@@ -1,0 +1,63 @@
+.accent_background {
+  background: var(--accent, #6a4bfc);
+  border-radius: 30px 0px 0px 30px;
+  border: 1px solid rgba(0, 0, 0, 0.15);
+  /* padding: 10px; */
+  height: 100%;
+}
+.menu_background {
+  /* border-radius: 12px; */
+  width: 40.176px;
+  height: 40.176px;
+  border: 1px solid rgba(255, 255, 255, 0.2);
+
+  background: rgba(255, 255, 255, 0.1);
+}
+.menu_background_color {
+  background: rgba(255, 255, 255, 0.1);
+}
+/* .Loyaltri_text_color {
+  color: var(--accent, #6a4bfc);
+} */
+.icon_text_color {
+  /* color: #fff; */
+
+  /* tiny */
+  /* font-family: Graphik; */
+  /* font-size: 12px; */
+  /* font-style: normal;
+  font-weight: 400; */
+  /* line-height: normal; */
+}
+.company_list {
+  border-radius: 10px;
+  border: 1px solid rgba(0, 0, 0, 0.1);
+  background: #f4f4f4;
+}
+.bg_linear_colort {
+  background: linear-gradient(180deg, #8086e4 0%, #6640eb 100%);
+  /* mix-blend-mode: lighten; */
+}
+
+.btn_Shadow {
+  box-shadow: 0px 1px 2px 0px rgba(16, 24, 40, 0.05);
+}
+
+@media (max-width: 780px) {
+  .menu_background {
+    width: 26.176px;
+    height: 26.176px;
+    border: 1px solid rgba(255, 255, 255, 0.2);
+
+    background: rgba(255, 255, 255, 0.1);
+  }
+}
+@media screen and (max-width: 425px) {
+  .menu_background {
+    width: 28.176px;
+    height: 28.176px;
+    border: 1px solid rgba(255, 255, 255, 0.2);
+
+    background: rgba(255, 255, 255, 0.1);
+  }
+}

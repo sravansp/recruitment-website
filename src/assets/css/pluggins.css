@@ -1,0 +1,74 @@
+.ant-menu.ant-menu-sub {
+  background: transparent !important;
+}
+.ant-menu-submenu-title {
+  padding-left: 0.875rem !important;
+}
+.ant-menu.ant-menu-sub {
+  background: transparent !important;
+}
+.ant-menu-submenu-title {
+  padding-left: 0.875rem !important;
+}
+.ant-steps.ant-steps-with-progress.ant-steps-label-vertical
+  .ant-steps-item
+  .ant-steps-item-tail {
+  top: 5px;
+}
+.ant-menu-submenu-title {
+}
+.ant-menu-item a {
+  transition: none;
+}
+.ant-btn-primary {
+  background: theme("colors.accent");
+}
+.ant-switch {
+  background: #f2f4f7;
+}
+.dark .ant-switch {
+  background: #3e3e3f;
+}
+.dark .ant-switch.ant-switch-checked {
+  background: theme("colors.accent");
+}
+@media screen and (max-width: 1439px) {
+  .ant-menu-submenu-title {
+    height: 32px !important;
+  }
+}
+.ant-steps-item-title {
+  font-size: 12px !important;
+}
+.ant-skeleton.ant-skeleton-element {
+  display: flex !important;
+  align-items: end;
+}
+.ant-color-picker-trigger .ant-color-picker-clear::after {
+  display: none;
+}
+.ant-color-picker-trigger.ant-color-picker-trigger-active {
+  border-inline-end-width: initial;
+  box-shadow: none;
+  outline: 0;
+}
+.ant-color-picker-trigger .ant-color-picker-color-block {
+  border-radius: 50%;
+}
+.ant-color-picker-trigger {
+  min-width: 32px;
+  height: 32px;
+  border-radius: 50%;
+  border: 3px solid #EBEBEB;
+  cursor: pointer;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  transition: all 0.2s;
+  background: #ffffff;
+  padding: 0;
+}
+.ant-color-picker-trigger .ant-color-picker-clear {
+  border-radius: 50%;
+  background: conic-gradient(from 180deg at 50% 50%, #FB2E2E 0deg, rgba(251, 120, 46, 0.80) 51.42857372760773deg, #FBE62E 102.85714745521545deg, #88FB2E 154.28571581840515deg, #2EFBEF 205.7142949104309deg, #2E43FB 257.1428632736206deg, #C62EFB 308.5714316368103deg, #FB2E6C 360deg) !important;
+}

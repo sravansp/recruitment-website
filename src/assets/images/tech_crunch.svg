@@ -1,0 +1,16 @@
+<svg width="40" height="40" viewBox="0 0 40 40" fill="none" xmlns="http://www.w3.org/2000/svg">
+<g id="tech_crunch">
+<circle id="bg" cx="20" cy="20" r="17.5" fill="url(#paint0_linear_1287_77986)"/>
+<g id="tech_crunch_2">
+<path d="M20 13.75V17.5H16.25V26.25H12.5V17.5H8.75V13.75H20Z" fill="white"/>
+<path d="M23.75 17.5V22.5H31.25V26.25H20V17.5H23.75Z" fill="white"/>
+<path d="M23.75 17.5V13.75H31.25V17.5H23.75Z" fill="white"/>
+</g>
+</g>
+<defs>
+<linearGradient id="paint0_linear_1287_77986" x1="12.5" y1="6.25" x2="30.625" y2="32.5" gradientUnits="userSpaceOnUse">
+<stop stop-color="#13B069"/>
+<stop offset="1" stop-color="#12C833"/>
+</linearGradient>
+</defs>
+</svg>
