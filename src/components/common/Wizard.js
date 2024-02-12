@@ -76,7 +76,7 @@ export default function Wizard({
                   key={i}
                   className={` py-3.5 px-5 ${choosePolicies === each.value
                       ? "bg-[#8770F21A] border-primary"
-                      : "border-[#DCDCDC] dark:bg-dark"
+                      : "border-[#DCDCDC] dark:bg-lightdark"
                     } flex  lg:justify-start justify-center lg:my-0 my-2 items-center gap-2.5 border  rounded-full`}
                   onClick={() => {
                     // buttonClick(each.value);
@@ -120,7 +120,7 @@ export default function Wizard({
       <div className=" h-full">{children}</div>
 
       <Affix offsetBottom={0}>
-        <div className=" md:flex justify-between items-center rounded-b-xl  py-4 border-t dark:text-white  bg-white dark:bg-dark px-2">
+        <div className=" md:flex justify-between items-center rounded-b-xl  py-4 border-t dark:text-white  bg-white dark:bg-lightdark px-2">
           <div className="">
             <p
               className={`  ${menu ? "md:col-span-2 " : "col-span-6 "

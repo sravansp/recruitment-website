@@ -27,12 +27,16 @@ export const theme = {
       secondaryWhite: "#F4F4F4",
       secondaryDark: "#3E3E3F",
       grey: "#667085",
-      dark: "#242424",
+      lightdark: "#242424",
       whiteTint: "#F4F4F4",
 
-      // dark: {
-      //   black: "#161618",
-      // },
+     // Specify black color for dark mode
+     black: {
+      DEFAULT: "#000000",
+    },
+    dark: {
+      black: "#161618",
+    },
     },
     // },
     //   extend: {
