@@ -26,6 +26,8 @@ export const theme = {
       // accent: "#6A4BFC", // Purple Blue
       secondaryWhite: "#F4F4F4",
       secondaryDark: "#3E3E3F",
+      borderlight: "rgba(0, 0, 0, 0.10)",
+      borderdark: "rgba(255, 255, 255, 0.10)",
       grey: "#667085",
       lightdark: "#242424",
       whiteTint: "#F4F4F4",

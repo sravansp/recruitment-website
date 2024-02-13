@@ -329,9 +329,9 @@ const Sidebar = () => {
       >
         <div
         className={`flex-col gap-[2px] 2xl:gap-1 vhcenter ${isHamburgerClicked ? 'is-active' : ''} cursor-pointer`}>
-        <span className={`line w-3 2xl:w-[18px] h-[1px] bg-gray-100 block mx-auto transition-all duration-300 ease-in-out transform ${isHamburgerClicked ? 'translate-x-[3px]' : ''}`}></span>
-        <span className={`line w-3 2xl:w-[18px] h-[1px] bg-gray-100 block mx-auto transition-all duration-300 ease-in-out transform ${isHamburgerClicked ? '' : 'translate-x-0'}`}></span>
-        <span className={`line w-3 2xl:w-[18px] h-[1px] bg-gray-100 block mx-auto transition-all duration-300 ease-in-out transform ${isHamburgerClicked ? '-translate-x-[3px]' : ''}`}></span>
+        <span className={`line w-3 2xl:w-[18px] h-[0.12rem] rounded-md bg-gray-100 block mx-auto transition-all duration-300 ease-in-out transform ${isHamburgerClicked ? 'translate-x-[3px]' : ''}`}></span>
+        <span className={`line w-3 2xl:w-[18px] h-[0.12rem] rounded-md bg-gray-100 block mx-auto transition-all duration-300 ease-in-out transform ${isHamburgerClicked ? '' : 'translate-x-0'}`}></span>
+        <span className={`line w-3 2xl:w-[18px] h-[0.12rem] rounded-md bg-gray-100 block mx-auto transition-all duration-300 ease-in-out transform ${isHamburgerClicked ? '-translate-x-[3px]' : ''}`}></span>
       </div>
       </div>
     </div>

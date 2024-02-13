@@ -7,6 +7,7 @@ import { useTranslation } from "react-i18next";
 import Sidebar from "./components/Menus/Sidebar";
 import JobsList from "./components/Jobs/JobsList";
 import Appearance from "./components/Settings/Appearance/Appearance";
+import JobDetails from "./components/Jobs/JobDetails";
 
 
 
@@ -49,6 +50,7 @@ export default function Router() {
                 {/* Company submenus */}
                 <Route path="/JobsList" element={<JobsList />} />
                 <Route path="/Appearance" element={<Appearance />} />
+                <Route path="/JobDetails" element={<JobDetails />} />
               </Routes>
             </div>
           </div>

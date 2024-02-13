@@ -1,0 +1,74 @@
+
+
+[
+  {
+    "name": "Sourced",
+    "items": [
+      {
+        "id": 1,
+        "name": "John Doe",
+        "image": "https://alpha.loyaltri.com/static/media/user3.b90ea7f9e2990cbeb255.webp"
+      },
+      {
+        "id": 2,
+        "name": "Jane Smith",
+        "image": "https://alpha.loyaltri.com/static/media/user3.b90ea7f9e2990cbeb255.webp"
+      },
+      {
+        "id": 3,
+        "name": "Alice Johnson",
+        "image": "https://alpha.loyaltri.com/static/media/user3.b90ea7f9e2990cbeb255.webp"
+      },
+      {
+        "id": 4,
+        "name": "Bob Williams",
+        "image": "https://alpha.loyaltri.com/static/media/user3.b90ea7f9e2990cbeb255.webp"
+      },
+      {
+        "id": 5,
+        "name": "Michael Brown",
+        "image": "https://alpha.loyaltri.com/static/media/user3.b90ea7f9e2990cbeb255.webp"
+      },
+      {
+        "id": 6,
+        "name": "Emily Davis",
+        "image": "https://alpha.loyaltri.com/static/media/user3.b90ea7f9e2990cbeb255.webp"
+      }
+    ]
+  },
+  {
+    "name": "Applied",
+    "items": [
+      {
+        "id": 7,
+        "name": "David Martinez",
+        "image": "https://alpha.loyaltri.com/static/media/user3.b90ea7f9e2990cbeb255.webp"
+      },
+      {
+        "id": 8,
+        "name": "Sarah Wilson",
+        "image": "https://alpha.loyaltri.com/static/media/user3.b90ea7f9e2990cbeb255.webp"
+      },
+      {
+        "id": 9,
+        "name": "Christopher Anderson",
+        "image": "https://alpha.loyaltri.com/static/media/user3.b90ea7f9e2990cbeb255.webp"
+      }
+    ]
+  },
+  {
+    "name": "Personal Interview",
+    "items": [
+      {
+        "id": 10,
+        "name": "Olivia Taylor",
+        "image": "https://alpha.loyaltri.com/static/media/user3.b90ea7f9e2990cbeb255.webp"
+      },
+      {
+        "id": 11,
+        "name": "Daniel Brown",
+        "image": "https://alpha.loyaltri.com/static/media/user3.b90ea7f9e2990cbeb255.webp"
+      }
+    ]
+  }
+]
