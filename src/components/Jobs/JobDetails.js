@@ -6,6 +6,7 @@ import { DragDropContext, Droppable, Draggable } from "react-beautiful-dnd";
 import { BsThreeDots } from "react-icons/bs";
 import { GoClock } from "react-icons/go";
 import ButtonClick from "../common/Button";
+import { PiBookmarkSimpleFill, PiDotsThreeOutlineVerticalFill } from "react-icons/pi";
 // import Message from "../svg/message.svg";
 // import Files from "../svg/files.svg";
 
@@ -64,35 +65,37 @@ const JobDetails = () => {
                   {board.name === "To Do" ? <img src="" alt="attach" /> : null}
                 </div>
                 <Droppable droppableId={bIndex.toString()}>
-  {(provided, snapshot) => (
-    <div {...provided.droppableProps} ref={provided.innerRef}>
-      <div
-        className={`bg-[#F7FBFF] h-[80vh] flex flex-col relative overflow-hidden p-1.5 border border-solid border-borderlight dark:border-borderdark w-72 rounded-lg
+                  {(provided, snapshot) => (
+                    <div {...provided.droppableProps} ref={provided.innerRef}>
+                      <div
+                        className={`bg-[#F7FBFF] h-[80vh] flex flex-col relative overflow-hidden p-1.5 border border-solid border-borderlight dark:border-borderdark w-72 rounded-lg
                     ${snapshot.isDraggingOver && "bg-[#FBF7F1]"}`}
-      >
-        {snapshot.isDraggingOver && board.items.length === 0 && (
-          <p className="text-center text-gray-400">Drop here</p>
-        )}
-        <div
-          className="flex flex-col h-auto gap-1.5 overflow-x-hidden overflow-y-auto"
-          style={{ maxHeight: "calc(100vh - 50px)" }}
-        >
-          {board.items.length > 0 &&
-            board.items.map((item, iIndex) => (
-              <CardItem
-                key={item.id}
-                data={item}
-                index={iIndex}
-                className="m-3"
-              />
-            ))}
-          {provided.placeholder}
-        </div>
-      </div>
-    </div>
-  )}
-</Droppable>
-
+                      >
+                        {snapshot.isDraggingOver &&
+                          board.items.length === 0 && (
+                            <p className="text-center text-gray-400">
+                              Drop here
+                            </p>
+                          )}
+                        <div
+                          className="flex flex-col h-auto gap-1.5 overflow-x-hidden overflow-y-auto"
+                          style={{ maxHeight: "calc(100vh - 50px)" }}
+                        >
+                          {board.items.length > 0 &&
+                            board.items.map((item, iIndex) => (
+                              <CardItem
+                                key={item.id}
+                                data={item}
+                                index={iIndex}
+                                className="m-3"
+                              />
+                            ))}
+                          {provided.placeholder}
+                        </div>
+                      </div>
+                    </div>
+                  )}
+                </Droppable>
               </div>
             ))}
           </div>
@@ -113,10 +116,10 @@ const CardItem = ({ data, index }) => {
           {...provided.dragHandleProps}
           className="p-3 bg-white border rounded-md cursor-grab border-borderlight dark:border-borderdark dark:bg-neutral-800"
         >
-          <div className="flex flex-col">
+          <div className="flex flex-col gap-2">
             <div className="flex items-center gap-3">
               <div
-                className={`w-8 h-8 overflow-hidden rounded-full ${
+                className={`2xl:w-8 2xl:h-8 w-6 h-6 overflow-hidden rounded-full ${
                   data?.image ? "" : "bg-primary"
                 } `}
               >
@@ -128,23 +131,21 @@ const CardItem = ({ data, index }) => {
                   />
                 )}
               </div>
-              <h1 className="!font-semibold h6 !text-black">
+              <p className="!font-semibold h6 !text-black">
                 {" "}
                 {data?.name && data?.name}
-              </h1>
+              </p>
             </div>
             <div className="flex justify-between gap-3">
-              <div className="flex items-center gap-3">
-                <GoClock />
-                <p className="para !text-black ">4d ago</p>
+              <div className="flex items-center gap-2">
+                <GoClock className="text-lg 2xl:text-2xl opacity-30" />
+                <p className="para !text-black !font-normal">4d ago</p>
               </div>
-              <div className="flex items-center gap-3">
-                <ButtonClick BtnType="text">
-                  <BsThreeDots />
-                </ButtonClick>
-                <ButtonClick BtnType="text">
-                  <BsThreeDots />
-                </ButtonClick>
+              <div className="flex items-center gap-2">
+                  <a href="" className=" text-green"><PiBookmarkSimpleFill className="text-xl"/></a>
+
+                 <a href="" className="text-primary"> <PiDotsThreeOutlineVerticalFill className="text-xl" /></a>
+    
               </div>
             </div>
           </div>

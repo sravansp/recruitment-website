@@ -22,7 +22,7 @@ import { HiDocumentText } from "react-icons/hi2";
 import { HiUsers } from "react-icons/hi";
 import { RiSettings4Fill } from "react-icons/ri";
 import { IoHelpCircle } from "react-icons/io5";
-import {  PiTreeStructure, PiCalendarX, PiCalendar, PiClockCountdown, PiPalette, PiBell, PiCheckSquareOffset, PiWatch, PiImage, PiUserCircle, PiNotepad, PiBriefcase, PiMoney, PiStack } from "react-icons/pi";
+import {  PiBriefcaseDuotone, PiBriefcaseMetalDuotone, PiPalette, PiPaletteDuotone } from "react-icons/pi";
 
 
 const Sidebar = () => {
@@ -220,11 +220,39 @@ const Sidebar = () => {
           icon: (
             <BsBriefcaseFill
               size={"100%"}
-              className={`text-white transition-all duration-300 group-hover:text-primary ${selectedMainMenu === t("Company") ? "text-primary" : ""
+              className={`text-white transition-all duration-300 group-hover:text-primary ${selectedMainMenu === t("Jobs") ? "text-primary" : ""
                 }`}
             />
           ),
-         
+          submenus: [
+            {
+              catid: 1,
+              id: 1,
+              parentMenu: "Jobs",
+              parentId: 5,
+              title: t("Jobs"),
+              status: false,
+              subMenu: [
+                {
+                  id: 21,
+                  title: t("Job List"),
+                  icon: (
+                    <PiBriefcaseDuotone className="!text-base 2xl:!text-2xl" />
+                  ),
+                  link: "/JobList",
+                },
+                {
+                  id: 22,
+                  title: t("Job Details"),
+                  icon: (
+                    <PiBriefcaseMetalDuotone className="!text-base 2xl:!text-2xl" />
+                  ),
+                  link: "/JobDetails",
+                },
+               
+              ],
+            },
+          ],
         },
         {
           id: 3,
@@ -274,7 +302,7 @@ const Sidebar = () => {
                   id: 112,
                   title: t("Appearance"),
                   icon: (
-                    <PiPalette className="!text-base 2xl:!text-2xl" />
+                    <PiPaletteDuotone className="!text-base 2xl:!text-2xl" />
                   ),
                   link: "/Appearance",
                 },

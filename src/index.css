@@ -47,7 +47,7 @@
 }
 
 .h6 {
-  @apply text-sm font-medium text-gray-700 md:text-base dark:text-white;
+  @apply text-sm font-medium text-gray-700 2xl:text-base dark:text-white;
 }
 
 .p6 {
