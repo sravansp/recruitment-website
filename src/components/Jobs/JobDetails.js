@@ -2,13 +2,11 @@ import React, { useEffect, useState } from "react";
 
 import BoardData from "../../data/board.json";
 import { DragDropContext, Droppable, Draggable } from "react-beautiful-dnd";
-// import Addsquare1 from "../svg/addsquare1.svg";
-import { BsThreeDots } from "react-icons/bs";
 import { GoClock } from "react-icons/go";
-import ButtonClick from "../common/Button";
-import { PiBookmarkSimpleFill, PiDotsThreeOutlineVerticalFill } from "react-icons/pi";
-// import Message from "../svg/message.svg";
-// import Files from "../svg/files.svg";
+import {
+  PiBookmarkSimpleFill,
+  PiDotsThreeOutlineVerticalFill,
+} from "react-icons/pi";
 
 const JobDetails = () => {
   const [ready, setReady] = useState(false);
@@ -46,15 +44,12 @@ const JobDetails = () => {
               <div key={board.name} className="flex flex-col gap-5">
                 <div className="flex items-center justify-between gap-2 px-3 mt-5 ">
                   <span className="flex items-center gap-2">
-                    <p
-                      className={`${
-                        board.name === "To Do"
-                          ? "bg-[#5030E5]"
-                          : board.name === "On Progress"
+                    {/* <p
+                      className={`${ board.name === "To Do" ? "bg-[#5030E5]" : board.name === "On Progress"
                           ? "bg-[#FFA500]"
                           : "bg-[#76A5EA]"
                       } rounded-full w-[8px] h-[8px]`}
-                    ></p>
+                    ></p> */}
                     <span className="text-base font-medium leading-5 text-indigo-900">
                       {board.name}
                     </span>
@@ -68,8 +63,8 @@ const JobDetails = () => {
                   {(provided, snapshot) => (
                     <div {...provided.droppableProps} ref={provided.innerRef}>
                       <div
-                        className={`bg-[#F7FBFF] h-[80vh] flex flex-col relative overflow-hidden p-1.5 border border-solid border-borderlight dark:border-borderdark w-72 rounded-lg
-                    ${snapshot.isDraggingOver && "bg-[#FBF7F1]"}`}
+                        className={`bg-[#F7FBFF] dark:bg-lightdark h-[80vh] flex flex-col relative overflow-hidden p-1.5 border border-solid border-borderlight dark:border-borderdark w-72 rounded-lg
+                    ${snapshot.isDraggingOver && "bg-[#FBF7F1] dark:bg-[#1B1B1B]"}`}
                       >
                         {snapshot.isDraggingOver &&
                           board.items.length === 0 && (
@@ -114,7 +109,7 @@ const CardItem = ({ data, index }) => {
           ref={provided.innerRef}
           {...provided.draggableProps}
           {...provided.dragHandleProps}
-          className="p-3 bg-white border rounded-md cursor-grab border-borderlight dark:border-borderdark dark:bg-neutral-800"
+          className="p-3 bg-white border rounded-md cursor-grab border-borderlight dark:border-borderdark dark:bg-secondaryDark dark:text-white"
         >
           <div className="flex flex-col gap-2">
             <div className="flex items-center gap-3">
@@ -131,7 +126,7 @@ const CardItem = ({ data, index }) => {
                   />
                 )}
               </div>
-              <p className="!font-semibold h6 !text-black">
+              <p className="!font-semibold h6 !text-black dark:!text-white">
                 {" "}
                 {data?.name && data?.name}
               </p>
@@ -139,13 +134,17 @@ const CardItem = ({ data, index }) => {
             <div className="flex justify-between gap-3">
               <div className="flex items-center gap-2">
                 <GoClock className="text-lg 2xl:text-2xl opacity-30" />
-                <p className="para !text-black !font-normal">4d ago</p>
+                <p className="para !text-black !font-normal dark:!text-white">4d ago</p>
               </div>
               <div className="flex items-center gap-2">
-                  <a href="" className=" text-green"><PiBookmarkSimpleFill className="text-xl"/></a>
+                <a href="" className=" text-[#15A61B]">
+                  <PiBookmarkSimpleFill className="text-xl" />
+                </a>
 
-                 <a href="" className="text-primary"> <PiDotsThreeOutlineVerticalFill className="text-xl" /></a>
-    
+                <a href="" className="text-primary">
+                  {" "}
+                  <PiDotsThreeOutlineVerticalFill className="text-xl" />
+                </a>
               </div>
             </div>
           </div>

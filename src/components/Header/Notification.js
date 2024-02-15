@@ -75,7 +75,7 @@ const Notification = () => {
         className="relative flex items-center justify-center w-8 h-8 rounded-full cursor-pointer 2xl:w-10 2xl:h-10 ltr:mr-4 rtl:ml-4 bg-secondaryWhite dark:bg-secondaryDark"
         onClick={showModal}
       >
-        <PiBellFill className="text-xs w-4 h-4 text-black 2xl:text-sm opacity-20 dark:text-white dark:opacity-100" />
+        <PiBellFill className="w-4 h-4 text-xs text-black 2xl:text-sm opacity-20 dark:text-white dark:opacity-100" />
         <div className="absolute top-0 right-0 w-3 h-3 text-white rounded-full 2xl:w-4 2xl:h-4 bg-primary vhcenter">
           <p className="text-[8px] 2xl:text-xs">3</p>
         </div>
@@ -122,8 +122,8 @@ const Notification = () => {
         </div>
 
         {/* code for the notifications */}
-        {notifications.map((data) => (
-          <div className={`notification-item ${data.status}`}>
+        {notifications.map((data, i) => (
+          <div className={`notification-item ${data.status}`} key={i}>
             <div class="flow-root">
               <ul
                 role="list"
