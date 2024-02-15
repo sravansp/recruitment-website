@@ -142,8 +142,8 @@ const CustomAccordion = () => {
               {item.contents.map((subitems) => (
                 <div key={subitems.id} className="input-group">
                   <div>
-                    <p class="acco-subhead">{subitems.title}</p>
-                    <p class="para">{subitems.subtitle}</p>
+                    <p className="acco-subhead">{subitems.title}</p>
+                    <p className="para">{subitems.subtitle}</p>
                   </div>
                   <div className="w-full form-select md:w-80">
                     {subitems.input ? (

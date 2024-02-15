@@ -74,6 +74,7 @@
 }
 
 
-[data-rbd-draggable-context-id="0"] {
-  
+.ant-dropdown-menu-submenu-title {
+  display: flex;
+  align-items: center;
 }

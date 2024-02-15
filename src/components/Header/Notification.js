@@ -124,21 +124,21 @@ const Notification = () => {
         {/* code for the notifications */}
         {notifications.map((data, i) => (
           <div className={`notification-item ${data.status}`} key={i}>
-            <div class="flow-root">
+            <div className="flow-root">
               <ul
                 role="list"
-                class="divide-y divide-gray-200 dark:divide-gray-700"
+                className="divide-y divide-gray-200 dark:divide-gray-700"
               >
-                <li class="py-3 sm:py-4">
-                  <div class="flex items-center">
-                    <div class="flex-shrink-0">
+                <li className="py-3 sm:py-4">
+                  <div className="flex items-center">
+                    <div className="flex-shrink-0">
                       <img
-                        class="w-8 h-8 rounded-full bg-gray-400"
+                        className="w-8 h-8 rounded-full bg-gray-400"
                         src={data.avatar}
                         alt="Profile image"
                       />
                     </div>
-                    <div class="flex-1 min-w-0 ms-4">
+                    <div className="flex-1 min-w-0 ms-4">
                       <p className="flex justify-end text-sm font-medium text-gray-900 truncate dark:text-white">
                         @{data.name} 
                         <span className="text-gray-600">{data.text}</span>
@@ -148,7 +148,7 @@ const Notification = () => {
                         </span>
                       </p>
 
-                      <p class="flex justify-between text-xs text-gray-500 truncate dark:text-gray-400">
+                      <p className="flex justify-between text-xs text-gray-500 truncate dark:text-gray-400">
                         {data.date}
                         <span>{data.time}</span>
                       </p>
@@ -160,11 +160,11 @@ const Notification = () => {
           </div>
         ))}
 
-        <div class="flex space-x-3">
-          <button class="px-4 py-2 border border-black rounded-md hover:bg-blue-500 transition duration-300">
+        <div className="flex space-x-3">
+          <button className="px-4 py-2 border border-black rounded-md hover:bg-blue-500 transition duration-300">
             Decline
           </button>
-          <button class="px-4 py-2 border border-black rounded-md hover:bg-blue-500 transition duration-300">
+          <button className="px-4 py-2 border border-black rounded-md hover:bg-blue-500 transition duration-300">
             Accept
           </button>
         </div>

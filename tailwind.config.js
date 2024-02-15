@@ -56,6 +56,8 @@ export const theme = {
       primaryShadow: "0px 0px 15px var(--primary-color)66",
       stepShadow: "0px 5px 8px 0px rgba(165, 165, 165, 0.40);",
       stepShadowInset: "0px 0px 4px 0px rgba(255, 255, 255, 0.25) inset;",
+      dragShadow: "0px 66px 100px 0px #C9CBD1",
+      dragShadowDark: "0px 66px 100px 0px #141414",
     },
 
     animation: {

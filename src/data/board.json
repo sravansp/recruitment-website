@@ -2,6 +2,7 @@
 
 [
   {
+    "id" : 1,
     "name": "Sourced",
     "items": [
       {
@@ -37,6 +38,7 @@
     ]
   },
   {
+    "id" : 2,
     "name": "Applied",
     "items": [
       {
@@ -57,6 +59,7 @@
     ]
   },
   {
+    "id" : 3,
     "name": "Personal Interview",
     "items": [
       {
