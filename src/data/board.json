@@ -13,7 +13,7 @@
       {
         "id": 2,
         "name": "Jane Smith",
-        "image": "https://alpha.loyaltri.com/static/media/user3.b90ea7f9e2990cbeb255.webp"
+        "image": ""
       },
       {
         "id": 3,
@@ -28,7 +28,7 @@
       {
         "id": 5,
         "name": "Michael Brown",
-        "image": "https://alpha.loyaltri.com/static/media/user3.b90ea7f9e2990cbeb255.webp"
+        "image": ""
       },
       {
         "id": 6,
@@ -44,7 +44,7 @@
       {
         "id": 7,
         "name": "David Martinez",
-        "image": "https://alpha.loyaltri.com/static/media/user3.b90ea7f9e2990cbeb255.webp"
+        "image": ""
       },
       {
         "id": 8,
@@ -54,7 +54,7 @@
       {
         "id": 9,
         "name": "Christopher Anderson",
-        "image": "https://alpha.loyaltri.com/static/media/user3.b90ea7f9e2990cbeb255.webp"
+        "image": ""
       }
     ]
   },
@@ -70,7 +70,65 @@
       {
         "id": 11,
         "name": "Daniel Brown",
-        "image": "https://alpha.loyaltri.com/static/media/user3.b90ea7f9e2990cbeb255.webp"
+        "image": ""
+      }
+    ]
+  },
+  {
+    "id" : 4,
+    "name": "Background check",
+    "items": [
+      {
+        "id": 12,
+        "name": "Mohammad Haris",
+        "image": ""
+      },
+      {
+        "id": 13,
+        "name": "Prasanth",
+        "image": ""
+      },
+      {
+        "id": 14,
+        "name": "Vignesh",
+        "image": ""
+      }
+    ]
+  },
+  {
+    "id" : 5,
+    "name": "Machine testing",
+    "items": [
+      {
+        "id": 15,
+        "name": "Ashok",
+        "image": ""
+      },
+      {
+        "id": 16,
+        "name": "Srinath",
+        "image": ""
+      },
+      {
+        "id": 17,
+        "name": "Ashikh",
+        "image": ""
+      }
+    ]
+  },
+  {
+    "id" : 6,
+    "name": "Final review",
+    "items": [
+      {
+        "id": 18,
+        "name": "Ajay",
+        "image": ""
+      },
+      {
+        "id": 19,
+        "name": "Brinesh",
+        "image": ""
       }
     ]
   }

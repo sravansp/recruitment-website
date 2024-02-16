@@ -2,15 +2,20 @@ import React, { useEffect, useState } from "react";
 
 import BoardData from "../../data/board.json";
 import { DragDropContext, Droppable, Draggable } from "react-beautiful-dnd";
-import { Dropdown, Space, Menu } from "antd";
+import { Dropdown, Tooltip } from "antd";
 import { GoClock } from "react-icons/go";
 import {
   PiBookmarkSimpleFill,
+  PiDotsThreeOutlineFill,
   PiDotsThreeOutlineVerticalFill,
-  PiTrash,
   PiTrashBold,
 } from "react-icons/pi";
-import { FcHighPriority, FcProcess } from "react-icons/fc";
+import {
+  FcEngineering,
+  FcHighPriority,
+  FcMms,
+  FcProcess,
+} from "react-icons/fc";
 
 const JobDetails = () => {
   const [ready, setReady] = useState(false);
@@ -52,22 +57,87 @@ const JobDetails = () => {
     }
   };
 
+  const customColors = [
+    "#00B23C",
+    "#FE4949",
+    "#4437CC",
+    "#FF8A00",
+    "#4976FE",
+    "#E0115F",
+    "#DFA510",
+    "#E546D5",
+    "#00E096",
+    "#884DFF",
+    "#FF4DB8",
+  ];
+
+  const colors = boardData.map(
+    (_, index) => customColors[index % customColors.length]
+  );
+
+  const items = [
+    {
+      label: "Automate",
+      key: "0",
+      icon: <FcEngineering size={20} />,
+    },
+    {
+      label: "Message",
+      key: "1",
+      icon: <FcMms size={20} />,
+      children: [
+        {
+          key: "1-1",
+          label: "SMS",
+        },
+        {
+          key: "1-2",
+          label: "Email",
+        },
+      ],
+    },
+  ];
   return (
-    <div className="flex flex-col lg:h-[100vh]">
-      
+    <div className="flex flex-col lg:h-[85vh] overflow-auto">
       {ready && (
         <DragDropContext onDragEnd={onDragEnd}>
-          <div className="flex w-full h-full gap-3 py-10">
+          <div className="flex w-full h-full gap-3">
             {boardData.map((board, bIndex) => (
               <div key={board.name} className="flex flex-col gap-5">
-                <div className="flex items-center justify-between gap-2 p-3 border rounded-md g-white cursor-grab border-borderlight dark:border-borderdark dark:bg-secondaryDark dark:text-white">
-                  <p className="!font-semibold h6 !text-black dark:!text-white">
-                    {board.name}
-                  </p>
-                  <div className="w-[26px] h-[26px] p-1 bg-violet-100 rounded-md flex-col justify-center items-center gap-2.5 inline-flex">
-                    <p className=" text-gray-900 text-[13px] font-['SF Pro'] leading-[18.20px]">
-                      {board.items.length}
+                <div className="flex items-center justify-between gap-2 p-3 bg-white border rounded-md w-[303px] border-borderlight dark:border-borderdark dark:bg-secondaryDark dark:text-white">
+                  <div className="flex items-center gap-4 overflow-hidden">
+                    <div
+                      className="w-4 h-4 overflow-hidden rounded-full vhcenter shrink-0"
+                      style={{ backgroundColor: `${colors[bIndex]}30` }}
+                    >
+                      <span
+                        className=" w-2.5 h-2.5 rounded-full "
+                        style={{ backgroundColor: colors[bIndex] }}
+                      ></span>
+                    </div>
+                    <p className="!font-semibold h6 !text-black dark:!text-white truncate">
+                      {board.name}
                     </p>
+                  </div>
+                  <div className="flex items-center gap-4 shrink-0">
+                    <div className="w-[26px] h-[26px] p-1 bg-violet-100 rounded-md flex-col justify-center items-center gap-2.5 inline-flex">
+                      <p className=" text-gray-900 text-[13px] font-['SF Pro'] leading-[18.20px]">
+                        {board.items.length}
+                      </p>
+                    </div>
+                    <Dropdown
+                      menu={{
+                        items,
+                      }}
+                      placement="bottomRight"
+                    >
+                      <a
+                        onClick={(e) => e.preventDefault()}
+                        className="p-1 border border-transparent rounded cursor-pointer text-primary hover:border-primary"
+                      >
+                        <PiDotsThreeOutlineFill className="text-xl" />
+                      </a>
+                    </Dropdown>
                   </div>
                 </div>
                 <Droppable droppableId={bIndex.toString()} key={bIndex}>
@@ -75,7 +145,7 @@ const JobDetails = () => {
                     <div
                       {...provided.droppableProps}
                       ref={provided.innerRef}
-                      className={`bg-[#F7FBFF] dark:bg-lightdark h-[80vh] flex flex-col relative overflow-hidden p-1.5 border border-solid border-borderlight dark:border-borderdark w-72 rounded-lg
+                      className={`bg-[#F7FBFF] dark:bg-lightdark h-full flex flex-col relative overflow-hidden p-1.5 border border-solid border-borderlight dark:border-borderdark w-[303px] rounded-lg
                       ${
                         snapshot.isDraggingOver &&
                         "bg-[#FBF7F1] dark:bg-[#1B1B1B]"
@@ -92,6 +162,7 @@ const JobDetails = () => {
                               key={item.id}
                               data={item}
                               index={iIndex}
+                              color={colors[bIndex]}
                               className="m-3"
                             />
                           ))}
@@ -115,7 +186,16 @@ const JobDetails = () => {
   );
 };
 
-const CardItem = ({ data, index }) => {
+const CardItem = ({ data, index, color }) => {
+  const [bookmarkState, setBookmarkState] = useState({});
+
+  const toggleBookmark = (cardId) => {
+    setBookmarkState((prevState) => ({
+      ...prevState,
+      [cardId]: !prevState[cardId],
+    }));
+  };
+
   const items = [
     {
       label: "Disqualify",
@@ -126,9 +206,6 @@ const CardItem = ({ data, index }) => {
       label: "Change Stage",
       key: "1",
       icon: <FcProcess size={20} />,
-      // children: data.map((child) => (
-      //   <Menu.Item key={child.id}>{child.name}</Menu.Item>
-      // )),
       children: [
         {
           key: "1-1",
@@ -153,8 +230,14 @@ const CardItem = ({ data, index }) => {
       icon: <PiTrashBold size={20} className="text-red-600 " />,
     },
   ];
+
+  const firstLetter = data?.name ? data.name.charAt(0).toUpperCase() : "";
   return (
-    <Draggable index={index} draggableId={data.id.toString()}>
+    <Draggable
+      index={index}
+      draggableId={data.id.toString()}
+      isDragDisabled={bookmarkState[data.id]}
+    >
       {(provided, snapshot) => (
         <div
           ref={provided.innerRef}
@@ -168,22 +251,29 @@ const CardItem = ({ data, index }) => {
           // }}
           className={`${
             snapshot.isDragging &&
-            " shadow-dragShadow dark:shadow-dragShadowDark"
-          } p-3 mb-1.5 bg-white border rounded-md cursor-grab border-borderlight dark:border-borderdark dark:bg-secondaryDark dark:text-white`}
+            "shadow-dragShadow dark:shadow-dragShadowDark"
+          } p-3 mb-1.5 bg-white border rounded-md ${
+            bookmarkState[data.id] ? " cursor-default" : "cursor-grab"
+          }  border-borderlight dark:border-borderdark dark:bg-secondaryDark dark:text-white`}
         >
           <div className="flex flex-col gap-2">
             <div className="flex items-center gap-3">
               <div
-                className={`2xl:w-8 2xl:h-8 w-6 h-6 overflow-hidden rounded-full ${
-                  data?.image ? "" : "bg-primary"
-                } `}
+                className={`2xl:w-8 2xl:h-8 w-6 h-6 overflow-hidden rounded-full vhcenter`}
+                style={{
+                  backgroundColor: `${data?.image ? "" : color}`,
+                }}
               >
-                {data?.image && (
+                {data?.image ? (
                   <img
                     src={data?.image}
                     alt={data?.image}
                     className="object-cover object-center w-full h-full"
                   />
+                ) : (
+                  <span className="h6 !text-white !font-medium">
+                    {firstLetter}
+                  </span>
                 )}
               </div>
               <p className="!font-semibold h6 !text-black dark:!text-white">
@@ -199,20 +289,39 @@ const CardItem = ({ data, index }) => {
                 </p>
               </div>
               <div className="flex items-center gap-2">
-                <a href="" className=" text-[#15A61B]">
-                  <PiBookmarkSimpleFill className="text-xl" />
-                </a>
+                <Tooltip
+                  title={`${
+                    bookmarkState[data.id]
+                      ? "Remove from Shortlist"
+                      : "Add to Shortlist"
+                  }`}
+                  color={color}
+                  key={color}
+                >
+                  <span
+                    className={` p-1 ${
+                      bookmarkState[data.id]
+                        ? "text-[#15A61B]"
+                        : "text-[#DFDFDF]"
+                    } cursor-pointer`}
+                    onClick={(e) => {
+                      e.preventDefault();
+                      toggleBookmark(data.id);
+                    }}
+                  >
+                    <PiBookmarkSimpleFill className="text-xl" />
+                  </span>
+                </Tooltip>
 
                 <Dropdown
                   menu={{
                     items,
                   }}
                   placement="bottomRight"
-                  trigger={["click"]}
                 >
                   <a
                     onClick={(e) => e.preventDefault()}
-                    className="cursor-pointer text-primary"
+                    className="p-1 border border-transparent rounded cursor-pointer text-primary hover:border-primary"
                   >
                     <PiDotsThreeOutlineVerticalFill className="text-xl" />
                   </a>
