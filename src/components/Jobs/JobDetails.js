@@ -3,6 +3,9 @@ import React, { useEffect, useState } from "react";
 import BoardData from "../../data/board.json";
 import { DragDropContext, Droppable, Draggable } from "react-beautiful-dnd";
 import { Dropdown, Tooltip } from "antd";
+import Breadcrumbs from "../common/BreadCrumbs";
+
+// ICONS
 import { GoClock } from "react-icons/go";
 import {
   PiBookmarkSimpleFill,
@@ -97,91 +100,106 @@ const JobDetails = () => {
       ],
     },
   ];
+  const breadcrumbItems = [
+    { label: "Jobs" },
+    { label: "UI UX Desinger" }
+  ];
   return (
-    <div className="flex flex-col lg:h-[85vh] overflow-auto">
-      {ready && (
-        <DragDropContext onDragEnd={onDragEnd}>
-          <div className="flex w-full h-full gap-3">
-            {boardData.map((board, bIndex) => (
-              <div key={board.name} className="flex flex-col gap-5">
-                <div className="flex items-center justify-between gap-2 p-3 bg-white border rounded-md w-[303px] border-borderlight dark:border-borderdark dark:bg-secondaryDark dark:text-white">
-                  <div className="flex items-center gap-4 overflow-hidden">
-                    <div
-                      className="w-4 h-4 overflow-hidden rounded-full vhcenter shrink-0"
-                      style={{ backgroundColor: `${colors[bIndex]}30` }}
-                    >
-                      <span
-                        className=" w-2.5 h-2.5 rounded-full "
-                        style={{ backgroundColor: colors[bIndex] }}
-                      ></span>
-                    </div>
-                    <p className="!font-semibold h6 !text-black dark:!text-white truncate">
-                      {board.name}
-                    </p>
-                  </div>
-                  <div className="flex items-center gap-4 shrink-0">
-                    <div className="w-[26px] h-[26px] p-1 bg-violet-100 rounded-md flex-col justify-center items-center gap-2.5 inline-flex">
-                      <p className=" text-gray-900 text-[13px] font-['SF Pro'] leading-[18.20px]">
-                        {board.items.length}
+    <div className="flex flex-col gap-5">
+      {/* BREADCRUMB  */}
+      <Breadcrumbs items={breadcrumbItems} />
+
+      {/* FILTER SECTON AND DETAILS  */}
+
+      {/* DRAG N DROP SECTION START  */}
+      <div className="flex flex-col lg:h-[85vh] overflow-auto">
+        {ready && (
+          <DragDropContext onDragEnd={onDragEnd}>
+            <div className="flex w-full h-full gap-3">
+              {boardData.map((board, bIndex) => (
+                <div key={board.name} className="flex flex-col gap-5">
+                  <div className="flex items-center justify-between gap-2 p-3 bg-white border rounded-md w-[303px] border-borderlight dark:border-borderdark dark:bg-secondaryDark dark:text-white">
+                    <div className="flex items-center gap-4 overflow-hidden">
+                      <div
+                        className="w-4 h-4 overflow-hidden rounded-full vhcenter shrink-0"
+                        style={{ backgroundColor: `${colors[bIndex]}30` }}
+                      >
+                        <span
+                          className=" w-2.5 h-2.5 rounded-full "
+                          style={{ backgroundColor: colors[bIndex] }}
+                        ></span>
+                      </div>
+                      <p className="!font-semibold h6 !text-black dark:!text-white truncate">
+                        {board.name}
                       </p>
                     </div>
-                    <Dropdown
-                      menu={{
-                        items,
-                      }}
-                      placement="bottomRight"
-                    >
-                      <a
-                        onClick={(e) => e.preventDefault()}
-                        className="p-1 border border-transparent rounded cursor-pointer text-primary hover:border-primary"
+                    <div className="flex items-center gap-4 shrink-0">
+                      <div className="w-[26px] h-[26px] p-1 bg-violet-100 rounded-md flex-col justify-center items-center gap-2.5 inline-flex">
+                        <p className=" text-gray-900 text-[13px] font-['SF Pro'] leading-[18.20px]">
+                          {board.items.length}
+                        </p>
+                      </div>
+                      <Dropdown
+                        menu={{
+                          items,
+                        }}
+                        placement="bottomRight"
                       >
-                        <PiDotsThreeOutlineFill className="text-xl" />
-                      </a>
-                    </Dropdown>
+                        <a
+                          onClick={(e) => e.preventDefault()}
+                          className="p-1 border border-transparent rounded cursor-pointer text-primary hover:border-primary"
+                        >
+                          <PiDotsThreeOutlineFill className="text-xl" />
+                        </a>
+                      </Dropdown>
+                    </div>
                   </div>
-                </div>
-                <Droppable droppableId={bIndex.toString()} key={bIndex}>
-                  {(provided, snapshot) => (
-                    <div
-                      {...provided.droppableProps}
-                      ref={provided.innerRef}
-                      className={`bg-[#F7FBFF] dark:bg-lightdark h-full flex flex-col relative overflow-hidden p-1.5 border border-solid border-borderlight dark:border-borderdark w-[303px] rounded-lg
+                  <Droppable droppableId={bIndex.toString()} key={bIndex}>
+                    {(provided, snapshot) => (
+                      <div
+                        {...provided.droppableProps}
+                        ref={provided.innerRef}
+                        className={`bg-[#F7FBFF] dark:bg-lightdark h-full flex flex-col relative overflow-hidden p-1.5 border border-solid border-borderlight dark:border-borderdark w-[303px] rounded-lg
                       ${
                         snapshot.isDraggingOver &&
                         "bg-[#FBF7F1] dark:bg-[#1B1B1B]"
                       }`}
-                      onDragOver={() => onDragOver(snapshot)}
-                    >
-                      <div
-                        className="flex flex-col h-auto overflow-x-hidden overflow-y-auto"
-                        style={{ maxHeight: "calc(100vh - 50px)" }}
+                        onDragOver={() => onDragOver(snapshot)}
                       >
-                        {board.items.length > 0 &&
-                          board.items.map((item, iIndex) => (
-                            <CardItem
-                              key={item.id}
-                              data={item}
-                              index={iIndex}
-                              color={colors[bIndex]}
-                              className="m-3"
-                            />
-                          ))}
-                        {provided.placeholder}
+                        <div
+                          className="flex flex-col h-auto overflow-x-hidden overflow-y-auto"
+                          style={{ maxHeight: "calc(100vh - 50px)" }}
+                        >
+                          {board.items.length > 0 &&
+                            board.items.map((item, iIndex) => (
+                              <CardItem
+                                key={item.id}
+                                data={item}
+                                index={iIndex}
+                                color={colors[bIndex]}
+                                className="m-3"
+                              />
+                            ))}
+                          {provided.placeholder}
+                        </div>
                       </div>
-                    </div>
-                  )}
-                </Droppable>
-              </div>
-            ))}
+                    )}
+                  </Droppable>
+                </div>
+              ))}
+            </div>
+          </DragDropContext>
+        )}
+        {/* Dropping div outside the DragDropContext */}
+        {draggingPosition !== null && (
+          <div
+            className="dropping-div"
+            style={{ top: `${draggingPosition}px` }}
+          >
+            Drop here to place the item
           </div>
-        </DragDropContext>
-      )}
-      {/* Dropping div outside the DragDropContext */}
-      {draggingPosition !== null && (
-        <div className="dropping-div" style={{ top: `${draggingPosition}px` }}>
-          Drop here to place the item
-        </div>
-      )}
+        )}
+      </div>
     </div>
   );
 };

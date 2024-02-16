@@ -38,9 +38,14 @@ export default function ButtonClick({
       onClick={() => (!updateBtn ? handleSubmit() : updateFun())}
       type={getButtonType()}
       size={isSmallScreen ? "default" : "large"}
-      className={` ${
-        (BtnType.toLowerCase() === "add" || getButtonType() === "primary") &&
-        "bg-accent"
+      className={`
+  ${
+    (BtnType.toLowerCase() === "add" || getButtonType() === "primary") &&
+    "bg-accent"
+  } ${
+        getButtonType() === "default" || getButtonType() === ""
+          ? "!bg-white dark:!bg-transparent"
+          : ""
       } text-xs 2xl:text-sm font-medium w-fit flex items-center justify-center leading-6 z-50 ${className}`}
     >
       {buttonName}
