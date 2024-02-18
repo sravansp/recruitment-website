@@ -5,13 +5,16 @@ import { DragDropContext, Droppable, Draggable } from "react-beautiful-dnd";
 import { Dropdown, Tooltip } from "antd";
 import Breadcrumbs from "../common/BreadCrumbs";
 
+import User from "../../assets/images/user1.jpeg";
 // ICONS
 import { GoClock } from "react-icons/go";
 import {
+  PiArrowSquareOut,
   PiBookmarkSimpleFill,
   PiDotsThreeOutlineFill,
   PiDotsThreeOutlineVerticalFill,
   PiTrashBold,
+  PiUsersThreeFill,
 } from "react-icons/pi";
 import {
   FcEngineering,
@@ -19,6 +22,9 @@ import {
   FcMms,
   FcProcess,
 } from "react-icons/fc";
+import { Link } from "react-router-dom";
+import ButtonClick from "../common/Button";
+import SearchBox from "../common/SearchBox";
 
 const JobDetails = () => {
   const [ready, setReady] = useState(false);
@@ -100,16 +106,50 @@ const JobDetails = () => {
       ],
     },
   ];
-  const breadcrumbItems = [
-    { label: "Jobs" },
-    { label: "UI UX Desinger" }
-  ];
+  const breadcrumbItems = [{ label: "Jobs" }, { label: "UI UX Desinger" }];
   return (
     <div className="flex flex-col gap-5">
-      {/* BREADCRUMB  */}
-      <Breadcrumbs items={breadcrumbItems} />
+      {/* BREADCRUMB AND BUTTONS */}
+      <div className="flex items-center justify-between">
+        <Breadcrumbs items={breadcrumbItems} />
+        <div className="flex gap-2.5 items-center">
+          <Link className="flex gap-2">
+            <span className="!text-primary para">View career page</span>{" "}
+            <PiArrowSquareOut size={15} className="dark:text-white" />
+          </Link>
+          <ButtonClick buttonName="Edit" />
+          <ButtonClick BtnType="add" buttonName="Create a Job" />
+        </div>
+      </div>
 
       {/* FILTER SECTON AND DETAILS  */}
+      <div className="flex items-center justify-between">
+        <div className="flex items-center gap-7">
+          {/* <div className=" flex-col justify-start items-start gap-2.5 inline-flex"> */}
+          <div className="w-[70px] h-[26px] px-2.5 py-1 bg-emerald-500 bg-opacity-10 dark:bg-opacity-50 rounded-[18px] gap-[7px] vhcenter">
+            <div className="w-2.5 h-2.5 relative bg-emerald-500 rounded-[5px] border border-white shrink-0" />
+            <p className="para dark:text-white !font-normal">Open</p>
+          </div>
+          <div className="gap-2 vhcenter ">
+            <PiUsersThreeFill size={20} className="text-[#DFDFDF]"/>
+            <p className="para dark:text-white !font-normal">250</p>
+          </div>
+          <div className="vhcenter gap-2.5">
+            <img
+              className="w-6 h-6 border-2 rounded-full border-stone-50"
+              src={User}
+            />
+            <div className="para dark:text-white !font-normal">Cody Fisher</div>
+          </div>
+          {/* </div> */}
+        </div>
+        <div className="flex">
+          <SearchBox
+            className="text-[#667085]"
+            placeholder="Search candidate"
+          />
+        </div>
+      </div>
 
       {/* DRAG N DROP SECTION START  */}
       <div className="flex flex-col lg:h-[85vh] overflow-auto">
@@ -118,7 +158,7 @@ const JobDetails = () => {
             <div className="flex w-full h-full gap-3">
               {boardData.map((board, bIndex) => (
                 <div key={board.name} className="flex flex-col gap-5">
-                  <div className="flex items-center justify-between gap-2 p-3 bg-white border rounded-md w-[303px] border-borderlight dark:border-borderdark dark:bg-secondaryDark dark:text-white">
+                  <div className="flex items-center justify-between gap-2 p-3 bg-white border rounded-md w-[270px] 2xl:w-[303px] border-borderlight dark:border-borderdark dark:bg-secondaryDark dark:text-white">
                     <div className="flex items-center gap-4 overflow-hidden">
                       <div
                         className="w-4 h-4 overflow-hidden rounded-full vhcenter shrink-0"
@@ -159,7 +199,8 @@ const JobDetails = () => {
                       <div
                         {...provided.droppableProps}
                         ref={provided.innerRef}
-                        className={`bg-[#F7FBFF] dark:bg-lightdark h-full flex flex-col relative overflow-hidden p-1.5 border border-solid border-borderlight dark:border-borderdark w-[303px] rounded-lg
+                        className={`bg-[#F7FBFF] dark:bg-lightdark h-full flex flex-col relative overflow-hidden p-1.5 border border-solid border-borderlight dark:border-borderdark 
+                        2xl:w-[303px] w-[270px] rounded-lg
                       ${
                         snapshot.isDraggingOver &&
                         "bg-[#FBF7F1] dark:bg-[#1B1B1B]"
@@ -274,7 +315,7 @@ const CardItem = ({ data, index, color }) => {
             bookmarkState[data.id] ? " cursor-default" : "cursor-grab"
           }  border-borderlight dark:border-borderdark dark:bg-secondaryDark dark:text-white`}
         >
-          <div className="flex flex-col gap-2">
+          <div className="flex flex-col gap-1 2xl:gap-2">
             <div className="flex items-center gap-3">
               <div
                 className={`2xl:w-8 2xl:h-8 w-6 h-6 overflow-hidden rounded-full vhcenter`}
@@ -289,7 +330,7 @@ const CardItem = ({ data, index, color }) => {
                     className="object-cover object-center w-full h-full"
                   />
                 ) : (
-                  <span className="h6 !text-white !font-medium">
+                  <span className="h6 !text-white !font-medium leading-none">
                     {firstLetter}
                   </span>
                 )}
