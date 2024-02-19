@@ -11,6 +11,7 @@ import { themeColor } from "./Redux/slice";
 import { ThemeProvider } from "./Context/Theme/ThemeContext";
 import axios from "axios";
 import API from "./components/Api";
+import JobCard from "./components/common/JobCard";
 
 function App() {
   const dispatch = useDispatch();
@@ -48,6 +49,7 @@ function App() {
         }}
       >
         <Router />
+        
       </ConfigProvider>
     </ThemeProvider>
   );

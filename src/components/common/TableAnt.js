@@ -167,13 +167,15 @@ const TableAnt = ({
             >
               {each.value === "isActive" ? (
                 <div
-                  key={text}
+                  
+                key={text}
                   className={`${
                     parseInt(record) === 1
                       ? " bg-emerald-100 text-emerald-600"
                       : " bg-rose-100 text-rose-600"
                   } rounded-full pr-2 py-[2px] w-fit font-medium text-[10px] 2xl:text-sm vhcenter flex-nowrap`}
                 >
+                  
                   <RxDotFilled
                     className={`${
                       parseInt(record) === 1
