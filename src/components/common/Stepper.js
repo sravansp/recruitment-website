@@ -88,7 +88,7 @@ export default function Stepper({
   // const stepsDisplay =
 
   return (
-    <div className="relative mx-4 py-1.5 flex justify-between items-center bg-white dark:bg-dark">
+    <div className="relative mx-4 py-1.5 flex justify-between items-center bg-white dark:bg-lightdark">
       {stepperSteps.map((step, index) => (
         <div
           key={index}

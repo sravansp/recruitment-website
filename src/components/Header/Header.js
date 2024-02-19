@@ -38,7 +38,7 @@ console.log(hamburger);
   return (
     // <!-- component -->
     <nav
-      className={` bg-white w-full grid grid-cols-12 relative justify-end items-center mx-auto px-4 lg:px-8 2xl:h-[76px] dark:bg-dark border-b border-opacity-10 dark:border-none py-[14px] z-[999]`}
+      className={` bg-white w-full grid grid-cols-12 relative justify-end items-center mx-auto px-4 lg:px-8 2xl:h-[76px] dark:bg-lightdark border-b border-opacity-10 dark:border-none py-[14px] z-[999]`}
     >
       <div className="hidden sm:col-span-2 brand-name lg:block">
       {hamburger == false &&  <h1 className="text-sm font-semibold 2xl:text-lg text-primary">

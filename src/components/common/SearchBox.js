@@ -7,7 +7,7 @@ import { LuSearch } from "react-icons/lu";
 export default function SearchBox({
   placeholder = "",
   value = "",
-  icon = <LuSearch />,
+  icon = <LuSearch/>,
   error = "",
   className = "",
   change = () => {},
@@ -69,7 +69,7 @@ export default function SearchBox({
           console.log(e.target.value);
           // searchFun(e.target.value);
         }}
-        className={`w-full border focus:outline-none  ${className}`}
+        className={`w-full border focus:outline-none text-[#667085] ${className}`}
         size={isSmallScreen ? "default" : "large"}
         prefix={icon && icon
         }

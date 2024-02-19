@@ -72,3 +72,9 @@
   border-radius: 50%;
   background: conic-gradient(from 180deg at 50% 50%, #FB2E2E 0deg, rgba(251, 120, 46, 0.80) 51.42857372760773deg, #FBE62E 102.85714745521545deg, #88FB2E 154.28571581840515deg, #2EFBEF 205.7142949104309deg, #2E43FB 257.1428632736206deg, #C62EFB 308.5714316368103deg, #FB2E6C 360deg) !important;
 }
+
+
+.ant-dropdown-menu-submenu-title {
+  display: flex;
+  align-items: center;
+}

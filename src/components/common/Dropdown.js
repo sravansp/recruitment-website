@@ -90,7 +90,7 @@ export default function Dropdown({
                     {/* <span>mkck</span>
                   </div> */}
                   <span>{each.label}</span>
-                  <p class="text-gray-500 text-xs font-medium font-['Inter'] leading-none">{each.description}</p>
+                  <p className="text-gray-500 text-xs font-medium font-['Inter'] leading-none">{each.description}</p>
                   
                 
                 

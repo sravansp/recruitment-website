@@ -26,13 +26,19 @@ export const theme = {
       // accent: "#6A4BFC", // Purple Blue
       secondaryWhite: "#F4F4F4",
       secondaryDark: "#3E3E3F",
+      borderlight: "rgba(0, 0, 0, 0.10)",
+      borderdark: "rgba(255, 255, 255, 0.10)",
       grey: "#667085",
-      dark: "#242424",
+      lightdark: "#242424",
       whiteTint: "#F4F4F4",
 
-      // dark: {
-      //   black: "#161618",
-      // },
+     // Specify black color for dark mode
+     black: {
+      DEFAULT: "#000000",
+    },
+    dark: {
+      black: "#161618",
+    },
     },
     // },
     //   extend: {
@@ -50,6 +56,8 @@ export const theme = {
       primaryShadow: "0px 0px 15px var(--primary-color)66",
       stepShadow: "0px 5px 8px 0px rgba(165, 165, 165, 0.40);",
       stepShadowInset: "0px 0px 4px 0px rgba(255, 255, 255, 0.25) inset;",
+      dragShadow: "0px 66px 100px 0px #C9CBD1",
+      dragShadowDark: "0px 66px 100px 0px #141414",
     },
 
     animation: {

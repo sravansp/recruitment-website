@@ -1,0 +1,135 @@
+
+
+[
+  {
+    "id" : 1,
+    "name": "Sourced",
+    "items": [
+      {
+        "id": 1,
+        "name": "John Doe",
+        "image": "https://alpha.loyaltri.com/static/media/user3.b90ea7f9e2990cbeb255.webp"
+      },
+      {
+        "id": 2,
+        "name": "Jane Smith",
+        "image": ""
+      },
+      {
+        "id": 3,
+        "name": "Alice Johnson",
+        "image": "https://alpha.loyaltri.com/static/media/user3.b90ea7f9e2990cbeb255.webp"
+      },
+      {
+        "id": 4,
+        "name": "Bob Williams",
+        "image": "https://alpha.loyaltri.com/static/media/user3.b90ea7f9e2990cbeb255.webp"
+      },
+      {
+        "id": 5,
+        "name": "Michael Brown",
+        "image": ""
+      },
+      {
+        "id": 6,
+        "name": "Emily Davis",
+        "image": "https://alpha.loyaltri.com/static/media/user3.b90ea7f9e2990cbeb255.webp"
+      }
+    ]
+  },
+  {
+    "id" : 2,
+    "name": "Applied",
+    "items": [
+      {
+        "id": 7,
+        "name": "David Martinez",
+        "image": ""
+      },
+      {
+        "id": 8,
+        "name": "Sarah Wilson",
+        "image": "https://alpha.loyaltri.com/static/media/user3.b90ea7f9e2990cbeb255.webp"
+      },
+      {
+        "id": 9,
+        "name": "Christopher Anderson",
+        "image": ""
+      }
+    ]
+  },
+  {
+    "id" : 3,
+    "name": "Personal Interview",
+    "items": [
+      {
+        "id": 10,
+        "name": "Olivia Taylor",
+        "image": "https://alpha.loyaltri.com/static/media/user3.b90ea7f9e2990cbeb255.webp"
+      },
+      {
+        "id": 11,
+        "name": "Daniel Brown",
+        "image": ""
+      }
+    ]
+  },
+  {
+    "id" : 4,
+    "name": "Background check",
+    "items": [
+      {
+        "id": 12,
+        "name": "Mohammad Haris",
+        "image": ""
+      },
+      {
+        "id": 13,
+        "name": "Prasanth",
+        "image": ""
+      },
+      {
+        "id": 14,
+        "name": "Vignesh",
+        "image": ""
+      }
+    ]
+  },
+  {
+    "id" : 5,
+    "name": "Machine testing",
+    "items": [
+      {
+        "id": 15,
+        "name": "Ashok",
+        "image": ""
+      },
+      {
+        "id": 16,
+        "name": "Srinath",
+        "image": ""
+      },
+      {
+        "id": 17,
+        "name": "Ashikh",
+        "image": ""
+      }
+    ]
+  },
+  {
+    "id" : 6,
+    "name": "Final review",
+    "items": [
+      {
+        "id": 18,
+        "name": "Ajay",
+        "image": ""
+      },
+      {
+        "id": 19,
+        "name": "Brinesh",
+        "image": ""
+      }
+    ]
+  }
+]

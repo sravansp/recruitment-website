@@ -75,7 +75,7 @@ const Notification = () => {
         className="relative flex items-center justify-center w-8 h-8 rounded-full cursor-pointer 2xl:w-10 2xl:h-10 ltr:mr-4 rtl:ml-4 bg-secondaryWhite dark:bg-secondaryDark"
         onClick={showModal}
       >
-        <PiBellFill className="text-xs w-4 h-4 text-black 2xl:text-sm opacity-20 dark:text-white dark:opacity-100" />
+        <PiBellFill className="w-4 h-4 text-xs text-black 2xl:text-sm opacity-20 dark:text-white dark:opacity-100" />
         <div className="absolute top-0 right-0 w-3 h-3 text-white rounded-full 2xl:w-4 2xl:h-4 bg-primary vhcenter">
           <p className="text-[8px] 2xl:text-xs">3</p>
         </div>
@@ -122,23 +122,23 @@ const Notification = () => {
         </div>
 
         {/* code for the notifications */}
-        {notifications.map((data) => (
-          <div className={`notification-item ${data.status}`}>
-            <div class="flow-root">
+        {notifications.map((data, i) => (
+          <div className={`notification-item ${data.status}`} key={i}>
+            <div className="flow-root">
               <ul
                 role="list"
-                class="divide-y divide-gray-200 dark:divide-gray-700"
+                className="divide-y divide-gray-200 dark:divide-gray-700"
               >
-                <li class="py-3 sm:py-4">
-                  <div class="flex items-center">
-                    <div class="flex-shrink-0">
+                <li className="py-3 sm:py-4">
+                  <div className="flex items-center">
+                    <div className="flex-shrink-0">
                       <img
-                        class="w-8 h-8 rounded-full bg-gray-400"
+                        className="w-8 h-8 rounded-full bg-gray-400"
                         src={data.avatar}
                         alt="Profile image"
                       />
                     </div>
-                    <div class="flex-1 min-w-0 ms-4">
+                    <div className="flex-1 min-w-0 ms-4">
                       <p className="flex justify-end text-sm font-medium text-gray-900 truncate dark:text-white">
                         @{data.name} 
                         <span className="text-gray-600">{data.text}</span>
@@ -148,7 +148,7 @@ const Notification = () => {
                         </span>
                       </p>
 
-                      <p class="flex justify-between text-xs text-gray-500 truncate dark:text-gray-400">
+                      <p className="flex justify-between text-xs text-gray-500 truncate dark:text-gray-400">
                         {data.date}
                         <span>{data.time}</span>
                       </p>
@@ -160,11 +160,11 @@ const Notification = () => {
           </div>
         ))}
 
-        <div class="flex space-x-3">
-          <button class="px-4 py-2 border border-black rounded-md hover:bg-blue-500 transition duration-300">
+        <div className="flex space-x-3">
+          <button className="px-4 py-2 border border-black rounded-md hover:bg-blue-500 transition duration-300">
             Decline
           </button>
-          <button class="px-4 py-2 border border-black rounded-md hover:bg-blue-500 transition duration-300">
+          <button className="px-4 py-2 border border-black rounded-md hover:bg-blue-500 transition duration-300">
             Accept
           </button>
         </div>

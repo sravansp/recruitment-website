@@ -75,7 +75,7 @@ export default function DrawerPop({
               onClick={() => {
                 buttonClickCancel();
               }}
-              className="py-2 px-5 border dark:text-white rounded-lg flex items-center gap-4 text-sm font-semibold"
+              className="flex items-center gap-4 px-5 py-2 text-sm font-semibold border rounded-lg dark:text-white"
             >
               <IoIosArrowBack />
               <p> {t("Previous")}</p>
@@ -110,7 +110,7 @@ export default function DrawerPop({
                   }}
                   buttonName={btnName ? btnName : t("Save_And_Continue_button")}
                   type="submit"
-                  className=" font-semibold px-5 py-2 lg:text-sm text-xs  text-white rounded-md"
+                  className="px-5 py-2 text-xs font-semibold text-white rounded-md lg:text-sm"
                   BtnType="Add"
                 />
               )
@@ -138,7 +138,7 @@ export default function DrawerPop({
       //   style={{
       //     borderRadius: 12,
       //   }}
-      className={` ${className !== "widthFull" && "md:rounded-xl"} `}
+      className={` ${className !== "widthFull" && "md:rounded-l-lg"} `}
     >
       {children}
     </Drawer>
