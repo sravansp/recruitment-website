@@ -4,6 +4,7 @@ import BoardData from "../../data/board.json";
 import { DragDropContext, Droppable, Draggable } from "react-beautiful-dnd";
 import { Dropdown, Tooltip } from "antd";
 import Breadcrumbs from "../common/BreadCrumbs";
+import { motion } from "framer-motion";
 
 import User from "../../assets/images/user1.jpeg";
 // ICONS
@@ -25,18 +26,22 @@ import {
 import { Link } from "react-router-dom";
 import ButtonClick from "../common/Button";
 import SearchBox from "../common/SearchBox";
+import Createjob from "./Createjob";
 
 const JobDetails = () => {
   const [ready, setReady] = useState(false);
   const [boardData, setBoardData] = useState(BoardData);
   const [draggingPosition, setDraggingPosition] = useState(null);
+  const [show, setShow] = useState(false);  
+
 
   useEffect(() => {
     if (typeof window !== "undefined") {
       setReady(true);
     }
   }, []);
-
+  const handleshow =()=>setShow(true);
+  const handleClose =()=>setShow(false)
   const onDragEnd = (re) => {
     if (!re.destination) return;
     setBoardData((prevData) => {
@@ -118,9 +123,34 @@ const JobDetails = () => {
             <PiArrowSquareOut size={15} className="dark:text-white" />
           </Link>
           <ButtonClick buttonName="Edit" />
-          <ButtonClick BtnType="add" buttonName="Create a Job" />
+          <ButtonClick BtnType="add" buttonName="Create a Job"   handleSubmit={() => {
+            setShow(true);
+            console.log("set",show);
+          }}
+          ></ButtonClick>
         </div>
       </div>
+      {show && (
+         <motion.div initial="hidden" animate="visible" >
+        <Createjob
+        open={show}
+        close={(e) => {
+          setShow(e);
+          
+          handleClose();
+
+        }}
+       
+       
+          // updateId={updateId}
+          refresh={() => {
+            // getLocationList();
+          }}
+          // openPolicy={openPop} 
+          // updateId={updateId}
+        />
+        </motion.div>
+      )}
 
       {/* FILTER SECTON AND DETAILS  */}
       <div className="flex items-center justify-between">
