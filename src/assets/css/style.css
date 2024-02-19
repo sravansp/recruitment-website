@@ -580,7 +580,7 @@ section {
 :where(.css-dev-only-do-not-override-guju8n).ant-modal .ant-modal-footer .ant-btn+.ant-btn:not(.ant-dropdown-trigger) {
   background: #6a4bfc;
 }
-
+/* 
 :where(.css-dev-only-do-not-override-f0s0a3).ant-drawer-right>.ant-drawer-content-wrapper {
   top: 0;
   right: 0;
@@ -631,7 +631,7 @@ section {
     right: 12px;
     bottom: 12px;
   }
-}
+} */
 
 /*employee Hirearchy */
 
@@ -2126,7 +2126,7 @@ section {
     margin-right: 5px;
   }
 }
-
+/* 
 .ant-drawer-right>.ant-drawer-content-wrapper {
   top: 0px;
   right: 0px;
@@ -2142,17 +2142,16 @@ section {
   left: 0;
   box-shadow: 6px 0 16px 0 rgba(0, 0, 0, 0.08),
     3px 0 6px -4px rgba(0, 0, 0, 0.12), 9px 0 28px 8px rgba(0, 0, 0, 0.05);
-}
+} */
 
 @media screen and (min-width: 768px) {
-  .ant-drawer-right>.ant-drawer-content-wrapper {
+  /* .ant-drawer-right>.ant-drawer-content-wrapper {
     top: 12px;
     right: 12px;
     bottom: 12px;
     left: 12px;
     overflow: hidden;
     box-shadow: none;
-    /* width: auto !important; */
   }
 
   .ant-drawer-left>.ant-drawer-content-wrapper {
@@ -2162,30 +2161,20 @@ section {
     left: 12px;
     overflow: hidden;
     box-shadow: none;
-    /* width: auto !important; */
-  }
+  } */
 
   .ant-drawer .ant-drawer-mask {
-    /* position: absolute;
-    inset: 0;
-    z-index: 1000; */
-    /* background: linear-gradient(180deg,
-        rgba(217, 217, 217, 0.17) 0%,
-        rgba(14, 9, 27, 0.37) 100%); */
     background: linear-gradient(180deg, rgba(14, 5, 34, 0.30) 0%, rgba(13, 6, 30, 0.60) 100%);
-    /* pointer-events: auto; */
   }
 }
 
-@media screen and (min-width: 862px) {
+/* @media screen and (min-width: 862px) {
   .ant-drawer-right>.ant-drawer-content-wrapper {
     left: auto;
-    /* width: 837px !important; */
   }
 
   .ant-drawer-left>.ant-drawer-content-wrapper {
     right: auto;
-    /* width: 837px !important; */
   }
 }
 
@@ -2201,7 +2190,7 @@ section {
     right: 12px;
     bottom: 12px;
   }
-}
+} */
 
 /*We will use ::before and ::after to draw the connectors*/
 /*employee Hirearchy */
@@ -3166,7 +3155,10 @@ button.rbc-button-link {
   #root {
     height: 100vh;
   }
- .main_content {
+ /* .main_content {
+    zoom: 0.7;
+  } */
+  body {
     zoom: 0.8;
   }
   

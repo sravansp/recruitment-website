@@ -2,8 +2,13 @@ import React, { useEffect, useState } from "react";
 
 import BoardData from "../../data/board.json";
 import { DragDropContext, Droppable, Draggable } from "react-beautiful-dnd";
-import { Dropdown, Tooltip } from "antd";
+import { Dropdown, Tooltip, Radio, Alert } from "antd";
 import Breadcrumbs from "../common/BreadCrumbs";
+import { useMediaQuery } from "react-responsive";
+import { Link } from "react-router-dom";
+import ButtonClick from "../common/Button";
+import SearchBox from "../common/SearchBox";
+import { FilterBtn } from "../common/FilterBtn";
 
 import User from "../../assets/images/user1.jpeg";
 // ICONS
@@ -11,9 +16,13 @@ import { GoClock } from "react-icons/go";
 import {
   PiArrowSquareOut,
   PiBookmarkSimpleFill,
+  PiCalendarFill,
   PiDotsThreeOutlineFill,
   PiDotsThreeOutlineVerticalFill,
+  PiMapPinFill,
+  PiNavigationArrowFill,
   PiTrashBold,
+  PiTreeStructureFill,
   PiUsersThreeFill,
 } from "react-icons/pi";
 import {
@@ -22,15 +31,153 @@ import {
   FcMms,
   FcProcess,
 } from "react-icons/fc";
-import { Link } from "react-router-dom";
-import ButtonClick from "../common/Button";
-import SearchBox from "../common/SearchBox";
+import { BsGrid, BsListUl } from "react-icons/bs";
+
+const customColors = [
+  "#00B23C",
+  "#FE4949",
+  "#4437CC",
+  "#FF8A00",
+  "#4976FE",
+  "#E0115F",
+  "#DFA510",
+  "#E546D5",
+  "#00E096",
+  "#884DFF",
+  "#FF4DB8",
+];
 
 const JobDetails = () => {
+  const isSmallScreen = useMediaQuery({ maxWidth: 1439 });
+  const [viewType, setViewType] = useState("grid"); // Initial view type
+  const breadcrumbItems = [{ label: "Jobs" }, { label: "UI UX Desinger" }];
+  const gridListoptions = [
+    {
+      label: <BsListUl />,
+      value: "list",
+    },
+    {
+      label: <BsGrid />,
+      value: "grid",
+    },
+  ];
+
+  const onChangeView = (e) => {
+    setViewType(e.target.value);
+    // Additional logic if needed when view type changes
+  };
+  const customMessage = (
+    <p>
+      <span>
+        <strong>Shift + Mouse Scroll Wheel</strong>
+      </span>
+      <span> to scroll horizontally</span>
+    </p>
+  );
+  return (
+    <div className="flex flex-col gap-5">
+      {/* BREADCRUMB AND BUTTONS */}
+      <div className="flex flex-col items-baseline justify-between gap-4 lg:items-center lg:gap-0 lg:flex-row">
+        <Breadcrumbs items={breadcrumbItems} />
+        <div className="flex gap-2.5 items-center">
+          <Link className="flex gap-2">
+            <span className="!text-primary para">View career page</span>{" "}
+            <PiArrowSquareOut size={15} className="dark:text-white" />
+          </Link>
+          <ButtonClick buttonName="Edit" />
+          <ButtonClick BtnType="add" buttonName="Create a Job" />
+        </div>
+      </div>
+
+      {/* FILTER SECTON AND DETAILS  */}
+      <div className="flex flex-col items-baseline justify-between gap-4 lg:items-center lg:gap-0 lg:flex-row">
+        <div className="flex flex-wrap items-center gap-7">
+          <div className="px-2.5 py-1 bg-emerald-500 bg-opacity-10 dark:bg-opacity-50 rounded-[18px] gap-[7px] vhcenter">
+            <div className="w-2.5 h-2.5 relative bg-emerald-500 rounded-[5px] border border-white shrink-0" />
+            <p className="para dark:text-white !font-normal">Open</p>
+          </div>
+          <div className="gap-2 vhcenter ">
+            <PiUsersThreeFill size={20} className="text-[#DFDFDF]" />
+            <p className="para !text-black dark:!text-white !font-normal">
+              250
+            </p>
+          </div>
+          <div className="gap-2 vhcenter ">
+            <PiTreeStructureFill size={20} className="text-[#DFDFDF]" />
+            <p className="para !text-black dark:!text-white !font-normal">
+              General
+            </p>
+          </div>
+          <div className="gap-2 vhcenter ">
+            <PiCalendarFill size={20} className="text-[#DFDFDF]" />
+            <p className="para !text-black dark:!text-white !font-normal">
+              Jan 12, 2024
+            </p>
+          </div>
+          <div className="gap-2 vhcenter ">
+            <PiNavigationArrowFill size={20} className="text-[#DFDFDF]" />
+            <p className="para !text-black dark:!text-white !font-normal">
+              Remote
+            </p>
+          </div>
+          <div className="gap-2 vhcenter ">
+            <PiMapPinFill size={20} className="text-[#DFDFDF]" />
+            <p className="para !text-black dark:!text-white !font-normal">
+              Dubai,UAE
+            </p>
+          </div>
+          <div className="vhcenter gap-2.5">
+            <img
+              className="w-6 h-6 border-2 rounded-full border-stone-50"
+              src={User}
+            />
+            <div className="para !text-black dark:!text-white !font-normal">
+              Cody Fisher
+            </div>
+          </div>
+        </div>
+        <div className="flex items-center gap-4 ">
+          <SearchBox
+            className="text-[#667085]"
+            placeholder="Search candidate"
+          />
+          <FilterBtn colors={customColors} />
+          <Radio.Group
+            options={gridListoptions}
+            onChange={onChangeView}
+            value={viewType}
+            optionType="button"
+            className="flex items-center py-1.5 h-full"
+            size={isSmallScreen ? "" : "large"}
+          />
+        </div>
+      </div>
+
+      <Alert
+        message={customMessage}
+        type="info"
+        showIcon
+        className="hidden w-fit lg:flex"
+      />
+
+      {/* MAIN CONTENT BASED ON DRAG VIEW AND LIST VIEW */}
+      {viewType === "grid" ? (
+        // Render grid view components
+        <DragView />
+      ) : (
+        // Render list view components
+        <ListView />
+      )}
+    </div>
+  );
+};
+
+const DragView = () => {
   const [ready, setReady] = useState(false);
   const [boardData, setBoardData] = useState(BoardData);
   const [draggingPosition, setDraggingPosition] = useState(null);
 
+  console.log(boardData);
   useEffect(() => {
     if (typeof window !== "undefined") {
       setReady(true);
@@ -66,20 +213,6 @@ const JobDetails = () => {
     }
   };
 
-  const customColors = [
-    "#00B23C",
-    "#FE4949",
-    "#4437CC",
-    "#FF8A00",
-    "#4976FE",
-    "#E0115F",
-    "#DFA510",
-    "#E546D5",
-    "#00E096",
-    "#884DFF",
-    "#FF4DB8",
-  ];
-
   const colors = boardData.map(
     (_, index) => customColors[index % customColors.length]
   );
@@ -106,51 +239,9 @@ const JobDetails = () => {
       ],
     },
   ];
-  const breadcrumbItems = [{ label: "Jobs" }, { label: "UI UX Desinger" }];
+
   return (
     <div className="flex flex-col gap-5">
-      {/* BREADCRUMB AND BUTTONS */}
-      <div className="flex items-center justify-between">
-        <Breadcrumbs items={breadcrumbItems} />
-        <div className="flex gap-2.5 items-center">
-          <Link className="flex gap-2">
-            <span className="!text-primary para">View career page</span>{" "}
-            <PiArrowSquareOut size={15} className="dark:text-white" />
-          </Link>
-          <ButtonClick buttonName="Edit" />
-          <ButtonClick BtnType="add" buttonName="Create a Job" />
-        </div>
-      </div>
-
-      {/* FILTER SECTON AND DETAILS  */}
-      <div className="flex items-center justify-between">
-        <div className="flex items-center gap-7">
-          {/* <div className=" flex-col justify-start items-start gap-2.5 inline-flex"> */}
-          <div className="w-[70px] h-[26px] px-2.5 py-1 bg-emerald-500 bg-opacity-10 dark:bg-opacity-50 rounded-[18px] gap-[7px] vhcenter">
-            <div className="w-2.5 h-2.5 relative bg-emerald-500 rounded-[5px] border border-white shrink-0" />
-            <p className="para dark:text-white !font-normal">Open</p>
-          </div>
-          <div className="gap-2 vhcenter ">
-            <PiUsersThreeFill size={20} className="text-[#DFDFDF]"/>
-            <p className="para dark:text-white !font-normal">250</p>
-          </div>
-          <div className="vhcenter gap-2.5">
-            <img
-              className="w-6 h-6 border-2 rounded-full border-stone-50"
-              src={User}
-            />
-            <div className="para dark:text-white !font-normal">Cody Fisher</div>
-          </div>
-          {/* </div> */}
-        </div>
-        <div className="flex">
-          <SearchBox
-            className="text-[#667085]"
-            placeholder="Search candidate"
-          />
-        </div>
-      </div>
-
       {/* DRAG N DROP SECTION START  */}
       <div className="flex flex-col lg:h-[85vh] overflow-auto">
         {ready && (
@@ -351,8 +442,8 @@ const CardItem = ({ data, index, color }) => {
                 <Tooltip
                   title={`${
                     bookmarkState[data.id]
-                      ? "Remove from Shortlist"
-                      : "Add to Shortlist"
+                      ? "Unsave Candidate"
+                      : "Save Candidate"
                   }`}
                   color={color}
                   key={color}
@@ -392,6 +483,10 @@ const CardItem = ({ data, index, color }) => {
       )}
     </Draggable>
   );
+};
+
+const ListView = () => {
+  return <div>ListView</div>;
 };
 
 export default JobDetails;
