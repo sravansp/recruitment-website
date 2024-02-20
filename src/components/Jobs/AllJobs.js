@@ -7,6 +7,9 @@ import { Add } from "@mui/icons-material";
 import API from "../Api";
 import Table from "../common/Table";
 import { getAllRecruitmentJobs } from '../Api1';
+import CustomTable from "../common/Table";
+import App1 from "../common/Table";
+import TableAnt1 from "../common/Table";
 
 function AllJobs() {
   const data = [
@@ -19,40 +22,58 @@ function AllJobs() {
     },
   ];
  
-  // const header = [
-  //     {
+  const header = [
+      {
        
      
      
-  //       header: [
-  //         {
-  //           id: 1,
-  //           title: ("Leave_Types"),
-  //           value: "jobId",
-  //         },
-  //         {
-  //           id: 2,
-  //           title: ("Description"),
-  //           value: "jobTitle",
-  //         },
-  //         {
-  //           id: 3,
-  //           title: ("Status"),
-  //           value: "isActive",
-  //           actionToggle: true
-  //         },
-  //         {
-  //           id: 4,
-  //           title: "Action",
-  //           value: "jobCode",
-  //           dotsVertical: true,
-  //         },
-  //       ],
+        AllJobs: [
+          {
+            id: 1,
+            title: ("NAME"),
+            value: "jobTitle",
+          },
+          {
+            id: 2,
+            title: ("APPLIED"),
+            value: "companyId",
+          },
+          {
+            id: 3,
+            title: ("TYPE"),
+            value: "workLocationType",
+          },
+          
+          {
+            id: 4,
+            title: ("LOCATION"),
+            value: "location",
+            // dotsVertical: true,
+          },
+          {
+            id: 5,
+           
+            title: ("Status"),
+            value: "isActive",
+            actionToggle: true
+          },
+          {
+            id: 6,
+            title: ("POSTED BY"),
+            value: "jobPublishType",
+          },
+          {
+            id: 7,
+            title: ("DATE"),
+            value: "createdOn",
+          },
+          
+        ],
    
-  //     },
-  //   ];
-  const [JobsList, setjoblist] = useState([]);
-  const [content,setcontent]=useState([{}])
+      },
+    ];
+  const [JobsList, setJobList] = useState([]);
+ 
 
   useEffect(() => {
     const callapi = async () => {
@@ -71,8 +92,8 @@ function AllJobs() {
         // );
        const data1=await getAllRecruitmentJobs()
           console.log(data1.result)
-          setjoblist(data1.result)
-          setcontent(data1.result.data)
+          setJobList(data1.result)
+         
       
         // setTableData(response.data);
         // console.log(response.data); // Access response data
@@ -140,7 +161,14 @@ function AllJobs() {
       </div>
 
       <div className="mt-28">
-        <TableAnt data={JobsList} header={content} />
+        {/* <TableAnt 
+        data={JobsList} 
+        header={header}
+        path="AllJobs" /> */}
+        <TableAnt1   data={JobsList} 
+        header={header}
+        path="AllJobs"/>
+       
       </div>
     </div>
   );
