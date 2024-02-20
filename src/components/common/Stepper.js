@@ -12,14 +12,15 @@ export default function Stepper({
   const [newSteps, setNewSteps] = useState([]);
   const primaryColor = localStorage.getItem("mainColor");
   const stepsStateRef = useRef();
+  
   useEffect(() => {
     console.log(steps);
     console.log(addMore);
 
-    // if (addMore === true) {
-    //   steps.splice(1, 0, { data });
-    // }
-    // setNewSteps(steps);
+    if (addMore === true) {
+      steps.splice(1, 0, { data });
+    }
+    setNewSteps(steps);
   }, [steps]);
 
   useEffect(() => {

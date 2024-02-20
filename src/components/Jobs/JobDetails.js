@@ -4,6 +4,7 @@ import BoardData from "../../data/board.json";
 import { DragDropContext, Droppable, Draggable } from "react-beautiful-dnd";
 import { Dropdown, Tooltip, Radio, Alert } from "antd";
 import Breadcrumbs from "../common/BreadCrumbs";
+import { motion } from "framer-motion";
 import { useMediaQuery } from "react-responsive";
 import { Link } from "react-router-dom";
 import ButtonClick from "../common/Button";
@@ -46,6 +47,7 @@ const customColors = [
   "#884DFF",
   "#FF4DB8",
 ];
+import Createjob from "./Createjob";
 
 const JobDetails = () => {
   const isSmallScreen = useMediaQuery({ maxWidth: 1439 });
@@ -176,6 +178,8 @@ const DragView = () => {
   const [ready, setReady] = useState(false);
   const [boardData, setBoardData] = useState(BoardData);
   const [draggingPosition, setDraggingPosition] = useState(null);
+  const [show, setShow] = useState(false);  
+
 
   console.log(boardData);
   useEffect(() => {
@@ -183,7 +187,8 @@ const DragView = () => {
       setReady(true);
     }
   }, []);
-
+  const handleshow =()=>setShow(true);
+  const handleClose =()=>setShow(false)
   const onDragEnd = (re) => {
     if (!re.destination) return;
     setBoardData((prevData) => {
@@ -242,6 +247,73 @@ const DragView = () => {
 
   return (
     <div className="flex flex-col gap-5">
+      {/* BREADCRUMB AND BUTTONS */}
+      <div className="flex items-center justify-between">
+        <Breadcrumbs items={breadcrumbItems} />
+        <div className="flex gap-2.5 items-center">
+          <Link className="flex gap-2">
+            <span className="!text-primary para">View career page</span>{" "}
+            <PiArrowSquareOut size={15} className="dark:text-white" />
+          </Link>
+          <ButtonClick buttonName="Edit" />
+          <ButtonClick BtnType="add" buttonName="Create a Job"   handleSubmit={() => {
+            setShow(true);
+            console.log("set",show);
+          }}
+          ></ButtonClick>
+        </div>
+      </div>
+      {show && (
+         <motion.div initial="hidden" animate="visible" >
+        <Createjob
+        open={show}
+        close={(e) => {
+          setShow(e);
+          
+          handleClose();
+
+        }}
+       
+       
+          // updateId={updateId}
+          refresh={() => {
+            // getLocationList();
+          }}
+          // openPolicy={openPop} 
+          // updateId={updateId}
+        />
+        </motion.div>
+      )}
+
+      {/* FILTER SECTON AND DETAILS  */}
+      <div className="flex items-center justify-between">
+        <div className="flex items-center gap-7">
+          {/* <div className=" flex-col justify-start items-start gap-2.5 inline-flex"> */}
+          <div className="w-[70px] h-[26px] px-2.5 py-1 bg-emerald-500 bg-opacity-10 dark:bg-opacity-50 rounded-[18px] gap-[7px] vhcenter">
+            <div className="w-2.5 h-2.5 relative bg-emerald-500 rounded-[5px] border border-white shrink-0" />
+            <p className="para dark:text-white !font-normal">Open</p>
+          </div>
+          <div className="gap-2 vhcenter ">
+            <PiUsersThreeFill size={20} className="text-[#DFDFDF]"/>
+            <p className="para dark:text-white !font-normal">250</p>
+          </div>
+          <div className="vhcenter gap-2.5">
+            <img
+              className="w-6 h-6 border-2 rounded-full border-stone-50"
+              src={User}
+            />
+            <div className="para dark:text-white !font-normal">Cody Fisher</div>
+          </div>
+          {/* </div> */}
+        </div>
+        <div className="flex">
+          <SearchBox
+            className="text-[#667085]"
+            placeholder="Search candidate"
+          />
+        </div>
+      </div>
+
       {/* DRAG N DROP SECTION START  */}
       <div className="flex flex-col lg:h-[85vh] overflow-auto">
         {ready && (
