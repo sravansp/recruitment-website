@@ -14,7 +14,7 @@ const TabsNew = ({ tabs, onTabChange, initialTab }) => {
 
   return (
     <div className="flex flex-col gap-6">
-      <div className="flex gap-2 p-[6px] bg-[#FAFAFA] dark:bg-secondaryDark border border-black border-opacity-10 rounded-xl flex-wrap">
+      <div className="flex gap-2 p-[6px] bg-white rounded-xl flex-wrap">
         {tabs?.map((tab) => (
           <button
             key={tab.id}
@@ -39,9 +39,9 @@ const TabsNew = ({ tabs, onTabChange, initialTab }) => {
                 activeTab === tab.id
                   ? "relative z-20 text-white"
                   : " text-black dark:text-white group-hover:text-primary"
-              }`}
+              } vhcenter gap-1`}
             >
-              {tab.title}
+              {tab.icon && tab.icon} {tab.title}
             </span>
           </button>
         ))}

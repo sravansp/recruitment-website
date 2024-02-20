@@ -1,8 +1,6 @@
 import { Button } from "antd";
 import React from "react";
 import { IoMdAdd } from "react-icons/io";
-import { IoClose } from "react-icons/io5";
-import { LuMailPlus } from "react-icons/lu";
 import { useMediaQuery } from "react-responsive";
 
 export default function ButtonClick({

@@ -1,0 +1,279 @@
+import React, { useState } from "react";
+import { Link } from "react-router-dom";
+import ButtonClick from "../common/Button";
+import { Button, Divider, Dropdown, Rate, message } from "antd";
+import { useMediaQuery } from "react-responsive";
+import copy from "clipboard-copy";
+import { Menu, Space } from "antd";
+import { useTranslation } from "react-i18next";
+
+// Icons
+import {
+  PiArrowLeftBold,
+  PiBookmarkSimpleFill,
+  PiDotsThreeOutlineFill,
+} from "react-icons/pi";
+import { FcCheckmark, FcHighPriority, FcShare } from "react-icons/fc";
+import { MdContentCopy, MdPhone } from "react-icons/md";
+import { DownOutlined } from "@ant-design/icons";
+
+// Components
+import TabsNew from "../common/TabsNew";
+import Overview from "./CandidateProfileTabs/Overview";
+import ActivityFeed from "./CandidateProfileTabs/ActivityFeed";
+import CVResume from "./CandidateProfileTabs/CVResume";
+import Emails from "./CandidateProfileTabs/Emails";
+import Evaluations from "./CandidateProfileTabs/Evaluations";
+import Questionaries from "./CandidateProfileTabs/Questionaries";
+import Offers from "./CandidateProfileTabs/Offers";
+import { RiCouponLine, RiFile4Line, RiFileList3Line, RiHome6Line, RiImage2Fill, RiMailUnreadLine, RiQuestionnaireLine, RiSurveyLine } from "react-icons/ri";
+import Events from "./CandidateProfileTabs/Events";
+
+const items = [
+  {
+    label: "Others",
+    key: "0",
+    // icon: ,
+  },
+  {
+    label: "Items 2",
+    key: "1",
+    // icon: ,
+    children: [
+      {
+        key: "1-1",
+        label: "Sub item 1",
+      },
+      {
+        key: "1-2",
+        label: "Sub Item 2",
+      },
+    ],
+  },
+];
+
+const dropdown = [
+  {
+    label: "1st menu item",
+    key: "0",
+  },
+  {
+    label: "2nd menu item",
+    key: "1",
+  },
+  {
+    label: "3rd menu item",
+    key: "3",
+  },
+];
+
+const handleTabChange = (tabId) => {
+  // Do something when the tab changes if needed
+  console.log(`Tab changed to ${tabId}`);
+  if (tabId === 1) {
+  } else if (tabId === 2) {
+  } else if (tabId === 3) {
+  } else if (tabId === 4) {
+  } else if (tabId === 5) {
+  } else if (tabId === 6) {
+  } else if (tabId === 7) {
+  }
+};
+
+const CandidateProfile = () => {
+  const { t } = useTranslation();
+  const primaryColor = localStorage.getItem("mainColor");
+  const isSmallScreen = useMediaQuery({ maxWidth: 1439 });
+  const [messageApi, contextHolder] = message.useMessage();
+  const [selectedItem, setSelectedItem] = useState("0");
+  const [selectedItemLabel, setSelectedItemLabel] = useState("1st menu item");
+  const tabs = [
+    {
+      id: 1,
+      title: t("Overview"),
+      value: "overview",
+      content: <Overview />,
+      icon: <RiHome6Line className="text-base" />,
+    },
+    {
+      id: 2,
+      title: t("Activity Feed"),
+      value: "activityfeed",
+      content: <ActivityFeed />,
+      icon: <RiFile4Line className="text-base" />,
+    },
+    {
+      id: 3,
+      title: t("CV/Resume"),
+      value: "cvresume",
+      content: <CVResume />,
+      icon: <RiFileList3Line className="text-base" />,
+    },
+    {
+      id: 4,
+      title: t("Emails"),
+      value: "emails",
+      content: <Emails />,
+      icon: <RiMailUnreadLine className="text-base" />,
+    },
+
+    {
+      id: 5,
+      title: t("Events"),
+      value: "events",
+      content: <Events />,
+      icon: <RiImage2Fill className="text-base" />,
+
+    },
+    {
+      id: 6,
+      title: t("Evaluations"),
+      value: "evaluations",
+      content: <Evaluations />,
+      icon: <RiSurveyLine className="text-base" />,
+
+    },
+    {
+      id: 7,
+      title: t("Questionaries"),
+      value: "questionaries",
+      content: <Questionaries />,
+      icon: <RiQuestionnaireLine className="text-base" />,
+
+    },
+    {
+      id: 8,
+      title: t("Offers"),
+      value: "offers",
+      content: <Offers />,
+      icon: <RiCouponLine className="text-base" />,
+
+    },
+  ];
+  const handleMenuClick = (e) => {
+    setSelectedItem(e.key);
+    const selectedItemLabel = dropdown.find((item) => item.key === e.key).label;
+    setSelectedItemLabel(selectedItemLabel);
+  };
+
+  const handleCopyClick = (value) => {
+    copy(value);
+
+    messageApi.open({
+      type: "success",
+      content: `${value} is copied succesfully`,
+    });
+  };
+
+  const menu = (
+    <Menu onClick={handleMenuClick}>
+      {dropdown.map((item) => (
+        <Menu.Item key={item.key}>{item.label}</Menu.Item>
+      ))}
+    </Menu>
+  );
+
+  return (
+    <div className="flex flex-col gap-6">
+      {contextHolder}
+      <div className="flex flex-col justify-between lg:flex-row lg:items-center">
+        <Link className="backBtn vhcenter gap-2.5" to="/CandidateList">
+          <div className="bg-white border border-black rounded-full w-9 h-9 border-opacity-5 vhcenter">
+            <PiArrowLeftBold className="text-xl text-primary" />
+          </div>
+          <p className="pblack">Back to All Candidates</p>
+        </Link>
+        <div className="gap-2 vhcenter">
+          <ButtonClick buttonName="Disqualify" icon={<FcHighPriority />} />
+          <ButtonClick buttonName="Hire" icon={<FcCheckmark />} />
+          <ButtonClick buttonName="Share" icon={<FcShare />} />
+          <Dropdown
+            menu={{
+              items,
+            }}
+            placement="bottomRight"
+            trigger={["click"]}
+          >
+            <Button
+              size={isSmallScreen ? "default" : "large"}
+              icon={<PiDotsThreeOutlineFill />}
+            />
+          </Dropdown>
+        </div>
+      </div>
+
+      <div
+        className="flex flex-col gap-3.5 rounded-lg p-3.5 dark:!bg-secondaryDark"
+        style={{ backgroundColor: `${primaryColor}10` }}
+      >
+        <div className="flex flex-col justify-between lg:flex-row lg:items-center">
+          <div className="flex items-center justify-start gap-5">
+            <img
+              className="w-[60px] h-[60px] rounded-full shadow border-2 border-white"
+              src="https://via.placeholder.com/60x60"
+            />
+            <div className="inline-flex flex-col items-start justify-start gap-1">
+              <div className="gap-3 vhcenter">
+                <h2 className="h2">Grace Bennett Anderson</h2>
+                <PiBookmarkSimpleFill className=" text-[#12B76A] text-base" />
+              </div>
+
+              <div className="inline-flex items-center justify-start gap-4">
+                <p className="pblack !font-normal">
+                  Dubai, United Arab Emirates
+                </p>
+                <p className="gap-2 pblack vhcenter">
+                  <MdPhone className="text-base text-primary" /> +971 50671852
+                </p>
+                <ButtonClick
+                  icon={<MdContentCopy size={16} />}
+                  BtnType="text"
+                  className="text-black text-opacity-30 dark:text-white dark:hover:text-primary"
+                  handleSubmit={() => handleCopyClick("+971 50671852")}
+                />
+              </div>
+            </div>
+          </div>
+
+          <div className="flex gap-3">
+            <div className="flex flex-col gap-3">
+              <Dropdown overlay={menu} trigger={["click"]}>
+                <a onClick={(e) => e.preventDefault()}>
+                  <Space>
+                    Stage
+                    <DownOutlined />
+                  </Space>
+                </a>
+              </Dropdown>
+              <div className="bg-[#FFE8E8] rounded-full px-4 py-1">
+                {selectedItemLabel && selectedItemLabel}
+              </div>
+            </div>
+            {/* <Divider type="vertical" className="hidden h-auto lg:block" />
+            <div className="flex flex-col gap-3">
+              <Dropdown overlay={menu} trigger={["click"]}>
+                <a onClick={(e) => e.preventDefault()}>
+                  <Space>
+                  Priority
+                    <DownOutlined />
+                  </Space>
+                </a>
+              </Dropdown>
+              <div className="bg-[#FFE8E8] rounded-full px-4 py-1">
+                {selectedItemLabel && selectedItemLabel}
+              </div>
+            </div> */}
+            <Divider type="vertical" className="hidden h-auto lg:block" />
+            <div className="flex flex-col gap-3">
+              <p>Rating</p>
+              <Rate allowHalf defaultValue={2.5} />
+            </div>
+          </div>
+        </div>
+      </div>
+      <TabsNew tabs={tabs} onTabChange={handleTabChange} />
+    </div>
+  );
+};
+
+export default CandidateProfile;
