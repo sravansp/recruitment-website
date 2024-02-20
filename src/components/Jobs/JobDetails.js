@@ -34,6 +34,9 @@ import {
 } from "react-icons/fc";
 import { BsGrid, BsListUl } from "react-icons/bs";
 
+
+import Createjob from "./Createjob";
+
 const customColors = [
   "#00B23C",
   "#FE4949",
@@ -47,12 +50,14 @@ const customColors = [
   "#884DFF",
   "#FF4DB8",
 ];
-import Createjob from "./Createjob";
 
 const JobDetails = () => {
   const isSmallScreen = useMediaQuery({ maxWidth: 1439 });
   const [viewType, setViewType] = useState("grid"); // Initial view type
   const breadcrumbItems = [{ label: "Jobs" }, { label: "UI UX Desinger" }];
+  const handleshow =()=>setShow(true);
+  const handleClose =()=>setShow(false)
+  const [show, setShow] = useState(false);
   const gridListoptions = [
     {
       label: <BsListUl />,
@@ -87,10 +92,34 @@ const JobDetails = () => {
             <PiArrowSquareOut size={15} className="dark:text-white" />
           </Link>
           <ButtonClick buttonName="Edit" />
-          <ButtonClick BtnType="add" buttonName="Create a Job" />
+          <ButtonClick BtnType="add" buttonName="Create a Job"   handleSubmit={() => {
+            setShow(true);
+            console.log("set",show);
+          }}
+          ></ButtonClick>
         </div>
       </div>
+      {show && (
+         <motion.div initial="hidden" animate="visible" >
+        <Createjob
+        open={show}
+        close={(e) => {
+          setShow(e);
+          
+          handleClose();
 
+        }}
+       
+       
+          // updateId={updateId}
+          refresh={() => {
+            // getLocationList();
+          }}
+          // openPolicy={openPop} 
+          // updateId={updateId}
+        />
+        </motion.div>
+      )}
       {/* FILTER SECTON AND DETAILS  */}
       <div className="flex flex-col items-baseline justify-between gap-4 lg:items-center lg:gap-0 lg:flex-row">
         <div className="flex flex-wrap items-center gap-7">
@@ -178,7 +207,7 @@ const DragView = () => {
   const [ready, setReady] = useState(false);
   const [boardData, setBoardData] = useState(BoardData);
   const [draggingPosition, setDraggingPosition] = useState(null);
-  const [show, setShow] = useState(false);  
+    
 
 
   console.log(boardData);
@@ -187,8 +216,7 @@ const DragView = () => {
       setReady(true);
     }
   }, []);
-  const handleshow =()=>setShow(true);
-  const handleClose =()=>setShow(false)
+ 
   const onDragEnd = (re) => {
     if (!re.destination) return;
     setBoardData((prevData) => {
@@ -244,11 +272,11 @@ const DragView = () => {
       ],
     },
   ];
-
+  
   return (
     <div className="flex flex-col gap-5">
       {/* BREADCRUMB AND BUTTONS */}
-      <div className="flex items-center justify-between">
+      {/* <div className="flex items-center justify-between">
         <Breadcrumbs items={breadcrumbItems} />
         <div className="flex gap-2.5 items-center">
           <Link className="flex gap-2">
@@ -262,28 +290,8 @@ const DragView = () => {
           }}
           ></ButtonClick>
         </div>
-      </div>
-      {show && (
-         <motion.div initial="hidden" animate="visible" >
-        <Createjob
-        open={show}
-        close={(e) => {
-          setShow(e);
-          
-          handleClose();
-
-        }}
-       
-       
-          // updateId={updateId}
-          refresh={() => {
-            // getLocationList();
-          }}
-          // openPolicy={openPop} 
-          // updateId={updateId}
-        />
-        </motion.div>
-      )}
+      </div> */}
+      
 
       {/* FILTER SECTON AND DETAILS  */}
       <div className="flex items-center justify-between">
