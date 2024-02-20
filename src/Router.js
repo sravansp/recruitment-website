@@ -8,6 +8,8 @@ import Sidebar from "./components/Menus/Sidebar";
 import JobsList from "./components/Jobs/JobsList";
 import Appearance from "./components/Settings/Appearance/Appearance";
 import JobDetails from "./components/Jobs/JobDetails";
+import CandidatesList from "./components/Candidates/CandidatesList";
+import CandidateProfile from "./components/Candidates/CandidateProfile";
 import AllJobs from "./components/Jobs/AllJobs";
 import JobCard from "./components/common/JobCard";
 import JobTabs from "./components/common/JobTabs";
@@ -54,6 +56,8 @@ export default function Router() {
                 <Route path="/JobsList" element={<JobsList />} />
                 <Route path="/Appearance" element={<Appearance />} />
                 <Route path="/JobDetails" element={<JobDetails />} />
+                <Route path="/CandidateList" element={<CandidatesList />} />
+                <Route path="/CandidateProfile" element={<CandidateProfile />} />
                 <Route path="/AllJobs" element={<AllJobs/>} />
                 <Route path="/jobcard" element={<JobCard/>}></Route>
                 <Route path="/jobtabs" element={<JobTabs/>}></Route>

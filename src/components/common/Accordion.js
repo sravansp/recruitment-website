@@ -12,7 +12,7 @@ export default function Accordion({
   click = () => {},
 }) {
   const [expanded, setExpanded] = useState(false);
-
+ const primaryColor = localStorage.getItem('mainColor')
   // const toggleAccordion = (id) => {
   //   setExpanded((prevExpanded) => ({
   //     ...prevExpanded,
@@ -30,12 +30,13 @@ export default function Accordion({
       {/* {data.map((item) => ( */}
       <div
         // key={item.id}
-        className="border rounded-lg border-secondaryDark dark:border-secondaryWhite border-opacity-10 dark:border-opacity-10 dark:bg-lightdark"
+        className="p-1 bg-white rounded-[10px] dark:bg-lightdark"
       >
         <h2>
           <button
             type="button"
-            className="flex items-center justify-between w-full px-6 py-4 font-semibold text-left"
+            className="flex items-center justify-between w-full px-6 py-4 font-semibold text-left rounded-md dark:!bg-transparent"
+            style={{backgroundColor: `${primaryColor}10`}}
             onClick={() => setExpanded(!expanded)}
             aria-expanded={expanded}
             aria-controls={`acco-text-item`}
@@ -70,7 +71,7 @@ export default function Accordion({
             expanded
               ? `grid-rows-[1fr] opacity-100 ${
                   padding ? "p-6" : ""
-                } border-t border-secondaryDark dark:border-secondaryWhite border-opacity-10 dark:border-opacity-10`
+                } `
               : "grid-rows-[0fr] opacity-0 "
           }`}
         >

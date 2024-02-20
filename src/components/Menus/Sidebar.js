@@ -22,7 +22,7 @@ import { HiDocumentText } from "react-icons/hi2";
 import { HiUsers } from "react-icons/hi";
 import { RiSettings4Fill } from "react-icons/ri";
 import { IoHelpCircle } from "react-icons/io5";
-import {  PiBriefcaseDuotone, PiBriefcaseMetalDuotone, PiPalette, PiPaletteDuotone } from "react-icons/pi";
+import {  PiBriefcaseDuotone, PiBriefcaseMetalDuotone, PiPalette, PiPaletteDuotone, PiUser } from "react-icons/pi";
 
 
 const Sidebar = () => {
@@ -226,10 +226,10 @@ const Sidebar = () => {
           ),
           submenus: [
             {
-              catid: 1,
+              catid: 2,
               id: 1,
               parentMenu: "Jobs",
-              parentId: 5,
+              parentId: 2,
               title: t("Jobs"),
               status: false,
               subMenu: [
@@ -260,10 +260,39 @@ const Sidebar = () => {
           icon: (
             <HiUsers
               size={"100%"}
-              className={`text-white transition-all duration-300 group-hover:text-primary ${selectedMainMenu === t("Time") ? "text-primary" : ""
+              className={`text-white transition-all duration-300 group-hover:text-primary ${selectedMainMenu === t("Candidates") ? "text-primary" : ""
                 }`}
             />
           ),
+          submenus: [
+            {
+              catid: 3,
+              id: 1,
+              parentMenu: "Candidates",
+              parentId: 3,
+              title: t("General"),
+              status: false,
+              subMenu: [
+                {
+                  id: 31,
+                  title: t("Candidate Profile"),
+                  icon: (
+                    <PiUser className="!text-base 2xl:!text-2xl" />
+                  ),
+                  link: "/CandidateProfile",
+                },
+                {
+                  id: 32,
+                  title: t("Candidate List"),
+                  icon: (
+                    <PiUser className="!text-base 2xl:!text-2xl" />
+                  ),
+                  link: "/CandidateList",
+                },
+               
+              ],
+            },
+          ],
           
         },
         {
