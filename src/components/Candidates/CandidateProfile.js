@@ -16,6 +16,7 @@ import {
 import { FcCheckmark, FcHighPriority, FcShare } from "react-icons/fc";
 import { MdContentCopy, MdPhone } from "react-icons/md";
 import { DownOutlined } from "@ant-design/icons";
+import { RiCouponLine, RiFile4Line, RiFileList3Line, RiHome6Line, RiImage2Fill, RiMailUnreadLine, RiQuestionnaireLine, RiSurveyLine } from "react-icons/ri";
 
 // Components
 import TabsNew from "../common/TabsNew";
@@ -26,7 +27,6 @@ import Emails from "./CandidateProfileTabs/Emails";
 import Evaluations from "./CandidateProfileTabs/Evaluations";
 import Questionaries from "./CandidateProfileTabs/Questionaries";
 import Offers from "./CandidateProfileTabs/Offers";
-import { RiCouponLine, RiFile4Line, RiFileList3Line, RiHome6Line, RiImage2Fill, RiMailUnreadLine, RiQuestionnaireLine, RiSurveyLine } from "react-icons/ri";
 import Events from "./CandidateProfileTabs/Events";
 
 const items = [
@@ -271,7 +271,7 @@ const CandidateProfile = () => {
           </div>
         </div>
       </div>
-      <TabsNew tabs={tabs} onTabChange={handleTabChange} />
+      <TabsNew tabs={tabs} onTabChange={handleTabChange} initialTab={1}/>
     </div>
   );
 };

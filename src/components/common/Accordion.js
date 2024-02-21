@@ -10,8 +10,9 @@ export default function Accordion({
   title,
   description,
   click = () => {},
+  initialExpanded = false,
 }) {
-  const [expanded, setExpanded] = useState(false);
+  const [expanded, setExpanded] = useState(initialExpanded);
  const primaryColor = localStorage.getItem('mainColor')
   // const toggleAccordion = (id) => {
   //   setExpanded((prevExpanded) => ({
@@ -35,7 +36,7 @@ export default function Accordion({
         <h2>
           <button
             type="button"
-            className="flex items-center justify-between w-full px-6 py-4 font-semibold text-left rounded-md dark:!bg-transparent"
+            className="flex items-center justify-between w-full px-6 py-4 font-semibold text-left rounded-md"
             style={{backgroundColor: `${primaryColor}10`}}
             onClick={() => setExpanded(!expanded)}
             aria-expanded={expanded}
