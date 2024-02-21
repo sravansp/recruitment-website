@@ -10,8 +10,10 @@ export default function Accordion({
   title,
   description,
   click = () => {},
+  initiallyExpanded = false
+  
 }) {
-  const [expanded, setExpanded] = useState(false);
+  const [expanded, setExpanded] = useState(initiallyExpanded);
  const primaryColor = localStorage.getItem('mainColor')
   // const toggleAccordion = (id) => {
   //   setExpanded((prevExpanded) => ({

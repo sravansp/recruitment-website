@@ -294,10 +294,10 @@ const DragView = () => {
       
 
       {/* FILTER SECTON AND DETAILS  */}
-      <div className="flex items-center justify-between">
-        <div className="flex items-center gap-7">
+      {/* <div className="flex items-center justify-between">
+        <div className="flex items-center gap-7"> */}
           {/* <div className=" flex-col justify-start items-start gap-2.5 inline-flex"> */}
-          <div className="w-[70px] h-[26px] px-2.5 py-1 bg-emerald-500 bg-opacity-10 dark:bg-opacity-50 rounded-[18px] gap-[7px] vhcenter">
+          {/* <div className="w-[70px] h-[26px] px-2.5 py-1 bg-emerald-500 bg-opacity-10 dark:bg-opacity-50 rounded-[18px] gap-[7px] vhcenter">
             <div className="w-2.5 h-2.5 relative bg-emerald-500 rounded-[5px] border border-white shrink-0" />
             <p className="para dark:text-white !font-normal">Open</p>
           </div>
@@ -313,14 +313,14 @@ const DragView = () => {
             <div className="para dark:text-white !font-normal">Cody Fisher</div>
           </div>
           {/* </div> */}
-        </div>
+        {/* </div>
         <div className="flex">
           <SearchBox
             className="text-[#667085]"
             placeholder="Search candidate"
           />
         </div>
-      </div>
+      </div> */} 
 
       {/* DRAG N DROP SECTION START  */}
       <div className="flex flex-col lg:h-[85vh] overflow-auto">

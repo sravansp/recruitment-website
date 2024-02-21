@@ -11,6 +11,10 @@ function JobCard() {
     "Background check",
     "Machine testing",
     "Final review",
+    "Final review",
+    "Final review",
+    "Final review",
+    "Final review",
   ];
   const itemsPerPage = 6;
   const containerRef = useRef(0);

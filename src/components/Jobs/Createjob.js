@@ -3,12 +3,16 @@ import DrawerPop from '../common/DrawerPop';
 import { useTranslation } from "react-i18next"; 
 import { RxCross2, RxQuestionMarkCircled } from "react-icons/rx";
 import Stepper from '../common/Stepper';
-import { Steps } from 'antd';
+import { Card, Flex, Radio } from 'antd';
 import Accordion from '../common/Accordion';
 import FlexCol from '../common/FlexCol';
 import Dropdown from '../common/Dropdown';
 import FormInput from '../common/FormInput';
 import { regularOvertime } from '../data'; 
+import TextArea from '../common/TextArea';
+import Radiobuttonnew from '../common/Radiobuttonnew';
+import GoogleForm from '../common/GoogleForm';
+import JobCard from '../common/JobCard';
  
 
 const Createjob = ( {open = "", close = () => { }}) => {
@@ -62,7 +66,23 @@ const Createjob = ( {open = "", close = () => { }}) => {
       },
   ]);
 
-  
+  const Radiobuttons = [
+    {
+      id: 1,
+      label: t("Mandatory"),
+      value: "Mandatory",
+    },
+    {
+      id: 2,
+      label: t("Optional"),
+      value: "Optional",
+    },
+    {
+      id: 3,
+      label: t("Off"),
+      value: "Off",
+    },
+  ];
   useEffect(() => {
     console.log(nextStep, activeBtn);
     if (activeBtn < 4 && activeBtn !== nextStep) {
@@ -196,7 +216,7 @@ const Createjob = ( {open = "", close = () => { }}) => {
       
       
       <FlexCol>
-      <div className="flex flex-col gap-6">
+      <div className="flex flex-col gap-6 max-w-[1070px] w-full mx-auto ">
             {steps && (
               <div className=" sticky -top-6 w-full z-50 px-5 bg-white dark:bg-[#1f1f1f] pb-10 ">
                 <Stepper
@@ -215,21 +235,30 @@ const Createjob = ( {open = "", close = () => { }}) => {
                 />
               </div>
             )}
+          
+          
+          
+          
           </div>
                   
-          <div className="Container_job w-[1645px] h-[2403px] relative bg-slate-50">
+          <div className="relative max-w-[1070px]  w-full mx-auto ">
         
                   {activeBtnValue === "Jobdetails" ? (
-                    <><div><Accordion
+                    <>
+                   
+                        <FlexCol>
+                        <Accordion
                                     title={"Leave Allowance"}
                                     className="Text_area"
-                                    padding={false}
+                                    padding={true}
                                     toggleBtn={false}
                                     click={() => {
                                         //   setPresentage(1.4);
                                     } }
+                                    initiallyExpanded={true}
                                 >
-                                    <div className="grid grid-cols-3 gap-4">
+                                
+                                    <div className="grid grid-cols-3 gap-6 ">
                                         <Dropdown
                                             title={t("Choose Template")}
                                             placeholder={t("Select")}
@@ -261,17 +290,19 @@ const Createjob = ( {open = "", close = () => { }}) => {
                                             placeholder={t("Choose Company")}
                                             required={true} />
                                     </div>
+                                    
                                 </Accordion>
-                                </div>
-                                <div >
+                                
+                                
                                         <Accordion
                                             title={"Location "}
                                             className="Text_area"
-                                            padding={false}
+                                            padding={true}
                                             toggleBtn={false}
                                             // click={() => {
                                             //     setPresentage(1.4);
                                             // } }
+                                            initiallyExpanded={true}
                                         >
                         <div className="md:grid grid-cols-12 flex flex-col gap-6 dark:text-white">
                         {regularOvertime?.map((each, i) => (
@@ -336,26 +367,27 @@ const Createjob = ( {open = "", close = () => { }}) => {
                                             <Accordion
                                              title={"Employment Details"}
                                              className="Text_area"
-                                             padding={false}
+                                             padding={true}
                                              toggleBtn={false}
                                              click={() => {
                                             //    setPresentage(1.4);
-                                             }}>
+                                             }}
+                                             >
                                             <div className='grid grid-cols-3 gap-4'>
                                             <Dropdown
-                                                    title={'Requirement'}
-                                                    placeholder={'Urgent'} />
+                                                    title={'Job Type'}
+                                                    placeholder={'Full-time'} />
                                                 <Dropdown
-                                                    title={'Requirement'}
-                                                    placeholder={'Urgent'} />
+                                                    title={'Experience'}
+                                                    placeholder={'Mid-Senior level'} />
                                                      <Dropdown
-                                                    title={'Requirement'}
-                                                    placeholder={'Urgent'} />
+                                                    title={'Education'}
+                                                    placeholder={'Bachelor’s Degree'} />
                                             </div>
                                             <div className='grid grid-cols-3 gap-4'>
                                             <Dropdown
-                                                    title={'Requirement'}
-                                                    placeholder={'Urgent'} />
+                                                    title={'Keywords'}
+                                                    placeholder={'Example : Dubait'} />
                                                 {/* <Dropdown
                                                     title={'Requirement'}
                                                     placeholder={'Urgent'} />
@@ -364,42 +396,299 @@ const Createjob = ( {open = "", close = () => { }}) => {
                                                     placeholder={'Urgent'} /> */}
                                             </div>
                                             <div className='grid grid-cols-4 gap-4'>
-                                            <Dropdown
-                                                    title={'Requirement'}
+                                            <FormInput
+                                                    title={'Salary Range From'}
                                                     placeholder={'Urgent'} />
-                                                <Dropdown
-                                                    title={'Requirement'}
+                                                <FormInput
+                                                    title={'Salary Range To'}
                                                     placeholder={'Urgent'} />
                                                      <Dropdown
-                                                    title={'Requirement'}
+                                                    title={'Salary Currency'}
                                                     placeholder={'Urgent'} />
                                             </div>
                                             </Accordion>
                                         </div>
-                                    </div></>
+                                        <Accordion
+                                               title={"Job Description"}
+                                               className="Text_area"
+                                               padding={true}
+                                               toggleBtn={false}
+                                               click={() => {
+                                              //    setPresentage(1.4);
+                                               }}
+                                        
+                                        > <Card>
+                                            <TextArea
+                                             title={t("Description")}
+                                             placeholder={t("Enter the Job description here; include key reas of responsibility an what the candidate mi ht do on a typical day.")}
+                                             required={true}
+                                             hideBorder={true} 
+                                             
+                                            //  change={(e) => {
+                                            //    formik.setFieldValue("description", e);
+                                            //    if (presentage < 1.3)
+                                            //          setPresentage(presentage + 0.1);
+                                               
+                                            //  }}
+                                            //  value={formik.values.description || selectedAccordionItem?.description || fetchedData.description}
+                                            //  error={formik.errors.description}
+                                             />
+                                                  <TextArea
+                                             title={t("Requirement")}
+                                             placeholder={t("Enter the job requirements here; from soft skills to the specific qualifications needed to perform the role.")}
+                                             required={true}
+                                             hideBorder={true} 
+                                            //  change={(e) => {
+                                            //    formik.setFieldValue("description", e);
+                                            //    if (presentage < 1.3)
+                                            //          setPresentage(presentage + 0.1);
+                                               
+                                            //  }}
+                                            //  value={formik.values.description || selectedAccordionItem?.description || fetchedData.description}
+                                            //  error={formik.errors.description}
+                                             />
+                                                  <TextArea
+                                             title={t("Benefits")}
+                                             placeholder={t("Enter the benefits here; Include nat just sa aty details but the perks that make your ca:npany unique.")}
+                                             required={true}
+                                             hideBorder={true} 
+                                            //  change={(e) => {
+                                            //    formik.setFieldValue("description", e);
+                                            //    if (presentage < 1.3)
+                                            //          setPresentage(presentage + 0.1);
+                                               
+                                            //  }}
+                                            //  value={formik.values.description || selectedAccordionItem?.description || fetchedData.description}
+                                            //  error={formik.errors.description}
+                                             />
+                                             </Card>
+
+                                        </Accordion>
+                                  
+                                    </FlexCol>
+                                    </>
                   
                 ) : activeBtnValue === "ApplicationForm" ? (
+                  <>
+                  <FlexCol>
                   <Accordion
-                    title={"ApplicationForm "}
+                      title={"ApplicationForm "}
+                      className="Text_area"
+                      padding={true}
+                      toggleBtn={false}
+                      click={() => {
+                        // setPresentage(1.4);
+                      } }
+                      initiallyExpanded={true}
+                    >
+
+
+                      <div className="flex items-center justify-between">
+                        <div className="w-[53.92px] text-black text-sm font-medium font-['Inter'] leading-tight">Name</div>
+
+                        <Radiobuttonnew
+                          options={Radiobuttons.filter(option => option.label === t("Mandatory"))}
+                          title={""}
+                          change={(e) => { } }
+                        >
+                          <Radio.Button value={t("Mandatory")}>Mandatory</Radio.Button>
+                        </Radiobuttonnew>
+
+
+                      </div>
+                      <div className="v-divider" />
+                      <div className="flex items-center justify-between">
+                        <div className="w-[53.92px] text-black text-sm font-medium font-['Inter'] leading-tight">Email</div>
+
+                        <Radiobuttonnew
+                          options={Radiobuttons.filter(option => option.label === t("Mandatory"))}
+                          title={""}
+                          change={(e) => { } }
+                        >
+                          <Radio.Button value={t("Mandatory")}>Mandatory</Radio.Button>
+                        </Radiobuttonnew>
+
+
+                      </div>
+                      <div className="v-divider" />
+                      <div className="flex items-center justify-between w-full">
+                        <p className="pblack text-black text-sm font-mediumleading-tight">Headline</p>
+
+                        <Radiobuttonnew
+                          options={Radiobuttons}
+                          title={""}
+                          change={(e) => { } }
+                        >
+
+                          <Radio.Button value={t("Mandatory")}>Mandatory</Radio.Button>
+                          <Radio.Button value={t("Optional")}>Optional</Radio.Button>
+                          <Radio.Button value={t("Off")}>Off</Radio.Button>
+
+                        </Radiobuttonnew>
+                      </div>
+                      <div className="v-divider" />
+                      <div className="flex items-center justify-between">
+                        <div className="w-[53.92px] text-black text-sm font-medium font-['Inter'] leading-tight">Phone</div>
+
+                        <Radiobuttonnew
+                          options={Radiobuttons}
+                          title={""}
+                          change={(e) => { } }
+                        >
+
+                          <Radio.Button value={t("Mandatory")}>Mandatory</Radio.Button>
+                          <Radio.Button value={t("Optional")}>Optional</Radio.Button>
+                          <Radio.Button value={t("Off")}>Off</Radio.Button>
+
+                        </Radiobuttonnew>
+                      </div>
+                      <div className="v-divider" />
+                      <div className="flex items-center justify-between">
+                        <div className="w-[53.92px] text-black text-sm font-medium font-['Inter'] leading-tight">Address</div>
+
+                        <Radiobuttonnew
+                          options={Radiobuttons}
+                          title={""}
+                          change={(e) => { } }
+                        >
+
+                          <Radio.Button value={t("Mandatory")}>Mandatory</Radio.Button>
+                          <Radio.Button value={t("Optional")}>Optional</Radio.Button>
+                          <Radio.Button value={t("Off")}>Off</Radio.Button>
+
+                        </Radiobuttonnew>
+                      </div>
+                      <div className="v-divider" />
+                      <div className="flex items-center justify-between">
+                        <div className="w-[53.92px] text-black text-sm font-medium font-['Inter'] leading-tight">Country</div>
+
+                        <Radiobuttonnew
+                          options={Radiobuttons}
+                          title={""}
+                          change={(e) => { } }
+                        >
+
+                          <Radio.Button value={t("Mandatory")}>Mandatory</Radio.Button>
+                          <Radio.Button value={t("Optional")}>Optional</Radio.Button>
+                          <Radio.Button value={t("Off")}>Off</Radio.Button>
+
+                        </Radiobuttonnew>
+                      </div>
+
+
+
+
+                    </Accordion>
+                    
+                    
+                    <Accordion
+                    title={"Profile "}
                     className="Text_area"
-                    padding={false}
+                    padding={true}
                     toggleBtn={false}
                     click={() => {
-                      setPresentage(1.4);
-                    }}
-                  > 
-                  <div className='grid grid-cols-2 gap-4'>
-                   <FormInput
-                   title={"Locaqtion"}
-                   placeholder={'Example : Dubai'}
-                   
-                   />
-                   <Dropdown
-                    title={'Requirement'}
-                    placeholder={'Urgent'}
-                    />
-                  </div>
-                  </Accordion>
+                      // setPresentage(1.4);
+                    } }
+                    initiallyExpanded={true}
+                    
+                    >
+                                           <div className="flex items-center justify-between">
+                        <div className="w-[53.92px] text-black text-sm font-medium font-['Inter'] leading-tight">Education</div>
+
+                        <Radiobuttonnew
+  options={Radiobuttons.filter(option => option.label !== t("Mandatory"))}
+  title={""}
+  change={(e) => {}}
+>
+  <Radio.Button value={t("Optional")}>Optional</Radio.Button>
+  <Radio.Button value={t("Off")}>Off</Radio.Button>
+</Radiobuttonnew>
+
+
+                      </div>
+                      <div className="v-divider" />
+                      <div className="flex items-center justify-between">
+                        <div className="w-[53.92px] text-black text-sm font-medium font-['Inter'] leading-tight">Experience</div>
+
+                        <Radiobuttonnew
+  options={Radiobuttons.filter(option => option.label !== t("Mandatory"))}
+  title={""}
+  change={(e) => {}}
+>
+  <Radio.Button value={t("Optional")}>Optional</Radio.Button>
+  <Radio.Button value={t("Off")}>Off</Radio.Button>
+</Radiobuttonnew>
+
+
+                      </div>
+                      <div className="v-divider" />
+                      <div className="flex items-center justify-between">
+                        <div className="w-[53.92px] text-black text-sm font-medium font-['Inter'] leading-tight">Summary</div>
+
+                        <Radiobuttonnew
+                          options={Radiobuttons}
+                          title={""}
+                          change={(e) => { } }
+                        >
+
+                          <Radio.Button value={t("Mandatory")}>Mandatory</Radio.Button>
+                          <Radio.Button value={t("Optional")}>Optional</Radio.Button>
+                          <Radio.Button value={t("Off")}>Off</Radio.Button>
+
+                        </Radiobuttonnew>
+                      </div>
+                      <div className="v-divider" />
+                      <div className="flex items-center justify-between">
+                        <div className="w-[53.92px] text-black text-sm font-medium font-['Inter'] leading-tight">Resume</div>
+
+                        <Radiobuttonnew
+                          options={Radiobuttons}
+                          title={""}
+                          change={(e) => { } }
+                        >
+
+                          <Radio.Button value={t("Mandatory")}>Mandatory</Radio.Button>
+                          <Radio.Button value={t("Optional")}>Optional</Radio.Button>
+                          <Radio.Button value={t("Off")}>Off</Radio.Button>
+
+                        </Radiobuttonnew>
+                      </div>
+
+                      <div className="v-divider" />
+                      <div className="flex items-center justify-between">
+                        <div className="w-[53.92px] text-black text-sm font-medium font-['Inter'] leading-tight">Cover Letter</div>
+
+                        <Radiobuttonnew
+                          options={Radiobuttons}
+                          title={""}
+                          change={(e) => { } }
+                        >
+
+                          <Radio.Button value={t("Mandatory")}>Mandatory</Radio.Button>
+                          <Radio.Button value={t("Optional")}>Optional</Radio.Button>
+                          <Radio.Button value={t("Off")}>Off</Radio.Button>
+
+                        </Radiobuttonnew>
+                      </div>
+
+
+                      
+                      </Accordion>
+                      <Accordion
+                      title={"Custom Fields "}
+                      className="Text_area"
+                      padding={true}
+                      toggleBtn={false}
+                      click={() => {
+                        // setPresentage(1.4);
+                      } }
+                      >
+                      <GoogleForm/>
+
+
+                      </Accordion>
+
+                      </FlexCol></>
                 ) : activeBtnValue === "Workflow" ? (
                   <Accordion
                     title={"Workflow"}
@@ -409,7 +698,10 @@ const Createjob = ( {open = "", close = () => { }}) => {
                     click={() => {
                       setPresentage(1.4);
                     }}
-                  ></Accordion>
+                  >
+                  <JobCard/>
+
+                  </Accordion>
                 ) : activeBtnValue === "TeamMembers" ? (
                   <Accordion
                     title={"TeamMembers"}
@@ -433,6 +725,7 @@ const Createjob = ( {open = "", close = () => { }}) => {
                 ) : null
                    
                   }
+                  
                   </div>
                 </FlexCol>
                 </div>

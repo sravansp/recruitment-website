@@ -6,6 +6,7 @@ import { HiMiniStar } from "react-icons/hi2";
 import { IoAlertCircleOutline } from "react-icons/io5";
 import logo from "../../assets/images/Avatar.png";
 import { useMediaQuery } from "react-responsive";
+import FormInput from "./FormInput";
 
 export default function Dropdown({
   title = "",
@@ -32,13 +33,14 @@ export default function Dropdown({
 
   return (
     <div className={`${className} flex flex-col gap-2`}>
+      {title && (
       <div className="flex flex-col gap-0.5">
         <div className="flex dark:text-white">
-          {title && (
+          
             <label htmlFor="" className="text-xs font-medium 2xl:text-sm ">
               {title}
             </label>
-          )}
+         
           {required && <HiMiniStar className="text-[10px] text-rose-600" />}
         </div>
         {descriptionTop && (
@@ -47,6 +49,7 @@ export default function Dropdown({
           </p>
         )}
       </div>
+       )}
       <div className="relative flex items-center ">
         {icondropDown ? (
           <Select
@@ -86,10 +89,13 @@ export default function Dropdown({
                     ) : (
                       <img src={logo} alt="" className="w-5 h-5 rounded-full" />
                     )}
-                    <FlagIcon code={91} className="w-5 h-5 rounded-full" /> */}
-                    {/* <span>mkck</span>
+                    <FlagIcon code={91} className="w-5 h-5 rounded-full" />
+                    <span>mkck</span>
                   </div> */}
-                  <span>{each.label}</span>
+                 <div className="flex items-center gap-2">
+                 <div alt="" className="w-5 h-5 rounded-full">{each.icon}</div>
+                   <span>{each.label}</span>
+                 </div>
                   <p className="text-gray-500 text-xs font-medium font-['Inter'] leading-none">{each.description}</p>
                   
                 
