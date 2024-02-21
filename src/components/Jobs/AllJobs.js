@@ -156,9 +156,9 @@ function AllJobs() {
           </div>
         ))}
       </div>
-      <div className="mt-20">
+      {/* <div className="mt-20">
         <JobTabs />
-      </div>
+      </div> */}
 
       <div className="mt-28">
         {/* <TableAnt 

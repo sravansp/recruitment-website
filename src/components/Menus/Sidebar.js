@@ -239,7 +239,7 @@ const Sidebar = () => {
                   icon: (
                     <PiBriefcaseDuotone className="!text-base 2xl:!text-2xl" />
                   ),
-                  link: "/JobList",
+                  link: "/AllJobs",
                 },
                 {
                   id: 22,
