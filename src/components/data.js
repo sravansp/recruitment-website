@@ -1060,14 +1060,14 @@ const Form = [
   {
     id: 1,
     label: "Multiple Choice",
-    value: "Multiple Choice",
+    value: "MultipleChoice",
     icon:<FaRegDotCircle />
     
   },
   {
     id: 2,
     label: "Short Answer",
-    value: "Short Answer",
+    value: "ShortAnswer",
     icon:<MdOutlineShortText />
   },
   {
@@ -1095,7 +1095,49 @@ const Form = [
   // },
   
 ];
-
+const cardData = [
+  {
+    id: 1,
+    label: "Sourced",
+    value: "Sourced",
+    
+    
+  },
+  {
+    id: 2,
+    label: "Applied",
+    value: "Applied",
+    
+  },
+  {
+    id: 3,
+    label: "Personal Interview",
+    value: "PPersonal Interview",
+    icon:<RiMenu2Line  />
+  },
+  {
+    id: 4,
+    label: "Phone Screen",
+    value: "Phone Screen",
+    icon:<MdOutlineCheckBox />
+  },
+  {
+    id: 5,
+    label: "Hired",
+    value: "Drop-down",
+    icon:<IoIosArrowDropdown />
+  },
+  {
+    id: 6,
+    label: "Offer",
+    value: "Offer",
+  },
+  {
+    id: 7,
+    label: "Final review",
+    value: "Final review",
+  },
+];
 export {
   bloodGroup,
   regularOvertime,
@@ -1136,5 +1178,6 @@ export {
   deductionTypeOption,
   occurrence,
   Deduction,
-  Form
+  Form,
+  cardData
 };

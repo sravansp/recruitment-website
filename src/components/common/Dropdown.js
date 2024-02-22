@@ -1,5 +1,5 @@
-import { Popover, Select } from "antd";
-import React from "react";
+import { Button, Popover, Select } from "antd";
+import React,{useState} from "react";
 import { FlagIcon } from "react-flag-kit";
 import { FiAlertCircle } from "react-icons/fi";
 import { HiMiniStar } from "react-icons/hi2";
@@ -8,9 +8,10 @@ import logo from "../../assets/images/Avatar.png";
 import { useMediaQuery } from "react-responsive";
 import FormInput from "./FormInput";
 
+
 export default function Dropdown({
   title = "",
-  value = null,
+  value = null  ,
   change = () => {},
   options = [],
   error = "",
@@ -25,11 +26,19 @@ export default function Dropdown({
   PopoverContent = {},
   icondropDown = false,
   icon = false,
+  forminput={},
+  input=false,
 }) {
   const isSmallScreen = useMediaQuery({ maxWidth: 1439 });
   const filterOption = (input, option) =>
     (option?.label ?? "").toLowerCase().includes(input.toLowerCase());
   const { Option } = Select;
+  const [tempValue, setTempValue] = useState(value); // Store temporary value
+
+  const handleSave = (tempValue) => {
+    setTempValue  (tempValue);
+    console.log("value",tempValue) // Save the value when the Save button is clicked
+  };
 
   return (
     <div className={`${className} flex flex-col gap-2`}>
@@ -74,7 +83,8 @@ export default function Dropdown({
                 : "", // Add box shadow for error
             }}
             menuItemSelectedIcon={<HiMiniStar className="text-[10px]" />}
-            value={value}
+            value={tempValue} // Use tempValue instead of value
+            onSelect={(val) => setTempValue(val)} // Update tempValue when an option is selected
             status={`${error && "error"}`}
             size={isSmallScreen ? "default" : "large"}
             optionLabelProp="label"
@@ -97,7 +107,7 @@ export default function Dropdown({
                    <span>{each.label}</span>
                  </div>
                   <p className="text-gray-500 text-xs font-medium font-['Inter'] leading-none">{each.description}</p>
-                  
+                
                 
                 
                 </div>
@@ -127,7 +137,8 @@ export default function Dropdown({
                 : "", // Add box shadow for error
             }}
             menuItemSelectedIcon={<HiMiniStar className="text-[10px]" />}
-            value={value}
+            value={tempValue} // Use tempValue instead of value
+            onSelect={(val) => setTempValue(val)} // Update tempValue when an option is selected
             status={`${error && "error"}`}
             size={isSmallScreen ? "default" : "large"}
           />
@@ -141,10 +152,15 @@ export default function Dropdown({
             style={{
               borderRadius: "13.45px",
             }}
+            
           >
+              
             <IoAlertCircleOutline className="text-xl opacity-50 pl-1" />
           </Popover>
         )}
+          {input&&(
+                    <FormInput change={(e)=>handleSave(e)} ></FormInput>
+                  )}
       </div>
       {description && (
         <p className="text-xs 2xl:text-sm font-normal opacity-70 dark:text-white">

@@ -13,6 +13,10 @@ import TextArea from '../common/TextArea';
 import Radiobuttonnew from '../common/Radiobuttonnew';
 import GoogleForm from '../common/GoogleForm';
 import JobCard from '../common/JobCard';
+import { cardData } from '../data';
+
+
+
  
 
 const Createjob = ( {open = "", close = () => { }}) => {
@@ -26,6 +30,7 @@ const Createjob = ( {open = "", close = () => { }}) => {
   const [activeBtnValue, setActiveBtnValue] = useState("Jobdetails"); //LeaveType
   const [btnName, setBtnName] = useState();
   const [customRate, setCustomRate] = useState(1);
+  const [isGoogleFormVisible, setIsGoogleFormVisible] = useState(false);
 
   const handleClose = () => {
     close(false);
@@ -684,8 +689,9 @@ const Createjob = ( {open = "", close = () => { }}) => {
                       } }
                       >
                       <GoogleForm/>
-
-
+                     
+                 
+                     
                       </Accordion>
 
                       </FlexCol></>
@@ -699,7 +705,18 @@ const Createjob = ( {open = "", close = () => { }}) => {
                       setPresentage(1.4);
                     }}
                   >
-                  <JobCard/>
+                  <Card>
+                  <JobCard
+                  options={cardData}
+                  />
+                  <div style={{ position: 'absolute', top: 0, right: 0, padding: '8px' }}>
+        <Radio.Group >
+          <Radio value={1}></Radio>
+         
+        </Radio.Group>
+      </div>
+                  </Card>
+                  
 
                   </Accordion>
                 ) : activeBtnValue === "TeamMembers" ? (
