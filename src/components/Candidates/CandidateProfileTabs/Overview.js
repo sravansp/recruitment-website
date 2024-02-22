@@ -14,7 +14,7 @@ import {
 } from "react-icons/ri";
 import { Notes } from "@mui/icons-material";
 import { BsFileEarmarkRichtext } from "react-icons/bs";
-import TextEditor from "../../common/TextEditor";
+import TextEditor from "../../common/TextEditor/TextEditor";
 
 const userInfo = [
   {
@@ -87,6 +87,10 @@ const quillModules = {
 const Overview = () => {
   const [content, setContent] = useState('');
 
+  const handleEditorChange = (content) => {
+    setContent(content);
+  };
+
   const onTabChange = (tabId) => {
     // Do something when the tab changes if needed
     console.log(`Tab changed to ${tabId}`);
@@ -145,7 +149,8 @@ const Overview = () => {
         <div className="rounded-lg bg-white dark:bg-secondaryDark p-1.5 ">
         <TabsNew tabs={tabData} onTabChange={onTabChange} initialTab={1}/>
         <div className="">
-        <TextEditor value={content} onChange={setContent} modules={quillModules} />
+        <TextEditor initialValue={content}
+        onChange={handleEditorChange} />
         </div>
         </div>
       </div>
