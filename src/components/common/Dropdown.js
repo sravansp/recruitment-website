@@ -159,8 +159,10 @@ export default function Dropdown({
           </Popover>
         )}
           {input&&(
-                    <FormInput change={(e)=>handleSave(e)} ></FormInput>
+                    <><FormInput change={(e) => handleSave(e)}></FormInput>
+                    <Button onClick={change}>Save</Button></>
                   )}
+
       </div>
       {description && (
         <p className="text-xs 2xl:text-sm font-normal opacity-70 dark:text-white">

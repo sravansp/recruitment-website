@@ -20,6 +20,7 @@ const GoogleForm = () => {
           selectedValue: '',
         },
     ]);
+    const [dropdownOptions, setDropdownOptions] = useState([]);
 
     const handleDropdownChange = (selectedValue, conditionIndex) => {
         const updatedConditions = [...conditions];
@@ -53,6 +54,11 @@ const GoogleForm = () => {
             setConditions(updatedConditions);
         }
     };
+    const handleSaveInput = (index) => {
+        const updatedDropdownOptions = [...dropdownOptions];
+        updatedDropdownOptions[index] = { id: conditions[index].id, label: conditions[index].inputValue, value: '' };
+        setDropdownOptions(updatedDropdownOptions);
+      };
 
     const generateInputField = (type, condition, index) => {
         switch (type) {
@@ -65,6 +71,7 @@ const GoogleForm = () => {
                     <Dropdown
                         forminput={<FormInput value={condition.inputValue} change={(newValue) => handleChange(newValue, index)} />}
                         input={true}
+                        change={(e)=>handleSaveInput(index)}
                     />
                 );
             default:
@@ -106,6 +113,7 @@ const GoogleForm = () => {
                         condition.selectedValue,
                         condition,
                         index,
+                        condition.inputValue
                         
                     )}
                 </div>
