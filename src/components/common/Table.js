@@ -89,10 +89,10 @@ const gridListoptions = [
     label: <BsListUl />,
     value: 1,
   },
-  {
-    label: <BsGrid />,
-    value: 2,
-  },
+  // {
+  //   label: <BsGrid />,
+  //   value: 2,
+  // },
 ];
 
 const TableAnt1 = ({
@@ -107,6 +107,7 @@ const TableAnt1 = ({
   buttonClick = () => {},
   clickDrawer = () => {},
   viewDetails = false,
+ 
 }) => {
   const { t } = useTranslation();
   const navigate = useNavigate();
@@ -124,7 +125,16 @@ const TableAnt1 = ({
   const [dropdownVisible, setDropdownVisible] = useState(false);
   const [gridList, setGridList] = useState(1);
   const primaryColor = localStorage.getItem("mainColor");
-  const tabs = [
+  const [activeTab, setActiveTab] = useState(1);
+
+  // Function to handle tab change
+  const handleTabChange = (tabid) => {
+    setActiveTab(tabid);
+    // You can perform any other actions related to tab change here
+    console.log(`Tab changed to ${tabid}`);
+  };
+
+  const tab = [
     { id: 1, title: "My Open Jobs", value: "tab1" },
     { id: 2, title: "All Jobs", value: "tab2" },
     { id: 3, title: "Open", value: "tab3" },
@@ -134,8 +144,8 @@ const TableAnt1 = ({
     // if (tabs.id===2) {
     setListData([...data]);
     // }
+    console.log(listData);
   }, [data[0]]);
-  
 
   // Action Toggle change
 
@@ -198,7 +208,7 @@ const TableAnt1 = ({
       window.location.reload();
     }
   };
- 
+
   useEffect(() => {
     console.log(header, "header");
     setTableData(
@@ -217,33 +227,32 @@ const TableAnt1 = ({
           <>
             {each.value === "createdOn" && (
               <div className="flex items-center gap-2">
-                {/* Display the logo */}
+                
                 <SlCalender className="w-6 h-6 text-gray-300" />
-                {/* Display the date */}
+               
                 <span>{record}</span>
+              
               </div>
             )}
             {each.value === "location" && (
               <div className="flex items-center gap-2">
-                {/* Display the logo */}
+                
                 <FaLocationDot className="w-6 h-6 text-gray-300" />
-                {/* Display the date */}
+                
                 <span>{record}</span>
               </div>
             )}
             {each.value === "companyId" && (
               <div className="flex items-center gap-2">
-                {/* Display the logo */}
+              
                 <HiUserGroup className="w-6 h-6 text-gray-300" />
-                {/* Display the date */}
+               
                 <span>{record}</span>
               </div>
             )}
             {each.value === "jobTitle" && (
               <div className="flex items-center gap-2">
-                {/* Display the logo */}
-                {/* <HiUserGroup className="w-6 h-6 text-gray-300" /> */}
-                {/* Display the date */}
+               
                 <div
                   className="w-5 h-5 rounded bg-gray-100 text-blue-600 text-center"
                   style={{ minWidth: "8px", minHeight: "8px" }}
@@ -257,9 +266,7 @@ const TableAnt1 = ({
             {each.value === "jobPublishType" && (
               <div className="flex items-center gap-2">
                 <div className="w-5 h-5 rounded-full bg-gray-300"></div>
-                {/* Display the logo */}
-                {/* <HiUserGroup className="w-6 h-6 text-gray-300" /> */}
-                {/* Display the date */}
+              
                 <span>{record}</span>
               </div>
             )}
@@ -285,9 +292,7 @@ const TableAnt1 = ({
                     {/* Display hybrid image if record is hybrid */}
                   </div>
                 </div>
-                {/* Display the logo */}
-                {/* <HiUserGroup className="w-6 h-6 text-gray-300" /> */}
-                {/* Display the date */}
+               
                 <span>{record}</span>
               </div>
             )}
@@ -457,7 +462,7 @@ const TableAnt1 = ({
                 }
                 // title="Start Action"
               >
-                <BsThreeDotsVertical className=" opacity- cursor-pointer" />
+                <BsThreeDotsVertical className=" opacity- cursor-pointer ml-24" />
               </Popover>
             )}
           </>
@@ -698,8 +703,8 @@ const TableAnt1 = ({
   return (
     <div className="flex flex-col gap-5">
       <div className="flex flex-col justify-between gap-3 xl:items-center xl:flex-row">
-        <div className="mt-4 mr-64  ">
-          <TabsNew tabs={tabs}  />
+        <div className="mt-4  w-full xl:w-auto ">
+          <TabsNew tabs={tab} onTabChange={handleTabChange} />
         </div>
         <SearchBox
           // title="Search"
@@ -707,7 +712,7 @@ const TableAnt1 = ({
           placeholder={t("Search_placeholder")}
           value={searchValue}
           icon={<CiSearch className=" dark:text-white" />}
-          className="mt-0 w-ful md:w-auto mr-92 "
+          className="mt-0 w-ful md:w-auto   "
           error=""
           change={(value) => {
             setSearchValue(value);
@@ -804,7 +809,7 @@ const TableAnt1 = ({
             className="flex items-center dark:bg-black dark:text-white justify-center h-full font-medium flex-nowrap bg-[#FAFAFA] gap-2"
             size={isSmallScreen ? "default" : "large"}
           >
-            <span className="mr-2">{"Sort by"}</span>
+            <span className="mr-2">{t("Sort by")}</span>
             <span className="ml-auto">
               <LuArrowDownUp className="text-base 2xl:text-lg" />
             </span>
@@ -823,13 +828,12 @@ const TableAnt1 = ({
           >
             <FiSettings className="text-base 2xl:text-lg" />
           </Button>
-         
         </div>
       </div>
-      
+
       <div className="border rounded-lg border-[#E7E7E7] dark:border-secondary relative overflow-auto">
-        {data && (
-          <Table 
+        {activeTab===2 && data ? (
+          <Table
             rowSelection={{ ...rowSelection }}
             columns={tableData}
             rowSelection={{ ...rowSelection }}
@@ -839,6 +843,7 @@ const TableAnt1 = ({
             scroll={{ y: 600 }} // Adjust the height according to your requirement
             pagination={false} // Remove pagination
             columnMenuItems={true}
+            className="custom-table"
             // dataSource={data.filter(
             //   (item) =>
             //     item.location_name
@@ -857,12 +862,10 @@ const TableAnt1 = ({
             // )}
             dataSource={listData}
             size={isSmallScreen ? "small" : ""}
-           
           />
-        
-         
-        )}
-       
+         ) :(
+           <div><p className="text-center">Coming soon...</p> </div>
+  )}
          
       </div>
     </div>
