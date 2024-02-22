@@ -2,6 +2,7 @@ import { useEffect, useMemo, useState } from "react";
 import { motion } from "framer-motion";
 import TableAnt from "./TableAnt";
 import InProgress from "./InProgres";
+import TableAnt1 from "./Table";
 
 const Tabs = ({
   tabs = [],

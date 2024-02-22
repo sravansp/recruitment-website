@@ -54,7 +54,7 @@ import {
 } from "antd";
 import { RxDotFilled } from "react-icons/rx";
 import { CiSearch } from "react-icons/ci";
-import { LuListFilter } from "react-icons/lu";
+import { LuArrowDownUp, LuListFilter } from "react-icons/lu";
 import { BsListUl, BsThreeDotsVertical } from "react-icons/bs";
 import { BsGrid } from "react-icons/bs";
 import { FiSettings } from "react-icons/fi";
@@ -68,10 +68,14 @@ import { useTranslation } from "react-i18next";
 import { useMediaQuery } from "react-responsive";
 import { useNavigate } from "react-router-dom";
 import { SlCalender } from "react-icons/sl";
+import Onsite from "../../assets/images/onsite.png";
+import Remote from "../../assets/images/remote.png";
+import Hybrid from "../../assets/images/hybrid.png";
 
 import Tabs from "./Tabs";
 import TabsNew from "./TabsNew";
 import { HiUserGroup } from "react-icons/hi2";
+import ToggleBtn from "./ToggleBtn";
 
 // Filter Dropdown
 const { SubMenu } = Menu;
@@ -85,10 +89,10 @@ const gridListoptions = [
     label: <BsListUl />,
     value: 1,
   },
-  {
-    label: <BsGrid />,
-    value: 2,
-  },
+  // {
+  //   label: <BsGrid />,
+  //   value: 2,
+  // },
 ];
 
 const TableAnt1 = ({
@@ -103,6 +107,7 @@ const TableAnt1 = ({
   buttonClick = () => {},
   clickDrawer = () => {},
   viewDetails = false,
+ 
 }) => {
   const { t } = useTranslation();
   const navigate = useNavigate();
@@ -120,10 +125,26 @@ const TableAnt1 = ({
   const [dropdownVisible, setDropdownVisible] = useState(false);
   const [gridList, setGridList] = useState(1);
   const primaryColor = localStorage.getItem("mainColor");
+  const [activeTab, setActiveTab] = useState(1);
+
+  // Function to handle tab change
+  const handleTabChange = (tabid) => {
+    setActiveTab(tabid);
+    // You can perform any other actions related to tab change here
+    console.log(`Tab changed to ${tabid}`);
+  };
+
+  const tab = [
+    { id: 1, title: "My Open Jobs", value: "tab1" },
+    { id: 2, title: "All Jobs", value: "tab2" },
+    { id: 3, title: "Open", value: "tab3" },
+    { id: 4, title: "Draft", value: "tab4" },
+  ];
   useEffect(() => {
-    // if (data) {
+    // if (tabs.id===2) {
     setListData([...data]);
     // }
+    console.log(listData);
   }, [data[0]]);
 
   // Action Toggle change
@@ -206,53 +227,72 @@ const TableAnt1 = ({
           <>
             {each.value === "createdOn" && (
               <div className="flex items-center gap-2">
-                {/* Display the logo */}
+                
                 <SlCalender className="w-6 h-6 text-gray-300" />
-                {/* Display the date */}
+               
                 <span>{record}</span>
+              
               </div>
             )}
             {each.value === "location" && (
               <div className="flex items-center gap-2">
-                {/* Display the logo */}
+                
                 <FaLocationDot className="w-6 h-6 text-gray-300" />
-                {/* Display the date */}
+                
                 <span>{record}</span>
               </div>
             )}
             {each.value === "companyId" && (
               <div className="flex items-center gap-2">
-                {/* Display the logo */}
+              
                 <HiUserGroup className="w-6 h-6 text-gray-300" />
-                {/* Display the date */}
+               
                 <span>{record}</span>
               </div>
             )}
             {each.value === "jobTitle" && (
               <div className="flex items-center gap-2">
-                {/* Display the logo */}
-                {/* <HiUserGroup className="w-6 h-6 text-gray-300" /> */}
-                {/* Display the date */}
+               
                 <div
-      className="w-5 h-5 rounded bg-gray-100 text-blue-600 text-center"
-      style={{ minWidth: '8px', minHeight: '8px' }}
-    > {record.charAt(0).toUpperCase()}</div>
+                  className="w-5 h-5 rounded bg-gray-100 text-blue-600 text-center"
+                  style={{ minWidth: "8px", minHeight: "8px" }}
+                >
+                  {" "}
+                  {record.charAt(0).toUpperCase()}
+                </div>
                 <span>{record}</span>
               </div>
             )}
             {each.value === "jobPublishType" && (
               <div className="flex items-center gap-2">
-                {/* Display the logo */}
-                {/* <HiUserGroup className="w-6 h-6 text-gray-300" /> */}
-                {/* Display the date */}
+                <div className="w-5 h-5 rounded-full bg-gray-300"></div>
+              
                 <span>{record}</span>
               </div>
             )}
             {each.value === "workLocationType" && (
               <div className="flex items-center gap-2">
-                {/* Display the logo */}
-                {/* <HiUserGroup className="w-6 h-6 text-gray-300" /> */}
-                {/* Display the date */}
+                <div
+                  className="w-5 h-5 rounded bg-blue-600 text-blue-600 text-center"
+                  style={{ minWidth: "8px", minHeight: "8px" }}
+                >
+                  <div
+                    className="w-5 h-5 rounded"
+                    style={{ minWidth: "8px", minHeight: "8px" }}
+                  >
+                    {record === "Onsite" && <img src={Onsite} alt="Onsite" />}{" "}
+                    {/* Display onsite image if record is onsite */}
+                    {record === "Remote" && (
+                      <img src={Remote} alt="Remote" />
+                    )}{" "}
+                    {/* Display remote image if record is remote */}
+                    {record === "Hybrid" && (
+                      <img src={Hybrid} alt="Hybrid" />
+                    )}{" "}
+                    {/* Display hybrid image if record is hybrid */}
+                  </div>
+                </div>
+               
                 <span>{record}</span>
               </div>
             )}
@@ -422,7 +462,7 @@ const TableAnt1 = ({
                 }
                 // title="Start Action"
               >
-                <BsThreeDotsVertical className=" opacity- cursor-pointer" />
+                <BsThreeDotsVertical className=" opacity- cursor-pointer ml-24" />
               </Popover>
             )}
           </>
@@ -663,6 +703,25 @@ const TableAnt1 = ({
   return (
     <div className="flex flex-col gap-5">
       <div className="flex flex-col justify-between gap-3 xl:items-center xl:flex-row">
+        <div className="mt-4  w-full xl:w-auto ">
+          <TabsNew tabs={tab} onTabChange={handleTabChange} />
+        </div>
+        <SearchBox
+          // title="Search"
+          data={data}
+          placeholder={t("Search_placeholder")}
+          value={searchValue}
+          icon={<CiSearch className=" dark:text-white" />}
+          className="mt-0 w-ful md:w-auto   "
+          error=""
+          change={(value) => {
+            setSearchValue(value);
+          }}
+          onSearch={(value) => {
+            // console.log(value);
+            setSearchFilter(value);
+          }}
+        />
         <div className="flex items-center gap-3">
           {/* <p className="text-lg font-semibold dark:text-white"> */}
           {/* {tabTitle?.split("_") || path?.split("_")} */}
@@ -683,14 +742,15 @@ const TableAnt1 = ({
             {console.log(jsonResult)}
           </div> */}
         </div>
+
         <div className="flex flex-wrap items-center gap-3">
-          <SearchBox
+          {/* <SearchBox 
             // title="Search"
             data={data}
             placeholder={t("Search_placeholder")}
             value={searchValue}
             icon={<CiSearch className=" dark:text-white" />}
-            className="mt-0 w-ful md:w-auto"
+            className="mt-0 w-ful md:w-auto "
             error=""
             change={(value) => {
               setSearchValue(value);
@@ -699,7 +759,12 @@ const TableAnt1 = ({
               // console.log(value);
               setSearchFilter(value);
             }}
-          />
+          /> */}
+
+          <ToggleBtn />
+          <span>
+            <p className="dark:text-white">Show Stages</p>
+          </span>
           <div>
             {/* <Dropdown
               menu={{
@@ -740,6 +805,15 @@ const TableAnt1 = ({
               </Button>
             </Dropdown>
           </div>
+          <Button
+            className="flex items-center dark:bg-black dark:text-white justify-center h-full font-medium flex-nowrap bg-[#FAFAFA] gap-2"
+            size={isSmallScreen ? "default" : "large"}
+          >
+            <span className="mr-2">{t("Sort by")}</span>
+            <span className="ml-auto">
+              <LuArrowDownUp className="text-base 2xl:text-lg" />
+            </span>
+          </Button>
           <Radio.Group
             options={gridListoptions}
             onChange={onChangeGridlist}
@@ -756,8 +830,9 @@ const TableAnt1 = ({
           </Button>
         </div>
       </div>
-      <div className="border rounded-lg border-[#E7E7E7] dark:border-secondary relative overflow-auto ">
-        {data && (
+
+      <div className="border rounded-lg border-[#E7E7E7] dark:border-secondary relative overflow-auto">
+        {activeTab===2 && data ? (
           <Table
             rowSelection={{ ...rowSelection }}
             columns={tableData}
@@ -767,6 +842,8 @@ const TableAnt1 = ({
             size={isSmallScreen ? "small" : ""}
             scroll={{ y: 600 }} // Adjust the height according to your requirement
             pagination={false} // Remove pagination
+            columnMenuItems={true}
+            className="custom-table"
             // dataSource={data.filter(
             //   (item) =>
             //     item.location_name
@@ -786,7 +863,10 @@ const TableAnt1 = ({
             dataSource={listData}
             size={isSmallScreen ? "small" : ""}
           />
-        )}
+         ) :(
+           <div><p className="text-center">Coming soon...</p> </div>
+  )}
+         
       </div>
     </div>
   );

@@ -6,7 +6,7 @@ import JobTabs from "../common/JobTabs";
 import { Add } from "@mui/icons-material";
 import API from "../Api";
 import Table from "../common/Table";
-import { getAllRecruitmentJobs } from '../Api1';
+import { getAllRecruitmentJobs } from "../Api1";
 import CustomTable from "../common/Table";
 import App1 from "../common/Table";
 import TableAnt1 from "../common/Table";
@@ -21,59 +21,60 @@ function AllJobs() {
       hired_count: "152",
     },
   ];
- 
+
   const header = [
-      {
-       
-     
-     
-        AllJobs: [
-          {
-            id: 1,
-            title: ("NAME"),
-            value: "jobTitle",
-          },
-          {
-            id: 2,
-            title: ("APPLIED"),
-            value: "companyId",
-          },
-          {
-            id: 3,
-            title: ("TYPE"),
-            value: "workLocationType",
-          },
-          
-          {
-            id: 4,
-            title: ("LOCATION"),
-            value: "location",
-            // dotsVertical: true,
-          },
-          {
-            id: 5,
-           
-            title: ("Status"),
-            value: "isActive",
-            actionToggle: true
-          },
-          {
-            id: 6,
-            title: ("POSTED BY"),
-            value: "jobPublishType",
-          },
-          {
-            id: 7,
-            title: ("DATE"),
-            value: "createdOn",
-          },
-          
-        ],
-   
-      },
-    ];
+    {
+      AllJobs: [
+        {
+          id: 1,
+          title: "NAME",
+          value: "jobTitle",
+        },
+        {
+          id: 2,
+          title: "APPLIED",
+          value: "companyId",
+        },
+        {
+          id: 3,
+          title: "TYPE",
+          value: "workLocationType",
+        },
+
+        {
+          id: 4,
+          title: "LOCATION",
+          value: "location",
+          // dotsVertical: true,
+        },
+        {
+          id: 5,
+
+          title: "Status",
+          value: "isActive",
+          actionToggle: true,
+        },
+        {
+          id: 6,
+          title: "POSTED BY",
+          value: "jobPublishType",
+        },
+        {
+          id: 7,
+          title: "DATE",
+          value: "createdOn",
+         
+        },
+        {
+          id:8,
+          title:"",
+          value:"action",
+          dotsVertical: true,
+        }
+      ],
+    },
+  ];
   const [JobsList, setJobList] = useState([]);
- 
 
   useEffect(() => {
     const callapi = async () => {
@@ -90,11 +91,10 @@ function AllJobs() {
         //       },
         //     }
         // );
-       const data1=await getAllRecruitmentJobs()
-          console.log(data1.result)
-          setJobList(data1.result)
-         
-      
+        const data1 = await getAllRecruitmentJobs();
+        console.log(data1.result);
+        setJobList(data1.result);
+
         // setTableData(response.data);
         // console.log(response.data); // Access response data
       } catch (error) {
@@ -156,19 +156,9 @@ function AllJobs() {
           </div>
         ))}
       </div>
-      <div className="mt-20">
-        <JobTabs />
-      </div>
 
       <div className="mt-28">
-        {/* <TableAnt 
-        data={JobsList} 
-        header={header}
-        path="AllJobs" /> */}
-        <TableAnt1   data={JobsList} 
-        header={header}
-        path="AllJobs"/>
-       
+        <TableAnt1 data={JobsList} header={header} path="AllJobs" />
       </div>
     </div>
   );

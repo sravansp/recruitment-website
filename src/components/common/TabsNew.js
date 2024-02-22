@@ -14,10 +14,10 @@ const TabsNew = ({ tabs, onTabChange, initialTab }) => {
 
   return (
     <div className="flex flex-col gap-6">
-      <div className="flex gap-2 p-[6px] bg-white rounded-xl flex-wrap">
+      <div className="flex gap-2 p-[6px] bg-white dark:bg-black rounded-xl flex-wrap">
         {tabs?.map((tab) => (
-          <button
-            // key={tab.id}
+          <button 
+            key={tab.id}
             onClick={() => {
               setActiveTab(tab.id);
               setTabName(tab.value);
