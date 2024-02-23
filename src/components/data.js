@@ -28,7 +28,11 @@ import { PiCloudWarningBold, PiLockOpenBold } from "react-icons/pi";
 import { title } from "faker/lib/locales/az";
 import { TbSettingsCheck } from "react-icons/tb";
 import { LuCalendarClock } from "react-icons/lu";
-
+import { RiMenu2Line } from "react-icons/ri";
+import { FaRegDotCircle } from "react-icons/fa";
+import { MdOutlineCheckBox } from "react-icons/md";
+import { IoIosArrowDropdown } from "react-icons/io";
+import { MdOutlineShortText } from "react-icons/md";
 // const { t } = useTranslation();
 
 const bloodGroup = [
@@ -1051,6 +1055,89 @@ const employeeAssetsHeader = [
 ];
 
 
+//RECRUITMENT
+const Form = [
+  {
+    id: 1,
+    label: "Multiple Choice",
+    value: "MultipleChoice",
+    icon:<FaRegDotCircle />
+    
+  },
+  {
+    id: 2,
+    label: "Short Answer",
+    value: "ShortAnswer",
+    icon:<MdOutlineShortText />
+  },
+  {
+    id: 3,
+    label: "Paragraph",
+    value: "Paragraph",
+    icon:<RiMenu2Line  />
+  },
+  {
+    id: 4,
+    label: "Checkboxes",
+    value: "Checkboxes",
+    icon:<MdOutlineCheckBox />
+  },
+  {
+    id: 5,
+    label: "Drop-down",
+    value: "Drop-down",
+    icon:<IoIosArrowDropdown />
+  },
+  // {
+  //   id: 6,
+  //   label: "Drop-down",
+  //   value: "Drop-down",
+  // },
+  
+];
+const cardData = [
+  {
+    id: 1,
+    label: "Sourced",
+    value: "Sourced",
+    
+    
+  },
+  {
+    id: 2,
+    label: "Applied",
+    value: "Applied",
+    
+  },
+  {
+    id: 3,
+    label: "Personal Interview",
+    value: "PPersonal Interview",
+    icon:<RiMenu2Line  />
+  },
+  {
+    id: 4,
+    label: "Phone Screen",
+    value: "Phone Screen",
+    icon:<MdOutlineCheckBox />
+  },
+  {
+    id: 5,
+    label: "Hired",
+    value: "Drop-down",
+    icon:<IoIosArrowDropdown />
+  },
+  {
+    id: 6,
+    label: "Offer",
+    value: "Offer",
+  },
+  {
+    id: 7,
+    label: "Final review",
+    value: "Final review",
+  },
+];
 export {
   bloodGroup,
   regularOvertime,
@@ -1091,4 +1178,6 @@ export {
   deductionTypeOption,
   occurrence,
   Deduction,
+  Form,
+  cardData
 };

@@ -3164,8 +3164,12 @@ button.rbc-button-link {
   
 }
 
-
-
-
+/* .Container_job{
+  padding-left: 20%;
+} */
+.radioButtons  {
+  display: flex;
+  margin-right: 10px; /* Adjust this value as needed for spacing */
+}
 
 

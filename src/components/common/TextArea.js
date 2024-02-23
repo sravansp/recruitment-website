@@ -13,6 +13,7 @@ export default function TextArea({
   value = "",
   required = false,
   rows = "",
+  hideBorder = false,
 }) {
   const isSmallScreen = useMediaQuery({ maxWidth: 1439 });
   const { TextArea } = Input;
@@ -23,6 +24,7 @@ export default function TextArea({
           <label className="text-xs font-medium 2xl:text-sm dark:text-white">
             {title}
           </label>
+          
         }        {required && <HiMiniStar className="text-[10px] text-rose-600" />}
       </div>
       <div style={{ position: "relative" }}>
@@ -36,7 +38,7 @@ export default function TextArea({
             change(e.target.value);
           }}
           size={isSmallScreen ? "default" : "large"}
-          className={`w-full  border rounded-lg  text-sm mt-[6px] dark:bg-black`}
+          className={`w-full ${hideBorder ? "border-none" : "border"} rounded-lg text-sm mt-[6px] dark:bg-black`}
           style={{
             ...(error && {
               boxShadow:
