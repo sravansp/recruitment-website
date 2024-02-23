@@ -1,5 +1,5 @@
 import { Button, Popover, Select } from "antd";
-import React,{useState} from "react";
+import React from "react";
 import { FlagIcon } from "react-flag-kit";
 import { FiAlertCircle } from "react-icons/fi";
 import { HiMiniStar } from "react-icons/hi2";
@@ -7,11 +7,11 @@ import { IoAlertCircleOutline } from "react-icons/io5";
 import logo from "../../assets/images/Avatar.png";
 import { useMediaQuery } from "react-responsive";
 import FormInput from "./FormInput";
-
+import { RiDeleteBinLine } from "react-icons/ri";
 
 export default function Dropdown({
   title = "",
-  value = null  ,
+  value = null,
   change = () => {},
   options = [],
   error = "",
@@ -26,19 +26,14 @@ export default function Dropdown({
   PopoverContent = {},
   icondropDown = false,
   icon = false,
-  forminput={},
-  input=false,
+  onDeleteOption=()=>{},
+  isNewlyAddedOption=false,
+  addarray=()=>{},
 }) {
   const isSmallScreen = useMediaQuery({ maxWidth: 1439 });
   const filterOption = (input, option) =>
     (option?.label ?? "").toLowerCase().includes(input.toLowerCase());
   const { Option } = Select;
-  const [tempValue, setTempValue] = useState(value); // Store temporary value
-
-  const handleSave = (tempValue) => {
-    setTempValue  (tempValue);
-    console.log("value",tempValue) // Save the value when the Save button is clicked
-  };
 
   return (
     <div className={`${className} flex flex-col gap-2`}>
@@ -83,8 +78,7 @@ export default function Dropdown({
                 : "", // Add box shadow for error
             }}
             menuItemSelectedIcon={<HiMiniStar className="text-[10px]" />}
-            value={tempValue} // Use tempValue instead of value
-            onSelect={(val) => setTempValue(val)} // Update tempValue when an option is selected
+            value={value}
             status={`${error && "error"}`}
             size={isSmallScreen ? "default" : "large"}
             optionLabelProp="label"
@@ -103,12 +97,23 @@ export default function Dropdown({
                     <span>mkck</span>
                   </div> */}
                  <div className="flex items-center gap-2">
+                 {/* {isNewlyAddedOption && (
+                    <RiDeleteBinLine
+                      className="cursor-pointer text-red-500"
+                      onClick={(e) => {
+                        e.stopPropagation(); // Prevents the Select dropdown from closing
+                        // Handle the delete action here
+                        // You can call a function to handle the deletion of the option
+                        onDeleteOption(each.label);
+                      }}
+                    />
+                  )} */}
                  <div alt="" className="w-5 h-5 rounded-full">{each.icon}</div>
                    <span>{each.label}</span>
                  </div>
                   <p className="text-gray-500 text-xs font-medium font-['Inter'] leading-none">{each.description}</p>
-                
-                
+                  
+                  
                 
                 </div>
               </Option>
@@ -119,7 +124,7 @@ export default function Dropdown({
             showSearch
             placeholder={placeholder}
             optionFilterProp="children"
-            onChange={change}
+            // onChange={change}
             onSearch={onSearch}
             filterOption={filterOption}
             filterSort={(optionA, optionB) =>
@@ -137,8 +142,7 @@ export default function Dropdown({
                 : "", // Add box shadow for error
             }}
             menuItemSelectedIcon={<HiMiniStar className="text-[10px]" />}
-            value={tempValue} // Use tempValue instead of value
-            onSelect={(val) => setTempValue(val)} // Update tempValue when an option is selected
+            value={value}
             status={`${error && "error"}`}
             size={isSmallScreen ? "default" : "large"}
           />
@@ -154,15 +158,10 @@ export default function Dropdown({
             }}
             
           >
-              
+            <Button onClick={change} >Save</Button>
             <IoAlertCircleOutline className="text-xl opacity-50 pl-1" />
           </Popover>
         )}
-          {input&&(
-                    <><FormInput change={(e) => handleSave(e)}></FormInput>
-                    <Button onClick={change}>Save</Button></>
-                  )}
-
       </div>
       {description && (
         <p className="text-xs 2xl:text-sm font-normal opacity-70 dark:text-white">

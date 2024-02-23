@@ -58,4 +58,14 @@ export const deleteRecruitmentJobById = async (id) => {
   return await apiRequest(action, method, kwargs);
 };
 
-// Add more API functions as needed
+// Job creation 
+export const saveRecruitmentJobApplicationFormSetting = async (e) => {
+  const action = "saveRecruitmentJobApplicationFormSetting";
+
+  const method = "POST";
+
+
+
+  return await apiRequest(action, method, e);
+};
+
