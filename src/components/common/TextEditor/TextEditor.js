@@ -24,12 +24,12 @@ const TextEditor = ({ initialValue, onChange }) => {
   };
 
   return (
-    <div style={{ border: '1px solid #ccc', borderRadius: '4px', position: 'relative' }}>
+    <div className='relative p-4 border border-black rounded-md h-52 border-opacity-10 dark:border-secondaryDark'>
       <Editor
         editorState={editorState}
         onEditorStateChange={handleEditorChange}
         toolbar={{
-          options: ['inline', 'blockType', 'fontSize', 'list', 'textAlign', 'colorPicker'],
+          options: ['inline', 'fontSize', 'list', 'textAlign'],
           inline: {
             options: ['bold', 'italic', 'underline', 'strikethrough'],
           },
@@ -37,23 +37,11 @@ const TextEditor = ({ initialValue, onChange }) => {
             options: ['unordered', 'ordered'],
           },
           textAlign: {
-            options: ['left', 'center', 'right'],
-          },
-          blockType: {
-            options: ['Normal', 'H1', 'H2', 'H3', 'Blockquote'],
-          },
-          colorPicker: {
-            colors: [
-              'rgba(0, 0, 0, 0.87)',
-              'rgba(255, 0, 0, 1)',
-              'rgba(0, 128, 0, 1)',
-              'rgba(0, 0, 255, 1)',
-              'rgba(255, 255, 0, 1)',
-              'rgba(255, 0, 255, 1)',
-            ],
+            options: ['left', 'center', 'right', 'justify'],
           },
         }}
-        toolbarStyle={{ position: 'absolute', bottom: '0', left: '0', right: '0' }}
+        toolbarStyle={{ position: 'absolute', bottom: '-60px', left: '0', right: '0' }}
+        toolbarClassName=' bg-black'
       />
     </div>
   );

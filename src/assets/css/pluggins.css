@@ -78,3 +78,48 @@
   display: flex;
   align-items: center;
 }
+
+
+.rdw-option-wrapper {
+  border: none;
+  padding: 1px 8px;
+  min-width: 25px;
+  height: 30px;
+  border-radius: 5px;
+  margin: 0;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  cursor: pointer;
+  background: transparent;
+  text-transform: capitalize;
+}
+.rdw-option-active {
+  box-shadow: none;
+  background: #9dacbc;
+}
+.rdw-inline-wrapper {
+  display: flex;
+  align-items: center;
+  margin-bottom: 6px;
+  flex-wrap: wrap;
+  background: #c0c9d2;
+  padding: 4px;
+  border-radius: 7px;
+  gap: 4px;
+}
+
+.rdw-editor-toolbar {
+  padding: 6px 5px 0;
+  border-radius: 2px;
+  border: 1px solid #F1F1F1;
+  display: flex;
+  justify-content: flex-start;
+  gap: 4px;
+  background: white;
+  flex-wrap: wrap;
+  font-size: 15px;
+  margin-bottom: 5px;
+  -webkit-user-select: none;
+  user-select: none;
+}
