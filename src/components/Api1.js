@@ -58,4 +58,14 @@ export const deleteRecruitmentJobById = async (id) => {
   return await apiRequest(action, method, kwargs);
 };
 
+export const getAllRecruitmentResumes = async () => {
+  const action = "getAllRecruitmentResumes";
+
+  const method = "POST";
+
+  const kwargs = { };
+
+  return await apiRequest(action, method, kwargs);
+};
+
 // Add more API functions as needed

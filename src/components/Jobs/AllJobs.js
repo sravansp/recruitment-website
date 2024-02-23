@@ -10,6 +10,10 @@ import { getAllRecruitmentJobs } from "../Api1";
 import CustomTable from "../common/Table";
 import App1 from "../common/Table";
 import TableAnt1 from "../common/Table";
+import Heading from "../common/Heading";
+import { Link } from "react-router-dom";
+import { PiArrowSquareOut } from "react-icons/pi";
+import ButtonClick from "../common/Button";
 
 function AllJobs() {
   const data = [
@@ -45,7 +49,7 @@ function AllJobs() {
           id: 4,
           title: "LOCATION",
           value: "location",
-          // dotsVertical: true,
+         
         },
         {
           id: 5,
@@ -63,14 +67,13 @@ function AllJobs() {
           id: 7,
           title: "DATE",
           value: "createdOn",
-         
         },
         {
-          id:8,
-          title:"",
-          value:"action",
+          id: 8,
+          title: "",
+          value: "action",
           dotsVertical: true,
-        }
+        },
       ],
     },
   ];
@@ -106,6 +109,21 @@ function AllJobs() {
   }, []);
   return (
     <div>
+      <div className="flex justify-between">
+        <Heading
+          title="Jobs"
+          description="Coordinates the planning,execution,and completion of projects... "
+        />
+        <div className="flex gap-4">
+          {" "}
+          <Link className="flex gap-2 mt-2">
+            <span className="!text-primary para">View career page</span>{" "}
+            <PiArrowSquareOut size={15} className="dark:text-white" />
+          </Link>
+          <ButtonClick buttonName={"Create a Job"} BtnType="primary" />
+        </div>
+      </div>
+
       <div className="w-full mt-12 rounded-sm h-24 sm:w-full sm:max-h-7">
         {data.map((data) => (
           <div className="bg-white rounded-md shadow-md m-4 p-4 flex dark:bg-black dark:text-white h-24">
