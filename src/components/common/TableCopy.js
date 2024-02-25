@@ -1,42 +1,3 @@
-// import React from "react";
-// import { MdEdit } from "react-icons/md";
-// import { MdDelete } from "react-icons/md";
-
-// export default function Table({header=[],data=[],action}) {
-//   return (
-//     <div className="relative overflow-x-auto border rounded-xl mx-4">
-//       <table className="w-full  text-sm text-left rtl:text-right dark:text-gray-400">
-//         <thead className="text-xs  uppercase bg-gray-50 dark:bg-gray-700 dark:text-gray-400">
-//           <tr className=" border-b">
-//            {header?.map((each)=>(<th scope="col" className={`px-3 py-3`}>
-//            {each.title}
-//             </th>
-//             )) }
-//           {action&&  <th className="px-3 py-3 text-center">Action</th>}
-
-//           </tr>
-//         </thead>
-//         <tbody>
-//           {data?.map((each)=>(<tr className=" bg-white border-b dark:bg-gray-800 dark:border-gray-700">
-//             <th
-//               scope="row"
-//               className="p-3 font-medium text-gray-900 whitespace-nowrap dark:text-white"
-//             >
-//               {each.designation}
-//             </th>
-//             <td className="p-3">{each.description}</td>
-//             <td className="p-3 flex justify-center items-center gap-4">
-//             <MdEdit className=" bg-slate-100 text-primary rounded-full p-1 text-2xl" />
-//             <MdDelete className=" bg-slate-100 rounded-full p-1 text-2xl"/>
-//             </td>
-//           </tr>))}
-
-//         </tbody>
-//       </table>
-//     </div>
-//   );
-// }
-
 import React, { useEffect, useState } from "react";
 import {
   Button,
@@ -52,8 +13,9 @@ import {
   Flex,
   Popover,
 } from "antd";
-import { RxDotFilled } from "react-icons/rx";
+import { RxCopy, RxDotFilled } from "react-icons/rx";
 import { CiSearch } from "react-icons/ci";
+import copy from "clipboard-copy";
 import { LuArrowDownUp, LuListFilter } from "react-icons/lu";
 import { BsListUl, BsThreeDotsVertical } from "react-icons/bs";
 import { BsGrid } from "react-icons/bs";
@@ -63,19 +25,11 @@ import axios from "axios";
 import API from "../Api";
 import SearchBox from "./SearchBox";
 import { RiDeleteBin5Line } from "react-icons/ri";
-import { FaLocationDot, FaPencil } from "react-icons/fa6";
+import { FaPencil } from "react-icons/fa6";
 import { useTranslation } from "react-i18next";
 import { useMediaQuery } from "react-responsive";
 import { useNavigate } from "react-router-dom";
-import { SlCalender } from "react-icons/sl";
-import Onsite from "../../assets/images/onsite.png";
-import Remote from "../../assets/images/remote.png";
-import Hybrid from "../../assets/images/hybrid.png";
-
-import Tabs from "./Tabs";
-import TabsNew from "./TabsNew";
-import { HiUserGroup } from "react-icons/hi2";
-import ToggleBtn from "./ToggleBtn";
+import { FaPhoneAlt } from "react-icons/fa";
 
 // Filter Dropdown
 const { SubMenu } = Menu;
@@ -89,13 +43,13 @@ const gridListoptions = [
     label: <BsListUl />,
     value: 1,
   },
-  // {
-  //   label: <BsGrid />,
-  //   value: 2,
-  // },
+  //   {
+  //     label: <BsGrid />,
+  //     value: 2,
+  //   },
 ];
 
-const TableAnt1 = ({
+const TableCopy = ({
   data = [],
   header = [],
 
@@ -107,7 +61,6 @@ const TableAnt1 = ({
   buttonClick = () => {},
   clickDrawer = () => {},
   viewDetails = false,
- 
 }) => {
   const { t } = useTranslation();
   const navigate = useNavigate();
@@ -125,26 +78,10 @@ const TableAnt1 = ({
   const [dropdownVisible, setDropdownVisible] = useState(false);
   const [gridList, setGridList] = useState(1);
   const primaryColor = localStorage.getItem("mainColor");
-  const [activeTab, setActiveTab] = useState(1);
-
-  // Function to handle tab change
-  const handleTabChange = (tabid) => {
-    setActiveTab(tabid);
-    // You can perform any other actions related to tab change here
-    console.log(`Tab changed to ${tabid}`);
-  };
-
-  const tab = [
-    { id: 1, title: "My Open Jobs", value: "tab1" },
-    { id: 2, title: "All Jobs", value: "tab2" },
-    { id: 3, title: "Open", value: "tab3" },
-    { id: 4, title: "Draft", value: "tab4" },
-  ];
   useEffect(() => {
-    // if (tabs.id===2) {
+    // if (data) {
     setListData([...data]);
     // }
-    console.log(listData);
   }, [data[0]]);
 
   // Action Toggle change
@@ -208,7 +145,14 @@ const TableAnt1 = ({
       window.location.reload();
     }
   };
+  const handleCopyClick = (value) => {
+    copy(value);
 
+    // MessageApi.open({
+    //   type: "success",
+    //   content: `${value} is copied succesfully`,
+    // });
+  };
   useEffect(() => {
     console.log(header, "header");
     setTableData(
@@ -216,7 +160,7 @@ const TableAnt1 = ({
         title: (
           <span
             key={i}
-            className="text-[10px] 2xl:text-xs text-[#667085] dark:text-white font-medium capitalize "
+            className="text-[10px] 2xl:text-xs text-[#667085] dark:text-white font-medium capitalize"
           >
             {each.title}
           </span>
@@ -225,78 +169,54 @@ const TableAnt1 = ({
         // dataIndex: "firstName",
         render: (record, text) => (
           <>
-            {each.value === "createdOn" && (
+            {each.value === "candidateName" && (
               <div className="flex items-center gap-2">
-                
-                <SlCalender className="w-6 h-6 text-gray-300" />
-               
-                <span>{record}</span>
-              
-              </div>
-            )}
-            {each.value === "location" && (
-              <div className="flex items-center gap-2">
-                
-                <FaLocationDot className="w-6 h-6 text-gray-300" />
-                
+                <div className="rounded-md border-gray-500 bg-gray-400 w-7 h-7"></div>
                 <span>{record}</span>
               </div>
             )}
-            {each.value === "companyId" && (
+            {each.value === "candidateContact" && (
               <div className="flex items-center gap-2">
-              
-                <HiUserGroup className="w-6 h-6 text-gray-300" />
-               
-                <span>{record}</span>
-              </div>
-            )}
-            {each.value === "jobTitle" && (
-              <div className="flex items-center gap-2">
-               
-                <div
-                  className="w-5 h-5 rounded bg-gray-100 text-blue-600 text-center"
-                  style={{ minWidth: "8px", minHeight: "8px" }}
-                >
-                  {" "}
-                  {record.charAt(0).toUpperCase()}
-                </div>
-                <span>{record}</span>
-              </div>
-            )}
-            {each.value === "jobPublishType" && (
-              <div className="flex items-center gap-2">
-                <div className="w-5 h-5 rounded-full bg-gray-300"></div>
-              
-                <span>{record}</span>
-              </div>
-            )}
-            {each.value === "workLocationType" && (
-              <div className="flex items-center gap-2">
-                <div
-                  className="w-5 h-5 rounded  text-blue-600 text-center"
-                  style={{ minWidth: "8px", minHeight: "8px" }}
-                >
-                  <div
-                    className="w-5 h-5 rounded"
-                    style={{ minWidth: "8px", minHeight: "8px" }}
-                  >
-                    {record === "Onsite" && <img src={Onsite} alt="Onsite" />}{" "}
-                    {/* Display onsite image if record is onsite */}
-                    {record === "Remote" && (
-                      <img src={Remote} alt="Remote" />
-                    )}{" "}
-                    {/* Display remote image if record is remote */}
-                    {record === "Hybrid" && (
-                      <img src={Hybrid} alt="Hybrid" />
-                    )}{" "}
-                    {/* Display hybrid image if record is hybrid */}
-                  </div>
-                </div>
-               
-                <span>{record}</span>
-              </div>
-            )}
+                <FaPhoneAlt className="w-3 h-3 text-blue-600" />
 
+                <span>{record}</span>
+                <button>
+                  <RxCopy
+                    className="w-3 h-3 text-gray-400"
+                    handleSubmit={() => handleCopyClick("record")}
+                  />
+                </button>
+              </div>
+            )}
+            {each.value === "jobDetail.title" && <span>{record}</span>}
+            {each.value === "candidateStage" && (
+              <>
+                {record === "New" ? (
+                  <div className="rounded-full bg-blue-100 w-10 p-1 text-blue-600">
+                    {record}
+                  </div>
+                ) : record === "Not Hired" ? (
+                  <div className="rounded-full bg-red-200 w-10 p-1 text-red-600">
+                    {record}
+                  </div>
+                ) : record === "Machine Test" ||
+                  record === "CEO Interview" ||
+                  record === "Technical Round" ? (
+                  <div className="rounded-full bg-gray-200 w-10 p-1 text-gray-600">
+                    {record}
+                  </div>
+                ) : record === "Hired" ? (
+                  <div className="rounded-full bg-violet-200 w-10 p-1 text-blue-600">
+                    {record}
+                  </div>
+                ) : (
+                  <span>{record}</span>
+                )}
+              </>
+            )}
+            {each.value === "candidateSource" && <span>{record}</span>}
+            {each.value === "createdOn" && <span>{record}</span>}
+            {each.value === "action" && <span>{record}</span>}
             <div
               className=" cursor-pointer"
               onClick={() => {
@@ -462,7 +382,7 @@ const TableAnt1 = ({
                 }
                 // title="Start Action"
               >
-                <BsThreeDotsVertical className=" opacity- cursor-pointer ml-24" />
+                <BsThreeDotsVertical className=" opacity-50 cursor-pointer ml-24" />
               </Popover>
             )}
           </>
@@ -703,33 +623,12 @@ const TableAnt1 = ({
   return (
     <div className="flex flex-col gap-5">
       <div className="flex flex-col justify-between gap-3 xl:items-center xl:flex-row">
-        <div className="mt-4  w-full xl:w-auto ">
-          <TabsNew tabs={tab} onTabChange={handleTabChange} />
-        </div>
-        
         <div className="flex items-center gap-3">
-        <SearchBox
-          // title="Search"
-          data={data}
-          placeholder={t("Search_placeholder")}
-          value={searchValue}
-          icon={<CiSearch className=" dark:text-white" />}
-          className="mt-0 w-ful md:w-auto   "
-          error=""
-          change={(value) => {
-            setSearchValue(value);
-          }}
-          onSearch={(value) => {
-            // console.log(value);
-            setSearchFilter(value);
-          }}
-        />
           {/* <p className="text-lg font-semibold dark:text-white"> */}
           {/* {tabTitle?.split("_") || path?.split("_")} */}
           {/* {jsonResult || path} */}
           {/* (0) */}
           {/* </p> */}
-
           {/* <div
             style={{ marginLeft: 8 }}
             className={`bg-[${primaryColor}] bg-opacity-10 text-primary text-[10px] 2xl:text-xs rounded-full px-3 py-1 vhcenter`}
@@ -742,16 +641,13 @@ const TableAnt1 = ({
               : `All ${jsonResult ? jsonResult : path}`}
             {console.log(jsonResult)}
           </div> */}
-        </div>
-
-        <div className="flex flex-wrap items-center gap-3">
-          {/* <SearchBox 
+          <SearchBox
             // title="Search"
             data={data}
             placeholder={t("Search_placeholder")}
             value={searchValue}
             icon={<CiSearch className=" dark:text-white" />}
-            className="mt-0 w-ful md:w-auto "
+            className="mt-0 w-ful md:w-auto  "
             error=""
             change={(value) => {
               setSearchValue(value);
@@ -760,12 +656,9 @@ const TableAnt1 = ({
               // console.log(value);
               setSearchFilter(value);
             }}
-          /> */}
-
-          <ToggleBtn />
-          <span>
-            <p className="dark:text-white">Show Stages</p>
-          </span>
+          />
+        </div>
+        <div className="flex flex-wrap items-center gap-3">
           <div>
             {/* <Dropdown
               menu={{
@@ -831,9 +724,8 @@ const TableAnt1 = ({
           </Button>
         </div>
       </div>
-
       <div className="border rounded-lg border-[#E7E7E7] dark:border-secondary relative overflow-auto">
-        {activeTab===2 && data ? (
+        {data && (
           <Table
             rowSelection={{ ...rowSelection }}
             columns={tableData}
@@ -864,13 +756,10 @@ const TableAnt1 = ({
             dataSource={listData}
             size={isSmallScreen ? "small" : ""}
           />
-         ) :(
-           <div><p className="text-center">Coming soon...</p> </div>
-  )}
-         
+        )}
       </div>
     </div>
   );
 };
 
-export default TableAnt1;
+export default TableCopy;
