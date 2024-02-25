@@ -876,9 +876,9 @@ const handleSaveInput = (index) => {
                 <div key={condition.id} className="grid grid-cols-4 gap-16  justify-between">
 <FormInput
           placeholder={'Type question here'}
-          value={formik.values.question[index]}
+          value={formik.values.question}
           change={(e) => {
-            formik.setFieldValue('question[index]',e);
+            formik.setFieldValue('question',e);
           }}
         />
 
