@@ -135,25 +135,25 @@ const Overview = () => {
             <div className="flex items-center justify-between">
               <div className="flex items-center gap-2.5">
                 <div className="w-8 h-8 iconI vhcenter bg-[#F5F5F5] dark:bg-secondaryDark text-base rounded-lg ">
-                  <div className="text-black opacity-50 ">{<RiFileList3Line />}</div>
+                  <div className="text-black opacity-50 ">
+                    {<RiFileList3Line />}
+                  </div>
                 </div>
                 <p className="text-xs font-normal leading-none text-black opacity-50 dark:text-white">
-                Pdfname.pdf
+                  Pdfname.pdf
                 </p>
               </div>
               <ButtonClick buttonName="Add Cover Note" icon={<IoMdAdd />} />
-            </div> 
+            </div>
           </div>
         </div>
       </div>
       <div className="lg:col-span-4">
         <div className="rounded-lg bg-white dark:bg-secondaryDark p-1.5 ">
           <TabsNew tabs={tabData} onTabChange={onTabChange} initialTab={1} />
-          <div className="">
-            <TextEditor initialValue={content} onChange={handleEditorChange} />
-          </div>
+          <TextEditor initialValue={content} onChange={handleEditorChange} className="h-[250px]" />
           <div
-            className="flex items-center justify-end gap-2.5 mt-16 p-1.5 rounded-lg"
+            className="flex items-center justify-end gap-2.5 p-1.5 mt-4 rounded-lg"
             style={{ backgroundColor: `${primaryColor}10` }}
           >
             <ButtonClick buttonName="Cancel" />

@@ -4,7 +4,7 @@ import { EditorState, convertToRaw, ContentState } from 'draft-js';
 import { Editor } from 'react-draft-wysiwyg';
 import 'react-draft-wysiwyg/dist/react-draft-wysiwyg.css';
 
-const TextEditor = ({ initialValue, onChange }) => {
+const TextEditor = ({ initialValue, onChange, className }) => {
   const [editorState, setEditorState] = useState(
     initialValue
       ? EditorState.createWithContent(ContentState.createFromText(initialValue))
@@ -24,7 +24,8 @@ const TextEditor = ({ initialValue, onChange }) => {
   };
 
   return (
-    <div className='relative p-4 border border-black rounded-md h-52 border-opacity-10 dark:border-secondaryDark'>
+   <div className={`${className}`}>
+     <div className='relative p-4 border border-black rounded-md h-[80%] border-opacity-10 dark:border-secondaryDark'>
       <Editor
         editorState={editorState}
         onEditorStateChange={handleEditorChange}
@@ -45,6 +46,7 @@ const TextEditor = ({ initialValue, onChange }) => {
         toolbarClassName=' bg-black'
       />
     </div>
+   </div>
   );
 };
 
