@@ -2,6 +2,7 @@ import axios from "axios";
 
 const apiUrl = 'http://192.168.0.55/loyaltri-recruitment-server/api/v1';
 
+
 const apiRequest = async (action, method, kwargs) => {
   try {
     const response = await axios.post(apiUrl, {
@@ -40,12 +41,12 @@ export const getAllRecruitmentJobs = async () => {
     return await apiRequest(action, method, kwargs);
   };
 
-export const saveRecruitmentJob = async (jobDetails) => {
+export const saveRecruitmentJob = async (e) => {
   const action = "saveRecruitmentJob";
 
   const method = "POST";
 
-  return await apiRequest(action, method, { ...jobDetails });
+  return await apiRequest(action, method, { ...e });
 };
 
 export const deleteRecruitmentJobById = async (id) => {
@@ -78,4 +79,5 @@ export const saveRecruitmentJobApplicationFormSetting = async (e) => {
 
   return await apiRequest(action, method, e);
 };
+
 
