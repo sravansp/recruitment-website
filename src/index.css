@@ -47,7 +47,7 @@
 }
 
 .h6 {
-  @apply text-sm font-semibold text-gray-700 2xl:text-base dark:text-white;
+  @apply text-sm font-semibold text-black 2xl:text-base dark:text-white;
 }
 
 .p6 {
@@ -96,9 +96,9 @@
 }
 
 .v-divider {
-  @apply h-[1px] border-secondaryWhite dark:border-secondaryDark border-b w-full;
+  @apply w-full h-px border-b border-secondaryWhite dark:border-secondaryDark;
 }
 
 .divider-h {
-  @apply h-[1px] bg-secondaryWhite dark:bg-secondaryDark w-full;
+  @apply w-full h-px bg-secondaryWhite dark:bg-secondaryDark;
 }

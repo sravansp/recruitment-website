@@ -4,6 +4,7 @@ import TabsNew from "../../common/TabsNew";
 
 // ICONS
 import {
+  RiArrowDownLine,
   RiCake2Line,
   RiFileList3Line,
   RiMailSendLine,
@@ -18,6 +19,9 @@ import { Notes } from "@mui/icons-material";
 import { BsFileEarmarkRichtext } from "react-icons/bs";
 import TextEditor from "../../common/TextEditor/TextEditor";
 import ButtonClick from "../../common/Button";
+import PDFViewer from "../../common/PDFViewer";
+import pdfFile from "../../../assets/documents/resume.pdf";
+import { workExperiences, educationExperiences } from "../../common/DataArrays";
 
 const userInfo = [
   {
@@ -95,14 +99,13 @@ const Overview = () => {
       icon: <BsFileEarmarkRichtext className="text-base" />,
     },
   ];
+
   return (
     <div className="grid gap-6 lg:grid-cols-12">
+      {/* LEFT COLOUMN  */}
       <div className="flex flex-col gap-6 lg:col-span-8">
         <Accordion
           title="All Personal Informations"
-          // description={t(
-          //   "Automate_late_fine_for_employees_who_are_coming_late_to_work"
-          // )}
           padding={true}
           className={""}
           initialExpanded={true}
@@ -139,19 +142,106 @@ const Overview = () => {
                     {<RiFileList3Line />}
                   </div>
                 </div>
-                <p className="text-xs font-normal leading-none text-black opacity-50 dark:text-white">
+                <p className="text-xs font-semibold leading-tight text-black dark:text-white">
                   Pdfname.pdf
                 </p>
               </div>
-              <ButtonClick buttonName="Add Cover Note" icon={<IoMdAdd />} />
+              <ButtonClick
+                buttonName="Download"
+                BtnType="primary"
+                icon={<RiArrowDownLine />}
+              />
             </div>
+            <div className="divider-h" />
+            <PDFViewer pdfUrl={pdfFile} />
+          </div>
+        </div>
+        {/* WORK EXPERIENCE  */}
+        <div className="flex flex-col gap-4 box-wrapper">
+          <h6 className="h6">All Experiences</h6>
+          <div className="flex flex-col divide-y">
+            {workExperiences.map((work, index) => (
+              <div
+                key={index}
+                className="flex items-center justify-start gap-5 py-3 2xl:py-6"
+              >
+                <img
+                  className="2xl:w-[60px] 2xl:h-[60px] w-11 h-11 rounded-full shadow"
+                  src="https://via.placeholder.com/60x60"
+                />
+                <div className="inline-flex flex-col items-start justify-start gap-1">
+                  <div className="gap-2 vhcenter">
+                    <h6 className="h6">{work.companyName}</h6>
+                    <p className="para p-1.5 rounded-md bg-secondaryWhite !leading-none">
+                      {work.Shift}
+                    </p>
+                  </div>
+
+                  <div className="inline-flex items-center justify-start gap-4">
+                    <p className="!text-opacity-50 h6">{work.role}</p>
+                    <p className="para !font-normal text-opacity-70">
+                      {work.experienceDuration}
+                    </p>
+
+                    <p className="para !font-normal text-opacity-70">
+                      {work.startDate}, {work.endDate}
+                    </p>
+                  </div>
+                </div>
+              </div>
+            ))}
+          </div>
+        </div>
+
+        {/* EDUCATION  */}
+        <div className="flex flex-col gap-4 box-wrapper">
+          <h6 className="h6">Education</h6>
+          <div className="flex flex-col divide-y">
+            {educationExperiences.map((edu, index) => (
+              <div
+                key={index}
+                className="flex justify-start gap-5 py-3 2xl:py-6"
+              >
+                <img
+                  className="2xl:w-[60px] 2xl:h-[60px] w-11 h-11 rounded-full shadow"
+                  src="https://via.placeholder.com/60x60"
+                />
+                <div className="inline-flex flex-col items-start justify-start gap-1">
+                  <div className="gap-2 vhcenter">
+                    <h6 className="h6">{edu.institution}</h6>
+                    {/* <p className="para p-1.5 rounded-md bg-secondaryWhite !leading-none">
+                    {work.Shift}
+                  </p> */}
+                  </div>
+
+                  <div className="flex flex-col gap-4">
+                    <p className="h6 !font-medium">{edu.degree}</p>
+                    <div className="flex gap-3">
+                      <p className="para !font-normal text-opacity-70">
+                        {edu.graduationYear}
+                      </p>
+
+                      <p className="para !font-normal text-opacity-70">
+                        {edu.location}
+                      </p>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            ))}
           </div>
         </div>
       </div>
+
+      {/* RIGHT COLUMN  */}
       <div className="lg:col-span-4">
         <div className="rounded-lg bg-white dark:bg-secondaryDark p-1.5 ">
           <TabsNew tabs={tabData} onTabChange={onTabChange} initialTab={1} />
-          <TextEditor initialValue={content} onChange={handleEditorChange} className="h-[250px]" />
+          <TextEditor
+            initialValue={content}
+            onChange={handleEditorChange}
+            className="h-[250px]"
+          />
           <div
             className="flex items-center justify-end gap-2.5 p-1.5 mt-4 rounded-lg"
             style={{ backgroundColor: `${primaryColor}10` }}
@@ -165,6 +255,7 @@ const Overview = () => {
   );
 };
 
+// Accordiyan Body Contents
 const UserInfoComponent = ({ personalInfo }) => {
   return (
     <div className="grid md:grid-cols-2 gap-7">
@@ -186,7 +277,7 @@ const UserInfoComponent = ({ personalInfo }) => {
     </div>
   );
 };
-
+// Accordiyan Body Contents
 const UserOtherComponent = ({ otherInfo }) => {
   console.log(otherInfo);
   return (
