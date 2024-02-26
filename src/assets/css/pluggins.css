@@ -160,3 +160,22 @@
 .rdw-option-wrapper:hover {
   box-shadow: inset 1px 1px 4px 0px #BFBDBD !important;
 }
+
+.page-controls {
+  
+  /* transition: opacity ease-in-out .2s; */
+  box-shadow: 0 30px 40px 0 rgba(16, 36, 94, .2);
+
+}
+.page-controls button {
+  width: 44px;
+  height: 44px;
+  background: white;
+  border: 0;
+  font: inherit;
+  font-size: .8em;
+  border-radius: 4px;
+}
+.page-controls button:enabled:hover, .page-controls button:enabled:focus {
+  background-color: #e6e6e6;
+}
