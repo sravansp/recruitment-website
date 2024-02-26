@@ -39,7 +39,7 @@
 }
 
 .box-wrapper {
-  @apply p-4 border rounded-lg 2xl:p-6 border-secondaryDark dark:border-secondaryWhite border-opacity-10 dark:border-opacity-10;
+  @apply p-4 bg-white rounded-lg dark:border 2xl:p-6 dark:border-secondaryWhite border-opacity-20 dark:border-opacity-10 dark:bg-black;
 }
 
 .h1 {
@@ -47,7 +47,7 @@
 }
 
 .h6 {
-  @apply text-sm font-medium text-gray-700 2xl:text-base dark:text-white;
+  @apply text-sm font-semibold text-gray-700 2xl:text-base dark:text-white;
 }
 
 .p6 {

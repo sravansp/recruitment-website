@@ -28,13 +28,14 @@ const TextEditor = ({ initialValue, onChange }) => {
       <Editor
         editorState={editorState}
         onEditorStateChange={handleEditorChange}
+        placeholder="Type your text here..." // Add placeholder here
         toolbar={{
           options: ['inline', 'fontSize', 'list', 'textAlign'],
           inline: {
             options: ['bold', 'italic', 'underline', 'strikethrough'],
           },
           list: {
-            options: ['unordered', 'ordered'],
+            options: ['unordered', 'ordered', 'indent'],
           },
           textAlign: {
             options: ['left', 'center', 'right', 'justify'],

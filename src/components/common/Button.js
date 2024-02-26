@@ -7,7 +7,7 @@ export default function ButtonClick({
   handleSubmit = () => {},
   updateFun = () => {},
   updateBtn = false,
-  buttonName,
+  buttonName = "",
   className,
   BtnType = "", // Updated prop name to avoid conflict with BtnType
   icon,

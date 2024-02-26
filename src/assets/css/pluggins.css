@@ -81,45 +81,82 @@
 
 
 .rdw-option-wrapper {
-  border: none;
-  padding: 1px 8px;
-  min-width: 25px;
-  height: 30px;
-  border-radius: 5px;
-  margin: 0;
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  cursor: pointer;
-  background: transparent;
-  text-transform: capitalize;
+  border: none !important;
+  padding: 1px 7px !important;
+  min-width: 25px !important;
+  height: 30px !important;
+  border-radius: 5px !important;
+  margin: 0 !important;
+  display: flex !important;
+  justify-content: center !important;
+  align-items: center !important;
+  cursor: pointer !important;
+  background: transparent !important;
+  text-transform: capitalize !important;
 }
 .rdw-option-active {
-  box-shadow: none;
-  background: #9dacbc;
+  box-shadow: none !important;
+  background: #d3dce6 !important;
 }
 .rdw-inline-wrapper {
   display: flex;
   align-items: center;
   margin-bottom: 6px;
   flex-wrap: wrap;
-  background: #c0c9d2;
+  background: #eff2f7;
   padding: 4px;
   border-radius: 7px;
   gap: 4px;
 }
 
 .rdw-editor-toolbar {
-  padding: 6px 5px 0;
-  border-radius: 2px;
-  border: 1px solid #F1F1F1;
+  padding: 0 !important;
+  border-radius: 2px !important;
+  border: none !important;
+  display: flex !important;
+  justify-content: flex-start !important;
+  gap: 3px !important;
+  background: none !important;
+  flex-wrap: wrap !important;
+  font-size: 15px !important;
+  margin-bottom: 5px !important;
+  -webkit-user-select: none !important;
+  user-select: none !important;
+}
+
+
+.rdw-list-wrapper {
   display: flex;
-  justify-content: flex-start;
-  gap: 4px;
-  background: white;
+  align-items: center;
+  margin-bottom: 6px;
   flex-wrap: wrap;
-  font-size: 15px;
-  margin-bottom: 5px;
-  -webkit-user-select: none;
-  user-select: none;
+  background: #eff2f7;
+  padding: 4px;
+  border-radius: 7px;
+  gap: 4px;
+}
+
+.rdw-dropdown-wrapper {
+  height: 38px !important;
+  cursor: pointer !important;
+  border: none !important;
+  border-radius: 7px !important;
+  margin: 0;
+  text-transform: capitalize !important;
+  background: white !important;
+  background: #eff2f7 !important;
+  padding: 0px !important;
+}
+.rdw-text-align-wrapper {
+  display: flex;
+  align-items: center;
+  margin-bottom: 6px;
+  flex-wrap: wrap;
+  background: #eff2f7;
+  padding: 4px;
+  border-radius: 7px;
+  gap: 4px;
+}
+.rdw-option-wrapper:hover {
+  box-shadow: inset 1px 1px 4px 0px #BFBDBD !important;
 }

@@ -32,7 +32,7 @@ export default function Accordion({
       {/* {data.map((item) => ( */}
       <div
         // key={item.id}
-        className="p-1 bg-white rounded-[10px] dark:bg-lightdark"
+        className="p-1 bg-white rounded-[10px] dark:bg-transparent dark:border dark:border-secondaryWhite border-opacity-20 dark:border-opacity-10"
       >
         <h2>
           <button

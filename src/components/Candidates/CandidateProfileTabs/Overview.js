@@ -5,6 +5,7 @@ import TabsNew from "../../common/TabsNew";
 // ICONS
 import {
   RiCake2Line,
+  RiFileList3Line,
   RiMailSendLine,
   RiMapPin2Line,
   RiMoneyDollarBoxLine,
@@ -12,9 +13,11 @@ import {
   RiSmartphoneLine,
   RiStickyNoteLine,
 } from "react-icons/ri";
+import { IoMdAdd } from "react-icons/io";
 import { Notes } from "@mui/icons-material";
 import { BsFileEarmarkRichtext } from "react-icons/bs";
 import TextEditor from "../../common/TextEditor/TextEditor";
+import ButtonClick from "../../common/Button";
 
 const userInfo = [
   {
@@ -61,31 +64,9 @@ const userInfo = [
   },
 ];
 
-const quillModules = {
-  toolbar: [
-    ['bold', 'italic', 'underline', 'strike'],        // toggled buttons
-    // ['blockquote', 'code-block'],
-
-    // [{ 'header': 1 }, { 'header': 2 }],               // custom button values
-    [{ 'list': 'ordered'}, { 'list': 'bullet' }],
-    // [{ 'script': 'sub'}, { 'script': 'super' }],      // superscript/subscript
-    // [{ 'indent': '-1'}, { 'indent': '+1' }],          // outdent/indent
-    // [{ 'direction': 'rtl' }],                         // text direction
-
-    // [{ 'size': ['small', false, 'large', 'huge'] }],  // custom dropdown
-    // [{ 'header': [1, 2, 3, 4, 5, 6, false] }],
-
-    [{ 'color': [] }, { 'background': [] }],          // dropdown with defaults from theme
-    // [{ 'font': [] }],
-    [{ 'align': [] }],
-
-    // ['clean'],                                         // remove formatting button
-  ],
-};
-
-
 const Overview = () => {
-  const [content, setContent] = useState('');
+  const [content, setContent] = useState("");
+  const primaryColor = localStorage.getItem("mainColor");
 
   const handleEditorChange = (content) => {
     setContent(content);
@@ -94,13 +75,13 @@ const Overview = () => {
   const onTabChange = (tabId) => {
     // Do something when the tab changes if needed
     console.log(`Tab changed to ${tabId}`);
-    if (tabId === 1  ) {
+    if (tabId === 1) {
     } else if (tabId === 2) {
     }
   };
   const tabData = [
     {
-      id:9,
+      id: 9,
       title: "Notes",
       value: "notes",
       // content: <Overview />,
@@ -116,14 +97,14 @@ const Overview = () => {
   ];
   return (
     <div className="grid gap-6 lg:grid-cols-12">
-      <div className="lg:col-span-8">
+      <div className="flex flex-col gap-6 lg:col-span-8">
         <Accordion
           title="All Personal Informations"
           // description={t(
           //   "Automate_late_fine_for_employees_who_are_coming_late_to_work"
           // )}
           padding={true}
-          className={" bg-white"}
+          className={""}
           initialExpanded={true}
         >
           <div>
@@ -144,14 +125,40 @@ const Overview = () => {
             ))}
           </div>
         </Accordion>
+
+        <div className="box-wrapper">
+          <div className="flex flex-col gap-4">
+            <div className="flex items-center justify-between">
+              <h6 className="h6 !text-black dark:!text-white">CV / Resume</h6>
+              <ButtonClick buttonName="Add Cover Note" icon={<IoMdAdd />} />
+            </div>
+            <div className="flex items-center justify-between">
+              <div className="flex items-center gap-2.5">
+                <div className="w-8 h-8 iconI vhcenter bg-[#F5F5F5] dark:bg-secondaryDark text-base rounded-lg ">
+                  <div className="text-black opacity-50 ">{<RiFileList3Line />}</div>
+                </div>
+                <p className="text-xs font-normal leading-none text-black opacity-50 dark:text-white">
+                Pdfname.pdf
+                </p>
+              </div>
+              <ButtonClick buttonName="Add Cover Note" icon={<IoMdAdd />} />
+            </div> 
+          </div>
+        </div>
       </div>
       <div className="lg:col-span-4">
         <div className="rounded-lg bg-white dark:bg-secondaryDark p-1.5 ">
-        <TabsNew tabs={tabData} onTabChange={onTabChange} initialTab={1}/>
-        <div className="">
-        <TextEditor initialValue={content}
-        onChange={handleEditorChange} />
-        </div>
+          <TabsNew tabs={tabData} onTabChange={onTabChange} initialTab={1} />
+          <div className="">
+            <TextEditor initialValue={content} onChange={handleEditorChange} />
+          </div>
+          <div
+            className="flex items-center justify-end gap-2.5 mt-16 p-1.5 rounded-lg"
+            style={{ backgroundColor: `${primaryColor}10` }}
+          >
+            <ButtonClick buttonName="Cancel" />
+            <ButtonClick buttonName="Save" BtnType="primary" />
+          </div>
         </div>
       </div>
     </div>
