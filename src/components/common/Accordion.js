@@ -10,7 +10,8 @@ export default function Accordion({
   title,
   description,
   click = () => {},
-  initialExpanded = false,
+  initialExpanded = false
+  
 }) {
   const [expanded, setExpanded] = useState(initialExpanded);
  const primaryColor = localStorage.getItem('mainColor')

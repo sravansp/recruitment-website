@@ -8,11 +8,12 @@ import FormInput from './FormInput';
 import ButtonClick from './Button';
 import { CgAdd } from "react-icons/cg";
 import TextArea from './TextArea';
+import { useFormik } from 'formik';
 
 
 
 
-const GoogleForm = () => {
+const GoogleForm = ( onSubmitCallback = ()=>{} ) => {
     const [conditions, setConditions] = useState([
         {
           id: 1,
@@ -20,6 +21,7 @@ const GoogleForm = () => {
           selectedValue: '',
         },
     ]);
+    const [dropdownOptions, setDropdownOptions] = useState([]);
 
     const handleDropdownChange = (selectedValue, conditionIndex) => {
         const updatedConditions = [...conditions];
@@ -35,6 +37,7 @@ const GoogleForm = () => {
         };
         setConditions([...conditions, newCondition]);
     };
+   
 
     const handleDeleteCondition = (conditionId) => {
         if (conditions.length > 1) {
@@ -53,25 +56,51 @@ const GoogleForm = () => {
             setConditions(updatedConditions);
         }
     };
-
-    const generateInputField = (type, condition, index) => {
-        switch (type) {
-            case 'Paragraph':
-                return <TextArea value={condition.inputValue} change={(newValue) => handleChange(newValue, index)} />;
-            case 'ShortAnswer':
-                return <FormInput value={condition.inputValue} change={(newValue) => handleChange(newValue, index)} />;
-            case 'Drop-down':
-                return (
-                    <Dropdown
-                        forminput={<FormInput value={condition.inputValue} change={(newValue) => handleChange(newValue, index)} />}
-                        input={true}
-                    />
-                );
-            default:
-                return <FormInput value={condition.inputValue} change={(newValue) => handleChange(newValue, index)} />;
+    const handleSaveInput = (index) => {
+        const updatedDropdownOptions = [...dropdownOptions];
+      
+        if (index === 0) {
+          // Handle the first condition differently
+          const numberOfArraysToAdd = 1; // You can adjust this number as needed
+          for (let i = 0; i < numberOfArraysToAdd; i++) {
+            updatedDropdownOptions.push({
+              id: conditions[0].id,
+              label: conditions[0].inputValue , // Adjust label as needed
+              value: conditions[index].selectedValue,
+            });
+          }
+        } else {
+          // For other conditions, update the existing array
+          updatedDropdownOptions[index] = {
+            id: conditions[index].id,
+            label: conditions[index].inputValue,
+            value: conditions[index].inputValue,
+          };
         }
-    };
-
+      
+        setDropdownOptions(updatedDropdownOptions);
+      };
+       const formik =useFormik
+      const generateInputField = (type, condition, index,newValue) => {
+        switch (type) {
+          case 'Paragraph':
+            return <TextArea value={formik.values.Paragraph} change={(newValue) => handleChange(newValue, index)} />;
+          case 'ShortAnswer':
+            return <FormInput value={formik.values.ShortAnswer} change={(newValue) => handleChange(newValue, index)} />;
+          case 'Drop-down':
+            return (
+              <Dropdown
+                PopoverContent={<FormInput value={formik.values.Dropdown} change={(newValue) => handleChange(newValue, index)} />}
+                rightIcon={true}
+                change={(e) => handleSaveInput(index)}
+                options={dropdownOptions}
+                value={condition.selectedValue}
+              />
+            );
+          default:
+            // return <FormInput value={formik.value.Default} change={(newValue) => handleChange(newValue, index)} />;
+        }
+      };
     return (
         <div className='grid grid-rows-2 gap-8'>
             {conditions.map((condition, index) => (
@@ -106,6 +135,8 @@ const GoogleForm = () => {
                         condition.selectedValue,
                         condition,
                         index,
+                        
+                        condition.inputValue
                         
                     )}
                 </div>
