@@ -21,6 +21,7 @@ import { Form } from '../data';
 import { MdOutlineFileCopy } from "react-icons/md";
 import { MdDelete } from "react-icons/md";
 import ToggleBtn from '../common/ToggleBtn';
+import { index } from 'd3';
 
 
 
@@ -47,18 +48,92 @@ const Createjob = ( {open = "", close = () => { }}) => {
 ]);
 const [dropdownOptions, setDropdownOptions] = useState([]);
 
-const handleDropdownChange = (selectedValue, conditionIndex) => {
-    const updatedConditions = [...conditions];
-    updatedConditions[conditionIndex].selectedValue = selectedValue;
-    setConditions(updatedConditions);
+
+
+const formik = useFormik({
+  initialValues: {
+    jobID:"",
+    name: "1",
+    email: "1",
+    headline: "1",
+    phone: "1",
+    address: "1",
+    country: "1",
+    education: "1",
+    experience: "1",
+    summary: "1",
+    resume: "1",
+    coverLetter: "1",
+    customFields: [
+      {
+        question: "",
+        answer_type: "",
+        is_required: "", //0 or 1
+        answer_meta_data: "",
+      },
+    ],
+  },
+  onSubmit: async (e) => {
+    try {
+      console.log("values:",{
+        name:e.name,
+        headline: e.headline,
+        answer_type:e.customFields[0].answer_type,
+        question: e.customFields[0].question,
+        answer_meta_data: e.customFields[0].answer_meta_data,
+
+      })
+      const response = await saveRecruitmentJobApplicationFormSetting({
+        
+        name: e.name,
+        email: e.email,
+        headline: e.headline,
+        phone: e.phone,
+        address: e.address,
+        country: e.country,
+        education: e.education,
+        experience: e.experience,
+        summary: e.summary,
+        resume: e.resume,
+        coverLetter: e.coverLetter,
+       
+          question: e.customFields[0].question,
+          answer_type: e.customFields[0].answer_type,
+          is_required: e.customFields[0].is_required,
+          answer_meta_data: e.customFields[0].answer_meta_data,
+      
+
+
+
+      });
+
+      // Handle the response if needed
+      console.log('Response:', response);
+    } catch (error) {
+      // Handle the error here
+      console.error('Error:', error);
+    }
+  },
+});
+
+
+
+const handleDropdownChange = (e, conditionIndex) => {
+  const updatedConditions = [...conditions];
+  updatedConditions[conditionIndex].e = e;
+  setConditions(updatedConditions);
 };
 
 const handleAddCondition = () => {
     const newCondition = {
       id: conditions.length + 1,
       inputValue: '',
-      selectedValue: '',
+    selectedValue: '',
+     
     };
+    formik.setFieldValue(`customFields[${conditions.length}].question`, '');
+    formik.setFieldValue(`customFields[${conditions.length}].answer_type`, '');
+    formik.setFieldValue(`customFields[${conditions.length}].answer_meta_data`, '');
     setConditions([...conditions, newCondition]);
 };
 
@@ -105,21 +180,31 @@ const handleSaveInput = (index) => {
     setDropdownOptions(updatedDropdownOptions);
   };
   
-  const generateInputField = (type, condition, index,newValue) => {
-    switch (type) {
-      case 'Paragraph':
-        return <TextArea value={formik.values.Paragraph} change={(newValue) => handleChange(newValue, index)} />;
-      case 'ShortAnswer':
-        return <FormInput value={formik.values.ShortAnswer} change={(newValue) => handleChange(newValue, index)} />;
+  const generateInputField = (e, condition, index) => {
+    console.log("value",e)
+    switch (e) {
+      
+//       case 'Paragraph':
+//         return (
+//           <TextArea
+//   value={formik.values.customFields[index].answer_meta_data}
+//   change={(e) => formik.setFieldValue(`customFields[${index}].answer_meta_data`, e)}
+// />
+//         );
+//       case 'ShortAnswer':
+//         return (
+//           <FormInput
+//   value={formik.values.customFields[index].answer_meta_data}
+//   change={(e) => formik.setFieldValue(`customFields[${index}].answer_meta_data`, e)}
+// />
+//         );
       case 'Drop-down':
         return (
-          <Dropdown
-            PopoverContent={<FormInput value={formik.values.Dropdown} change={(newValue) => handleChange(newValue, index)} />}
-            rightIcon={true}
-            change={(e) => handleSaveInput(index)}
-            options={dropdownOptions}
-            value={condition.selectedValue}
+          <FormInput
+          value={formik.values.customFields[index].answer_meta_data}
+            change={(e) => formik.setFieldValue(`customFields[${index}].answer_meta_data`, e)}
           />
+          
         );
       default:
         // return <FormInput value={formik.value.Default} change={(newValue) => handleChange(newValue, index)} />;
@@ -196,68 +281,6 @@ const handleSaveInput = (index) => {
 
 
 
-  const formik = useFormik({
-    initialValues: {
-      jobID:"",
-      name: "1",
-      email: "1",
-      headline: "1",
-      phone: "1",
-      address: "1",
-      country: "1",
-      education: "1",
-      experience: "1",
-      summary: "1",
-      resume: "1",
-      coverLetter: "1",
-      customFields: [
-        {
-          question: "",
-          answer_type: "",
-          is_required: "", //0 or 1
-          answer_meta_data: "",
-        },
-      ],
-    },
-    onSubmit: async (e) => {
-      try {
-        console.log("values:",{
-          name:e.name,
-          headline: e.headline,
-        })
-        const response = await saveRecruitmentJobApplicationFormSetting({
-          
-          name: e.name,
-          email: e.email,
-          headline: e.headline,
-          phone: e.phone,
-          address: e.address,
-          country: e.country,
-          education: e.education,
-          experience: e.experience,
-          summary: e.summary,
-          resume: e.resume,
-          coverLetter: e.coverLetter,
-         
-            question: e.question,
-            answer_type: e.answer_type,
-            is_required: e.is_required,
-            answer_meta_data: e.answer_meta_data,
-        
-
-
-
-        });
-  
-        // Handle the response if needed
-        console.log('Response:', response);
-      } catch (error) {
-        // Handle the error here
-        console.error('Error:', error);
-      }
-    },
-  });
-  
 
 
     return (
@@ -874,20 +897,25 @@ const handleSaveInput = (index) => {
                        <div className='grid grid-rows-2 gap-8'>
             {conditions.map((condition, index) => (
                 <div key={condition.id} className="grid grid-cols-4 gap-16  justify-between">
-<FormInput
-          placeholder={'Type question here'}
-          value={formik.values.question}
-          change={(e) => {
-            formik.setFieldValue('question',e);
-          }}
-        />
+       <FormInput
+  placeholder={'Type question here'}
+  value={formik.values.customFields[index].question}
+  change={(e) => {
+    formik.setFieldValue(`customFields[${index}].question`, e);
+    console.log("question value", e);
+  }}
+/>
 
-                    <Dropdown
-                        options={Form}
-                        change={(selectedValue) => handleDropdownChange(selectedValue, index)}
-                        value={condition.selectedValue}
-                        icondropDown={true}
-                    />
+<Dropdown
+  options={Form}
+  change={(e) => {
+    formik.setFieldValue(`customFields[${index}].answer_type`, e);
+    handleDropdownChange(e,index)
+    console.log("dropdown", e);
+  }}
+  value={condition.e}
+  icondropDown={true}
+/>
 
                     <div style={{ display: 'flex', alignItems: 'center', gap: '15px' }}>
                         <p>Mandatory</p>
@@ -903,10 +931,10 @@ const handleSaveInput = (index) => {
                         />
                     </div>
                     {generateInputField(
-                        condition.selectedValue,
+                        condition.e,
                         condition,
                         index,
-                        
+                    
                         condition.inputValue
                         
                     )}

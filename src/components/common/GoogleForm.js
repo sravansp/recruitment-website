@@ -14,6 +14,7 @@ import { useFormik } from 'formik';
 
 
 const GoogleForm = ( onSubmitCallback = ()=>{} ) => {
+    const formik =useFormik
     const [conditions, setConditions] = useState([
         {
           id: 1,
@@ -80,17 +81,17 @@ const GoogleForm = ( onSubmitCallback = ()=>{} ) => {
       
         setDropdownOptions(updatedDropdownOptions);
       };
-       const formik =useFormik
-      const generateInputField = (type, condition, index,newValue) => {
-        switch (type) {
+       
+      const generateInputField = (selectedValue, condition, index,newValue) => {
+        switch (selectedValue) {
           case 'Paragraph':
-            return <TextArea value={formik.values.Paragraph} change={(newValue) => handleChange(newValue, index)} />;
+            return <TextArea  />;
           case 'ShortAnswer':
-            return <FormInput value={formik.values.ShortAnswer} change={(newValue) => handleChange(newValue, index)} />;
+            return <FormInput/>;
           case 'Drop-down':
             return (
               <Dropdown
-                PopoverContent={<FormInput value={formik.values.Dropdown} change={(newValue) => handleChange(newValue, index)} />}
+                PopoverContent={<FormInput  />}
                 rightIcon={true}
                 change={(e) => handleSaveInput(index)}
                 options={dropdownOptions}
@@ -105,19 +106,24 @@ const GoogleForm = ( onSubmitCallback = ()=>{} ) => {
         <div className='grid grid-rows-2 gap-8'>
             {conditions.map((condition, index) => (
                 <div key={condition.id} className="grid grid-cols-4 gap-16  justify-between">
-                    <FormInput
-                        placeholder={'Type question here'}
-                        value={condition.inputValue}
-                        change={(newValue) => handleChange(newValue, index)}
-                    />
+                      <FormInput
+  placeholder={'Type question here'}
+  value={formik.values.customFields[index].question}
+  change={(e) => {
+    formik.setFieldValue(`customFields[${index}].question`, e);
+    console.log("question value", e);
+  }}
+/>
 
-                    <Dropdown
-                        options={Form}
-                        change={(selectedValue) => handleDropdownChange(selectedValue, index)}
-                        value={condition.selectedValue}
-                        icondropDown={true}
-                    />
-
+<Dropdown
+  options={Form}
+  change={(e) => {
+    formik.setFieldValue(`customFields[${index}].answer_type`, e);
+    console.log("dropdown", e);
+  }}
+  value={formik.values.customFields[index].answer_type}
+  icondropDown={true}
+/>
                     <div style={{ display: 'flex', alignItems: 'center', gap: '15px' }}>
                         <p>Mandatory</p>
                         <ToggleBtn />
