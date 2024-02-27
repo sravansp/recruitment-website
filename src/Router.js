@@ -13,6 +13,8 @@ import CandidateProfile from "./components/Candidates/CandidateProfile";
 import AllJobs from "./components/Jobs/AllJobs";
 import JobCard from "./components/common/JobCard";
 import JobTabs from "./components/common/JobTabs";
+import Notification from "./components/Settings/Notification";
+import Company from "./components/Company/Company";
 
 
 
@@ -61,6 +63,8 @@ export default function Router() {
                 <Route path="/AllJobs" element={<AllJobs/>} />
                 <Route path="/jobcard" element={<JobCard/>}></Route>
                 <Route path="/jobtabs" element={<JobTabs/>}></Route>
+                <Route path="/Notification" element={<Notification/>}></Route>
+                <Route path="/Company" element={<Company/>}></Route>
               </Routes>
             </div>
           </div>
