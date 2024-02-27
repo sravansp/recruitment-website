@@ -762,10 +762,10 @@ const TableAnt1 = ({
             }}
           /> */}
 
-          <ToggleBtn />
-          <span>
+          <ToggleBtn title="Show Stages" flexText="True"/>
+          {/* <span>
             <p className="dark:text-white">Show Stages</p>
-          </span>
+          </span> */}
           <div>
             {/* <Dropdown
               menu={{
