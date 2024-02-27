@@ -244,7 +244,7 @@ const CandidateProfile = () => {
           <div className="flex gap-3">
             <div className="flex flex-col gap-3">
               <Dropdown overlay={menu} trigger={["click"]}>
-                <a onClick={(e) => e.preventDefault()}>
+                <a className="pblack" onClick={(e) => e.preventDefault()}>
                   <Space>
                     Stage
                     <DownOutlined />
@@ -258,7 +258,7 @@ const CandidateProfile = () => {
             
             <Divider type="vertical" className="hidden h-auto lg:block" />
             <div className="flex flex-col gap-3">
-              <p>Rating</p>
+              <p className="pblack">Rating</p>
               <Rate allowHalf defaultValue={2.5} />
             </div>
           </div>

@@ -106,12 +106,13 @@ export default function Stepper({
                     ? "border-opacity-40"
                     : " border-[#E4E4E4] border-opacity-100"
                 }`}
+                style={{backgroundColor: `${primaryColor}44`}}
               >
                 <div
                   style={{
                     boxShadow: `${
                       step.selected
-                        ? `0px 2px 4px 0px ${primaryColor}50 inset`
+                        ? `0px 3.882px 6.211px 0px ${primaryColor}66, 0px 0.776px 1.553px 0px #ffffff66 inset`
                         : `none`
                     }`,
                   }}
