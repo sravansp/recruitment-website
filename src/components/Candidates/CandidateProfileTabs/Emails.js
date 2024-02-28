@@ -2,9 +2,13 @@ import React, { useState } from "react";
 import TabsNew from "../../common/TabsNew";
 import TextEditor from "../../common/TextEditor/TextEditor";
 import ButtonClick from "../../common/Button";
-import { RiStickyNoteLine } from "react-icons/ri";
-import { BsFileEarmarkRichtext } from "react-icons/bs";
-import { Divider } from "antd";
+import { RiAttachment2, RiDeleteBin6Line, RiStickyNoteLine } from "react-icons/ri";
+import {
+  BsFileEarmarkRichtext,
+  BsFileImage,
+  BsFileWord,
+  BsFiletypePdf,
+} from "react-icons/bs";
 
 const tabData = [
   {
@@ -25,6 +29,7 @@ const tabData = [
 const Emails = () => {
   const [content, setContent] = useState("");
   const [emailContent, setEmailContent] = useState("");
+  const [uploadedFiles, setUploadedFiles] = useState([]);
   const primaryColor = localStorage.getItem("mainColor");
 
   const handleEditorChange = (content) => {
@@ -40,6 +45,40 @@ const Emails = () => {
     if (tabId === 1) {
     } else if (tabId === 2) {
     }
+  };
+
+  // File Uploader JS
+  const handleFileChange = (event) => {
+    const files = event.target.files;
+    setUploadedFiles([...uploadedFiles, ...files]);
+  };
+
+  const removeFile = (index) => {
+    const updatedFiles = [...uploadedFiles];
+    updatedFiles.splice(index, 1);
+    setUploadedFiles(updatedFiles);
+  };
+
+  const getFileIcon = (fileType) => {
+    switch (fileType) {
+      case "application/pdf":
+        return <BsFiletypePdf className="mr-2 text-red-500" size={20} />;
+      case "image/jpeg":
+      case "image/png":
+        return <BsFileImage className="mr-2 text-blue-500" size={20} />;
+      case "application/msword":
+      case "application/vnd.openxmlformats-officedocument.wordprocessingml.document":
+        return <BsFileWord className="mr-2 text-blue-700" size={20} />;
+      default:
+        return null;
+    }
+  };
+
+  const formatSize = (bytes) => {
+    const sizes = ['Bytes', 'KB', 'MB', 'GB', 'TB'];
+    if (bytes === 0) return '0 Byte';
+    const i = parseInt(Math.floor(Math.log(bytes) / Math.log(1024)));
+    return Math.round(bytes / Math.pow(1024, i), 2) + ' ' + sizes[i];
   };
   return (
     <div className="grid gap-6 lg:grid-cols-12">
@@ -67,13 +106,42 @@ const Emails = () => {
               />
             </div>
           </div>
+          {uploadedFiles.length > 0 && (
+          <div className="flex flex-wrap items-center gap-2">
+            {/* <p className="font-bold">Uploaded Files:</p> */}
+            {uploadedFiles.map((file, index) => (
+              <div key={index} className="flex items-center p-4 text-black border border-black rounded-lg border-opacity-20 dark:border-white dark:text-white">
+                {getFileIcon(file.type)}
+                <p><span>{file.name}</span>   <span className="text-black text-opacity-50">{formatSize(file.size)}</span></p>
+                <button
+                  className="ml-2 text-black text-opacity-40 hover:text-red-500"
+                  onClick={() => removeFile(index)}
+                >
+                  <RiDeleteBin6Line />
+                </button>
+              </div>
+            ))}
+          </div>
+        )}
 
           <div
-            className="flex items-center justify-end gap-2.5 p-1.5  rounded-lg"
+            className="flex items-center justify-between gap-2.5 p-1.5  rounded-lg"
             style={{ backgroundColor: `${primaryColor}10` }}
           >
-            <ButtonClick buttonName="Cancel" />
-            <ButtonClick buttonName="Send Now" BtnType="primary" />
+            <label className="p-2 cursor-pointer">
+              <RiAttachment2 size={18} className="text-primary"/>
+              <input
+                type="file"
+                className="hidden"
+                onChange={handleFileChange}
+                multiple
+                accept=".doc, .docx, .pdf, .jpg, .jpeg, .png" // Specify the allowed file types
+              />
+            </label>
+            <div className="flex items-center gap-2.5">
+              <ButtonClick buttonName="Cancel" />
+              <ButtonClick buttonName="Send Now" BtnType="primary" />
+            </div>
           </div>
         </div>
         <div className="flex flex-col gap-4 divide-y box-wrapper">
