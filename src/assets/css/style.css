@@ -3175,3 +3175,6 @@ button.rbc-button-link {
 .search-All{
   transform: translateX(-30px);
 }
+.table-row:hover {
+  cursor: pointer;
+}

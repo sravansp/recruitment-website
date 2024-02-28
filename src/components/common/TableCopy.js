@@ -620,6 +620,15 @@ const TableCopy = ({
   const jsonResult = splitTitle
     .map((word) => word.charAt(0).toUpperCase() + word.slice(1))
     .join(" ");
+
+    const handleRowClick = (record) => {
+      // const candidateId = record.id;
+      // Use the Link component to navigate to the candidate profile page
+      // without directly manipulating history
+      // You can define the route in your React Router setup
+      // For example: <Route path="/candidate-profile/:id" component={CandidateProfile} />
+      window.location.href = '/candidateprofile';
+    };
     
   return (
     <div className="flex flex-col gap-5">
@@ -736,9 +745,11 @@ const TableCopy = ({
             pagination={false} // Remove pagination
             columnMenuItems={true}
             className="custom-table"
-            render={(text, record) => (
-              <Link to="/CandidateProfile"></Link>
-            )}
+            rowClassName={() => 'table-row'}  
+            onRow={() => ({
+              onClick: handleRowClick,
+            })}
+
             // dataSource={data.filter(
             //   (item) =>
             //     item.location_name
