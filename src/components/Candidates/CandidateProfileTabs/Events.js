@@ -12,6 +12,7 @@ import Dropdown from "../../common/Dropdown";
 import { duration, eventType, eventList } from "../../common/DataArrays";
 import TextArea from "../../common/TextArea";
 import MultiSelect from "../../common/MultiSelect";
+import { PiDotsThreeOutlineFill } from "react-icons/pi";
 
 const tabData = [
   {
@@ -31,7 +32,6 @@ const tabData = [
 ];
 const Events = () => {
   const [content, setContent] = useState("");
-  const [eventList, setEventList] = useState([]);
   const [showAddEventSection, setShowAddEventSection] = useState(false); // New state to manage the visibility of AddEventSection
   const primaryColor = localStorage.getItem("mainColor");
 
@@ -62,7 +62,7 @@ const Events = () => {
             <CreateEventSection onCreateEventClick={handleCreateEventClick} />
           )
         ) : (
-          <Eventlist />
+          <Eventlist onCreateEventClick={handleCreateEventClick}/>
         )}
       </div>
 
@@ -109,14 +109,51 @@ const CreateEventSection = ({ onCreateEventClick }) => {
     </div>
   );
 };
-const Eventlist = () => {
+const Eventlist = ({onCreateEventClick}) => {
   return (
-    <div className="h-full gap-4 vhcenter box-wrapper borderb">
-      {/* {eventList.map()} */}
+    <div className="flex flex-col h-full gap-4">
+      <ButtonClick
+          buttonName="Create Event"
+          BtnType="primary"
+          handleSubmit={onCreateEventClick}
+        />
+      {eventList.map((events, i) => (
+        <div className="flex flex-col gap-3 p-4 rounded-lg borderb" key={i}>
+          <div className="flex items-center justify-between">
+            <h6 className="h6">{events.eventName}</h6>
+            <a
+              onClick={(e) => e.preventDefault()}
+              className="p-1 border border-transparent rounded cursor-pointer text-primary hover:border-primary"
+            >
+              <PiDotsThreeOutlineFill className="text-xl" />
+            </a>
+          </div>
+          <div className="grid grid-cols-6">
+            <p className="col-span-1 para">Date: {events.date}</p>
+            <p className="col-span-1 para">Time: {events.time}</p>
+            <p className="col-span-1 para">Duration: {events.duration}</p>
+          </div>
+          <p className="pblack">{events.note}</p>
+          <div className="divider-h" />
+          <div className="flex items-center gap-3">
+            <p className="para">Attendies: </p>
+            <div className="flex items-center gap-3">
+              {events.attendies.map((atd, i) => (
+                <div className="relative" key={i}>
+                  <img
+                    src="https://via.placeholder.com/60x60"
+                    alt=""
+                    className="rounded-full size-9"
+                  />
+                </div>
+              ))}
+            </div>
+          </div>
+        </div>
+      ))}
     </div>
   );
 };
-
 
 const AddEventSection = ({ onCancel }) => {
   const [EventDropValue, setEventDropValue] = useState("online");

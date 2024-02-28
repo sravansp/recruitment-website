@@ -102,67 +102,70 @@ export const eventType = [
   },
 ];
 export const eventList = [
-  {
-    id: 1,
-    eventName: "Interview On 12 March",
-    date: "12/03/2024",
-    time: "2:00 PM",
-    duration: "30min",
-    type: "Online",
-    url: "www.meet.google.com",
-    attendies: [
-      {
-        name: "Prasanth",
-        img: "",
-      },
-      {
-        name: "Haris",
-        img: "",
-      },
-      {
-        name: "Vignesh",
-        img: "",
-      },
-    ],
-  },
-  {
-    id: 2,
-    eventName: "Team Meeting",
-    date: "15/03/2024",
-    time: "10:00 AM",
-    duration: "1hr",
-    type: "Goole Meet",
-    url: "www.meet.google.com",
-    attendies: [
-      {
-        name: "Alice",
-        img: "",
-      },
-      {
-        name: "Bob",
-        img: "",
-      },
-    ],
-  },
-  {
-    id: 3,
-    eventName: "Project Kick-off",
-    date: "20/03/2024",
-    time: "3:30 PM",
-    duration: "2hr",
-    type: "Online",
-    url: "www.meet.google.com",
-    attendies: [
-      {
-        name: "Charlie",
-        img: "",
-      },
-      {
-        name: "Diana",
-        img: "",
-      },
-    ],
-  },
+  // {
+  //   id: 1,
+  //   eventName: "Interview On 12 March",
+  //   date: "12/03/2024",
+  //   time: "2:00 PM",
+  //   duration: "30min",
+  //   type: "Online",
+  //   url: "www.meet.google.com",
+  //   note:"  Lorem ipsum dolor, sit amet consectetur adipisicing elit. In incidunt quae non aperiam eos commodi cumque nam obcaecati ipsa odit iste, dolorem sequi.",
+  //   attendies: [
+  //     {
+  //       name: "Prasanth",
+  //       img: "",
+  //     },
+  //     {
+  //       name: "Haris",
+  //       img: "",
+  //     },
+  //     {
+  //       name: "Vignesh",
+  //       img: "",
+  //     },
+  //   ],
+  // },
+  // {
+  //   id: 2,
+  //   eventName: "Team Meeting",
+  //   date: "15/03/2024",
+  //   time: "10:00 AM",
+  //   duration: "1hr",
+  //   type: "Goole Meet",
+  //   url: "www.meet.google.com",
+  //   note:"  Lorem ipsum dolor, sit amet consectetur adipisicing elit. In incidunt quae non aperiam eos commodi cumque nam obcaecati ipsa odit iste, dolorem sequi.",
+  //   attendies: [
+  //     {
+  //       name: "Alice",
+  //       img: "",
+  //     },
+  //     {
+  //       name: "Bob",
+  //       img: "",
+  //     },
+  //   ],
+  // },
+  // {
+  //   id: 3,
+  //   eventName: "Project Kick-off",
+  //   date: "20/03/2024",
+  //   time: "3:30 PM",
+  //   duration: "2hr",
+  //   type: "Online",
+  //   url: "www.meet.google.com",
+  //   note:"  Lorem ipsum dolor, sit amet consectetur adipisicing elit. In incidunt quae non aperiam eos commodi cumque nam obcaecati ipsa odit iste, dolorem sequi.",
+  //   attendies: [
+  //     {
+  //       name: "Charlie",
+  //       img: "",
+  //     },
+  //     {
+  //       name: "Diana",
+  //       img: "",
+  //     },
+  //   ],
+  // },
   // Add more events as needed
 ];
 
