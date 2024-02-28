@@ -102,3 +102,7 @@
 .divider-h {
   @apply w-full h-px bg-secondaryWhite dark:bg-secondaryDark;
 }
+
+.borderb {
+  @apply border border-black dark:border-white border-opacity-10 dark:border-opacity-20;
+}
