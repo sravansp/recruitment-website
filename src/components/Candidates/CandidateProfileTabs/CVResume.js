@@ -28,6 +28,23 @@ const tabData = [
     icon: <BsFileEarmarkRichtext className="text-base" />,
   },
 ];
+const QA = [
+  {
+    id: 1,
+    question: "Do you prefer an in-office setup or Remote?*",
+    answer: "Remote",
+  },
+  {
+    id: 2,
+    question: "Are you legally eligible to work in the country?",
+    answer: "Yes, I’ve resident visa",
+  },
+  {
+    id: 3,
+    question: "Do you prefer an in-office setup or Remote?",
+    answer: "Remote",
+  },
+];
 const CVResume = () => {
   const [content, setContent] = useState("");
   const primaryColor = localStorage.getItem("mainColor");
@@ -73,24 +90,32 @@ const CVResume = () => {
           <PDFViewer pdfUrl={pdfFile} />
         </div>
 
-        <div className="flex flex-col divide-y box-wrapper">
+        <div className="flex flex-col gap-5 divide-y box-wrapper">
           <div className="flex items-center justify-between">
             <h6 className="h6">Question</h6>
             <ButtonClick iconAdd={true} buttonName="Add Cover Note" />
           </div>
-          <div className="inline-flex flex-col items-start justify-start gap-7">
-            <div className="">
-              <div className="flex items-center gap-4">
-                <span className="pblack">Q1.</span>
-                <span className="pblack">
-                  Do you prefer an in-office setup or Remote?
-                </span>
+          <div className="inline-flex flex-col items-start justify-start pt-4 gap-7">
+            {QA?.map((qans) => (
+              <div className="flex flex-col gap-3" key={qans.id}>
+                <div className="flex">
+                  <div className="w-12 ">
+                    <span className="pblack">Q{qans.id}.</span>
+                  </div>
+                  <div>
+                    <span className="pblack !text-opacity-80">
+                      {qans.question}
+                    </span>
+                  </div>
+                </div>
+                <div className="flex">
+                  <div className="w-12 ">
+                    <p className="pblack">Ans.</p>
+                  </div>
+                  <p className="pblack !text-opacity-80">{qans.answer}</p>
+                </div>
               </div>
-              <div className="flex items-center gap-4">
-                <p className="pblack">Ans.</p>
-                <p className="pblack">Remote</p>
-              </div>
-            </div>
+            ))}
           </div>
         </div>
       </div>
