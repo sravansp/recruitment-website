@@ -226,36 +226,38 @@ const Sidebar = () => {
               className={`text-white transition-all duration-300 group-hover:text-primary ${selectedMainMenu === t("Jobs") ? "text-primary" : ""
                 }`}
             />
+           
           ),
-          submenus: [
-            {
-              catid: 2,
-              id: 1,
-              parentMenu: "Jobs",
-              parentId: 2,
-              title: t("Jobs"),
-              status: false,
-              subMenu: [
-                {
-                  id: 21,
-                  title: t("Job List"),
-                  icon: (
-                    <PiBriefcaseDuotone className="!text-base 2xl:!text-2xl" />
-                  ),
-                  link: "/AllJobs",
-                },
-                {
-                  id: 22,
-                  title: t("Job Details"),
-                  icon: (
-                    <PiBriefcaseMetalDuotone className="!text-base 2xl:!text-2xl" />
-                  ),
-                  link: "/JobDetails",
-                },
+           link:"/AllJobs",
+          // submenus: [
+          //   {
+          //     catid: 2,
+          //     id: 1,
+          //     parentMenu: "Jobs",
+          //     parentId: 2,
+          //     title: t("Jobs"),
+          //     status: false,
+          //     // subMenu: [
+          //     //   {
+          //     //     id: 21,
+          //     //     title: t("Job List"),
+          //     //     icon: (
+          //     //       <PiBriefcaseDuotone className="!text-base 2xl:!text-2xl" />
+          //     //     ),
+          //     //     link: "/AllJobs",
+          //     //   },
+          //     //   {
+          //     //     id: 22,
+          //     //     title: t("Job Details"),
+          //     //     icon: (
+          //     //       <PiBriefcaseMetalDuotone className="!text-base 2xl:!text-2xl" />
+          //     //     ),
+          //     //     link: "/JobDetails",
+          //     //   },
                
-              ],
-            },
-          ],
+          //     // ],
+          //   },
+          // ],
         },
         {
           id: 3,
@@ -266,36 +268,39 @@ const Sidebar = () => {
               className={`text-white transition-all duration-300 group-hover:text-primary ${selectedMainMenu === t("Candidates") ? "text-primary" : ""
                 }`}
             />
+           
           ),
-          submenus: [
-            {
-              catid: 3,
-              id: 1,
-              parentMenu: "Candidates",
-              parentId: 3,
-              title: t("General"),
-              status: false,
-              subMenu: [
-                {
-                  id: 31,
-                  title: t("Candidate Profile"),
-                  icon: (
-                    <PiUser className="!text-base 2xl:!text-2xl" />
-                  ),
-                  link: "/CandidateProfile",
-                },
-                {
-                  id: 32,
-                  title: t("Candidate List"),
-                  icon: (
-                    <PiUser className="!text-base 2xl:!text-2xl" />
-                  ),
-                  link: "/CandidateList",
-                },
+          link:"/CandidateList",
+          
+          // submenus: [
+          //   {
+          //     catid: 3,
+          //     id: 1,
+          //     parentMenu: "Candidates",
+          //     parentId: 3,
+          //     title: t("General"),
+          //     status: false,
+          //     subMenu: [
+          //       {
+          //         id: 31,
+          //         title: t("Candidate Profile"),
+          //         icon: (
+          //           <PiUser className="!text-base 2xl:!text-2xl" />
+          //         ),
+          //         link: "/CandidateProfile",
+          //       },
+          //       {
+          //         id: 32,
+          //         title: t("Candidate List"),
+          //         icon: (
+          //           <PiUser className="!text-base 2xl:!text-2xl" />
+          //         ),
+          //         link: "/CandidateList",
+          //       },
                
-              ],
-            },
-          ],
+          //     ],
+          //   },
+          // ],
           
         },
         {
@@ -488,11 +493,12 @@ const Sidebar = () => {
                         ? "bg-white bg-opacity-100"
                         : ""
                       }`}
-                  >
-                    {menuItem.icon}
+                  > <Link to={menuItem.link}>{menuItem.icon}</Link>
+                    
                   </div>
                   <p className="text-[9px] 2xl:text-xs text-white">
-                    {menuItem.title}
+                    <Link to={menuItem.link}>{menuItem.title}</Link>
+                    
                   </p>
                 </div>
               </li>

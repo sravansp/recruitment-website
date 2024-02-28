@@ -10,6 +10,7 @@ import Location from './Addlocation'
 import API from '../Api'
 import axios from 'axios'
 import { setNavigationPath } from '../../Redux/action'
+import ToggleBtn from '../common/ToggleBtn'
 
 
 const Company = () => {
@@ -19,6 +20,7 @@ const Company = () => {
     const [show, setShow] = useState(false);
     const handleShow = () => setShow(true);
     const dispatch = useDispatch();
+    const [statusToggle, setStatusToggle] = useState(true);
   const tabs= [
     {
         id:1,
@@ -39,22 +41,24 @@ const Company = () => {
         {
          id:1,
          title:"Name",
-         value:"Name",
+         value:"department",
         },
         {
             id:2,
             title:"Description",
-            value:"Description",
+            value:"description",
            },
            {
             id:3,
             title:"status",
             value:"status",
+            actionToggle:true,
            },
            {
             id:4,
             title:"actions",
-            value:"actions",
+            value:"",
+            action:true,
            },
 
     ],
@@ -62,22 +66,24 @@ const Company = () => {
         {
          id:1,
          title:"Name",
-         value:"Name",
+         value:"location",
         },
         {
             id:2,
             title:"Description",
-            value:"Description",
+            value:"description",
            },
            {
             id:3,
             title:"status",
             value:"status",
+            actionToggle:true,
            },
            {
             id:4,
             title:"actions",
             value:"actions",
+            action:true,
            },
 
     ]
@@ -90,20 +96,21 @@ const Company = () => {
   const [departmentList, setDepartmentList] = useState();
   const actionData = [
     {
-    //   company: { id: 1, data: companyList },
-    Locations: { id: 1, data: locationList },
+    
+      Locations: { id: 1, data: locationList },
       Departments: { id: 2, data: departmentList },
-    //   category: { id: 4, data: categoryList },
-    //   subcategory: { id: 5, data: subCategoryList },
+    
+    
     },
   ];
   const [companyId, setCompanyId] = useState(localStorage.getItem("companyId"));
+  const [tabsData, setTabsData] = useState([]);
   
   
   const getLocationList = async () => {
     console.log(companyId);
     console.log(API.HOST + API.GET_LOCATION + "/" + companyId);
-    console.log("navigationPath");
+    console.log("navigationPath",navigationPath);
     const result = await axios.post(
       API.HOST + API.GET_LOCATION + "/" + companyId
     );
@@ -122,30 +129,34 @@ const Company = () => {
  
   React.useEffect(() => {
     // Provide a default value if needed
-    setCompanyId(companySliceId || localStorage.getItem("companyId"));
-    
-
-
+   
+  
+    let newData = [];
+  
     switch (navigationPath) {
       case "Locations":
         getLocationList();
+      
+        
         break;
       case "Departments":
         getDepartmentList();
+        
+        console.log(newData)
         break;
       // Add more cases as needed
       default:
         break;
     }
-
+  
     console.log(companySliceId, navigationPath, "refresh");
-  }, [companySliceId, dispatch, navigationPath]);
+  
+    // Update the state variable or Redux store with the new data
+   
+  
+  }, [navigationPath]);
 
-  const tabClickHandler = (e) => {
-    console.log(e, "e");
-    // You can access navigationPath here and use it as needed
-    console.log("Navigation Path:", navigationPath);
-  };
+
     return (
     <div>
         <Tabs
@@ -157,7 +168,11 @@ const Company = () => {
         // console.log(e);
         // setShow(e);
       }}
-      tabClick={tabClickHandler}
+      // data={tabsData}
+      tabClick={(e) => {
+        console.log(e, "e");
+        dispatch(setNavigationPath(e));
+      }}
               data={
           Object.keys(actionData[0]).includes(navigationPath)
             ? actionData[0]?.[navigationPath].data

@@ -62,7 +62,8 @@ const TableAnt = ({
   buttonClick = () => {},
   clickDrawer = () => {},
   viewDetails = false,
-  showButton = false
+  showButton = false,
+  All=false
 }) => {
   const { t } = useTranslation();
   const navigate = useNavigate();
@@ -170,11 +171,11 @@ const TableAnt = ({
       window.location.reload();
     }
   };
-
+ 
   useEffect(() => {
     console.log(header, "header");
     setTableData(
-      header[0]?.[tabValue || path]?.map((each, i) => ({
+      (header[0]?.[tabValue || path || ''] || []).map((each, i) => ({
         title: (
           <span
             key={i}
@@ -598,7 +599,7 @@ const TableAnt = ({
         <div className="flex items-center gap-3">
           <p className="text-lg font-semibold dark:text-white">
             {/* {tabTitle?.split("_") || path?.split("_")} */}
-            {jsonResult || path}
+            {/* {jsonResult || path} */}
             {/* (0) */}
           </p>
           <div
@@ -606,11 +607,42 @@ const TableAnt = ({
             className={`bg-[${primaryColor}] bg-opacity-10 text-primary text-[10px] 2xl:text-xs rounded-full px-3 py-1 vhcenter`}
           >
             {console.log(...tabTitle.split("_"))}
-            {hasSelected
+            {All ? (
+  <span>
+     {hasSelected
               ? `${selectedRowKeys?.length} ${
                   jsonResult ? jsonResult : path
                 } Selected`
               : `All ${jsonResult ? jsonResult : path}`}
+  </span>
+) : (
+  <div className="search-All">
+     <SearchBox
+  // title="Search"
+  data={data}
+  placeholder={t("Search_placeholder")}
+  value={searchValue}
+  icon={<CiSearch className=" dark:text-white" />}
+  className="mt-0 w-ful md:w-auto"
+  error=""
+  change={(value) => {
+    setSearchValue(value);
+  }}
+  onSearch={(value) => {
+    // console.log(value);
+    setSearchFilter(value);
+  }}
+/>
+  </div>
+ 
+)}
+            
+{/*             
+            {hasSelected
+              ? `${selectedRowKeys?.length} ${
+                  jsonResult ? jsonResult : path
+                } Selected`
+              : `All ${jsonResult ? jsonResult : path}`} */}
             {console.log(jsonResult)}
           </div>
         </div>
@@ -628,7 +660,8 @@ const TableAnt = ({
       
     </ButtonClick>
   ) : (
-    <div>
+    <div className="flex flex-wrap items-center gap-3">
+                {All&&( 
                 <SearchBox
             // title="Search"
             data={data}
@@ -644,7 +677,8 @@ const TableAnt = ({
               // console.log(value);
               setSearchFilter(value);
             }}
-          />
+          />)}
+               
           <div>
             {/* <Dropdown
               menu={{

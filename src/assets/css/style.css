@@ -3172,4 +3172,6 @@ button.rbc-button-link {
   margin-right: 10px; /* Adjust this value as needed for spacing */
 }
 
-
+.search-All{
+  transform: translateX(-30px);
+}
