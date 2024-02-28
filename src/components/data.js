@@ -33,6 +33,9 @@ import { FaRegDotCircle } from "react-icons/fa";
 import { MdOutlineCheckBox } from "react-icons/md";
 import { IoIosArrowDropdown } from "react-icons/io";
 import { MdOutlineShortText } from "react-icons/md";
+import { BsFillBuildingsFill } from "react-icons/bs";
+import { BiSolidShoppingBags } from "react-icons/bi";
+import { FaLaptop } from "react-icons/fa6";
 // const { t } = useTranslation();
 
 const bloodGroup = [
@@ -106,33 +109,33 @@ const leavelimitPer =[
 const regularOvertime = [
   {
     id: 1,
-    title: "Fixed Rate",
+    title: "Onsite ",
     description:
-      "Fixed rate for all types (weekdays, weekends, public holidays and day offs) for extra hours",
+      "Employees work from an office",
     image: (
-      <PiLockOpenBold className=" active:text-primary focus:text-primary" />
+      <BsFillBuildingsFill className=" active:text-primary focus:text-primary" />
     ),
-    value: "fixedRate",
+    value: "Onsite",
   },
   {
     id: 2,
-    title: "Custom Rate",
+    title: "Hybrid",
     description:
-      "Fixed rate for all types (weekdays, weekends, public holidays and day offs) for extra hours",
+      "Employees work from an office",
     image: (
-      <TbSettingsCheck className=" active:text-primary focus:text-primary" />
+      <BiSolidShoppingBags className=" active:text-primary focus:text-primary" />
     ),
-    value: "customRate",
+    value: "Hybrid",
   },
   {
     id: 3,
-    title: "Complimentary Off",
+    title: "Remote",
     description:
-      "Fixed rate for all types (weekdays, weekends, public holidays and day offs) for extra hours",
+      "Employees work from an office",
     image: (
-      <LuCalendarClock className=" active:text-primary focus:text-primary" />
+      <FaLaptop  className=" active:text-primary focus:text-primary" />
     ),
-    value: "complimentaryOff",
+    value: "Remote",
   },
 ];
 const automationPolicies = [

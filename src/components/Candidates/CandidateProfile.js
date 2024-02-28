@@ -16,7 +16,16 @@ import {
 import { FcCheckmark, FcHighPriority, FcShare } from "react-icons/fc";
 import { MdContentCopy, MdPhone } from "react-icons/md";
 import { DownOutlined } from "@ant-design/icons";
-import { RiCouponLine, RiFile4Line, RiFileList3Line, RiHome6Line, RiImage2Fill, RiMailUnreadLine, RiQuestionnaireLine, RiSurveyLine } from "react-icons/ri";
+import {
+  RiCouponLine,
+  RiFile4Line,
+  RiFileList3Line,
+  RiHome6Line,
+  RiImage2Fill,
+  RiMailUnreadLine,
+  RiQuestionnaireLine,
+  RiSurveyLine,
+} from "react-icons/ri";
 
 // Components
 import TabsNew from "../common/TabsNew";
@@ -123,7 +132,6 @@ const CandidateProfile = () => {
       value: "events",
       content: <Events />,
       icon: <RiImage2Fill className="text-base" />,
-
     },
     {
       id: 6,
@@ -131,7 +139,6 @@ const CandidateProfile = () => {
       value: "evaluations",
       content: <Evaluations />,
       icon: <RiSurveyLine className="text-base" />,
-
     },
     {
       id: 7,
@@ -139,7 +146,6 @@ const CandidateProfile = () => {
       value: "questionaries",
       content: <Questionaries />,
       icon: <RiQuestionnaireLine className="text-base" />,
-
     },
     {
       id: 8,
@@ -147,7 +153,6 @@ const CandidateProfile = () => {
       value: "offers",
       content: <Offers />,
       icon: <RiCouponLine className="text-base" />,
-
     },
   ];
   const handleMenuClick = (e) => {
@@ -225,12 +230,13 @@ const CandidateProfile = () => {
                 <p className="gap-2 pblack vhcenter">
                   <MdPhone className="text-base text-primary" /> +971 50671852
                 </p>
-                <ButtonClick
-                  icon={<MdContentCopy size={16} />}
-                  BtnType="text"
-                  className="text-black text-opacity-30 dark:text-white dark:hover:text-primary"
-                  handleSubmit={() => handleCopyClick("+971 50671852")}
-                />
+               
+                <div
+                  className="text-black cursor-pointer text-opacity-30 dark:text-white dark:hover:text-primary hover:text-opacity-90"
+                  onClick={() => handleCopyClick("+971 50671852")}
+                >
+                  <MdContentCopy size={16} />
+                </div>
               </div>
             </div>
           </div>
@@ -249,20 +255,7 @@ const CandidateProfile = () => {
                 {selectedItemLabel && selectedItemLabel}
               </div>
             </div>
-            {/* <Divider type="vertical" className="hidden h-auto lg:block" />
-            <div className="flex flex-col gap-3">
-              <Dropdown overlay={menu} trigger={["click"]}>
-                <a onClick={(e) => e.preventDefault()}>
-                  <Space>
-                  Priority
-                    <DownOutlined />
-                  </Space>
-                </a>
-              </Dropdown>
-              <div className="bg-[#FFE8E8] rounded-full px-4 py-1">
-                {selectedItemLabel && selectedItemLabel}
-              </div>
-            </div> */}
+            
             <Divider type="vertical" className="hidden h-auto lg:block" />
             <div className="flex flex-col gap-3">
               <p>Rating</p>
@@ -271,7 +264,7 @@ const CandidateProfile = () => {
           </div>
         </div>
       </div>
-      <TabsNew tabs={tabs} onTabChange={handleTabChange} initialTab={1}/>
+      <TabsNew tabs={tabs} onTabChange={handleTabChange} initialTab={1} />
     </div>
   );
 };
