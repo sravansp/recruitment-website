@@ -108,7 +108,7 @@ function AllJobs() {
     callapi();
   }, []);
   return (
-    <div>
+    <div className="flex flex-col gap-[25px]">
       <div className="flex justify-between">
         <Heading
           title="Jobs"
@@ -124,9 +124,9 @@ function AllJobs() {
         </div>
       </div>
 
-      <div className="w-full mt-12 rounded-sm h-24 sm:w-full sm:max-h-7">
+      <div className="  rounded-sm h-24   flex flex-col">
         {data.map((data) => (
-          <div className="bg-white rounded-md shadow-md m-4 p-4 flex dark:bg-black dark:text-white h-24">
+          <div className="bg-white rounded-md shadow-md  p-4 flex dark:bg-black dark:text-white h-24">
             <div className="flex items-center w-1/5 sm:w-1/5">
               <div className="ml-4">
                 <p className="para">Total No of Jobs Posted</p>
@@ -175,7 +175,7 @@ function AllJobs() {
         ))}
       </div>
 
-      <div className="mt-28">
+      <div className="">
         <TableAnt1 data={JobsList} header={header} path="AllJobs" />
       </div>
     </div>

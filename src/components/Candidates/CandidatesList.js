@@ -75,7 +75,7 @@ const CandidatesList = () => {
     callapi();
   }, []);
   return (
-    <div>
+    <div className="flex flex-col gap-[25px]">
       <div className='flex justify-between'>
         <Heading
           title="Candidates"
@@ -90,7 +90,7 @@ const CandidatesList = () => {
         </div>
       </div>
       <JobListCopy/>
-      <div className='mt-28'>
+      <div className=''>
         <TableCopy data={jobList} header={header} path='CandidateList'/>
       </div>
     </div>

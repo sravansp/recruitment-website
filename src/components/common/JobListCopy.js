@@ -12,9 +12,9 @@ function JobListCopy() {
       ];
   return (
     <div>
-         <div className="w-full mt-12 rounded-sm h-24 sm:w-full sm:max-h-7">
+         <div className="w-full  rounded-sm h-24 sm:w-full ">
         {data.map((data) => (
-          <div className="bg-white rounded-md shadow-md m-4 p-4 flex dark:bg-black dark:text-white h-24">
+          <div className="bg-white rounded-md shadow-md  p-4 flex dark:bg-black dark:text-white h-24">
             <div className="flex items-center w-1/5 sm:w-1/5">
               <div className="ml-4">
                 <p className="para">Total No of Jobs Posted</p>

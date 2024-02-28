@@ -41,9 +41,9 @@ const Evaluations = () => {
   ];
   return (
     <div className="flex flex-row gap-6 lg:col-span-8">
-      <div className="rounded-md h-[446px] sm:w-[1150px] bg-white border">
+      <div className="rounded-md h-full sm:w-[1150px] bg-white border">
         <div className="flex justify-between items-center">
-          <h3 className="w-[150px] h-[22px] mt-[18.88px] ml-[13.61px] font-[sf pro] size-[16px] text-black font-bold ">
+          <h3 className="w-[150px] h-[22px] mt-[18.88px] ml-[13.61px] font-[sf pro] size-[16px] text-black font-semibold ">
             Evaluation Form
           </h3>
           <div
@@ -53,15 +53,54 @@ const Evaluations = () => {
             <ButtonClick buttonName="Create New Form" BtnType="primary" />
           </div>
         </div>
-        <div className="v-divider mt-4 border-[1px] opacity-[10px]" />
-        {/* <div>
+        {/* <div className="v-divider  border-[1px] opacity-[10px]" /> */}
+        <div className="divider-h" />
+        <div className="flex flex-col mt-[20px] ml-[14px] gap-[15px] font-[SF Pro] font-normal text-sm leading-5 text-black ">
           <RadioButton
-            title="email"
-            value="dsbj"
-            options={["hjwdj", "whejh"]}
-            label={["jkne", "eer"]}
+            title="Does the candidate have the appropriate educational qualifications or training for this position?"
+            // value={}
+            // change={}
+            options={[
+              { value: "yes", label: "Yes" },
+              { value: "no", label: "No" },
+              { value: "not sure", label: "Not Sure" },
+            ]}
+            gap={"125px"}
           />
-        </div> */}
+          <RadioButton
+            title="Did the candidate demonstrate, through their answers, a high degree of initiative?"
+            // value={}
+            // change={}
+            options={[
+              { value: "yes", label: "Yes" },
+              { value: "no", label: "No" },
+              { value: "not sure", label: "Not Sure" },
+            ]}
+            
+          />
+          <Dropdown
+            title="Characteristics" // Example title passed as prop
+            // value={}
+            // change={}
+            // options={}
+            placeholder="Choose..."
+            className="w-[196px]"
+          />
+          <Dropdown
+            title="Appearance" // Example title passed as prop
+            // value={}
+            // change={}
+            // options={}
+            placeholder="Choose..."
+            className="w-[196px]"
+          />
+          <div className="v-divider  border-[1px] opacity-[10px] " />
+          <div className="flex  justify-between ">
+            <h3 className="text-black font-semibold text-base font-['SF Pro']  !leading-6 ">Overall Scrore</h3>
+            <p className="leading-4 text-black font-['SF Pro'] font-normal mr-4 ">*Overall score always required</p>
+          </div>
+          <p className="font-normal text-xs leading-5 font-['SF Pro'] ">Give the candidate a quick evaluation score</p>
+        </div>
       </div>
 
       <div className="">
