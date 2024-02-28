@@ -701,20 +701,20 @@ const TableAnt1 = ({
     .map((word) => word.charAt(0).toUpperCase() + word.slice(1))
     .join(" ");
   return (
-    <div className="flex flex-col gap-5">
-      <div className="flex flex-col justify-between gap-3 xl:items-center xl:flex-row">
-        <div className="mt-4  w-full xl:w-auto ">
+    <div className="flex flex-col ">
+      <div className="flex flex-col justify-between  xl:items-center xl:flex-row">
+       
           <TabsNew tabs={tab} onTabChange={handleTabChange} />
-        </div>
         
-        <div className="flex items-center gap-3">
+        
+        
         <SearchBox
           // title="Search"
           data={data}
           placeholder={t("Search_placeholder")}
           value={searchValue}
           icon={<CiSearch className=" dark:text-white" />}
-          className="mt-0 w-ful md:w-auto   "
+          className="mt-0 w-full md:w-auto   "
           error=""
           change={(value) => {
             setSearchValue(value);
@@ -742,9 +742,9 @@ const TableAnt1 = ({
               : `All ${jsonResult ? jsonResult : path}`}
             {console.log(jsonResult)}
           </div> */}
-        </div>
+        
 
-        <div className="flex flex-wrap items-center gap-3">
+        <div className="flex  items-center gap-3">
           {/* <SearchBox 
             // title="Search"
             data={data}
@@ -763,9 +763,7 @@ const TableAnt1 = ({
           /> */}
 
           <ToggleBtn title="Show Stages" flexText="True"/>
-          {/* <span>
-            <p className="dark:text-white">Show Stages</p>
-          </span> */}
+         
           <div>
             {/* <Dropdown
               menu={{
