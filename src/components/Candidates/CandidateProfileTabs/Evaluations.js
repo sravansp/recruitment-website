@@ -7,6 +7,7 @@ import TabsNew from "../../common/TabsNew";
 import RadioButton from "../../common/RadioButton";
 import Radiobuttonnew from "../../common/Radiobuttonnew";
 import Dropdown from "../../common/Dropdown";
+import { Flex, Radio } from "antd";
 
 const Evaluations = () => {
   const primaryColor = localStorage.getItem("mainColor");
@@ -39,6 +40,9 @@ const Evaluations = () => {
       icon: <BsFileEarmarkRichtext className="text-base" />,
     },
   ];
+  const onChange = (e) => {
+    
+  };
   return (
     <div className="flex flex-row gap-6 lg:col-span-8">
       <div className="rounded-md h-full sm:w-[1150px] bg-white border">
@@ -101,6 +105,14 @@ const Evaluations = () => {
           </div>
           <p className="font-normal text-xs leading-5 font-['SF Pro'] ">Give the candidate a quick evaluation score</p>
         </div>
+        {/* <Flex Horizontal gap="middle">
+    <Radio.Group onChange={onChange} defaultValue="a">
+      <Radio.Button value="a">Hangzhou</Radio.Button>
+      <Radio.Button value="b">Shanghai</Radio.Button>
+      <Radio.Button value="c">Beijing</Radio.Button>
+      <Radio.Button value="d">Chengdu</Radio.Button>
+    </Radio.Group>
+    </Flex> */}
       </div>
 
       <div className="">

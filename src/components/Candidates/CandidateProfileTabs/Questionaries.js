@@ -55,7 +55,7 @@ const Questionaries = () => {
         <div className="v-divider mt-4 border-[1px] opacity-[10px]" />
         <div className="ml-8 mt-8">
           <p className="text-gray-700 font-Inter font-weight:500">
-            <strong>Q1:</strong> &nbsp; &nbsp;Can you provide an overview of
+            <strong>Q1.</strong> &nbsp; &nbsp;Can you provide an overview of
             your experience in designing and managing network infrastructures?{" "}
             <br />
             <br /> <strong> Ans.</strong> &nbsp;In my previous role, I designed
@@ -63,7 +63,25 @@ const Questionaries = () => {
             routers, switches, and firewalls. I ensured high <br />{" "}
             &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;availability by
             implementing redundancy and conducted regular performance
-            assessments to optimize network efficiency.
+            assessments to optimize network efficiency. <br /> <br />
+            <strong>Q2.</strong> &nbsp; &nbsp;How do you approach network
+            security, and what measures have you implemented to protect against
+            potential threats? <br />
+            <br /> <strong> Ans.</strong> &nbsp;I prioritize security through
+            measures such as implementing firewalls, intrusion detection
+            systems, and regularly updating security policies. <br />{" "}
+            &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Additionally, I
+            conduct regular vulnerability assessments and penetration testing to
+            identify and address potential vulnerabilities. <br /> <br />
+            <strong>Q3.</strong> &nbsp; &nbsp;Can you provide an overview of
+            your experience in designing and managing network infrastructures?{" "}
+            <br />
+            <br /> <strong> Ans.</strong> &nbsp;In my previous role, I designed
+            and maintained a robust network infrastructure that included
+            routers, switches, and firewalls. I ensured high <br />{" "}
+            &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;availability by
+            implementing redundancy and conducted regular performance
+            assessments to optimize network efficiency. <br />
           </p>
         </div>
       </div>
