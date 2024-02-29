@@ -110,6 +110,7 @@ export const eventList = [
     duration: "30min",
     type: "Online",
     url: "www.meet.google.com",
+    note:"  Lorem ipsum dolor, sit amet consectetur adipisicing elit. In incidunt quae non aperiam eos commodi cumque nam obcaecati ipsa odit iste, dolorem sequi.",
     attendies: [
       {
         name: "Prasanth",
@@ -133,6 +134,7 @@ export const eventList = [
     duration: "1hr",
     type: "Goole Meet",
     url: "www.meet.google.com",
+    note:"  Lorem ipsum dolor, sit amet consectetur adipisicing elit. In incidunt quae non aperiam eos commodi cumque nam obcaecati ipsa odit iste, dolorem sequi.",
     attendies: [
       {
         name: "Alice",
@@ -152,6 +154,7 @@ export const eventList = [
     duration: "2hr",
     type: "Online",
     url: "www.meet.google.com",
+    note:"  Lorem ipsum dolor, sit amet consectetur adipisicing elit. In incidunt quae non aperiam eos commodi cumque nam obcaecati ipsa odit iste, dolorem sequi.",
     attendies: [
       {
         name: "Charlie",
