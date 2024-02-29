@@ -15,7 +15,7 @@ import ToggleBtn from '../common/ToggleBtn'
 
 const Company = () => {
     const { t } = useTranslation();
-    const navigationPath = useSelector((state) => state.navigation.navigationPath);
+    const [navigationPath, setNavigationPath] = useState("Departments");
     const companySliceId = useSelector((state) => state.layout.companyId);
     const [show, setShow] = useState(false);
     const handleShow = () => setShow(true);
@@ -169,19 +169,19 @@ const Company = () => {
         // setShow(e);
       }}
       // data={tabsData}
-      tabClick={(e) => {
-        console.log(e, "e");
-        dispatch(setNavigationPath(e));
-      }}
-              data={
-          Object.keys(actionData[0]).includes(navigationPath)
-            ? actionData[0]?.[navigationPath].data
-            : null
-        }
+        tabClick={(e) => {
+          console.log(e, "e");
+          setNavigationPath(e);
+        }}
+                data={
+            Object.keys(actionData[0]).includes(navigationPath)
+              ? actionData[0]?.[navigationPath].data
+              : null
+          }
        
         />
       
-       {navigationPath === "Departments" && show && (
+      {navigationPath === "Departments" && show && (
         <Departments
           open={show}
           close={(e) => {

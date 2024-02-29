@@ -1141,6 +1141,75 @@ const cardData = [
     value: "Final review",
   },
 ];
+
+const Requirment = [
+{
+  id:1,
+  label:"urgent",
+  value:"urgent"
+},
+{
+  id:2,
+  label:"Not urgent",
+  value:"noturgent"
+},
+{
+  id:3,
+  labe:"Mid level",
+  value:"midlevel"
+}
+] 
+const JobType =[
+  {
+    id:1,
+    label:"Fulltime",
+    value:"fulltime",
+  },
+  {
+    id:2,
+    label:"Part time",
+    value:"parttime",
+  }
+]
+const experiencelevel=[
+  {
+    id:1,
+    lable:"Director Level",
+    value:"DirectorLevel"
+  },
+  {
+    id:2,
+    lable:"Manager Level",
+    value:"ManagerLevel"
+  },
+  {
+    id:3,
+    lable:"Senior Level",
+    value:"SeniorLevel"
+  },
+  {
+    id:4,
+    lable:"Mid Senior Level",
+    value:"MidSeniorLevel"
+  },
+  {
+    id:5,
+    lable:"Junior Level",
+    value:"JuniorLevel"
+  },
+  {
+    id:1,
+    lable:"Fresher",
+    value:"Fresher"
+  },
+
+]
+
+
+
+
+
+
 export {
   bloodGroup,
   regularOvertime,
@@ -1182,5 +1251,8 @@ export {
   occurrence,
   Deduction,
   Form,
-  cardData
+  cardData,
+  Requirment,
+  JobType,
+  experiencelevel ,
 };

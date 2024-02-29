@@ -835,8 +835,8 @@ const TableAnt1 = ({
           <Table
             rowSelection={{ ...rowSelection }}
             columns={tableData}
-            rowSelection={{ ...rowSelection }}
-            columns={tableData}
+            
+            
             dataSource={listData}
             size={isSmallScreen ? "small" : ""}
             scroll={{ y: 600 }} // Adjust the height according to your requirement
@@ -859,8 +859,8 @@ const TableAnt1 = ({
             //       .toLowerCase()
             //       .includes(searchValue.toLowerCase())
             // )}
-            dataSource={listData}
-            size={isSmallScreen ? "small" : ""}
+            
+            
           />
          ) :(
            <div><p className="text-center">Coming soon...</p> </div>

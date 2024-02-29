@@ -3,7 +3,7 @@ import DrawerPop from '../common/DrawerPop';
 import { useTranslation } from "react-i18next"; 
 import { RxCross2, RxQuestionMarkCircled } from "react-icons/rx";
 import Stepper from '../common/Stepper';
-import { Button, Card, Checkbox, Flex, Radio ,Space} from 'antd';
+import { Button, Card, Checkbox, Flex, Radio ,Space, notification} from 'antd';
 import Accordion from '../common/Accordion';
 import FlexCol from '../common/FlexCol';
 import Dropdown from '../common/Dropdown';
@@ -31,7 +31,7 @@ import image from '../../assets/images/generate-ai-img.png'
 
  
 
-const Createjob = ( {open = "", close = () => { }}) => {
+const Createjob = ( {open = "", close = () => { },inputshow= false}) => {
   
   const[show,setShow] =useState(open);
   const { t } = useTranslation();
@@ -45,6 +45,29 @@ const Createjob = ( {open = "", close = () => { }}) => {
   const [savedContent, setSavedContent] = useState([]);
   const [companyId, setCompanyId] = useState(localStorage.getItem("companyId"));
   const [selectedCompany, setSelectedCompany] = useState(null);
+
+  const [api, contextHolder] = notification.useNotification();
+  const openNotification = (type, message, description) => {
+    api[type]({
+      message: message,
+      description: description,
+      placement: "top",
+      // stack: 2,
+      style: {
+        background: `${
+          type === "success"
+            ? `linear-gradient(180deg, rgba(204, 255, 233, 0.8) 0%, rgba(235, 252, 248, 0.8) 51.08%, rgba(246, 251, 253, 0.8) 100%)`
+            : "linear-gradient(180deg, rgba(255, 236, 236, 0.80) 0%, rgba(253, 246, 248, 0.80) 51.13%, rgba(251, 251, 254, 0.80) 100%)"
+        }`,
+        boxShadow: `${
+          type === "success"
+            ? "0px 4.868px 11.358px rgba(62, 255, 93, 0.2)"
+            : "0px 22px 60px rgba(134, 92, 144, 0.20)"
+        }`,
+      },
+      // duration: null,
+    });
+  };
   useEffect(() => {
     setCompanyId(localStorage.getItem("companyId"));
   }, []);
@@ -66,6 +89,7 @@ const [dropdownOptions, setDropdownOptions] = useState([]);
 
 const formik1 = useFormik({
  initialValues: {
+  companyId:"",
   jobTitle:"",
   departmentId:"",
   jobCode:"",
@@ -84,14 +108,102 @@ const formik1 = useFormik({
   workFlowId:"",
   jobPublishType:"",
   jobPublishDetails:"",
+  
 
- }
+ },
+ onSubmit: async (e) => {
+  try{
+    console.log(e)
+    const response = await saveRecruitmentJob({
+    companyId:companyId,
+    jobTitle:e.jobTitle,
+    departmentId:e.departmentId,
+    jobCode:e.jobCode,
+    workLocationType:e.workLocationType,
+    location:e.location,
+    requirementType:e.requirementType,
+    jobType:e.jobType,
+    experience:e.experience,
+    education:e.education,
+    searchKeywords:e.searchKeywords,
+    salaryRangeFrom:e.salaryRangeFrom,
+    salaryRangeTo:e.salaryRangeFrom,
+    salaryCurrency:e.salaryCurrency,
+    isSalaryPublic:e.isSalaryPublic,
+    jobDescription:e.jobDescription,
+    workFlowId:e.workFlowId,
+    jobPublishType:e.jobPublishDetails,
+    jobPublishDetails:e.jobPublishDetails,
 
+    
+    })
+    console.log(response)
+    if (response.data.status === 200) {
+      openNotification(
+        "success",
+        "Successful",
+        "createpoilicy update saved. Changes are now reflected."
+      );
+      setPresentage(2);
+      setNextStep(nextStep + 1);
+    }
+  }
+  catch (error) {
+    // Handle the error here
+    console.error("Error during form submission:", error);
+        openNotification(
+          "error",
+          "Error saving category",
+          "There was an error while saving the category. Please try again."
+        );
+  }
+
+ },
 })
+const [departmentList, setDepartmentList] = useState([]);
 
+const getDepartmentList = async () => {
+  console.log(API.HOST + API.GET_DEPARTMENT + "/" + companyId);
+  const result = await axios.post(
+    API.HOST + API.GET_DEPARTMENT + "/" + companyId
+  );
+  // setDepartmentList(result.data.tbl_department);
+     setDepartmentList( result.data.tbl_department.map((each) => ({
+      label: each.department,
+      value: each.departmentId,
+    })))
+  console.log("calue" ,departmentList);
+};
+useEffect(() => {
+  // switch (assignBtnName) {
+  //   default:
+  getDepartmentList();
+
+}, []);
+// const [locationList, setLocationList] = useState([]);
+// const getLocationList = async () => {
+//   console.log(companyId);
+//   console.log(API.HOST + API.GET_LOCATION + "/" + companyId);
+//   // console.log("navigationPath",navigationPath);
+//   const result = await axios.post(
+//     API.HOST + API.GET_LOCATION + "/" + companyId
+//   );
+//   // setLocationList(result.data.tbl_location);
+//   setLocationList( result.data.tbl_location.map((each) => ({
+//     label: each.location,
+//     value: each.locationId,
+//   })))
+//   console.log(result);
+// };
+// useEffect(() => {
+//   // switch (assignBtnName) {
+//   //   default:
+//   getLocationList();
+
+// }, []);
 const formik = useFormik({
   initialValues: {
-    jobID:"",
+    jobId:"1",
     name: "1",
     email: "1",
     headline: "1",
@@ -123,7 +235,7 @@ const formik = useFormik({
 
       })
       const response = await saveRecruitmentJobApplicationFormSetting({
-        
+        jobId:"1",
         name: e.name,
         email: e.email,
         headline: e.headline,
@@ -347,6 +459,7 @@ const handleSaveInput = (index) => {
     // switch (assignBtnName) {
     //   default:
     getCompany();
+    console.log("value",company)
   
   }, []);
   const handleCompanyChange = (selectedOption) => {
@@ -405,7 +518,10 @@ const handleSaveInput = (index) => {
         switch (activeBtnValue) {
           case "Jobdetails":
             // Handle submission for Configuration
-            setNextStep(nextStep + 1);
+            
+            console.log("valuegtgggggggggggg")
+            formik1.handleSubmit()
+
             break;
 
           case "ApplicationForm":
@@ -515,12 +631,16 @@ const handleSaveInput = (index) => {
                                     } }
                                     initialExpanded={true}
                                 >
-                                
+                                   {inputshow&&(
                                     <div className="grid grid-cols-3 gap-6 ">
-                                        <Dropdown
+                                   
+                                    <Dropdown
                                             title={t("Choose Template")}
                                             placeholder={t("Select")}
                                             required={true} />
+
+                                           
+                                        
 
 
 
@@ -529,10 +649,14 @@ const handleSaveInput = (index) => {
                                             title={t("Choose Company")}
                                             placeholder={t("Choose Company")}
                                             options={company}
-                                            value={selectedCompany}
+                                            value={formik1.values.companyId}
                                             required={true} 
-                                            change={handleCompanyChange}/>
+                                            change={(e)=>{
+                                              formik1.setFieldValue('companyId',e)
+                                            }}/>
                                     </div>
+                                     )
+                                    }
                                     <div className="grid grid-cols-3 gap-4">
                                         <FormInput
                                             title={t("Job Title")}
@@ -552,7 +676,14 @@ const handleSaveInput = (index) => {
                                         <Dropdown
                                             title={t("Department")}
                                             placeholder={t("Select...")}
-                                            required={true} />
+                                            required={true} 
+                                            options={departmentList}
+                                            value={formik1.values.departmentId}
+                                            change={(e)=>{
+                                              formik1.setFieldValue('departmentId',e)
+                                            }}
+                                            />
+
                                         <FormInput
                                             title={t(" Job Code")}
                                             placeholder={t(" Job Code")}
@@ -638,7 +769,7 @@ const handleSaveInput = (index) => {
                                                      formik1.setFieldValue('location',e)
 
                                                     }}
-                                                    value={formik.values.location }
+                                                    value={formik1.values.location }
                                                     />
                                                     
                                                 <Dropdown
@@ -669,23 +800,41 @@ const handleSaveInput = (index) => {
                                                     placeholder={'Bachelor’s Degree'} />
                                             </div>
                                             <div className='grid grid-cols-3 gap-4'>
-                                            <Dropdown
+                                            <FormInput
                                                     title={'Keywords'}
-                                                    placeholder={'Example : Dubait'} />
+                                                    placeholder={'Example : Dubai'}
+                                                    change={(e)=>{
+                                                      formik1.setFieldValue('searchKeywords',e)
+                                                    }}
+                                                    value={formik1.values.searchKeywords}
+                                                    />
                                                 {/* <Dropdown
                                                     title={'Requirement'}
                                                     placeholder={'Urgent'} />
                                                      <Dropdown
                                                     title={'Requirement'}
                                                     placeholder={'Urgent'} /> */}
+
                                             </div>
                                             <div className='grid grid-cols-4 gap-4'>
                                             <FormInput
                                                     title={'Salary Range From'}
-                                                    placeholder={'Urgent'} />
+                                                    placeholder={'Urgent'} 
+                                                    change={(e)=>{
+                                                      formik1.setFieldValue('salaryRangeFrom',e)
+                                                    }}
+                                                    value={formik1.values.salaryRangeFrom
+                                                    }
+                                                    />
                                                 <FormInput
                                                     title={'Salary Range To'}
-                                                    placeholder={'Urgent'} />
+                                                    placeholder={'Urgent'}
+                                                    change={(e)=>{
+                                                      formik1.setFieldValue('salaryRangeTo',e)
+                                                    }}
+                                                    value={formik1.values.salaryRangeTo
+                                                    }
+                                                    />
                                                      <Dropdown
                                                     title={'Salary Currency'}
                                                     placeholder={'Urgent'} />
@@ -1123,7 +1272,7 @@ impactful, accurate, and personalized to your company</p>
                 ) : null
                    
                   }
-                  
+                  {contextHolder}
                   </div>
                 </FlexCol>
                 </div>

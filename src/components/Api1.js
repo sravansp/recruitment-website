@@ -1,6 +1,7 @@
 import axios from "axios";
 
-const apiUrl = 'http://192.168.0.55/loyaltri-recruitment-server/api/v1';
+// const apiUrl = 'http://10.10.6.118/loyaltri-recruitment-server/api/v1';
+const apiUrl = 'https://alpha-jobs-api.loyaltri.com/api/v1';
 
 
 const apiRequest = async (action, method, kwargs) => {
@@ -45,7 +46,7 @@ export const saveRecruitmentJob = async (e) => {
   const action = "saveRecruitmentJob";
 
   const method = "POST";
-
+  
   return await apiRequest(action, method, { ...e });
 };
 

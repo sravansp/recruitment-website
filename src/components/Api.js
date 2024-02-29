@@ -1,5 +1,5 @@
 const API = {
-  HOST: "http://192.168.0.38/loyaltri-server",
+  HOST: "http://10.10.6.117/loyaltri-server",
   // HOST: "http://192.168.0.37/ci-news",
 
   // HOST: "https://alpha-api.loyaltri.com",
