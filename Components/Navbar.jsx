@@ -6,17 +6,17 @@ import { HiOutlineMenuAlt3 } from "react-icons/hi";
 const Navbar = () => {
   return (
     <div className="fixed top-0 w-full bg-transparent">
-      <header class="text-gray-600 body-font container-wrapper">
-        <div class="flex flex-wrap py-5 flex-col md:flex-row items-center">
-          <a class="flex title-font font-medium items-center text-gray-900 mb-4 md:mb-0 cursor-pointer">
+      <header className="text-gray-600 body-font container-wrapper">
+        <div className="flex flex-col flex-wrap items-center py-5 md:flex-row">
+          <a className="flex items-center mb-4 font-medium text-gray-900 cursor-pointer title-font md:mb-0">
          <Image src={logo} alt="logo" width={80} height={80} />
           </a>
-          <nav class="md:ml-auto flex flex-wrap items-center text-base font-semibold justify-center transition-all duration-300">
-            <a class="mr-5 hover:text-gray-900 cursor-pointer">Home</a>
-            <a class="mr-5 hover:text-gray-900 cursor-pointer">Jobs worldwide</a>
-            <a class="mr-5 hover:text-gray-900 cursor-pointer">Menu</a>
+          <nav className="flex flex-wrap items-center justify-center text-base font-semibold transition-all duration-300 md:ml-auto">
+            <a className="mr-5 cursor-pointer hover:text-gray-900">Home</a>
+            <a className="mr-5 cursor-pointer hover:text-gray-900">Jobs worldwide</a>
+            <a className="mr-5 cursor-pointer hover:text-gray-900">Menu</a>
           </nav>
-          <div class=" cursor-pointer hover:text-black transition-all duration-300">
+          <div className="transition-all duration-300 cursor-pointer  hover:text-black">
             <HiOutlineMenuAlt3 size={23} />
           </div>
         </div>
