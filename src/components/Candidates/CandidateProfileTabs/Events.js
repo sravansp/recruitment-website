@@ -35,6 +35,7 @@ const Events = () => {
   const [showAddEventSection, setShowAddEventSection] = useState(false); // New state to manage the visibility of AddEventSection
   const primaryColor = localStorage.getItem("mainColor");
 
+  // console.log(showAddEventSection);
   const handleEditorChange = (content) => {
     setContent(content);
   };
@@ -57,12 +58,14 @@ const Events = () => {
 
         {eventList.length === 0 ? (
           showAddEventSection ? (
-            <AddEventSection onCancel={() => setShowAddEventSection(false)} />
+            <FormSection onCancel={() => setShowAddEventSection(false)} />
           ) : (
             <CreateEventSection onCreateEventClick={handleCreateEventClick} />
           )
+        ) : showAddEventSection ? (
+          <FormSection onCancel={() => setShowAddEventSection(false)} />
         ) : (
-          <Eventlist onCreateEventClick={handleCreateEventClick}/>
+          <Eventlist onCreateEventClick={handleCreateEventClick} primaryColor={primaryColor} />
         )}
       </div>
 
@@ -88,6 +91,7 @@ const Events = () => {
   );
 };
 
+// CREATE EVENT SECTION
 const CreateEventSection = ({ onCreateEventClick }) => {
   return (
     <div className="h-full gap-4 vhcenter box-wrapper borderb">
@@ -109,16 +113,27 @@ const CreateEventSection = ({ onCreateEventClick }) => {
     </div>
   );
 };
-const Eventlist = ({onCreateEventClick}) => {
+
+// EVENT LIST SECTION
+const Eventlist = ({ onCreateEventClick, primaryColor }) => {
   return (
     <div className="flex flex-col h-full gap-4">
-      <ButtonClick
-          buttonName="Create Event"
+      <div
+        className="flex items-center gap-2.5 p-1.5 rounded-lg"
+        style={{ backgroundColor: `${primaryColor}10` }}
+      >
+        <ButtonClick
+          buttonName="Create New Event"
           BtnType="primary"
           handleSubmit={onCreateEventClick}
         />
+      </div>
+
       {eventList.map((events, i) => (
-        <div className="flex flex-col gap-3 p-4 rounded-lg borderb" key={i}>
+        <div
+          className="flex flex-col gap-3 p-4 bg-white rounded-lg borderb dark:bg-transparent"
+          key={i}
+        >
           <div className="flex items-center justify-between">
             <h6 className="h6">{events.eventName}</h6>
             <a
@@ -133,7 +148,7 @@ const Eventlist = ({onCreateEventClick}) => {
             <p className="col-span-1 para">Time: {events.time}</p>
             <p className="col-span-1 para">Duration: {events.duration}</p>
           </div>
-          <p className="pblack">{events.note}</p>
+          <p className="pblack !font-normal">{events.note}</p>
           <div className="divider-h" />
           <div className="flex items-center gap-3">
             <p className="para">Attendies: </p>
@@ -155,7 +170,8 @@ const Eventlist = ({onCreateEventClick}) => {
   );
 };
 
-const AddEventSection = ({ onCancel }) => {
+// EVENT FORM SECTION
+const FormSection = ({ onCancel }) => {
   const [EventDropValue, setEventDropValue] = useState("online");
   const [durationValue, setDurationValue] = useState("15min");
   const primaryColor = localStorage.getItem("mainColor");
@@ -261,7 +277,7 @@ const AddEventSection = ({ onCancel }) => {
         className="flex items-center justify-end gap-2.5 p-1.5 rounded-lg"
         style={{ backgroundColor: `${primaryColor}10` }}
       >
-        <ButtonClick buttonName="Cancel" />
+        <ButtonClick buttonName="Cancel" handleSubmit={onCancel} />
         <ButtonClick
           buttonName="Send Invitation"
           BtnType="primary"
