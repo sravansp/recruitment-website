@@ -39,7 +39,7 @@ const Questionaries = () => {
   ];
   return (
     <div className="flex flex-row gap-6 lg:col-span-8">
-      <div className="rounded-md h-[446px] sm:w-[1150px] bg-white border">
+      <div className="rounded-md h-[446px] sm:w-full bg-white border">
         <div className="flex justify-between items-center">
           <h3 className="w-[87px] h-[22px] mt-[18.88px] ml-[13.61px] font-[sf pro] size-[16px] text-black font-bold ">
             Questionair
@@ -86,7 +86,7 @@ const Questionaries = () => {
         </div>
       </div>
       <div className="">
-        <div className="rounded-lg bg-white dark:bg-secondaryDark p-1.5 ">
+        <div className="rounded-lg bg-white dark:bg-secondaryDark p-1.5 w-full ">
           <TabsNew tabs={tabData} onTabChange={onTabChange} initialTab={1} />
           <TextEditor
             // initialValue={content}

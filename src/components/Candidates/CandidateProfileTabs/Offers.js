@@ -56,7 +56,7 @@ const Offers = () => {
   return (
     // <div className="grid gap-6 lg:grid-cols-12">
     <div className="flex flex-row gap-6 lg:col-span-8">
-      <div className="rounded-md h-[446px] sm:w-[1150px] bg-white border">
+      <div className="rounded-md h-[446px] sm:w-full bg-white border">
         <div className="flex justify-between items-center">
           <h3 className="w-[87px] h-[22px] mt-[18.88px] ml-[13.61px] font-[sf pro] size-[16px] text-black font-bold ">
             Offer Letter

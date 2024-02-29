@@ -8,6 +8,9 @@ import RadioButton from "../../common/RadioButton";
 import Radiobuttonnew from "../../common/Radiobuttonnew";
 import Dropdown from "../../common/Dropdown";
 import { Flex, Radio } from "antd";
+import { FaCircleMinus, FaThumbsDown, FaThumbsUp } from "react-icons/fa6";
+import { GoStarFill } from "react-icons/go";
+import { RxCrossCircled } from "react-icons/rx";
 
 const Evaluations = () => {
   const primaryColor = localStorage.getItem("mainColor");
@@ -45,7 +48,7 @@ const Evaluations = () => {
   };
   return (
     <div className="flex flex-row gap-6 lg:col-span-8">
-      <div className="rounded-md h-full sm:w-[1150px] bg-white border">
+      <div className="rounded-md h-full sm:w-full w-full bg-white border ">
         <div className="flex justify-between items-center">
           <h3 className="w-[150px] h-[22px] mt-[18.88px] ml-[13.61px] font-[sf pro] size-[16px] text-black font-semibold ">
             Evaluation Form
@@ -104,19 +107,22 @@ const Evaluations = () => {
             <p className="leading-4 text-black font-['SF Pro'] font-normal mr-4 ">*Overall score always required</p>
           </div>
           <p className="font-normal text-xs leading-5 font-['SF Pro'] ">Give the candidate a quick evaluation score</p>
-        </div>
-        {/* <Flex Horizontal gap="middle">
-    <Radio.Group onChange={onChange} defaultValue="a">
-      <Radio.Button value="a">Hangzhou</Radio.Button>
-      <Radio.Button value="b">Shanghai</Radio.Button>
-      <Radio.Button value="c">Beijing</Radio.Button>
-      <Radio.Button value="d">Chengdu</Radio.Button>
+       
+        
+        
+    <Radio.Group onChange={onChange} defaultValue="" className="flex flex-grow w-[860px] h-[70px] mb-2">
+      <Radio.Button className="w-[172px] h-[70px]  bg-gray-200 text-gray-500 " value="a"><RxCrossCircled className="bg-gray-200 text-gray-500 ml-5 " />Strong No</Radio.Button>
+      <Radio.Button className="w-[172px] h-[70px]  bg-gray-200 text-gray-500" value="b"><FaThumbsDown className="bg-gray-200 text-gray-500 ml-1 " />NO</Radio.Button>
+      <Radio.Button className="w-[172px] h-[70px]  bg-gray-200 text-gray-500" value="c" ><FaCircleMinus className="bg-gray-200 text-gray-500 ml-5 " />Not Sure</Radio.Button>
+      <Radio.Button className="w-[172px] h-[70px]  bg-gray-200 text-gray-500" value="d"> <FaThumbsUp className="bg-gray-200 text-gray-500 ml-1" />Yes</Radio.Button>
+      <Radio.Button className="w-[172px] h-[70px]  bg-gray-200 text-gray-500" value="e"><GoStarFill className="bg-gray-200 text-gray-500 ml-6 " />Strong Yes</Radio.Button>
     </Radio.Group>
-    </Flex> */}
+    
+    </div>
       </div>
 
       <div className="">
-        <div className="rounded-lg bg-white dark:bg-secondaryDark p-1.5 ">
+        <div className="rounded-lg bg-white dark:bg-secondaryDark p-1.5 w-full ">
           <div className="flex flex-grow justify-between items-center">
             <TabsNew tabs={tabData} onTabChange={onTabChange} initialTab={1} />
             <ButtonClick buttonName="Unpin" BtnType="link" />
