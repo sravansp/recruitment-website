@@ -8,6 +8,9 @@ import RadioButton from "../../common/RadioButton";
 import Radiobuttonnew from "../../common/Radiobuttonnew";
 import Dropdown from "../../common/Dropdown";
 import { Flex, Radio } from "antd";
+import { FaCircleMinus, FaThumbsDown, FaThumbsUp } from "react-icons/fa6";
+import { GoStarFill } from "react-icons/go";
+import { RxCrossCircled } from "react-icons/rx";
 
 const Evaluations = () => {
   const primaryColor = localStorage.getItem("mainColor");
@@ -40,92 +43,130 @@ const Evaluations = () => {
       icon: <BsFileEarmarkRichtext className="text-base" />,
     },
   ];
-  const onChange = (e) => {
-    
-  };
+  const onChange = (e) => {};
   return (
-    <div className="flex flex-row gap-6 lg:col-span-8">
-      <div className="rounded-md h-full sm:w-[1150px] bg-white border">
-        <div className="flex justify-between items-center">
-          <h3 className="w-[150px] h-[22px] mt-[18.88px] ml-[13.61px] font-[sf pro] size-[16px] text-black font-semibold ">
-            Evaluation Form
-          </h3>
-          <div
-            className="flex items-center justify-end gap-2.5 p-1.5 mt-[18.88px] rounded-lg"
-            // style={{ backgroundColor: `${primaryColor}10` }}
-          >
-            <ButtonClick buttonName="Create New Form" BtnType="primary" />
+    <div className="grid gap-6 lg:grid-cols-12">
+      {/* LEFT COLUMN  */}
+      <div className="flex flex-col gap-6 lg:col-span-8">
+        <div className="flex flex-col gap-4 box-wrapper">
+          <div className="flex flex-col gap-4 divide-y">
+            <div className="flex items-center justify-between">
+              <h6 className="h6">Evaluation Form</h6>
+              <div
+                className="flex items-center justify-end gap-2.5 p-1.5 mt-[18.88px] rounded-lg"
+                // style={{ backgroundColor: `${primaryColor}10` }}
+              >
+                <ButtonClick buttonName="Create New Form" BtnType="primary" />
+              </div>
+            </div>
+            {/* <div className="v-divider  border-[1px] opacity-[10px]" /> */}
+
+            <div className="flex flex-col   gap-6 font-['SF Pro'] font-normal text-sm leading-5 text-black ">
+              <RadioButton
+                title="Does the candidate have the appropriate educational qualifications or training for this position?"
+                // value={}
+                // change={}
+                options={[
+                  { value: "yes", label: "Yes" },
+                  { value: "no", label: "No" },
+                  { value: "not sure", label: "Not Sure" },
+                ]}
+                gap={"125px"}
+                
+              />
+              <RadioButton
+                title="Did the candidate demonstrate, through their answers, a high degree of initiative?"
+                // value={}
+                // change={}
+                options={[
+                  { value: "yes", label: "Yes" },
+                  { value: "no", label: "No" },
+                  { value: "not sure", label: "Not Sure" },
+                ]}
+              />
+              <Dropdown
+                title="Characteristics" // Example title passed as prop
+                // value={}
+                // change={}
+                // options={}
+                placeholder="Choose..."
+                className="w-[196px]"
+              />
+              <Dropdown
+                title="Appearance" // Example title passed as prop
+                // value={}
+                // change={}
+                // options={}
+                placeholder="Choose..."
+                className="w-[196px]"
+              />
+              <div className="v-divider  border-[1px] opacity-[10px] " />
+              <div className="flex  justify-between ">
+                <h3 className="text-black font-semibold text-base font-['SF Pro']  !leading-6 ">
+                  Overall Scrore
+                </h3>
+                <p className="leading-4 text-black font-['SF Pro'] font-normal  ">
+                  *Overall score always required
+                </p>
+              </div>
+              <p className="font-normal text-xs leading-5 font-['SF Pro'] ">
+                Give the candidate a quick evaluation score
+              </p>
+
+              <Radio.Group
+                onChange={onChange}
+                defaultValue=""
+                className="flex flex-grow w-[860px] h-[70px] mb-2 "
+              >
+                <Radio.Button
+                  className="w-[172px] h-[70px]  bg-gray-200 text-gray-500 hover:bg-violet-100 hover:text-primary "
+                  value="a"
+                >
+                  <RxCrossCircled className="bg-gray-200 text-gray-500 ml-5  hover:text-primary " />
+                  Strong No
+                </Radio.Button>
+                <Radio.Button
+                  className="w-[172px] h-[70px]  bg-gray-200 text-gray-500"
+                  value="b"
+                >
+                  <FaThumbsDown className="bg-gray-200 text-gray-500 ml-1 " />
+                  NO
+                </Radio.Button>
+                <Radio.Button
+                  className="w-[172px] h-[70px]  bg-gray-200 text-gray-500"
+                  value="c"
+                >
+                  <FaCircleMinus className="bg-gray-200 text-gray-500 ml-5 " />
+                  Not Sure
+                </Radio.Button>
+                <Radio.Button
+                  className="w-[172px] h-[70px]  bg-gray-200 text-gray-500"
+                  value="d"
+                >
+                  {" "}
+                  <FaThumbsUp className="bg-gray-200 text-gray-500 ml-1" />
+                  Yes
+                </Radio.Button>
+                <Radio.Button
+                  className="w-[172px] h-[70px]  bg-gray-200 text-gray-500"
+                  value="e"
+                >
+                  <GoStarFill className="bg-gray-200 text-gray-500 ml-6 " />
+                  Strong Yes
+                </Radio.Button>
+              </Radio.Group>
+            </div>
           </div>
         </div>
-        {/* <div className="v-divider  border-[1px] opacity-[10px]" /> */}
-        <div className="divider-h" />
-        <div className="flex flex-col mt-[20px] ml-[14px] gap-[15px] font-[SF Pro] font-normal text-sm leading-5 text-black ">
-          <RadioButton
-            title="Does the candidate have the appropriate educational qualifications or training for this position?"
-            // value={}
-            // change={}
-            options={[
-              { value: "yes", label: "Yes" },
-              { value: "no", label: "No" },
-              { value: "not sure", label: "Not Sure" },
-            ]}
-            gap={"125px"}
-          />
-          <RadioButton
-            title="Did the candidate demonstrate, through their answers, a high degree of initiative?"
-            // value={}
-            // change={}
-            options={[
-              { value: "yes", label: "Yes" },
-              { value: "no", label: "No" },
-              { value: "not sure", label: "Not Sure" },
-            ]}
-            
-          />
-          <Dropdown
-            title="Characteristics" // Example title passed as prop
-            // value={}
-            // change={}
-            // options={}
-            placeholder="Choose..."
-            className="w-[196px]"
-          />
-          <Dropdown
-            title="Appearance" // Example title passed as prop
-            // value={}
-            // change={}
-            // options={}
-            placeholder="Choose..."
-            className="w-[196px]"
-          />
-          <div className="v-divider  border-[1px] opacity-[10px] " />
-          <div className="flex  justify-between ">
-            <h3 className="text-black font-semibold text-base font-['SF Pro']  !leading-6 ">Overall Scrore</h3>
-            <p className="leading-4 text-black font-['SF Pro'] font-normal mr-4 ">*Overall score always required</p>
-          </div>
-          <p className="font-normal text-xs leading-5 font-['SF Pro'] ">Give the candidate a quick evaluation score</p>
-        </div>
-        {/* <Flex Horizontal gap="middle">
-    <Radio.Group onChange={onChange} defaultValue="a">
-      <Radio.Button value="a">Hangzhou</Radio.Button>
-      <Radio.Button value="b">Shanghai</Radio.Button>
-      <Radio.Button value="c">Beijing</Radio.Button>
-      <Radio.Button value="d">Chengdu</Radio.Button>
-    </Radio.Group>
-    </Flex> */}
       </div>
 
-      <div className="">
+      <div className="lg:col-span-4">
         <div className="rounded-lg bg-white dark:bg-secondaryDark p-1.5 ">
-          <div className="flex flex-grow justify-between items-center">
-            <TabsNew tabs={tabData} onTabChange={onTabChange} initialTab={1} />
-            <ButtonClick buttonName="Unpin" BtnType="link" />
-          </div>
-
+          <TabsNew tabs={tabData} onTabChange={onTabChange} initialTab={1} />
           <TextEditor
             // initialValue={content}
             // onChange={handleEditorChange}
-            className="h-[250px] w-[580px]"
+            minheight="250px"
           />
           <div
             className="flex items-center justify-end gap-2.5 p-1.5 mt-4 rounded-lg"

@@ -17,6 +17,7 @@ import Notification from "./components/Settings/Notification";
 import Company from "./components/Company/Company";
 import TeamMembers from "./components/Team_members/TeamMembers";
 import Template from "./components/Template/Template";
+import Intergration from "./components/Settings/Intergration";
 
 
 
@@ -68,7 +69,7 @@ export default function Router() {
                 <Route path="/Notification" element={<Notification/>}></Route>
                 <Route path="/Company" element={<Company/>}></Route>
                 <Route path="/members" element={<TeamMembers/>}></Route>
-                <Route path="/Templates" element={<Template/>}></Route>
+                <Route path="/Integrations" element={<Intergration />}></Route>
               </Routes>
             </div>
           </div>

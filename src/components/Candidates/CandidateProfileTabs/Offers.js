@@ -3,6 +3,7 @@ import ButtonClick from "../../common/Button";
 import TextEditor from "../../common/TextEditor/TextEditor";
 import TabsNew from "../../common/TabsNew";
 import {
+  RiAttachment2,
   RiEmojiStickerFill,
   RiHome6Line,
   RiStickyNoteLine,
@@ -15,6 +16,7 @@ import { ImAttachment } from "react-icons/im";
 
 const Offers = () => {
   const [content, setContent] = useState("");
+  const [uploadedFiles, setUploadedFiles] = useState([]);
   const primaryColor = localStorage.getItem("mainColor");
 
   const handleEditorChange = (content) => {
@@ -27,6 +29,10 @@ const Offers = () => {
     if (tabId === 1) {
     } else if (tabId === 2) {
     }
+  };
+  const handleFileChange = (event) => {
+    const files = event.target.files;
+    setUploadedFiles([...uploadedFiles, ...files]);
   };
   const tabData = [
     {
@@ -54,84 +60,77 @@ const Offers = () => {
     },
   ];
   return (
-    // <div className="grid gap-6 lg:grid-cols-12">
-    <div className="flex flex-row gap-6 lg:col-span-8">
-      <div className="rounded-md h-[446px] sm:w-[1150px] bg-white border">
-        <div className="flex justify-between items-center">
-          <h3 className="w-[87px] h-[22px] mt-[18.88px] ml-[13.61px] font-[sf pro] size-[16px] text-black font-bold ">
-            Offer Letter
-          </h3>
-          <div
-            className="flex items-center justify-end gap-2.5 p-1.5 mt-[18.88px] rounded-lg"
-            // style={{ backgroundColor: `${primaryColor}10` }}
-          >
-            <ButtonClick buttonName="Reject" />
-            <ButtonClick buttonName="Accept" icon={<FcCheckmark />} />
-            <ButtonClick buttonName="Choose Template" BtnType="primary" />
-          </div>
-        </div>
-
-        <div className="v-divider mt-4 border-[1px] opacity-[10px]" />
-        <div>
-          <Editor
-            // editorState={editorState}
-            onEditorStateChange={handleEditorChange}
-            placeholder="Type your text here..." // Add placeholder here
-            toolbar={{
-              options: ["inline", "fontSize", "list", "textAlign"],
-              inline: {
-                options: ["bold", "italic", "underline", "strikethrough"],
-              },
-              list: {
-                options: ["unordered", "ordered", "indent"],
-              },
-              textAlign: {
-                options: ["left", "center", "right", "justify"],
-              },
-            }}
-            toolbarStyle={{
-              position: "absolute",
-              bottom: "110px",
-              left: "50px",
-              right: "0",
-            }}
-            toolbarClassName=" bg-black"
-          />
-          <div
-            className="flex justify-between items-center gap-2.5 p-1.5 mt-60 rounded-lg "
-            style={{
-              backgroundColor: `${primaryColor}10`,
-              color: `${primaryColor}10`,
-            }}
-          >
-            <div className="flex justify-items-start !important  gap-2.5 p-1.5 ">
-              <ButtonClick
-                buttonName=""
-                BtnType="link"
-                icon={<ImAttachment />}
-              />
-              <ButtonClick
-                buttonName=""
-                BtnType="link"
-                icon={<RiEmojiStickerFill />}
-              />
-
-              <ButtonClick buttonName="Add Signature" BtnType="link" />
+    <div className="grid gap-6 lg:grid-cols-12">
+      {/* LEFT COLUMN  */}
+      <div className="flex flex-col gap-6 lg:col-span-8">
+        <div className="flex flex-col gap-4 box-wrapper">
+          <div className="flex flex-col gap-4 divide-y">
+            <div className="flex items-center justify-between">
+              <h6 className="h6">Offer Letter</h6>
+              <div
+                className="flex items-center justify-end gap-2.5 p-1.5  rounded-lg"
+                // style={{ backgroundColor: `${primaryColor}10` }}
+              >
+                <ButtonClick buttonName="Reject" />
+                <ButtonClick buttonName="Accept" icon={<FcCheckmark />} />
+                <ButtonClick buttonName="Choose Template" BtnType="primary" />
+              </div>
             </div>
-            <div className="flex gap-2.5 p-1.5">
-              <ButtonClick buttonName="Cancel" />
-              <ButtonClick buttonName="Send now" BtnType="primary" />
+
+            <div>
+              <div className="pt-4">
+                <TextEditor
+                  // initialValue={emailContent}
+                  // onChange={handleEditorChange2}
+                  minheight="300px"
+                  className="border-none"
+                />
+              </div>
+              <div
+                className="flex justify-between items-center gap-2.5 p-1.5  rounded-lg "
+                style={{
+                  backgroundColor: `${primaryColor}10`,
+                  color: `${primaryColor}10`,
+                }}
+              >
+                <div className="flex justify-items-start !important  gap-2.5 p-1.5 ">
+                  <label className="p-2 cursor-pointer">
+                    <RiAttachment2 size={18} className="text-primary" />
+                    <input
+                      type="file"
+                      className="hidden"
+                      onChange={handleFileChange}
+                      multiple
+                      accept=".doc, .docx, .pdf, .jpg, .jpeg, .png" // Specify the allowed file types
+                    />
+                  </label>
+                  <label className="p-2 cursor-pointer">
+                    <RiEmojiStickerFill size={18} className="text-primary" />
+                  </label>
+
+                  <ButtonClick
+                    buttonName="Add Signature"
+                    BtnType="link"
+                    className="text-primary"
+                  />
+                </div>
+                <div className="flex gap-2.5 p-1.5">
+                  <ButtonClick buttonName="Cancel" />
+                  <ButtonClick buttonName="Send now" BtnType="primary" />
+                </div>
+              </div>
             </div>
           </div>
         </div>
       </div>
-      <div className="">
+
+      <div className="lg:col-span-4">
         <div className="rounded-lg bg-white dark:bg-secondaryDark p-1.5 ">
           <TabsNew tabs={tabData} onTabChange={onTabChange} initialTab={1} />
           <TextEditor
             initialValue={content}
             onChange={handleEditorChange}
-            className="h-[250px] w-[580px]"
+            minheight="250px"
           />
           <div
             className="flex items-center justify-end gap-2.5 p-1.5 mt-4 rounded-lg"
@@ -143,7 +142,6 @@ const Offers = () => {
         </div>
       </div>
     </div>
-    // </div>
   );
 };
 
