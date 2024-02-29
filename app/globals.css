@@ -3,31 +3,133 @@
 @tailwind utilities;
 
 :root {
-  --foreground-rgb: 0, 0, 0;
-  --background-start-rgb: 214, 219, 220;
-  --background-end-rgb: 255, 255, 255;
+  --text-white: #fafafa;
+  --text-black: #111e2c;
+  --slateBlue: "#6A4BFC";
+  --stale: "#7939EF";
+  --body-bg: #ffffff;
+  --primary-color: #6a4bfc;
+  /* --primary-color: rgba(106, 75, 252); */
+  --bg-primary-color: #6a4bfc;
+
+  --secondary-color: #111e2c;
+
+  --btn-color: var(--primary-color);
+
+  --gradient-primary: linear-gradient(180deg, #8086e4 0%, #6640eb 100%);
+
+  /* ====== BORDER RADIUS ====== */
+  --bradius-4: 4px;
+  --bradius-8: 8px;
+  --bradius-16: 14px;
+
+  /* ====== SHADOW ====== */
+
+  /* ====== FONT FAMILY AND FS ====== */
+
+  --font-figtree: "Figtree", sans-serif;
+  --font-Inter: "Inter", sans-serif;
+
+  --text-size: 14px;
+
+  /* ====== PADDING ====== */
+
+  /* ====== Transition ====== */
+  --tran-02: all 0.2s ease;
+  --tran-03: all 0.3s ease;
+  --tran-04: all 0.4s ease;
+  --tran-05: all 0.5s ease;
 }
 
-@media (prefers-color-scheme: dark) {
+@media (prefers-color-scheme: light) {
   :root {
-    --foreground-rgb: 255, 255, 255;
-    --background-start-rgb: 0, 0, 0;
-    --background-end-rgb: 0, 0, 0;
   }
 }
 
 body {
-  color: rgb(var(--foreground-rgb));
-  background: linear-gradient(
-      to bottom,
-      transparent,
-      rgb(var(--background-end-rgb))
-    )
-    rgb(var(--background-start-rgb));
+  color: var(--text-black);
+  background: var(--body-bg);
 }
 
 @layer utilities {
   .text-balance {
     text-wrap: balance;
   }
+}
+
+.vhcenter {
+  @apply flex items-center justify-center;
+}
+
+.box-wrapper {
+  @apply p-4 bg-white rounded-lg dark:border 2xl:p-6 dark:border-white dark:border-opacity-20 dark:bg-black;
+}
+
+.container-wrapper {
+  @apply px-5 mx-auto sm:container xl:max-w-screen-xl;
+}
+
+.h1 {
+  @apply text-base font-semibold text-black 2xl:text-2xl dark:text-white;
+}
+
+.h6 {
+  @apply text-sm font-semibold text-black 2xl:text-base dark:text-white;
+}
+
+.p6 {
+  @apply text-sm font-normal text-gray-500 md:text-base dark:text-white;
+}
+
+.subhead {
+  @apply text-sm font-semibold text-black 2xl:text-xl dark:text-white;
+}
+
+.h2 {
+  @apply text-sm font-semibold text-black 2xl:text-xl dark:text-white;
+}
+
+.acco-h1 {
+  @apply text-sm font-semibold leading-normal text-black 2xl:text-xl dark:text-white;
+}
+
+.acco-subhead {
+  @apply text-[11px] leading-normal font-semibold text-black 2xl:text-base dark:text-white;
+}
+
+.para {
+  @apply text-[9px] 2xl:text-sm leading-normal font-semibold text-grey dark:text-white dark:text-opacity-50;
+}
+
+.pblack {
+  @apply text-[9px] 2xl:text-sm leading-normal font-semibold text-black dark:text-white dark:text-opacity-90;
+}
+
+.input-group {
+  @apply flex flex-col justify-between gap-6 md:items-center md:gap-0 md:flex-row;
+}
+
+.dot-green {
+  @apply bg-gradient-to-r from-[#38A472] to-[#10BA6A] w-3 h-3 rounded-full;
+}
+
+.h-divider {
+  @apply border-r border-secondaryWhite dark:border-secondaryDark pr-2.5 pl-2.5;
+}
+
+.h-divider-xl {
+  /* @apply 2xl:border-r 2xl:border-secondaryWhite 2xl:dark:border-secondaryDark 2xl:pr-2.5 2xl:pl-2.5; */
+  @apply xl:border-r xl:border-secondaryWhite xl:dark:border-secondaryDark xl:pr-2.5 xl:pl-2.5;
+}
+
+.v-divider {
+  @apply w-full h-px border-b border-secondaryWhite dark:border-secondaryDark;
+}
+
+.divider-h {
+  @apply w-full h-px bg-black dark:bg-white bg-opacity-10 dark:bg-opacity-20;
+}
+
+.borderb {
+  @apply border border-black dark:border-white border-opacity-10 dark:border-opacity-20;
 }
