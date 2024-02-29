@@ -28,7 +28,7 @@ import { RiDeleteBin5Line } from "react-icons/ri";
 import { FaPencil } from "react-icons/fa6";
 import { useTranslation } from "react-i18next";
 import { useMediaQuery } from "react-responsive";
-import { useNavigate } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import { FaPhoneAlt } from "react-icons/fa";
 
 // Filter Dropdown
@@ -620,6 +620,16 @@ const TableCopy = ({
   const jsonResult = splitTitle
     .map((word) => word.charAt(0).toUpperCase() + word.slice(1))
     .join(" ");
+
+    const handleRowClick = (record) => {
+      // const candidateId = record.id;
+      // Use the Link component to navigate to the candidate profile page
+      // without directly manipulating history
+      // You can define the route in your React Router setup
+      // For example: <Route path="/candidate-profile/:id" component={CandidateProfile} />
+      window.location.href = '/candidateprofile';
+    };
+    
   return (
     <div className="flex flex-col gap-5">
       <div className="flex flex-col justify-between gap-3 xl:items-center xl:flex-row">
@@ -729,14 +739,17 @@ const TableCopy = ({
           <Table
             rowSelection={{ ...rowSelection }}
             columns={tableData}
-            rowSelection={{ ...rowSelection }}
-            columns={tableData}
             dataSource={listData}
             size={isSmallScreen ? "small" : ""}
             scroll={{ y: 600 }} // Adjust the height according to your requirement
             pagination={false} // Remove pagination
             columnMenuItems={true}
             className="custom-table"
+            rowClassName={() => 'table-row'}  
+            onRow={() => ({
+              onClick: handleRowClick,
+            })}
+
             // dataSource={data.filter(
             //   (item) =>
             //     item.location_name
@@ -753,8 +766,8 @@ const TableCopy = ({
             //       .toLowerCase()
             //       .includes(searchValue.toLowerCase())
             // )}
-            dataSource={listData}
-            size={isSmallScreen ? "small" : ""}
+            
+           
           />
         )}
       </div>

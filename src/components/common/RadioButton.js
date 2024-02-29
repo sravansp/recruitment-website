@@ -11,6 +11,7 @@ export default function RadioButton({
   options = [],
   required = false,
   children,
+  gap = 0
 }) {
   const isSmallScreen = useMediaQuery({ maxWidth: 1439 });
   return (
