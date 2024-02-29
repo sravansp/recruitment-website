@@ -18,11 +18,14 @@ import { hamburger } from "../../Redux/slice";
 
 import { IoMdCompass } from "react-icons/io";
 import { BsBriefcaseFill } from "react-icons/bs";
-import { HiDocumentText } from "react-icons/hi2";
+import { HiDocumentText, HiOutlineSquare3Stack3D } from "react-icons/hi2";
 import { HiUsers } from "react-icons/hi";
 import { RiSettings4Fill } from "react-icons/ri";
-import { IoHelpCircle } from "react-icons/io5";
+import { IoCashOutline, IoHelpCircle } from "react-icons/io5";
 import {  PiBriefcaseDuotone, PiBriefcaseMetalDuotone, PiPalette, PiPaletteDuotone, PiUser } from "react-icons/pi";
+import { FaKey } from "react-icons/fa";
+import { GoKey } from "react-icons/go";
+import { CiBank } from "react-icons/ci";
 
 
 const Sidebar = () => {
@@ -223,36 +226,38 @@ const Sidebar = () => {
               className={`text-white transition-all duration-300 group-hover:text-primary ${selectedMainMenu === t("Jobs") ? "text-primary" : ""
                 }`}
             />
+           
           ),
-          submenus: [
-            {
-              catid: 2,
-              id: 1,
-              parentMenu: "Jobs",
-              parentId: 2,
-              title: t("Jobs"),
-              status: false,
-              subMenu: [
-                {
-                  id: 21,
-                  title: t("Job List"),
-                  icon: (
-                    <PiBriefcaseDuotone className="!text-base 2xl:!text-2xl" />
-                  ),
-                  link: "/AllJobs",
-                },
-                {
-                  id: 22,
-                  title: t("Job Details"),
-                  icon: (
-                    <PiBriefcaseMetalDuotone className="!text-base 2xl:!text-2xl" />
-                  ),
-                  link: "/JobDetails",
-                },
+           link:"/AllJobs",
+          // submenus: [
+          //   {
+          //     catid: 2,
+          //     id: 1,
+          //     parentMenu: "Jobs",
+          //     parentId: 2,
+          //     title: t("Jobs"),
+          //     status: false,
+          //     // subMenu: [
+          //     //   {
+          //     //     id: 21,
+          //     //     title: t("Job List"),
+          //     //     icon: (
+          //     //       <PiBriefcaseDuotone className="!text-base 2xl:!text-2xl" />
+          //     //     ),
+          //     //     link: "/AllJobs",
+          //     //   },
+          //     //   {
+          //     //     id: 22,
+          //     //     title: t("Job Details"),
+          //     //     icon: (
+          //     //       <PiBriefcaseMetalDuotone className="!text-base 2xl:!text-2xl" />
+          //     //     ),
+          //     //     link: "/JobDetails",
+          //     //   },
                
-              ],
-            },
-          ],
+          //     // ],
+          //   },
+          // ],
         },
         {
           id: 3,
@@ -263,36 +268,39 @@ const Sidebar = () => {
               className={`text-white transition-all duration-300 group-hover:text-primary ${selectedMainMenu === t("Candidates") ? "text-primary" : ""
                 }`}
             />
+           
           ),
-          submenus: [
-            {
-              catid: 3,
-              id: 1,
-              parentMenu: "Candidates",
-              parentId: 3,
-              title: t("General"),
-              status: false,
-              subMenu: [
-                {
-                  id: 31,
-                  title: t("Candidate Profile"),
-                  icon: (
-                    <PiUser className="!text-base 2xl:!text-2xl" />
-                  ),
-                  link: "/CandidateProfile",
-                },
-                {
-                  id: 32,
-                  title: t("Candidate List"),
-                  icon: (
-                    <PiUser className="!text-base 2xl:!text-2xl" />
-                  ),
-                  link: "/CandidateList",
-                },
+          link:"/CandidateList",
+          
+          // submenus: [
+          //   {
+          //     catid: 3,
+          //     id: 1,
+          //     parentMenu: "Candidates",
+          //     parentId: 3,
+          //     title: t("General"),
+          //     status: false,
+          //     subMenu: [
+          //       {
+          //         id: 31,
+          //         title: t("Candidate Profile"),
+          //         icon: (
+          //           <PiUser className="!text-base 2xl:!text-2xl" />
+          //         ),
+          //         link: "/CandidateProfile",
+          //       },
+          //       {
+          //         id: 32,
+          //         title: t("Candidate List"),
+          //         icon: (
+          //           <PiUser className="!text-base 2xl:!text-2xl" />
+          //         ),
+          //         link: "/CandidateList",
+          //       },
                
-              ],
-            },
-          ],
+          //     ],
+          //   },
+          // ],
           
         },
         {
@@ -335,10 +343,80 @@ const Sidebar = () => {
                   ),
                   link: "/Appearance",
                 },
+                {
+                  id: 113,
+                  title: t("Notification"),
+                  icon: (
+                    <IoCashOutline  className="!text-base 2xl:!text-2xl" />
+                  ),
+                  link: "/Notification",
+                },
+                {
+                  id: 114,
+                  title: t("Role and Privileges"),
+                  icon: (
+                    <GoKey  className="!text-base 2xl:!text-2xl" />
+                  ),
+                  link: "/Privileges",
+                },
+                
+               
+              ],
+            },
+            {
+              catid: 1,
+              id: 2,
+              parentMenu: "Settings",
+              parentId: 5,
+              title: t("Other"),
+              status: false,
+              subMenu: [
+                {
+                  id: 115,
+                  title: t("Company"),
+                  icon: (
+                    <CiBank className="!text-base 2xl:!text-2xl" />
+                  ),
+                  link: "/Company",
+                },
+                {
+                  id: 116,
+                  title: t("Team members"),
+                  icon: (
+                    <HiOutlineSquare3Stack3D  className="!text-base 2xl:!text-2xl" />
+                  ),
+                  link: "/members",
+                },
+                {
+                  id: 117,
+                  title: t("System settings"),
+                  icon: (
+                    <GoKey  className="!text-base 2xl:!text-2xl" />
+                  ),
+                  link: "/System",
+                },
+                {
+                  id: 118,
+                  title: t("Integrations"),
+                  icon: (
+                    <GoKey  className="!text-base 2xl:!text-2xl" />
+                  ),
+                  link: "/Integrations",
+                },
+                {
+                  id: 119,
+                  title: t("Templates"),
+                  icon: (
+                    <GoKey  className="!text-base 2xl:!text-2xl" />
+                  ),
+                  link: "/Templates",
+                },
+                
                
               ],
             },
           ],
+       
         },
         {
           id: 6,
@@ -415,11 +493,12 @@ const Sidebar = () => {
                         ? "bg-white bg-opacity-100"
                         : ""
                       }`}
-                  >
-                    {menuItem.icon}
+                  > <Link to={menuItem.link}>{menuItem.icon}</Link>
+                    
                   </div>
                   <p className="text-[9px] 2xl:text-xs text-white">
-                    {menuItem.title}
+                    <Link to={menuItem.link}>{menuItem.title}</Link>
+                    
                   </p>
                 </div>
               </li>

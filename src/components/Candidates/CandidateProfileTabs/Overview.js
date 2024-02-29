@@ -20,7 +20,7 @@ import { BsFileEarmarkRichtext } from "react-icons/bs";
 import TextEditor from "../../common/TextEditor/TextEditor";
 import ButtonClick from "../../common/Button";
 import PDFViewer from "../../common/PDFViewer";
-import pdfFile from "../../../assets/documents/resume.pdf";
+import pdfFile from "../../../assets/documents/sample.pdf";
 import { workExperiences, educationExperiences } from "../../common/DataArrays";
 
 const userInfo = [
@@ -172,7 +172,7 @@ const Overview = () => {
                 <div className="inline-flex flex-col items-start justify-start gap-1">
                   <div className="gap-2 vhcenter">
                     <h6 className="h6">{work.companyName}</h6>
-                    <p className="para p-1.5 rounded-md bg-secondaryWhite !leading-none">
+                    <p className="para p-1.5 rounded-md bg-secondaryWhite dark:bg-secondaryDark !leading-none">
                       {work.Shift}
                     </p>
                   </div>
@@ -240,7 +240,7 @@ const Overview = () => {
           <TextEditor
             initialValue={content}
             onChange={handleEditorChange}
-            className="h-[250px]"
+            minheight="250px"
           />
           <div
             className="flex items-center justify-end gap-2.5 p-1.5 mt-4 rounded-lg"

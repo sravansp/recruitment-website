@@ -44,6 +44,8 @@ const layoutSlice = createSlice({
   },
 });
 
+
+
 // Action creators are generated for each case reducer function
 export const {
   increment,
@@ -56,6 +58,7 @@ export const {
   organisationId,
   companyIdSet,
   hamburger,
+   
 } = layoutSlice.actions;
 
 export default layoutSlice.reducer;

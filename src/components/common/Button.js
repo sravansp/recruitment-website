@@ -11,6 +11,7 @@ export default function ButtonClick({
   className,
   BtnType = "", // Updated prop name to avoid conflict with BtnType
   icon,
+  iconAdd = false
 }) {
   const isSmallScreen = useMediaQuery({ maxWidth: 1439 });
 
@@ -32,7 +33,14 @@ export default function ButtonClick({
   return (
     // <div className={`${className} `}>
     <Button
-      icon={BtnType.toLowerCase() === "add" ? <IoMdAdd /> : icon}
+      // icon={BtnType.toLowerCase() === "add" ? <IoMdAdd /> : icon}
+      icon={BtnType.toLowerCase() === "add" ? (
+        <IoMdAdd />
+      ) : icon ? (
+        icon
+      ) : iconAdd === true && (
+        <IoMdAdd />
+      )}
       onClick={() => (!updateBtn ? handleSubmit() : updateFun())}
       type={getButtonType()}
       size={isSmallScreen ? "default" : "large"}
@@ -50,4 +58,5 @@ export default function ButtonClick({
     </Button>
     // </div>
   );
+  console.log("ButtonClick Component - HandleSubmit called!");
 }

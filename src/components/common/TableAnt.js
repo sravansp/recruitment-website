@@ -28,6 +28,9 @@ import { FaPencil } from "react-icons/fa6";
 import { useTranslation } from "react-i18next";
 import { useMediaQuery } from "react-responsive";
 import { useNavigate } from "react-router-dom";
+import ButtonClick from "./Button";
+import { useDispatch, useSelector } from 'react-redux';
+import { setNavigationPath } from "../../Redux/action";
 
 // Filter Dropdown
 const { SubMenu } = Menu;
@@ -59,6 +62,8 @@ const TableAnt = ({
   buttonClick = () => {},
   clickDrawer = () => {},
   viewDetails = false,
+  showButton = false,
+  All=false
 }) => {
   const { t } = useTranslation();
   const navigate = useNavigate();
@@ -71,19 +76,42 @@ const TableAnt = ({
   const [loading, setLoading] = useState(false);
   const [searchValue, setSearchValue] = useState("");
   const [searchFilter, setSearchFilter] = useState([...data]);
-
+  // const [navigationPath, setNavigationPath] = useState("");
+   
+  const dispatch = useDispatch();
+  
+  const [updateId, setUpdateId] = useState("");
   const [visibleColumns, setVisibleColumns] = useState();
   const [dropdownVisible, setDropdownVisible] = useState(false);
   const [gridList, setGridList] = useState(1);
   const primaryColor = localStorage.getItem("mainColor");
+  const [show, setShow] = useState(false);
+  const [openPop, setOpenPop] = useState("");
+  const handleShow = () => setShow(true);
   useEffect(() => {
     // if (data) {
     setListData([...data]);
     // }
   }, [data[0]]);
-
+    
+  
+  React.useEffect(() => {
+    dispatch(setNavigationPath(tabValue));
+  }, [dispatch, tabValue]);
   // Action Toggle change
 
+  const navigationPath = useSelector((state) => state.navigation.navigationPath);
+  useEffect(() => {
+    console.log("Updated navigationPath:", navigationPath);
+  }, [navigationPath]);
+
+
+  const handleAddButtonClick = (path) => {
+    // Use the path parameter as needed in your function
+    console.log(`Add button clicked for path: ${path}`);
+  
+    // The rest of your logic...
+  };
   const handleToggleList = (id, checked) => {
     // console.log(checked);
     // console.log(switches);
@@ -143,11 +171,11 @@ const TableAnt = ({
       window.location.reload();
     }
   };
-
+ 
   useEffect(() => {
     console.log(header, "header");
     setTableData(
-      header[0]?.[tabValue || path]?.map((each, i) => ({
+      (header[0]?.[tabValue || path || ''] || []).map((each, i) => ({
         title: (
           <span
             key={i}
@@ -563,13 +591,15 @@ const TableAnt = ({
   const jsonResult = splitTitle
     .map((word) => word.charAt(0).toUpperCase() + word.slice(1))
     .join(" ");
+
+   
   return (
     <div className="flex flex-col gap-5">
       <div className="flex flex-col justify-between gap-3 xl:items-center xl:flex-row">
         <div className="flex items-center gap-3">
           <p className="text-lg font-semibold dark:text-white">
             {/* {tabTitle?.split("_") || path?.split("_")} */}
-            {jsonResult || path}
+            {/* {jsonResult || path} */}
             {/* (0) */}
           </p>
           <div
@@ -577,16 +607,62 @@ const TableAnt = ({
             className={`bg-[${primaryColor}] bg-opacity-10 text-primary text-[10px] 2xl:text-xs rounded-full px-3 py-1 vhcenter`}
           >
             {console.log(...tabTitle.split("_"))}
-            {hasSelected
+            {All ? (
+  <span>
+     {hasSelected
               ? `${selectedRowKeys?.length} ${
                   jsonResult ? jsonResult : path
                 } Selected`
               : `All ${jsonResult ? jsonResult : path}`}
+  </span>
+) : (
+  <div className="search-All">
+     <SearchBox
+  // title="Search"
+  data={data}
+  placeholder={t("Search_placeholder")}
+  value={searchValue}
+  icon={<CiSearch className=" dark:text-white" />}
+  className="mt-0 w-ful md:w-auto"
+  error=""
+  change={(value) => {
+    setSearchValue(value);
+  }}
+  onSearch={(value) => {
+    // console.log(value);
+    setSearchFilter(value);
+  }}
+/>
+  </div>
+ 
+)}
+            
+{/*             
+            {hasSelected
+              ? `${selectedRowKeys?.length} ${
+                  jsonResult ? jsonResult : path
+                } Selected`
+              : `All ${jsonResult ? jsonResult : path}`} */}
             {console.log(jsonResult)}
           </div>
         </div>
         <div className="flex flex-wrap items-center gap-3">
-          <SearchBox
+          
+        {
+  showButton ? (
+    <ButtonClick
+
+  handleSubmit={() => clickDrawer(true)}
+    buttonName={`Add ${navigationPath}`}
+    className="your-custom-styles"
+    BtnType="Add"
+    >
+      
+    </ButtonClick>
+  ) : (
+    <div className="flex flex-wrap items-center gap-3">
+                {All&&( 
+                <SearchBox
             // title="Search"
             data={data}
             placeholder={t("Search_placeholder")}
@@ -601,7 +677,8 @@ const TableAnt = ({
               // console.log(value);
               setSearchFilter(value);
             }}
-          />
+          />)}
+               
           <div>
             {/* <Dropdown
               menu={{
@@ -656,7 +733,14 @@ const TableAnt = ({
           >
             <FiSettings className="text-base 2xl:text-lg" />
           </Button>
+
+    </div>
+  )
+}
+
+
         </div>
+        
       </div>
       <div className="border rounded-lg border-[#E7E7E7] dark:border-secondary relative overflow-auto">
         {data && (

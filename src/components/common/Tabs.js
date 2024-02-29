@@ -29,11 +29,14 @@ const Tabs = ({
   arabic = true,
   checkBox = true,
   tabClick = () => {},
+  showButton=false,
+
 }) => {
   const [activeTab, setActiveTab] = useState(tabs[0].id);
   const [changeData, setChangedata] = useState(false);
   const [tabeName, setTabName] = useState("company");
   const [tabeData, setTabData] = useState();
+  
 
   // useEffect(() => {
   //   console.log(activeTab);
@@ -115,6 +118,8 @@ const Tabs = ({
                     addButtonName={addButtonName}
                     exportButton={false}
                     title={title}
+                    showButton={showButton}
+                    
                     // arabic = true,
                     // checkBox = true
                   />

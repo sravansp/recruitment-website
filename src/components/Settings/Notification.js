@@ -1,0 +1,264 @@
+import React, { useState } from "react";
+import { IoIosArrowForward } from "react-icons/io";
+import { Switch } from "antd";
+import ToggleBtn from "../common/ToggleBtn";
+import { useTranslation } from "react-i18next";
+
+import { useMediaQuery } from "react-responsive";
+import axios from "axios";
+import API from "../Api";
+import { useFormik } from "formik";
+import * as yup from "yup";
+import Accordion from "../common/Accordion";
+export default function Notification() {
+  const isSmallScreen = useMediaQuery({ maxWidth: 1439 });
+  const { t } = useTranslation();
+  const [notificationData, setNotificationData] = useState([
+    {
+      id: 1,
+      title: t("Email_Notification"),
+      description: t("Email_Notification_description"),
+      contents: [
+        {
+          id: 1,
+          subTitle: t("Salary Slip"),
+          subTitleDescription: t("This will show Arabic in table fields when creating and editing items."),
+          value: "generalUpdates",
+          isActive: false,
+        },
+        {
+          id: 2,
+          subTitle: t("Salary Certificate"),
+          subTitleDescription: t("This will show Arabic in table fields when creating and editing items.n"),
+          value: "taskReminders",
+          isActive: false,
+        },
+        {
+          id: 3,
+          subTitle: t("Gratuity Approval"),
+          subTitleDescription: t("This will show Arabic in table fields when creating and editing items."),
+          value: "meetingInvitations",
+          isActive: false,
+        },
+        {
+          id: 4,
+          subTitle: t("Loan approvals"),
+          subTitleDescription: t("This will show Arabic in table fields when creating and editing items."),
+          value: "emailemployeeRequests",
+          isActive: false,
+        },
+        // {
+        //   id: 5,
+        //   subTitle: t("System_Status_alerts"),
+        //   subTitleDescription: t("System_Status_alerts_description"),
+        //   value: "systemStatus",
+        //   isActive: false,
+        // },
+      ],
+    },
+    // {
+    //   id: 2,
+    //   title: t("Push_Notification"),
+    //   description: t("Push_Notification_description"),
+    //   contents: [
+    //     {
+    //       id: 1,
+    //       subTitle: t("Instant_Messages"),
+    //       subTitleDescription: t("Instant_Messages_description"),
+    //       value: "instantMessages",
+    //       isActive: false,
+    //     },
+    //     {
+    //       id: 2,
+    //       subTitle: t("Task_Updates"),
+    //       subTitleDescription: t("Task_Updates_description"),
+    //       value: "taskUpdates",
+    //       isActive: false,
+    //     },
+    //     {
+    //       id: 3,
+    //       subTitle: t("Meeting_Reminders"),
+    //       subTitleDescription: t("Meeting_Reminders_description"),
+    //       value: "meetingReminders",
+    //       isActive: false,
+    //     },
+    //     {
+    //       id: 4,
+    //       subTitle: t("Employee_Requests"),
+    //       subTitleDescription: t("Employee_Requests_description"),
+    //       value: "pushemployeeRequests",
+    //       isActive: false,
+    //     },
+    //     {
+    //       id: 5,
+    //       subTitle: t("Attendance_Updates"),
+    //       subTitleDescription: t("Attendance_Updates_description"),
+    //       value: "attendanceUpdates",
+    //       isActive: false,
+    //     },
+    //   ],
+    // },
+  ]);
+
+  const [expanded, setExpanded] = useState(
+    Object.fromEntries(notificationData.map((item) => [item.id, true]))
+  );
+  // const toggleAccordion = (id) => {
+  //   setExpanded((prevExpanded) => ({
+  //     ...prevExpanded,
+  //     [id]: !prevExpanded[id],
+  //   }));
+  // };
+
+  const loginData = JSON.parse(localStorage.getItem("LoginData"));
+
+  // const setNotificationsToDB = async (subTitle, value) => {
+  //   try {
+  //     const result = await axios.post(API.HOST + API.NOTIFICATION_SETTINGS, {
+  //       employeeId: loginData.userData.id,
+  //       [subTitle]: value,
+  //       // generalUpdates: "Testing2",
+  //       // taskReminders: "trrr",
+  //       // meetingInvitations: "gff",
+  //       // emailemployeeRequests: "ffff",
+  //       // systemStatus: "reee",
+  //       // instantMessages: "dffddf",
+  //       // taskUpdates: "fddd",
+  //       // meetingReminders: "test21",
+  //       // pushemployeeRequests: "test22",
+  //       // attendanceUpdates: "test33",
+
+  //       isActive: "1",
+  //       createdBy: "as"
+  //     });
+  //   } catch (error) {
+  //     console.log(error);
+  //   }
+  // }
+
+  // const formik = useFormik({
+  //   initialValues: {
+  //     generalUpdates: "",
+  //     taskReminders: "",
+  //     meetingInvitations: "",
+  //     emailemployeeRequests: "",
+  //     systemStatus: "",
+  //     taskUpdates: "",
+  //     meetingReminders: "",
+  //     instantMessages: "",
+  //     pushemployeeRequests: "",
+  //     attendanceUpdates: "",
+  //   },
+  //   enableReinitialize: true,
+  //   validateOnChange: false,
+  //   validationSchema: yup.object().shape({
+  //     // firstName: yup.string().required("First Name is Required"),
+  //     // lastName: yup.string().required("Last Name is Required"),
+  //     // email: yup.string().required("Email is Required"),
+  //     // mobile: yup.string().min(10).max(10).required("Mobile is Required"),
+  //     // // gender: yup.string().required("Gender is Required"),
+  //     // // dateOfBirth: yup.string().required("Date of Birth Group is Required"),
+  //   }),
+  //   onSubmit: async (e) => {
+  //     console.log(e);
+
+  //     try {
+  //       const result = await axios.post(API.HOST + API.NOTIFICATION_SETTINGS, {
+  //         employeeId: loginData.userData.id,
+  //         generalUpdates: e.generalUpdates,
+  //         taskReminders: e.taskReminders,
+  //         meetingInvitations: e.meetingInvitations,
+  //         emailemployeeRequests: e.emailemployeeRequests,
+  //         systemStatus: e.systemStatus,
+  //         taskUpdates: e.taskUpdates,
+  //         meetingReminders: e.meetingReminders,
+  //         instantMessages: e.instantMessages,
+  //         pushemployeeRequests: e.pushemployeeRequests,
+  //         attendanceUpdates: e.attendanceUpdates,
+  //       });
+  //       console.log(result);
+  //     } catch (error) {}
+  //   },
+  // });
+  // const handleToggleList = (id, checked) => {
+  //   // console.log(checked);
+  //   // console.log(switches);
+  //   setNotificationData(
+  //     (prevSwitches) =>
+  //       prevSwitches?.map((sw, i) =>
+  //         // console.log(sw.companyId , id )
+  //         sw?.id === id ? { ...sw, isActive: checked === true ? 1 : 0 } : sw
+  //       )
+
+  //     // prevSwitches.map((sw) => (sw.id === i ? { ...sw, value: checked } : sw))
+  //   );
+  // };
+
+  return (
+    <div className="flex flex-col gap-6">
+      <div>
+        <h1 className="h1">{t("Notification_settings")}</h1>
+        <p className="para">{t("Notification_settings_description")} </p>
+      </div>
+          
+        <div className="relative flex flex-col gap-6">
+        {/*  Accordian item 1 */}
+        {notificationData.map((item) => (
+          
+          <Accordion  
+           title={item.title}
+           description={item.description}
+           initialExpanded={true}
+           > <div
+            key={item.id}
+            
+          >
+            <h2>
+             
+            
+
+            
+            </h2>
+          
+              <div className="flex flex-col gap-8 overflow-hidden">
+                {item.contents.map((subitems) => (
+                  <div
+                    key={subitems.id}
+                    className="flex flex-row-reverse justify-between md:flex-row "
+                  >
+                    <div>
+                      <p class="acco-subhead">{subitems.subTitle}</p>
+                      <p class="para">{subitems.subTitleDescription}</p>
+                    </div>
+                    <div className="pr-3 form-select md:w-80">
+                      {/* <Switch
+                        defaultChecked
+                        className="md:float-right rtl:md:float-left"
+                        size={isSmallScreen ? "small" : ""}
+                      /> */}
+                      <ToggleBtn
+                        className="md:float-right rtl:md:float-left"
+                        value={subitems.isActive}
+                        change={
+                          (e) => {
+                            // handleToggleList(subitems.id, e);
+                            // formik.setFieldValue(subitems.value, e);
+                            // formik.handleSubmit();
+                          }
+                          // saved_theme(subitems.value, e);
+                          // setNotificationsToDB(subitems.subTitle, checked)
+                        }
+                      />
+                    </div>
+                  </div>
+                ))}
+              </div>
+            
+          </div>
+          </Accordion>
+        ))}
+      </div>
+
+    </div>
+  );
+}

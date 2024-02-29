@@ -80,9 +80,9 @@ export default function MultiSelect({
       width: "100%",
       // height: 40,
       boxShadow: error
-        ? "0px 0px 0px 4px #FEE4E2, 0px 1px 2px 0px rgba(16, 24, 40, 0.05)"
-        : value &&
-          "0px 0px 0px 4px #F4EBFF, 0px 1px 2px 0px rgba(16, 24, 40, 0.05)",
+        && "0px 0px 0px 4px #FEE4E2, 0px 1px 2px 0px rgba(16, 24, 40, 0.05)",
+        // : value &&
+          // "0px 0px 0px 4px #F4EBFF, 0px 1px 2px 0px rgba(16, 24, 40, 0.05)",
       // borderRadius: error ? "8px" : "none",
       border: error ? "0.5px solid #f76002" : "none",
       borderRadius: "7px",

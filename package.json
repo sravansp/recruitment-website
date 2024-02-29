@@ -29,6 +29,7 @@
     "i18next": "^23.6.0",
     "moment": "^2.29.4",
     "pdfjs-dist": "^3.4.120",
+    "process": "^0.11.10",
     "quill": "^2.0.0-rc.2",
     "randomcolor": "^0.6.2",
     "rc-virtual-list": "^3.11.3",
