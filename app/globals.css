@@ -43,13 +43,14 @@
 
 @media (prefers-color-scheme: light) {
   :root {
+    body {
+      color: var(--text-black);
+      background: var(--body-bg);
+    }
   }
 }
 
-body {
-  color: var(--text-black);
-  background: var(--body-bg);
-}
+
 
 @layer utilities {
   .text-balance {
@@ -66,7 +67,7 @@ body {
 }
 
 .container-wrapper {
-  @apply px-5 mx-auto sm:container xl:max-w-screen-xl;
+  @apply px-5 mx-auto lg:px-20 2xl:px-5 sm:container xl:max-w-screen-xl;
 }
 
 .h1 {
