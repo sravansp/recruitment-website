@@ -36,9 +36,8 @@ function Intergration() {
         </div>
       </div>
       <div className="grid gap-6 lg:grid-cols-9">
-        {/* LEFT COLUMN  */}
         <div className="flex flex-col gap-6 lg:col-span-8">
-          <div className="flex flex-wrap gap-4">
+          <div className="flex flex-wrap gap-6">
             {/* Small card-like div */}
             {data.map((item, index) => (
               <div
@@ -56,7 +55,7 @@ function Intergration() {
                     className="w-[58px] h-[58px] object-cover rounded-md borderb lg:border-b-0"
                   />
                   <div className="ml-2">
-                    <h3 className="h6 ">{item.title}</h3>
+                    <h3 className="h6  ">{item.title}</h3>
                     <p className="para">abcd@gmail</p>
                   </div>
                   <input
@@ -68,10 +67,10 @@ function Intergration() {
                     style={{ borderColor: "red" }}
                   />
                 </div>
-                <div>
-                  <p className="para mt-4">
+                <div className="text-wrap">
+                  <p className="para mt-4 ">
                     Indeed is a global job search engine for job listings with
-                    over 200 million unique monthly visitors.
+                    over 200 million unique monthly visitors
                   </p>
                 </div>
                 <div className="mt-4">
