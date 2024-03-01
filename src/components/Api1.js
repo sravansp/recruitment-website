@@ -1,7 +1,7 @@
 import axios from "axios";
 
-// const apiUrl = 'http://10.10.6.118/loyaltri-recruitment-server/api/v1';
-const apiUrl = 'https://alpha-jobs-api.loyaltri.com/api/v1';
+const apiUrl = 'http://10.10.6.118/loyaltri-recruitment-server/api/v1';
+// const apiUrl = 'https://alpha-jobs-api.loyaltri.com/api/v1';
 
 
 const apiRequest = async (action, method, kwargs) => {
@@ -81,4 +81,29 @@ export const saveRecruitmentJobApplicationFormSetting = async (e) => {
   return await apiRequest(action, method, e);
 };
 
+export const getAllRecruitmentWorkFlows = async () => {
+  const action = "getAllRecruitmentWorkFlows";
 
+  const method = "POST";
+  // const requestData = {
+  //   // Include any other necessary parameters
+  //   workFlowId: workFlowId,
+  // };
+
+  const kwargs = { };
+
+  return await apiRequest(action, method, kwargs);
+};
+export const updateRecruitmentJob = async (id) => {
+  const action = "updateRecruitmentJob";
+
+  const method = "POST";
+  const requestData = {
+    // Include any other necessary parameters
+    JobId: id,
+  };
+
+  // const kwargs = { };
+
+  return await apiRequest(action, method, id);
+};

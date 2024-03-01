@@ -1,4 +1,4 @@
-import React, { useEffect } from "react";
+import React, { useEffect,useState } from "react";
 import { BrowserRouter, Routes, Route } from "react-router-dom";
 import Header from "./components/Header/Header";
 import { useDispatch, useSelector } from "react-redux";
@@ -17,6 +17,7 @@ import Notification from "./components/Settings/Notification";
 import Company from "./components/Company/Company";
 import TeamMembers from "./components/Team_members/TeamMembers";
 import Template from "./components/Template/Template";
+import Login from "./components/Login/login";
 import Intergration from "./components/Settings/Intergration";
 
 
@@ -28,6 +29,7 @@ export default function Router() {
   const layout = useSelector((state) => state.layout.value);
   const mode = useSelector((state) => state.layout.mode);
   const dispatch = useDispatch();
+  const [loginData, setLoginData] = useState();
   // const [loginData, setLoginData] = useState();
   // const [endload, setEndLoad] = useState();
 
@@ -41,12 +43,13 @@ export default function Router() {
       dispatch(rtl(layout));
     }
     changeLanguage(layout === "rtl" ? "ar" : "en");
-    // setLoginData(JSON.parse(localStorage.getItem("LoginData")));
+    setLoginData(JSON.parse(localStorage.getItem("LoginData")));
   }, []);
 
   return (
     <BrowserRouter basename="">
-        <div
+        
+        {loginData ?(        <div
           className={`main_content flex bg-[#F8FAFC] dark:bg-black h-full min-h-screen font-Inter ${mode}`}
           dir={layout}
         >
@@ -69,7 +72,7 @@ export default function Router() {
                 <Route path="/Notification" element={<Notification/>}></Route>
                 <Route path="/Company" element={<Company/>}></Route>
                 <Route path="/members" element={<TeamMembers/>}></Route>
-                <Route path="/Integrations" element={<Intergration />}></Route>
+                <Route path="/Integrations" element={<Intergration/>}></Route>
               </Routes>
             </div>
           </div>
@@ -77,6 +80,12 @@ export default function Router() {
             <h1 className="text-xs 2xl:text-md">Developement Mode</h1>
           </div>
         </div>
+        ) :loginData === null ? (
+          <Login />
+        ) :("")
+      
+      }
+
       
     </BrowserRouter>
   );

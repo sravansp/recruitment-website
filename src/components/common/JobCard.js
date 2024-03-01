@@ -8,6 +8,7 @@ function JobCard({
   card = false,
   selectcard =()=>{},
   options=[],
+  renderContent ,
 
 
 }) {
@@ -22,6 +23,7 @@ function JobCard({
       container.scrollLeft += scrollAmount;
     }
   };
+  console.log(options)
   return (
     
     
@@ -29,6 +31,7 @@ function JobCard({
       <div className="flex mt-10 ml-5 overflow-x-auto " ref={containerRef}>
         {options.map((each, index) => (
           <div key={index} className="flex items-center ">
+             
             {index === 0 && (
               <svg
                 xmlns="http://www.w3.org/2000/svg"
@@ -53,11 +56,11 @@ function JobCard({
                   fill="black"
                   className="font-semibold text-sm"
                 >
-                  {each.label}
+                  {each.title}
                 </text>
                 <foreignObject x="30" y="40" width="34" height="26">
                   <p className="flex items-center justify-center rounded-md bg-violet-100 font-semibold text-sm px-1 py-1">
-                    {each.nummber}
+                    {/* {each.nummber} */}
                   </p>
                 </foreignObject>
                 <foreignObject x="210" y="50" width="100" height="40">
@@ -94,19 +97,19 @@ function JobCard({
                     fill="black"
                     className="font-semibold text-sm"
                   >
-                    {each.label}
+                    {/* {each.label} */}{each.title}
                   </text>
                   <foreignObject x="30" y="40" width="34" height="26">
                     <p className="flex items-center justify-center rounded-md bg-violet-100 font-semibold text-sm px-1 py-1">
-                      {each.nummber}
+                      {/* {each.nummber} */}
                     </p>
                   </foreignObject>
                   <foreignObject x="75" y="43" width="34" height="26" style={{ color: "gray" }} size={18}>
-                    {each.icons1}
+                    {/* {each.icons1} */}
                   </foreignObject>
                   <foreignObject x="100" y="43" width="34" height="26"  style={{ color: "#FF9900" }}
                       size={18}>
-                    {each.icons2}
+                    {/* {each.icons2} */}
                   </foreignObject>
                   <foreignObject x="210" y="50" width="100" height="40">
                     <button
@@ -155,19 +158,19 @@ function JobCard({
                   fill="black"
                   className="font-semibold text-sm"
                 >
-                  {each.label}
+                  {each.title}
                 </text>
 
                 <foreignObject x="30" y="40" width="34" height="26">
                   <p className="flex items-center justify-center rounded-md bg-violet-100 font-semibold text-sm px-1 py-1">
-                    {each.nummber}
+                    {/* {each.nummber} */}
                   </p>
                 </foreignObject>
                 <foreignObject x="75" y="43" width="34" height="26"style={{ color: "gray" }} size={18} >
-                  {each.icons2}
+                  {/* {each.icons2} */}
                 </foreignObject>
                 <foreignObject x="100" y="43" width="34" height="26"style={{ color: "#FF9900" }} size={19}>
-                  {each.icons2}
+                  {/* {each.icons2} */}
                 </foreignObject>
 
                 <foreignObject x="190" y="50" width="100" height="40">
