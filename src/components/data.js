@@ -1143,66 +1143,119 @@ const cardData = [
 ];
 
 const Requirment = [
-{
-  id:1,
-  label:"urgent",
-  value:"urgent"
-},
-{
-  id:2,
-  label:"Not urgent",
-  value:"noturgent"
-},
-{
-  id:3,
-  labe:"Mid level",
-  value:"midlevel"
-}
+  {
+    id:1,
+    label:"Urgent",
+    value:"Urgent"
+  },
+  {
+    id:2,
+    label:"Not urgent",
+    value:"Not Urgent"
+  },
+  {
+    id:3,
+    label:"Mid level",
+    value:"Mid Level"
+  },
+  // {
+  //   id:4,
+  //   label:"Mid Senior Level",
+  //   value:"Mid Senior Level"
+  // },
 ] 
 const JobType =[
   {
     id:1,
-    label:"Fulltime",
-    value:"fulltime",
+    label:"Full Time",
+    value:"Full Time"
   },
   {
     id:2,
-    label:"Part time",
-    value:"parttime",
-  }
+    label:"Part Time",
+    value:"Part Time."
+  },
+  // {
+  //   id:3,
+  //   label:"Mid level",
+  //   value:"Mid level"
+  // },
 ]
 const experiencelevel=[
   {
     id:1,
-    lable:"Director Level",
+    label:"Director Level",
     value:"DirectorLevel"
   },
   {
     id:2,
-    lable:"Manager Level",
+    label:"Manager Level",
     value:"ManagerLevel"
   },
   {
     id:3,
-    lable:"Senior Level",
+    label:"Senior Level",
     value:"SeniorLevel"
   },
   {
     id:4,
-    lable:"Mid Senior Level",
+    label:"Mid Senior Level",
     value:"MidSeniorLevel"
   },
   {
     id:5,
-    lable:"Junior Level",
+    label:"Junior Level",
     value:"JuniorLevel"
   },
   {
     id:1,
-    lable:"Fresher",
+    label:"Fresher",
     value:"Fresher"
   },
 
+]
+
+const eductaion =[
+  
+  {
+    id:1,
+    label:"Above Post Graduate",
+    value:"AbovePostGraduate"
+  },
+  {
+    id:2,
+    label:"Post Graduate",
+    value:"PostGraduate"
+  },
+  {
+    id:3,
+    label:"Graduate",
+    value:"Graduate"
+  },
+  {
+    id:4,
+    label:"Under Graduate",
+    value:"UnderGraduate"
+  },
+  {
+    id:5,
+    label:"School Level",
+    value:"SchoolLevel"
+  },
+]
+const saleryCurrency =[
+  {
+    id:1,
+    label:"AED",
+    value:"AED",
+
+  },
+  {
+    id:2,
+    label:"INR",
+    value:"INR",
+    
+  }
 ]
 
 
@@ -1255,4 +1308,6 @@ export {
   Requirment,
   JobType,
   experiencelevel ,
+  eductaion,
+  saleryCurrency
 };
