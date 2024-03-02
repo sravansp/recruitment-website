@@ -35,6 +35,8 @@ function AllJobs() {
   const handleshow =()=>setShow(true);
   const handleClose =()=>setShow(false)
   const [show, setShow] = useState(false);
+  const[updateId,setUpdateId]=useState("")
+ 
   
   const tabs =[
     {
@@ -259,12 +261,20 @@ function AllJobs() {
   const actionData = [
     {
       // MyOpenJobs: { id: 1, data: companyList },
-      AllJobs: { id: 2, data1: JobsList },
+      AllJobs: { id: 2, response: JobsList },
       // open: { id: 3, data: departmentList },
       // Draft: { id: 4, data: categoryList },
       // subcategory: { id: 5, data: subCategoryList },
     },
   ];
+ const actionID = [
+  {
+    id:JobsList.map((items)=>({
+       actionID:items.jobId
+      
+    }))
+  }
+ ]
 
 
   useEffect(() => {
@@ -282,17 +292,22 @@ function AllJobs() {
         //       },
         //     }
         // );
-        const data1 = await getAllRecruitmentJobs();
-        console.log(data1.result);
-        setJobList(data1.result);
-
+        const response = await getAllRecruitmentJobs();
+        
+        setJobList(response.result);
+        const newData = {};
+        response.result.forEach((job) => {
+          newData[job.jobId] = job; // Assuming jobId is the unique identifier
+        });
+       
         // setTableData(response.data);
         // console.log(response.data); // Access response data
+        console.log(response);
       } catch (error) {
         console.error(error); // Handle errors
       }
     };
-
+    {console.log(updateId)}
     callapi();
   }, []);
   return (
@@ -398,12 +413,17 @@ function AllJobs() {
         header={header}
         data={
           Object.keys(actionData[0]).includes(navigationPath)
-            ? actionData[0]?.[navigationPath].data1
+            ? actionData[0]?.[navigationPath].response
             : null
         }
         tabClick={(e) => {
           console.log(e, "e");
           setNavigationPath(e);
+        }}
+        actionID="jobId"
+        path="JobDetails"
+        buttonClick={(e) => {
+          setUpdateId(e);
         }}
         showButton={true}
 

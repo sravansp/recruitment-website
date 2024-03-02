@@ -173,7 +173,14 @@ const TableAnt = ({
       window.location.reload();
     }
   };
- 
+
+  const [selectedDataId, setSelectedDataId] = useState(null);
+  const handleRowClick = (record) => {
+    setSelectedDataId(record.id);
+
+    // Store the clicked data ID in local storage
+    localStorage.setItem('selectedDataId', record.id);
+  };
   useEffect(() => {
     console.log(header, "header");
     setTableData(
@@ -774,6 +781,9 @@ const TableAnt = ({
             //       .toLowerCase()
             //       .includes(searchValue.toLowerCase())
             // )}
+            onRow={(record) => ({
+              onClick: () =>handleRowClick(record),
+            })}
             dataSource={listData}
             size={isSmallScreen ? "small" : ""}
           />

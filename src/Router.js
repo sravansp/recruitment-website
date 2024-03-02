@@ -63,7 +63,7 @@ export default function Router() {
                 {/* Company submenus */}
                 <Route path="/JobsList" element={<JobsList />} />
                 <Route path="/Appearance" element={<Appearance />} />
-                <Route path="/JobDetails" element={<JobDetails />} />
+                <Route path="/JobDetails/:jobId" element={<JobDetails />} />
                 <Route path="/CandidateList" element={<CandidatesList />} />
                 <Route path="/CandidateProfile" element={<CandidateProfile />} />
                 <Route path="/AllJobs" element={<AllJobs/>} />

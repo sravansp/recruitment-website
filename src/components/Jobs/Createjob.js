@@ -3,12 +3,12 @@ import DrawerPop from '../common/DrawerPop';
 import { useTranslation } from "react-i18next"; 
 import { RxCross2, RxQuestionMarkCircled } from "react-icons/rx";
 import Stepper from '../common/Stepper';
-import { Button, Card, Checkbox, Flex, Radio ,Space, notification} from 'antd';
+import { Button, Card, Checkbox, Flex, List, Radio ,Space, notification} from 'antd';
 import Accordion from '../common/Accordion';
 import FlexCol from '../common/FlexCol';
 import Dropdown from '../common/Dropdown';
 import FormInput from '../common/FormInput';
-
+import VirtualList from "rc-virtual-list";
 import CheckBoxInput from '../common/CheckBoxInput';
 
 import TextArea from '../common/TextArea';
@@ -16,7 +16,7 @@ import Radiobuttonnew from '../common/Radiobuttonnew';
 import GoogleForm from '../common/GoogleForm';
 import JobCard from '../common/JobCard';
 import { cardData, regularOvertime,Requirment,JobType,experiencelevel,eductaion,saleryCurrency } from '../data';
-import { saveRecruitmentJobApplicationFormSetting,saveRecruitmentJob,getAllRecruitmentWorkFlows } from '../Api1';
+import { saveRecruitmentJobApplicationFormSetting,saveRecruitmentJob,getAllRecruitmentWorkFlows,updateRecruitmentJob,getAllRecruitmentJobTeamMembers } from '../Api1';
 import { Formik, useFormik } from 'formik';
 import { CgAdd } from "react-icons/cg";
 import { Form } from '../data';
@@ -29,6 +29,8 @@ import API from '../Api';
 import { DownOutlined, UserOutlined } from '@ant-design/icons';
 import image from '../../assets/images/generate-ai-img.png'
 import Item from 'antd/es/list/Item';
+import TableAnt from '../common/TableAnt';
+
 
 
 
@@ -42,7 +44,7 @@ const Createjob = ( {open = "", close = () => { },inputshow= false}) => {
   const [activeBtn, setActiveBtn] = useState(0);
   const [presentage, setPresentage] = useState(0);
   const [nextStep, setNextStep] = useState(0);
-  const [activeBtnValue, setActiveBtnValue] = useState("Workflow"); //LeaveType
+  const [activeBtnValue, setActiveBtnValue] = useState("Jobdetails"); //LeaveType
   const [btnName, setBtnName] = useState();
   const [customRate, setCustomRate] = useState(1);
   const [savedContent, setSavedContent] = useState([]);
@@ -261,7 +263,7 @@ const formik = useFormik({
     try {
       console.log(e)
       const response = await saveRecruitmentJobApplicationFormSetting({
-        jobId:2,
+        jobId:jobId,
         name: e.name,
         email: e.email,
         headline: e.headline,
@@ -311,7 +313,7 @@ const formik = useFormik({
 const handleDropdownChange = (e, conditionIndex) => {
   const updatedConditions = [...conditions];
   updatedConditions[conditionIndex].e = e;
-  setConditions(updatedConditions);
+  setConditions(updatedConditions); 
 };
 
 const handleAddCondition = () => {
@@ -508,6 +510,7 @@ const handleSaveInput = (index) => {
     // Additional logic if needed
   };
   //Fetch work flow
+  
   const [Stages,setStages] = useState([])
   // const fetchData = async () => {
   //   try {
@@ -545,7 +548,7 @@ const handleSaveInput = (index) => {
   // useEffect(() => {
   //   console.log('Updated Workflow:', Stages);
   // }, [Stages]);
-
+  
   const fetchData = async () => {
    try{
     const response = await getAllRecruitmentWorkFlows();
@@ -583,9 +586,157 @@ const handleSaveInput = (index) => {
   //   nummber: index + 1,
   //   // Add other properties as needed
   // }));
-  const handleRadioChange = (e) => {
-    setSelectedWorkFlowId(e.target.value);
+  
+  
+  const handleRadioChange = async (e) => {
+    const workFlowId = e.target.value;
+    setSelectedWorkFlowId(workFlowId);
+   
+    // Assuming you have the jobId stored somewhere, replace 'yourJobId' with the actual jobId
+    // const jobId = 24;
+    const modifiedBy = userid
+    // Update the database with the selected workflow ID for the specific job
+    
+     try {
+      console.log(workFlowId)
+      const response = await updateRecruitmentJob(
+         jobId,
+         workFlowId,
+         modifiedBy,
+        
+      );
+  
+      console.log(response);
+      if (response.status === 200) {
+      
+      
+        openNotification(
+          "success",
+          "Successful",
+          "createpoilicy update saved. Changes are now reflected."
+        );
+        setPresentage(2);
+        setNextStep(nextStep + 1);
+      } 
+    } catch (error) {
+      console.error('Error updating workflow ID:', error);
+      
+    }
   };
+  const handleButtonClick = async (e) => {
+    switch (activeBtnValue) {
+      case "Jobdetails":
+        // Handle submission for Configuration
+        
+        console.log("valuegtgggggggggggg")
+        formik1.handleSubmit()
+
+        break;
+
+      case "ApplicationForm":
+        // Handle submission for Applicability
+        // Your logic for Applicability form submission...
+        // Move to the next step if applicable
+        formik.handleSubmit(e);
+        
+        break;
+
+      // Add more cases for additional activeBtnValues...
+
+      case "Workflow":
+        // assignPolicy();
+        // Handle submission for Applicability
+        // Your logic for Applicability form submission...
+        // Move to the next step if applicable
+        // formik1.handleSubmit();
+        fetchData()
+        try {
+          await fetchData(); // Assuming fetchData is an asynchronous function
+          await handleRadioChange(e); // Assuming handleRadioChange is an asynchronous function
+          
+        } catch (error) {
+          console.error('Error handling Workflow:', error);
+        }
+        // setNextStep(nextStep + 1);
+        
+        break;
+        case "TeamMembers":
+            // assignPolicy();
+            // Handle submission for Applicability
+            // Your logic for Applicability form submission...
+            // Move to the next step if applicable
+            // formik1.handleSubmit();
+            setNextStep(nextStep + 1);
+            break;
+            case "Publish":
+                // assignPolicy();
+                // Handle submission for Applicability
+                // Your logic for Applicability form submission...
+                // Move to the next step if applicable
+                // formik1.handleSubmit();
+                setNextStep(nextStep + 1);
+                break;
+      default:
+        // // Handle the case when no card is selected
+        // console.log(
+        //   "Please select a card before moving to the next step."
+        // );
+        // openNotification(
+        //   "error",
+        //   "Please choose a card..",
+        //   "Please select a card before moving to the next step."
+        // );
+        break;
+    }
+  
+  }
+
+  //Teammebers
+  const header =[
+    {
+    id:1,
+    titile:"",
+    value:"username",
+    },
+    {
+      id:2,
+      titile:"",
+      value:"userId",
+    },
+    {id:3,
+    titile:"",
+    value:"userId",
+    }
+  ]
+
+  const [employeeList,setemployeeList] =useState([])
+
+  const AllRecruitmentJobTeamMembers = async()=> {
+      const jobId=1;
+    try {
+    const response = await getAllRecruitmentJobTeamMembers(
+      jobId,
+
+    );
+    setemployeeList(response.result.map((item) => ({
+      username: item.userName,
+      userId: item.userId,
+      userimage: item.userImage,
+    })));
+    
+    console.log(response)
+   }
+   
+   catch (error) {
+    console.error('Error updating workflow ID:', error);
+  }
+  }
+  useEffect(() => {
+    AllRecruitmentJobTeamMembers();
+    console.log(employeeList)
+    
+  }, []);
+  
     return (
     <div>
     <DrawerPop
@@ -635,63 +786,7 @@ const handleSaveInput = (index) => {
       ]}
       className="widthFull"
       buttonClick={(e) => {
-        switch (activeBtnValue) {
-          case "Jobdetails":
-            // Handle submission for Configuration
-            
-            console.log("valuegtgggggggggggg")
-            formik1.handleSubmit()
-
-            break;
-
-          case "ApplicationForm":
-            // Handle submission for Applicability
-            // Your logic for Applicability form submission...
-            // Move to the next step if applicable
-            formik.handleSubmit();
-            
-            break;
-
-          // Add more cases for additional activeBtnValues...
-
-          case "Workflow":
-            // assignPolicy();
-            // Handle submission for Applicability
-            // Your logic for Applicability form submission...
-            // Move to the next step if applicable
-            // formik1.handleSubmit();
-            fetchData()
-            // setNextStep(nextStep + 1);
-            console.log(Stages)
-            break;
-            case "TeamMembers":
-                // assignPolicy();
-                // Handle submission for Applicability
-                // Your logic for Applicability form submission...
-                // Move to the next step if applicable
-                // formik1.handleSubmit();
-                setNextStep(nextStep + 1);
-                break;
-                case "Publish":
-                    // assignPolicy();
-                    // Handle submission for Applicability
-                    // Your logic for Applicability form submission...
-                    // Move to the next step if applicable
-                    // formik1.handleSubmit();
-                    setNextStep(nextStep + 1);
-                    break;
-          default:
-            // // Handle the case when no card is selected
-            // console.log(
-            //   "Please select a card before moving to the next step."
-            // );
-            // openNotification(
-            //   "error",
-            //   "Please choose a card..",
-            //   "Please select a card before moving to the next step."
-            // );
-            break;
-        }
+        handleButtonClick(e)
       }}
       buttonClickCancel={(e) => {
         if (activeBtn > 0) {
@@ -1428,8 +1523,56 @@ impactful, accurate, and personalized to your company</p>
                     click={() => {
                       setPresentage(1.4);
                     }}
+                    tableshow={true}
                     initialExpanded={true}
-                  ></Accordion>
+                    data={employeeList}
+                    
+                  >
+                 <List>
+                      <VirtualList
+                        data={
+                          employeeList
+                        }
+                        height={400}
+                        itemHeight={47}
+                        // itemKey="email"
+                        // onScroll={onScroll}
+                      >
+  
+  {(item) => (
+    <List.Item 
+    
+    >
+     <div className='grid grid-cols-3'>
+  <p className='justify-self-start'>{item.userId}</p>
+  <p className='justify-self-center'>{item.username}</p>
+  <img
+    src={item.userimage}
+    alt={`User ${item.userId} Image`}
+    style={{ maxWidth: '50px' }}
+    className='justify-self-end'
+  />
+</div>
+    </List.Item>
+  )}</VirtualList>
+</List>
+{/* <List
+  data={employeeList}  
+  renderItem={(item) => (
+    <List.Item>
+      {/* <div>
+        <p>User ID: {item.userId}</p>
+        <p>User Name: {item.userName}</p>
+        <img src={item.userImage} alt={`User ${item.userId} Image`} style={{ maxWidth: '100px' }} />
+      </div> */}
+      {/* <div>{item}</div> *
+    {console.log(item)}
+    </List.Item>
+  )}
+/> */}
+                   
+
+                  </Accordion>
                 ) : activeBtnValue === "Publish" ? (
                   <Accordion
                     title={"Publish"}

@@ -66,6 +66,7 @@ const Tabs = ({
   //   //   // }
   //   //   // setTabData([...tabs]);
   // }, [tabs]);
+  console.log("action",actionID)
   const items = [
     {
       key: "selectAll",

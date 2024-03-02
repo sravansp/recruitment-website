@@ -1,6 +1,7 @@
 import React, { useEffect, useState } from "react";
 import { IoIosArrowForward } from "react-icons/io";
 import ToggleBtn from "./ToggleBtn";
+import { Table } from "antd";
 
 export default function Accordion({
   children,
@@ -10,7 +11,8 @@ export default function Accordion({
   title,
   description,
   click = () => {},
-  initialExpanded = false
+  initialExpanded = false,
+  tableshow=false,
   
 }) {
   const [expanded, setExpanded] = useState(initialExpanded);
@@ -24,6 +26,7 @@ export default function Accordion({
 
   useEffect(() => {
     console.log(expanded[1]);
+    console.log(data)
   }, [expanded]);
 
   return (
@@ -79,8 +82,39 @@ export default function Accordion({
         >
           <div className="flex flex-col gap-8 overflow-hidden">{children}</div>
           {/* Content */}
+          {/* {tableshow && (
+  <div>
+    <Table>
+      {/* <thead>
+        <tr>
+          <th>User ID</th>
+          <th>User Image</th>
+          <th>Username</th>
+        
+        </tr>
+      </thead> *
+      <tbody>
+        {data.map((item, index) => (
+          <tr key={index}>
+            
+            <td>{item.userId}</td>
+            <td>
+              {item.userimage && (
+                <img src={item.userimage} alt={`User ${item.userId} Image`} style={{ maxWidth: '100px' }} />
+              )}
+            </td>
+            <td>{item.username}</td>
+           
+          </tr>
+        ))}
+      </tbody>
+    </Table>
+  </div>
+)} */}
+          
         </div>
       </div>
+
       {/* ))} */}
     </div>
   );

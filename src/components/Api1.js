@@ -94,16 +94,33 @@ export const getAllRecruitmentWorkFlows = async () => {
 
   return await apiRequest(action, method, kwargs);
 };
-export const updateRecruitmentJob = async (id) => {
+export const updateRecruitmentJob = async (id, workFlowId,modifiedBy) => {
   const action = "updateRecruitmentJob";
+  const method = "POST";
+  console.log(workFlowId)
+  console.log(modifiedBy)
+  // Construct the request payload
+  const requestData = {
+    id: id,
+    workFlowId: workFlowId,
+    modifiedBy:modifiedBy
+    
+
+    // Include any other necessary parameters
+  };
+
+  return await apiRequest(action, method, requestData);
+};
+export const getAllRecruitmentJobTeamMembers = async (jobId) => {
+  const action = "getAllRecruitmentJobTeamMembers";
 
   const method = "POST";
   const requestData = {
     // Include any other necessary parameters
-    JobId: id,
+    jobId: jobId,
   };
 
-  // const kwargs = { };
+  
 
-  return await apiRequest(action, method, id);
+  return await apiRequest(action, method, requestData);
 };
