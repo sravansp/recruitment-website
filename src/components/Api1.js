@@ -79,7 +79,7 @@ export const saveRecruitmentJobApplicationFormSetting = async (e) => {
   return await apiRequest(action, method, e);
 };
 
-Team Members
+//Team Members
 export const getAllRecruitmentJobTeamMembers = async () => {
   const action = "getAllRecruitmentJobTeamMembers";
 
