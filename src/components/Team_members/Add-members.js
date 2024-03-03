@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import React from 'react'
 import DrawerPop from '../common/DrawerPop'
 import { useTranslation } from 'react-i18next';
@@ -7,6 +7,7 @@ import TextArea from '../common/TextArea';
 import FlexCol from '../common/FlexCol';
 import { notification } from 'antd';
 import Dropdown from '../common/Dropdown';
+import { getAllRecruitmentUserRoleMappings } from '../Api1';
 
 const Addmembers = ({
     open,
@@ -16,7 +17,7 @@ const Addmembers = ({
     companyDataId = "",} ) => {
 
 
-
+        const [jobRole,setJobRole]=useState([])
         const [show, setShow] = useState(open);
         const { t } = useTranslation();
         const [isUpdate, setIsUpdate] = useState();
@@ -44,6 +45,22 @@ const Addmembers = ({
             // duration: null,
           });
         };
+        useEffect(() => {
+          const callapi = async () => {
+            try {
+             
+              const data = await getAllRecruitmentUserRoleMappings();
+              console.log(data.result);
+              setJobRole(data.result);
+        
+             
+            } catch (error) {
+              console.error(error); // Handle errors
+            }
+          };
+        
+          callapi();
+        }, []);
   return (
     <DrawerPop
     open={show}
@@ -90,6 +107,8 @@ const Addmembers = ({
         <Dropdown
           title={t("Role")}
           placeholder={t("Marketing Manager")}
+          options={jobRole}
+          
           className=""
           change={(e) => {
             // formik.setFieldValue("description", e);

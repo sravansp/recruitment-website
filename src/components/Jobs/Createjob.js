@@ -16,7 +16,7 @@ import Radiobuttonnew from '../common/Radiobuttonnew';
 import GoogleForm from '../common/GoogleForm';
 import JobCard from '../common/JobCard';
 import { cardData, regularOvertime,Requirment,JobType,experiencelevel,eductaion,saleryCurrency } from '../data';
-import { saveRecruitmentJobApplicationFormSetting,saveRecruitmentJob,getAllRecruitmentWorkFlows,updateRecruitmentJob,getAllRecruitmentJobTeamMembers } from '../Api1';
+import { saveRecruitmentJobApplicationFormSetting,saveRecruitmentJob,getAllRecruitmentWorkFlows,updateRecruitmentJob,getRecruitmentJobTeamMemberById } from '../Api1';
 import { Formik, useFormik } from 'formik';
 import { CgAdd } from "react-icons/cg";
 import { Form } from '../data';
@@ -714,7 +714,7 @@ const handleSaveInput = (index) => {
   const AllRecruitmentJobTeamMembers = async()=> {
       const jobId=1;
     try {
-    const response = await getAllRecruitmentJobTeamMembers(
+    const response = await getRecruitmentJobTeamMemberById(
       jobId,
 
     );

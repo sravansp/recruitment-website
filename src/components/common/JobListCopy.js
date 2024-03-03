@@ -1,6 +1,10 @@
-import React from 'react'
+import React, { useEffect, useState } from 'react'
+import { getAllRecruitmentJobs } from '../Api1';
 
 function JobListCopy() {
+  const [JobsList, setJobList] = useState([]);
+  const [activeJobs, setActiveJobs] = useState(0);
+
     const data = [
         {
           Total_number_of_jobs_posted: "3612",
@@ -10,6 +14,26 @@ function JobListCopy() {
           hired_count: "152",
         },
       ];
+      useEffect(() => {
+        const callapi = async () => {
+          try {
+           
+            const data1 = await getAllRecruitmentJobs();
+            console.log(data1.result);
+            setJobList(data1.result);
+            const activeJobs = data1.result.filter(job => job.isActive === 1);
+            setActiveJobs(activeJobs.length);
+            
+          } catch (error) {
+            console.error(error); // Handle errors
+          }
+        }
+    
+        callapi();
+      }, []);
+      // const openJobs = () => {
+      //   return JobsList.filter(job => job.isActive == 1).length;
+      // };
   return (
     <div>
          <div className="w-full  rounded-sm h-24 sm:w-full ">
@@ -18,8 +42,9 @@ function JobListCopy() {
             <div className="flex items-center w-1/5 sm:w-1/5">
               <div className="ml-4">
                 <p className="para">Total No of Jobs Posted</p>
+                
                 <h1 className="h1 mt-4">
-                  <b>{data.Total_number_of_jobs_posted}</b>
+                <b>{JobsList.length}</b>
                 </h1>
               </div>
             </div>
@@ -37,7 +62,7 @@ function JobListCopy() {
               <div className="ml-4">
                 <p className="para">Open Jobs</p>
                 <h1 className="h1 mt-4">
-                  <b>{data.open_jobs}</b>
+                  <b>{activeJobs}</b>
                 </h1>
               </div>
             </div>

@@ -18,9 +18,9 @@ import Tabs from "../common/Tabs";
 import { useTranslation } from "react-i18next";
 import Createjob from "./Createjob";
 import { motion } from "framer-motion";
+import JobListCopy from "../common/JobListCopy";
 
 function AllJobs() {
-  
   const { t } = useTranslation();
   const data = [
     {
@@ -32,8 +32,8 @@ function AllJobs() {
     },
   ];
   const [navigationPath, setNavigationPath] = useState("MyOpenJobs");
-  const handleshow =()=>setShow(true);
-  const handleClose =()=>setShow(false)
+  const handleshow = () => setShow(true);
+  const handleClose = () => setShow(false);
   const [show, setShow] = useState(false);
   const[updateId,setUpdateId]=useState("")
  
@@ -60,10 +60,8 @@ function AllJobs() {
       title: t("Draft"),
       value: "Draft",
     },
-  
+  ];
 
-  ]
-  
   const header = [
     {
       AllJobs: [
@@ -87,7 +85,6 @@ function AllJobs() {
           id: 4,
           title: "LOCATION",
           value: "location",
-         
         },
         {
           id: 5,
@@ -134,7 +131,6 @@ function AllJobs() {
           id: 4,
           title: "LOCATION",
           value: "location",
-         
         },
         {
           id: 5,
@@ -181,7 +177,6 @@ function AllJobs() {
           id: 4,
           title: "LOCATION",
           value: "location",
-         
         },
         {
           id: 5,
@@ -228,7 +223,6 @@ function AllJobs() {
           id: 4,
           title: "LOCATION",
           value: "location",
-         
         },
         {
           id: 5,
@@ -256,8 +250,8 @@ function AllJobs() {
       ],
     },
   ];
-  
-  const [JobsList, setJobList] = useState([]);  
+
+  const [JobsList, setJobList] = useState([]);
   const actionData = [
     {
       // MyOpenJobs: { id: 1, data: companyList },
@@ -323,87 +317,37 @@ function AllJobs() {
             <span className="!text-primary para">View career page</span>{" "}
             <PiArrowSquareOut size={15} className="dark:text-white" />
           </Link>
-          <ButtonClick buttonName={"Create a Job"} BtnType="primary" 
-         
-         handleSubmit={() => {
-          setShow(true);
-          console.log("set",show);
-        }}
+          <ButtonClick
+            buttonName={"Create a Job"}
+            BtnType="primary"
+            handleSubmit={() => {
+              setShow(true);
+              console.log("set", show);
+            }}
           />
-           {show && (
-         <motion.div initial="hidden" animate="visible" >
-        <Createjob
-        open={show}
-        close={(e) => {
-          setShow(e);
-          
-          handleClose();
+          {show && (
+            <motion.div initial="hidden" animate="visible">
+              <Createjob
+                open={show}
+                close={(e) => {
+                  setShow(e);
 
-        }}
-       
-        inputshow={true}
-          // updateId={updateId}
-          refresh={() => {
-            // getLocationList();
-          }}
-          // openPolicy={openPop} 
-          // updateId={updateId}
-        />
-        </motion.div>
-      )}
+                  handleClose();
+                }}
+                inputshow={true}
+                // updateId={updateId}
+                refresh={() => {
+                  // getLocationList();
+                }}
+                // openPolicy={openPop}
+                // updateId={updateId}
+              />
+            </motion.div>
+          )}
         </div>
       </div>
 
-      <div className="  rounded-sm h-24   flex flex-col">
-        {data.map((data) => (
-          <div className="bg-white rounded-md borderb  p-4 flex dark:bg-black dark:text-white h-24">
-            <div className="flex items-center w-1/5 sm:w-1/5">
-              <div className="ml-4">
-                <p className="para">Total No of Jobs Posted</p>
-                <h1 className="h1 mt-4">
-                  <b>{data.Total_number_of_jobs_posted}</b>
-                </h1>
-              </div>
-            </div>
-            <div className="h-divider !border-gray-300 ml-12"></div>
-            <div className="flex items-center w-1/5 sm:w-1/5">
-              <div className="ml-4">
-                <p className="para">Source Diversity</p>
-                <h1 className="h1 mt-4">
-                  <b>{data.Source_diversity}</b>
-                </h1>
-              </div>
-            </div>
-            <div className="h-divider !border-gray-300 ml-12"></div>
-            <div className="flex items-center w-1/5 sm:w-1/5">
-              <div className="ml-4">
-                <p className="para">Open Jobs</p>
-                <h1 className="h1 mt-4">
-                  <b>{data.open_jobs}</b>
-                </h1>
-              </div>
-            </div>
-            <div className="h-divider !border-gray-300 ml-12"></div>
-            <div className="flex items-center w-1/5 sm:w-1/5">
-              <div className="ml-4">
-                <p className="para">Rejection Average</p>
-                <h1 className="h1 mt-4">
-                  <b>{data.rejection_average}</b>
-                </h1>
-              </div>
-            </div>
-            <div className="h-divider !border-gray-300 ml-12"></div>
-            <div className="flex items-center w-1/5 sm:w-1/5">
-              <div className="ml-4">
-                <p className="para">Hired Count</p>
-                <h1 className="h1 mt-4">
-                  <b>{data.hired_count}</b>
-                </h1>
-              </div>
-            </div>
-          </div>
-        ))}
-      </div>
+      <JobListCopy />
 
       <div className="">
         {/* <TableAnt1 data={JobsList} header={header} path="AllJobs" /> */}
