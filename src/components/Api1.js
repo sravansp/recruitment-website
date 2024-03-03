@@ -33,20 +33,20 @@ export const getRecruitmentJobById = async (id) => {
 };
 
 export const getAllRecruitmentJobs = async () => {
-    const action = "getAllRecruitmentJobs";
-  
-    const method = "POST";
-  
-    const kwargs = {};
-  
-    return await apiRequest(action, method, kwargs);
-  };
+  const action = "getAllRecruitmentJobs";
+
+  const method = "POST";
+
+  const kwargs = {};
+
+  return await apiRequest(action, method, kwargs);
+};
 
 export const saveRecruitmentJob = async (e) => {
   const action = "saveRecruitmentJob";
 
   const method = "POST";
-  
+
   return await apiRequest(action, method, { ...e });
 };
 
@@ -65,23 +65,40 @@ export const getAllRecruitmentResumes = async () => {
 
   const method = "POST";
 
-  const kwargs = { };
+  const kwargs = {};
 
   return await apiRequest(action, method, kwargs);
 };
 
-// Job creation 
+// Job creation
 export const saveRecruitmentJobApplicationFormSetting = async (e) => {
   const action = "saveRecruitmentJobApplicationFormSetting";
 
   const method = "POST";
 
-
-
   return await apiRequest(action, method, e);
 };
 
-export const getAllRecruitmentWorkFlows = async () => {
+// Team Members
+// export const getAllRecruitmentJobTeamMembers = async () => {
+//   const action = "getAllRecruitmentJobTeamMembers";
+
+//   const method = "POST";
+
+//   const kwargs = {};
+
+//   return await apiRequest(action, method, kwargs);
+// };
+
+export const getAllRecruitmentUserRoleMappings = async () => {
+  const action = "getAllRecruitmentUserRoleMappings";
+
+  const method = "POST";
+
+  const kwargs = {};
+
+  return await apiRequest(action, method, kwargs);
+};export const getAllRecruitmentWorkFlows = async () => {
   const action = "getAllRecruitmentWorkFlows";
 
   const method = "POST";
