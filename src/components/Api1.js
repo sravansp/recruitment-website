@@ -111,7 +111,7 @@ export const updateRecruitmentJob = async (id, workFlowId,modifiedBy) => {
 
   return await apiRequest(action, method, requestData);
 };
-export const getAllRecruitmentJobTeamMembers = async (jobId) => {
+export const getRecruitmentJobTeamMemberById = async (jobId) => {
   const action = "getAllRecruitmentJobTeamMembers";
 
   const method = "POST";
