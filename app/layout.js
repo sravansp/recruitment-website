@@ -22,7 +22,7 @@ const colorPrimary = "#6A4BFC";
 const mode = initialTheme || defaultTheme;
 export default function RootLayout({ children }) {
   return (
-    <html lang="en" className="scroll-smooth">
+    <html lang="en" className="transition-colors duration-300 scroll-smooth">
       <body className={inter.className}>
         <ConfigProvider
           theme={{

@@ -38,16 +38,16 @@ const JobCard = ({
         <h1 className="text-2xl font-semibold text-black h2">{jobName}</h1>
         <div className="grid grid-cols-2 gap-2">
           <div className="flex items-center gap-2 truncate">
-            <PiFoldersLight className="text-xl text-opacity-20"/> <p className="pblack !font-normal">{category}</p>
+            <PiFoldersLight className="text-xl text-black dark:text-white text-opacity-20"/> <p className="pblack !font-normal">{category}</p>
           </div>
           <div className="flex items-center gap-2 truncate">
-            <PiClock className="text-xl text-opacity-20"/> <p className="pblack !font-normal">{timeShift}</p>
+            <PiClock className="text-xl text-black dark:text-white text-opacity-20"/> <p className="pblack !font-normal">{timeShift}</p>
           </div>
           <div className="flex items-center gap-2 truncate">
-            <PiMapPin className="text-xl text-opacity-20"/> <p className="pblack !font-normal">{location}</p>
+            <PiMapPin className="text-xl text-black dark:text-white text-opacity-20"/> <p className="pblack !font-normal">{location}</p>
           </div>
           <div className="flex items-center gap-2 truncate">
-            <PiMoney className="text-xl text-opacity-20"/> <p className="pblack !font-normal">{salary}</p>
+            <PiMoney className="text-xl text-black dark:text-white text-opacity-20"/> <p className="pblack !font-normal">{salary}</p>
           </div>
         </div>
       </div>
