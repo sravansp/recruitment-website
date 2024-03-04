@@ -74,7 +74,9 @@ export default function Router() {
                 <Route path="/Company" element={<Company/>}></Route>
                 <Route path="/members" element={<TeamMembers/>}></Route>
                 <Route path="/Integrations" element={<Intergration/>}></Route>
-              </Routes>
+                <Route path="/Templates" element={<Template/>}></Route>
+                
+               </Routes>
             </div>
           </div>
           <div className="absolute bottom-0 right-0 p-2 opacity-40">

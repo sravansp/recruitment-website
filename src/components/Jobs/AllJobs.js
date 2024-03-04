@@ -36,6 +36,7 @@ function AllJobs() {
   const handleClose = () => setShow(false);
   const [show, setShow] = useState(false);
   const[updateId,setUpdateId]=useState("")
+  const record =""
  
   
   const tabs =[
@@ -341,6 +342,7 @@ function AllJobs() {
                 }}
                 // openPolicy={openPop}
                 // updateId={updateId}
+                isUpdate={false}
               />
             </motion.div>
           )}
@@ -370,7 +372,7 @@ function AllJobs() {
           setUpdateId(e);
         }}
         showButton={true}
-
+        // recordId={record.jobId}
         
         />
       </div>

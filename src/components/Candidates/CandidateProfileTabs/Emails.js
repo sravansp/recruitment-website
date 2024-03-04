@@ -263,9 +263,9 @@ const Emails = () => {
         <div className="rounded-lg bg-white dark:bg-secondaryDark p-1.5 ">
           <TabsNew tabs={tabData} onTabChange={onTabChange} initialTab={1} />
           <TextEditor
-            initialValue={content}
-            onChange={handleEditorChange}
-            minheight="250px"
+              initialValue={content}
+              onChange={handleEditorChange}
+              minheight="250px"
           />
           <div
             className="flex items-center justify-end gap-2.5 p-1.5 mt-4 rounded-lg"

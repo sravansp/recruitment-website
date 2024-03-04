@@ -1,15 +1,19 @@
-import React,{useState} from 'react'
+import React,{useState,useEffect} from 'react'
 import TableAnt from '../common/TableAnt'
 import Breadcrumbs from '../common/BreadCrumbs';
 import { useTranslation } from 'react-i18next';
 
 import ButtonClick from '../common/Button';
-
+import { getAllRecruitmentJobTemplates,getAllRecruitmentWorkFlows,getAllRecruitmentEmailTemplates } from '../Api1';
 import AddTemplate from './Addtemplate';
 import Tabs from '../common/Tabs';
 import Departments from '../Company/Add _departments';
 import Location from '../Company/Addlocation';
 import Createjob from '../Jobs/Createjob';
+import TemplateDec from './templateDec';
+import { Subject } from '@mui/icons-material';
+import Emailtemplate from './AddEmailtemplate';
+import TemEvaluation from './TemEvaluation';
 
 const Template = ({
     open = "",
@@ -80,20 +84,22 @@ const Template = ({
    
       const Header =[
     {
-        Job : [ {
+        Job : [ 
+          {
             id:1,
             title:"Name",
-            value:"Name",
+            value:"jobTitle",
          },
          {
             id:2,
-            title:"Contact",
-            value:"Contact",
+            title:"Description",
+            value:"jobDescription",
          },
          {
             id:3,
-            title:"Designation",
-            value:"Designation",
+            title:"Status",
+            value:"",
+            actionToggle: true,
          },
          {
             id:4,
@@ -103,141 +109,128 @@ const Template = ({
          },
         ],
         JobDescription : [ 
-            {
+          {
             id:1,
             title:"Name",
             value:"Name",
          },
          {
             id:2,
-            title:"Contact",
-            value:"Contact",
+            title:"Description",
+            value:"Description",
          },
          {
-            id:3,
-            title:"Designation",
-            value:"Designation",
-         },
+          id:3,
+          title:"Status",
+          value:"",
+          actionToggle: true,
+       },
          {
             id:4,
-            title:"Action",
-            value:"Action",
+            title:"Status",
+            value:"Status",
             action:true,
          },
         ],
         Workflow : [ 
-            {
+          {
             id:1,
             title:"Name",
-            value:"Name",
+            value:"workFlowName",
          },
          {
             id:2,
-            title:"Contact",
-            value:"Contact",
+            title:"Description",
+            value:"description",
          },
          {
-            id:3,
-            title:"Designation",
-            value:"Designation",
-         },
+          id:3,
+          title:"Status",
+          value:"",
+          actionToggle: true,
+       },
          {
             id:4,
-            title:"Action",
-            value:"Action",
+            title:"Status",
+            value:"Status",
             action:true,
          },
         ],
         Email : [ 
-            {
+          {
             id:1,
             title:"Name",
-            
-            value:"Name",
+            value:"emailTemplateName",
          },
          {
             id:2,
-            title:"Contact",
-            value:"Contact",
+            title:"Description",
+            value:"subject",
          },
          {
-            id:3,
-            title:"Designation",
-            value:"Designation",
-         },
+          id:3,
+          title:"Status",
+          value:"",
+          actionToggle: true,
+       },
          {
             id:4,
-            title:"Action",
-            value:"Action",
+            title:"Status",
+            value:"Status",
             action:true,
          },
         ],
         Evaluation : [ 
-            {
+          {
             id:1,
             title:"Name",
             value:"Name",
          },
          {
             id:2,
-            title:"Contact",
-            value:"Contact",
+            title:"Description",
+            value:"Description",
          },
          {
             id:3,
-            title:"Designation",
-            value:"Designation",
-         },
-         {
-            id:4,
-            title:"Action",
-            value:"Action",
+            title:"Status",
+            value:"Status",
             action:true,
          },
         ],
         Questionaire : [ 
-            {
+          {
             id:1,
             title:"Name",
             value:"Name",
          },
          {
             id:2,
-            title:"Contact",
-            value:"Contact",
+            title:"Description",
+            value:"Description",
          },
          {
             id:3,
-            title:"Designation",
-            value:"Designation",
-         },
-         {
-            id:4,
-            title:"Action",
-            value:"Action",
+            title:"Status",
+            value:"Status",
             action:true,
          },
         ],
         Letter : [ 
-            {
+          {
             id:1,
             title:"Name",
             value:"Name",
          },
          {
             id:2,
-            title:"Contact",
-            value:"Contact",
+            title:"Description",
+            value:"Description",
          },
          {
             id:3,
-            title:"Designation",
-            value:"Designation",
-         },
-         {
-            id:4,
-            title:"Action",
-            value:"Action",
+            title:"Status",
+            value:"Status",
             action:true,
          },
         ]
@@ -252,27 +245,15 @@ const Template = ({
 
    ]
 
-   const [JobList,steJobList]= useState()
-   const [JobDescriptionList,setJobDescriptionList]=useState()
-   const [WorkflowList,setWorkflow]=useState()
-   const [EmailList,setEmail] = useState()
-   const [EvaluationLIst,setEvaluation]=useState()
-   const[QuestionaireLIst,setQuestionaire]=useState()
-   const[LetterLIst,setLetter]=useState()
+   const [JobList,steJobList]= useState([])
+   const [JobDescriptionList,setJobDescriptionList]=useState([])
+   const [WorkflowList,setWorkflow]=useState([])
+   const [EmailList,setEmail] = useState([])
+   const [EvaluationLIst,setEvaluation]=useState([])
+   const[QuestionaireLIst,setQuestionaire]=useState([])
+   const[LetterLIst,setLetter]=useState([])
 
-   const actionData = [
-    {
-    
-        Job: { id: 1, data: JobList },
-        JobDescription: { id: 2, data: JobDescriptionList },
-        Workflow: {id:3,data:WorkflowList},
-        Email:{id:4,data:EmailList},
-        Evaluation:{id:5,data:EvaluationLIst},
-        Questionaire:{id:6,data:QuestionaireLIst},
-        Letter:{id:7,data:LetterLIst}
-    
-    },
-  ];
+ 
 //    const handleOpenModal = () => {
 //     // Set the state to trigger the rendering of AddLeaveType
 //     setOpenPop("Members");
@@ -282,7 +263,95 @@ const Template = ({
 //   };
    console.log("header",Header)
    
-  React.useEffect(() => {
+   const[TemplateList,setTemplateList]=useState([])
+   
+     const gettemaplate = async () => {
+       try {
+        
+         const response = await getAllRecruitmentJobTemplates();
+         
+         setTemplateList(response.result);
+         // const newData = {};
+         // response.result.forEach((job) => {
+         //   newData[job.jobId] = job; // Assuming jobId is the unique identifier
+         // });
+        
+         // setTableData(response.data);
+         // console.log(response.data); // Access response data
+         console.log(response);
+       } catch (error) {
+         console.error(error); // Handle errors
+       }
+     };
+     {console.log(updateId)}
+    
+    // useEffect(()=>{
+    //   gettemaplate();
+    // })
+    
+    const getWorkflows = async () => {
+      try {
+       
+        const response = await getAllRecruitmentWorkFlows();
+        
+        setWorkflow(response.result);
+        // const newData = {};
+        // response.result.forEach((job) => {
+        //   newData[job.jobId] = job; // Assuming jobId is the unique identifier
+        // });
+       
+        // setTableData(response.data);
+        // console.log(response.data); // Access response data
+        console.log(response);
+      } catch (error) {
+        console.error(error); // Handle errors
+      }
+    };
+    {console.log(updateId)}
+   
+  //  useEffect(()=>{
+  //   getWorkflows();
+  //  })
+ 
+  //  useEffect(()=>{
+  //   gettemaplate();
+  // })
+  
+  const getEmailLsit = async () => {
+    try {
+     
+      const response = await getAllRecruitmentEmailTemplates();
+      
+      // setEmail(response.result.map((item) => ({
+      //   emailTemplateName: item.emailTemplateName,
+      //   subject: item.emailTemplate.map((e) => (
+      //   e.subject)),
+      // }))
+      // )
+      setEmail(response.result)
+      // const newData = {};
+      // response.result.forEach((job) => {
+      //   newData[job.jobId] = job; // Assuming jobId is the unique identifier
+      // });
+     
+      // setTableData(response.data);
+      // console.log(response.data); // Access response data
+      console.log(response);
+      console.log(EmailList);
+    } catch (error) {
+      console.error(error); // Handle errors
+    }
+  };
+  
+ 
+//  useEffect(()=>{
+//   getEmailLsit();
+//   console.log(EmailList);
+//  })
+  
+  
+  
+   React.useEffect(() => {
     // Provide a default value if needed
    
   
@@ -291,7 +360,7 @@ const Template = ({
     switch (navigationPath) {
       case "Job":
         // getLocationList();
-      
+        gettemaplate();
         
         break;
       case "Departments":
@@ -310,6 +379,27 @@ const Template = ({
    
   
   }, [navigationPath]);
+
+  const actionData = [
+    {
+    
+        Job: { id: 1, data:TemplateList },
+        JobDescription: { id: 2, data:JobDescriptionList },
+        Workflow: {id:3,data:WorkflowList},
+        Email:{id:4,data:EmailList},
+        Evaluation:{id:5,data:EvaluationLIst},
+        Questionaire:{id:6,data:QuestionaireLIst},
+        Letter:{id:7,data:LetterLIst}
+    
+    },
+  ];
+  // const handleCreateJobClose = () => {
+  //   // Perform navigation logic here
+  //   // Example: navigate to the "Jobdetails" accordion
+  //   setNavigationPath("JobDetails");
+  //   // You can also set other necessary state or perform additional actions
+  // };
+  
     return (
    
     <><div className="flex flex-col justify-between gap-6 lg:items-center lg:flex-row">
@@ -324,7 +414,7 @@ const Template = ({
         
               <Tabs 
               header={Header}
-              path="employee"
+              // path="employee"
               tabs={tabs}
               All={true}
               clickDrawer={(e) => {
@@ -351,6 +441,7 @@ const Template = ({
           open={show}
           close={(e) => {
             setShow(e);
+           
           }}
         //   updateId={updateId}
         //   companyDataId={companyId}
@@ -358,11 +449,14 @@ const Template = ({
             // getLocationList();
           }}
           inputshow={false}
+          isUpdate={true}
+          
+          
         />
       )}
 
 {navigationPath === "JobDescription" && show && (
-        <Createjob
+        <TemplateDec
           open={show}
           close={(e) => {
             setShow(e);
@@ -372,6 +466,7 @@ const Template = ({
           refresh={() => {
             // getLocationList();
           }}
+          // jobDescription={true}
         />
       )}
       {navigationPath === "Workflow" && show && (
@@ -388,7 +483,7 @@ const Template = ({
         />
       )}
       {navigationPath === "Email" && show && (
-        <Createjob
+        <Emailtemplate
           open={show}
           close={(e) => {
             setShow(e);
@@ -401,7 +496,7 @@ const Template = ({
         />
       )}
        {navigationPath === "Evaluation" && show && (
-        <Createjob
+        <TemEvaluation
           open={show}
           close={(e) => {
             setShow(e);

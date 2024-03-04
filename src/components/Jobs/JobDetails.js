@@ -207,7 +207,7 @@ const JobDetails = () => {
 
 const DragView = () => {
   const [ready, setReady] = useState(false);
-  const [boardData, setBoardData] = useState(BoardData);
+  const [boardData, setBoardData] = useState([]);
   const [draggingPosition, setDraggingPosition] = useState(null);
   const selectedDataId = useSelector((state) => state.dataId.selectedDataId);
   const jobId = selectedDataId

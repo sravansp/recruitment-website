@@ -39,7 +39,8 @@ const Tabs = ({
   tabClick = () => {},
   showButton=false,
   Showsearch=false,
-  All=false
+  All=false,
+  recordId="",
  
 }) => {
   const [activeTab, setActiveTab] = useState(tabs[0].id);
@@ -300,6 +301,7 @@ const Tabs = ({
                     showButton={showButton}
                     Showsearch={Showsearch }
                     All={All}
+                    recordId={recordId}
                     // All={All}
                     
                     // arabic = true,

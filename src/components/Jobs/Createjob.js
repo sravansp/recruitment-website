@@ -36,11 +36,11 @@ import TableAnt from '../common/TableAnt';
 
  
 
-const Createjob = ( {open = "", close = () => { },inputshow= false}) => {
+const Createjob = ( {open = "", close = () => { },inputshow= false,isUpdate={}}) => {
   
   const[show,setShow] =useState(open);
   const { t } = useTranslation();
-  const [isUpdate, setIsUpdate] = useState();
+  // const [isUpdate, setIsUpdate] = useState();
   const [activeBtn, setActiveBtn] = useState(0);
   const [presentage, setPresentage] = useState(0);
   const [nextStep, setNextStep] = useState(0);
@@ -98,6 +98,7 @@ const Createjob = ( {open = "", close = () => { },inputshow= false}) => {
   };
   useEffect(() => {
     setCompanyId(localStorage.getItem("companyId"));
+    
   }, []);
   const [organisationId, setOrganisationId] = useState(
     localStorage.getItem("organisationId")
@@ -208,6 +209,7 @@ const getDepartmentList = async () => {
       value: each.departmentId,
     })))
   console.log("calue" ,departmentList);
+  console.log(isUpdate)
 };
 useEffect(() => {
   // switch (assignBtnName) {
@@ -414,7 +416,7 @@ const handleSaveInput = (index) => {
     close(false);
   };
 
-
+  
   const [steps, setSteps] = useState([
     {
       id: 1,
@@ -766,9 +768,10 @@ const handleSaveInput = (index) => {
      header={[
         !isUpdate
           ? t("Create a Job")
-          : t("Update_Employee_Onboarding"),
+          : t("Create a Job Temaplate"),
         t("Lorem ipsum dummy text doret solo."),
       ]}
+      
       headerRight={
         <div className="flex items-center gap-10">
           <p className="text-sm font-medium text-gray-400">
@@ -805,7 +808,7 @@ const handleSaveInput = (index) => {
     
     <div >
       
-      
+    
       <FlexCol>
       <div className="flex flex-col gap-6 max-w-[1070px] w-full mx-auto ">
             {steps && (
@@ -1103,6 +1106,7 @@ const handleSaveInput = (index) => {
                                             </div>
                                             </Accordion>
                                         </div>
+                                        
                                         <Accordion
                                                title={"Job Description"}
                                                className="Text_area"

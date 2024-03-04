@@ -67,7 +67,8 @@ const TableAnt = ({
   viewDetails = false,
   showButton = false,
   All=false,
-  showsearch=false
+  showsearch=false,
+  recordId="",
   
 }) => {
   const { t } = useTranslation();
@@ -181,10 +182,13 @@ const TableAnt = ({
   
 
   const handleRowClick = (record) => {
-    dispatch(setSelectedDataId(record.jobId));
-    navigate(`/JobDetails/${record.jobId}`);
-    // Store the clicked data ID in local storage
-    localStorage.setItem('selectedDataId', record.jobId);
+    // Check if the path is present and is not an empty array
+    if (path && path.length > 0) {
+      dispatch(setSelectedDataId(record.jobId));
+      navigate(`/${path}/${record[actionID]}`);
+      // Store the clicked data ID in local storage only when the path is present and not an empty array
+      localStorage.setItem('selectedDataId', record.jobId);
+    }
   };
   // useEffect(()=>{
   //   const record
