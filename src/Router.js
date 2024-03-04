@@ -28,6 +28,7 @@ export default function Router() {
 
   const layout = useSelector((state) => state.layout.value);
   const mode = useSelector((state) => state.layout.mode);
+  const selectedDataId = useSelector((state) => state.dataId.selectedDataId);
   const dispatch = useDispatch();
   const [loginData, setLoginData] = useState();
   // const [loginData, setLoginData] = useState();
@@ -63,7 +64,7 @@ export default function Router() {
                 {/* Company submenus */}
                 <Route path="/JobsList" element={<JobsList />} />
                 <Route path="/Appearance" element={<Appearance />} />
-                <Route path="/JobDetails/:jobId" element={<JobDetails />} />
+                <Route path={`/JobDetails/${selectedDataId}`}element={<JobDetails />} />
                 <Route path="/CandidateList" element={<CandidatesList />} />
                 <Route path="/CandidateProfile" element={<CandidateProfile />} />
                 <Route path="/AllJobs" element={<AllJobs/>} />

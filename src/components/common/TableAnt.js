@@ -27,10 +27,13 @@ import { RiDeleteBin5Line } from "react-icons/ri";
 import { FaPencil } from "react-icons/fa6";
 import { useTranslation } from "react-i18next";
 import { useMediaQuery } from "react-responsive";
-import { useNavigate } from "react-router-dom";
+// import { useNavigate } from "react-router-dom";
 import ButtonClick from "./Button";
 import { useDispatch, useSelector } from 'react-redux';
 import { setNavigationPath } from "../../Redux/action";
+import { setSelectedDataId } from "../../Redux/action";
+import { useNavigate } from 'react-router-dom';
+
 
 // Filter Dropdown
 const { SubMenu } = Menu;
@@ -174,13 +177,19 @@ const TableAnt = ({
     }
   };
 
-  const [selectedDataId, setSelectedDataId] = useState(null);
-  const handleRowClick = (record) => {
-    setSelectedDataId(record.id);
+ 
+  
 
+  const handleRowClick = (record) => {
+    dispatch(setSelectedDataId(record.jobId));
+    navigate(`/JobDetails/${record.jobId}`);
     // Store the clicked data ID in local storage
-    localStorage.setItem('selectedDataId', record.id);
+    localStorage.setItem('selectedDataId', record.jobId);
   };
+  // useEffect(()=>{
+  //   const record
+  //   console.log(record.jobId)
+  // })
   useEffect(() => {
     console.log(header, "header");
     setTableData(
@@ -761,6 +770,7 @@ const TableAnt = ({
         
       </div>
       <div className="border rounded-lg border-[#E7E7E7] dark:border-secondary relative overflow-auto">
+      {console.log(data)}
         {data && (
           <Table
             rowSelection={{ ...rowSelection }}

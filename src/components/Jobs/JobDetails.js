@@ -6,11 +6,12 @@ import { Dropdown, Tooltip, Radio, Alert } from "antd";
 import Breadcrumbs from "../common/BreadCrumbs";
 import { motion } from "framer-motion";
 import { useMediaQuery } from "react-responsive";
-import { Link } from "react-router-dom";
+import { Link, useParams } from "react-router-dom";
 import ButtonClick from "../common/Button";
 import SearchBox from "../common/SearchBox";
 import { FilterBtn } from "../common/FilterBtn";
-
+import { useDispatch, useSelector } from 'react-redux';
+import { getAllRecruitmentJobWorkFlowDetails } from "../Api1";
 import User from "../../assets/images/user1.jpeg";
 // ICONS
 import { GoClock } from "react-icons/go";
@@ -58,6 +59,7 @@ const JobDetails = () => {
   const handleshow =()=>setShow(true);
   const handleClose =()=>setShow(false)
   const [show, setShow] = useState(false);
+  const { selectedDataId } = useParams();
   const gridListoptions = [
     {
       label: <BsListUl />,
@@ -207,9 +209,35 @@ const DragView = () => {
   const [ready, setReady] = useState(false);
   const [boardData, setBoardData] = useState(BoardData);
   const [draggingPosition, setDraggingPosition] = useState(null);
+  const selectedDataId = useSelector((state) => state.dataId.selectedDataId);
+  const jobId = selectedDataId
+
+
+  
+  const GetAllRecruitmentJobWorkFlowDetails = async()=> {
+    // const jobId=1;
+  try {
+  const response = await getAllRecruitmentJobWorkFlowDetails(
+    jobId,
+
+  );
+  setBoardData(response.result.map((item) => ({
+    name:item.stageName,
+    stageId:item.stageId,
     
-
-
+  })));
+  
+  console.log(response)
+ }
+ 
+ catch (error) {
+  console.error('Error updating workflow ID:', error);
+}
+}
+useEffect(()=>{
+  GetAllRecruitmentJobWorkFlowDetails()
+  console.log(jobId)
+})
   console.log(boardData);
   useEffect(() => {
     if (typeof window !== "undefined") {
@@ -347,7 +375,7 @@ const DragView = () => {
                     <div className="flex items-center gap-4 shrink-0">
                       <div className="w-[26px] h-[26px] p-1 bg-violet-100 rounded-md flex-col justify-center items-center gap-2.5 inline-flex">
                         <p className=" text-gray-900 text-[13px] font-['SF Pro'] leading-[18.20px]">
-                          {board.items.length}
+                          {/* {board.items.length} */}
                         </p>
                       </div>
                       <Dropdown
@@ -382,7 +410,7 @@ const DragView = () => {
                           className="flex flex-col h-auto overflow-x-hidden overflow-y-auto"
                           style={{ maxHeight: "calc(100vh - 50px)" }}
                         >
-                          {board.items.length > 0 &&
+                          {/* {board.items.length > 0 &&
                             board.items.map((item, iIndex) => (
                               <CardItem
                                 key={item.id}
@@ -391,7 +419,7 @@ const DragView = () => {
                                 color={colors[bIndex]}
                                 className="m-3"
                               />
-                            ))}
+                            ))} */}
                           {provided.placeholder}
                         </div>
                       </div>

@@ -272,7 +272,7 @@ const Tabs = ({
           >
 
  
-
+            
             {
               activeTab === tab.id &&
                 changeData &&

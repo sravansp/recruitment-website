@@ -15,3 +15,4 @@ const navigationReducer = (state = initialState, action) => {
 };
 
 export default navigationReducer;
+
