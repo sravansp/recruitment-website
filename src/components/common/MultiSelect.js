@@ -102,7 +102,7 @@ export default function MultiSelect({
       event.preventDefault();
       event.stopPropagation();
     };
-
+    
     return (
       <div className=" px-0.5" onMouseDown={onPreventMouseDown}>
         <span className=" flex items-center gap-1 bg-[#F9F5FF] rounded-xl p-1 ">
@@ -130,13 +130,38 @@ export default function MultiSelect({
       // </Tag>
     );
   };
+  const selectedValues = options.filter((option) => value.includes(option.value));
   return (
-    <div className="relative block dark:text-white">
+    <div className="relative block dark:text-white ">
       {title && (
         <label className="text-xs font-medium 2xl:text-sm dark:text-white">
           {title}
         </label>
       )}
+  {/* {selectedValues.length > 0 && (
+        <div className="flex ">
+          {selectedValues.map((selected) => (
+            <div key={selected.value} className="mr-2">
+              <div className="w-36 h-[38px] p-[3px] bg-zinc-100 rounded-[58px] justify-start items-center gap-1 inline-flex">
+                <div className="w-8 h-8 relative"></div>
+                <div className="text-center text-neutral-700 text-xs font-medium font-['Inter'] leading-[18px]">
+                  {selected.label}
+                </div>
+                <div className="rounded-[36px] flex-col justify-start items-center gap-2.5 inline-flex">
+                  <div className="p-2.5 flex-col justify-start items-start gap-2.5 flex"></div>
+                </div>
+              </div>
+            </div>
+          ))}
+        </div>
+      )} */}
+
+      <Space
+        direction="vertical"
+        style={{ width: "100%" }}
+        className="mt-[6px]"
+        status={`  ${error && "error"}`}
+      ></Space>
       <Space
         direction="vertical"
         style={{ width: "100%" }}

@@ -74,6 +74,7 @@ const CandidatesList = () => {
 
     callapi();
   }, []);
+  console.log(jobList)
   return (
     <div className="flex flex-col gap-[25px]">
       <div className='flex justify-between'>
@@ -92,6 +93,7 @@ const CandidatesList = () => {
       <JobListCopy/>
       <div className=''>
         <TableCopy data={jobList} header={header} path='CandidateList'/>
+        {/* <TableAnt data={jobList} header={header} path='CandidateList'/> */}
       </div>
     </div>
   )

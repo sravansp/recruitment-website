@@ -11,7 +11,7 @@ import ButtonClick from "../common/Button";
 import SearchBox from "../common/SearchBox";
 import { FilterBtn } from "../common/FilterBtn";
 import { useDispatch, useSelector } from 'react-redux';
-import { getAllRecruitmentJobWorkFlowDetails } from "../Api1";
+import { getAllRecruitmentJobWorkFlowDetails,getAllCandidatesByjobId } from "../Api1";
 import User from "../../assets/images/user1.jpeg";
 // ICONS
 import { GoClock } from "react-icons/go";
@@ -237,8 +237,42 @@ const DragView = () => {
 useEffect(()=>{
   GetAllRecruitmentJobWorkFlowDetails()
   console.log(jobId)
-})
+},[])
   console.log(boardData);
+ const[candidatelist,setcandidatelist] =useState([])
+ const[candidateName,setcandidateName] =useState([])
+ const[candidateEmail,setcandidateEmail]=useState([])
+ const getCandidatesbyID = async () => {
+  try {
+    const response = await getAllCandidatesByjobId(jobId);
+   
+   
+
+    // Check if the current stage ID matches any stage ID in the workflow
+    response.result.forEach(candidate => {
+      const matchingStage = boardData.find(stage => stage.stageId === candidate.currentStage
+        );
+
+      if (matchingStage) {
+        // Extract candidate name and email
+        setcandidateName(candidate.candidateName) ;
+        setcandidateEmail(candidate.candidateEmail)
+        setcandidatelist({data:response.result});
+        // Now you can use candidateName and candidateEmail as needed
+        
+      }
+    });
+
+    console.log(response);
+  } catch (error) {
+    console.error('Error updating workflow ID:', error);
+  }
+}
+
+useEffect(()=>{
+  getCandidatesbyID()
+  console.log(`Candidate Name: ${candidateName}, Candidate Email: ${candidateEmail}`);
+},[])
   useEffect(() => {
     if (typeof window !== "undefined") {
       setReady(true);
@@ -412,14 +446,19 @@ useEffect(()=>{
                         >
                           {/* {board.items.length > 0 &&
                             board.items.map((item, iIndex) => (
-                              <CardItem
-                                key={item.id}
-                                data={item}
-                                index={iIndex}
-                                color={colors[bIndex]}
-                                className="m-3"
-                              />
+                            
                             ))} */}
+                             {/* {candidatelist.map((each =>{
+                              <CardItem
+                              key={each.jobResumeMappingId}
+                              data={each.candidateName}
+                              // index={iIndex}
+                              // color={colors[bIndex]}
+                              className="m-3"
+                            />
+
+                             }))} */}
+                           
                           {provided.placeholder}
                         </div>
                       </div>
@@ -536,7 +575,7 @@ const CardItem = ({ data, index, color }) => {
               </div>
               <p className="!font-semibold h6 !text-black dark:!text-white">
                 {" "}
-                {data?.name && data?.name}
+                {/* {data?.name && data?.name} */}{data.candidateName}
               </p>
             </div>
             <div className="flex justify-between gap-3">

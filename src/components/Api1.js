@@ -180,3 +180,16 @@ export const getAllRecruitmentEmailTemplates = async () => {
 
   return await apiRequest(action, method, kwargs);
 };
+export const getAllCandidatesByjobId = async (jobId) => {
+  const action = "getAllCandidatesByjobId";
+
+  const method = "POST";
+  const requestData = {
+    // Include any other necessary parameters
+    jobId: jobId,
+  };
+
+  
+
+  return await apiRequest(action, method, requestData);
+};
