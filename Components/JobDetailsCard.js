@@ -1,26 +1,29 @@
 // JobDetailsCard.js
-'use client';
+"use client";
 import React from "react";
 import { motion } from "framer-motion";
 import ButtonClick from "./Button";
 import TextReadMore from "./TextReadMore";
+import Link from "next/link";
 
 const JobDetailsCard = ({ selectedJob, jobDetailsAnimation }) => {
   return (
     <motion.div
-    // initial={{ opacity: 0, y: 20 }}
-    // animate={jobDetailsAnimation}
-    // exit={{ opacity: 0, y: -20 }}
-    // transition={{ duration: 0.4 }}
-    // initial={{ opacity: 0, y: 20, duration: 0.2 }}
-    animate={jobDetailsAnimation}
-    transition={{ duration: 0.2 }}
+      // initial={{ opacity: 0, y: 20 }}
+      // animate={jobDetailsAnimation}
+      // exit={{ opacity: 0, y: -20 }}
+      // transition={{ duration: 0.4 }}
+      // initial={{ opacity: 0, y: 20, duration: 0.2 }}
+      animate={jobDetailsAnimation}
+      transition={{ duration: 0.2 }}
     >
       {selectedJob && (
         <div className="flex flex-col gap-2.5 2xl:gap-4">
           <div className="flex items-center justify-between">
             <h1 className="h2">{selectedJob.jobName}</h1>
-            <ButtonClick buttonName="Apply" BtnType="primary" />
+            <Link href="/login">
+              <ButtonClick buttonName="Apply" BtnType="primary" />
+            </Link>
           </div>
           <div className="flex flex-col gap-2.5 2xl:gap-4 Overview">
             <div className="bg-[#f2f0fd] dark:bg-[#4a4a4a] p-2.5 rounded-md">
