@@ -12,7 +12,7 @@ const CandidatesList = () => {
   const [jobList,setJobList]=useState([])
   const header = [
     {
-      CandidateList: [
+      CandidateProfile: [
         {
           id: 1,
           title: "NAME",
@@ -61,9 +61,9 @@ const CandidatesList = () => {
     const callapi = async () => {
       try {
         
-        const data = await getAllRecruitmentResumes();
-        console.log(data.result);
-        setJobList(data.result);
+        const response = await getAllRecruitmentResumes();
+        console.log(response.result);
+        setJobList(response.result);
 
         // setTableData(response.data);
         // console.log(response.data); // Access response data
@@ -92,8 +92,8 @@ const CandidatesList = () => {
       </div>
       <JobListCopy/>
       <div className=''>
-        <TableCopy data={jobList} header={header} path='CandidateList'/>
-        {/* <TableAnt data={jobList} header={header} path='CandidateList'/> */}
+        {/* <TableCopy data={jobList} header={header} path='CandidateProfile'/> */}
+        <TableAnt data={jobList} header={header} path='CandidateProfile' actionID="resumeId"/>
       </div>
     </div>
   )

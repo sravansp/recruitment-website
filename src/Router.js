@@ -9,7 +9,7 @@ import JobsList from "./components/Jobs/JobsList";
 import Appearance from "./components/Settings/Appearance/Appearance";
 import JobDetails from "./components/Jobs/JobDetails";
 import CandidatesList from "./components/Candidates/CandidatesList";
-import CandidateProfile from "./components/Candidates/CandidateProfile";
+
 import AllJobs from "./components/Jobs/AllJobs";
 import JobCard from "./components/common/JobCard";
 import JobTabs from "./components/common/JobTabs";
@@ -19,6 +19,7 @@ import TeamMembers from "./components/Team_members/TeamMembers";
 import Template from "./components/Template/Template";
 import Login from "./components/Login/login";
 import Intergration from "./components/Settings/Intergration";
+import CandidateProfile from "./components/Candidates/CandidateProfile";
 
 
 
@@ -66,7 +67,7 @@ export default function Router() {
                 <Route path="/Appearance" element={<Appearance />} />
                 <Route path={`/JobDetails/${selectedDataId}`}element={<JobDetails />} />
                 <Route path="/CandidateList" element={<CandidatesList />} />
-                <Route path="/CandidateProfile" element={<CandidateProfile />} />
+                <Route path="CandidateProfile/:resumeId" element={<CandidateProfile/>} />
                 <Route path="/AllJobs" element={<AllJobs/>} />
                 <Route path="/jobcard" element={<JobCard/>}></Route>
                 <Route path="/jobtabs" element={<JobTabs/>}></Route>

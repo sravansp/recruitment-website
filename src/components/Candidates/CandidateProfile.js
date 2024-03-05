@@ -169,7 +169,7 @@ const CandidateProfile = () => {
       content: `${value} is copied succesfully`,
     });
   };
-
+  console.log("hjkjjkkkakakfka")
   const menu = (
     <Menu onClick={handleMenuClick}>
       {dropdown.map((item) => (

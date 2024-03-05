@@ -1,17 +1,17 @@
 import React, { useEffect, useState } from "react";
-
-import BoardData from "../../data/board.json";
+import { useDispatch, useSelector } from 'react-redux';
+import { getAllRecruitmentJobWorkFlowDetails,getAllCandidatesByjobId } from "../Api1";
+// import BoardData from "../../data/board.json";
 import { DragDropContext, Droppable, Draggable } from "react-beautiful-dnd";
 import { Dropdown, Tooltip, Radio, Alert } from "antd";
 import Breadcrumbs from "../common/BreadCrumbs";
 import { motion } from "framer-motion";
 import { useMediaQuery } from "react-responsive";
-import { Link, useParams } from "react-router-dom";
+import { Link } from "react-router-dom";
 import ButtonClick from "../common/Button";
 import SearchBox from "../common/SearchBox";
 import { FilterBtn } from "../common/FilterBtn";
-import { useDispatch, useSelector } from 'react-redux';
-import { getAllRecruitmentJobWorkFlowDetails,getAllCandidatesByjobId } from "../Api1";
+
 import User from "../../assets/images/user1.jpeg";
 // ICONS
 import { GoClock } from "react-icons/go";
@@ -37,6 +37,7 @@ import { BsGrid, BsListUl } from "react-icons/bs";
 
 
 import Createjob from "./Createjob";
+import { ColumnChooserSelection } from "devextreme-react/data-grid";
 
 const customColors = [
   "#00B23C",
@@ -59,7 +60,6 @@ const JobDetails = () => {
   const handleshow =()=>setShow(true);
   const handleClose =()=>setShow(false)
   const [show, setShow] = useState(false);
-  const { selectedDataId } = useParams();
   const gridListoptions = [
     {
       label: <BsListUl />,
@@ -206,74 +206,117 @@ const JobDetails = () => {
 };
 
 const DragView = () => {
-  const [ready, setReady] = useState(false);
-  const [boardData, setBoardData] = useState(BoardData);
-  const [draggingPosition, setDraggingPosition] = useState(null);
+  
+
+  const[candidatelist,setcandidatelist]=useState([])
+  const[Workflow,setWorkflow]=useState([])
   const selectedDataId = useSelector((state) => state.dataId.selectedDataId);
   const jobId = selectedDataId
+  const [boardData, setBoardData] = useState([]);
+  const getCandidatesById = async () => {
+    try {
+      const response = await getAllCandidatesByjobId(jobId);
+      setBoardData(response.result.map((item) => ({
+        id: item.stageId,
+        name: item.stageName,
+        items: item.stageCandidates.map((candidate)=>({
+          id:candidate.resumeId,
+          name:candidate.candidateName,
+          image:candidate.image,
+        }))
+      })));
+      console.log(response);
+      console.log(boardData)
+    } catch (error) {
+      console.error('Error updating workflow ID:', error);
+    }
+  };
 
+  // const getCandidatesById = async () => {
+  //   try {
+  //     const response = await getAllCandidatesByjobId(jobId);
+  //     setcandidatelist(response.result);
+  //     // boardData.push( Workflow.map((workflowItem) => ({
+  //     //   id: workflowItem.id,
+  //     //   name: workflowItem.name,
+  //     //   items: response?.result?.map((candidate) => ({
+  //     //     id: candidate.jobResumeMappingId,
+  //     //     name: candidate.candidateName,
+  //     //     image: candidate.candidateEmail
+  //     //   }))
+  //     // })));
 
-  
-  const GetAllRecruitmentJobWorkFlowDetails = async()=> {
-    // const jobId=1;
-  try {
-  const response = await getAllRecruitmentJobWorkFlowDetails(
-    jobId,
+  //     // setBoardData(newBoardData);
+  //     console.log(response);
+  //   } catch (error) {
+  //     console.error('Error updating workflow ID:', error);
+  //   }
+  // };
 
-  );
-  // setBoardData(response.result.map((item) => ({
-  //   name:item.stageName,
-  //   stageId:item.stageId,
+    useEffect(() => {
     
-  // })));
-  setBoardData(response.result)
-  
-  console.log(response)
- }
- 
- catch (error) {
-  console.error('Error updating workflow ID:', error);
-}
-}
-useEffect(()=>{
-  GetAllRecruitmentJobWorkFlowDetails()
-  console.log(jobId)
-},[])
-  console.log(boardData);
- const[candidatelist,setcandidatelist] =useState([])
- const[candidateName,setcandidateName] =useState([])
- const[candidateEmail,setcandidateEmail]=useState([])
- const getCandidatesbyID = async () => {
-  try {
-    const response = await getAllCandidatesByjobId(jobId);
-   
-   
+        // console.log('Both API calls completed');
+        // console.log('Job ID:', jobId);
+        // console.log('Workflow:', Workflow);
+        // console.log('Candidate List:', candidatelist);
 
-    // Check if the current stage ID matches any stage ID in the workflow
-    response.result.forEach(candidate => {
-      const matchingStage = boardData.find(stage => stage.stageId === candidate.currentStage
-        );
+        // Create the desired array structure
+        // getRecruitmentWorkflow()
+        getCandidatesById()
+       
+        // console.log(newBoardData);
 
-      if (matchingStage) {
-        // Extract candidate name and email
-        setcandidateName(candidate.candidateName) ;
-        setcandidateEmail(candidate.candidateEmail)
-        setcandidatelist({data:response.result});
-        // Now you can use candidateName and candidateEmail as needed
+
+      
+    }, []);
+   
+    useEffect(()=>{
+      // const newBoardData = Workflow.map((workflowItem) => ({
+      //   id: workflowItem.id,
+      //   name: workflowItem.name,
+      //   items: candidatelist.map((candidate) => ({
+      //     id: candidate.jobResumeMappingId,
+      //     name: candidate.candidateName,
+      //     image: candidate.candidateEmail
+      //   }))
+      // }));
+
+      // setBoardData(Workflow.map((workflowItem) => ({
+      //   id: workflowItem.id,
+      //   name: workflowItem.name,
+      //   items: candidatelist.map((candidate) => ({
+      //     id: candidate.jobResumeMappingId,
+      //     name: candidate.candidateName,
+      //     image: candidate.candidateEmail
+      //   }))
+      // })));
+    },[candidatelist])
+  // const BoardData=[
+  //   {
+  //     "id" : "",
+  //     "name": "",
+  //     "items": [
+  //       {
+  //         "id": "",
+  //         "name": "",
+  //         "image": ""
+  //       }
         
-      }
-    });
+  //     ]
+  //   }
+  
+  //  ]
+  
+  
+  const [ready, setReady] = useState(false);
+ 
+  const [draggingPosition, setDraggingPosition] = useState(null);
+  
 
-    console.log(response);
-  } catch (error) {
-    console.error('Error updating workflow ID:', error);
-  }
-}
 
-useEffect(()=>{
-  getCandidatesbyID()
-  console.log(`Candidate Name: ${candidateName}, Candidate Email: ${candidateEmail}`);
-},[])
+
+
+  // console.log(BoardData);
   useEffect(() => {
     if (typeof window !== "undefined") {
       setReady(true);
@@ -312,18 +355,7 @@ useEffect(()=>{
   const colors = boardData.map(
     (_, index) => customColors[index % customColors.length]
   );
-  const transformedData  = boardData.map(item => ({
-    id: item.stageId,
-    name: item.stageName,
-    items: [
-      {
-        id: "",  // You need to replace this with the actual id for the item
-        name: "",  // You need to replace this with the actual name for the item
-        image: "",
-      }
-      // Add more items if needed
-    ]
-  }));
+
   const items = [
     {
       label: "Automate",
@@ -421,7 +453,7 @@ useEffect(()=>{
                     <div className="flex items-center gap-4 shrink-0">
                       <div className="w-[26px] h-[26px] p-1 bg-violet-100 rounded-md flex-col justify-center items-center gap-2.5 inline-flex">
                         <p className=" text-gray-900 text-[13px] font-['SF Pro'] leading-[18.20px]">
-                          {/* {board.items.length} */}
+                          {board?.items?.length}
                         </p>
                       </div>
                       <Dropdown
@@ -456,21 +488,16 @@ useEffect(()=>{
                           className="flex flex-col h-auto overflow-x-hidden overflow-y-auto"
                           style={{ maxHeight: "calc(100vh - 50px)" }}
                         >
-                          {/* {board.items.length > 0 &&
+                          {
                             board.items.map((item, iIndex) => (
-                            
-                            ))} */}
-                             {/* {candidatelist.map((each =>{
                               <CardItem
-                              key={each.jobResumeMappingId}
-                              data={each.candidateName}
-                              // index={iIndex}
-                              // color={colors[bIndex]}
-                              className="m-3"
-                            />
-
-                             }))} */}
-                           
+                                key={item.id}
+                                data={item}
+                                index={iIndex}
+                                color={colors[bIndex]}
+                                className="m-3"
+                              />
+                            ))}
                           {provided.placeholder}
                         </div>
                       </div>
@@ -587,7 +614,7 @@ const CardItem = ({ data, index, color }) => {
               </div>
               <p className="!font-semibold h6 !text-black dark:!text-white">
                 {" "}
-                {/* {data?.name && data?.name} */}{data.candidateName}
+                {data?.name && data?.name}
               </p>
             </div>
             <div className="flex justify-between gap-3">
