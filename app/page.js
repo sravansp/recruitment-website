@@ -1,21 +1,23 @@
 "use client";
 import React, { useState, useEffect } from "react";
-import JobCard from "@/Components/JobCard";
 import { motion, useAnimation } from "framer-motion";
+import JobCard from "@/Components/JobCard";
 import JobDetailsCard from "@/Components/JobDetailsCard";
-// SAMPLE DATA
-import { jobs } from "@/Components/Data";
 import ButtonClick from "@/Components/Button";
 import Filter from "@/Components/Filter";
 import Sorting from "@/Components/Sorting";
 import SearchBox from "@/Components/SearchBox";
 import { PiMagnifyingGlass, PiNavigationArrow } from "react-icons/pi";
 import { useMediaQuery } from "react-responsive";
+import { useRouter } from "next/navigation";
+import Link from "next/link";
+import { jobs } from "@/Components/Data";
 
 const Home = () => {
-  const [selectedJobId, setSelectedJobId] = useState(1); // Default to the first job ID
+  const [selectedJobId, setSelectedJobId] = useState(1);
   const jobDetailsAnimation = useAnimation();
-  const isSmallScreen = useMediaQuery({ maxWidth: 1439 });
+  const isSmallScreen = useMediaQuery({ maxWidth: 767 });
+  const router = useRouter();
 
   const findJobById = (id) => {
     // Logic to find job details by ID from your data
@@ -26,7 +28,13 @@ const Home = () => {
 
   const handleJobSelect = (id) => {
     setSelectedJobId(id);
-    animateJobDetails();
+    if (isSmallScreen) {
+      router.push(`/job-details/${id}`, undefined, { shallow: true });
+      // window.location.href = `/job-details/${id}`;
+      // <Link href={`/job-details/${id}`} shallow />
+    } else {
+      animateJobDetails();
+    }
   };
 
   const animateJobDetails = () => {
@@ -34,19 +42,24 @@ const Home = () => {
       jobDetailsAnimation.start({ opacity: 1, y: 0 });
     });
   };
+  useEffect(() => {
+    try {
+      // Initial animation when component mounts
+      animateJobDetails();
+    } catch (error) {
+      console.error("Error in controls.start:", error);
+    }
+  }, [jobDetailsAnimation]);
 
   useEffect(() => {
-    // Initial animation when component mounts
-    animateJobDetails();
-
     // Set the default selected job
     setSelectedJob(findJobById(selectedJobId));
-  }, [selectedJobId]);
+  }, [selectedJobId, jobDetailsAnimation]);
 
   return (
-    <main className="flex flex-col justify-center gap-6 pb-10 bg-white dark:bg-black scroll-smooth">
-      <div className="md:h-[374px] h-full w-full bg-TopSection py-5">
-        <div className="flex flex-col gap-3 px-5 pt-16 md:pt-36 container-wrapper">
+    <main className="flex flex-col justify-center gap-6 pb-10 scroll-smooth">
+      <div className="md:h-[288px] xl:h-[300px] h-full w-full bg-TopSection py-5">
+        <div className="flex flex-col gap-3 px-5 pt-16 md:pt-24 container-wrapper">
           <div>
             <h6 className="h6 text-primary">Careers</h6>
             <h1 className=" text-3xl 2xl:text-5xl font-semibold leading-[140%] text-black dark:text-white">
@@ -93,30 +106,32 @@ const Home = () => {
           </div>
         </div>
       </div>
-      <motion.main
+      <motion.div
         initial={{ opacity: 0 }}
         animate={{ opacity: 1 }}
         exit={{ opacity: 0 }}
         className="grid w-full grid-cols-12 gap-6 container-wrapper"
       >
-        <div className="flex flex-col w-full col-span-12 md:col-span-5 gap-2.5 md:pr-2.5 overflow-auto md:h-screen">
+        <div className="flex flex-col w-full col-span-12 md:col-span-5 gap-2.5 md:pr-2.5">
           {jobs.map((job) => (
             <JobCard
               key={job.id}
-              id={job.id} // Assuming your job object has an 'id' property
+              id={job.id}
               {...job}
               onSelect={() => handleJobSelect(job.id)}
               selected={selectedJob && selectedJob.id === job.id}
             />
           ))}
         </div>
-        <div className="hidden w-full h-screen overflow-auto md:col-span-7 md:block">
+        {/* {!isSmallScreen && ( */}
+        <div className="sticky top-[1rem] hidden w-full h-[96vh] overflow-auto md:col-span-7 md:block p-3 rounded-lg borderb">
           <JobDetailsCard
             selectedJob={selectedJob}
             jobDetailsAnimation={jobDetailsAnimation}
           />
         </div>
-      </motion.main>
+        {/* )} */}
+      </motion.div>
     </main>
   );
 };

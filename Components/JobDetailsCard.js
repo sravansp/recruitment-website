@@ -1,4 +1,5 @@
 // JobDetailsCard.js
+'use client';
 import React from "react";
 import { motion } from "framer-motion";
 import ButtonClick from "./Button";
@@ -11,7 +12,7 @@ const JobDetailsCard = ({ selectedJob, jobDetailsAnimation }) => {
     // animate={jobDetailsAnimation}
     // exit={{ opacity: 0, y: -20 }}
     // transition={{ duration: 0.4 }}
-    initial={{ opacity: 0, y: 20, duration: 0.2 }}
+    // initial={{ opacity: 0, y: 20, duration: 0.2 }}
     animate={jobDetailsAnimation}
     transition={{ duration: 0.2 }}
     >

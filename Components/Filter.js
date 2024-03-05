@@ -79,14 +79,14 @@ const CustomDropdown = () => {
   );
 
   return (
-    <Dropdown overlay={menu} trigger={["click"]} ref={dropdownRef}>
-      <a
-        className="ant-dropdown-link para text-[#656565] cursor-pointer"
-        onClick={(e) => e.preventDefault()}
-      >
-        Filter Jobs <DownOutlined />
-      </a>
-    </Dropdown>
+    <><Dropdown overlay={menu} trigger={["click"]} ref={dropdownRef}>
+    <a
+      className="ant-dropdown-link para text-[#656565] cursor-pointer"
+      onClick={(e) => e.preventDefault()}
+    >
+      Filter Jobs <DownOutlined />
+    </a>
+  </Dropdown></>
   );
 };
 
