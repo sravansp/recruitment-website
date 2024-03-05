@@ -207,7 +207,7 @@ const JobDetails = () => {
 
 const DragView = () => {
   const [ready, setReady] = useState(false);
-  const [boardData, setBoardData] = useState([]);
+  const [boardData, setBoardData] = useState(BoardData);
   const [draggingPosition, setDraggingPosition] = useState(null);
   const selectedDataId = useSelector((state) => state.dataId.selectedDataId);
   const jobId = selectedDataId
@@ -221,11 +221,12 @@ const DragView = () => {
     jobId,
 
   );
-  setBoardData(response.result.map((item) => ({
-    name:item.stageName,
-    stageId:item.stageId,
+  // setBoardData(response.result.map((item) => ({
+  //   name:item.stageName,
+  //   stageId:item.stageId,
     
-  })));
+  // })));
+  setBoardData(response.result)
   
   console.log(response)
  }
@@ -311,7 +312,18 @@ useEffect(()=>{
   const colors = boardData.map(
     (_, index) => customColors[index % customColors.length]
   );
-
+  const transformedData  = boardData.map(item => ({
+    id: item.stageId,
+    name: item.stageName,
+    items: [
+      {
+        id: "",  // You need to replace this with the actual id for the item
+        name: "",  // You need to replace this with the actual name for the item
+        image: "",
+      }
+      // Add more items if needed
+    ]
+  }));
   const items = [
     {
       label: "Automate",
