@@ -2,7 +2,7 @@ const API = {
   HOST: "http://192.168.29.111/loyaltri-server",
   // HOST: "http://192.168.0.37/ci-news",
    
-  // HOST: "https://alpha-api.loyaltri.com",
+  HOST: "https://alpha-api.loyaltri.com",
   // HOST: "http://192.168.0.55/loyaltri-recruitment-server/api/v1",
 
   // theme settings

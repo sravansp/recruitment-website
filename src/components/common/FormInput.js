@@ -25,7 +25,7 @@ export default function FormInput({
   return (
     <div className={`flex flex-col ${title ? "gap-2" : "gap-0 items-center "} `}>
       <div className="flex">
-        <p className="text-xs font-medium 2xl:text-sm dark:text-white">
+        <p className={`text-xs font-medium 2xl:text-sm dark:text-white ${className}`}>
           {title}
         </p>
         {required && <HiMiniStar className="text-[10px] text-rose-600" />}

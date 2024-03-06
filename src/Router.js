@@ -19,6 +19,8 @@ import TeamMembers from "./components/Team_members/TeamMembers";
 import Template from "./components/Template/Template";
 import Login from "./components/Login/login";
 import Intergration from "./components/Settings/Intergration";
+import SystemSettings from "./components/Settings/SystemSettings";
+
 import CandidateProfile from "./components/Candidates/CandidateProfile";
 
 
@@ -77,7 +79,9 @@ export default function Router() {
                 <Route path="/Integrations" element={<Intergration/>}></Route>
                 <Route path="/Templates" element={<Template/>}></Route>
                 
-               </Routes>
+                 <Route path="/Systemsettings" element={<SystemSettings/>}></Route>
+                
+              </Routes>
             </div>
           </div>
           <div className="absolute bottom-0 right-0 p-2 opacity-40">
