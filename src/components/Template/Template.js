@@ -15,6 +15,9 @@ import { Subject } from '@mui/icons-material';
 import Emailtemplate from './AddEmailtemplate';
 import TemEvaluation from './TemEvaluation';
 import { Button } from 'antd';
+import QuestionAire from './Addquestinaire';
+import AddLetter from './AddLetter';
+import Workflowstage from './Workflowstage';
 
 const Template = ({
     open = "",
@@ -436,7 +439,7 @@ const Template = ({
             }
             // updateFun=""
             // updateBtn={true} // Set to true if it's an update button
-            buttonName={`Add ${navigationPath}`}// Set the button name
+            buttonName={`Create ${navigationPath}`}// Set the button name
             className="your-custom-styles" // Add any additional class names for styling
             BtnType="Add" // Specify the button type (Add or Update)
           />
@@ -501,7 +504,7 @@ const Template = ({
         />
       )}
       {navigationPath === "Workflow" && show && (
-        <Createjob
+        <Workflowstage
           open={show}
           close={(e) => {
             setShow(e);
@@ -540,7 +543,7 @@ const Template = ({
         />
       )}
        {navigationPath === "Questionaire" && show && (
-        <Createjob
+        <QuestionAire
           open={show}
           close={(e) => {
             setShow(e);
@@ -553,7 +556,7 @@ const Template = ({
         />
       )}
              {navigationPath === "Letter" && show && (
-        <Createjob
+        <AddLetter
           open={show}
           close={(e) => {
             setShow(e);

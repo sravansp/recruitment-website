@@ -1,3 +1,5 @@
+
+import { persistStore, persistReducer } from 'redux-persist';
 import { configureStore } from "@reduxjs/toolkit";
 import layoutReducer from "./slice";
 import navigationReducer from './reducer';

@@ -43,7 +43,7 @@ const TemplateDec = ({open = "", close = () => { },inputshow= false,isUpdate={}}
     header={[
        !isUpdate
          ? t("Create a Job Description Template")
-         : t("Create a Job Temaplate"),
+         : t("Create a Job Description Template"),
        t("Lorem ipsum dummy text doret solo."),
      ]}
      

@@ -749,7 +749,7 @@ const TableAnt = ({
               </Button>
             </Dropdown>
           </div>
-          <Radio.Group
+          {/* <Radio.Group
             options={gridListoptions}
             onChange={onChangeGridlist}
             value={gridList}
@@ -762,7 +762,7 @@ const TableAnt = ({
             size={isSmallScreen ? "default" : "large"}
           >
             <FiSettings className="text-base 2xl:text-lg" />
-          </Button>
+          </Button> */}
 
     </div>
     

@@ -210,7 +210,8 @@ const DragView = () => {
 
   const[candidatelist,setcandidatelist]=useState([])
   const[Workflow,setWorkflow]=useState([])
-  const selectedDataId = useSelector((state) => state.dataId.selectedDataId);
+  // const selectedDataId = useSelector((state) => state.dataId.selectedDataId);
+  const selectedDataId = localStorage.getItem('selectedDataId');
   const jobId = selectedDataId
   const [boardData, setBoardData] = useState([]);
   const getCandidatesById = async () => {
@@ -272,14 +273,14 @@ const DragView = () => {
 
         // Create the desired array structure
         // getRecruitmentWorkflow()
-        getCandidatesById()
+        getCandidatesById(jobId)
        
         // console.log(newBoardData);
 
 
       
-    }, []);
-   
+    }, [jobId]);
+    
     useEffect(()=>{
       // const newBoardData = Workflow.map((workflowItem) => ({
       //   id: workflowItem.id,

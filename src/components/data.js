@@ -1258,6 +1258,26 @@ const saleryCurrency =[
   }
 ]
 
+const Employees =[
+  {
+    id:1,
+   img:Avatar,
+    name:"ashik",
+   employeeid:"EMP ID: #234567",
+   email:"alexanderpaul@company.com",
+   designation:"Super Admin",
+
+   
+  },
+  {
+    id:2,
+    img:Avatar,
+    name:"aness",
+    employeeid:"EMP ID: #234568",
+    email:"alexanderpaul@company.com",
+    designation:"Super ",
+  }
+]
 
 
 
@@ -1309,5 +1329,6 @@ export {
   JobType,
   experiencelevel ,
   eductaion,
-  saleryCurrency
+  saleryCurrency,
+  Employees
 };

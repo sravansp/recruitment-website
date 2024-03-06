@@ -74,7 +74,7 @@ function AllJobs() {
         {
           id: 2,
           title: "APPLIED",
-          value: "companyId",
+          value: "noOfApplicants",
         },
         {
           id: 3,

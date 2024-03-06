@@ -108,7 +108,7 @@ export default function DrawerPop({
                   handleSubmit={() => {
                     buttonClick();
                   }}
-                  buttonName={btnName ? btnName : t("Save_And_Continue_button")}
+                  buttonName={btnName ? btnName : t("Save And Continue button")}
                   type="submit"
                   className="px-5 py-2 text-xs font-semibold text-white rounded-md lg:text-sm"
                   BtnType="Add"

@@ -186,7 +186,7 @@ const CandidateProfile = () => {
       ))}
     </Menu>
   );
-  const selectedDataId = useSelector((state) => state.dataId.selectedDataId);
+  const selectedDataId = localStorage.getItem('selectedDataId');
   const id=selectedDataId
   
 //back end

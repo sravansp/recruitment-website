@@ -22,10 +22,11 @@ import { HiDocumentText, HiOutlineSquare3Stack3D } from "react-icons/hi2";
 import { HiUsers } from "react-icons/hi";
 import { RiSettings4Fill } from "react-icons/ri";
 import { IoCashOutline, IoHelpCircle } from "react-icons/io5";
-import {  PiBriefcaseDuotone, PiBriefcaseMetalDuotone, PiPalette, PiPaletteDuotone, PiUser } from "react-icons/pi";
+import {  PiBriefcaseDuotone, PiBriefcaseMetalDuotone, PiCheckSquareOffsetThin, PiCreditCardLight, PiPalette, PiPaletteDuotone, PiUser } from "react-icons/pi";
 import { FaKey } from "react-icons/fa";
 import { GoKey } from "react-icons/go";
 import { CiBank } from "react-icons/ci";
+import { LuMonitorDot } from "react-icons/lu";
 
 
 const Sidebar = () => {
@@ -391,7 +392,7 @@ const Sidebar = () => {
                   id: 117,
                   title: t("System settings"),
                   icon: (
-                    <GoKey  className="!text-base 2xl:!text-2xl" />
+                    <PiCheckSquareOffsetThin  className="!text-base 2xl:!text-2xl"/>
                   ),
                   link: "/Systemsettings",
                 },
@@ -399,7 +400,7 @@ const Sidebar = () => {
                   id: 118,
                   title: t("Integrations"),
                   icon: (
-                    <GoKey  className="!text-base 2xl:!text-2xl" />
+                    <PiCreditCardLight className="!text-base 2xl:!text-2xl" />
                   ),
                   link: "/Integrations",
                 },
@@ -407,7 +408,7 @@ const Sidebar = () => {
                   id: 119,
                   title: t("Templates"),
                   icon: (
-                    <GoKey  className="!text-base 2xl:!text-2xl" />
+                    <LuMonitorDot  className="!text-base 2xl:!text-2xl" />
                   ),
                   link: "/Templates",
                 },

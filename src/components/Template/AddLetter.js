@@ -10,7 +10,7 @@ import TextEditor from '../common/TextEditor/TextEditor'
 import FormInput from '../common/FormInput'
 import image from '../../assets/images/attachment-2.svg'
 import image2 from '../../assets/images/emoji-sticker-line.svg'
-const Emailtemplate = ({open = "", close = () => { },inputshow= false,isUpdate={}}) => {
+const AddLetter = ({open = "", close = () => { },inputshow= false,isUpdate={}}) => {
   
     const[show,setShow] =useState(open);
     const { t } = useTranslation();
@@ -52,8 +52,8 @@ const Emailtemplate = ({open = "", close = () => { },inputshow= false,isUpdate={
    
     header={[
        !isUpdate
-         ? t("Create Email Template")
-         : t("Create a Email Template"),
+         ? t("Create Letter Template")
+         : t("Create Letter Template"),
        t("Lorem ipsum dummy text doret solo."),
      ]}
      
@@ -91,7 +91,7 @@ const Emailtemplate = ({open = "", close = () => { },inputshow= false,isUpdate={
     
     > <div  className="relative max-w-[1070px]  w-full mx-auto">
           <Accordion
-                                               title={"Email Templates"}
+                                               title={"Letter Templates"}
                                                className="Text_area"
                                                padding={true}
                                                toggleBtn={false}
@@ -102,10 +102,8 @@ const Emailtemplate = ({open = "", close = () => { },inputshow= false,isUpdate={
                                         >
                                           <div className='grid grid-cols-2 '>
                                           <FormInput
-                                          title={"Template Name"}
                                         placeholder={"type here"}
-                                        />
-                                        </div> 
+                                        /></div> 
                                       
                                        <TextEditor
                                        
@@ -128,4 +126,4 @@ const Emailtemplate = ({open = "", close = () => { },inputshow= false,isUpdate={
   )
 }
 
-export default Emailtemplate
+export default AddLetter

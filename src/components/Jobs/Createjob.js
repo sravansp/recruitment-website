@@ -10,6 +10,8 @@ import Dropdown from '../common/Dropdown';
 import FormInput from '../common/FormInput';
 import VirtualList from "rc-virtual-list";
 import CheckBoxInput from '../common/CheckBoxInput';
+import { Employees } from '../data';
+import * as Yup from 'yup';
 
 import TextArea from '../common/TextArea';
 import Radiobuttonnew from '../common/Radiobuttonnew';
@@ -30,6 +32,7 @@ import { DownOutlined, UserOutlined } from '@ant-design/icons';
 import image from '../../assets/images/generate-ai-img.png'
 import Item from 'antd/es/list/Item';
 import TableAnt from '../common/TableAnt';
+import SearchBox from '../common/SearchBox';
 
 
 
@@ -142,6 +145,16 @@ const formik1 = useFormik({
   
 
  },
+    //  enableReinitialize: true,
+    //   validateOnChange: false,
+    //   validationSchema: yup.object().shape({
+    //     firstName: yup.string().required("First Name is Required"),
+    //     lastName: yup.string().required("Last Name is Required"),
+    //     email: yup.string().required("Email is Required"),
+    //     mobile: yup.string().min(10).max(10).required("Mobile is Required"),
+    //     gender: yup.string().required("Gender is Required"),
+    //     dateOfBirth: yup.string().required("Date of Birth Group is Required"),
+    //   }),
  onSubmit: async (e) => {
   try{
     console.log(e)
@@ -785,7 +798,7 @@ const handleSaveInput = (index) => {
       }
       footerBtn={[
         t("Cancel"),
-        !isUpdate ? t("Save_and_Continue") : t("Update_Company"),
+        !isUpdate ? "Save and Continue" : t("Save and Continue"),
       ]}
       className="widthFull"
       buttonClick={(e) => {
@@ -1519,6 +1532,7 @@ impactful, accurate, and personalized to your company</p>
                   </Accordion>
                   </FlexCol>
                 ) : activeBtnValue === "TeamMembers" ? (
+                  <FlexCol>
                   <Accordion
                     title={"TeamMembers"}
                     className="Text_area"
@@ -1532,7 +1546,7 @@ impactful, accurate, and personalized to your company</p>
                     data={employeeList}
                     
                   >
-                 <List>
+                 {/* <List>
                       <VirtualList
                         data={
                           employeeList
@@ -1559,7 +1573,51 @@ impactful, accurate, and personalized to your company</p>
 </div>
     </List.Item>
   )}</VirtualList>
-</List>
+</List> */}
+<div className='grid grid-cols-2 mt-8 '>
+<SearchBox
+placeholder={"Search Employess"}/>
+</div>
+<table>
+  <thead>
+    <tr>
+      <th></th>
+      <th></th>
+      <th></th>
+      <th></th>
+      <th></th> {/* Add an additional column for the checkbox */}
+    </tr>
+  </thead>
+  <tbody>
+    {Employees.map((employee) => (
+      <React.Fragment key={employee.id}>
+        <tr>
+          <td>
+            <input type="checkbox" />
+          </td>
+          <td>
+            <div className='flex items-center gap-4'>
+              {/* Assuming you have an 'image' property in your employee object */}
+              <img src={employee.img} alt={`${employee.name} Avatar`} style={{ width: '50px', height: '50px' }} />
+              <div className="flex flex-col">
+                <div class="text-gray-900 text-sm font-semibold font-['Inter'] leading-tight">{employee.name}</div>
+                <div className="text-gray-500 text-sm font-normal font-['Inter'] leading-tight">{employee.employeeid}</div>
+              </div>
+            </div>
+          </td>
+          <td></td>
+          <td><div class="text-gray-900 text-sm font-medium font-['Inter'] leading-tight">{employee.email}</div></td>
+          <td><div  class="text-gray-900 text-sm font-medium font-['Inter'] leading-tight">{employee.designation}</div></td>
+        </tr>
+        <tr className="v-divider" key={`divider-${employee.id}`}>
+          {/* Assuming you want a visual divider after each row */}
+          <td colSpan="5"></td>
+        </tr>
+      </React.Fragment>
+    ))}
+  </tbody>
+</table>
+
 {/* <List
   data={employeeList}  
   renderItem={(item) => (
@@ -1577,6 +1635,7 @@ impactful, accurate, and personalized to your company</p>
                    
 
                   </Accordion>
+                  </FlexCol>
                 ) : activeBtnValue === "Publish" ? (
                   <Accordion
                     title={"Publish"}

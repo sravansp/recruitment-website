@@ -14,7 +14,7 @@ import { MdDelete, MdOutlineFileCopy } from 'react-icons/md'
 import { Form } from '../data'
 import { CgAdd } from 'react-icons/cg'
 
-const TemEvaluation = ({open = "", close = () => { },inputshow= false,isUpdate={}}) => {
+const QuestionAire = ({open = "", close = () => { },inputshow= false,isUpdate={}}) => {
     
 
     const [savedContent, setSavedContent] = useState([]);
@@ -128,8 +128,8 @@ const TemEvaluation = ({open = "", close = () => { },inputshow= false,isUpdate={
    
     header={[
        !isUpdate
-         ? t("Create Evaluation Template")
-         : t("Create Evaluation Template"),
+         ? t("Create Questionnaire Template")
+         : t("Create Questionnaire Template"),
        t("Lorem ipsum dummy text doret solo."),
      ]}
      
@@ -167,7 +167,7 @@ const TemEvaluation = ({open = "", close = () => { },inputshow= false,isUpdate={
     
     > <div  className="relative max-w-[1070px]  w-full mx-auto">
           <Accordion
-                                               title={"New Evaluation Templates"}
+                                               title={"New Questionnaire Templates"}
                                                className="Text_area"
                                                padding={true}
                                                toggleBtn={false}
@@ -243,4 +243,4 @@ const TemEvaluation = ({open = "", close = () => { },inputshow= false,isUpdate={
   )
 }
 
-export default TemEvaluation
+export default QuestionAire

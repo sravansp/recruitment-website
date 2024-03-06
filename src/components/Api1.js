@@ -181,6 +181,7 @@ export const getAllRecruitmentEmailTemplates = async () => {
   return await apiRequest(action, method, kwargs);
 };
 export const getAllCandidatesByjobId = async (jobId) => {
+  console.log(jobId)
   const action = "getAllCandidatesByjobId";
 
   const method = "POST";
