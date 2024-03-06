@@ -1,6 +1,8 @@
 import Accordion from "../../common/Accordion";
-import React, { useState } from "react";
+import React, { useState,useEffect } from "react";
 import TabsNew from "../../common/TabsNew";
+import { getRecruitmentResumeById } from "../../Api1";
+import { useDispatch, useSelector } from 'react-redux';
 
 // ICONS
 import {
@@ -23,54 +25,122 @@ import PDFViewer from "../../common/PDFViewer";
 import pdfFile from "../../../assets/documents/sample.pdf";
 import { workExperiences, educationExperiences } from "../../common/DataArrays";
 
-const userInfo = [
-  {
-    personal: [
-      {
-        id: 1,
-        label: "Email Address",
-        value: "grace.bennet@example.com",
-        icon: <RiMailSendLine />,
-      },
-      {
-        id: 2,
-        label: "Phone number",
-        value: "+1234567890",
-        icon: <RiSmartphoneLine />,
-      },
-      {
-        id: 3,
-        label: "Date of Birth",
-        value: "03 September 2000",
-        icon: <RiCake2Line />,
-      },
-      {
-        id: 4,
-        label: "Salary Expectation",
-        value: "AED 25000",
-        icon: <RiMoneyDollarBoxLine />,
-      },
-    ],
-    other: [
-      {
-        id: 5,
-        label: "Location",
-        value: "Istanbul, Izmir, Ankara, Turkey, US, Europe",
-        icon: <RiMapPin2Line />,
-      },
-      {
-        id: 6,
-        label: "Work Type",
-        value: "Remote. Fulltime. Part-Timet Internship, Freelance",
-        icon: <RiMouseLine />,
-      },
-    ],
-  },
-];
+// const userInfo = [
+//   {
+//     personal: [
+//       {
+//         id: 1,
+//         label: "Email Address",
+//         value: "",
+//         icon: <RiMailSendLine />,
+//       },
+//       {
+//         id: 2,
+//         label: "Phone number",
+//         value: "",
+//         icon: <RiSmartphoneLine />,
+//       },
+//       {
+//         id: 3,
+//         label: "Date of Birth",
+//         value: "03 September 2000",
+//         icon: <RiCake2Line />,
+//       },
+//       {
+//         id: 4,
+//         label: "Salary Expectation",
+//         value: "AED 25000",
+//         icon: <RiMoneyDollarBoxLine />,
+//       },
+//     ],
+//     other: [
+//       {
+//         id: 5,
+//         label: "Location",
+//         value: "",
+//         icon: <RiMapPin2Line />,
+//       },
+//       {
+//         id: 6,
+//         label: "Work Type",
+//         value: "Work Type",
+//         icon: <RiMouseLine />,
+//       },
+//     ],
+//   },
+// ];
 
 const Overview = () => {
   const [content, setContent] = useState("");
   const primaryColor = localStorage.getItem("mainColor");
+  const[candidate,setcandidate] =useState([])
+  const[userdata,setuserdata]=useState([])
+  const selectedDataId = useSelector((state) => state.dataId.selectedDataId);
+  const id=selectedDataId
+
+  const getCandidatesById = async () => {
+    try {
+      const response = await getRecruitmentResumeById(id);
+       
+      setcandidate(response.result)
+      setuserdata(response.result.map((items)=>({
+       personal:[ 
+        {id:1,
+          label:"Email Address",
+          value:items.candidateEmail,
+          icon: <RiMailSendLine />,
+        },
+        {
+          id:2,
+          label:"Phone number",
+          value:items.candidateContact,
+          icon: <RiSmartphoneLine />,
+        },
+        {
+          id: 3,
+          label: "Date of Birth",
+          value: "03 September 2000",
+          icon: <RiCake2Line />,
+        },
+        {
+          id: 4,
+          label: "Salary Expectation",
+          value: "AED 25000",
+          icon: <RiMoneyDollarBoxLine />,
+        },
+      ],
+      other:[
+        {
+          id: 5,
+          label: "Location",
+          value: items.candidateLocation,
+          icon: <RiMapPin2Line />,
+        },
+        {
+          id: 6,
+          label: "Work Type",
+          value: "Work Type",
+          icon: <RiMouseLine />,
+        },
+      ]
+      })))
+      console.log(response.result)
+  
+    } catch (error) {
+      console.error('Error updating workflow ID:', error);
+    }
+  };
+  
+  useEffect(() => {
+   
+    getCandidatesById()
+    console.log(id)
+    console.log(userdata)
+   
+    
+  
+  
+  }, []);
 
   const handleEditorChange = (content) => {
     setContent(content);
@@ -101,17 +171,22 @@ const Overview = () => {
   ];
 
   return (
+  
     <div className="grid gap-6 lg:grid-cols-12">
       {/* LEFT COLOUMN  */}
+      
       <div className="flex flex-col gap-6 lg:col-span-8">
+        
+
         <Accordion
           title="All Personal Informations"
           padding={true}
           className={""}
           initialExpanded={true}
         >
+          
           <div>
-            {userInfo.map((user) => (
+            {userdata.map((user) => (
               <UserInfoComponent
                 key={user.personal[0].id}
                 personalInfo={user.personal}
@@ -120,7 +195,7 @@ const Overview = () => {
           </div>
           <div className="v-divider" />
           <div>
-            {userInfo.map((user) => (
+            {userdata.map((user) => (
               <UserOtherComponent
                 key={user.other[0].id}
                 otherInfo={user.other}
@@ -256,7 +331,8 @@ const Overview = () => {
 };
 
 // Accordiyan Body Contents
-const UserInfoComponent = ({ personalInfo }) => {
+const UserInfoComponent = ({ personalInfo}) => {
+  
   return (
     <div className="grid md:grid-cols-2 gap-7">
       {personalInfo.map((info) => (
@@ -283,7 +359,7 @@ const UserOtherComponent = ({ otherInfo }) => {
   return (
     <div className="grid gap-7">
       {otherInfo.map((info) => (
-        <div className="flex items-center gap-2.5">
+        <div   className="flex items-center gap-2.5">
           <div className="w-8 h-8 iconI vhcenter bg-[#F5F5F5] dark:bg-secondaryDark text-base rounded-lg ">
             <div className="text-black opacity-50 ">{info.icon}</div>
           </div>

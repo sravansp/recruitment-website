@@ -184,10 +184,10 @@ const TableAnt = ({
   const handleRowClick = (record) => {
     // Check if the path is present and is not an empty array
     if (path && path.length > 0) {
-      dispatch(setSelectedDataId(record.jobId));
+      dispatch(setSelectedDataId(record[actionID]));
       navigate(`/${path}/${record[actionID]}`);
       // Store the clicked data ID in local storage only when the path is present and not an empty array
-      localStorage.setItem('selectedDataId', record.jobId);
+      localStorage.setItem('selectedDataId', record[actionID]);
     }
   };
   // useEffect(()=>{
@@ -690,82 +690,82 @@ const TableAnt = ({
       
     </ButtonClick>
   ) : (
-    // <div className="flex flex-wrap items-center gap-3">
-    //             {All&&( 
-    //             <SearchBox
-    //         // title="Search"
-    //         data={data}
-    //         placeholder={t("Search_placeholder")}
-    //         value={searchValue}
-    //         icon={<CiSearch className=" dark:text-white" />}
-    //         className="mt-0 w-ful md:w-auto"
-    //         error=""
-    //         change={(value) => {
-    //           setSearchValue(value);
-    //         }}
-    //         onSearch={(value) => {
-    //           // console.log(value);
-    //           setSearchFilter(value);
-    //         }}
-    //       />)}
+    <div className="flex flex-wrap items-center gap-3">
+                {All&&( 
+                <SearchBox
+            // title="Search"
+            data={data}
+            placeholder={t("Search_placeholder")}
+            value={searchValue}
+            icon={<CiSearch className=" dark:text-white" />}
+            className="mt-0 w-ful md:w-auto"
+            error=""
+            change={(value) => {
+              setSearchValue(value);
+            }}
+            onSearch={(value) => {
+              // console.log(value);
+              setSearchFilter(value);
+            }}
+          />)}
                
-    //       <div>
-    //         {/* <Dropdown
-    //           menu={{
-    //             items,
-    //           }}
-    //           placement="bottomRight"
-    //         >
-    //           <Button>bottomRight</Button>
-    //         </Dropdown> */}
-    //         <Dropdown
-    //           // menu={columnMenuItems.map((item, index) => ({
-    //           //   ...item,
-    //           //   key: index,
-    //           // }))}
-    //           menu={{ items }}
-    //           placement="bottomRight"
-    //           // trigger={["click"]}
-    //           // open={dropdownVisible}
-    //           // onOpenChange={(visible) => {
-    //           //   console.log(visible);
-    //           //   setDropdownVisible(visible);
-    //           // }}
-    //         >
-    //           {/* <Button>Filters</Button> */}
-    //           <Button
-    //             className="flex items-center dark:bg-black dark:text-white justify-center h-full font-medium flex-nowrap bg-[#FAFAFA]"
-    //             onClick={(e) => {
-    //               // console.log(e);
-    //               // e.stopPropagation(); // Prevent dropdown from closing
-    //               // setDropdownVisible(!dropdownVisible);
-    //             }}
-    //             size={isSmallScreen ? "default" : "large"}
-    //           >
-    //             <span className="mr-2">{t("Filters")}</span>
-    //             <span className="ml-auto">
-    //               <LuListFilter className="text-base 2xl:text-lg" />
-    //             </span>
-    //           </Button>
-    //         </Dropdown>
-    //       </div>
-    //       <Radio.Group
-    //         options={gridListoptions}
-    //         onChange={onChangeGridlist}
-    //         value={gridList}
-    //         optionType="button"
-    //         className="flex items-center py-1.5 h-full"
-    //         size={isSmallScreen ? "" : "large"}
-    //       />
-    //       <Button
-    //         className="flex items-center justify-center h-full py-1.5 font-medium bg-white dark:bg-black dark:text-white flex-nowrap"
-    //         size={isSmallScreen ? "default" : "large"}
-    //       >
-    //         <FiSettings className="text-base 2xl:text-lg" />
-    //       </Button>
+          <div>
+            {/* <Dropdown
+              menu={{
+                items,
+              }}
+              placement="bottomRight"
+            >
+              <Button>bottomRight</Button>
+            </Dropdown> */}
+            <Dropdown
+              // menu={columnMenuItems.map((item, index) => ({
+              //   ...item,
+              //   key: index,
+              // }))}
+              menu={{ items }}
+              placement="bottomRight"
+              // trigger={["click"]}
+              // open={dropdownVisible}
+              // onOpenChange={(visible) => {
+              //   console.log(visible);
+              //   setDropdownVisible(visible);
+              // }}
+            >
+              {/* <Button>Filters</Button> */}
+              <Button
+                className="flex items-center dark:bg-black dark:text-white justify-center h-full font-medium flex-nowrap bg-[#FAFAFA]"
+                onClick={(e) => {
+                  // console.log(e);
+                  // e.stopPropagation(); // Prevent dropdown from closing
+                  // setDropdownVisible(!dropdownVisible);
+                }}
+                size={isSmallScreen ? "default" : "large"}
+              >
+                <span className="mr-2">{t("Filters")}</span>
+                <span className="ml-auto">
+                  <LuListFilter className="text-base 2xl:text-lg" />
+                </span>
+              </Button>
+            </Dropdown>
+          </div>
+          <Radio.Group
+            options={gridListoptions}
+            onChange={onChangeGridlist}
+            value={gridList}
+            optionType="button"
+            className="flex items-center py-1.5 h-full"
+            size={isSmallScreen ? "" : "large"}
+          />
+          <Button
+            className="flex items-center justify-center h-full py-1.5 font-medium bg-white dark:bg-black dark:text-white flex-nowrap"
+            size={isSmallScreen ? "default" : "large"}
+          >
+            <FiSettings className="text-base 2xl:text-lg" />
+          </Button>
 
-    // </div>
-    null
+    </div>
+    
   )
 }
 

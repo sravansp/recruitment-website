@@ -193,3 +193,42 @@ export const getAllCandidatesByjobId = async (jobId) => {
 
   return await apiRequest(action, method, requestData);
 };
+export const getRecruitmentResumeById = async (id) => {
+  const action = "getRecruitmentResumeById";
+
+  const method = "POST";
+  const requestData = {
+    // Include any other necessary parameters
+    id: id,
+  };
+
+  
+
+  return await apiRequest(action, method, requestData);
+};
+export const saveRecruitmentJobResumesStage = async (jobId,resumeId,stageId,stageActions,stageRemarks) => {
+  const action = "saveRecruitmentJobResumesStage";
+console.log({
+  // Include any other necessary parameters
+  jobId: jobId,
+  resumeId:resumeId,
+  stageId:stageId,
+  stageActions:stageActions,
+  stageRemarks:stageRemarks
+
+})
+  const method = "POST";
+  const requestData = {
+    // Include any other necessary parameters
+    jobId: jobId,
+    resumeId:resumeId,
+    stageId:stageId,
+    stageActions:stageActions,
+    stageRemarks:stageRemarks
+
+  };
+
+  
+
+  return await apiRequest(action, method, requestData);
+};

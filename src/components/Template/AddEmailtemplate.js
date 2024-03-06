@@ -5,9 +5,11 @@ import { useTranslation } from 'react-i18next'
 import { Button, Card, Space } from 'antd'
 import { DownOutlined, UserOutlined } from '@ant-design/icons';
 import TextArea from '../common/TextArea'
-import image from '../../assets/images/generate-ai-img.png'
+// import image from '../../assets/images/generate-ai-img.png'
 import TextEditor from '../common/TextEditor/TextEditor'
-
+import FormInput from '../common/FormInput'
+import image from '../../assets/images/attachment-2.svg'
+import image2 from '../../assets/images/emoji-sticker-line.svg'
 const Emailtemplate = ({open = "", close = () => { },inputshow= false,isUpdate={}}) => {
   
     const[show,setShow] =useState(open);
@@ -97,14 +99,26 @@ const Emailtemplate = ({open = "", close = () => { },inputshow= false,isUpdate={
                                               //    setPresentage(1.4);
                                                }}
                                                initialExpanded={true}
-                                        > 
+                                        >
+                                          <div className='grid grid-cols-2 '>
+                                          <FormInput
+                                        placeholder={"type here"}
+                                        /></div> 
+                                      
                                        <TextEditor
                                        
                                        initialValue={content}
                                         onChange={handleEditorChange}
                                         minheight="250px"
                                        />
-
+                                       <div class="relative max-w-[1070px]  w-full mx-auto h-[49.72px] bg-purple-50 rounded-lg">
+                                          <div className='flex justify-start items-center w-full mx-auto'>
+                                            <img src={image}></img>
+                                          <img src={image2}></img>  
+                                          </div>
+                                        
+                                      
+                                       </div>
                                         </Accordion>
                                         </div>  
     </DrawerPop>

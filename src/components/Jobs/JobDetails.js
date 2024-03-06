@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from "react";
 import { useDispatch, useSelector } from 'react-redux';
-import { getAllRecruitmentJobWorkFlowDetails,getAllCandidatesByjobId } from "../Api1";
+import {getAllCandidatesByjobId,saveRecruitmentJobResumesStage } from "../Api1";
 // import BoardData from "../../data/board.json";
 import { DragDropContext, Droppable, Draggable } from "react-beautiful-dnd";
 import { Dropdown, Tooltip, Radio, Alert } from "antd";
@@ -94,11 +94,11 @@ const JobDetails = () => {
             <PiArrowSquareOut size={15} className="dark:text-white" />
           </Link>
           <ButtonClick buttonName="Edit" />
-          <ButtonClick BtnType="add" buttonName="Create a Job"   handleSubmit={() => {
+          {/* <ButtonClick BtnType="add" buttonName="Create a Job"   handleSubmit={() => {
             setShow(true);
             console.log("set",show);
           }}
-          ></ButtonClick>
+          ></ButtonClick> */}
         </div>
       </div>
       {show && (
@@ -216,6 +216,7 @@ const DragView = () => {
   const getCandidatesById = async () => {
     try {
       const response = await getAllCandidatesByjobId(jobId);
+      
       setBoardData(response.result.map((item) => ({
         id: item.stageId,
         name: item.stageName,
@@ -225,12 +226,21 @@ const DragView = () => {
           image:candidate.image,
         }))
       })));
+       
       console.log(response);
       console.log(boardData)
+      // response.result.forEach((item) => {
+      //   item.stageCandidates.forEach((candidate) => {
+      //     // Call saveRecruitmentJobResumesStage with jobId, stageId, and resumeId
+      //     saveRecruitmentJobResumesStage(jobId, item.stageId, candidate.resumeId);
+      //   });
+      // });
     } catch (error) {
       console.error('Error updating workflow ID:', error);
     }
   };
+
+
 
   // const getCandidatesById = async () => {
   //   try {
@@ -313,7 +323,10 @@ const DragView = () => {
   const [draggingPosition, setDraggingPosition] = useState(null);
   
 
-
+  const [currentStageId, setCurrentStageId] = useState(null);
+  const [currentResumeId, setCurrentResumeId] = useState(null);
+  const resumeId = currentResumeId
+  const stageId =currentStageId
 
 
   // console.log(BoardData);
@@ -322,28 +335,48 @@ const DragView = () => {
       setReady(true);
     }
   }, []);
- 
-  const onDragEnd = (re) => {
-    if (!re.destination) return;
-    setBoardData((prevData) => {
-      const newBoardData = [...prevData];
-      const dragItem =
-        newBoardData[re.source.droppableId].items[re.source.index];
 
-      newBoardData[re.source.droppableId].items.splice(re.source.index, 1);
-      newBoardData[re.destination.droppableId].items.splice(
-        re.destination.index,
-        0,
-        dragItem
-      );
+  const JobResumesStage = async (jobId,stageId,resumeId) => {
+    console.log(jobId)
+    try {
+      const response = await saveRecruitmentJobResumesStage(jobId, stageId, resumeId);
 
-      return newBoardData;
-    });
-
-    // Reset dragging position after drop
-    setDraggingPosition(null);
+      
+      console.log(response);
+      console.log(boardData)
+    } catch (error) {
+      console.error('Error updating workflow ID:', error);
+    }
   };
+ useEffect(()=>{
+  JobResumesStage(jobId,stageId,resumeId)
+ },[jobId,stageId,resumeId])
+ const onDragEnd = (re) => {
+  if (!re.destination) return;
+  setBoardData((prevData) => {
+    const newBoardData = [...prevData];
+    const sourceStageId = newBoardData[re.source.droppableId].id;
+    const destinationStageId = newBoardData[re.destination.droppableId].id;
 
+    const dragItem =
+      newBoardData[re.source.droppableId].items[re.source.index];
+
+    setCurrentResumeId(destinationStageId);
+    setCurrentStageId(dragItem.id);
+
+    newBoardData[re.source.droppableId].items.splice(re.source.index, 1);
+    newBoardData[re.destination.droppableId].items.splice(
+      re.destination.index,
+      0,
+      dragItem
+    );
+
+    return newBoardData;
+  });
+
+  // Reset dragging position after drop
+  setDraggingPosition(null);
+};
   const onDragOver = (snapshot) => {
     if (snapshot.isDraggingOver) {
       // Set the top position of the dropping div based on clientY

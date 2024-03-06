@@ -14,6 +14,7 @@ import TemplateDec from './templateDec';
 import { Subject } from '@mui/icons-material';
 import Emailtemplate from './AddEmailtemplate';
 import TemEvaluation from './TemEvaluation';
+import { Button } from 'antd';
 
 const Template = ({
     open = "",
@@ -401,15 +402,45 @@ const Template = ({
   // };
   
     return (
-   
-    <><div className="flex flex-col justify-between gap-6 lg:items-center lg:flex-row">
+   <div className='flex flex-col gap-6'>
+    <div className="flex flex-col justify-between gap-6 lg:items-center lg:flex-row">
           <div>
               <Breadcrumbs items={breadcrumbItems} />
               <p className="para">{t("Lorem ipsum dolart sit dummy text.")}</p>
           </div>
-          <div className="flex flex-col gap-6 sm:flex-row">
+          {/* <div className="flex flex-col gap-6 sm:flex-row">
               
-          </div>
+          </div> */}
+          <div className="flex flex-col gap-6 sm:flex-row">
+          <ButtonClick
+            handleSubmit={
+              () => {
+                console.log("show");
+                handleShow();
+                // if (e === navigationPath) {
+                // setShow(true);
+
+                // setCompanyId(company);
+                setOpenPop(navigationPath);
+                // setUpdateId(false);
+                // } else {
+                // setOpenPop(navigationPath);
+
+                setShow(true);
+                // console.log(company, "companyparentId");
+                // if (company === "edit") {
+                // setUpdateId(e);
+                // }
+              }
+              // buttonClick(btnName, companyData.companyId);
+            }
+            // updateFun=""
+            // updateBtn={true} // Set to true if it's an update button
+            buttonName={`Add ${navigationPath}`}// Set the button name
+            className="your-custom-styles" // Add any additional class names for styling
+            BtnType="Add" // Specify the button type (Add or Update)
+          />
+        </div>
       </div><div>
         
               <Tabs 
@@ -431,7 +462,7 @@ const Template = ({
                     ? actionData[0]?.[navigationPath].data
                     : null
                 }
-                showButton={true}
+                
               
               
               />
@@ -535,7 +566,7 @@ const Template = ({
         />
       )}
       
-          </>
+      </div>
    
   )
 }

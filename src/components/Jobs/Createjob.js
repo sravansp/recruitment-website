@@ -30,7 +30,6 @@ import { DownOutlined, UserOutlined } from '@ant-design/icons';
 import image from '../../assets/images/generate-ai-img.png'
 import Item from 'antd/es/list/Item';
 import TableAnt from '../common/TableAnt';
-import MultiSelect from '../common/MultiSelect';
 
 
 
@@ -739,14 +738,6 @@ const handleSaveInput = (index) => {
     console.log(employeeList)
     
   }, []);
-  // const [selectedValues, setSelectedValues] = useState([formik1.values.companyId]);
-  const [selectedValues, setSelectedValues] = useState([]);
-
-  const handleMultiSelectChange = (newValues) => {
-    setSelectedValues(newValues);
-    // Your other logic or state updates here
-  };
-  
   
     return (
     <div>
@@ -874,7 +865,7 @@ const handleSaveInput = (index) => {
 
 
 
-                                        <MultiSelect
+                                        <Dropdown
                                             title={t("Choose Company")}
                                             placeholder={t("Choose Company")}
                                             options={company}

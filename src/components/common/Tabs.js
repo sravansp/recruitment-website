@@ -188,7 +188,7 @@ const Tabs = ({
             </span>
           </button>
         ))}
-                     <div className="flex flex-wrap items-center justify-end gap-3">
+                     {/* <div className="flex flex-wrap items-center justify-end gap-3">
                 
                 <SearchBox
             // title="Search"
@@ -216,22 +216,22 @@ const Tabs = ({
             >
               <Button>bottomRight</Button>
             </Dropdown> */}
-            <Dropdown
+            {/* <Dropdown
               // menu={columnMenuItems.map((item, index) => ({
               //   ...item,
               //   key: index,
               // }))}
               menu={{ items }}
-              placement="bottomRight"
-              // trigger={["click"]}
+              placement="bottomRight" */}
+              {/* // trigger={["click"]}
               // open={dropdownVisible}
-              // onOpenChange={(visible) => {
-              //   console.log(visible);
+              // onOpenChange={(visible) => { */}
+              {/* //   console.log(visible);
               //   setDropdownVisible(visible);
               // }}
-            >
+            > */}
               {/* <Button>Filters</Button> */}
-              <Button
+              {/* <Button
                 className="flex items-center dark:bg-black dark:text-white justify-center h-full font-medium flex-nowrap bg-[#FAFAFA]"
                 onClick={(e) => {
                   // console.log(e);
@@ -262,7 +262,7 @@ const Tabs = ({
             <FiSettings className="text-base 2xl:text-lg" />
           </Button>
 
-    </div>
+    </div> */} 
       </div>
       <div className="tab-content">
         
@@ -298,7 +298,7 @@ const Tabs = ({
                     addButtonName={addButtonName}
                     exportButton={false}
                     title={title}
-                    showButton={showButton}
+                    // showButton={showButton}
                     Showsearch={Showsearch }
                     All={All}
                     recordId={recordId}

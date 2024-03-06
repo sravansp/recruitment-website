@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import { Link } from "react-router-dom";
 import ButtonClick from "../common/Button";
 import { Button, Divider, Dropdown, Rate, message } from "antd";
@@ -6,7 +6,7 @@ import { useMediaQuery } from "react-responsive";
 import copy from "clipboard-copy";
 import { Menu, Space } from "antd";
 import { useTranslation } from "react-i18next";
-
+import { getRecruitmentResumeById } from "../Api1";
 // Icons
 import {
   PiArrowLeftBold,
@@ -17,13 +17,19 @@ import { FcCheckmark, FcHighPriority, FcShare } from "react-icons/fc";
 import { MdContentCopy, MdPhone } from "react-icons/md";
 import { DownOutlined } from "@ant-design/icons";
 import {
+  RiCake2Line,
   RiCouponLine,
   RiFile4Line,
   RiFileList3Line,
   RiHome6Line,
   RiImage2Fill,
+  RiMailSendLine,
   RiMailUnreadLine,
+  RiMapPin2Line,
+  RiMoneyDollarBoxLine,
+  RiMouseLine,
   RiQuestionnaireLine,
+  RiSmartphoneLine,
   RiSurveyLine,
 } from "react-icons/ri";
 
@@ -37,6 +43,7 @@ import Evaluations from "./CandidateProfileTabs/Evaluations";
 import Questionaries from "./CandidateProfileTabs/Questionaries";
 import Offers from "./CandidateProfileTabs/Offers";
 import Events from "./CandidateProfileTabs/Events";
+import { useDispatch, useSelector } from 'react-redux';
 
 const items = [
   {
@@ -96,12 +103,14 @@ const CandidateProfile = () => {
   const [messageApi, contextHolder] = message.useMessage();
   const [selectedItem, setSelectedItem] = useState("0");
   const [selectedItemLabel, setSelectedItemLabel] = useState("1st menu item");
+  const[Candidate,setcandidate]=useState([])
+  const[userdata,setuserdata]=useState([])
   const tabs = [
     {
       id: 1,
       title: t("Overview"),
       value: "overview",
-      content: <Overview />,
+      content: <Overview  data={userdata}/>,
       icon: <RiHome6Line className="text-base" />,
     },
     {
@@ -169,7 +178,7 @@ const CandidateProfile = () => {
       content: `${value} is copied succesfully`,
     });
   };
-  console.log("hjkjjkkkakakfka")
+  
   const menu = (
     <Menu onClick={handleMenuClick}>
       {dropdown.map((item) => (
@@ -177,6 +186,73 @@ const CandidateProfile = () => {
       ))}
     </Menu>
   );
+  const selectedDataId = useSelector((state) => state.dataId.selectedDataId);
+  const id=selectedDataId
+  
+//back end
+const getCandidatesById = async () => {
+  try {
+    const response = await getRecruitmentResumeById(id);
+     
+    setcandidate(response.result)
+    // setuserdata(response.result.map((items)=>({
+    //  personal:[ 
+    //   {id:1,
+    //     label:"Email Address",
+    //     value:items.candidateEmail,
+    //     icon: <RiMailSendLine />,
+    //   },
+    //   {
+    //     id:2,
+    //     label:"Phone number",
+    //     value:items.candidateContact,
+    //     icon: <RiSmartphoneLine />,
+    //   },
+    //   {
+    //     id: 3,
+    //     label: "Date of Birth",
+    //     value: "03 September 2000",
+    //     icon: <RiCake2Line />,
+    //   },
+    //   {
+    //     id: 4,
+    //     label: "Salary Expectation",
+    //     value: "AED 25000",
+    //     icon: <RiMoneyDollarBoxLine />,
+    //   },
+    // ],
+    // other:[
+    //   {
+    //     id: 5,
+    //     label: "Location",
+    //     value: items.candidateLocation,
+    //     icon: <RiMapPin2Line />,
+    //   },
+    //   {
+    //     id: 6,
+    //     label: "Work Type",
+    //     value: "Work Type",
+    //     icon: <RiMouseLine />,
+    //   },
+    // ]
+    // })))
+    console.log(response.result)
+
+  } catch (error) {
+    console.error('Error updating workflow ID:', error);
+  }
+};
+
+useEffect(() => {
+ 
+  getCandidatesById()
+  console.log(id)
+  console.log(userdata)
+ 
+  
+
+
+}, []);
 
   return (
     <div className="flex flex-col gap-6">
@@ -206,11 +282,12 @@ const CandidateProfile = () => {
           </Dropdown>
         </div>
       </div>
-
-      <div
+      {Candidate.map((items) => (
+  <div key={items.id}>
+          <div
         className="flex flex-col gap-3.5 rounded-lg p-3.5 dark:!bg-secondaryDark"
         style={{ backgroundColor: `${primaryColor}10` }}
-      >
+      >  
         <div className="flex flex-col justify-between lg:flex-row lg:items-center">
           <div className="flex items-center justify-start gap-5">
             <img
@@ -219,21 +296,21 @@ const CandidateProfile = () => {
             />
             <div className="inline-flex flex-col items-start justify-start gap-1">
               <div className="gap-3 vhcenter">
-                <h2 className="h2">Grace Bennett Anderson</h2>
+                <h2 className="h2">{items.candidateName}</h2>
                 <PiBookmarkSimpleFill className=" text-[#12B76A] text-base" />
               </div>
 
               <div className="inline-flex items-center justify-start gap-4">
                 <p className="pblack !font-normal">
-                  Dubai, United Arab Emirates
+                  {items.candidateLocation}
                 </p>
                 <p className="gap-2 pblack vhcenter">
-                  <MdPhone className="text-base text-primary" /> +971 50671852
+                  <MdPhone className="text-base text-primary" /> {items.candidateContact}
                 </p>
                
                 <div
                   className="text-black cursor-pointer text-opacity-30 dark:text-white dark:hover:text-primary hover:text-opacity-90"
-                  onClick={() => handleCopyClick("+971 50671852")}
+                  onClick={() => handleCopyClick(items.candidateContact)}
                 >
                   <MdContentCopy size={16} />
                 </div>
@@ -264,6 +341,10 @@ const CandidateProfile = () => {
           </div>
         </div>
       </div>
+    
+  </div>
+))}
+
       <TabsNew tabs={tabs} onTabChange={handleTabChange} initialTab={1} />
     </div>
   );
