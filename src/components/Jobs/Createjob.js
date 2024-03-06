@@ -33,6 +33,16 @@ import image from '../../assets/images/generate-ai-img.png'
 import Item from 'antd/es/list/Item';
 import TableAnt from '../common/TableAnt';
 import SearchBox from '../common/SearchBox';
+import TabsNew from '../common/TabsNew';
+import Tabs from '../common/Tabs';
+import indeed from "../../assets/images/indeed.png";
+import bayt from "../../assets/images/Bayt.png";
+import linkedin from "../../assets/images/Linked.png";
+import gulftalent from "../../assets/images/gulftalent.png";
+import Naukrigulf from "../../assets/images/Naukrigulf.png";
+import loyaltri from "../../assets/images/logo.png";
+import ButtonClick from '../common/Button';
+
 
 
 
@@ -47,7 +57,7 @@ const Createjob = ( {open = "", close = () => { },inputshow= false,isUpdate={}})
   const [activeBtn, setActiveBtn] = useState(0);
   const [presentage, setPresentage] = useState(0);
   const [nextStep, setNextStep] = useState(0);
-  const [activeBtnValue, setActiveBtnValue] = useState("Jobdetails"); //LeaveType
+  const [activeBtnValue, setActiveBtnValue] = useState("Publish"); //LeaveType
   const [btnName, setBtnName] = useState();
   const [customRate, setCustomRate] = useState(1);
   const [savedContent, setSavedContent] = useState([]);
@@ -57,6 +67,7 @@ const Createjob = ( {open = "", close = () => { },inputshow= false,isUpdate={}})
   const [userid, setuserid] = useState("");
   const [workFlows, setWorkFlows] = useState([]);
   const [selectedWorkFlowId, setSelectedWorkFlowId] = useState(null);
+  const [selectedDivs, setSelectedDivs] = useState([]);
 
   useEffect(() => {
     // Retrieve the login data JSON string from local storage
@@ -481,7 +492,40 @@ const handleSaveInput = (index) => {
       value: 0,
     },
   ];
+  const tabs =[
+    {
+      id: 1,
+      title: t("Public"),
+      value: "Public",
+    },
+    {
+      id: 2,
+      title: t("Internal"),
+      value: "Internal",
+    },
+    {
+      id: 3,
+      title: t("Confidential"),
+      value: "Confidential",
+    },
 
+  
+  ];
+  const data = [
+    { title: "Naukarigulf", image: Naukrigulf },
+    { title: "Bayt", image: bayt },
+    { title: "Linked in", image: linkedin },
+    { title: "Gulf Talent", image: gulftalent },
+    { title: "Indeed", image: indeed },
+    { title: "Loyaltri", image: loyaltri },
+  ];
+  const handleCheckboxChange = (index) => {
+    if (selectedDivs.includes(index)) {
+      setSelectedDivs(selectedDivs.filter((item) => item !== index));
+    } else {
+      setSelectedDivs([...selectedDivs, index]);
+    }
+  };
 
   useEffect(() => {
     console.log(nextStep, activeBtn);
@@ -1646,7 +1690,65 @@ placeholder={"Search Employess"}/>
                       setPresentage(1.4);
                     }}
                     initialExpanded={true}
-                  ></Accordion>
+                  >
+                <TabsNew tabs={tabs}/>
+                <div className="grid gap-6 lg:grid-cols-6 ">
+  <div className="flex flex-col gap-6 lg:col-span-8">
+    <div className="flex flex-wrap gap-6 ">
+      {/* Small card-like div */}
+      {data.map((item, index) => (
+        <div
+          key={index}
+          className={`bg-white dark:bg-black rounded-lg border-[1px] p-4 w-[330px] ${
+            selectedDivs.includes(index)
+              ? "border-[#6A4BFC]"
+              : "border-[#DADADA]"
+          }`}
+          style={{ position: "relative" }} // Added to set position for absolute checkbox
+        >
+          <div className="items-center flex flex-col lg:flex-row">
+            <img
+              src={item.image}
+              alt="Logo"
+              className="w-[58px] h-[58px] object-cover rounded-md borderb lg:border-b-0"
+            />
+            <div className="ml-2">
+              <h3 className="h6">{item.title}</h3>
+              <p className="para">abcd@gmail</p>
+            </div>
+          </div>
+          <input
+            id={`comments-${index}`}
+            name={`comments-${index}`}
+            type="checkbox"
+            className="h-4 w-4 rounded border text-indigo-600 focus:ring-indigo-600 absolute top-4 right-4"
+            onChange={() => handleCheckboxChange(index)}
+            style={{ borderColor: "red" }}
+          />
+        </div>
+      ))}
+    </div>
+  </div>
+</div>
+
+                {/* </div> */}
+                {/* <div className="text-wrap">
+                  <p className="para mt-4 ">
+                    Indeed is a global job search engine for job listings with
+                    over 200 million unique monthly visitors
+                  </p>
+                </div> */}
+                {/* <div className="mt-4">
+                  <ButtonClick
+                    BtnType="text"
+                    icon={<BiEditAlt />}
+                    buttonName="Edit"
+                    className={"bg-[#e8e4e4]"}
+                  />
+                </div> */}
+        
+
+                  </Accordion>
                 ) : null
                    
                   }
