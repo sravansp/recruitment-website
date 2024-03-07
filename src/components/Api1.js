@@ -1,7 +1,7 @@
 import axios from "axios";
 
-// const apiUrl = 'http://192.168.29.185/loyaltri-recruitment-server/api/v1';
-const apiUrl = 'https://alpha-jobs-api.loyaltri.com/api/v1';
+const apiUrl = 'http://192.168.29.185/loyaltri-recruitment-server/api/v1';
+// const apiUrl = 'https://alpha-jobs-api.loyaltri.com/api/v1';
 
 
 const apiRequest = async (action, method, kwargs) => {
@@ -228,8 +228,39 @@ console.log({
     stageRemarks:stageRemarks
 
   };
+return await apiRequest(action, method, requestData);
+};
 
-  
+// export const saveRecruitmentEvaluationTemplateDetailBatch = async (data) => {
+//   const action = "saveRecruitmentEvaluationTemplateDetailBatch";
 
-  return await apiRequest(action, method, requestData);
+//   const method = "POST";
+//   const kwargs=data;
+// return await apiRequest(action, method, kwargs);
+// };
+export const saveRecruitmentEvaluationTemplate = async (e) => {
+
+  const action = "saveRecruitmentEvaluationTemplate";
+
+  const method = "POST";
+  const kwargs=e
+return await apiRequest(action, method, kwargs);
+};
+export const saveRecruitmentEvaluationTemplateDetailBatch = async (data) => {
+  try {
+    const action = "saveRecruitmentEvaluationTemplateDetailBatch";
+    const method = "POST";
+    const kwargs = data;
+    
+    console.log("API Request Data:", { action, method, kwargs });
+
+    const response = await apiRequest(action, method, kwargs);
+
+    console.log("API Response:", response);
+
+    return response;
+  } catch (error) {
+    console.error("Error in saveRecruitmentEvaluationTemplateDetailBatch:", error);
+    throw error; // Re-throw the error to handle it where the function is called.
+  }
 };
