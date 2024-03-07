@@ -1,5 +1,5 @@
 import { Card } from "antd";
-import React, { useRef, useState } from "react";
+import React, { useRef, useState,useEffect } from "react";
 import { BsFillLightningFill, BsThreeDotsVertical } from "react-icons/bs";
 
 import { MdArrowBackIos, MdArrowForwardIos, MdMessage } from "react-icons/md";
@@ -16,6 +16,7 @@ function JobCard({
   const itemsPerPage = 6;
   const containerRef = useRef(0);
   const scrollAmount = 253;
+  const [selectedId, setSelectedId] = useState(null);
 
   const slidemover = () => {
     const container = containerRef.current;
@@ -23,7 +24,25 @@ function JobCard({
       container.scrollLeft += scrollAmount;
     }
   };
+  const handleSvgClick = (id) => {
+    // Toggle the selected state
+    setSelectedId((prevId) => (prevId === id ? null : id));
+    // Call the selectcard function
+    selectcard(id);
+  };
   console.log(options)
+  console.log(selectedId)
+  useEffect(() => {
+    const storedId = localStorage.getItem("selectedId");
+    if (storedId) {
+      setSelectedId(storedId);
+    }
+  }, []);
+
+  // Save the selectedId to localStorage whenever it changes
+  useEffect(() => {
+    localStorage.setItem("selectedId", selectedId);
+  }, [selectedId]);
   return (
     
     
@@ -39,7 +58,10 @@ function JobCard({
                 height="74"
                 viewBox="0 0 253 74"
                 fill="none"
-                className="hover:fill-violet-100 "
+                className={`svg-item ${selectedId === each.id ? "selected" : ""}`}
+                onClick={(e) => {selectcard(each.id)
+                  handleSvgClick(each.id)
+                }}
               >
                 <path
                   d="M0.700684 6.05713C0.700684 2.74342 3.38698 0.0571289 6.70068 0.0571289H240.239L252.522 36.8679L240.239 73.6787H6.70068C3.38697 73.6787 0.700684 70.9924 0.700684 67.6787V6.05713Z"
@@ -80,7 +102,10 @@ function JobCard({
                   height="74"
                   viewBox="0 0 253 74"
                   fill="none"
-                  className="hover:fill-violet-100"
+                  className={`svg-item ${selectedId === each.id ? "selected" : ""}`}
+                  onClick={(e) => {selectcard(each.id)
+                    handleSvgClick(each.id)
+                  }}
                 >
                   <path
                     d="M0.521973 0.0571289H240.632L252.344 36.8679L240.632 73.6787H0.521973L12.2337 36.8679L0.521973 0.0571289Z"
@@ -128,7 +153,10 @@ function JobCard({
                 height="74"
                 viewBox="0 0 211 74"
                 fill="none"
-                className="hover:fill-violet-100"
+                className={`svg-item ${selectedId === each.id ? "selected" : ""}`}
+                onClick={(e) => {selectcard(each.id)
+                  handleSvgClick(each.id)
+                }}
               >
                 <path
                   d="M0.34375 0.0571289H210.344V73.6787H0.34375L10.0698 36.8679L0.34375 0.0571289Z"

@@ -3178,3 +3178,16 @@ button.rbc-button-link {
 .table-row:hover {
   cursor: pointer;
 }
+.svg-item {
+  cursor: pointer;
+  transition: fill 0.3s ease; /* Add transition for smooth color change */
+}
+
+.svg-item:hover {
+  fill: #F3E8FF; /* Define the hover color */
+}
+
+.selected {
+  fill: #F3E8FF !important; /* Use !important to ensure it overrides other styles */
+  /* Add any additional styling for the selected state */
+}

@@ -35,7 +35,7 @@ const Sidebar = () => {
   // const primaryColor = localStorage.getItem("mainColor");
   const [activeMenu, setActiveMenu] = useState(null);
   const [showSubmenu, setShowSubmenu] = useState(false);
-  const [isHamburgerClicked, setHamburgerClicked] = useState(true);
+  const [isHamburgerClicked, setHamburgerClicked] = useState(false);
   const [activeSubMenuLink, setActiveSubMenuLink] = useState(null);
   const [selectedMainMenu, setSelectedMainMenu] = useState(null);
   const submenuRef = useRef(null);
@@ -167,9 +167,9 @@ const Sidebar = () => {
     // document.body.classList.toggle('sidebar-open', !isHamburgerClicked);
   };
 
-  useEffect(() => {
-    dispatch(hamburger(isHamburgerClicked));
-  }, [isHamburgerClicked, dispatch]);
+  // useEffect(() => {
+  //   dispatch(hamburger(isHamburgerClicked));
+  // }, [isHamburgerClicked, dispatch]);
 
 
   useEffect(() => {
@@ -195,7 +195,7 @@ const Sidebar = () => {
       setShowSubmenu(false);
     }
   }, [isHamburgerClicked]);
-
+ 
   const isSubmenuVisible = isHamburgerClicked || showSubmenu;
   useEffect(() => {
     const storedMenu = localStorage.getItem('selectedMainMenu');

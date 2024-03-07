@@ -38,6 +38,9 @@ import { BsGrid, BsListUl } from "react-icons/bs";
 
 import Createjob from "./Createjob";
 import { ColumnChooserSelection } from "devextreme-react/data-grid";
+import JobCard from "../common/JobCard";
+import FlexCol from "../common/FlexCol";
+import TableAnt from "../common/TableAnt";
 
 const customColors = [
   "#00B23C",
@@ -199,7 +202,9 @@ const JobDetails = () => {
         <DragView />
       ) : (
         // Render list view components
-        <ListView />
+        <ListView
+        
+        />
       )}
     </div>
   );
@@ -706,7 +711,122 @@ const CardItem = ({ data, index, color }) => {
 };
 
 const ListView = () => {
-  return <div>ListView</div>;
-};
+  
+  
+  const selectedDataId = localStorage.getItem('selectedDataId');
+  const[stageId,setStageId]=useState(null)
+  const jobId = selectedDataId
+  const [boardData, setBoardData] = useState([]);
+  const getCandidatesById = async () => {
+    try {
+      const response = await getAllCandidatesByjobId(jobId);
+      
+      setBoardData(response.result.map((item) => ({
+        id: item.stageId,
+        title:item.stageName,
+        items: item.stageCandidates.map((candidate)=>({
+          id:candidate.resumeId,
+          name:candidate.candidateName,
+          image:candidate.image,
+          contact:candidate.candidateContact,
+          source:candidate.candidateSource,
+          appliedDate:candidate.createdOn,
+          stageName: item.stageName,
+        }))
+      })));
+       
+      console.log(response);
+      console.log(boardData)
+      // response.result.forEach((item) => {
+      //   item.stageCandidates.forEach((candidate) => {
+      //     // Call saveRecruitmentJobResumesStage with jobId, stageId, and resumeId
+      //     saveRecruitmentJobResumesStage(jobId, item.stageId, candidate.resumeId);
+      //   });
+      // });
+    } catch (error) {
+      console.error('Error updating workflow ID:', error);
+    }
+  };
+  const selectedStageItems = boardData.find((board) => board.id === stageId)?.items || [];
+  useEffect(()=>{
+    getCandidatesById(jobId)
+    console.log(selectedStageItems)
+    
+  },[jobId])
+  const handleSelectCard = (selectedStageId) => {
+    // Handle the selected stageId in your parent component
+    console.log('Selected Stage ID:', selectedStageId);
+    setStageId(selectedStageId);
+  };
+  
+  const header = [
+    {
+      CandidateProfile: [
+        {
+          id: 1,
+          title: "NAME",
+          value: "name",
+        },
+        {
+          id: 2,
+          title: "CONTACT",
+          value: "contact",
+        },
+        {
+          id: 3,
+          title: "stage",
+          value: "stageName",
+        },
+
+        {
+          id: 4,
+          title: "source",
+          value: "source",
+         
+        },
+        {
+          id: 5,
+
+          title: "applied date",
+          value: "appliedDate",
+         
+        },
+        {
+          id: 7,
+          title: "action",
+          value: "action",
+          dotsVertical: true,
+        },
+        
+       
+      ],
+    },
+  ];
+  
+  return (
+  
+  <FlexCol>
+  <div>
+
+  
+  <JobCard 
+  options={boardData}
+  selectcard={handleSelectCard}
+  />
+</div>
+<div>
+
+<TableAnt 
+header={header} 
+path='CandidateProfile' 
+actionID="resumeId"
+data={selectedStageItems}
+
+/>
+</div>
+
+</FlexCol>
+
+)};
 
 export default JobDetails;
