@@ -22,7 +22,7 @@ import { saveRecruitmentJobApplicationFormSetting,saveRecruitmentJob,getAllRecru
 import { Formik, useFormik } from 'formik';
 import { CgAdd } from "react-icons/cg";
 import { Form } from '../data';
-import { MdOutlineFileCopy } from "react-icons/md";
+import { MdContentCopy, MdOutlineFileCopy } from "react-icons/md";
 import { MdDelete } from "react-icons/md";
 import ToggleBtn from '../common/ToggleBtn';
 import { index } from 'd3';
@@ -526,6 +526,7 @@ const handleSaveInput = (index) => {
       setSelectedDivs([...selectedDivs, index]);
     }
   };
+  const selectedCount = selectedDivs.length;
 
   useEffect(() => {
     console.log(nextStep, activeBtn);
@@ -1684,6 +1685,7 @@ placeholder={"Search Employess"}/>
                   <Accordion
                     title={"Publish"}
                     className="Text_area"
+                    description={"lorem ipsum dummy text dolar sit."}
                     padding={false}
                     toggleBtn={false}
                     click={() => {
@@ -1691,7 +1693,21 @@ placeholder={"Search Employess"}/>
                     }}
                     initialExpanded={true}
                   >
+                    <div className='flex justify-between'>
                 <TabsNew tabs={tabs}/>
+                <div className="flex items-center">
+            <input
+              id={`selectAll`}
+              name={`selectAll`}
+              type="checkbox"
+              className="h-4 w-4 rounded border text-indigo-600 focus:ring-indigo-600 mr-2"
+              // onChange={() => handleSelectAll()}
+            />
+            {selectedCount > 0 && (
+              <span className="mr-2 h6">{`Selected ${selectedCount} portal `}</span>
+            )}
+          </div>
+                </div>
                 <div className="grid gap-6 lg:grid-cols-6 ">
   <div className="flex flex-col gap-6 lg:col-span-8">
     <div className="flex flex-wrap gap-6 ">
@@ -1725,9 +1741,12 @@ placeholder={"Search Employess"}/>
             onChange={() => handleCheckboxChange(index)}
             style={{ borderColor: "red" }}
           />
+         
         </div>
+        
       ))}
     </div>
+    <FormInput type={'text'} websiteLink className='w-[320px]'title='Sharable Link'placeholder='loyaltri.com/jkjskl3lsjlfsdf' icon={<MdContentCopy/>} description={"Share this link to anywhere"}/>
   </div>
 </div>
 
@@ -1746,8 +1765,7 @@ placeholder={"Search Employess"}/>
                     className={"bg-[#e8e4e4]"}
                   />
                 </div> */}
-        
-
+       
                   </Accordion>
                 ) : null
                    
