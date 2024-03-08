@@ -20,6 +20,7 @@ import { Formik, useFormik } from 'formik';
 const TemEvaluation = ({open = "", close = () => { },inputshow= false,isUpdate={}}) => {
     
   const [companyId, setCompanyId] = useState(localStorage.getItem("companyId"));
+  const[insertedId,setinsertedId] =useState(null)
   console.log(companyId)  
   const [savedContent, setSavedContent] = useState([]);
 
@@ -32,13 +33,7 @@ const TemEvaluation = ({open = "", close = () => { },inputshow= false,isUpdate={
       const handleEditorChange = (content) => {
         setContent(content);
       };
-      const [conditions, setConditions] = useState([
-        {
-          id: 1,
-          inputValue: '',
-          selectedValue: '',
-        },
-    ]);
+      const [conditions, setConditions] = useState([]);
     const [api, contextHolder] = notification.useNotification();
   const openNotification = (type, message, description) => {
     api[type]({
@@ -65,13 +60,16 @@ const TemEvaluation = ({open = "", close = () => { },inputshow= false,isUpdate={
     const handleAddCondition = () => {
       const newCondition = {
         id: conditions.length + 1,
-        inputValue: '',
-      selectedValue: '',
-       
+        companyId: companyId, // replace with the actual companyId
+        evaluationTemplateId: insertedId, // replace with the actual evaluationTemplateId
+        question: '',
+        answerMetaData: '{"key":"value"}',
+        description: '',
+        createdBy: 'Ashik', // replace with the actual createdBy value
       };
-     
+    
       setConditions([...conditions, newCondition]);
-  };
+    };
   
   
   const handleDeleteCondition = (conditionId) => {
@@ -80,7 +78,7 @@ const TemEvaluation = ({open = "", close = () => { },inputshow= false,isUpdate={
         setConditions(updatedConditions);
       }
   };
-  const[insertedId,setinsertedId] =useState(null)
+  // const[insertedId,setinsertedId] =useState(null)
   
   const formik = useFormik({
     initialValues: {
@@ -142,56 +140,24 @@ const TemEvaluation = ({open = "", close = () => { },inputshow= false,isUpdate={
    })
    const formik1 = useFormik({
     initialValues: {
-      
-      customFields:[
-      {companyId:"",
-      evaluationTemplateId:"",
-      question: "" , // Provide a default value if 'each' or 'each.question' is undefined
-      // answer_type: each?.answer_type || "",
-      // Assuming is_required should be a number (0 or 1)
-      answerMetaData: "" , 
-      description:""
-    }
-  ]  
-      
-      
-      
+      conditions: conditions, // Use conditions from state
     },
-    onSubmit: async (e) => {
-      
+    onSubmit: async (values) => {
       try {
-        console.log(e,insertedId)
-        const response = await saveRecruitmentEvaluationTemplateDetailBatch(
-         {
-          customFields: (e.customFields.default ||[]).map((each) => ({
-            companyId:companyId,
-            evaluationTemplateId:insertedId,
-            question: each?.question , // Provide a default value if 'each' or 'each.question' is undefined
-            // answer_type: each?.answer_type || "",
-            // Assuming is_required should be a number (0 or 1)
-            answerMetaData: each?.answerMetaData , 
-            description:null
-            // Provide a default value if 'each.answer_meta_data' is undefined
-          })),
-        
+        console.log(conditions); // Check the conditions data before sending to the server
   
-  
-  
-         } );
+        // Call your API to save data using values.conditions
+        const response = await saveRecruitmentEvaluationTemplateDetailBatch(conditions);
   
         // Handle the response if needed
         console.log('Response:', response);
-        
+  
         if (response.status === 200) {
-        
-        
           openNotification(
             "success",
             "Successful",
-            "createpoilicy update saved. Changes are now reflected."
+            "createpolicy update saved. Changes are now reflected."
           );
-       
-       
         }
       } catch (error) {
         // Handle the error here
@@ -341,58 +307,49 @@ const TemEvaluation = ({open = "", close = () => { },inputshow= false,isUpdate={
                                        />
                                        </div>
                                     
-                                       {conditions.map((condition, index) => (
-                <div key={index} className="grid grid-cols-4 gap-16  justify-between">
-       <FormInput
-  placeholder={'Type question here'}
-  value={formik.values.customFields.default?.[index]?.question}
+                                      {conditions.map((condition, index) => (
+  <div key={index} className="grid grid-cols-4 gap-16 justify-between">
+    <FormInput
+      placeholder={'Type question here'}
+      value={condition.question}
+      change={(e) => {
+        formik1.setFieldValue(`conditions[${index}].question`, e);
+      }}
+    />
 
-  change={(e) => {
-    formik.setFieldValue(`customFields.default[${index}].question`, e);
-    console.log("question value", e);
-  }}
-/>
+    <Dropdown
+      options={Form}
+      change={(e) => {
+        formik1.setFieldValue(`conditions[${index}].answerMetaData.key`, e); // Assuming key is a field inside answerMetaData
+        // Add logic to dynamically generate additional input fields based on the selected value
+      }}
+      value={condition.answerMetaData.key}
+      icondropDown={true}
+    />
 
-<Dropdown
-  options={Form}
-  change={(e) => {
-    formik.setFieldValue(`customFields.default[${index}].answerMetaData`, e);
-    handleDropdownChange(e,index)
-    console.log("dropdown", e);
-  }}
-  value={formik.values.customFields.default?.[index]?.answerMetaData}
-  icondropDown={true}
-/>
+    {/* Additional dynamic input fields based on the selected value in the dropdown */}
+    {/* Add your logic here */}
 
+    <div style={{ display: 'flex', alignItems: 'center', gap: '15px' }}>
+      <p>Mandatory</p>
+      <ToggleBtn />
+    </div>
 
-                    <div style={{ display: 'flex', alignItems: 'center', gap: '15px' }}>
-                        <p>Mandatory</p>
-                        <ToggleBtn />
-                    </div>
-                    <div style={{ display: 'flex', alignItems: 'center', gap: '15px' }}>
-                        <MdOutlineFileCopy
-                            style={{ width: '18px', height: '18px', cursor: 'pointer' }}
-                        />
-                        <MdDelete
-                            style={{ width: '18px', height: '18px', cursor: 'pointer' }}
-                            onClick={() => handleDeleteCondition(condition.id)}
-                        />
-                    </div>
-                    {generateInputField(
-                        condition.e,
-                        condition,
-                        index,
-                        'Drop-down',
-                        null,
-                        condition.inputValue
-                        
-                    )}
-                </div>
-            ))}
-             <div className="flex items-center gap-2">
-                <CgAdd style={{ width: '34px', height: '34px', cursor: 'pointer' }} onClick={handleAddCondition} />
-                <p style={{ cursor: 'pointer' }}>  Add Custom Field</p>
-            </div>
+    <div style={{ display: 'flex', alignItems: 'center', gap: '15px' }}>
+      <MdOutlineFileCopy
+        style={{ width: '18px', height: '18px', cursor: 'pointer' }}
+      />
+      <MdDelete
+        style={{ width: '18px', height: '18px', cursor: 'pointer' }}
+        onClick={() => handleDeleteCondition(condition.id)}
+      />
+    </div>
+  </div>
+))}
+<div className="flex items-center gap-2">
+  <CgAdd style={{ width: '34px', height: '34px', cursor: 'pointer' }} onClick={handleAddCondition} />
+  <p style={{ cursor: 'pointer' }}>  Add Custom Field</p>
+</div>
                                         </Accordion>
                                         </div>  
     </DrawerPop>

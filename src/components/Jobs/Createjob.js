@@ -57,7 +57,7 @@ const Createjob = ( {open = "", close = () => { },inputshow= false,isUpdate={}})
   const [activeBtn, setActiveBtn] = useState(0);
   const [presentage, setPresentage] = useState(0);
   const [nextStep, setNextStep] = useState(0);
-  const [activeBtnValue, setActiveBtnValue] = useState("Publish"); //LeaveType
+  const [activeBtnValue, setActiveBtnValue] = useState("Jobdetails"); //LeaveType
   const [btnName, setBtnName] = useState();
   const [customRate, setCustomRate] = useState(1);
   const [savedContent, setSavedContent] = useState([]);
@@ -137,7 +137,7 @@ const formik1 = useFormik({
   jobTitle:"",
   departmentId:"",
   jobCode:"",
-  workLocationType:"",
+  workLocationType:"Onsite",
   location:"",
   requirementType:"",
   jobType:"",
@@ -147,7 +147,7 @@ const formik1 = useFormik({
   salaryRangeFrom:"",
   salaryRangeTo:"",
   salaryCurrency:"",
-  isSalaryPublic:"",
+  isSalaryPublic: "true",
   jobDescription:"",
   workFlowId:"",
   jobPublishType:"",
@@ -206,6 +206,8 @@ const formik1 = useFormik({
       );
       setPresentage(2);
       setNextStep(nextStep + 1);
+    }else if (response.status === 500) {
+      openNotification("error", "input field is empty..", response.message);
     }
   }
   catch (error) {
@@ -326,10 +328,13 @@ const formik = useFormik({
         );
         setPresentage(2);
         setNextStep(nextStep + 1);
+      }else if (response.status === 500) {
+        openNotification("error", "input field is empty", response.message);
       }
     } catch (error) {
       // Handle the error here
       console.error('Error:', error);
+      openNotification("error", "Failed..", error);
     }
   },
 });
@@ -676,7 +681,7 @@ const handleSaveInput = (index) => {
           "createpoilicy update saved. Changes are now reflected."
         );
         setPresentage(2);
-        setNextStep(nextStep + 1);
+        
       } 
     } catch (error) {
       console.error('Error updating workflow ID:', error);
@@ -717,15 +722,11 @@ const handleSaveInput = (index) => {
         } catch (error) {
           console.error('Error handling Workflow:', error);
         }
-        // setNextStep(nextStep + 1);
+        setNextStep(nextStep + 1);
         
         break;
         case "TeamMembers":
-            // assignPolicy();
-            // Handle submission for Applicability
-            // Your logic for Applicability form submission...
-            // Move to the next step if applicable
-            // formik1.handleSubmit();
+           
             setNextStep(nextStep + 1);
             break;
             case "Publish":
@@ -734,7 +735,7 @@ const handleSaveInput = (index) => {
                 // Your logic for Applicability form submission...
                 // Move to the next step if applicable
                 // formik1.handleSubmit();
-                setNextStep(nextStep + 1);
+                handleClose()
                 break;
       default:
         // // Handle the case when no card is selected
@@ -1127,7 +1128,7 @@ const handleSaveInput = (index) => {
                                             <div className='grid grid-cols-4 gap-4'>
                                             <FormInput
                                                     title={'Salary Range From'}
-                                                    placeholder={'Urgent'} 
+                                                    placeholder={'Enter value'} 
                                                     change={(e)=>{
                                                       formik1.setFieldValue('salaryRangeFrom',e)
                                                     }}
@@ -1136,7 +1137,7 @@ const handleSaveInput = (index) => {
                                                     />
                                                 <FormInput
                                                     title={'Salary Range To'}
-                                                    placeholder={'Urgent'}
+                                                    placeholder={'Enter value'}
                                                     change={(e)=>{
                                                       formik1.setFieldValue('salaryRangeTo',e)
                                                     }}

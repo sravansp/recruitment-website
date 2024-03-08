@@ -1280,7 +1280,35 @@ const Employees =[
 ]
 
 
+const evaluation =[
+ 
+    {   id:1,
+        companyId: "",
+        evaluationTemplateId: "",
+        question: "",
+        answerMetaData:[
+          { id:1,
+            key:"",
+            value:"",
+          }
+        ],
+        description: "",
+        createdBy: "ashik"
+    },
+    {   id:2,
+        companyId: "",
+        evaluationTemplateId: "",
+        question: "",
+        answerMetaData: {
+          id:2,
+          key:"",
+          value:"",
+      },
+        description: "",
+        createdBy: "ashik",
+    }
 
+]
 
 
 export {
@@ -1330,5 +1358,6 @@ export {
   experiencelevel ,
   eductaion,
   saleryCurrency,
-  Employees
+  Employees,
+  evaluation
 };

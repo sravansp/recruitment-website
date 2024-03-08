@@ -43,6 +43,15 @@ function JobCard({
   useEffect(() => {
     localStorage.setItem("selectedId", selectedId);
   }, [selectedId]);
+
+  useEffect(() => {
+    if (options.length > 0 && selectedId === null) {
+      // If no card is selected and options are present, select the first card
+      const firstItemId = options[0].id;
+      setSelectedId(firstItemId);
+      selectcard(firstItemId);
+    }
+  }, [options, selectcard, selectedId]);
   return (
     
     

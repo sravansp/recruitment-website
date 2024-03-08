@@ -570,7 +570,16 @@ const CardItem = ({ data, index, color }) => {
       [cardId]: !prevState[cardId],
     }));
   };
-
+  const navigateToCandidateProfile = () => {
+    // Set data.id as the selectedId in localStorage
+    localStorage.setItem("selectedDataId", data.id);
+    
+    // Navigate to candidateprofile page with data.id
+    window.location.href = `/candidateprofile/${data.id}`;
+    
+    // Optionally, update the state with the selectedId
+    
+  };
   const items = [
     {
       label: "Disqualify",
@@ -607,6 +616,10 @@ const CardItem = ({ data, index, color }) => {
   ];
 
   const firstLetter = data?.name ? data.name.charAt(0).toUpperCase() : "";
+ 
+ 
+ 
+ 
   return (
     <Draggable
       index={index}
@@ -630,6 +643,7 @@ const CardItem = ({ data, index, color }) => {
           } p-3 mb-1.5 bg-white border rounded-md ${
             bookmarkState[data.id] ? " cursor-default" : "cursor-grab"
           }  border-borderlight dark:border-borderdark dark:bg-secondaryDark dark:text-white`}
+          onClick={navigateToCandidateProfile}
         >
           <div className="flex flex-col gap-1 2xl:gap-2">
             <div className="flex items-center gap-3">

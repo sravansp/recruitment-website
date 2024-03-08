@@ -1,11 +1,14 @@
 import React from 'react';
 import WorkImage from '../../assets/images/WorkInProgres.jpeg';
+import { Table, Typography } from 'antd';
+const { Text } = Typography;
 
 export default function InProgress() {
     return (
-        <div className='flex flex-col items-center mt-20'>
-            <img className='h-50 w-50' src={WorkImage} alt='Work in Progress' />
-            <div className='mt-4 dark:text-white'>Work In Progress...</div>
-        </div>
+       <Table>
+         <Table.ColumnGroup>
+          <Table.Column title="No data" dataIndex="noData" key="noData" render={() => <Text>No data available</Text>} />
+        </Table.ColumnGroup>
+       </Table>
     );
 }
