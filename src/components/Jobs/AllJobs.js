@@ -304,7 +304,14 @@ function AllJobs() {
     };
     {console.log(updateId)}
     callapi();
+   
   }, []);
+  useEffect(()=>{
+      
+    
+    console.log(JobsList)
+  
+  },[])
   return (
     <div className="flex flex-col gap-[25px]">
       <div className="flex justify-between">

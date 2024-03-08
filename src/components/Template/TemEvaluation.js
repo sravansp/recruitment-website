@@ -15,15 +15,100 @@ import { Form } from '../data'
 import { CgAdd } from 'react-icons/cg'
 import { saveRecruitmentEvaluationTemplate,saveRecruitmentEvaluationTemplateDetailBatch} from '../Api1'
 import { Formik, useFormik } from 'formik';
+import { Value } from 'devextreme-react/range-selector'
 
 
 const TemEvaluation = ({open = "", close = () => { },inputshow= false,isUpdate={}}) => {
     
   const [companyId, setCompanyId] = useState(localStorage.getItem("companyId"));
   const[insertedId,setinsertedId] =useState(null)
-  console.log(companyId)  
-  const [savedContent, setSavedContent] = useState([]);
+  console.log(companyId)
+  
+  
+ //condition data
 
+ const [evaluation, setEvaluation] = useState([
+  {
+    id: 1,
+    companyId: companyId,
+    evaluationTemplateId: insertedId,
+    question: "",
+    answerMetaData: [
+      {
+        id: 1,
+        key: "",
+        value: "",
+      }
+    ],
+    description: "",
+    createdBy: "ashik"
+  },
+]);
+console.log(evaluation)
+
+const handleAddCondition = () => {
+  setEvaluation((prevEvaluation) => [
+    ...prevEvaluation,
+    {
+      id: prevEvaluation.length + 1,
+      companyId: companyId, // Replace companyId with your actual value
+      evaluationTemplateId: insertedId, // Replace insertedId with your actual value
+      question: "",
+      answerMetaData: [
+        {
+          id: 1,
+          key: "",
+          value: "",
+        }
+      ],
+      description: "",
+      createdBy: "ashik"
+    },
+  ]);
+};
+
+const handleDeleteCondition = (index) => {
+  setEvaluation((prevEvaluation) =>
+    prevEvaluation.filter((_, i) => i !== index)
+  );
+};
+const handleDeleteField = (conditionIndex, fieldIndex) => {
+  console.log("Deleting field", conditionIndex, fieldIndex);
+
+  setEvaluation((prevEvaluation) =>
+    prevEvaluation.map((prevCondition, i) =>
+      i === conditionIndex
+        ? {
+            ...prevCondition,
+            answerMetaData: (prevCondition.answerMetaData || []).filter(
+              (field, j) => j !== fieldIndex
+            ),
+          }
+        : prevCondition
+    )
+  );
+};
+const handleAddField = (index) => {
+  setEvaluation((prevEvaluation) =>
+    prevEvaluation.map((prevCondition, i) =>
+      i === index
+        ? {
+            ...prevCondition,
+            answerMetaData: [
+              ...prevCondition.answerMetaData,
+              {
+                id: prevCondition.answerMetaData.length + 1,
+                key: 'Drop-down', // You can set the default key or customize as needed
+                value: '',
+              },
+            ],
+          }
+        : prevCondition
+    )
+  );
+};
+
+//<--------------------------------------------------->//
     const[show,setShow] =useState(open);
     const { t } = useTranslation();
     const handleClose = () => {
@@ -33,7 +118,7 @@ const TemEvaluation = ({open = "", close = () => { },inputshow= false,isUpdate={
       const handleEditorChange = (content) => {
         setContent(content);
       };
-      const [conditions, setConditions] = useState([]);
+     
     const [api, contextHolder] = notification.useNotification();
   const openNotification = (type, message, description) => {
     api[type]({
@@ -57,27 +142,10 @@ const TemEvaluation = ({open = "", close = () => { },inputshow= false,isUpdate={
     });
   };
     
-    const handleAddCondition = () => {
-      const newCondition = {
-        id: conditions.length + 1,
-        companyId: companyId, // replace with the actual companyId
-        evaluationTemplateId: insertedId, // replace with the actual evaluationTemplateId
-        question: '',
-        answerMetaData: '{"key":"value"}',
-        description: '',
-        createdBy: 'Ashik', // replace with the actual createdBy value
-      };
-    
-      setConditions([...conditions, newCondition]);
-    };
+
   
   
-  const handleDeleteCondition = (conditionId) => {
-      if (conditions.length > 1) {
-        const updatedConditions = conditions.filter((condition) => condition.id !== conditionId);
-        setConditions(updatedConditions);
-      }
-  };
+
   // const[insertedId,setinsertedId] =useState(null)
   
   const formik = useFormik({
@@ -140,14 +208,14 @@ const TemEvaluation = ({open = "", close = () => { },inputshow= false,isUpdate={
    })
    const formik1 = useFormik({
     initialValues: {
-      conditions: conditions, // Use conditions from state
+     
     },
     onSubmit: async (values) => {
       try {
-        console.log(conditions); // Check the conditions data before sending to the server
+       
   
         // Call your API to save data using values.conditions
-        const response = await saveRecruitmentEvaluationTemplateDetailBatch(conditions);
+        const response = await saveRecruitmentEvaluationTemplateDetailBatch();
   
         // Handle the response if needed
         console.log('Response:', response);
@@ -167,49 +235,7 @@ const TemEvaluation = ({open = "", close = () => { },inputshow= false,isUpdate={
   });
   
   
-  const generateInputField = (e, condition, index) => {
-    console.log("value",e)
-    
-   
-    console.log('Saved content:', savedContent);
-    switch (e) {
-      
-//       case 'Paragraph':
-//         return (
-//           <TextArea
-//   value={formik.values.customFields[index].answer_meta_data}
-//   change={(e) => formik.setFieldValue(`customFields[${index}].answer_meta_data`, e)}
-// />
-//         );
-//       case 'ShortAnswer':
-//         return (
-//           <FormInput
-//   value={formik.values.customFields[index].answer_meta_data}
-//   change={(e) => formik.setFieldValue(`customFields[${index}].answer_meta_data`, e)}
-// />
-//         );
-      case 'Drop-down':
-        return (
-          
-          <FormInput
-            // value={formik.values.customFields[index].answer_meta_data}
-            // change={(e) => formik.setFieldValue(`customFields[${index}].answer_meta_data`, e)}
-          />
-        
-      
-        
-          
-        );
-      default:
-        // return <FormInput value={formik.value.Default} change={(newValue) => handleChange(newValue, index)} />;
-    }
-  };
-
-  const handleDropdownChange = (e, conditionIndex) => {
-    const updatedConditions = [...conditions];
-    updatedConditions[conditionIndex].e = e;
-    setConditions(updatedConditions); 
-  };
+ 
 
   const handleSubmit = async () => {
   formik.handleSubmit()
@@ -307,29 +333,51 @@ const TemEvaluation = ({open = "", close = () => { },inputshow= false,isUpdate={
                                        />
                                        </div>
                                     
-                                      {conditions.map((condition, index) => (
-  <div key={index} className="grid grid-cols-4 gap-16 justify-between">
-    <FormInput
-      placeholder={'Type question here'}
-      value={condition.question}
-      change={(e) => {
-        formik1.setFieldValue(`conditions[${index}].question`, e);
-      }}
-    />
+                                      
+                                       {evaluation.map((condition, index) => (
+  <div className="grid grid-cols-4 gap-16 justify-between">
+   <FormInput
+            placeholder={'Type question here'}
+            value={condition.question} 
+            change={(e) => {
+              setEvaluation((prevEvaluation) =>
+                prevEvaluation.map((prevCondition, i) =>
+                  i === index
+                    ? { ...prevCondition, question: e}
+                    : prevCondition
+                )
+              );
+              console.log(e)
+            }}
+          />
 
-    <Dropdown
-      options={Form}
-      change={(e) => {
-        formik1.setFieldValue(`conditions[${index}].answerMetaData.key`, e); // Assuming key is a field inside answerMetaData
-        // Add logic to dynamically generate additional input fields based on the selected value
-      }}
-      value={condition.answerMetaData.key}
-      icondropDown={true}
-    />
+<Dropdown
+            options={Form}
+            change={(e) => {
+              setEvaluation((prevEvaluation) =>
+                prevEvaluation.map((prevCondition, i) =>
+                  i === index
+                    ? {
+                        ...prevCondition,
+                        answerMetaData: [
+                          {
+                            id: 1,
+                            key: e,
+                            value: "",
+                          }
+                        ],
+                      }
+                    : prevCondition
+                )
+              );
+            }}
+            value={condition.answerMetaData[0]?.key}
+            icondropDown={true}
+          />
 
     {/* Additional dynamic input fields based on the selected value in the dropdown */}
     {/* Add your logic here */}
-
+   
     <div style={{ display: 'flex', alignItems: 'center', gap: '15px' }}>
       <p>Mandatory</p>
       <ToggleBtn />
@@ -341,11 +389,57 @@ const TemEvaluation = ({open = "", close = () => { },inputshow= false,isUpdate={
       />
       <MdDelete
         style={{ width: '18px', height: '18px', cursor: 'pointer' }}
-        onClick={() => handleDeleteCondition(condition.id)}
+        onClick={() => handleDeleteCondition(index)}
       />
     </div>
+    {condition.answerMetaData[0]?.key === 'Drop-down' && (
+  <>
+    {/* Render existing FormInput components */}
+    {condition.answerMetaData.map((field, fieldIndex) => (
+      <div key={fieldIndex} className="flex items-center">
+          <FormInput
+          placeholder={'Enter value'}
+          value={field.value}  
+          change={(e) =>
+            setEvaluation((prevEvaluation) =>
+              prevEvaluation.map((prevCondition, i) =>
+                i === index
+                  ? {
+                      ...prevCondition,
+                      answerMetaData: prevCondition.answerMetaData.map(
+                        (f, j) =>
+                          j === fieldIndex
+                            ? { ...f, value: e } 
+                            : f
+                      ),
+                    }
+                  : prevCondition
+              )
+            )
+          }
+        />
+
+        <div className="ml-2">
+          <MdDelete
+            onClick={() => handleDeleteField(index, fieldIndex)}
+            className="cursor-pointer text-red-500"
+          />
+        </div>
+      </div>
+    ))}
+
+    {/* Add button for adding more FormInput components */}
+    <div className="mt-2">
+      <CgAdd
+        onClick={() => handleAddField(index)}
+        style={{ width: '18px', height: '18px', cursor: 'pointer' }}
+      />
+    </div>
+  </>
+)}
   </div>
-))}
+  ))}
+
 <div className="flex items-center gap-2">
   <CgAdd style={{ width: '34px', height: '34px', cursor: 'pointer' }} onClick={handleAddCondition} />
   <p style={{ cursor: 'pointer' }}>  Add Custom Field</p>

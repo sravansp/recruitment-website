@@ -57,7 +57,7 @@ const Createjob = ( {open = "", close = () => { },inputshow= false,isUpdate={}})
   const [activeBtn, setActiveBtn] = useState(0);
   const [presentage, setPresentage] = useState(0);
   const [nextStep, setNextStep] = useState(0);
-  const [activeBtnValue, setActiveBtnValue] = useState("Jobdetails"); //LeaveType
+  const [activeBtnValue, setActiveBtnValue] = useState("ApplicationForm"); //LeaveType
   const [btnName, setBtnName] = useState();
   const [customRate, setCustomRate] = useState(1);
   const [savedContent, setSavedContent] = useState([]);
@@ -402,8 +402,21 @@ const handleSaveInput = (index) => {
   
     setDropdownOptions(updatedDropdownOptions);
   };
- 
-  const generateInputField = (e, condition, index) => {
+  const handleAddField = () => {
+    // Add a new custom field to the formik values array
+    formik.setFieldValue("customFields", [
+      ...formik.values.customFields,
+      { answer_meta_data: "" },
+    ]);
+  };
+
+  const handleDeleteField = (index) => {
+    // Remove the custom field at the specified index
+    const updatedFields = [...formik.values.customFields];
+    updatedFields.splice(index, 1);
+    formik.setFieldValue("customFields", updatedFields);
+  };
+  const generateInputField = (e, condition, conditionIndex) => {
     console.log("value",e)
     
    
@@ -427,15 +440,123 @@ const handleSaveInput = (index) => {
       case 'Drop-down':
         return (
           
-          <FormInput
-            value={formik.values.customFields[index].answer_meta_data}
-            change={(e) => formik.setFieldValue(`customFields[${index}].answer_meta_data`, e)}
-          />
-        
+          <>
+          {formik.values.customFields.map((field, index) => (
+            <div key={index} className="flex items-center">
+              <FormInput
+                placeholder={"Enter value"}
+                value={field.answer_meta_data}
+                change={(e) =>
+                  formik.setFieldValue(
+                    `customFields[${index}].answer_meta_data`,
+                    e
+                  )
+                }
+              />
+              <div className="ml-2">
+                <MdDelete
+                  onClick={() => handleDeleteField(index)}
+                  className="cursor-pointer text-red-500"
+                />
+              </div>
+            </div>
+          ))}
+          <div>
+            <button
+              type="button"
+              onClick={handleAddField}
+              className="flex items-center mt-2"
+            >
+              <CgAdd className="mr-1" />
+              Add Field
+            </button>
+          </div>
+        </>
+         
       
         
           
         );
+        case 'MultipleChoice':
+          return (
+          
+            <>
+            {formik.values.customFields.map((field, index) => (
+              <div key={index} className="flex items-center">
+                <FormInput
+                  placeholder={"Enter value"}
+                  value={field.answer_meta_data}
+                  change={(e) =>
+                    formik.setFieldValue(
+                      `customFields[${index}].answer_meta_data`,
+                      e
+                    )
+                  }
+                />
+                <div className="ml-2">
+                  <MdDelete
+                    onClick={() => handleDeleteField(index)}
+                    className="cursor-pointer text-red-500"
+                  />
+                </div>
+              </div>
+            ))}
+            <div>
+              <button
+                type="button"
+                onClick={handleAddField}
+                className="flex items-center mt-2"
+              >
+                <CgAdd className="mr-1" />
+                Add Field
+              </button>
+            </div>
+          </>
+           
+        
+          
+            
+          );
+          case 'Checkboxes':
+            return (
+          
+              <>
+              {formik.values.customFields.map((field, index) => (
+                <div key={index} className="flex items-center">
+                  <FormInput
+                    placeholder={"Enter value"}
+                    value={field.answer_meta_data}
+                    change={(e) =>
+                      formik.setFieldValue(
+                        `customFields[${index}].answer_meta_data`,
+                        e
+                      )
+                    }
+                  />
+                  <div className="ml-2">
+                    <MdDelete
+                      onClick={() => handleDeleteField(index)}
+                      className="cursor-pointer text-red-500"
+                    />
+                  </div>
+                </div>
+              ))}
+              <div>
+                <button
+                  type="button"
+                  onClick={handleAddField}
+                  className="flex items-center mt-2"
+                >
+                  <CgAdd className="mr-1" />
+                  Add Field
+                </button>
+              </div>
+            </>
+             
+          
+            
+              
+            );
       default:
         // return <FormInput value={formik.value.Default} change={(newValue) => handleChange(newValue, index)} />;
     }
@@ -901,7 +1022,7 @@ const handleSaveInput = (index) => {
                    
                         <FlexCol>
                         <Accordion
-                                    title={"Leave Allowance"}
+                                    title={"Job Details"}
                                     className="Text_area"
                                     padding={true}
                                     toggleBtn={false}

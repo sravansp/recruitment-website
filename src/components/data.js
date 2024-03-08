@@ -1295,19 +1295,7 @@ const evaluation =[
         description: "",
         createdBy: "ashik"
     },
-    {   id:2,
-        companyId: "",
-        evaluationTemplateId: "",
-        question: "",
-        answerMetaData: {
-          id:2,
-          key:"",
-          value:"",
-      },
-        description: "",
-        createdBy: "ashik",
-    }
-
+    
 ]
 
 
