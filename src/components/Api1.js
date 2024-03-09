@@ -1,7 +1,7 @@
 import axios from "axios";
 
-const apiUrl = 'http://192.168.29.185/loyaltri-recruitment-server/api/v1';
-// const apiUrl = 'https://alpha-jobs-api.loyaltri.com/api/v1';
+// const apiUrl = 'http://192.168.29.185/loyaltri-recruitment-server/api/v1';
+const apiUrl = 'https://alpha-jobs-api.loyaltri.com/api/v1';
 
 
 const apiRequest = async (action, method, kwargs) => {
@@ -241,16 +241,18 @@ return await apiRequest(action, method, requestData);
 export const saveRecruitmentEvaluationTemplate = async (e) => {
 
   const action = "saveRecruitmentEvaluationTemplate";
+  
 
   const method = "POST";
   const kwargs=e
+  console.log("API Request Data:", { action, method, kwargs });
 return await apiRequest(action, method, kwargs);
 };
-export const saveRecruitmentEvaluationTemplateDetailBatch = async (data) => {
+export const saveRecruitmentEvaluationTemplateDetailBatch = async (formattedData) => {
   try {
     const action = "saveRecruitmentEvaluationTemplateDetailBatch";
     const method = "POST";
-    const kwargs = data;
+    const kwargs = formattedData;
     
     console.log("API Request Data:", { action, method, kwargs });
 

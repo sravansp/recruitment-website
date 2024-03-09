@@ -57,7 +57,7 @@ const Createjob = ( {open = "", close = () => { },inputshow= false,isUpdate={}})
   const [activeBtn, setActiveBtn] = useState(0);
   const [presentage, setPresentage] = useState(0);
   const [nextStep, setNextStep] = useState(0);
-  const [activeBtnValue, setActiveBtnValue] = useState("ApplicationForm"); //LeaveType
+  const [activeBtnValue, setActiveBtnValue] = useState("Jobdetails"); //LeaveType
   const [btnName, setBtnName] = useState();
   const [customRate, setCustomRate] = useState(1);
   const [savedContent, setSavedContent] = useState([]);
@@ -1760,7 +1760,9 @@ placeholder={"Search Employess"}/>
       <React.Fragment key={employee.id}>
         <tr>
           <td>
-            <input type="checkbox" />
+            <CheckBoxInput change={()=>{
+              setPresentage(3.4);
+            }}/>
           </td>
           <td>
             <div className='flex items-center gap-4'>

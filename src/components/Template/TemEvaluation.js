@@ -1,4 +1,4 @@
-import React,{useState} from 'react'
+import React,{useState,useEffect} from 'react'
 import DrawerPop from '../common/DrawerPop'
 import Accordion from '../common/Accordion'
 import { useTranslation } from 'react-i18next'
@@ -23,29 +23,37 @@ const TemEvaluation = ({open = "", close = () => { },inputshow= false,isUpdate={
   const [companyId, setCompanyId] = useState(localStorage.getItem("companyId"));
   const[insertedId,setinsertedId] =useState(null)
   console.log(companyId)
+  console.log(insertedId)
+  const [evaluation, setEvaluation] = useState([
+    {
+      id: 1,
+      companyId: companyId,
+      evaluationTemplateId: insertedId,
+      question: "",
+      answerMetaData: '[]',
+      description:"hihihihih",
+      createdBy: 499
+    },
+  ]);
   
   
  //condition data
 
- const [evaluation, setEvaluation] = useState([
-  {
-    id: 1,
-    companyId: companyId,
-    evaluationTemplateId: insertedId,
-    question: "",
-    answerMetaData: [
-      {
-        id: 1,
-        key: "",
-        value: "",
-      }
-    ],
-    description: "",
-    createdBy: "ashik"
-  },
-]);
+ 
 console.log(evaluation)
+// const parsedAnswerMetaData = JSON.parse(evaluation[0].answerMetaData);
+// parsedAnswerMetaData[0].key = "updatedKey";
+// parsedAnswerMetaData[0].value = "updatedValue";
+useEffect(() => {
+  // Update evaluation with the new insertedId
+  setEvaluation((prevEvaluation) => {
+    return prevEvaluation.map((item) => ({
+      ...item,
+      evaluationTemplateId: insertedId,
 
+    }));
+  });
+}, [insertedId]);
 const handleAddCondition = () => {
   setEvaluation((prevEvaluation) => [
     ...prevEvaluation,
@@ -54,15 +62,9 @@ const handleAddCondition = () => {
       companyId: companyId, // Replace companyId with your actual value
       evaluationTemplateId: insertedId, // Replace insertedId with your actual value
       question: "",
-      answerMetaData: [
-        {
-          id: 1,
-          key: "",
-          value: "",
-        }
-      ],
-      description: "",
-      createdBy: "ashik"
+      answerMetaData: '[]',
+      description: "hihihihi",
+      createdBy: 493
     },
   ]);
 };
@@ -107,7 +109,6 @@ const handleAddField = (index) => {
     )
   );
 };
-
 //<--------------------------------------------------->//
     const[show,setShow] =useState(open);
     const { t } = useTranslation();
@@ -190,8 +191,12 @@ const handleAddField = (index) => {
            "createpoilicy update saved. Changes are now reflected."
          );
          setinsertedId(response.result.insertedId)
-         if(response.result.insertedId)
-         formik1.handleSubmit()
+         
+         
+       }
+       if(response.result.insertedId)
+       {
+        formik1.handleSubmit(setinsertedId)
        }
      }
      catch (error) {
@@ -206,19 +211,29 @@ const handleAddField = (index) => {
    
     },
    })
+   
    const formik1 = useFormik({
-    initialValues: {
-     
-    },
-    onSubmit: async (values) => {
+    initialValues: {},
+    onSubmit: async (setinsertedId) => {
       try {
-       
+        const formattedData = evaluation.map((item) => ({
+          companyId: item.companyId,
+          evaluationTemplateId: item.evaluationTemplateId,
+           
+          question: item.question,
+          answerMetaData: JSON.stringify(item.answerMetaData),
+          
+          description: item.description,
+          createdBy: item.createdBy,
+        }));
   
-        // Call your API to save data using values.conditions
-        const response = await saveRecruitmentEvaluationTemplateDetailBatch();
+        // Call your API to save data using the formatted data
+        const response = await saveRecruitmentEvaluationTemplateDetailBatch(formattedData);
   
         // Handle the response if needed
         console.log('Response:', response);
+        console.log(formattedData)
+        console.log(insertedId)
   
         if (response.status === 200) {
           openNotification(
@@ -392,14 +407,15 @@ const handleAddField = (index) => {
         onClick={() => handleDeleteCondition(index)}
       />
     </div>
-    {condition.answerMetaData[0]?.key === 'Drop-down' && (
+    {condition.answerMetaData[0]?.key && (
   <>
     {/* Render existing FormInput components */}
     {condition.answerMetaData.map((field, fieldIndex) => (
       <div key={fieldIndex} className="flex items-center">
+        {field.key === 'Drop-down' && (
           <FormInput
           placeholder={'Enter value'}
-          value={field.value}  
+          value={field.value}
           change={(e) =>
             setEvaluation((prevEvaluation) =>
               prevEvaluation.map((prevCondition, i) =>
@@ -409,7 +425,7 @@ const handleAddField = (index) => {
                       answerMetaData: prevCondition.answerMetaData.map(
                         (f, j) =>
                           j === fieldIndex
-                            ? { ...f, value: e } 
+                            ? { ...f, value: String(e) } // Ensure e is a string
                             : f
                       ),
                     }
@@ -418,6 +434,53 @@ const handleAddField = (index) => {
             )
           }
         />
+        )}
+        {field.key === 'MultipleChoice' && (
+       <FormInput
+       placeholder={'Enter value'}
+       value={field.value}
+       change={(e) =>
+         setEvaluation((prevEvaluation) =>
+           prevEvaluation.map((prevCondition, i) =>
+             i === index
+               ? {
+                   ...prevCondition,
+                   answerMetaData: prevCondition.answerMetaData.map(
+                     (f, j) =>
+                       j === fieldIndex
+                         ? { ...f, value: String(e) } // Ensure e is a string
+                         : f
+                   ),
+                 }
+               : prevCondition
+           )
+         )
+       }
+     />
+        )}
+        {field.key === 'Checkboxes' && (
+            <FormInput
+            placeholder={'Enter value'}
+            value={field.value}
+            change={(e) =>
+              setEvaluation((prevEvaluation) =>
+                prevEvaluation.map((prevCondition, i) =>
+                  i === index
+                    ? {
+                        ...prevCondition,
+                        answerMetaData: prevCondition.answerMetaData.map(
+                          (f, j) =>
+                            j === fieldIndex
+                              ? { ...f, value: String(e) } // Ensure e is a string
+                              : f
+                        ),
+                      }
+                    : prevCondition
+                )
+              )
+            }
+          />
+        )}
 
         <div className="ml-2">
           <MdDelete
