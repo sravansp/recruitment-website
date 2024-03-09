@@ -75,8 +75,11 @@ export const saveRecruitmentJobApplicationFormSetting = async (e) => {
   const action = "saveRecruitmentJobApplicationFormSetting";
 
   const method = "POST";
+  const kwargs = e;
+  const response = await apiRequest(action, method, kwargs);
+  console.log("API Response:", response);
 
-  return await apiRequest(action, method, e);
+  return await apiRequest(action, method, kwargs);
 };
 
 //Team Members

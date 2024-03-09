@@ -19,6 +19,7 @@ export default function FormInput({
   width = "full",
   description,
   required = false,
+  answerMetaDataIndex
 }) {
   const isSmallScreen = useMediaQuery({ maxWidth: 1439 });
   const [show, setShow] = useState(false);
@@ -50,6 +51,7 @@ export default function FormInput({
                   "0px 0px 0px 4px #FEE4E2, 0px 2px 4px 0px rgba(16, 24, 40, 0.05)",
               }
             }
+            maxLength={30}
           />
 
           {error && (

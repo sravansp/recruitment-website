@@ -2,6 +2,7 @@ import { Input } from "antd";
 import React from "react";
 import { FiAlertCircle } from 'react-icons/fi';
 import { HiMiniStar } from "react-icons/hi2";
+import { TbNorthStar } from "react-icons/tb";
 import { useMediaQuery } from 'react-responsive';
 
 export default function TextArea({
@@ -25,7 +26,7 @@ export default function TextArea({
             {title}
           </label>
           
-        }        {required && <HiMiniStar className="text-[10px] text-rose-600" />}
+        }        {required && <TbNorthStar className="text-[10px] text-rose-600" />}
       </div>
       <div style={{ position: "relative" }}>
         <TextArea

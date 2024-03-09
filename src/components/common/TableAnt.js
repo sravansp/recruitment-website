@@ -6,7 +6,7 @@ import {
   Dropdown,
   Space,
   Menu,
-  Checkbox,
+  
   Radio,
   Switch,
   Popconfirm,
@@ -523,20 +523,20 @@ const TableAnt = ({
   const items = [
     {
       key: "selectAll",
-      label: (
-        <Checkbox
-          checked={visibleColumns?.length === tableData?.length}
-          onChange={() => {
-            setVisibleColumns(
-              visibleColumns?.length === tableData?.length
-                ? []
-                : tableData.map((col) => col.dataIndex)
-            );
-          }}
-        >
-          Select All
-        </Checkbox>
-      ),
+      // label: (
+      //   <Checkbox
+      //     checked={visibleColumns?.length === tableData?.length}
+      //     onChange={() => {
+      //       setVisibleColumns(
+      //         visibleColumns?.length === tableData?.length
+      //           ? []
+      //           : tableData.map((col) => col.dataIndex)
+      //       );
+      //     }}
+      //   >
+      //     Select All
+      //   </Checkbox>
+      // ),
     },
     {
       key: "search",
@@ -550,34 +550,34 @@ const TableAnt = ({
     },
     ...(tableData?.map((column, i) => ({
       key: i,
-      label: (
-        <Checkbox
-          value={column.title}
-          checked={visibleColumns?.includes(column.dataIndex)}
-          onChange={handleColumnVisibilityChange(column.dataIndex)}
-        >
-          {column.title}
-        </Checkbox>
-      ),
+      // label: (
+      //   <Checkbox
+      //     value={column.title}
+      //     checked={visibleColumns?.includes(column.dataIndex)}
+      //     onChange={handleColumnVisibilityChange(column.dataIndex)}
+      //   >
+      //     {column.title}
+      //   </Checkbox>
+      // ),
     })) || []),
   ];
   const columnMenuItems = [
     {
       key: "selectAll",
-      label: (
-        <Checkbox
-          checked={visibleColumns?.length === tableData?.length}
-          onChange={() => {
-            setVisibleColumns(
-              visibleColumns?.length === tableData?.length
-                ? []
-                : tableData.map((col) => col.dataIndex)
-            );
-          }}
-        >
-          Select All
-        </Checkbox>
-      ),
+      // label: (
+      //   <Checkbox
+      //     checked={visibleColumns?.length === tableData?.length}
+      //     onChange={() => {
+      //       setVisibleColumns(
+      //         visibleColumns?.length === tableData?.length
+      //           ? []
+      //           : tableData.map((col) => col.dataIndex)
+      //       );
+      //     }}
+      //   >
+      //     Select All
+      //   </Checkbox>
+      // ),
     },
     {
       key: "search",
@@ -591,15 +591,15 @@ const TableAnt = ({
     },
     ...(tableData?.map((column, i) => ({
       key: i,
-      label: (
-        <Checkbox
-          value={column.title}
-          checked={visibleColumns?.includes(column.dataIndex)}
-          onChange={handleColumnVisibilityChange(column.dataIndex)}
-        >
-          {column.title}
-        </Checkbox>
-      ),
+      // label: (
+      //   <Checkbox
+      //     value={column.title}
+      //     checked={visibleColumns?.includes(column.dataIndex)}
+      //     onChange={handleColumnVisibilityChange(column.dataIndex)}
+      //   >
+      //     {column.title}
+      //   </Checkbox>
+      // ),
     })) || []),
   ];
 
