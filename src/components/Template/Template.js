@@ -35,7 +35,7 @@ const Template = ({
     const [show, setShow] = useState(open);
     const [openPop, setOpenPop] = useState("");
     const breadcrumbItems = [
-        { label: t("Team Members"), url: "/" },
+        { label: t("Templates"), url: "/" },
         // { label: navigationPath.charAt(0).toUpperCase() + navigationPath.slice(1) },
       ];
       const [navigationPath, setNavigationPath] = useState("Job");
@@ -367,12 +367,37 @@ const Template = ({
         gettemaplate();
         
         break;
-      case "Departments":
+      case "JobDescription":
         // getDepartmentList();
         
         console.log(newData)
         break;
       // Add more cases as needed
+      case "Workflow":
+        // getDepartmentList();
+        
+        console.log(newData)
+        break;
+        case "Email":
+          // getDepartmentList();
+          
+          console.log(newData)
+          break;
+          case "Evaluation":
+            // getDepartmentList();
+            
+            console.log(newData)
+            break;
+            case "Questionaire":
+              // getDepartmentList();
+              
+              console.log(newData)
+              break;
+              case "Letter":
+                // getDepartmentList();
+                
+                console.log(newData)
+                break;
       default:
         break;
     }

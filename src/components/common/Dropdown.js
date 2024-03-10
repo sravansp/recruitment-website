@@ -83,19 +83,20 @@ export default function Dropdown({
           {options?.map((each, i) => (
             <Option key={i} value={each.value}>
               <div className="flex flex-col gap-1 country-option">
-                <div>
-                  {icon && each.icon}
-                  {image && (
+                <div className="flex items-center gap-2">
+                {each.icon}
+                  {/* {image && (
                     <img
                       src={each.image}
                       alt=""
                       className="w-5 h-5 rounded-full"
                     />
-                  )}
+                  )} */}
                   {/* <FlagIcon code={91} className="w-5 h-5 rounded-full" />
                     <span>mkck</span> */}
+                    <span>{each.label}</span>
                 </div>
-                <span>{each.label}</span>
+                
                 <p class="text-gray-500 text-xs font-medium font-['Inter'] leading-none">
                   {each.description}
                 </p>

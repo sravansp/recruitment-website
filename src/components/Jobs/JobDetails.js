@@ -59,7 +59,8 @@ const customColors = [
 const JobDetails = () => {
   const isSmallScreen = useMediaQuery({ maxWidth: 1439 });
   const [viewType, setViewType] = useState("grid"); // Initial view type
-  const breadcrumbItems = [{ label: "Jobs" }, { label: "UI UX Desinger" }];
+  const breadcrumbItems = [{ label: "Jobs",
+  url:"/AllJobs" }, { label: "UI UX Desinger" }];
   const handleshow =()=>setShow(true);
   const handleClose =()=>setShow(false)
   const [show, setShow] = useState(false);
@@ -96,7 +97,7 @@ const JobDetails = () => {
             <span className="!text-primary para">View career page</span>{" "}
             <PiArrowSquareOut size={15} className="dark:text-white" />
           </Link>
-          <ButtonClick buttonName="Edit" />
+          {/* <ButtonClick buttonName="Edit" /> */}
           {/* <ButtonClick BtnType="add" buttonName="Create a Job"   handleSubmit={() => {
             setShow(true);
             console.log("set",show);

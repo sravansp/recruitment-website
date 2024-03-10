@@ -29,7 +29,7 @@ const TeamMembers = ({
   ];
   const Header = [
     {
-      employee: [
+      Employee: [
         {
           id: 1,
           title: "Name",
@@ -77,7 +77,7 @@ const TeamMembers = ({
   console.log("header", Header);
   return (
     <>
-      <div className="flex flex-col justify-between gap-6 lg:items-center lg:flex-row">
+      <div className="flex flex-col justify-between gap-8 lg:items-center lg:flex-row">
         <div>
           <Breadcrumbs items={breadcrumbItems} />
           <p className="para">{t("Lorem ipsum dolart sit dummy text.")}</p>
@@ -117,7 +117,7 @@ const TeamMembers = ({
         </div>
       </div>
       <div>
-        <TableAnt header={Header} path="employee" data={TeamMembers} />
+        <TableAnt header={Header}  data={TeamMembers}  All={true}/>
       </div>
       {openPop === "Members" && showPop && (
         <Addmembers

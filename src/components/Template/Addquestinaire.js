@@ -13,6 +13,7 @@ import Dropdown from '../common/Dropdown'
 import { MdDelete, MdOutlineFileCopy } from 'react-icons/md'
 import { Form } from '../data'
 import { CgAdd } from 'react-icons/cg'
+import AddMore from '../common/AddMore'
 
 const QuestionAire = ({open = "", close = () => { },inputshow= false,isUpdate={}}) => {
     
@@ -27,76 +28,73 @@ const QuestionAire = ({open = "", close = () => { },inputshow= false,isUpdate={}
       const handleEditorChange = (content) => {
         setContent(content);
       };
-      const [conditions, setConditions] = useState([
+      const [evaluation, setEvaluation] = useState([
         {
           id: 1,
-          inputValue: '',
-          selectedValue: '',
+          companyId: "",
+          evaluationTemplateId: "",
+          question: "",
+          answerMetaData: '[]',
+          description:"hihihihih",
+          createdBy: 499
         },
-    ]);
-    const handleAddCondition = () => {
-      const newCondition = {
-        id: conditions.length + 1,
-        inputValue: '',
-      selectedValue: '',
-       
+      ]);
+      const handleAddCondition = () => {
+        setEvaluation((prevEvaluation) => [
+          ...prevEvaluation,
+          {
+            id: prevEvaluation.length + 1,
+            companyId: "companyId", // Replace companyId with your actual value
+            evaluationTemplateId: "", // Replace insertedId with your actual value
+            question: "",
+            answerMetaData: '[]',
+            description: "hihihihi",
+            createdBy: 493
+          },
+        ]);
       };
-      // formik.setFieldValue(`customFields[${conditions.length}].question`, '');
-      // formik.setFieldValue(`customFields[${conditions.length}].answer_type`, '');
-      // formik.setFieldValue(`customFields[${conditions.length}].answer_meta_data`, '');
-      setConditions([...conditions, newCondition]);
-  };
   
   
-  const handleDeleteCondition = (conditionId) => {
-      if (conditions.length > 1) {
-        const updatedConditions = conditions.filter((condition) => condition.id !== conditionId);
-        setConditions(updatedConditions);
-      }
-  };
-  const generateInputField = (e, condition, index) => {
-    console.log("value",e)
-    
-   
-    console.log('Saved content:', savedContent);
-    switch (e) {
-      
-//       case 'Paragraph':
-//         return (
-//           <TextArea
-//   value={formik.values.customFields[index].answer_meta_data}
-//   change={(e) => formik.setFieldValue(`customFields[${index}].answer_meta_data`, e)}
-// />
-//         );
-//       case 'ShortAnswer':
-//         return (
-//           <FormInput
-//   value={formik.values.customFields[index].answer_meta_data}
-//   change={(e) => formik.setFieldValue(`customFields[${index}].answer_meta_data`, e)}
-// />
-//         );
-      case 'Drop-down':
-        return (
-          
-          <FormInput
-            // value={formik.values.customFields[index].answer_meta_data}
-            // change={(e) => formik.setFieldValue(`customFields[${index}].answer_meta_data`, e)}
-          />
-        
-      
-        
-          
+      const handleDeleteCondition = (index) => {
+        setEvaluation((prevEvaluation) =>
+          prevEvaluation.filter((_, i) => i !== index)
         );
-      default:
-        // return <FormInput value={formik.value.Default} change={(newValue) => handleChange(newValue, index)} />;
-    }
-  };
-
-  const handleDropdownChange = (e, conditionIndex) => {
-    const updatedConditions = [...conditions];
-    updatedConditions[conditionIndex].e = e;
-    setConditions(updatedConditions); 
-  };
+      };
+      const handleDeleteField = (conditionIndex, fieldIndex) => {
+        console.log("Deleting field", conditionIndex, fieldIndex);
+      
+        setEvaluation((prevEvaluation) =>
+          prevEvaluation.map((prevCondition, i) =>
+            i === conditionIndex
+              ? {
+                  ...prevCondition,
+                  answerMetaData: (prevCondition.answerMetaData || []).filter(
+                    (field, j) => j !== fieldIndex
+                  ),
+                }
+              : prevCondition
+          )
+        );
+      };
+      const handleAddField = (index) => {
+        setEvaluation((prevEvaluation) =>
+          prevEvaluation.map((prevCondition, i) =>
+            i === index
+              ? {
+                  ...prevCondition,
+                  answerMetaData: [
+                    ...prevCondition.answerMetaData,
+                    {
+                      id: prevCondition.answerMetaData.length + 1,
+                      key: 'Drop-down', // You can set the default key or customize as needed
+                      value: '',
+                    },
+                  ],
+                }
+              : prevCondition
+          )
+        );
+      };
     return (
       <div>
     
@@ -184,57 +182,112 @@ const QuestionAire = ({open = "", close = () => { },inputshow= false,isUpdate={}
                                        />
                                        </div>
                                     
-                                       {conditions.map((condition, index) => (
-                <div key={index} className="grid grid-cols-4 gap-16  justify-between">
-       <FormInput
-  placeholder={'Type question here'}
-  // value={formik.values.customFields.default?.[index]?.question}
+                                       {evaluation.map((condition, index) => (
+  <><div className="flex items-center justify-between">
+  <FormInput
+    showValueParagraph={true}
+    placeholder={'Type question here'}
+    value={condition.question}
+    change={(e) => {
+      setEvaluation((prevEvaluation) => prevEvaluation.map((prevCondition, i) => i === index
+        ? { ...prevCondition, question: e }
+        : prevCondition
+      ))
+      console.log(e)
+    }} />
 
-  // change={(e) => {
-  //   formik.setFieldValue(`customFields.default[${index}].question`, e);
-  //   console.log("question value", e);
-  // }}
-/>
+  <div className="flex items-center gap-5">
+    <div className="flex-shrink-0"> {/* Add this container for the dropdown and icons */}
+      <Dropdown
+        options={Form}
+        change={(e) => {
+          setEvaluation((prevEvaluation) => prevEvaluation.map((prevCondition, i) => i === index
+            ? {
+              ...prevCondition,
+              answerMetaData: [
+                {
+                  id: 1,
+                  key: e,
+                  value: "",
+                }
+              ],
+            }
+            : prevCondition
+          ))
+        }}
+        value={condition.answerMetaData[0]?.key || "MultipleChoice"}
+        icondropDown={true}
+      />
+      </div>
+      {/* Additional dynamic input fields based on the selected value in the dropdown */}
+      {/* Add your logic here */}
 
-<Dropdown
-  options={Form}
-  // change={(e) => {
-  //   formik.setFieldValue(`customFields.default[${index}].answer_type`, e);
-  //   handleDropdownChange(e,index)
-  //   console.log("dropdown", e);
-  // }}
-  // value={formik.values.customFields.default?.[index]?.answer_type}
-  icondropDown={true}
-/>
+      <div style={{ display: 'flex', alignItems: 'center', gap: '15px' }}>
+        <p>Mandatory</p>
+        <ToggleBtn />
+      </div>
 
-                    <div style={{ display: 'flex', alignItems: 'center', gap: '15px' }}>
-                        <p>Mandatory</p>
-                        <ToggleBtn />
-                    </div>
-                    <div style={{ display: 'flex', alignItems: 'center', gap: '15px' }}>
-                        <MdOutlineFileCopy
-                            style={{ width: '18px', height: '18px', cursor: 'pointer' }}
-                        />
-                        <MdDelete
-                            style={{ width: '18px', height: '18px', cursor: 'pointer' }}
-                            onClick={() => handleDeleteCondition(condition.id)}
-                        />
-                    </div>
-                    {generateInputField(
-                        condition.e,
-                        condition,
-                        index,
-                        'Drop-down',
-                        null,
-                        condition.inputValue
-                        
-                    )}
-                </div>
-            ))}
-             <div className="flex items-center gap-2">
-                <CgAdd style={{ width: '34px', height: '34px', cursor: 'pointer' }} onClick={handleAddCondition} />
-                <p style={{ cursor: 'pointer' }}>  Add Custom Field</p>
-            </div>
+      <div style={{ display: 'flex', alignItems: 'center', gap: '15px' }}>
+        <MdOutlineFileCopy style={{ width: '18px', height: '18px', cursor: 'pointer' }} />
+        <MdDelete style={{ width: '18px', height: '18px', cursor: 'pointer' }} onClick={() => handleDeleteCondition(index)} />
+      </div>
+    
+  </div>
+</div>
+                                           {condition.answerMetaData[0]?.key && (
+                                             <>
+                                               {/* Render existing FormInput components */}
+                                               {condition.answerMetaData.map((field, fieldIndex) => (
+                                                 <div key={fieldIndex} className="flex items-center">
+                                                   {['Drop-down', 'MultipleChoice', 'Checkboxes'].includes(field.key) && (
+                                                     <FormInput
+                                                     
+                                                     placeholder={'Enter value'}
+                                                       value={field.value}
+                                                       change={(e) => setEvaluation((prevEvaluation) => prevEvaluation.map((prevCondition, i) => i === index
+                                                         ? {
+                                                           ...prevCondition,
+                                                           answerMetaData: prevCondition.answerMetaData.map(
+                                                             (f, j) => j === fieldIndex
+                                                               ? { ...f, value: String(e) }
+                                                               : f
+                                                           ),
+                                                         }
+                                                         : prevCondition
+                                                       )
+                                                       )} />
+                                                   )}
+
+                                                   {['Drop-down', 'MultipleChoice', 'Checkboxes'].includes(field.key) && (
+                                                     <div className="ml-2">
+                                                       <MdDelete
+                                                         onClick={() => handleDeleteField(index, fieldIndex)}
+                                                         className="cursor-pointer text-red-500" />
+                                                     </div>
+                                                   )}
+                                                 </div>
+                                               ))}
+
+                                               <div className="mt-2">
+                                                 {['Drop-down', 'MultipleChoice', 'Checkboxes'].includes(
+                                                   condition.answerMetaData[0]?.key
+                                                 ) && (
+                                                     <CgAdd
+                                                       onClick={() => handleAddField(index, condition.answerMetaData[0]?.key)}
+                                                       style={{ width: '18px', height: '18px', cursor: 'pointer' }} />
+                                                   )}
+                                               </div>
+                                             </>
+                                           )}
+
+                                         
+                                         <div className="v-divider"></div></>
+  ))}
+
+<div className="flex items-center gap-2">
+<AddMore name="Add New Question" className="!text-black" change={(e)=>{handleAddCondition()}} />
+  
+</div>
                                         </Accordion>
                                         </div>  
     </DrawerPop>

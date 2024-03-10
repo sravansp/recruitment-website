@@ -11,7 +11,7 @@ import FormInput from '../common/FormInput';
 import VirtualList from "rc-virtual-list";
 import CheckBoxInput from '../common/CheckBoxInput';
 import { Employees } from '../data';
-import * as Yup from 'yup';
+import * as yup from 'yup';
 
 import TextArea from '../common/TextArea';
 import Radiobuttonnew from '../common/Radiobuttonnew';
@@ -43,6 +43,7 @@ import Naukrigulf from "../../assets/images/Naukrigulf.png";
 import loyaltri from "../../assets/images/logo.png";
 import ButtonClick from '../common/Button';
 import { Check } from '@mui/icons-material';
+import AddMore from '../common/AddMore';
 
 
 
@@ -58,7 +59,7 @@ const Createjob = ( {open = "", close = () => { },inputshow= false,isUpdate={}})
   const [activeBtn, setActiveBtn] = useState(0);
   const [presentage, setPresentage] = useState(0);
   const [nextStep, setNextStep] = useState(0);
-  const [activeBtnValue, setActiveBtnValue] = useState("ApplicationForm"); //LeaveType//ApplicationForm
+  const [activeBtnValue, setActiveBtnValue] = useState("Jobdetails"); //LeaveType//ApplicationForm//Jobdetails//
   const [btnName, setBtnName] = useState();
   const [customRate, setCustomRate] = useState(1);
   const [savedContent, setSavedContent] = useState([]);
@@ -132,7 +133,7 @@ const Createjob = ( {open = "", close = () => { },inputshow= false,isUpdate={}})
 const [dropdownOptions, setDropdownOptions] = useState([]);
 const [jobId,setJobId] =useState("")
 
-
+console.log(evaluation)
 //job applying
 
 const formik1 = useFormik({
@@ -163,12 +164,17 @@ const formik1 = useFormik({
     //  enableReinitialize: true,
     //   validateOnChange: false,
     //   validationSchema: yup.object().shape({
-    //     firstName: yup.string().required("First Name is Required"),
-    //     lastName: yup.string().required("Last Name is Required"),
-    //     email: yup.string().required("Email is Required"),
-    //     mobile: yup.string().min(10).max(10).required("Mobile is Required"),
-    //     gender: yup.string().required("Gender is Required"),
-    //     dateOfBirth: yup.string().required("Date of Birth Group is Required"),
+    //     companyId: yup.string().required("First Name is Required"),
+    //     jobTitle: yup.string().required("Last Name is Required"),
+    //     departmentId: yup.string().required("Email is Required"),
+    //     jobCode: yup.string().min(10).max(10).required("Mobile is Required"),
+    //     experience: yup.string().required("Gender is Required"),
+    //     education: yup.string().required("Date of Birth Group is Required"),
+    //     searchKeywords: yup.string().required("Gender is Required"),
+       
+    //     salaryRangeFrom: yup.string().required("Gender is Required"),
+    //     salaryCurrency: yup.string().required("Date of Birth Group is Required"),
+       
     //   }),
  onSubmit: async (e) => {
   try{
@@ -206,7 +212,7 @@ const formik1 = useFormik({
       openNotification(
         "success",
         "Successful",
-        "createpoilicy update saved. Changes are now reflected."
+        response.message
       );
       setPresentage(2);
       setNextStep(nextStep + 1);
@@ -220,7 +226,7 @@ const formik1 = useFormik({
         openNotification(
           "error",
           "Error saving category",
-          "There was an error while saving the category. Please try again."
+          error
         );
   }
 
@@ -283,27 +289,24 @@ const formik = useFormik({
     resume: "1",
     coverLetter: "1",
     customFields: [
-    
       {
         question: "",
         answer_type: "",
-        is_required: 1,
-        answer_meta_data: [
-         
-      ],
-      },
+        is_required: "",
+        answer_meta_data: [],
+      }
     ],
   },
   onSubmit: async (e) => {
     try {
       console.log(e)
-      const updatedCustomFields = e.customFields.map((condition) => ({
+      const updatedCustomFields = evaluation.map((condition) => ({
         question: condition.question,
         answer_type: condition.answer_type,
         is_required: condition.is_required,
-        answer_meta_data: condition.answer_meta_data,
+        answer_meta_data: condition.answerMetaData,
       }));
-
+     console.log(updatedCustomFields)
       // Merge the updated customFields into the form data
    
       const response = await saveRecruitmentJobApplicationFormSetting({
@@ -334,17 +337,17 @@ const formik = useFormik({
         openNotification(
           "success",
           "Successful",
-          "createpoilicy update saved. Changes are now reflected."
+          response.message
         );
         setPresentage(2);
         setNextStep(nextStep + 1);
       }else if (response.status === 500) {
-        openNotification("error", "input field is empty", response.message);
+        openNotification("error", response.message);
       }
     } catch (error) {
       // Handle the error here
       console.error('Error:', error);
-      openNotification("error", "Failed..", error);
+      // openNotification("error", "Failed..");
     }
   },
 });
@@ -793,7 +796,7 @@ const handleAddField = (index) => {
         openNotification(
           "success",
           "Successful",
-          "createpoilicy update saved. Changes are now reflected."
+          response.message
         );
         setPresentage(2);
         
@@ -824,22 +827,23 @@ const handleAddField = (index) => {
       // Add more cases for additional activeBtnValues...
 
       case "Workflow":
-        // assignPolicy();
-        // Handle submission for Applicability
-        // Your logic for Applicability form submission...
-        // Move to the next step if applicable
-        // formik1.handleSubmit();
-        fetchData()
-        try {
-          await fetchData(); // Assuming fetchData is an asynchronous function
-          await handleRadioChange(e); // Assuming handleRadioChange is an asynchronous function
-          
-        } catch (error) {
-          console.error('Error handling Workflow:', error);
+      fetchData();
+      try {
+        await fetchData(); // Assuming fetchData is an asynchronous function
+    
+        // Check if the radio is selected
+        if (selectedWorkFlowId !== undefined) {
+          // Assuming handleRadioChange is an asynchronous function
+          await handleRadioChange(e);
+          setNextStep(nextStep + 1);
+        } else {
+          // Handle the case where the radio is not selected, maybe show a message
+          console.log('Radio not selected');
         }
-        setNextStep(nextStep + 1);
-        
-        break;
+      } catch (error) {
+        console.error('Error handling Workflow:', error);
+      }
+      break;
         case "TeamMembers":
            
             setNextStep(nextStep + 1);
@@ -1591,6 +1595,7 @@ impactful, accurate, and personalized to your company</p>
 
                       
                       </Accordion>
+                      {evaluation.map((condition, index) => (
                       <Accordion
                       title={"Custom Fields "}
                       className="Text_area"
@@ -1601,7 +1606,7 @@ impactful, accurate, and personalized to your company</p>
                       } }
                       initialExpanded={true}
                       >
-                       <div className='grid grid-rows-2 gap-8'>
+                      
             {/* {conditions.map((condition, index) => (
                 <div key={index} className="grid grid-cols-4 gap-16  justify-between">
        <FormInput
@@ -1649,8 +1654,8 @@ impactful, accurate, and personalized to your company</p>
                     )}
                 </div>
             ))} */}
-  {evaluation.map((condition, index) => (
-  <div className="grid grid-cols-4 gap-16 justify-between">
+ 
+  <><div className="flex items-center justify-between">
    <FormInput
             placeholder={'Type question here'}
             value={condition.question} 
@@ -1665,7 +1670,8 @@ impactful, accurate, and personalized to your company</p>
               console.log(e)
             }}
           />
-
+<div className="flex items-center gap-5">
+<div className="flex-shrink-0">
 <Dropdown
   options={Form}
   change={(e) => {
@@ -1687,10 +1693,10 @@ impactful, accurate, and personalized to your company</p>
       )
     );
   }}
-  value={condition.answer_type}
+  value={condition.answer_type|| "ShortAnswer"}
   icondropDown={true}
 />
-
+</div>
     {/* Additional dynamic input fields based on the selected value in the dropdown */}
     {/* Add your logic here */}
    
@@ -1708,112 +1714,68 @@ impactful, accurate, and personalized to your company</p>
         onClick={() => handleDeleteCondition(index)}
       />
     </div>
-    {condition.answerMetaData[0]?.key && (
-  <>
-    {/* Render existing FormInput components */}
-    {condition.answerMetaData.map((field, fieldIndex) => (
-      <div key={fieldIndex} className="flex items-center">
-        {field.key === 'Drop-down' && (
-          <FormInput
-          placeholder={'Enter value'}
-          value={field.value}
-          change={(e) =>
-            setEvaluation((prevEvaluation) =>
-              prevEvaluation.map((prevCondition, i) =>
-                i === index
-                  ? {
-                      ...prevCondition,
-                      answerMetaData: prevCondition.answerMetaData.map(
-                        (f, j) =>
-                          j === fieldIndex
-                            ? { ...f, value: String(e) } // Ensure e is a string
-                            : f
-                      ),
-                    }
-                  : prevCondition
-              )
-            )
-          }
-        />
-        )}
-        {field.key === 'MultipleChoice' && (
-       <FormInput
-       placeholder={'Enter value'}
-       value={field.value}
-       change={(e) =>
-         setEvaluation((prevEvaluation) =>
-           prevEvaluation.map((prevCondition, i) =>
-             i === index
-               ? {
-                   ...prevCondition,
-                   answerMetaData: prevCondition.answerMetaData.map(
-                     (f, j) =>
-                       j === fieldIndex
-                         ? { ...f, value: String(e) } // Ensure e is a string
-                         : f
-                   ),
-                 }
-               : prevCondition
-           )
-         )
-       }
-     />
-        )}
-        {field.key === 'Checkboxes' && (
-            <FormInput
-            placeholder={'Enter value'}
-            value={field.value}
-            change={(e) =>
-              setEvaluation((prevEvaluation) =>
-                prevEvaluation.map((prevCondition, i) =>
-                  i === index
-                    ? {
+    </div>
+ 
+
+        </div>
+        {condition.answerMetaData[0]?.key && (
+          <>
+            {/* Render existing FormInput components */}
+            {condition.answerMetaData.map((field, fieldIndex) => (
+              <div key={fieldIndex} className="flex items-center">
+                {['Drop-down', 'MultipleChoice', 'Checkboxes'].includes(field.key) && (
+                  <FormInput
+                  
+                  placeholder={'Enter value'}
+                    value={field.value}
+                    change={(e) => setEvaluation((prevEvaluation) => prevEvaluation.map((prevCondition, i) => i === index
+                      ? {
                         ...prevCondition,
                         answerMetaData: prevCondition.answerMetaData.map(
-                          (f, j) =>
-                            j === fieldIndex
-                              ? { ...f, value: String(e) } // Ensure e is a string
-                              : f
+                          (f, j) => j === fieldIndex
+                            ? { ...f, value: String(e) }
+                            : f
                         ),
                       }
-                    : prevCondition
-                )
-              )
-            }
-          />
-        )}
+                      : prevCondition
+                    )
+                    )} />
+                )}
 
-        <div className="ml-2">
-          <MdDelete
-            onClick={() => handleDeleteField(index, fieldIndex)}
-            className="cursor-pointer text-red-500"
-          />
-        </div>
-      </div>
-    ))}
-
-              <div className="mt-2">
-                <CgAdd
-                  onClick={() => handleAddField(index)}
-                  style={{ width: '18px', height: '18px', cursor: 'pointer' }}
-                />
+                {['Drop-down', 'MultipleChoice', 'Checkboxes'].includes(field.key) && (
+                  <div className="ml-2">
+                    <MdDelete
+                      onClick={() => handleDeleteField(index, fieldIndex)}
+                      className="cursor-pointer text-red-500" />
+                  </div>
+                )}
               </div>
-            </>
-          )}
-        </div>
-      ))}
+            ))}
 
-
-            <div className="flex items-center gap-2">
-                <CgAdd style={{ width: '34px', height: '34px', cursor: 'pointer' }} onClick={handleAddCondition} />
-                <p style={{ cursor: 'pointer' }}>  Add Custom Field</p>
+            <div className="mt-2">
+              {['Drop-down', 'MultipleChoice', 'Checkboxes'].includes(
+                condition.answerMetaData[0]?.key
+              ) && (
+                  <CgAdd
+                    onClick={() => handleAddField(index, condition.answerMetaData[0]?.key)}
+                    style={{ width: '18px', height: '18px', cursor: 'pointer' }} />
+                )}
             </div>
-        </div>
+          </>
+        )}
+        </>
+      
+
+
+        <div className="flex items-center gap-2">
+<AddMore name="Add Custom Field " className="!text-black" change={(e)=>{handleAddCondition()}} />
+  
+</div>
                      
                  
                      
                       </Accordion>
-
+                      ))}
                       </FlexCol></>
                 ) : activeBtnValue === "Workflow" ? (
                   <FlexCol>
