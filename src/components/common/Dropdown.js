@@ -9,6 +9,7 @@ import { useMediaQuery } from "react-responsive";
 
 export default function Dropdown({
   title = "",
+  formik,
   value = null,
   change = () => {},
   options = [],
@@ -78,6 +79,7 @@ export default function Dropdown({
           status={`${error && "error"}`}
           size={isSmallScreen ? "default" : "large"}
           optionLabelProp="label"
+          formik={formik}
         >
           {options?.map((each, i) => (
             <Option key={i} value={each.value}>

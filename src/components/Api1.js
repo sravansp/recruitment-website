@@ -1,7 +1,7 @@
 import axios from "axios";
 
-const apiUrl = 'http://192.168.29.185/loyaltri-recruitment-server/api/v1';
-// const apiUrl = 'https://alpha-jobs-api.loyaltri.com/api/v1';
+// const apiUrl = 'http://192.168.29.185/loyaltri-recruitment-server/api/v1';
+const apiUrl = 'https://alpha-jobs-api.loyaltri.com/api/v1';
 
 
 const apiRequest = async (action, method, kwargs) => {
@@ -134,7 +134,7 @@ export const getAllRecruitmentJobTeamMembers = async (jobId) => {
   const method = "POST";
   const requestData = {
     // Include any other necessary parameters
-    jobId: jobId,
+    jobId: 31,
   };
 
   
@@ -180,6 +180,32 @@ export const getAllRecruitmentEmailTemplates = async () => {
 
   return await apiRequest(action, method, kwargs);
 };
+export const getAllRecruitmentQuestionnaireTemplateDetails = async () => {
+  const action = "getAllRecruitmentQuestionnaireTemplateDetails";
+
+  const method = "POST";
+  // const requestData = {
+  //   // Include any other necessary parameters
+  //   jobId: jobId,
+  // };
+
+  const kwargs = { };
+
+  return await apiRequest(action, method, kwargs);
+};
+export const getAllRecruitmentLetterTemplates = async () => {
+  const action = "getAllRecruitmentLetterTemplates";
+
+  const method = "POST";
+  // const requestData = {
+  //   // Include any other necessary parameters
+  //   jobId: jobId,
+  // };
+
+  const kwargs = { };
+
+  return await apiRequest(action, method, kwargs);
+};
 export const getAllCandidatesByjobId = async (jobId) => {
   console.log(jobId)
   const action = "getAllCandidatesByjobId";
@@ -194,6 +220,7 @@ export const getAllCandidatesByjobId = async (jobId) => {
 
   return await apiRequest(action, method, requestData);
 };
+
 export const getRecruitmentResumeById = async (id) => {
   const action = "getRecruitmentResumeById";
 
@@ -263,4 +290,21 @@ export const saveRecruitmentEvaluationTemplateDetailBatch = async (data) => {
     console.error("Error in saveRecruitmentEvaluationTemplateDetailBatch:", error);
     throw error; // Re-throw the error to handle it where the function is called.
   }
+};
+
+export const saveRecruitmentQuestionnaireTemplateDetail = async (e) => {
+
+  const action = "saveRecruitmentQuestionnaireTemplateDetail";
+
+  const method = "POST";
+  const kwargs=e
+return await apiRequest(action, method, kwargs);
+};
+export const saveRecruitmentEmailTemplate = async (e) => {
+
+  const action = "saveRecruitmentEmailTemplate";
+
+  const method = "POST";
+  const kwargs=e
+return await apiRequest(action, method, kwargs);
 };

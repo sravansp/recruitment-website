@@ -2,7 +2,7 @@ import React,{useState} from 'react'
 import DrawerPop from '../common/DrawerPop'
 import Accordion from '../common/Accordion'
 import { useTranslation } from 'react-i18next'
-import { Button, Card, Space } from 'antd'
+import { Button, Card, Space ,notification } from 'antd'
 import { DownOutlined, UserOutlined } from '@ant-design/icons';
 import TextArea from '../common/TextArea'
 import image from '../../assets/images/generate-ai-img.png'
@@ -13,9 +13,14 @@ import Dropdown from '../common/Dropdown'
 import { MdDelete, MdOutlineFileCopy } from 'react-icons/md'
 import { Form } from '../data'
 import { CgAdd } from 'react-icons/cg'
+import { saveRecruitmentQuestionnaireTemplateDetail } from '../Api1'
+import { Formik, useFormik } from 'formik'
 
-const QuestionAire = ({open = "", close = () => { },inputshow= false,isUpdate={}}) => {
+
+const QuestionAire = ({open = "", close = () => { },inputshow= false,isUpdate={},}) => {
     
+  const [companyId, setCompanyId] = useState(localStorage.getItem("companyId"));
+  const[insertedId,setinsertedId] =useState(null)
 
     const [savedContent, setSavedContent] = useState([]);
     const[show,setShow] =useState(open);
@@ -27,23 +32,154 @@ const QuestionAire = ({open = "", close = () => { },inputshow= false,isUpdate={}
       const handleEditorChange = (content) => {
         setContent(content);
       };
-      const [conditions, setConditions] = useState([
+     const [conditions, setConditions] = useState([
+  {
+    id: 1,
+    companyId: companyId,
+    questionnaireTemplateId:insertedId ,
+    question: "",
+    answerMetaData: [
+      {
+        id: 1,
+        key: "",
+        value: "",
+      }
+    ],
+    description: "",
+    createdBy: "ajay"
+  },
+]);
+console.log(conditions)
+
+const handleAddCondition = () => {
+  setConditions((prevConditions) => [
+    ...prevConditions,
+    {
+      id: prevConditions.length + 1,
+      companyId: companyId, // Replace companyId with your actual value
+      questionnaireTemplateId:insertedId,
+      question: "",
+      answerMetaData: [
         {
           id: 1,
-          inputValue: '',
-          selectedValue: '',
-        },
-    ]);
-    const handleAddCondition = () => {
+          key: "",
+          value: "",
+        }
+      ],
+      description: "",
+      createdBy: "ajay"
+    },
+  ]);
+};
+    // const handleSaveTemplate = async () => {
+    //   try {
+       
+    //     const response = await saveRecruitmentQuestionnaireTemplateDetail(conditions);
+        
+       
+       
+    //     console.log(response);
+    //   } catch (error) {
+    //     console.error(error); // Handle errors
+    //   }
+    // };
+    const formik = useFormik({
+      initialValues: {
+        companyId:"",
+        question:"",
+        createdBy:""
+       
+     
+      },
+        
+      onSubmit: async (e) => {
+       try{
+         console.log({companyId:companyId,
+          question:e.question,
+          createdBy:null,})
+         const response = await saveRecruitmentQuestionnaireTemplateDetail({
+         companyId:companyId,
+         question:e.question,
+         createdBy:null,
+     
+         
+         })
+         console.log(response)
+         
+         
+         if (response.status === 200) {
+           
+           
+          //  openNotification(
+          //    "success",
+          //    "Successful",
+          //    "createpoilicy update saved. Changes are now reflected."
+          //  );
+          setinsertedId(response.result.insertedId)
+           if(response.result.insertedId)
+           formik1.handleSubmit()
+         }
+       }
+       catch (error) {
+         // Handle the error here
+         console.error("Error during form submission:", error);
+            //  openNotification(
+            //    "error",
+            //    "Error saving category",
+            //    "There was an error while saving the category. Please try again."
+            //  );
+       }
+     
+      },
+     })
+     const formik1 = useFormik({
+      initialValues: {
+       
+      },
+      onSubmit: async (values) => {
+        try {
+         
+    
+          // Call your API to save data using values.conditions
+          const response = await saveRecruitmentQuestionnaireTemplateDetail();
+    
+          // Handle the response if needed
+          console.log('Response:', response);
+    
+          if (response.status === 200) {
+            const { insertedId } = response.result;
+            setinsertedId(insertedId);
+            // openNotification(
+            //   "success",
+            //   "Successful",
+            //   "createpolicy update saved. Changes are now reflected."
+            // );
+          }
+        } catch (error) {
+          // Handle the error here
+          console.error('Error:', error);
+        }
+      },
+    });
+    
+    
+   
+  
+    const handleSubmit = async () => {
+    formik.handleSubmit()
+    
+  
+    }
+    const handleaddCondition = () => {
       const newCondition = {
         id: conditions.length + 1,
         inputValue: '',
       selectedValue: '',
        
       };
-      // formik.setFieldValue(`customFields[${conditions.length}].question`, '');
-      // formik.setFieldValue(`customFields[${conditions.length}].answer_type`, '');
-      // formik.setFieldValue(`customFields[${conditions.length}].answer_meta_data`, '');
+      formik.setFieldValue(`customFields[${conditions.length}].question`, '');
+      formik.setFieldValue(`customFields[${conditions.length}].answer_type`, '');
+      formik.setFieldValue(`customFields[${conditions.length}].answer_meta_data`, '');
       setConditions([...conditions, newCondition]);
   };
   
@@ -61,26 +197,26 @@ const QuestionAire = ({open = "", close = () => { },inputshow= false,isUpdate={}
     console.log('Saved content:', savedContent);
     switch (e) {
       
-//       case 'Paragraph':
-//         return (
-//           <TextArea
-//   value={formik.values.customFields[index].answer_meta_data}
-//   change={(e) => formik.setFieldValue(`customFields[${index}].answer_meta_data`, e)}
-// />
-//         );
-//       case 'ShortAnswer':
-//         return (
-//           <FormInput
-//   value={formik.values.customFields[index].answer_meta_data}
-//   change={(e) => formik.setFieldValue(`customFields[${index}].answer_meta_data`, e)}
-// />
-//         );
+      case 'Paragraph':
+        return (
+          <TextArea
+  // value={formik.values.customFields[index].answer_meta_data}
+  // change={(e) => formik.setFieldValue(`customFields[${index}].answer_meta_data`, e)}
+/>
+        );
+      case 'ShortAnswer':
+        return (
+          <FormInput
+  // value={formik.values.customFields[index].answer_meta_data}
+  // change={(e) => formik.setFieldValue(`customFields[${index}].answer_meta_data`, e)}
+/>
+        );
       case 'Drop-down':
         return (
           
           <FormInput
-            // value={formik.values.customFields[index].answer_meta_data}
-            // change={(e) => formik.setFieldValue(`customFields[${index}].answer_meta_data`, e)}
+            // value={Formik.values.customFields[index].answer_meta_data}
+            // change={(e) => Formik.setFieldValue(`customFields[${index}].answer_meta_data`, e)}
           />
         
       
@@ -115,6 +251,7 @@ const QuestionAire = ({open = "", close = () => { },inputshow= false,isUpdate={}
        borderRadius: 0,
        borderTopLeftRadius: "0px !important",
        borderBottomLeftRadius: 0,
+       
      }}
 
 
@@ -149,6 +286,7 @@ const QuestionAire = ({open = "", close = () => { },inputshow= false,isUpdate={}
        !isUpdate ? t("Save Template") : t("Save Template"),
      ]}
      className="widthFull"
+     handleSubmit={handleSubmit}
      
     //  buttonClickCancel={(e) => {
     //    if (activeBtn > 0) {
@@ -176,10 +314,15 @@ const QuestionAire = ({open = "", close = () => { },inputshow= false,isUpdate={}
                                                }}
                                                initialExpanded={true}
                                         > 
+                                        
                                        <div className='grid grid-cols-2'>
                                        <FormInput
                                        title={"Template Name"}
                                        placeholder={"Type here..."}
+                                       value={formik.values.questionnaireTemplateName}
+                                       change={(e)=>{
+                                        formik.setFieldValue('questionnaireTemplateName',e)
+                                       }}
                                        
                                        />
                                        </div>
@@ -188,22 +331,40 @@ const QuestionAire = ({open = "", close = () => { },inputshow= false,isUpdate={}
                 <div key={index} className="grid grid-cols-4 gap-16  justify-between">
        <FormInput
   placeholder={'Type question here'}
-  // value={formik.values.customFields.default?.[index]?.question}
-
-  // change={(e) => {
-  //   formik.setFieldValue(`customFields.default[${index}].question`, e);
-  //   console.log("question value", e);
-  // }}
-/>
+  value={condition.question} 
+            change={(e) => {
+              setConditions((prevEvaluation) =>
+                prevEvaluation.map((prevCondition, i) =>
+                  i === index
+                    ? { ...prevCondition, question: e}
+                    : prevCondition
+                )
+              );
+              console.log(e)
+            }}
+          />
 
 <Dropdown
   options={Form}
-  // change={(e) => {
-  //   formik.setFieldValue(`customFields.default[${index}].answer_type`, e);
-  //   handleDropdownChange(e,index)
-  //   console.log("dropdown", e);
-  // }}
-  // value={formik.values.customFields.default?.[index]?.answer_type}
+  change={(e) => {
+    setConditions((prevQuestion) =>
+      prevQuestion.map((prevCondition, i) =>
+        i === index
+          ? {
+              ...prevCondition,
+              answerMetaData: [
+                {
+                  id: 1,
+                  key: e,
+                  value: "",
+                }
+              ],
+            }
+          : prevCondition
+      )
+    );
+  }}
+  value={condition.answerMetaData[0]?.key}
   icondropDown={true}
 />
 

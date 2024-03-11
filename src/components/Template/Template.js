@@ -4,7 +4,7 @@ import Breadcrumbs from '../common/BreadCrumbs';
 import { useTranslation } from 'react-i18next';
 
 import ButtonClick from '../common/Button';
-import { getAllRecruitmentJobTemplates,getAllRecruitmentWorkFlows,getAllRecruitmentEmailTemplates } from '../Api1';
+import { getAllRecruitmentJobTemplates,getAllRecruitmentWorkFlows,getAllRecruitmentEmailTemplates, getAllRecruitmentQuestionnaireTemplateDetails, getAllRecruitmentLetterTemplates } from '../Api1';
 import AddTemplate from './Addtemplate';
 import Tabs from '../common/Tabs';
 import Departments from '../Company/Add _departments';
@@ -320,6 +320,39 @@ const Template = ({
   //  useEffect(()=>{
   //   gettemaplate();
   // })
+
+
+  const getquestionnaire = async () => {
+    try {
+     
+      const response = await getAllRecruitmentQuestionnaireTemplateDetails();
+      
+      setQuestionaire(response.result);
+      // const newData = {};
+      // response.result.forEach((job) => {
+      //   newData[job.jobId] = job; // Assuming jobId is the unique identifier
+      // });
+     
+      // setTableData(response.data);
+      // console.log(response.data); // Access response data
+      console.log(response);
+    } catch (error) {
+      console.error(error); // Handle errors
+    }
+  };
+  const getlettertemplate = async () => {
+    try {
+     
+      const response = await getAllRecruitmentLetterTemplates();
+      
+      setLetter(response.result);
+     
+      console.log(response);
+    } catch (error) {
+      console.error(error); // Handle errors
+    }
+  };
+
   
   const getEmailLsit = async () => {
     try {
@@ -547,7 +580,9 @@ const Template = ({
           open={show}
           close={(e) => {
             setShow(e);
+            
           }}
+          questionaireList={QuestionaireLIst}
         //   updateId={updateId}
         //   companyDataId={companyId}
           refresh={() => {
@@ -561,6 +596,7 @@ const Template = ({
           close={(e) => {
             setShow(e);
           }}
+          letterList={LetterLIst}
         //   updateId={updateId}
         //   companyDataId={companyId}
           refresh={() => {
