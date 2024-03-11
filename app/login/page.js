@@ -1,9 +1,17 @@
+"use client";
 import Image from "next/image";
 import React from "react";
 import Google from "@/public/google.svg";
+import { useRouter } from "next/navigation";
 
 
 const Login = () => {
+  const router = useRouter();
+  const handleSignInWithGoogle = () => {
+    
+    router.push('/Form'); 
+  };
+
   return (
     <div className="w-full h-screen vhcenter">
       <div className="flex flex-col w-full gap-5 px-10 sm:w-96 sm:px-0">
@@ -18,7 +26,7 @@ const Login = () => {
         <div className="inline-flex flex-col items-start justify-start gap-4 h-44">
           <div className="px-4 py-2.5 bg-white rounded-lg shadow border w-full border-gray-300 justify-center items-center gap-3 inline-flex">
           <Image src={Google} />
-            <div className="text-slate-700 text-base font-semibold font-['Inter'] leading-normal">
+            <div className="text-slate-700 text-base font-semibold font-['Inter'] leading-normal" onClick={handleSignInWithGoogle}>
               Sign in with Google
             </div>
           </div>
