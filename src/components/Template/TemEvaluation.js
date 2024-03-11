@@ -213,6 +213,7 @@ const handleAddField = (index) => {
     onSubmit: async (values) => {
       try {
        
+        
   
         // Call your API to save data using values.conditions
         const response = await saveRecruitmentEvaluationTemplateDetailBatch();
@@ -333,112 +334,108 @@ const handleAddField = (index) => {
                                        />
                                        </div>
                                     
-                                      
                                        {evaluation.map((condition, index) => (
-  <div className="grid grid-cols-4 gap-16 justify-between">
-   <FormInput
-            placeholder={'Type question here'}
-            value={condition.question} 
-            change={(e) => {
-              setEvaluation((prevEvaluation) =>
-                prevEvaluation.map((prevCondition, i) =>
-                  i === index
-                    ? { ...prevCondition, question: e}
-                    : prevCondition
-                )
-              );
-              console.log(e)
-            }}
-          />
+  <><div className="flex items-center justify-between">
+  <FormInput
+    showValueParagraph={true}
+    placeholder={'Type question here'}
+    value={condition.question}
+    change={(e) => {
+      setEvaluation((prevEvaluation) => prevEvaluation.map((prevCondition, i) => i === index
+        ? { ...prevCondition, question: e }
+        : prevCondition
+      ))
+      console.log(e)
+    }} />
 
-<Dropdown
-            options={Form}
-            change={(e) => {
-              setEvaluation((prevEvaluation) =>
-                prevEvaluation.map((prevCondition, i) =>
-                  i === index
-                    ? {
-                        ...prevCondition,
-                        answerMetaData: [
-                          {
-                            id: 1,
-                            key: e,
-                            value: "",
-                          }
-                        ],
-                      }
-                    : prevCondition
-                )
-              );
-            }}
-            value={condition.answerMetaData[0]?.key}
-            icondropDown={true}
-          />
-
-    {/* Additional dynamic input fields based on the selected value in the dropdown */}
-    {/* Add your logic here */}
-   
-    <div style={{ display: 'flex', alignItems: 'center', gap: '15px' }}>
-      <p>Mandatory</p>
-      <ToggleBtn />
-    </div>
-
-    <div style={{ display: 'flex', alignItems: 'center', gap: '15px' }}>
-      <MdOutlineFileCopy
-        style={{ width: '18px', height: '18px', cursor: 'pointer' }}
+  <div className="flex items-center gap-5">
+    <div className="flex-shrink-0"> {/* Add this container for the dropdown and icons */}
+      <Dropdown
+        options={Form}
+        change={(e) => {
+          setEvaluation((prevEvaluation) => prevEvaluation.map((prevCondition, i) => i === index
+            ? {
+              ...prevCondition,
+              answerMetaData: [
+                {
+                  id: 1,
+                  key: e,
+                  value: "",
+                }
+              ],
+            }
+            : prevCondition
+          ))
+        }}
+        value={condition.answerMetaData[0]?.key || "MultipleChoice"}
+        icondropDown={true}
       />
-      <MdDelete
-        style={{ width: '18px', height: '18px', cursor: 'pointer' }}
-        onClick={() => handleDeleteCondition(index)}
-      />
-    </div>
-    {condition.answerMetaData[0]?.key === 'Drop-down' && (
-  <>
-    {/* Render existing FormInput components */}
-    {condition.answerMetaData.map((field, fieldIndex) => (
-      <div key={fieldIndex} className="flex items-center">
-          <FormInput
-          placeholder={'Enter value'}
-          value={field.value}  
-          change={(e) =>
-            setEvaluation((prevEvaluation) =>
-              prevEvaluation.map((prevCondition, i) =>
-                i === index
-                  ? {
-                      ...prevCondition,
-                      answerMetaData: prevCondition.answerMetaData.map(
-                        (f, j) =>
-                          j === fieldIndex
-                            ? { ...f, value: e } 
-                            : f
-                      ),
-                    }
-                  : prevCondition
-              )
-            )
-          }
-        />
-
-        <div className="ml-2">
-          <MdDelete
-            onClick={() => handleDeleteField(index, fieldIndex)}
-            className="cursor-pointer text-red-500"
-          />
-        </div>
       </div>
-    ))}
+      {/* Additional dynamic input fields based on the selected value in the dropdown */}
+      {/* Add your logic here */}
 
-    {/* Add button for adding more FormInput components */}
-    <div className="mt-2">
-      <CgAdd
-        onClick={() => handleAddField(index)}
-        style={{ width: '18px', height: '18px', cursor: 'pointer' }}
-      />
-    </div>
-  </>
-)}
+      <div style={{ display: 'flex', alignItems: 'center', gap: '15px' }}>
+        <p>Mandatory</p>
+        <ToggleBtn />
+      </div>
+
+      <div style={{ display: 'flex', alignItems: 'center', gap: '15px' }}>
+        <MdOutlineFileCopy style={{ width: '18px', height: '18px', cursor: 'pointer' }} />
+        <MdDelete style={{ width: '18px', height: '18px', cursor: 'pointer' }} onClick={() => handleDeleteCondition(index)} />
+      </div>
+    
   </div>
+</div>
+                                           {condition.answerMetaData[0]?.key && (
+                                             <>
+                                               {/* Render existing FormInput components */}
+                                               {condition.answerMetaData.map((field, fieldIndex) => (
+                                                 <div key={fieldIndex} className="flex">
+                                                   {['Drop-down', 'MultipleChoice', 'Checkboxes'].includes(field.key) && (
+                                                     <FormInput
+                                                     
+                                                     placeholder={'Enter value'}
+                                                       value={field.value}
+                                                       change={(e) => setEvaluation((prevEvaluation) => prevEvaluation.map((prevCondition, i) => i === index
+                                                         ? {
+                                                           ...prevCondition,
+                                                           answerMetaData: prevCondition.answerMetaData.map(
+                                                             (f, j) => j === fieldIndex
+                                                               ? { ...f, value: String(e) }
+                                                               : f
+                                                           ),
+                                                         }
+                                                         : prevCondition
+                                                       )
+                                                       )} />
+                                                   )}
+
+                                                   {['Drop-down', 'MultipleChoice', 'Checkboxes'].includes(field.key) && (
+                                                     <div className="ml-2">
+                                                       <MdDelete
+                                                         onClick={() => handleDeleteField(index, fieldIndex)}
+                                                         className="cursor-pointer text-red-500" />
+                                                     </div>
+                                                   )}
+                                                 </div>
+                                               ))}
+
+                                               <div className="mt-2">
+                                                 {['Drop-down', 'MultipleChoice', 'Checkboxes'].includes(
+                                                   condition.answerMetaData[0]?.key
+                                                 ) && (
+                                                     <CgAdd
+                                                       onClick={() => handleAddField(index, condition.answerMetaData[0]?.key)}
+                                                       style={{ width: '18px', height: '18px', cursor: 'pointer' }} />
+                                                   )}
+                                               </div>
+                                             </>
+                                           )}
+
+                                         
+                                         <div className="v-divider"></div></>
   ))}
+
 
 <div className="flex items-center gap-2">
   <CgAdd style={{ width: '34px', height: '34px', cursor: 'pointer' }} onClick={handleAddCondition} />

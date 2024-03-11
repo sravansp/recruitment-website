@@ -2,7 +2,7 @@ import { Input } from "antd";
 import React, { useRef, useState } from "react";
 import { FiAlertCircle } from "react-icons/fi";
 import { HiMiniStar } from "react-icons/hi2";
-import { TbNorthStar } from "react-icons/tb";
+import { FaAsterisk } from "react-icons/fa";
 import { useMediaQuery } from "react-responsive";
 
 export default function FormInput({
@@ -38,7 +38,7 @@ export default function FormInput({
         <p className={`text-xs font-medium 2xl:text-sm dark:text-white ${className}`}>
           {title}
         </p>
-        {required && <TbNorthStar className="text-[10px] text-rose-600" />}
+        {required && <FaAsterisk className="text-[10px] text-rose-600" />}
       </div>
     
       {websiteLink ? (

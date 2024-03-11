@@ -6,7 +6,7 @@ import { HiMiniStar } from "react-icons/hi2";
 import { IoAlertCircleOutline } from "react-icons/io5";
 import logo from "../../assets/images/Avatar.png";
 import { useMediaQuery } from "react-responsive";
-import { TbNorthStar } from "react-icons/tb";
+import { FaAsterisk } from "react-icons/fa";
 
 export default function Dropdown({
   title = "",
@@ -42,7 +42,7 @@ export default function Dropdown({
               {title}
             </label>
 
-            {required && <TbNorthStar className="text-[10px] text-rose-600" />}
+            {required && <FaAsterisk className="text-[10px] text-rose-600" />}
           </div>
           {descriptionTop && (
             <p className="text-xs font-medium opacity-50 dark:text-white">

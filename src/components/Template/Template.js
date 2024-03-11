@@ -4,7 +4,7 @@ import Breadcrumbs from '../common/BreadCrumbs';
 import { useTranslation } from 'react-i18next';
 
 import ButtonClick from '../common/Button';
-import { getAllRecruitmentJobTemplates,getAllRecruitmentWorkFlows,getAllRecruitmentEmailTemplates,getAllRecruitmentQuestionnaireTemplateDetails } from '../Api1';
+import { getAllRecruitmentJobTemplates,getAllRecruitmentWorkFlows,getAllRecruitmentEmailTemplates,getAllRecruitmentQuestionnaireTemplateDetails,getAllRecruitmentEvaluationTemplateDetails,getAllRecruitmentLetterTemplates } from '../Api1';
 import AddTemplate from './Addtemplate';
 import Tabs from '../common/Tabs';
 import Departments from '../Company/Add _departments';
@@ -332,12 +332,7 @@ const Template = ({
      
       const response = await getAllRecruitmentEmailTemplates();
       
-      // setEmail(response.result.map((item) => ({
-      //   emailTemplateName: item.emailTemplateName,
-      //   subject: item.emailTemplate.map((e) => (
-      //   e.subject)),
-      // }))
-      // )
+    
       setEmail(response.result)
       // const newData = {};
       // response.result.forEach((job) => {
@@ -354,13 +349,35 @@ const Template = ({
   };
   const getallquestionaire = async ()=>{
     try{
-      const response = await getAllRecruitmentQuestionnaireTemplateDetails()
-      setQuestionaire(response.result)
+      const data = await getAllRecruitmentQuestionnaireTemplateDetails()
+      setQuestionaire(data.result)
+      console.log(data)
     }catch (error) {
       console.error(error); // Handle errors
     }
 
   }
+  const getallevaluation = async ()=>{
+    try{
+      const data = await getAllRecruitmentEvaluationTemplateDetails()
+      setQuestionaire(data.result)
+      console.log(data)
+    }catch (error) {
+      console.error(error); // Handle errors
+    }
+
+  }
+  const getallLetter = async ()=>{
+    try{
+      const data = await getAllRecruitmentLetterTemplates()
+      setQuestionaire(data.result)
+      console.log(data)
+    }catch (error) {
+      console.error(error); // Handle errors
+    }
+
+  }
+
  
 //  useEffect(()=>{
 //   getEmailLsit();
@@ -388,27 +405,28 @@ const Template = ({
         break;
       // Add more cases as needed
       case "Workflow":
-        // getDepartmentList();
+        getWorkflows();
         
         console.log(newData)
         break;
         case "Email":
-          // getDepartmentList();
+          getEmailLsit();
           
           console.log(newData)
           break;
           case "Evaluation":
-            // getDepartmentList();
+            getallevaluation();
             
             console.log(newData)
             break;
             case "Questionaire":
               // getDepartmentList();
               getallquestionaire();
+              
               console.log(newData)
               break;
               case "Letter":
-                // getDepartmentList();
+                getallLetter()
                 
                 console.log(newData)
                 break;

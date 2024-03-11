@@ -1,4 +1,4 @@
-import React, { useState,useEffect } from 'react'
+import React, { useState,useEffect,useRef  } from 'react'
 import DrawerPop from '../common/DrawerPop';
 import { useTranslation } from "react-i18next"; 
 import { RxCross2, RxQuestionMarkCircled } from "react-icons/rx";
@@ -44,6 +44,8 @@ import loyaltri from "../../assets/images/logo.png";
 import ButtonClick from '../common/Button';
 import { Check } from '@mui/icons-material';
 import AddMore from '../common/AddMore';
+import TextEditor from '../common/TextEditor/TextEditor';
+import RadioButton from '../common/RadioButton';
 
 
 
@@ -59,7 +61,7 @@ const Createjob = ( {open = "", close = () => { },inputshow= false,isUpdate={}})
   const [activeBtn, setActiveBtn] = useState(0);
   const [presentage, setPresentage] = useState(0);
   const [nextStep, setNextStep] = useState(0);
-  const [activeBtnValue, setActiveBtnValue] = useState("Jobdetails"); //LeaveType//ApplicationForm//Jobdetails//
+  const [activeBtnValue, setActiveBtnValue] = useState("Jobdetails"); //Publish//TeamMembers//LeaveType//ApplicationForm//Jobdetails////Workflow
   const [btnName, setBtnName] = useState();
   const [customRate, setCustomRate] = useState(1);
   const [savedContent, setSavedContent] = useState([]);
@@ -88,6 +90,7 @@ const Createjob = ( {open = "", close = () => { },inputshow= false,isUpdate={}})
       console.error('Login data not found in local storage.');
     }
   }, []); // Empty dependency array ensures the useEffect runs only once
+  const [isChecked, setIsChecked] = useState(false);
 
   console.log('Username:', userid);
   const [api, contextHolder] = notification.useNotification();
@@ -355,7 +358,7 @@ const formik = useFormik({
 
 
 
-
+const scrollRef = useRef();
 const handleAddCondition = () => {
   setEvaluation((prevEvaluation) => [
     ...prevEvaluation,
@@ -368,12 +371,20 @@ const handleAddCondition = () => {
      is_required:0
     },
   ]);
+  if (scrollRef.current) {
+    scrollRef.current.scrollIntoView({ behavior: 'smooth' });
+  }
 };
 
 const handleDeleteCondition = (index) => {
-  setEvaluation((prevEvaluation) =>
-    prevEvaluation.filter((_, i) => i !== index)
-  );
+  setEvaluation((prevEvaluation) => {
+    // Check if there's more than one condition before deleting
+    if (prevEvaluation.length > 1) {
+      return prevEvaluation.filter((_, i) => i !== index);
+    }
+    // If there's only one condition, return the existing array without deleting
+    return prevEvaluation;
+  });
 };
 const handleDeleteField = (conditionIndex, fieldIndex) => {
   console.log("Deleting field", conditionIndex, fieldIndex);
@@ -771,41 +782,85 @@ const handleAddField = (index) => {
   // }));
   
   
-  const handleRadioChange = async (e) => {
-    const workFlowId = e.target.value;
-    setSelectedWorkFlowId(workFlowId);
+  // const handleRadioChange = async (e) => {
+  //   const workFlowId = e.target.value;
+  //   setSelectedWorkFlowId(workFlowId);
    
-    // Assuming you have the jobId stored somewhere, replace 'yourJobId' with the actual jobId
-    // const jobId = 24;
-    const modifiedBy = userid
-    // Update the database with the selected workflow ID for the specific job
+  //   // Assuming you have the jobId stored somewhere, replace 'yourJobId' with the actual jobId
+  //   // const jobId = 24;
+  //   const modifiedBy = userid
+  //   // Update the database with the selected workflow ID for the specific job
     
-     try {
-      console.log(workFlowId)
-      const response = await updateRecruitmentJob(
-         jobId,
-         workFlowId,
-         modifiedBy,
+  //    try {
+  //     console.log(workFlowId)
+  //     const response = await updateRecruitmentJob(
+  //        jobId,
+  //        workFlowId,
+  //        modifiedBy,
         
-      );
+  //     );
   
-      console.log(response);
-      if (response.status === 200) {
+  //     console.log(response);
+  //     if (response.status === 200) {
       
       
-        openNotification(
-          "success",
-          "Successful",
-          response.message
-        );
-        setPresentage(2);
+  //       openNotification(
+  //         "success",
+  //         "Successful",
+  //         response.message
+  //       );
+  //       setPresentage(2);
         
-      } 
-    } catch (error) {
-      console.error('Error updating workflow ID:', error);
+  //     } 
+  //   } catch (error) {
+  //     console.error('Error updating workflow ID:', error);
       
-    }
-  };
+  //   }
+  // };
+
+  const formik2 = useFormik({
+    initialValues: {
+    jobId:"",
+    modifiedBy:"",
+    workFlowId:"",
+    },
+    onSubmit: async (e) => {
+      const workFlowId = selectedWorkFlowId;
+      const modifiedBy =userid;
+      
+      try {
+        console.log(e)
+        const response = await updateRecruitmentJob(
+
+                 jobId,
+                 workFlowId,
+                 modifiedBy,
+        
+                
+              );
+  
+        // Handle the response if needed
+        console.log('Response:', response);
+        if (response.status === 200) {
+        
+        
+            openNotification(
+              "success",
+              "Successful",
+              response.message
+            );
+            setPresentage(2);
+            setNextStep(nextStep + 1);
+          }else if (response.status === 500) {
+            openNotification("error", response.message);
+          }
+      } catch (error) {
+        // Handle the error here
+        console.error('Error:', error);
+        // openNotification("error", "Failed..");
+      }
+    },
+  });
   const handleButtonClick = async (e) => {
     switch (activeBtnValue) {
       case "Jobdetails":
@@ -820,29 +875,30 @@ const handleAddField = (index) => {
         // Handle submission for Applicability
         // Your logic for Applicability form submission...
         // Move to the next step if applicable
-        formik.handleSubmit(e);
+        formik.handleSubmit();
         
         break;
 
       // Add more cases for additional activeBtnValues...
 
       case "Workflow":
-      fetchData();
-      try {
-        await fetchData(); // Assuming fetchData is an asynchronous function
+      // fetchData();
+      // try {
+      //   await fetchData(); // Assuming fetchData is an asynchronous function
     
-        // Check if the radio is selected
-        if (selectedWorkFlowId !== undefined) {
-          // Assuming handleRadioChange is an asynchronous function
-          await handleRadioChange(e);
-          setNextStep(nextStep + 1);
-        } else {
-          // Handle the case where the radio is not selected, maybe show a message
-          console.log('Radio not selected');
-        }
-      } catch (error) {
-        console.error('Error handling Workflow:', error);
-      }
+      //   // Check if the radio is selected
+      //   if (selectedWorkFlowId !== undefined) {
+      //     // Assuming handleRadioChange is an asynchronous function
+      //     await handleRadioChange(e);
+      //     setNextStep(nextStep + 1);
+      //   } else {
+      //     // Handle the case where the radio is not selected, maybe show a message
+      //     console.log('Radio not selected');
+      //   }
+      // } catch (error) {
+      //   console.error('Error handling Workflow:', error);
+      formik2.handleSubmit()
+      // }
       break;
         case "TeamMembers":
            
@@ -872,22 +928,7 @@ const handleAddField = (index) => {
   }
 
   //Teammebers
-  const header =[
-    {
-    id:1,
-    titile:"",
-    value:"username",
-    },
-    {
-      id:2,
-      titile:"",
-      value:"userId",
-    },
-    {id:3,
-    titile:"",
-    value:"userId",
-    }
-  ]
+
 
   const [employeeList,setemployeeList] =useState([])
 
@@ -1035,7 +1076,8 @@ const handleAddField = (index) => {
                                     <Dropdown
                                             title={t("Choose Template")}
                                             placeholder={t("Select")}
-                                            required={true} />
+                                            // required={true} 
+                                            />
 
                                            
                                         
@@ -1324,16 +1366,17 @@ impactful, accurate, and personalized to your company</p>
           </Button>
                                         </div>
                                         <Card>
-                                            <TextArea
+                                            <TextEditor
                                              title={t("Description")}
                                              placeholder={t("Enter the Job description here; include key reas of responsibility an what the candidate mi ht do on a typical day.")}
                                              required={true}
                                              hideBorder={true} 
                                              
                                              value={formik1.values.jobDescription}
-                                             change={(e)=>{
-                                               formik1.setFieldValue('jobDescription',e)
-                                             }}
+                                            //  change={(e)=>{
+                                            //    formik1.setFieldValue('jobDescription',e)
+                                            //  }}
+                                            onChange={(e)=>{ formik1.setFieldValue('jobDescription',e)}}
                                              />
                                                   {/* <TextArea
                                              title={t("Requirement")}
@@ -1596,186 +1639,180 @@ impactful, accurate, and personalized to your company</p>
                       
                       </Accordion>
                       {evaluation.map((condition, index) => (
-                      <Accordion
-                      title={"Custom Fields "}
-                      className="Text_area"
-                      padding={true}
-                      toggleBtn={false}
-                      click={() => {
-                        // setPresentage(1.4);
-                      } }
-                      initialExpanded={true}
-                      >
-                      
-            {/* {conditions.map((condition, index) => (
-                <div key={index} className="grid grid-cols-4 gap-16  justify-between">
-       <FormInput
-  placeholder={'Type question here'}
-  value={formik.values.customFields.default?.[index]?.question}
+                      <><Accordion
+                          title={"Custom Fields "}
+                          className="Text_area"
+                          padding={true}
+                          toggleBtn={false}
+                          click={() => {
+                            // setPresentage(1.4);
+                          } }
+                          initialExpanded={true}
+                        >
 
-  change={(e) => {
-    formik.setFieldValue(`customFields.default[${index}].question`, e);
-    console.log("question value", e);
-  }}
+                          {/* {conditions.map((condition, index) => (
+        <div key={index} className="grid grid-cols-4 gap-16  justify-between">
+<FormInput
+placeholder={'Type question here'}
+value={formik.values.customFields.default?.[index]?.question}
+
+change={(e) => {
+formik.setFieldValue(`customFields.default[${index}].question`, e);
+console.log("question value", e);
+}}
 />
 
 <Dropdown
-  options={Form}
-  change={(e) => {
-    formik.setFieldValue(`customFields.default[${index}].answer_type`, e);
-    handleDropdownChange(e,index)
-    console.log("dropdown", e);
-  }}
-  value={formik.values.customFields.default?.[index]?.answer_type}
-  icondropDown={true}
+options={Form}
+change={(e) => {
+formik.setFieldValue(`customFields.default[${index}].answer_type`, e);
+handleDropdownChange(e,index)
+console.log("dropdown", e);
+}}
+value={formik.values.customFields.default?.[index]?.answer_type}
+icondropDown={true}
 />
 
-                    <div style={{ display: 'flex', alignItems: 'center', gap: '15px' }}>
-                        <p>Mandatory</p>
-                        <ToggleBtn />
-                    </div>
-                    <div style={{ display: 'flex', alignItems: 'center', gap: '15px' }}>
-                        <MdOutlineFileCopy
-                            style={{ width: '18px', height: '18px', cursor: 'pointer' }}
-                        />
-                        <MdDelete
-                            style={{ width: '18px', height: '18px', cursor: 'pointer' }}
-                            onClick={() => handleDeleteCondition(condition.id)}
-                        />
-                    </div>
-                    {generateInputField(
-                        condition.e,
-                        condition,
-                        index,
-                        'Drop-down',
-                        null,
-                        condition.inputValue
-                        
-                    )}
-                </div>
-            ))} */}
- 
-  <><div className="flex items-center justify-between">
-   <FormInput
-            placeholder={'Type question here'}
-            value={condition.question} 
-            change={(e) => {
-              setEvaluation((prevEvaluation) =>
-                prevEvaluation.map((prevCondition, i) =>
-                  i === index
-                    ? { ...prevCondition, question: e}
-                    : prevCondition
-                )
-              );
-              console.log(e)
-            }}
-          />
-<div className="flex items-center gap-5">
-<div className="flex-shrink-0">
-<Dropdown
-  options={Form}
-  change={(e) => {
-    setEvaluation((prevEvaluation) =>
-      prevEvaluation.map((prevCondition, i) =>
-        i === index
-          ? {
-              ...prevCondition,
-              answer_type: e,
-              answerMetaData: [
-                {
-                  id: 1,
-                  key: e,
-                  value: '',
-                },
-              ],
-            }
-          : prevCondition
-      )
-    );
-  }}
-  value={condition.answer_type|| "ShortAnswer"}
-  icondropDown={true}
-/>
-</div>
-    {/* Additional dynamic input fields based on the selected value in the dropdown */}
-    {/* Add your logic here */}
-   
-    <div style={{ display: 'flex', alignItems: 'center', gap: '15px' }}>
-      <p>Mandatory</p>
-      <ToggleBtn />
-    </div>
-
-    <div style={{ display: 'flex', alignItems: 'center', gap: '15px' }}>
-      <MdOutlineFileCopy
-        style={{ width: '18px', height: '18px', cursor: 'pointer' }}
-      />
-      <MdDelete
-        style={{ width: '18px', height: '18px', cursor: 'pointer' }}
-        onClick={() => handleDeleteCondition(index)}
-      />
-    </div>
-    </div>
- 
-
-        </div>
-        {condition.answerMetaData[0]?.key && (
-          <>
-            {/* Render existing FormInput components */}
-            {condition.answerMetaData.map((field, fieldIndex) => (
-              <div key={fieldIndex} className="flex items-center">
-                {['Drop-down', 'MultipleChoice', 'Checkboxes'].includes(field.key) && (
-                  <FormInput
-                  
-                  placeholder={'Enter value'}
-                    value={field.value}
-                    change={(e) => setEvaluation((prevEvaluation) => prevEvaluation.map((prevCondition, i) => i === index
-                      ? {
-                        ...prevCondition,
-                        answerMetaData: prevCondition.answerMetaData.map(
-                          (f, j) => j === fieldIndex
-                            ? { ...f, value: String(e) }
-                            : f
-                        ),
-                      }
-                      : prevCondition
-                    )
-                    )} />
-                )}
-
-                {['Drop-down', 'MultipleChoice', 'Checkboxes'].includes(field.key) && (
-                  <div className="ml-2">
-                    <MdDelete
-                      onClick={() => handleDeleteField(index, fieldIndex)}
-                      className="cursor-pointer text-red-500" />
-                  </div>
-                )}
-              </div>
-            ))}
-
-            <div className="mt-2">
-              {['Drop-down', 'MultipleChoice', 'Checkboxes'].includes(
-                condition.answerMetaData[0]?.key
-              ) && (
-                  <CgAdd
-                    onClick={() => handleAddField(index, condition.answerMetaData[0]?.key)}
-                    style={{ width: '18px', height: '18px', cursor: 'pointer' }} />
-                )}
+            <div style={{ display: 'flex', alignItems: 'center', gap: '15px' }}>
+                <p>Mandatory</p>
+                <ToggleBtn />
             </div>
-          </>
-        )}
-        </>
-      
+            <div style={{ display: 'flex', alignItems: 'center', gap: '15px' }}>
+                <MdOutlineFileCopy
+                    style={{ width: '18px', height: '18px', cursor: 'pointer' }}
+                />
+                <MdDelete
+                    style={{ width: '18px', height: '18px', cursor: 'pointer' }}
+                    onClick={() => handleDeleteCondition(condition.id)}
+                />
+            </div>
+            {generateInputField(
+                condition.e,
+                condition,
+                index,
+                'Drop-down',
+                null,
+                condition.inputValue
+                
+            )}
+        </div>
+    ))} */}
+
+                          <><div className="flex items-center justify-between">
+                            <FormInput
+                              placeholder={'Type question here'}
+                              value={condition.question}
+                              change={(e) => {
+                                setEvaluation((prevEvaluation) => prevEvaluation.map((prevCondition, i) => i === index
+                                  ? { ...prevCondition, question: e }
+                                  : prevCondition
+                                )
+                                );
+                                console.log(e);
+                              } } />
+                            <div className="flex items-center gap-5">
+                              <div className="flex-shrink-0">
+                                <Dropdown
+                                  options={Form}
+                                  change={(e) => {
+                                    setEvaluation((prevEvaluation) => prevEvaluation.map((prevCondition, i) => i === index
+                                      ? {
+                                        ...prevCondition,
+                                        answer_type: e,
+                                        answerMetaData: [
+                                          {
+                                            id: 1,
+                                            key: e,
+                                            value: '',
+                                          },
+                                        ],
+                                      }
+                                      : prevCondition
+                                    )
+                                    );
+                                  } }
+                                  value={condition.answer_type || "ShortAnswer"}
+                                  icondropDown={true} />
+                              </div>
+                              {/* Additional dynamic input fields based on the selected value in the dropdown */}
+                              {/* Add your logic here */}
+
+                              <div style={{ display: 'flex', alignItems: 'center', gap: '15px' }}>
+                                <p>Mandatory</p>
+                                <ToggleBtn />
+                              </div>
+
+                              <div style={{ display: 'flex', alignItems: 'center', gap: '15px' }}>
+                                <MdOutlineFileCopy
+                                  style={{ width: '18px', height: '18px', cursor: 'pointer' }} />
+                                <MdDelete
+                                  style={{ width: '18px', height: '18px', cursor: 'pointer' }}
+                                  onClick={() => handleDeleteCondition(index)} />
+                              </div>
+                            </div>
 
 
-        <div className="flex items-center gap-2">
-<AddMore name="Add Custom Field " className="!text-black" change={(e)=>{handleAddCondition()}} />
-  
-</div>
-                     
-                 
-                     
-                      </Accordion>
+                          </div>
+                            {condition.answerMetaData[0]?.key && (
+                              <>
+                                {/* Render existing FormInput components */}
+                                {condition.answerMetaData.map((field, fieldIndex) => (
+                                  <div key={fieldIndex} className="flex items-center">
+                                    {['Drop-down', 'MultipleChoice', 'Checkboxes'].includes(field.key) && (
+                                      <FormInput
+
+                                        placeholder={'Enter value'}
+                                        value={field.value}
+                                        change={(e) => setEvaluation((prevEvaluation) => prevEvaluation.map((prevCondition, i) => i === index
+                                          ? {
+                                            ...prevCondition,
+                                            answerMetaData: prevCondition.answerMetaData.map(
+                                              (f, j) => j === fieldIndex
+                                                ? { ...f, value: String(e) }
+                                                : f
+                                            ),
+                                          }
+                                          : prevCondition
+                                        )
+                                        )} />
+                                    )}
+
+                                    {['Drop-down', 'MultipleChoice', 'Checkboxes'].includes(field.key) && (
+                                      <div className="ml-2">
+                                        <MdDelete
+                                          onClick={() => handleDeleteField(index, fieldIndex)}
+                                          className="cursor-pointer text-red-500" />
+                                      </div>
+                                    )}
+                                  </div>
+                                ))}
+
+                                <div className="mt-2">
+                                  {['Drop-down', 'MultipleChoice', 'Checkboxes'].includes(
+                                    condition.answerMetaData[0]?.key
+                                  ) && (
+                                      <CgAdd
+                                        onClick={() => handleAddField(index, condition.answerMetaData[0]?.key)}
+                                        style={{ width: '18px', height: '18px', cursor: 'pointer' }} />
+                                    )}
+                                </div>
+                              </>
+                            )}
+                          </>
+
+
+
+                          <div className="flex items-center gap-2">
+
+
+                          </div>
+
+
+
+                        </Accordion>
+                        </>
                       ))}
+                      <AddMore name="Add Custom Field " className="!text-black" change={(e) => { handleAddCondition(); } } />
                       </FlexCol></>
                 ) : activeBtnValue === "Workflow" ? (
                   <FlexCol>
@@ -1802,18 +1839,16 @@ impactful, accurate, and personalized to your company</p>
         </Card>
       ))}
                 */}
-                    {Stages.map(each => (
+                    <Radio.Group onChange={(e) => setSelectedWorkFlowId(e.target.value)}>
+      {Stages.map(each => (
         <Card key={each.workFlowId}>
-          {/* <JobCard options={Stages[workFlowId]} /> */}
-        <JobCard options={each.stages}/>
+          <JobCard options={each.stages} />
           <div style={{ position: 'absolute', top: 0, right: 0, padding: '8px' }}>
-          <Radio.Group onChange={handleRadioChange} value={selectedWorkFlowId}>
-              <Radio value={each.workFlowId}></Radio>
-            </Radio.Group>
+            <Radio value={each.workFlowId}></Radio>
           </div>
         </Card>
       ))}
-
+    </Radio.Group>
                   </Accordion>
                   </FlexCol>
                 ) : activeBtnValue === "TeamMembers" ? (
@@ -1878,9 +1913,13 @@ placeholder={"Search Employess"}/>
       <React.Fragment key={employee.id}>
         <tr>
           <td>
-            <CheckBoxInput change={()=>{
-              setPresentage(3.4);
-            }}/>
+          <CheckBoxInput
+        value={isChecked}
+        change={(checked) => {
+          setIsChecked(checked);
+          setPresentage(checked ? 3.4 : 0);
+        }}
+      />
           </td>
           <td>
             <div className='flex items-center gap-4'>
