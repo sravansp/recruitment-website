@@ -1,3 +1,4 @@
+import Link from "next/link";
 import React from "react";
 import { FaArrowLeft } from "react-icons/fa";
 
@@ -6,7 +7,7 @@ function Header1() {
     <div>
     <div className="bg-white flex items-center     dark:bg-black dark:text-white h-[65px] w-full">
       <div className="float-end flex mt-3 ml-5 ">
-        <button className="w-10     text-primary ">
+        <Link href="/" className="w-10     text-primary ">
           <span className=" inset-0 flex items-center justify-center rounded-md bg-white">
             <span className="flex items-center justify-center w-[35px] h-[36px]  rounded-full border-[1px]  bg-[#FAFAFA]">
               <FaArrowLeft
@@ -14,7 +15,7 @@ function Header1() {
               />
             </span>
           </span>
-        </button>
+        </Link>
         {/* <button className="w-16 border-2 border-#FDFDFD  rounded-md  text-primary mt-10 text-sm font-semibold ">
           <b>Edit</b>
         </button> */}
