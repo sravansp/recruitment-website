@@ -43,7 +43,7 @@ const TeamMembers = ({
         {
           id: 3,
           title: "Designation",
-          value: "Designation",
+          value: "roleName",
         },
         {
           id: 4,

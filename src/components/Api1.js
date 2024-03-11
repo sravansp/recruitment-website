@@ -1,7 +1,7 @@
 import axios from "axios";
 
-const apiUrl = 'http://192.168.29.185/loyaltri-recruitment-server/api/v1';
-// const apiUrl = 'https://alpha-jobs-api.loyaltri.com/api/v1';
+// const apiUrl = 'http://192.168.29.185/loyaltri-recruitment-server/api/v1';
+const apiUrl = 'https://alpha-jobs-api.loyaltri.com/api/v1';
 
 
 const apiRequest = async (action, method, kwargs) => {
@@ -136,7 +136,7 @@ export const getAllRecruitmentJobTeamMembers = async (jobId) => {
   const method = "POST";
   const requestData = {
     // Include any other necessary parameters
-    jobId: jobId,
+    jobId: 31,
   };
 
   
@@ -179,6 +179,55 @@ export const getAllRecruitmentEmailTemplates = async () => {
 
   return await apiRequest(action, method, kwargs);
 };
+// export const getAllRecruitmentQuestionnaireTemplateDetails = async () => {
+//   const action = "getAllRecruitmentQuestionnaireTemplateDetails";
+
+//   const method = "POST";
+//   // const requestData = {
+//   //   // Include any other necessary parameters
+//   //   jobId: jobId,
+//   // };
+
+//   const kwargs = { };
+
+//   return await apiRequest(action, method, kwargs);
+// };
+export const getAllRecruitmentLetterTemplates = async () => {
+  const action = "getAllRecruitmentLetterTemplates";
+
+  const method = "POST";
+
+
+  const kwargs = { };
+
+  return await apiRequest(action, method, kwargs);
+};
+export const getAllRecruitmentQuestionnaireTemplateDetails = async () => {
+  const action = "getAllRecruitmentQuestionnaireTemplateDetails";
+
+  const method = "POST";
+  // const requestData = {
+  //   // Include any other necessary parameters
+  //   jobId: jobId,
+  // };
+
+  const kwargs = { };
+
+  return await apiRequest(action, method, kwargs);
+};
+// export const getAllRecruitmentLetterTemplates = async () => {
+//   const action = "getAllRecruitmentLetterTemplates";
+
+//   const method = "POST";
+//   // const requestData = {
+//   //   // Include any other necessary parameters
+//   //   jobId: jobId,
+//   // };
+
+//   const kwargs = { };
+
+//   return await apiRequest(action, method, kwargs);
+// };
 export const getAllCandidatesByjobId = async (jobId) => {
   console.log(jobId)
   const action = "getAllCandidatesByjobId";
@@ -193,6 +242,7 @@ export const getAllCandidatesByjobId = async (jobId) => {
 
   return await apiRequest(action, method, requestData);
 };
+
 export const getRecruitmentResumeById = async (id) => {
   const action = "getRecruitmentResumeById";
 
@@ -265,15 +315,15 @@ export const saveRecruitmentEvaluationTemplateDetailBatch = async (formattedData
     throw error; // Re-throw the error to handle it where the function is called.
   }
 };
-export const getAllRecruitmentQuestionnaireTemplateDetails = async () => {
-  const action = "getAllRecruitmentQuestionnaireTemplateDetails";
+// export const getAllRecruitmentQuestionnaireTemplateDetails = async () => {
+//   const action = "getAllRecruitmentQuestionnaireTemplateDetails";
 
-  const method = "POST";
+//   const method = "POST";
 
-  const kwargs = {};
+//   const kwargs = {};
 
-  return await apiRequest(action, method, kwargs);
-};
+//   return await apiRequest(action, method, kwargs);
+// };
 export const getAllRecruitmentEvaluationTemplateDetails = async () => {
   const action = "getAllRecruitmentEvaluationTemplateDetails";
 
@@ -283,15 +333,15 @@ export const getAllRecruitmentEvaluationTemplateDetails = async () => {
 
   return await apiRequest(action, method, kwargs);
 };
-export const getAllRecruitmentLetterTemplates = async () => {
-  const action = "getAllRecruitmentLetterTemplates";
+// export const getAllRecruitmentLetterTemplates = async () => {
+//   const action = "getAllRecruitmentLetterTemplates";
 
-  const method = "POST";
+//   const method = "POST";
 
-  const kwargs = {};
+//   const kwargs = {};
 
-  return await apiRequest(action, method, kwargs);
-};
+//   return await apiRequest(action, method, kwargs);
+// };
 
 
 export const saveRecruitmentWorkFlow = async (e) => {
@@ -311,6 +361,23 @@ export const saveRecruitmentWorkFlow = async (e) => {
     console.error("Error in saveRecruitmentEvaluationTemplateDetailBatch:", error);
     throw error; // Re-throw the error to handle it where the function is called.
   }
+};
+
+export const saveRecruitmentQuestionnaireTemplateDetail = async (e) => {
+
+  const action = "saveRecruitmentQuestionnaireTemplateDetail";
+
+  const method = "POST";
+  const kwargs=e
+return await apiRequest(action, method, kwargs);
+};
+export const saveRecruitmentEmailTemplate = async (e) => {
+
+  const action = "saveRecruitmentEmailTemplate";
+
+  const method = "POST";
+  const kwargs=e
+return await apiRequest(action, method, kwargs);
 };
 export const saveRecruitmentWorkFlowStage = async (e) => {
   try {

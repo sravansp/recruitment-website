@@ -2,7 +2,7 @@ import React,{useState} from 'react'
 import DrawerPop from '../common/DrawerPop'
 import Accordion from '../common/Accordion'
 import { useTranslation } from 'react-i18next'
-import { Button, Card, Space } from 'antd'
+import { Button, Card, Space ,notification } from 'antd'
 import { DownOutlined, UserOutlined } from '@ant-design/icons';
 import TextArea from '../common/TextArea'
 import image from '../../assets/images/generate-ai-img.png'
@@ -13,10 +13,15 @@ import Dropdown from '../common/Dropdown'
 import { MdDelete, MdOutlineFileCopy } from 'react-icons/md'
 import { Form } from '../data'
 import { CgAdd } from 'react-icons/cg'
+import { saveRecruitmentQuestionnaireTemplateDetail } from '../Api1'
+import { Formik, useFormik } from 'formik'
 import AddMore from '../common/AddMore'
 
-const QuestionAire = ({open = "", close = () => { },inputshow= false,isUpdate={}}) => {
+
+const QuestionAire = ({open = "", close = () => { },inputshow= false,isUpdate={},}) => {
     
+  const [companyId, setCompanyId] = useState(localStorage.getItem("companyId"));
+  const[insertedId,setinsertedId] =useState(null)
 
     const [savedContent, setSavedContent] = useState([]);
     const[show,setShow] =useState(open);
@@ -28,6 +33,9 @@ const QuestionAire = ({open = "", close = () => { },inputshow= false,isUpdate={}
       const handleEditorChange = (content) => {
         setContent(content);
       };
+      const handleSubmit =()=>{
+
+      }
       const [evaluation, setEvaluation] = useState([
         {
           id: 1,
@@ -113,6 +121,7 @@ const QuestionAire = ({open = "", close = () => { },inputshow= false,isUpdate={}
        borderRadius: 0,
        borderTopLeftRadius: "0px !important",
        borderBottomLeftRadius: 0,
+       
      }}
 
 
@@ -147,6 +156,7 @@ const QuestionAire = ({open = "", close = () => { },inputshow= false,isUpdate={}
        !isUpdate ? t("Save Template") : t("Save Template"),
      ]}
      className="widthFull"
+     handleSubmit={handleSubmit}
      
     //  buttonClickCancel={(e) => {
     //    if (activeBtn > 0) {
@@ -174,10 +184,15 @@ const QuestionAire = ({open = "", close = () => { },inputshow= false,isUpdate={}
                                                }}
                                                initialExpanded={true}
                                         > 
+                                        
                                        <div className='grid grid-cols-2'>
                                        <FormInput
                                        title={"Template Name"}
                                        placeholder={"Type here..."}
+                                       value={Formik.values.questionnaireTemplateName}
+                                       change={(e)=>{
+                                        Formik.setFieldValue('questionnaireTemplateName',e)
+                                       }}
                                        
                                        />
                                        </div>
