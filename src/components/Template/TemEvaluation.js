@@ -29,7 +29,7 @@ const TemEvaluation = ({open = "", close = () => { },inputshow= false,isUpdate={
     {
       id: 1,
       companyId: companyId,
-      evaluationTemplateId: null,
+      evaluationTemplateId: "",
       question: "",
       answerMetaData: '[]',
       description:"hihihihih",
@@ -174,17 +174,17 @@ const[show,setShow] =useState(open);
         });
   
         console.log(response);
-        setinsertedId(response.result.insertedId);
-        setEvaluation((prevEvaluation) => {
-              return prevEvaluation.map((item) => ({
-                ...item,
-                evaluationTemplateId: parseInt(response.result.insertedId),
-          
-              }));
-            });
+  
         if (response.status === 200) {
           // Update the state with the insertedId
-         
+          setinsertedId(response.result.insertedId);
+          setEvaluation((prevEvaluation) => {
+                return prevEvaluation.map((item) => ({
+                  ...item,
+                  evaluationTemplateId: parseInt(response.result.insertedId),
+            
+                }));
+              });
   
           // Process the data for the second formik here
           const formattedData = evaluation.map((item) => ({

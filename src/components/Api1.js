@@ -330,3 +330,21 @@ export const saveRecruitmentWorkFlowStage = async (e) => {
     throw error; // Re-throw the error to handle it where the function is called.
   }
 };
+export const saveRecruitmentEvaluationTemplateWithDetails = async (e) => {
+  try {
+    const action = "saveRecruitmentEvaluationTemplateWithDetails";
+    const method = "POST";
+    const kwargs = e;
+    
+    console.log("API Request Data:", { action, method, kwargs });
+
+    const response = await apiRequest(action, method, kwargs);
+
+    console.log("API Response:", response);
+
+    return response;
+  } catch (error) {
+    console.error("Error in saveRecruitmentWorkFlowStage:", error);
+    throw error; // Re-throw the error to handle it where the function is called.
+  }
+};

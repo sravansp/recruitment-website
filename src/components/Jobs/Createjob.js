@@ -1638,8 +1638,8 @@ impactful, accurate, and personalized to your company</p>
 
                       
                       </Accordion>
-                      {evaluation.map((condition, index) => (
-                      <><Accordion
+                      
+                      <Accordion
                           title={"Custom Fields "}
                           className="Text_area"
                           padding={true}
@@ -1650,6 +1650,8 @@ impactful, accurate, and personalized to your company</p>
                           initialExpanded={true}
                         >
 
+                      {evaluation.map((condition, index) => (
+                      <>
                           {/* {conditions.map((condition, index) => (
         <div key={index} className="grid grid-cols-4 gap-16  justify-between">
 <FormInput
@@ -1700,6 +1702,7 @@ icondropDown={true}
 
                           <><div className="flex items-center justify-between">
                             <FormInput
+                             title={`Question ${index + 1}`}
                               placeholder={'Type question here'}
                               value={condition.question}
                               change={(e) => {
@@ -1760,7 +1763,7 @@ icondropDown={true}
                                   <div key={fieldIndex} className="flex items-center">
                                     {['Drop-down', 'MultipleChoice', 'Checkboxes'].includes(field.key) && (
                                       <FormInput
-
+                                      title={`options ${fieldIndex + 1}`}
                                         placeholder={'Enter value'}
                                         value={field.value}
                                         change={(e) => setEvaluation((prevEvaluation) => prevEvaluation.map((prevCondition, i) => i === index
@@ -1808,11 +1811,13 @@ icondropDown={true}
                           </div>
 
 
-
-                        </Accordion>
+                          <div className="v-divider"></div>
+                      
                         </>
                       ))}
-                      <AddMore name="Add Custom Field " className="!text-black" change={(e) => { handleAddCondition(); } } />
+                       <AddMore name="Add Custom Field " className="!text-black" change={(e) => { handleAddCondition(); } } />
+                      </Accordion>
+                     
                       </FlexCol></>
                 ) : activeBtnValue === "Workflow" ? (
                   <FlexCol>
