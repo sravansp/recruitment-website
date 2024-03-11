@@ -1,4 +1,4 @@
-import React,{useState,useEffect} from 'react'
+import React,{useState} from 'react'
 import DrawerPop from '../common/DrawerPop'
 import Accordion from '../common/Accordion'
 import { useTranslation } from 'react-i18next'
@@ -16,7 +16,6 @@ import { CgAdd } from 'react-icons/cg'
 import { saveRecruitmentEvaluationTemplate,saveRecruitmentEvaluationTemplateDetailBatch} from '../Api1'
 import { Formik, useFormik } from 'formik';
 import { Value } from 'devextreme-react/range-selector'
-import AddMore from '../common/AddMore'
 
 
 const TemEvaluation = ({open = "", close = () => { },inputshow= false,isUpdate={}}) => {
@@ -24,37 +23,29 @@ const TemEvaluation = ({open = "", close = () => { },inputshow= false,isUpdate={
   const [companyId, setCompanyId] = useState(localStorage.getItem("companyId"));
   const[insertedId,setinsertedId] =useState(null)
   console.log(companyId)
-  console.log(insertedId)
-  const [evaluation, setEvaluation] = useState([
-    {
-      id: 1,
-      companyId: companyId,
-      evaluationTemplateId: insertedId,
-      question: "",
-      answerMetaData: '[]',
-      description:"hihihihih",
-      createdBy: 499
-    },
-  ]);
   
   
  //condition data
 
- 
+ const [evaluation, setEvaluation] = useState([
+  {
+    id: 1,
+    companyId: companyId,
+    evaluationTemplateId: insertedId,
+    question: "",
+    answerMetaData: [
+      {
+        id: 1,
+        key: "",
+        value: "",
+      }
+    ],
+    description: "",
+    createdBy: "ashik"
+  },
+]);
 console.log(evaluation)
-// const parsedAnswerMetaData = JSON.parse(evaluation[0].answerMetaData);
-// parsedAnswerMetaData[0].key = "updatedKey";
-// parsedAnswerMetaData[0].value = "updatedValue";
-useEffect(() => {
-  // Update evaluation with the new insertedId
-  setEvaluation((prevEvaluation) => {
-    return prevEvaluation.map((item) => ({
-      ...item,
-      evaluationTemplateId: insertedId,
 
-    }));
-  });
-}, [insertedId]);
 const handleAddCondition = () => {
   setEvaluation((prevEvaluation) => [
     ...prevEvaluation,
@@ -63,9 +54,15 @@ const handleAddCondition = () => {
       companyId: companyId, // Replace companyId with your actual value
       evaluationTemplateId: insertedId, // Replace insertedId with your actual value
       question: "",
-      answerMetaData: '[]',
-      description: "hihihihi",
-      createdBy: 493
+      answerMetaData: [
+        {
+          id: 1,
+          key: "",
+          value: "",
+        }
+      ],
+      description: "",
+      createdBy: "ashik"
     },
   ]);
 };
@@ -110,13 +107,12 @@ const handleAddField = (index) => {
     )
   );
 };
+
 //<--------------------------------------------------->//
-const [successNotificationVisible, setSuccessNotificationVisible] = useState(false);    
-const[show,setShow] =useState(open);
+    const[show,setShow] =useState(open);
     const { t } = useTranslation();
     const handleClose = () => {
-     close(false)
-      
+        close(false);
       };
       const [content, setContent] = useState("")
       const handleEditorChange = (content) => {
@@ -191,21 +187,11 @@ const[show,setShow] =useState(open);
          openNotification(
            "success",
            "Successful",
-           response.message
+           "createpoilicy update saved. Changes are now reflected."
          );
          setinsertedId(response.result.insertedId)
-        
-       }else if(response.status === 500){
-        openNotification(
-          "success",
-          "Successful",
-          response.message
-        );
-       }
-       
-       if(response.result.insertedId)
-       {
-        formik1.handleSubmit()
+         if(response.result.insertedId)
+         formik1.handleSubmit()
        }
      }
      catch (error) {
@@ -220,42 +206,25 @@ const[show,setShow] =useState(open);
    
     },
    })
-   
    const formik1 = useFormik({
-    initialValues: {},
-    onSubmit: async (setinsertedId) => {
+    initialValues: {
+     
+    },
+    onSubmit: async (values) => {
       try {
-        const formattedData = evaluation.map((item) => ({
-          companyId: item.companyId,
-          evaluationTemplateId: item.evaluationTemplateId,
-           
-          question: item.question,
-          answerMetaData: JSON.stringify(item.answerMetaData),
-          
-          description: item.description,
-          createdBy: item.createdBy,
-        }));
+       
   
-        // Call your API to save data using the formatted data
-        const response = await saveRecruitmentEvaluationTemplateDetailBatch(formattedData);
+        // Call your API to save data using values.conditions
+        const response = await saveRecruitmentEvaluationTemplateDetailBatch();
   
         // Handle the response if needed
         console.log('Response:', response);
-        console.log(formattedData)
-        console.log(insertedId)
   
         if (response.status === 200) {
-          openNotification("success", "Successful", response.message);
-          setSuccessNotificationVisible(true);
-          setTimeout(() => {
-            handleClose();
-          }, 2000);
-        } else if(response.status === 500)
-        {
           openNotification(
-            "error",
-            "error",
-            response.message
+            "success",
+            "Successful",
+            "createpolicy update saved. Changes are now reflected."
           );
         }
       } catch (error) {
@@ -268,7 +237,7 @@ const[show,setShow] =useState(open);
   
  
 
-  const handleSubmit = async (e) => {
+  const handleSubmit = async () => {
   formik.handleSubmit()
   
 
@@ -325,7 +294,7 @@ const[show,setShow] =useState(open);
        !isUpdate ? t("Save Template") : t("Save Template"),
      ]}
      className="widthFull"
-     handleSubmit={(e)=>handleSubmit(e)}
+     handleSubmit={handleSubmit}
     //  buttonClickCancel={(e) => {
     //    if (activeBtn > 0) {
     //      setActiveBtn(activeBtn - 1);
@@ -346,7 +315,7 @@ const[show,setShow] =useState(open);
                                                title={"New Evaluation Templates"}
                                                className="Text_area"
                                                padding={true}
-                                               
+                                               toggleBtn={false}
                                                click={() => {
                                               //    setPresentage(1.4);
                                                }}
@@ -366,112 +335,115 @@ const[show,setShow] =useState(open);
                                     
                                       
                                        {evaluation.map((condition, index) => (
-  <><div className="flex items-center justify-between">
-  <FormInput
-    showValueParagraph={true}
-    placeholder={'Type question here'}
-    value={condition.question}
-    change={(e) => {
-      setEvaluation((prevEvaluation) => prevEvaluation.map((prevCondition, i) => i === index
-        ? { ...prevCondition, question: e }
-        : prevCondition
-      ))
-      console.log(e)
-    }} />
+  <div className="grid grid-cols-4 gap-16 justify-between">
+   <FormInput
+            placeholder={'Type question here'}
+            value={condition.question} 
+            change={(e) => {
+              setEvaluation((prevEvaluation) =>
+                prevEvaluation.map((prevCondition, i) =>
+                  i === index
+                    ? { ...prevCondition, question: e}
+                    : prevCondition
+                )
+              );
+              console.log(e)
+            }}
+          />
 
-  <div className="flex items-center gap-5">
-    <div className="flex-shrink-0"> {/* Add this container for the dropdown and icons */}
-      <Dropdown
-        options={Form}
-        change={(e) => {
-          setEvaluation((prevEvaluation) => prevEvaluation.map((prevCondition, i) => i === index
-            ? {
-              ...prevCondition,
-              answerMetaData: [
-                {
-                  id: 1,
-                  key: e,
-                  value: "",
-                }
-              ],
-            }
-            : prevCondition
-          ))
-        }}
-        value={condition.answerMetaData[0]?.key || "MultipleChoice"}
-        icondropDown={true}
+<Dropdown
+            options={Form}
+            change={(e) => {
+              setEvaluation((prevEvaluation) =>
+                prevEvaluation.map((prevCondition, i) =>
+                  i === index
+                    ? {
+                        ...prevCondition,
+                        answerMetaData: [
+                          {
+                            id: 1,
+                            key: e,
+                            value: "",
+                          }
+                        ],
+                      }
+                    : prevCondition
+                )
+              );
+            }}
+            value={condition.answerMetaData[0]?.key}
+            icondropDown={true}
+          />
+
+    {/* Additional dynamic input fields based on the selected value in the dropdown */}
+    {/* Add your logic here */}
+   
+    <div style={{ display: 'flex', alignItems: 'center', gap: '15px' }}>
+      <p>Mandatory</p>
+      <ToggleBtn />
+    </div>
+
+    <div style={{ display: 'flex', alignItems: 'center', gap: '15px' }}>
+      <MdOutlineFileCopy
+        style={{ width: '18px', height: '18px', cursor: 'pointer' }}
       />
-      </div>
-      {/* Additional dynamic input fields based on the selected value in the dropdown */}
-      {/* Add your logic here */}
+      <MdDelete
+        style={{ width: '18px', height: '18px', cursor: 'pointer' }}
+        onClick={() => handleDeleteCondition(index)}
+      />
+    </div>
+    {condition.answerMetaData[0]?.key === 'Drop-down' && (
+  <>
+    {/* Render existing FormInput components */}
+    {condition.answerMetaData.map((field, fieldIndex) => (
+      <div key={fieldIndex} className="flex items-center">
+          <FormInput
+          placeholder={'Enter value'}
+          value={field.value}  
+          change={(e) =>
+            setEvaluation((prevEvaluation) =>
+              prevEvaluation.map((prevCondition, i) =>
+                i === index
+                  ? {
+                      ...prevCondition,
+                      answerMetaData: prevCondition.answerMetaData.map(
+                        (f, j) =>
+                          j === fieldIndex
+                            ? { ...f, value: e } 
+                            : f
+                      ),
+                    }
+                  : prevCondition
+              )
+            )
+          }
+        />
 
-      <div style={{ display: 'flex', alignItems: 'center', gap: '15px' }}>
-        <p>Mandatory</p>
-        <ToggleBtn />
+        <div className="ml-2">
+          <MdDelete
+            onClick={() => handleDeleteField(index, fieldIndex)}
+            className="cursor-pointer text-red-500"
+          />
+        </div>
       </div>
+    ))}
 
-      <div style={{ display: 'flex', alignItems: 'center', gap: '15px' }}>
-        <MdOutlineFileCopy style={{ width: '18px', height: '18px', cursor: 'pointer' }} />
-        <MdDelete style={{ width: '18px', height: '18px', cursor: 'pointer' }} onClick={() => handleDeleteCondition(index)} />
-      </div>
-    
+    {/* Add button for adding more FormInput components */}
+    <div className="mt-2">
+      <CgAdd
+        onClick={() => handleAddField(index)}
+        style={{ width: '18px', height: '18px', cursor: 'pointer' }}
+      />
+    </div>
+  </>
+)}
   </div>
-</div>
-                                           {condition.answerMetaData[0]?.key && (
-                                             <>
-                                               {/* Render existing FormInput components */}
-                                               {condition.answerMetaData.map((field, fieldIndex) => (
-                                                 <div key={fieldIndex} className="flex items-center">
-                                                   {['Drop-down', 'MultipleChoice', 'Checkboxes'].includes(field.key) && (
-                                                     <FormInput
-                                                     
-                                                     placeholder={'Enter value'}
-                                                       value={field.value}
-                                                       change={(e) => setEvaluation((prevEvaluation) => prevEvaluation.map((prevCondition, i) => i === index
-                                                         ? {
-                                                           ...prevCondition,
-                                                           answerMetaData: prevCondition.answerMetaData.map(
-                                                             (f, j) => j === fieldIndex
-                                                               ? { ...f, value: String(e) }
-                                                               : f
-                                                           ),
-                                                         }
-                                                         : prevCondition
-                                                       )
-                                                       )} />
-                                                   )}
-
-                                                   {['Drop-down', 'MultipleChoice', 'Checkboxes'].includes(field.key) && (
-                                                     <div className="ml-2">
-                                                       <MdDelete
-                                                         onClick={() => handleDeleteField(index, fieldIndex)}
-                                                         className="cursor-pointer text-red-500" />
-                                                     </div>
-                                                   )}
-                                                 </div>
-                                               ))}
-
-                                               <div className="mt-2">
-                                                 {['Drop-down', 'MultipleChoice', 'Checkboxes'].includes(
-                                                   condition.answerMetaData[0]?.key
-                                                 ) && (
-                                                     <CgAdd
-                                                       onClick={() => handleAddField(index, condition.answerMetaData[0]?.key)}
-                                                       style={{ width: '18px', height: '18px', cursor: 'pointer' }} />
-                                                   )}
-                                               </div>
-                                             </>
-                                           )}
-
-                                         
-                                         <div className="v-divider"></div></>
   ))}
 
 <div className="flex items-center gap-2">
-<AddMore name="Add New Question"className="!text-black" change={(e)=>{handleAddCondition()}} />
-  
+  <CgAdd style={{ width: '34px', height: '34px', cursor: 'pointer' }} onClick={handleAddCondition} />
+  <p style={{ cursor: 'pointer' }}>  Add Custom Field</p>
 </div>
-{contextHolder}
                                         </Accordion>
                                         </div>  
     </DrawerPop>

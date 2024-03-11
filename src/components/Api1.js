@@ -269,12 +269,12 @@ export const saveRecruitmentEvaluationTemplateDetailBatch = async (formattedData
     throw error; // Re-throw the error to handle it where the function is called.
   }
 };
-// export const getAllRecruitmentQuestionnaireTemplateDetails = async () => {
-//   const action = "getAllRecruitmentJobs";
+export const getAllRecruitmentQuestionnaireTemplateDetails = async () => {
+  const action = "getAllRecruitmentJobs";
 
-//   const method = "POST";
+  const method = "POST";
 
-//   const kwargs = {};
+  const kwargs = {};
 
-//   return await apiRequest(action, method, kwargs);
-// };
+  return await apiRequest(action, method, kwargs);
+};

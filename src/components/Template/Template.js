@@ -4,7 +4,7 @@ import Breadcrumbs from '../common/BreadCrumbs';
 import { useTranslation } from 'react-i18next';
 
 import ButtonClick from '../common/Button';
-import { getAllRecruitmentJobTemplates,getAllRecruitmentWorkFlows,getAllRecruitmentEmailTemplates } from '../Api1';
+import { getAllRecruitmentJobTemplates,getAllRecruitmentWorkFlows,getAllRecruitmentEmailTemplates,getAllRecruitmentQuestionnaireTemplateDetails } from '../Api1';
 import AddTemplate from './Addtemplate';
 import Tabs from '../common/Tabs';
 import Departments from '../Company/Add _departments';
@@ -206,19 +206,25 @@ const Template = ({
           {
             id:1,
             title:"Name",
-            value:"Name",
+            value:"question",
          },
          {
             id:2,
             title:"Description",
-            value:"Description",
+            value:"description",
          },
          {
             id:3,
             title:"Status",
             value:"Status",
-            action:true,
+            actionToggle:true,
          },
+         {
+          id:4,
+          title:"",
+          value:"actions",
+          action:true,
+       },
         ],
         Letter : [ 
           {
@@ -346,7 +352,15 @@ const Template = ({
       console.error(error); // Handle errors
     }
   };
-  
+  const getallquestionaire = async ()=>{
+    try{
+      const response = await getAllRecruitmentQuestionnaireTemplateDetails()
+      setQuestionaire(response.result)
+    }catch (error) {
+      console.error(error); // Handle errors
+    }
+
+  }
  
 //  useEffect(()=>{
 //   getEmailLsit();
@@ -390,7 +404,7 @@ const Template = ({
             break;
             case "Questionaire":
               // getDepartmentList();
-              
+              getallquestionaire();
               console.log(newData)
               break;
               case "Letter":

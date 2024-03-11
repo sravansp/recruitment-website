@@ -56,7 +56,7 @@ const gridListoptions = [
 const TableAnt = ({
   data = [],
   header = [],
-
+  actionToggle=false,
   actionID = "",
   updateApi = "",
   deleteApi = "",
