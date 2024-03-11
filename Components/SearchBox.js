@@ -33,7 +33,7 @@ const SearchBox = ({ items, onItemSelected, icon, placeholder="", className=""})
       />
       </div>
       {hasResults && (
-        <ul className="absolute left-0 w-full mt-2 overflow-hidden bg-white border border-gray-300 rounded-md top-10">
+        <ul className="absolute left-0 z-50 w-full mt-2 overflow-hidden bg-white border border-gray-300 rounded-md top-10">
           {filteredItems.map((item, index) => (
             <li
               key={index}

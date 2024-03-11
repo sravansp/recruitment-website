@@ -1,34 +1,34 @@
 "use client";
-
-import React from "react";
+import React, { useEffect, useState } from "react";
 import { ConfigProvider, theme } from "antd";
 import { AntdRegistry } from "@ant-design/nextjs-registry";
 import Navbar from "@/Components/Navbar";
 
-// Check if localStorage is available and retrieve the theme
-const initialTheme = typeof window !== "undefined" ? localStorage.theme : null;
-
-// Set a default theme if localStorage.theme is not available
-const defaultTheme = "light";
-
-const colorPrimary = "#6A4BFC";
-const mode = initialTheme || defaultTheme;
 export default function Wrapper(props) {
+  // Set a default theme if localStorage.theme is not available
+  const defaultTheme = "light";
+
+  const colorPrimary = "#6A4BFC";
+
+  // Use state to manage the current theme
+  const [currentTheme, setCurrentTheme] = useState(() => {
+    // Check if localStorage is available and retrieve the theme
+    return typeof window !== "undefined" ? localStorage.theme || defaultTheme : defaultTheme;
+  });
+
   const { children } = props;
 
+  useEffect(() => {
+    // Update localStorage when the theme changes
+    localStorage.setItem("theme", currentTheme);
+  }, [currentTheme]);
+
   return (
-    // <ConfigProvider
-    //   theme={{
-    //     algorithm: theme.darkAlgorithm,
-    //   }}
-    // >
-    //   {children}
-    // </ConfigProvider>
-    <ConfigProvider
+     <ConfigProvider
       theme={{
         token: { colorPrimary },
         algorithm:
-          mode === "dark" ? theme.darkAlgorithm : theme.defaultAlgorithm,
+        currentTheme === "dark" ? theme.darkAlgorithm : theme.defaultAlgorithm,
       }}
     >
       <AntdRegistry>
