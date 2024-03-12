@@ -188,8 +188,8 @@ const[show,setShow] =useState(open);
   
           // Process the data for the second formik here
           const formattedData = evaluation.map((item) => ({
-            companyId: item.companyId,
-            evaluationTemplateId: item.evaluationTemplateId,
+            companyId: companyId,
+            evaluationTemplateId: insertedId,
             question: item.question,
             answerMetaData: JSON.stringify(item.answerMetaData),
             description: item.description,

@@ -1,4 +1,4 @@
-import React,{useState} from 'react'
+import React,{useEffect, useState} from 'react'
 import { useTranslation } from 'react-i18next';
 import DrawerPop from '../common/DrawerPop';
 import FlexCol from '../common/FlexCol';
@@ -9,14 +9,40 @@ import AddMore from '../common/AddMore';
 import { SlEnergy } from 'react-icons/sl';
 import { AiFillThunderbolt } from 'react-icons/ai';
 import { Formik,useFormik } from 'formik';
-import { saveRecruitmentWorkFlow } from '../Api1';
+import { saveRecruitmentWorkFlow,saveRecruitmentWorkFlowStage } from '../Api1';
 import { PiPencilSimpleLineThin } from 'react-icons/pi';
-import { Modal,Button } from 'antd';
+import { Modal,Button,notification } from 'antd';
 import image from "../../assets/images/image 622.png"
 
 const Workflowstage = ({open = "", close = () => { },inputshow= false,isUpdate={}}) => {
   
   
+  const [successNotificationVisible, setSuccessNotificationVisible] = useState(false);   
+  const [api, contextHolder] = notification.useNotification();
+  const openNotification = (type, message, description) => {
+    api[type]({
+      message: message,
+      description: description,
+      placement: "top",
+      // stack: 2,
+      style: {
+        background: `${
+          type === "success"
+            ? `linear-gradient(180deg, rgba(204, 255, 233, 0.8) 0%, rgba(235, 252, 248, 0.8) 51.08%, rgba(246, 251, 253, 0.8) 100%)`
+            : "linear-gradient(180deg, rgba(255, 236, 236, 0.80) 0%, rgba(253, 246, 248, 0.80) 51.13%, rgba(251, 251, 254, 0.80) 100%)"
+        }`,
+        boxShadow: `${
+          type === "success"
+            ? "0px 4.868px 11.358px rgba(62, 255, 93, 0.2)"
+            : "0px 22px 60px rgba(134, 92, 144, 0.20)"
+        }`,
+      },
+      // duration: null,
+    });
+  };
+  
+  
+    
     const[show,setShow] =useState(open);
     const { t } = useTranslation();
     const handleClose = () => {
@@ -24,43 +50,49 @@ const Workflowstage = ({open = "", close = () => { },inputshow= false,isUpdate={
       };
       const [companyId, setCompanyId] = useState(localStorage.getItem("companyId"));
       const [presentage, setPresentage] = useState(0);
+      const [stageName, setStageName] = useState('');
+      const[insertedId,setInsertedId]=useState("")
+      const [stages,setstages] = useState(
+       [
+       
+      ]
+      )
+      useEffect(()=>{
+        console.log(stages)
+      },[stages])
+      const handleAddStageClick = () => {
+        // Create a new stage object
+        
+        setstages((prevEvaluation) =>[
+          ...prevEvaluation,
+          {
+            id: stages.length + 1, // You can use stages.length + 1 as the new id
+            workFlowId: insertedId, // Update this as needed
+            stageOrder: stages.length + 1, // Update this as needed
+            stageName: stageName,
+            stageRules: {
+              id: 1, // Update this as needed
+              key1: '', // Update this as needed
+              value: '', // Update this as needed
+            },
+            createdBy:9
+          },
+        ]); 
+    
+        // Update the stages array
 
-      const formik = useFormik({
-        initialValues :{
-          companyId : "",
-          workFlowName:"",
-          description:"",
-          createdBy:"",
-
-        },
-        onSubmit : async (e)=>{
-
-         try{
-        const response = await saveRecruitmentWorkFlow({
-         companyId:companyId,
-         workFlowName:e.workFlowName,
-         description :null,
-         createdBy: 9,
-
-        })
-        console.log(response)
-
-         }catch(error)
-         {
-         console.log(error)          
-         }
-
-        }
-
-      })
+    
+        // Close the modal
+        setIsModalVisible(false);
+      };
 //Modal
 const [isModalVisible, setIsModalVisible] = useState(false);
 
-  const handleAddStageClick = () => {
-    // Set the state to true to show the modal
-    setIsModalVisible(true);
-    console.log("hhhh");
-  };
+  // const handleAddStageClick = () => {
+  //   // Set the state to true to show the modal
+  //   setIsModalVisible(true);
+  //   console.log("hhhh");
+  // };
 
   const handleModalClose = () => {
     // Set the state to false to hide the modal
@@ -69,6 +101,73 @@ const [isModalVisible, setIsModalVisible] = useState(false);
  const formik1 = useFormik ({
   
  })
+
+//  const handleAddStageRule = () => {
+//   // Add your logic for handling the "Add stage rule" button click
+//   // You can use the values of stageName and other inputs here
+//   // For now, let's just update the SVG content with the stageName
+//   setSvgContent(stageName);
+//   setIsModalVisible(false);
+// };
+
+const [svgContent, setSvgContent] = useState('');
+
+const formik = useFormik({
+  initialValues :{
+    companyId : "",
+    workFlowName:"",
+    description:"",
+    createdBy:"",
+
+  },
+  onSubmit : async (e)=>{
+
+   try{
+  const response = await saveRecruitmentWorkFlow({
+   companyId:companyId,
+   workFlowName:e.workFlowName,
+   description :null,
+   createdBy: 9,
+
+  })
+
+  console.log(response)
+  
+  
+   if(response.status === 200)
+   setInsertedId(response.result.insertedId)
+   {
+    const formattedData = stages.map((item) => ({
+      workFlowId: insertedId,
+      stageOrder: item.stageOrder,
+      stageName:item.stageName,
+      stageRules:JSON.stringify(item.stageRules),
+      createdBy:9
+    }));
+    const response2 = await saveRecruitmentWorkFlowStage(...formattedData
+);
+    console.log('Response2:', response2);
+          console.log(formattedData);
+          console.log(insertedId);
+          if (response2.status === 200) {
+            openNotification("success", "Successful", response2.message);
+           
+            setTimeout(() => {
+              handleClose();
+            }, 2000);
+          } else if (response2.status === 500) {
+            openNotification("error", "error", response2.message);
+          }
+   }
+
+   }catch(error)
+   {
+   console.log(error)          
+   }
+
+  }
+
+})
     return (
     <DrawerPop
     
@@ -178,8 +277,9 @@ initialExpanded={true}
 
                 </div>
                 <div className="w-full sm:w-[545px] grid grid-cols-1 gap-4">
-  <div className='flex  gap-5'> 
-  <svg
+                {stages.map((stage) => (
+        <div key={stage.id} className="flex gap-5">
+           <svg
     xmlns="http://www.w3.org/2000/svg"
     width="545"
     height="55"
@@ -201,24 +301,31 @@ initialExpanded={true}
     />
      <foreignObject x="30" y="0" width="545" height="55">
     <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', width: '100%', height: '100%' }}>
-      <span>Sourced</span>
+      <span>{stage.stageName}</span>
       <MdOutlineLock className='mr-12' />
     </div>
   </foreignObject >
   </svg>
-<div className='flex items-center gap-5'>
-<PiPencilSimpleLineThin />
-  <MdDelete
-                                          
-                                          className="cursor-pointer text-red-500" />
-</div>
-</div>
+  <div className='flex  gap-5'> 
+ 
+ <div className='flex items-center gap-5'>
+ <PiPencilSimpleLineThin />
+   <MdDelete
+                                           
+                                           className="cursor-pointer text-red-500" />
+ </div>
+ </div>
+        </div>
+        
+      ))}
+
+
 
  
 </div>
 
                 </div>
-                <AddMore name="Add Stage" className="text-black" change={(e)=>{handleAddStageClick()}} />
+                <AddMore name="Add Stage" className="text-black" change={(e)=>setIsModalVisible(true)} />
                 <Modal
         // title="Vertically centered modal dialog"
         wrapClassName="vertical-center-modal"
@@ -228,7 +335,7 @@ initialExpanded={true}
           <Button key="back" onClick={handleModalClose}>
             Cancel
           </Button>,
-          <Button key="submit" type="primary" onClick={handleModalClose}>
+          <Button key="submit" type="primary"  onClick={handleAddStageClick}>
             OK
           </Button>,
         ]}
@@ -245,7 +352,8 @@ initialExpanded={true}
         <FormInput
         title={"Stage Name"}
         placeholder={"Type here..."}
-        value={formik.values}
+        value={stageName}
+        change={(e) => setStageName(e)}
         
         />
         <AddMore name="Add stage rule" className="text-black" />
@@ -253,6 +361,7 @@ initialExpanded={true}
         
       </Modal>
   </Accordion>
+  {contextHolder}
   </div>
     </DrawerPop>
   )

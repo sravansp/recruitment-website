@@ -4,7 +4,7 @@ import Breadcrumbs from '../common/BreadCrumbs';
 import { useTranslation } from 'react-i18next';
 
 import ButtonClick from '../common/Button';
-import { getAllRecruitmentJobTemplates,getAllRecruitmentWorkFlows,getAllRecruitmentEmailTemplates,getAllRecruitmentQuestionnaireTemplateDetails,getAllRecruitmentEvaluationTemplateDetails,getAllRecruitmentLetterTemplates } from '../Api1';
+import { getAllRecruitmentJobTemplates,getAllRecruitmentWorkFlows,getAllRecruitmentEmailTemplates,getAllRecruitmentQuestionnaireTemplateDetails,getAllRecruitmentEvaluationTemplates,getAllRecruitmentLetterTemplates } from '../Api1';
 import AddTemplate from './Addtemplate';
 import Tabs from '../common/Tabs';
 import Departments from '../Company/Add _departments';
@@ -18,6 +18,7 @@ import { Button } from 'antd';
 import QuestionAire from './Addquestinaire';
 import AddLetter from './AddLetter';
 import Workflowstage from './Workflowstage';
+import CreatejobTemp from './createJobtemp';
 
 const Template = ({
     open = "",
@@ -188,7 +189,7 @@ const Template = ({
           {
             id:1,
             title:"Name",
-            value:"Name",
+            value:"evaluationTemplateName",
          },
          {
             id:2,
@@ -328,36 +329,8 @@ const Template = ({
   // })
 
 
-  const getquestionnaire = async () => {
-    try {
-     
-      const response = await getAllRecruitmentQuestionnaireTemplateDetails();
-      
-      setQuestionaire(response.result);
-      // const newData = {};
-      // response.result.forEach((job) => {
-      //   newData[job.jobId] = job; // Assuming jobId is the unique identifier
-      // });
-     
-      // setTableData(response.data);
-      // console.log(response.data); // Access response data
-      console.log(response);
-    } catch (error) {
-      console.error(error); // Handle errors
-    }
-  };
-  const getlettertemplate = async () => {
-    try {
-     
-      const response = await getAllRecruitmentLetterTemplates();
-      
-      setLetter(response.result);
-     
-      console.log(response);
-    } catch (error) {
-      console.error(error); // Handle errors
-    }
-  };
+  
+
 
   
   const getEmailLsit = async () => {
@@ -392,8 +365,8 @@ const Template = ({
   }
   const getallevaluation = async ()=>{
     try{
-      const data = await getAllRecruitmentEvaluationTemplateDetails()
-      setQuestionaire(data.result)
+      const data = await getAllRecruitmentEvaluationTemplates()
+      setEvaluation(data.result)
       console.log(data)
     }catch (error) {
       console.error(error); // Handle errors
@@ -561,7 +534,7 @@ const Template = ({
               />
           </div>
           {navigationPath === "Job" && show && (
-        <Createjob
+        <CreatejobTemp
           open={show}
           close={(e) => {
             setShow(e);

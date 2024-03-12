@@ -10,6 +10,7 @@ import TextEditor from "../common/TextEditor/TextEditor";
 import FormInput from "../common/FormInput";
 import image from "../../assets/images/attachment-2.svg";
 import image2 from "../../assets/images/emoji-sticker-line.svg";
+
 import { saveRecruitmentEmailTemplate } from "../Api1";
 const Emailtemplate = ({
   open = "",
@@ -24,6 +25,28 @@ const Emailtemplate = ({
     close(false);
   };
   const [content, setContent] = useState("");
+  const [api, contextHolder] = notification.useNotification();
+  const openNotification = (type, message, description) => {
+    api[type]({
+      message: message,
+      description: description,
+      placement: "top",
+      // stack: 2,
+      style: {
+        background: `${
+          type === "success"
+            ? `linear-gradient(180deg, rgba(204, 255, 233, 0.8) 0%, rgba(235, 252, 248, 0.8) 51.08%, rgba(246, 251, 253, 0.8) 100%)`
+            : "linear-gradient(180deg, rgba(255, 236, 236, 0.80) 0%, rgba(253, 246, 248, 0.80) 51.13%, rgba(251, 251, 254, 0.80) 100%)"
+        }`,
+        boxShadow: `${
+          type === "success"
+            ? "0px 4.868px 11.358px rgba(62, 255, 93, 0.2)"
+            : "0px 22px 60px rgba(134, 92, 144, 0.20)"
+        }`,
+      },
+      // duration: null,
+    });
+  };
 
   const handleSubmit = async () => {
     try {
@@ -42,15 +65,19 @@ const Emailtemplate = ({
       // Handle API response
       console.log(response);
       if (response.status === 200) {
-        notification.success({
-          message: "Success",
-          description: "Email template saved successfully.",
-        });
-      } else {
-        notification.error({
-          message: "Error",
-          description: "Failed to save email template.",
-        });
+      
+      
+        openNotification(
+          "success",
+          "Successful",
+          response.message
+        );
+        setTimeout(() => {
+          handleClose();
+        }, 2000);
+      
+      }else if (response.status === 500) {
+        openNotification("error", "input field is empty..", response.message);
       }
     } catch (error) {
       console.error("Error saving email template:", error);
@@ -156,6 +183,7 @@ const Emailtemplate = ({
           </Accordion>
         </div>
       </DrawerPop>
+      {contextHolder}
     </div>
   );
 };

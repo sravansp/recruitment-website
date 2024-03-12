@@ -1,7 +1,7 @@
 import axios from "axios";
 
-// const apiUrl = 'http://192.168.29.185/loyaltri-recruitment-server/api/v1';
-const apiUrl = 'https://alpha-jobs-api.loyaltri.com/api/v1';
+const apiUrl = 'http://192.168.29.185/loyaltri-recruitment-server/api/v1';
+// const apiUrl = 'https://alpha-jobs-api.loyaltri.com/api/v1';
 
 
 const apiRequest = async (action, method, kwargs) => {
@@ -414,4 +414,40 @@ export const saveRecruitmentEvaluationTemplateWithDetails = async (e) => {
     console.error("Error in saveRecruitmentWorkFlowStage:", error);
     throw error; // Re-throw the error to handle it where the function is called.
   }
+};
+export const saveRecruitmentJobTemplate = async (e) => {
+  try {
+    const action = "saveRecruitmentJobTemplate";
+    const method = "POST";
+    const kwargs = e;
+    
+    console.log("API Request Data:", { action, method, kwargs });
+
+    const response = await apiRequest(action, method, kwargs);
+
+    console.log("API Response:", response);
+
+    return response;
+  } catch (error) {
+    console.error("Error in saveRecruitmentWorkFlowStage:", error);
+    throw error; // Re-throw the error to handle it where the function is called.
+  }
+};
+export const getAllRecruitmentEvaluationTemplates = async () => {
+  const action = "getAllRecruitmentEvaluationTemplates";
+
+  const method = "POST";
+
+  const kwargs = {};
+
+  return await apiRequest(action, method, kwargs);
+};
+export const getRecruitmentJobTemplateById = async (id) => {
+  const action = "getRecruitmentJobTemplateById";
+
+  const method = "POST";
+
+  const kwargs = {id};
+
+  return await apiRequest(action, method, kwargs);
 };
