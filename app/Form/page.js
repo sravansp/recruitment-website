@@ -129,7 +129,7 @@ function Web() {
       
       <div className="divider-h mt-10 bottom-0" />
       <div className=" flex gap-2.5 p-1.5 justify-end ">
-        <ButtonClick buttonName="Cancel" icon={<RxCross2 />} />
+        <ButtonClick buttonName="Cancel" icon={<RxCross2 />} className={"dark:text-white"} />
         <ButtonClick
           buttonName="Save & Continue"
           BtnType="primary"

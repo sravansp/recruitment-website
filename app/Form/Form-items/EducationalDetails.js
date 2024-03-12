@@ -45,24 +45,24 @@ function EducationalDetails() {
                   <FormInput
                     title={"School or University"}
                     placeholder={"Eg: Boston University"}
-                    className="!text-[#344054]"
+                    className="text-[#344054]"
                   />
                   <Dropdown
                     title={"Degree"}
                     placeholder={"Eg: Bachelor’s"}
-                    className="!text-[#344054]"
+                    className="text-[#344054]"
                   />
                 </div>
                 <div className="grid  grid-cols-1  sm:grid-cols-3 gap-4">
                   <FormInput
                     title={"Field of Study"}
                     placeholder={"Eg: Business"}
-                    className="!text-[#344054]"
+                    className="text-[#344054]"
                   />
                   <FormInput
                     title={"Year"}
                     placeholder={"Year"}
-                    className="!text-[#344054]"
+                    className="text-[#344054]"
                   />
                 </div>
                 <div className="divider-h" />
@@ -71,29 +71,29 @@ function EducationalDetails() {
                   <FormInput
                     title={"School or University"}
                     placeholder={"Eg: Boston University"}
-                    className="!text-[#344054]"
+                    className="text-[#344054]"
                   />
                   <Dropdown
                     title={"Degree"}
                     placeholder={"Eg: Bachelor’s"}
-                    className="!text-[#344054]"
+                    className="text-[#344054]"
                   />
                 </div>
                 <div className="grid  grid-cols-1  sm:grid-cols-3 gap-4">
                   <FormInput
                     title={"Field of Study"}
                     placeholder={"Eg: Business"}
-                    className="!text-[#344054]"
+                    className="text-[#344054]"
                   />
                   <FormInput
                     title={"Year"}
                     placeholder={"Year"}
-                    className="!text-[#344054]"
+                    className="text-[#344054]"
                   />
 
                   <RiDeleteBin5Line className="text-gray-500 w-[17px] h-[17px] justify-end " />
                 </div>
-                <AddMore name="Add More Experience " className="!text-black" />
+                <AddMore name="Add More Experience "  />
               </div>
             </div>
           </div>

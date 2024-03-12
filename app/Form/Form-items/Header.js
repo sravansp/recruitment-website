@@ -19,10 +19,10 @@ function Header1() {
         </button> */}
         <div className="h-divider" />
         <div className="flex-auto min-w-0 ml-5">
-          <p className="text-sm font-semibold font-Inter] leading-6 text-gray-900">
+          <p className="text-sm font-semibold font-Inter] leading-6 text-gray-900 dark:text-white">
             Head of Director{" "}
           </p>
-          <p className="mt-1 text-xs leading-5 text-gray-500 truncate">
+          <p className="mt-1 text-xs leading-5 text-gray-500 truncate dark:text-gray-300">
             at Dubai, United Arab Emirates
           </p>
         </div>

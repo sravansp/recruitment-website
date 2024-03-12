@@ -50,41 +50,41 @@ function WorkExperience() {
                   <FormInput
                     title={"Job Title"}
                     placeholder={"Eg: Retail Sales Manager"}
-                    className="!text-[#344054]"
+                    className="text-[#344054]"
                   />
 
                   <Dropdown
                     title={"Employment Type"}
                     placeholder={"Eg: Fulltime"}
-                    className="!text-[#344054]"
+                    className="text-[#344054]"
                   />
                 </div>
                 <div className="grid grid-cols-1 sm:grid-cols-3 gap-4">
                   <FormInput
                     title={"Company Name"}
                     placeholder={"Eg: Microsoft"}
-                    className="!text-[#344054]"
+                    className="text-[#344054]"
                   />
 
                   <FormInput
                     title={"Location"}
                     placeholder={"Eg: London, UK"}
-                    className="!text-[#344054]"
+                    className="text-[#344054]"
                   />
                 </div>
                 <div className="grid grid-cols-3 sm:grid-cols-6 gap-4">
                   <FormInput
                     title={"From"}
                     placeholder={"09/2023"}
-                    className="!text-[#344054]"
+                    className="text-[#344054]"
                   />
                   <FormInput
                     title={"To"}
                     placeholder={"09/2024"}
-                    className="!text-[#344054]"
+                    className="text-[#344054]"
                   />
                 </div>
-                <AddMore name="Add More Experience " className="!text-black" />
+                <AddMore name="Add More Experience " className="text-black" />
               </div>
             </div>
           </div>
@@ -114,7 +114,7 @@ function WorkExperience() {
                 aria-labelledby={`acco-title-item`}
                 className="flex flex-col gap-6  justify-between w-full px-6 py-4"
               >
-               <div className="relative max-w-[1070px] sm:w-[492px] w-full borderb rounded-md h-24 bg-[#FAFAFA]">
+               <div className="relative max-w-[1070px] sm:w-[492px] w-full borderb rounded-md h-24 bg-[#FAFAFA] dark:bg-black">
                 <div className="flex min-w-0 gap-x-4 pt-5 pl-5">
                   <img
                     className="h-12 w-12 flex-none rounded-full bg-gray-50"
@@ -122,7 +122,7 @@ function WorkExperience() {
                     alt=""
                   />
                   <div className="min-w-0 flex-auto">
-                    <p className="text-sm font-semibold leading-6 text-gray-900">
+                    <p className="text-sm font-semibold leading-6 text-gray-900 dark:text-white">
                       Click to upload or drag and drop{" "}
                     </p>
                     <p className="mt-1 truncate text-xs leading-5 text-gray-500">

@@ -43,14 +43,14 @@ function Questions() {
                   <FormInput
                     title={"Are you legally eligible to work in the country?"}
                     placeholder={"Answer here.."}
-                    className="!text-[#344054]"
+                    className="text-[#344054]"
                   />
                 </div>
                 <div className="grid  grid-cols-1 sm:grid-cols-2 gap-4">
                   <FormInput
                     title={"Highest level of education completed"}
                     placeholder={"Answer here.."}
-                    className="!text-[#344054]"
+                    className="text-[#344054]"
                   />
                 </div>
 
@@ -58,14 +58,14 @@ function Questions() {
                   <FormInput
                     title={"Highest level of education completed"}
                     placeholder={"Answer here.."}
-                    className="!text-[#344054]"
+                    className="text-[#344054]"
                   />
                 </div>
                 <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
                   <FormInput
                     title={"Highest level of education completed"}
                     placeholder={"Answer here.."}
-                    className="!text-[#344054]"
+                    className="text-[#344054]"
                   />
                 </div>
               </div>

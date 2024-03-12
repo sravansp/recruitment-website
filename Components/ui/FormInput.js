@@ -68,7 +68,7 @@ export default function FormInput({
             placeholder={placeholder}
             value={value}
             onChange={(e) => change(e.target.value)}
-            className={`w-full relative ${className} 
+            className={`w-full relative dark:text-white ${className} 
             } ${error ? "border-rose-400" : ""}`}
             status={error ? "error" : ""}
             size={isSmallScreen ? "default" : "large"}

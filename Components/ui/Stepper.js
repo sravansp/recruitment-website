@@ -95,7 +95,7 @@ export default function Stepper({
   // const stepsDisplay =
 
   return (
-    <div className="relative mx-4 py-1.5 flex justify-between items-center bg-white dark:bg-lightdark">
+    <div className="relative mx-4 py-1.5 flex justify-between items-center ">
       {stepperSteps.map((step, index) => (
         <div
           key={index}
@@ -106,12 +106,12 @@ export default function Stepper({
           }
         >
           <div className="relative z-50 flex flex-col items-center">
-            <div className="w-8 h-8 bg-white rounded-full 2xl:h-11 2xl:w-11">
+            <div className="w-8 h-8 bg-white dark:bg-black rounded-full 2xl:h-11 2xl:w-11">
               <div
                 className={`rounded-full 2xl:h-11 2xl:w-11 h-8 w-8 shadow-stepShadowInset vhcenter bg-[${primaryColor}] bg-opacity-30 border-[0.5px] border-[${primaryColor}] ${
                   step.selected && step.completed
                     ? "border-opacity-40"
-                    : " border-[#E4E4E4] border-opacity-100"
+                    : " border-[#E4E4E4] dark:borde border-opacity-100"
                 }`}
                 style={{ backgroundColor: `${primaryColor}44` }}
               >
@@ -125,7 +125,7 @@ export default function Stepper({
                   }}
                   className={`text-xs 2xl:text-base font-medium rounded-full transition duration-500 ease-in-out h-5 w-5 2xl:h-8 2xl:w-8 vhcenter shadow-stepShadow
              ${
-               step.selected ? "bg-accent text-white border-accent" : "bg-white"
+               step.selected ? "bg-accent text-white dark:text-black border-accent" : "bg-white"
              }
             `}
                 >
@@ -141,7 +141,7 @@ export default function Stepper({
             </div>
             <div
               className={`absolute top-0  text-center mt-11 2xl:mt-14 w-40 text-xs 2xl:text-base font-medium ${
-                step.selected ? "text-black" : "text-black opacity-50"
+                step.selected ? "text-black dark:text-white" : "text-white opacity-50"
               }`}
             >
               {step.description}
@@ -151,7 +151,7 @@ export default function Stepper({
             className={`flex-auto border-t-4 transition duration-500 ease-in-out border-[#E5E5E5]`}
           ></div>
           <div
-            className="absolute left-0 right-0 h-1 bg-[#E4E4E4] z-0 rounded-md"
+            className="absolute left-0 right-0 h-1 bg-[#E4E4E4] dark:bg-black z-0 rounded-md"
             style={{
               // width: `${(currentStepNumber / (steps.length - 1)) * 100}%`,
               width: `${(presentage / (steps.length - 1)) * 100}%`,

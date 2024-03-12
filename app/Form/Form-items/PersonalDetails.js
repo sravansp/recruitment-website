@@ -43,34 +43,34 @@ function PersonalDetails() {
                 <Dropdown
                   title={"Prefix"}
                   placeholder={"Mr"}
-                  className="!text-[#344054]"
+                  // className="text-[#344054]"
                 />
               </div>
               <div className="grid grid-cols-1 sm:grid-cols-3 gap-4">
                 <FormInput
                   title={"First Name"}
                   placeholder={"First Name"}
-                  className="!text-[#344054]"
+                  // className="text-[#344054] "
                 />
                 <FormInput
                   title={"Last Name"}
                   placeholder={"Last Name"}
-                  className="!text-[#344054]"
+                  // className="text-[#344054]"
                 />
               </div>
               <div className="grid grid-cols-1 sm:grid-cols-3 gap-4">
                 <FormInput
                   title={"Email"}
                   placeholder={"Email Address"}
-                  className="!text-[#344054]"
+                  // className="text-[#344054]"
                 />
                 <Dropdown
                   title={"Phone Number"}
                   placeholder={"1234656987"}
-                  className="!text-[#344054]"
+                  // className="text-[#344054]"
                 />
               </div>
-              <div className="relative max-w-[1070px] sm:w-[492px] w-full borderb rounded-md h-24 bg-[#FAFAFA]">
+              <div className="relative max-w-[1070px] sm:w-[492px] w-full borderb rounded-md h-24 bg-[#FAFAFA] dark:bg-black">
                 <div className="flex min-w-0 gap-x-4 pt-5 pl-5">
                   <img
                     className="h-12 w-12 flex-none rounded-full bg-gray-50"
@@ -78,10 +78,10 @@ function PersonalDetails() {
                     alt=""
                   />
                   <div className="min-w-0 flex-auto">
-                    <p className="text-sm font-semibold leading-6 text-gray-900">
+                    <p className="text-sm font-semibold leading-6 text-gray-900 dark:text-white">
                       Click to upload or drag and drop{" "}
                     </p>
-                    <p className="mt-1 truncate text-xs leading-5 text-gray-500">
+                    <p className="mt-1 truncate text-xs leading-5 text-gray-500 dark:text-white dark:text-opacity-50">
                       PDF, DOCX Format only (5 mb max)
                     </p>
                   </div>
@@ -91,24 +91,24 @@ function PersonalDetails() {
                 <Dropdown
                   title={"Location"}
                   placeholder={"United Arab Emirates"}
-                  className="!text-[#344054]"
+                  // className="text-[#344054]"
                 />
                 <FormInput
                   title={"City or Town"}
                   placeholder={"Type here..."}
-                  className="!text-[#344054]"
+                  // className="text-[#344054]"
                 />
               </div>
               <div className="grid grid-cols-1 sm:grid-cols-3 gap-4">
                 <FormInput
                   title={"Address Line"}
                   placeholder={"Type here..."}
-                  className="!text-[#344054]"
+                  // className="text-[#344054]"
                 />
                 <Dropdown
                   title={"Postal Code"}
                   placeholder={"Type here..."}
-                  className="!text-[#344054]"
+                  // className="text-[#344054]"
                 />
               </div>
             </div>
