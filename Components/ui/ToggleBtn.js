@@ -1,3 +1,4 @@
+"use client";
 import { useEffect } from "react";
 import { Switch } from "antd";
 import React, { useState } from "react";

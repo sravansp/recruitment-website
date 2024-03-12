@@ -1,3 +1,4 @@
+"use client";
 import React, { useEffect, useState } from "react";
 import { IoIosArrowForward } from "react-icons/io";
 import ToggleBtn from "@components/ui/ToggleBtn";
@@ -16,7 +17,14 @@ export default function Accordion({
   
 }) {
   const [expanded, setExpanded] = useState(initialExpanded);
- const primaryColor = localStorage.getItem('mainColor')
+  const [primaryColor, setPrimaryColor] = useState('');
+  useEffect(() => {
+    
+    const color = localStorage.getItem("mainColor");
+    if (color) {
+      setPrimaryColor(color);
+    }
+  }, []);
   // const toggleAccordion = (id) => {
   //   setExpanded((prevExpanded) => ({
   //     ...prevExpanded,

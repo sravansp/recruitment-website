@@ -1,3 +1,4 @@
+"use client";
 import React, { useState, useRef, useEffect } from "react";
 import { DownOutlined, RightOutlined } from "@ant-design/icons";
 import { Menu, Dropdown, Checkbox } from "antd";
