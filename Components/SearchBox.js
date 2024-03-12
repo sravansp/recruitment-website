@@ -1,4 +1,5 @@
 // SearchBox.js
+"use client";
 import React, { useState } from "react";
 
 const SearchBox = ({ items, onItemSelected, icon, placeholder="", className=""}) => {

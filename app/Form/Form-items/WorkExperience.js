@@ -11,7 +11,14 @@ import TextArea from "@components/ui/TextArea";
 function WorkExperience() {
   
    
-  const primaryColor = localStorage.getItem("mainColor");
+  const [primaryColor, setPrimaryColor] = useState('');
+  useEffect(() => {
+    
+    const color = localStorage.getItem("mainColor");
+    if (color) {
+      setPrimaryColor(color);
+    }
+  }, []);
   return (
    
       

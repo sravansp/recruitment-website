@@ -1,10 +1,18 @@
-import React from "react";
+"use client";
+import React, { useEffect, useState } from "react";
 import FlexCol from "@components/ui/FlexCol";
 import Dropdown from "@components/ui/Dropdown";
 import FormInput from "@components/ui/FormInput";
 
 function PersonalDetails() {
-  const primaryColor = localStorage.getItem("mainColor");
+  const [primaryColor, setPrimaryColor] = useState('');
+  useEffect(() => {
+    
+    const color = localStorage.getItem("mainColor");
+    if (color) {
+      setPrimaryColor(color);
+    }
+  }, []);
 
   return (
     <div className="flex flex-col gap-6">

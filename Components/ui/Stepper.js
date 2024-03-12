@@ -1,3 +1,4 @@
+"use client";
 import React, { useState, useEffect, useRef, useMemo } from "react";
 import { MdCheck } from "react-icons/md";
 
@@ -10,7 +11,8 @@ export default function Stepper({
 }) {
   const [stepperSteps, setStep] = useState([]);
   const [newSteps, setNewSteps] = useState([]);
-  const primaryColor = localStorage.getItem("mainColor");
+  const [primaryColor, setPrimaryColor] = useState("");
+
   const stepsStateRef = useRef();
   useEffect(() => {
     console.log(steps);
@@ -21,7 +23,12 @@ export default function Stepper({
     // }
     // setNewSteps(steps);
   }, [steps]);
-
+  useEffect(() => {
+    const color = localStorage.getItem("mainColor");
+    if (color) {
+      setPrimaryColor(color);
+    }
+  }, []);
   useEffect(() => {
     console.log(presentage);
     console.log(steps);
@@ -106,7 +113,7 @@ export default function Stepper({
                     ? "border-opacity-40"
                     : " border-[#E4E4E4] border-opacity-100"
                 }`}
-                style={{backgroundColor: `${primaryColor}44`}}
+                style={{ backgroundColor: `${primaryColor}44` }}
               >
                 <div
                   style={{

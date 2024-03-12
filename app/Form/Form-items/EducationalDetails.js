@@ -1,5 +1,5 @@
 "use client";
-import React from "react";
+import React, { useEffect, useState } from "react";
 import FlexCol from "@components/ui/FlexCol";
 import Dropdown from "@components/ui/Dropdown";
 import FormInput from "@components/ui/FormInput";
@@ -7,7 +7,14 @@ import AddMore from "@components/ui/AddMore";
 import { RiDeleteBin5Line } from "react-icons/ri";
 
 function EducationalDetails() {
-  const primaryColor = localStorage.getItem("mainColor");
+  const [primaryColor, setPrimaryColor] = useState('');
+  useEffect(() => {
+    
+    const color = localStorage.getItem("mainColor");
+    if (color) {
+      setPrimaryColor(color);
+    }
+  }, []);
   return (
     <div>
       <div className="flex flex-col gap-6">
