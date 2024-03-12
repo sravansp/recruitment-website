@@ -17,6 +17,7 @@ const Emailtemplate = ({
   inputshow = false,
   isUpdate = {},
 }) => {
+  const [companyId, setCompanyId] = useState(localStorage.getItem("companyId"));
   const [templateName, setTemplateName] = useState("");
   const [show, setShow] = useState(open);
   const { t } = useTranslation();
@@ -27,16 +28,15 @@ const Emailtemplate = ({
 
   const handleSubmit = async () => {
     try {
-      // API call
+     
       const response = await saveRecruitmentEmailTemplate({
-        companyId: 1, // Replace with your companyId value
-        // Replace with your emailTemplateName value
+        companyId: companyId, 
         emailTemplateName: templateName,
         emailTemplate: {
           subject: "Invitation to Interview for [Job Title] Position",
-          body: content, // Use the content state for the email body
+          body: content, 
         },
-        createdBy: null, // Replace with your createdBy value
+        createdBy: null,
       });
 
       // Handle API response
