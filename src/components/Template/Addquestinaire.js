@@ -18,10 +18,14 @@ import { Formik, useFormik } from 'formik'
 import AddMore from '../common/AddMore'
 
 
-const QuestionAire = ({open = "", close = () => { },inputshow= false,isUpdate={},}) => {
-    
+const QuestionAire = ({
+  open = "",
+  close = () => {},
+  inputshow = false,
+  isUpdate = {},
+}) => {
   const [companyId, setCompanyId] = useState(localStorage.getItem("companyId"));
-  const[insertedId,setinsertedId] =useState(null)
+  const [insertedId, setinsertedId] = useState();
 
     const [savedContent, setSavedContent] = useState([]);
     const[show,setShow] =useState(open);
@@ -308,7 +312,7 @@ const QuestionAire = ({open = "", close = () => { },inputshow= false,isUpdate={}
     </DrawerPop>
    
     </div>
-  )
-}
+  );
+};
 
-export default QuestionAire
+export default QuestionAire;
