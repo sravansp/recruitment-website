@@ -4,7 +4,7 @@ import Breadcrumbs from '../common/BreadCrumbs';
 import { useTranslation } from 'react-i18next';
 
 import ButtonClick from '../common/Button';
-import { getAllRecruitmentJobTemplates,getAllRecruitmentWorkFlows,getAllRecruitmentEmailTemplates, getAllRecruitmentQuestionnaireTemplateDetails, getAllRecruitmentLetterTemplates } from '../Api1';
+import { getAllRecruitmentJobTemplates,getAllRecruitmentWorkFlows,getAllRecruitmentEmailTemplates,getAllRecruitmentQuestionnaireTemplateDetails,getAllRecruitmentEvaluationTemplates,getAllRecruitmentLetterTemplates } from '../Api1';
 import AddTemplate from './Addtemplate';
 import Tabs from '../common/Tabs';
 import Departments from '../Company/Add _departments';
@@ -18,13 +18,14 @@ import { Button } from 'antd';
 import QuestionAire from './Addquestinaire';
 import AddLetter from './AddLetter';
 import Workflowstage from './Workflowstage';
+import CreatejobTemp from './createJobtemp';
 
 const Template = ({
     open = "",
     close = () => {},
     refresh,
     createPolicyAction,
-    updateId,
+    
     openPolicy,
 }) => {
     const { t } = useTranslation();
@@ -35,7 +36,7 @@ const Template = ({
     const [show, setShow] = useState(open);
     const [openPop, setOpenPop] = useState("");
     const breadcrumbItems = [
-        { label: t("Team Members"), url: "/" },
+        { label: t("Templates"), url: "/" },
         // { label: navigationPath.charAt(0).toUpperCase() + navigationPath.slice(1) },
       ];
       const [navigationPath, setNavigationPath] = useState("Job");
@@ -188,7 +189,7 @@ const Template = ({
           {
             id:1,
             title:"Name",
-            value:"Name",
+            value:"evaluationTemplateName",
          },
          {
             id:2,
@@ -198,33 +199,39 @@ const Template = ({
          {
             id:3,
             title:"Status",
-            value:"Status",
-            action:true,
+            value:"",
+            actionToggle:true,
          },
         ],
         Questionaire : [ 
           {
             id:1,
             title:"Name",
-            value:"Name",
+            value:"question",
          },
          {
             id:2,
             title:"Description",
-            value:"Description",
+            value:"description",
          },
          {
             id:3,
             title:"Status",
             value:"Status",
-            action:true,
+            actionToggle:true,
          },
+         {
+          id:4,
+          title:"",
+          value:"actions",
+          action:true,
+       },
         ],
         Letter : [ 
           {
             id:1,
             title:"Name",
-            value:"Name",
+            value:"letterTemplateName",
          },
          {
             id:2,
@@ -234,8 +241,8 @@ const Template = ({
          {
             id:3,
             title:"Status",
-            value:"Status",
-            action:true,
+            value:"",
+            actionToggle: true,
          },
         ]
 
@@ -256,6 +263,7 @@ const Template = ({
    const [EvaluationLIst,setEvaluation]=useState([])
    const[QuestionaireLIst,setQuestionaire]=useState([])
    const[LetterLIst,setLetter]=useState([])
+   const[updateId,setUpdateId]=useState(null)
 
  
 //    const handleOpenModal = () => {
@@ -322,36 +330,8 @@ const Template = ({
   // })
 
 
-  const getquestionnaire = async () => {
-    try {
-     
-      const response = await getAllRecruitmentQuestionnaireTemplateDetails();
-      
-      setQuestionaire(response.result);
-      // const newData = {};
-      // response.result.forEach((job) => {
-      //   newData[job.jobId] = job; // Assuming jobId is the unique identifier
-      // });
-     
-      // setTableData(response.data);
-      // console.log(response.data); // Access response data
-      console.log(response);
-    } catch (error) {
-      console.error(error); // Handle errors
-    }
-  };
-  const getlettertemplate = async () => {
-    try {
-     
-      const response = await getAllRecruitmentLetterTemplates();
-      
-      setLetter(response.result);
-     
-      console.log(response);
-    } catch (error) {
-      console.error(error); // Handle errors
-    }
-  };
+  
+
 
   
   const getEmailLsit = async () => {
@@ -359,12 +339,7 @@ const Template = ({
      
       const response = await getAllRecruitmentEmailTemplates();
       
-      // setEmail(response.result.map((item) => ({
-      //   emailTemplateName: item.emailTemplateName,
-      //   subject: item.emailTemplate.map((e) => (
-      //   e.subject)),
-      // }))
-      // )
+    
       setEmail(response.result)
       // const newData = {};
       // response.result.forEach((job) => {
@@ -379,7 +354,37 @@ const Template = ({
       console.error(error); // Handle errors
     }
   };
-  
+  const getallquestionaire = async ()=>{
+    try{
+      const data = await getAllRecruitmentQuestionnaireTemplateDetails()
+      setQuestionaire(data.result)
+      console.log(data)
+    }catch (error) {
+      console.error(error); // Handle errors
+    }
+
+  }
+  const getallevaluation = async ()=>{
+    try{
+      const data = await getAllRecruitmentEvaluationTemplates()
+      setEvaluation(data.result)
+      console.log(data)
+    }catch (error) {
+      console.error(error); // Handle errors
+    }
+
+  }
+  const getallLetter = async ()=>{
+    try{
+      const data = await getAllRecruitmentLetterTemplates()
+      setLetter(data.result)
+      console.log(data)
+    }catch (error) {
+      console.error(error); // Handle errors
+    }
+
+  }
+
  
 //  useEffect(()=>{
 //   getEmailLsit();
@@ -400,12 +405,38 @@ const Template = ({
         gettemaplate();
         
         break;
-      case "Departments":
+      case "JobDescription":
         // getDepartmentList();
         
         console.log(newData)
         break;
       // Add more cases as needed
+      case "Workflow":
+        getWorkflows();
+        
+        console.log(newData)
+        break;
+        case "Email":
+          getEmailLsit();
+          
+          console.log(newData)
+          break;
+          case "Evaluation":
+            getallevaluation();
+            
+            console.log(newData)
+            break;
+            case "Questionaire":
+              // getDepartmentList();
+              getallquestionaire();
+              
+              console.log(newData)
+              break;
+              case "Letter":
+                getallLetter()
+                
+                console.log(newData)
+                break;
       default:
         break;
     }
@@ -430,6 +461,19 @@ const Template = ({
     
     },
   ];
+  const actionId= [
+    {
+      Job:{id:"jobTemplateId"},
+      JobDescription:{id:"JobDescriptionTemplateId"},
+      Workflow: {id:"workFlowId"},
+      Email:{id:"emailTemplateId"},
+      Evaluation:{id:"evaluationTemplateId"},
+      Questionaire:{id:"questionnaireTemplateId"},
+      Letter:{id:"letterTemplateId"}
+    }
+    
+
+  ]
   // const handleCreateJobClose = () => {
   //   // Perform navigation logic here
   //   // Example: navigate to the "Jobdetails" accordion
@@ -498,19 +542,44 @@ const Template = ({
                     ? actionData[0]?.[navigationPath].data
                     : null
                 }
-                
+                actionID={
+                  Object.keys(actionId[0]).includes(navigationPath)
+                    ? actionId[0]?.[navigationPath].id
+                    : null
+                }
+                buttonClick={(e) => {
+                  // console.log(company, "company", e);
+                  if (e === true) {
+                    // setShow(e);
+                  } else if (e === navigationPath) {
+                    // setShow(true);
+        
+                    // setCompanyId(company);
+                    setOpenPop(e);
+                    // setUpdateId(false);
+                  } else {
+                    setUpdateId(e);
+                    setOpenPop(navigationPath);
+        
+                    setShow(true);
+                    // console.log(company, "companyparentId");
+                    // if (company === "edit") {
+                    
+                    // }
+                  }
+                }}
               
               
               />
           </div>
-          {navigationPath === "Job" && show && (
-        <Createjob
+          { show && (
+        <CreatejobTemp
           open={show}
           close={(e) => {
             setShow(e);
            
           }}
-        //   updateId={updateId}
+          updateId={updateId}
         //   companyDataId={companyId}
           refresh={() => {
             // getLocationList();

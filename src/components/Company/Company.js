@@ -11,6 +11,7 @@ import API from '../Api'
 import axios from 'axios'
 import { setNavigationPath } from '../../Redux/action'
 import ToggleBtn from '../common/ToggleBtn'
+import Breadcrumbs from '../common/BreadCrumbs'
 
 
 const Company = () => {
@@ -125,8 +126,11 @@ const Company = () => {
     );
     setDepartmentList(result.data.tbl_department);
     console.log(result);
-  };
- 
+  }; 
+  const breadcrumbItems = [
+    { label: t("Company"), url: "/" },
+    // { label: navigationPath.charAt(0).toUpperCase() + navigationPath.slice(1) },
+  ];
   React.useEffect(() => {
     // Provide a default value if needed
    
@@ -158,11 +162,16 @@ const Company = () => {
 
 
     return (
-    <div>
+    
+      <div className='flex flex-col gap-6'>
+                <div>
+              <Breadcrumbs items={breadcrumbItems} />
+              <p className="para">{t("Lorem ipsum dolart sit dummy text.")}</p>
+          </div>
         <Tabs
        tabs={tabs}
        header={header}
-       showButton={true}
+       All={true}
        clickDrawer={(e) => {
         handleShow();
         // console.log(e);

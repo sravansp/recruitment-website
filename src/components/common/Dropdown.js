@@ -6,6 +6,7 @@ import { HiMiniStar } from "react-icons/hi2";
 import { IoAlertCircleOutline } from "react-icons/io5";
 import logo from "../../assets/images/Avatar.png";
 import { useMediaQuery } from "react-responsive";
+import { FaAsterisk } from "react-icons/fa";
 
 export default function Dropdown({
   title = "",
@@ -42,7 +43,7 @@ export default function Dropdown({
               {title}
             </label>
 
-            {required && <HiMiniStar className="text-[10px] text-rose-600" />}
+            {required && <FaAsterisk className="text-[10px] text-rose-600" />}
           </div>
           {descriptionTop && (
             <p className="text-xs font-medium opacity-50 dark:text-white">
@@ -84,19 +85,20 @@ export default function Dropdown({
           {options?.map((each, i) => (
             <Option key={i} value={each.value}>
               <div className="flex flex-col gap-1 country-option">
-                <div>
-                  {icon && each.icon}
-                  {image && (
+                <div className="flex items-center gap-2">
+                {each.icon}
+                  {/* {image && (
                     <img
                       src={each.image}
                       alt=""
                       className="w-5 h-5 rounded-full"
                     />
-                  )}
+                  )} */}
                   {/* <FlagIcon code={91} className="w-5 h-5 rounded-full" />
                     <span>mkck</span> */}
+                    <span>{each.label}</span>
                 </div>
-                <span>{each.label}</span>
+                
                 <p class="text-gray-500 text-xs font-medium font-['Inter'] leading-none">
                   {each.description}
                 </p>

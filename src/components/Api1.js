@@ -1,7 +1,8 @@
 import axios from "axios";
 
 // const apiUrl = 'http://192.168.29.185/loyaltri-recruitment-server/api/v1';
-const apiUrl = "https://alpha-jobs-api.loyaltri.com/api/v1";
+const apiUrl = 'https://alpha-jobs-api.loyaltri.com/api/v1';
+
 
 const apiRequest = async (action, method, kwargs) => {
   try {
@@ -74,8 +75,11 @@ export const saveRecruitmentJobApplicationFormSetting = async (e) => {
   const action = "saveRecruitmentJobApplicationFormSetting";
 
   const method = "POST";
+  const kwargs = e;
+  const response = await apiRequest(action, method, kwargs);
+  console.log("API Response:", response);
 
-  return await apiRequest(action, method, e);
+  return await apiRequest(action, method, kwargs);
 };
 
 //Team Members
@@ -98,34 +102,26 @@ export const getAllRecruitmentUserRoleMappings = async () => {
 
   return await apiRequest(action, method, kwargs);
 };
+
 export const getAllRecruitmentWorkFlows = async () => {
   const action = "getAllRecruitmentWorkFlows";
 
   const method = "POST";
-  // const requestData = {
-  //   // Include any other necessary parameters
-  //   workFlowId: workFlowId,
-  // };
+
 
   const kwargs = {};
 
   return await apiRequest(action, method, kwargs);
 };
-export const updateRecruitmentJob = async (id, workFlowId, modifiedBy) => {
+export const updateRecruitmentJob = async (data) => {
   const action = "updateRecruitmentJob";
   const method = "POST";
-  console.log(workFlowId);
-  console.log(modifiedBy);
+ 
   // Construct the request payload
-  const requestData = {
-    id: id,
-    workFlowId: workFlowId,
-    modifiedBy: modifiedBy,
+  const kwargs= data
+  
 
-    // Include any other necessary parameters
-  };
-
-  return await apiRequest(action, method, requestData);
+  return await apiRequest(action, method, kwargs);
 };
 export const getAllRecruitmentJobTeamMembers = async (jobId) => {
   const action = "getAllRecruitmentJobTeamMembers";
@@ -171,6 +167,29 @@ export const getAllRecruitmentEmailTemplates = async () => {
   //   jobId: jobId,
   // };
 
+  const kwargs = { };
+
+  return await apiRequest(action, method, kwargs);
+};
+// export const getAllRecruitmentQuestionnaireTemplateDetails = async () => {
+//   const action = "getAllRecruitmentQuestionnaireTemplateDetails";
+
+//   const method = "POST";
+//   // const requestData = {
+//   //   // Include any other necessary parameters
+//   //   jobId: jobId,
+//   // };
+
+//   const kwargs = { };
+
+//   return await apiRequest(action, method, kwargs);
+// };
+export const getAllRecruitmentLetterTemplates = async () => {
+  const action = "getAllRecruitmentLetterTemplates";
+
+  const method = "POST";
+
+
   const kwargs = {};
 
   return await apiRequest(action, method, kwargs);
@@ -188,19 +207,19 @@ export const getAllRecruitmentQuestionnaireTemplateDetails = async () => {
 
   return await apiRequest(action, method, kwargs);
 };
-export const getAllRecruitmentLetterTemplates = async () => {
-  const action = "getAllRecruitmentLetterTemplates";
+// export const getAllRecruitmentLetterTemplates = async () => {
+//   const action = "getAllRecruitmentLetterTemplates";
 
-  const method = "POST";
-  // const requestData = {
-  //   // Include any other necessary parameters
-  //   jobId: jobId,
-  // };
+//   const method = "POST";
+//   // const requestData = {
+//   //   // Include any other necessary parameters
+//   //   jobId: jobId,
+//   // };
 
   const kwargs = {};
 
-  return await apiRequest(action, method, kwargs);
-};
+//   return await apiRequest(action, method, kwargs);
+// };
 export const getAllCandidatesByjobId = async (jobId) => {
   console.log(jobId);
   const action = "getAllCandidatesByjobId";
@@ -262,17 +281,66 @@ export const saveRecruitmentJobResumesStage = async (
 // };
 export const saveRecruitmentEvaluationTemplate = async (e) => {
   const action = "saveRecruitmentEvaluationTemplate";
+  
 
   const method = "POST";
-  const kwargs = e;
-  return await apiRequest(action, method, kwargs);
+  const kwargs=e
+  console.log("API Request Data:", { action, method, kwargs });
+return await apiRequest(action, method, kwargs);
 };
-export const saveRecruitmentEvaluationTemplateDetailBatch = async (data) => {
+export const saveRecruitmentEvaluationTemplateDetailBatch = async (formattedData) => {
   try {
     const action = "saveRecruitmentEvaluationTemplateDetailBatch";
     const method = "POST";
-    const kwargs = data;
+    const kwargs = formattedData;
+    
+    console.log("API Request Data:", { action, method, kwargs });
 
+    const response = await apiRequest(action, method, kwargs);
+
+    console.log("API Response:", response);
+
+    return response;
+  } catch (error) {
+    console.error("Error in saveRecruitmentEvaluationTemplateDetailBatch:", error);
+    throw error; // Re-throw the error to handle it where the function is called.
+  }
+};
+// export const getAllRecruitmentQuestionnaireTemplateDetails = async () => {
+//   const action = "getAllRecruitmentQuestionnaireTemplateDetails";
+
+//   const method = "POST";
+
+//   const kwargs = {};
+
+//   return await apiRequest(action, method, kwargs);
+// };
+export const getAllRecruitmentEvaluationTemplateDetails = async () => {
+  const action = "getAllRecruitmentEvaluationTemplateDetails";
+
+  const method = "POST";
+
+  const kwargs = {};
+
+  return await apiRequest(action, method, kwargs);
+};
+// export const getAllRecruitmentLetterTemplates = async () => {
+//   const action = "getAllRecruitmentLetterTemplates";
+
+//   const method = "POST";
+
+//   const kwargs = {};
+
+//   return await apiRequest(action, method, kwargs);
+// };
+
+
+export const saveRecruitmentWorkFlow = async (e) => {
+  try {
+    const action = "saveRecruitmentWorkFlow";
+    const method = "POST";
+    const kwargs = e;
+    
     console.log("API Request Data:", { action, method, kwargs });
 
     const response = await apiRequest(action, method, kwargs);
@@ -310,3 +378,94 @@ export const saveRecruitmentLetterTemplate = async (e) => {
   const kwargs = e;
   return await apiRequest(action, method, kwargs);
 };
+export const saveRecruitmentWorkFlowStage = async (e) => {
+  try {
+    const action = "saveRecruitmentWorkFlowStage";
+    const method = "POST";
+    const kwargs = e;
+    
+    console.log("API Request Data:", { action, method, kwargs });
+
+    const response = await apiRequest(action, method, kwargs);
+
+    console.log("API Response:", response);
+
+    return response;
+  } catch (error) {
+    console.error("Error in saveRecruitmentWorkFlowStage:", error);
+    throw error; // Re-throw the error to handle it where the function is called.
+  }
+};
+export const saveRecruitmentEvaluationTemplateWithDetails = async (e) => {
+  try {
+    const action = "saveRecruitmentEvaluationTemplateWithDetails";
+    const method = "POST";
+    const kwargs = e;
+    
+    console.log("API Request Data:", { action, method, kwargs });
+
+    const response = await apiRequest(action, method, kwargs);
+
+    console.log("API Response:", response);
+
+    return response;
+  } catch (error) {
+    console.error("Error in saveRecruitmentWorkFlowStage:", error);
+    throw error; // Re-throw the error to handle it where the function is called.
+  }
+};
+export const saveRecruitmentJobTemplate = async (e) => {
+  try {
+    const action = "saveRecruitmentJobTemplate";
+    const method = "POST";
+    const kwargs = e;
+    
+    console.log("API Request Data:", { action, method, kwargs });
+
+    const response = await apiRequest(action, method, kwargs);
+
+    console.log("API Response:", response);
+
+    return response;
+  } catch (error) {
+    console.error("Error in saveRecruitmentWorkFlowStage:", error);
+    throw error; // Re-throw the error to handle it where the function is called.
+  }
+};
+export const getAllRecruitmentEvaluationTemplates = async () => {
+  const action = "getAllRecruitmentEvaluationTemplates";
+
+  const method = "POST";
+
+  const kwargs = {};
+
+  return await apiRequest(action, method, kwargs);
+};
+export const getRecruitmentJobTemplateById = async (id) => {
+  const action = "getRecruitmentJobTemplateById";
+
+  const method = "POST";
+
+  const kwargs = {id};
+
+  return await apiRequest(action, method, kwargs);
+};
+export const updateRecruitmentJobTemplate = async (data) => {
+  const action = "getRecruitmentJobTemplateById";
+
+  const method = "POST";
+
+  const kwargs = data;
+
+  return await apiRequest(action, method, kwargs);
+};
+export const updateRecruitmentJobApplicationFormSetting = async (data) => {
+  const action = "getRecruitmentJobTemplateById";
+
+  const method = "POST";
+
+  const kwargs = data;
+
+  return await apiRequest(action, method, kwargs);
+};
+

@@ -6,7 +6,7 @@ import TableAnt1 from "./Table";
 import { useTranslation } from "react-i18next";
 import SearchBox from "./SearchBox";
 import { CiSearch } from "react-icons/ci";
-import { Button, Checkbox, Dropdown, Input, Radio } from "antd";
+import { Button, Dropdown, Input, Radio } from "antd";
 import { LuListFilter } from "react-icons/lu";
 import { useMediaQuery } from "react-responsive";
 import { BsGrid, BsListUl } from "react-icons/bs";
@@ -71,20 +71,20 @@ const Tabs = ({
   const items = [
     {
       key: "selectAll",
-      label: (
-        <Checkbox
-          checked={visibleColumns?.length === tableData?.length}
-          onChange={() => {
-            setVisibleColumns(
-              visibleColumns?.length === tableData?.length
-                ? []
-                : tableData.map((col) => col.dataIndex)
-            );
-          }}
-        >
-          Select All
-        </Checkbox>
-      ),
+      // label: (
+      //   <Checkbox
+      //     checked={visibleColumns?.length === tableData?.length}
+      //     onChange={() => {
+      //       setVisibleColumns(
+      //         visibleColumns?.length === tableData?.length
+      //           ? []
+      //           : tableData.map((col) => col.dataIndex)
+      //       );
+      //     }}
+      //   >
+      //     Select All
+      //   </Checkbox>
+      // ),
     },
     {
       key: "search",
@@ -98,15 +98,15 @@ const Tabs = ({
     },
     ...(tableData?.map((column, i) => ({
       key: i,
-      label: (
-        <Checkbox
-          value={column.title}
-          checked={visibleColumns?.includes(column.dataIndex)}
-          onChange={handleColumnVisibilityChange(column.dataIndex)}
-        >
-          {column.title}
-        </Checkbox>
-      ),
+      // label: (
+      //   <Checkbox
+      //     value={column.title}
+      //     checked={visibleColumns?.includes(column.dataIndex)}
+      //     onChange={handleColumnVisibilityChange(column.dataIndex)}
+      //   >
+      //     {column.title}
+      //   </Checkbox>
+      // ),
     })) || []),
   ];
   useMemo(() => {
@@ -293,7 +293,7 @@ const Tabs = ({
                     // tablechange = false,
                     // children,
                     activeOrNot={activeOrNot}
-                    actionToggle={false}
+                    actionToggle={actionToggle}
                     // ListApi=""
                     addButtonName={addButtonName}
                     exportButton={false}

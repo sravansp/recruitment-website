@@ -2,9 +2,18 @@
 import React, { useState } from 'react';
 import { EditorState, convertToRaw, ContentState } from 'draft-js';
 import { Editor } from 'react-draft-wysiwyg';
+import { FaAsterisk } from "react-icons/fa";
 import 'react-draft-wysiwyg/dist/react-draft-wysiwyg.css';
 
-const TextEditor = ({ initialValue, onChange, className, minheight = "250px" }) => {
+const TextEditor = ({
+  title = "",
+  required = false,
+  initialValue, 
+  onChange=()=>{}, 
+  className, 
+  minheight = "250px",
+  placeholder="" 
+}) => {
   const [editorState, setEditorState] = useState(
     initialValue
       ? EditorState.createWithContent(ContentState.createFromText(initialValue))
@@ -26,10 +35,16 @@ const TextEditor = ({ initialValue, onChange, className, minheight = "250px" }) 
   return (
   //  <div className={`min-h-[${minheight}]`} style={{minHeight: `${minheight}`}}>
      <div className={`relative p-4 border border-black rounded-md border-opacity-10 dark:border-secondaryDark mb-14 ${className}`} style={{minHeight: `${minheight}`}}>
+            <div className="flex">
+        <p className={`text-xs font-medium 2xl:text-sm dark:text-white ${className}`}>
+          {title}
+        </p>
+        {required && <FaAsterisk className="text-[10px] text-rose-600" />}
+      </div>
       <Editor
         editorState={editorState}
         onEditorStateChange={handleEditorChange}
-        placeholder="Type your text here..." // Add placeholder here
+        placeholder={placeholder}// Add placeholder here
         toolbar={{
           options: ['inline', 'fontSize', 'list', 'textAlign'],
           inline: {

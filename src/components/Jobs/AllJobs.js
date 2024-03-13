@@ -19,6 +19,7 @@ import { useTranslation } from "react-i18next";
 import Createjob from "./Createjob";
 import { motion } from "framer-motion";
 import JobListCopy from "../common/JobListCopy";
+import { RiRuler2Fill } from "react-icons/ri";
 
 function AllJobs() {
   const { t } = useTranslation();
@@ -378,7 +379,7 @@ function AllJobs() {
         buttonClick={(e) => {
           setUpdateId(e);
         }}
-        showButton={true}
+        All={true}
         // recordId={record.jobId}
         actionToggle={(e) => {
           setUpdateId(e);
