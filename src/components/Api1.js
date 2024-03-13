@@ -118,7 +118,7 @@ export const updateRecruitmentJob = async (data) => {
   const method = "POST";
  
   // Construct the request payload
-  const kwargs= data
+  const kwargs= data;
   
 
   return await apiRequest(action, method, kwargs);

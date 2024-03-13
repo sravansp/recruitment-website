@@ -158,7 +158,7 @@ const formik1 = useFormik({
   salaryCurrency:"",
   isSalaryPublic: "true",
   jobDescription:"",
-  workFlowId:"",
+  workFlowId:null,
   jobPublishType:"",
   jobPublishDetails:"",
   createdBy:"",
@@ -169,6 +169,7 @@ const formik1 = useFormik({
  onSubmit: async (e) => {
   try{
     console.log(e)
+    console.log(jobId)
    if(jobId){
     const response = await updateRecruitmentJob({
     id:jobId,
@@ -188,7 +189,8 @@ const formik1 = useFormik({
     salaryCurrency:e.salaryCurrency,
     isSalaryPublic:e.isSalaryPublic,
     jobDescription:e.jobDescription,
-    workFlowId:null,
+    workFlowId: null,
+    
     modifiedBy:45
 
     })
@@ -254,11 +256,11 @@ const formik1 = useFormik({
   catch (error) {
     // Handle the error here
     console.error("Error during form submission:", error);
-        openNotification(
-          "error",
-          "Error saving category",
-          error
-        );
+        // openNotification(
+        //   "error",
+        //   "Error saving category",
+        //   error
+        // );
   }
 
  },
@@ -345,7 +347,7 @@ const formik = useFormik({
         openNotification('error', 'CustomFields', 'Please fill in all the required fields.');
         return;
       } 
-     
+      
         const response = await updateRecruitmentJobApplicationFormSettingWithJobId({
           jobId:jobId,
           name: e.name,
