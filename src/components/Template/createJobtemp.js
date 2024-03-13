@@ -18,7 +18,7 @@ import Radiobuttonnew from '../common/Radiobuttonnew';
 import GoogleForm from '../common/GoogleForm';
 import JobCard from '../common/JobCard';
 import { cardData, regularOvertime,Requirment,JobType,experiencelevel,eductaion,saleryCurrency } from '../data';
-import { saveRecruitmentJobApplicationFormSetting,saveRecruitmentJobTemplate,getAllRecruitmentWorkFlows,updateRecruitmentJob,getAllRecruitmentJobTeamMembers,updateRecruitmentJobTemplate } from '../Api1';
+import { saveRecruitmentJobApplicationFormSetting,saveRecruitmentJobTemplate,getAllRecruitmentWorkFlows,updateRecruitmentJob,getAllRecruitmentJobTeamMembers,updateRecruitmentJobTemplate,getRecruitmentJobTemplateById } from '../Api1';
 import { Formik, useFormik } from 'formik';
 import { CgAdd } from "react-icons/cg";
 import { Form } from '../data';
@@ -166,7 +166,23 @@ const formik = useFormik({
   workFlowId:"",
   jobPublishType:"",
   jobPublishDetails:"",
-  jobApplicationFormData:{},
+  jobApplicationFormData:{
+     name: "1",
+      email: "1",
+      headline: "1",
+      phone: "1",
+      address: "1",
+      country: "1",
+      education: "1",
+      experience: "1",
+      summary: "1",
+      resume: "1",
+      coverLetter: "1",
+      
+      customFields: []
+  
+
+  },
   createdBy:"",
   
 
@@ -190,25 +206,78 @@ const formik = useFormik({
   
     try{
 
-       if (updateId){
-        const response = await updateRecruitmentJobTemplate(
-            {
-             id:updateId,
-            }
-
-        )
-      
-
-       } else{
-
-       
-    console.log(e)
-    const updatedCustomFields = evaluation.map((condition) => ({
+      const updatedCustomFields = evaluation.map((condition) => ({
         question: condition.question,
         answer_type: condition.answer_type,
         is_required: condition.is_required,
         answer_meta_data: condition.answerMetaData,
       }));
+
+       if (updateId){
+        const response = await updateRecruitmentJobTemplate(
+            {
+             id:updateId,
+             companyId:companyId,
+    jobTitle:e.jobTitle,
+    departmentId:e.departmentId,
+    jobCode:e.jobCode,
+    workLocationType:e.workLocationType,
+    location:e.location,
+    requirementType:e.requirementType,
+    jobType:e.jobType,
+    experience:e.experience,
+    education:e.education,
+    searchKeywords:e.searchKeywords,
+    salaryRangeFrom:e.salaryRangeFrom,
+    salaryRangeTo:e.salaryRangeTo,
+    salaryCurrency:e.salaryCurrency,
+    isSalaryPublic:e.isSalaryPublic,
+    jobDescription:e.jobDescription,
+    workFlowId:selectedWorkFlowId,
+    jobPublishType:null,
+    jobPublishDetails:null,
+    createdBy:45,
+    jobApplicationFormData:
+       { name: e.name,
+        email: e.email,
+        headline: e.headline,
+        phone: e.phone,
+        address: e.address,
+        country: e.country,
+        education: e.education,
+        experience: e.experience,
+        summary: e.summary,
+        resume: e.resume,
+        coverLetter: e.coverLetter,
+        
+        customFields: updatedCustomFields
+    }
+            }
+
+        )
+       console.log(response)
+       if (response.status === 200) {
+      
+      
+        openNotification(
+          "success",
+          
+          response.message
+          
+        );
+        setPresentage(2);
+        setTimeout(() => {
+          handleClose();
+        }, 2000);
+      }else if (response.status === 500) {
+        openNotification("error", response.message);
+      }
+
+       } else{
+
+       
+    console.log(e)
+   
      
     const response = await saveRecruitmentJobTemplate({
     companyId:companyId,
@@ -223,7 +292,7 @@ const formik = useFormik({
     education:e.education,
     searchKeywords:e.searchKeywords,
     salaryRangeFrom:e.salaryRangeFrom,
-    salaryRangeTo:e.salaryRangeFrom,
+    salaryRangeTo:e.salaryRangeTo,
     salaryCurrency:e.salaryCurrency,
     isSalaryPublic:e.isSalaryPublic,
     jobDescription:e.jobDescription,
@@ -283,6 +352,48 @@ const formik = useFormik({
 
  },
 })
+const[jobdata,setjobdata]=useState([])
+
+const getJobtemById = async () => {
+  try {
+    const response = await getRecruitmentJobTemplateById(updateId);
+    console.log(response);
+
+    if (response.result.length > 0) {
+      const firstJob = response.result[0];
+
+      setjobdata(firstJob);
+
+      formik.setFieldValue("companyId", firstJob.companyId);
+      formik.setFieldValue("jobTitle", firstJob.jobTitle);
+      formik.setFieldValue("departmentId", firstJob.departmentId);
+      formik.setFieldValue("education", firstJob.education);
+      formik.setFieldValue("isActive", firstJob.isActive);
+      formik.setFieldValue("isSalaryPublic", firstJob.isSalaryPublic);
+      formik.setFieldValue("jobCode", firstJob.jobCode);
+      formik.setFieldValue("jobDescription", firstJob.jobDescription);
+      formik.setFieldValue("jobType", firstJob.jobType);
+      formik.setFieldValue("location", firstJob.location);
+      formik.setFieldValue("requirementType", firstJob.requirementType);
+      formik.setFieldValue("salaryCurrency", firstJob.salaryCurrency);
+      formik.setFieldValue("salaryRangeFrom", firstJob.salaryRangeFrom);
+      formik.setFieldValue("salaryRangeTo", firstJob.salaryRangeTo);
+      formik.setFieldValue("searchKeywords", firstJob.searchKeywords);
+      
+
+
+      console.log(firstJob.companyId);
+    } else {
+      console.error("No data found in the response.");
+    }
+  } catch (error) {
+    console.log(error);
+  }
+};
+useEffect(()=>{
+  getJobtemById()
+  console.log(jobdata)
+},[updateId])
 const [departmentList, setDepartmentList] = useState();
 const [company,setCompany] =useState([])
 const getDepartmentList = async () => {

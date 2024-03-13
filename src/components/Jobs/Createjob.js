@@ -18,7 +18,7 @@ import Radiobuttonnew from '../common/Radiobuttonnew';
 import GoogleForm from '../common/GoogleForm';
 import JobCard from '../common/JobCard';
 import { cardData, regularOvertime,Requirment,JobType,experiencelevel,eductaion,saleryCurrency } from '../data';
-import { saveRecruitmentJobApplicationFormSetting,saveRecruitmentJob,getAllRecruitmentWorkFlows,updateRecruitmentJob,getAllRecruitmentJobTeamMembers,getAllRecruitmentJobTemplates,getRecruitmentJobTemplateById,updateRecruitmentJobApplicationFormSetting } from '../Api1';
+import { saveRecruitmentJobApplicationFormSetting,saveRecruitmentJob,getAllRecruitmentWorkFlows,updateRecruitmentJob,getAllRecruitmentJobTeamMembers,getAllRecruitmentJobTemplates,getRecruitmentJobTemplateById,updateRecruitmentJobApplicationFormSettingWithJobId } from '../Api1';
 import { Formik, useFormik } from 'formik';
 import { CgAdd } from "react-icons/cg";
 import { Form } from '../data';
@@ -184,10 +184,11 @@ const formik1 = useFormik({
     education:e.education,
     searchKeywords:e.searchKeywords,
     salaryRangeFrom:e.salaryRangeFrom,
-    salaryRangeTo:e.salaryRangeFrom,
+    salaryRangeTo:e.salaryRangeTo,
     salaryCurrency:e.salaryCurrency,
     isSalaryPublic:e.isSalaryPublic,
     jobDescription:e.jobDescription,
+    workFlowId:null,
     modifiedBy:45
 
     })
@@ -198,12 +199,12 @@ const formik1 = useFormik({
       openNotification(
         "success",
         "Successful",
-        response.message
+        "success"
       );
       setPresentage(2);
       setNextStep(nextStep + 1);
     }else if (response.status === 500) {
-      openNotification("error", "input field is empty..", response.message);
+      openNotification("error", "input field is empty..", "enter the field");
     }
 
    }else{
@@ -221,7 +222,7 @@ const formik1 = useFormik({
     education:e.education,
     searchKeywords:e.searchKeywords,
     salaryRangeFrom:e.salaryRangeFrom,
-    salaryRangeTo:e.salaryRangeFrom,
+    salaryRangeTo:e.salaryRangeTo,
     salaryCurrency:e.salaryCurrency,
     isSalaryPublic:e.isSalaryPublic,
     jobDescription:e.jobDescription,
@@ -299,7 +300,7 @@ useEffect(() => {
 
 const formik = useFormik({
   initialValues: {
-    jobId:"1",
+    
     name: "1",
     email: "1",
     headline: "1",
@@ -344,8 +345,8 @@ const formik = useFormik({
         openNotification('error', 'CustomFields', 'Please fill in all the required fields.');
         return;
       } 
-      if (jobId){
-        const response = await updateRecruitmentJobApplicationFormSetting({
+     
+        const response = await updateRecruitmentJobApplicationFormSettingWithJobId({
           jobId:jobId,
           name: e.name,
           email: e.email,
@@ -363,7 +364,7 @@ const formik = useFormik({
         }
         )
        console.log(response)
-       if (response && response.status === 200) {
+       if (response.status === 200) {
         openNotification('success', 'Successful', response.message);
         setPresentage(2);
         setNextStep(nextStep + 1);
@@ -371,42 +372,10 @@ const formik = useFormik({
         // Handle other status codes or error messages here
         openNotification('error', 'Error', 'Failed to save data.');
       }
-      }else{
+    
      
-     console.log(updatedCustomFields)
-      // Merge the updated customFields into the form data
-   
-      const response = await saveRecruitmentJobApplicationFormSetting({
-        jobId:jobId,
-        name: e.name,
-        email: e.email,
-        headline: e.headline,
-        phone: e.phone,
-        address: e.address,
-        country: e.country,
-        education: e.education,
-        experience: e.experience,
-        summary: e.summary,
-        resume: e.resume,
-        coverLetter: e.coverLetter,
-        
-        customFields: updatedCustomFields
-
-
-
-      });
-
-      // Handle the response if needed
-      console.log('Response:', response);
-      if (response && response.status === 200) {
-        openNotification('success', 'Successful', response.message);
-        setPresentage(2);
-        setNextStep(nextStep + 1);
-      } else {
-        // Handle other status codes or error messages here
-        openNotification('error', 'Error', 'Failed to save data.');
-      }
-    }
+    
+    // }
     } catch (error) {
       // Handle the error here
       console.error('Error:', error);
@@ -683,56 +652,7 @@ const handleAddField = (index) => {
     useEffect(() => {
       console.log('Updated Workflow:', Stages);
     }, [Stages]);
-  // const workflowDetails = workflow.map((stageName, index) => ({
-  //   stageName,
-  //   label: stageName,
-  //   nummber: index + 1,
-  //   // Add other properties as needed
-  // }));
 
-  // const workflowDetails = setworkFlowId.map((stageName, index) => ({
-  //   stageName,
-  //   label: stageName,
-  //   nummber: index + 1,
-  //   // Add other properties as needed
-  // }));
-  
-  
-  // const handleRadioChange = async (e) => {
-  //   const workFlowId = e.target.value;
-  //   setSelectedWorkFlowId(workFlowId);
-   
-  //   // Assuming you have the jobId stored somewhere, replace 'yourJobId' with the actual jobId
-  //   // const jobId = 24;
-  //   const modifiedBy = userid
-  //   // Update the database with the selected workflow ID for the specific job
-    
-  //    try {
-  //     console.log(workFlowId)
-  //     const response = await updateRecruitmentJob(
-  //        jobId,
-  //        workFlowId,
-  //        modifiedBy,
-        
-  //     );
-  
-  //     console.log(response);
-  //     if (response.status === 200) {
-      
-      
-  //       openNotification(
-  //         "success",
-  //         "Successful",
-  //         response.message
-  //       );
-  //       setPresentage(2);
-        
-  //     } 
-  //   } catch (error) {
-  //     console.error('Error updating workflow ID:', error);
-      
-  //   }
-  // };
 
   const formik2 = useFormik({
     initialValues: {
@@ -894,20 +814,47 @@ const handleAddField = (index) => {
     console.log(employeeList)
     
   }, []);
-  const [jobdata,setJobdata]=useState([])
+  
   const [selectedJobId, setSelectedJobId] = useState('');
   const handleValueChange = (e) => {
     setSelectedJobId(e);
     // No need to call getjobById here
   };
-  
+  const[jobdata,setJobdata]=useState([])
   // job template by id
   const getjobById = async (id) => {
     try {
       const response = await getRecruitmentJobTemplateById(id);
       console.log(response);
-      setJobdata(response?.result||[])
+     
       console.log(id);
+      if (response.result.length > 0) {
+        const firstJob = response.result[0];
+  
+        setJobdata(firstJob);
+  
+        formik1.setFieldValue("companyId", firstJob.companyId);
+        formik1.setFieldValue("jobTitle", firstJob.jobTitle);
+        formik1.setFieldValue("departmentId", firstJob.departmentId);
+        formik1.setFieldValue("education", firstJob.education);
+        formik1.setFieldValue("isActive", firstJob.isActive);
+        formik1.setFieldValue("isSalaryPublic", firstJob.isSalaryPublic);
+        formik1.setFieldValue("jobCode", firstJob.jobCode);
+        formik1.setFieldValue("jobDescription", firstJob.jobDescription);
+        formik1.setFieldValue("jobType", firstJob.jobType);
+        formik1.setFieldValue("location", firstJob.location);
+        formik1.setFieldValue("requirementType", firstJob.requirementType);
+        formik1.setFieldValue("salaryCurrency", firstJob.salaryCurrency);
+        formik1.setFieldValue("salaryRangeFrom", firstJob.salaryRangeFrom);
+        formik1.setFieldValue("salaryRangeTo", firstJob.salaryRangeTo);
+        formik1.setFieldValue("searchKeywords", firstJob.searchKeywords);
+        
+  
+  
+        console.log(firstJob.companyId);
+      } else {
+        console.error("No data found in the response.");
+      }
     } catch (error) {
       console.log(error);
     }
@@ -1083,7 +1030,7 @@ const handleAddField = (index) => {
                                             title={t("Choose Company")}
                                             placeholder={t("Choose Company")}
                                             options={company}
-                                            value={formik1.values.companyId||jobdata.companyId||""}
+                                            value={formik1.values.companyId}
                                             required={true} 
                                             change={(selectedCompanyId) => {
                                               formik1.setFieldValue('companyId', selectedCompanyId);
@@ -1103,7 +1050,7 @@ const handleAddField = (index) => {
 
 
                                             }}
-                                            value={formik1.values.jobTitle||jobdata.jobTitle||""}
+                                            value={formik1.values.jobTitle}
                                             />
 
 
@@ -1114,7 +1061,7 @@ const handleAddField = (index) => {
                                             placeholder={t("Select...")}
                                             required={true} 
                                             options={departmentList}
-                                            value={formik1.values?.departmentId}
+                                            value={formik1.values.departmentId}
                                             change={(e)=>{
                                               formik1.setFieldValue('departmentId',e)
                                             }}
@@ -1129,7 +1076,7 @@ const handleAddField = (index) => {
                                               formik1.setFieldValue('jobCode',e)
                                             }
                                             }
-                                            value={formik1.values?.jobCode}
+                                            value={formik1.values.jobCode}
                                             />
                                             
                                     </div>
@@ -1205,7 +1152,7 @@ const handleAddField = (index) => {
                                                      formik1.setFieldValue('location',e)
 
                                                     }}
-                                                    value={formik1.values?.location }
+                                                    value={formik1.values.location }
                                                     required={true}
                                                     />
                                                     
@@ -1213,7 +1160,7 @@ const handleAddField = (index) => {
                                                     title={'Requirement'}
                                                     placeholder={'Urgent'} 
                                                     options={Requirment}
-                                                    value={formik1.values?.requirementType
+                                                    value={formik1.values.requirementType
                                                     }
                                                     change={(e)=>{
                                                       formik1.setFieldValue('requirementType',e)
@@ -1244,13 +1191,13 @@ const handleAddField = (index) => {
                                                       console.log(e)
                                                     }}
                                                     required={true}
-                                                    value={formik1.values?.jobType}
+                                                    value={formik1.values.jobType}
                                                     />
                                                <Dropdown
                                                     title={'Experience'}
                                                     placeholder={'Mid-Senior level'}
                                                     options={experiencelevel} 
-                                                    value={formik1.values?.experience}
+                                                    value={formik1.values.experience}
                                                     change={(e)=>{
                                                       formik1.setFieldValue('experience',e)
                                                     }}
@@ -1260,7 +1207,7 @@ const handleAddField = (index) => {
                                                     title={'Education'}
                                                     placeholder={'Bachelor’s Degree'} 
                                                     options={eductaion}
-                                                    value={formik1.values?.education}
+                                                    value={formik1.values.education}
                                                     change={(e)=>{
                                                       formik1.setFieldValue('education',e)
                                                     }}
@@ -1275,7 +1222,7 @@ const handleAddField = (index) => {
                                                     change={(e)=>{
                                                       formik1.setFieldValue('searchKeywords',e)
                                                     }}
-                                                    value={formik1.values?.searchKeywords}
+                                                    value={formik1.values.searchKeywords}
                                                     required={true}
                                                     />
                                                 {/* <Dropdown
@@ -1293,7 +1240,7 @@ const handleAddField = (index) => {
                                                     change={(e)=>{
                                                       formik1.setFieldValue('salaryRangeFrom',e)
                                                     }}
-                                                    value={formik1.values?.salaryRangeFrom
+                                                    value={formik1.values.salaryRangeFrom
                                                     }
                                                     required={true}
                                                     />
@@ -1303,7 +1250,7 @@ const handleAddField = (index) => {
                                                     change={(e)=>{
                                                       formik1.setFieldValue('salaryRangeTo',e)
                                                     }}
-                                                    value={formik1.values?.salaryRangeTo
+                                                    value={formik1.values.salaryRangeTo
                                                     }
                                                     required={true}
                                                     />
@@ -1311,7 +1258,7 @@ const handleAddField = (index) => {
                                                     title={'Salary Currency'}
                                                     placeholder={'Urgent'} 
                                                     options={saleryCurrency}
-                                                    value={formik1.values?.salaryCurrency}
+                                                    value={formik1.values.salaryCurrency}
                                                     change={(e)=>{
                                                       formik1.setFieldValue('salaryCurrency',e)
                                                     }}
@@ -1322,7 +1269,7 @@ const handleAddField = (index) => {
                                                         formik1.setFieldValue('isSalaryPublic',e)
                                                         console.log(e)
                                                       }}
-                                                      value={formik1.values?.isSalaryPublic}
+                                                      value={formik1.values.isSalaryPublic}
                                                       title={"View Public"}
                                                       description={"Given Salary will be visible for public"}
                                                       />
@@ -1368,7 +1315,7 @@ impactful, accurate, and personalized to your company</p>
                                              required={true}
                                              hideBorder={true} 
                                              
-                                             value={formik1.values?.jobDescription}
+                                             value={formik1.values.jobDescription}
                                             //  change={(e)=>{
                                             //    formik1.setFieldValue('jobDescription',e)
                                             //  }}
