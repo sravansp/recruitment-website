@@ -30,7 +30,7 @@ const JobCard = ({
       animate="animate" // Add some space between cards
     >
       <div
-        className="w-full !border hover:shadow-lg hover:bg-[#f4f4f4] cursor-pointer border-[#D9D9D9] dark:border-opacity-20 rounded-md p-2.5 2xl:p-4 transition-all duration-300 bg-white dark:bg-black flex-col flex gap-1.5 2xl:gap-3 text-black dark:text-white"
+        className="w-full !border hover:bg-primaryalpha/10 cursor-pointer border-[#D9D9D9] dark:border-opacity-20 rounded-md p-2.5 2xl:p-4 transition-all duration-300 bg-white dark:bg-black flex-col flex gap-1.5 2xl:gap-3 text-black dark:text-white"
         
         style={{ border: selected && "1px solid var(--primary-color)" }}
         onClick={onSelect}

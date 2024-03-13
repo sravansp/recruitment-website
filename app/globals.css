@@ -8,8 +8,12 @@
   --slateBlue: "#6A4BFC";
   --stale: "#7939EF";
   --body-bg: #ffffff;
-  --primary-color: #6a4bfc;
-  /* --primary-color: rgba(106, 75, 252); */
+
+
+  --primary: 106, 75, 252;
+  --primary-color: rgba(var(--primary), 1);
+
+
   --bg-primary-color: #6a4bfc;
 
   --secondary-color: #111e2c;
