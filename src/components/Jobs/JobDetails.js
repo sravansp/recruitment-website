@@ -11,6 +11,7 @@ import { Link } from "react-router-dom";
 import ButtonClick from "../common/Button";
 import SearchBox from "../common/SearchBox";
 import { FilterBtn } from "../common/FilterBtn";
+import { useNavigate } from 'react-router-dom';
 
 import User from "../../assets/images/user1.jpeg";
 // ICONS
@@ -58,9 +59,10 @@ const customColors = [
 
 const JobDetails = () => {
   const isSmallScreen = useMediaQuery({ maxWidth: 1439 });
-  const [viewType, setViewType] = useState("grid"); // Initial view type
+  const [viewType, setViewType] = useState("grid");
+   // Initial view type
   const breadcrumbItems = [{ label: "Jobs",
-  url:"/AllJobs" }, { label: "UI UX Desinger" }];
+  url:"/AllJobs" }, { label: "Assign stages" }];
   const handleshow =()=>setShow(true);
   const handleClose =()=>setShow(false)
   const [show, setShow] = useState(false);
@@ -564,6 +566,7 @@ const DragView = () => {
 
 const CardItem = ({ data, index, color }) => {
   const [bookmarkState, setBookmarkState] = useState({});
+  const navigate = useNavigate();
 
   const toggleBookmark = (cardId) => {
     setBookmarkState((prevState) => ({
@@ -576,7 +579,7 @@ const CardItem = ({ data, index, color }) => {
     localStorage.setItem("selectedDataId", data.id);
     
     // Navigate to candidateprofile page with data.id
-    window.location.href = `/candidateprofile/${data.id}`;
+    navigate(`/candidateprofile/${data.id}`)
     
     // Optionally, update the state with the selectedId
     

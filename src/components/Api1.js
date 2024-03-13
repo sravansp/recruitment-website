@@ -1,7 +1,7 @@
 import axios from "axios";
 
-const apiUrl = 'http://192.168.29.185/loyaltri-recruitment-server/api/v1';
-// const apiUrl = 'https://alpha-jobs-api.loyaltri.com/api/v1';
+// const apiUrl = 'http://192.168.29.185/loyaltri-recruitment-server/api/v1';
+const apiUrl = 'https://alpha-jobs-api.loyaltri.com/api/v1';
 
 
 const apiRequest = async (action, method, kwargs) => {
@@ -113,21 +113,15 @@ export const getAllRecruitmentWorkFlows = async () => {
 
   return await apiRequest(action, method, kwargs);
 };
-export const updateRecruitmentJob = async (id, workFlowId, modifiedBy) => {
+export const updateRecruitmentJob = async (data) => {
   const action = "updateRecruitmentJob";
   const method = "POST";
-  console.log(workFlowId);
-  console.log(modifiedBy);
+ 
   // Construct the request payload
-  const requestData = {
-    id: id,
-    workFlowId: workFlowId,
-    modifiedBy: modifiedBy,
+  const kwargs= data
+  
 
-    // Include any other necessary parameters
-  };
-
-  return await apiRequest(action, method, requestData);
+  return await apiRequest(action, method, kwargs);
 };
 export const getAllRecruitmentJobTeamMembers = async (jobId) => {
   const action = "getAllRecruitmentJobTeamMembers";
@@ -456,3 +450,22 @@ export const getRecruitmentJobTemplateById = async (id) => {
 
   return await apiRequest(action, method, kwargs);
 };
+export const updateRecruitmentJobTemplate = async (data) => {
+  const action = "getRecruitmentJobTemplateById";
+
+  const method = "POST";
+
+  const kwargs = data;
+
+  return await apiRequest(action, method, kwargs);
+};
+export const updateRecruitmentJobApplicationFormSetting = async (data) => {
+  const action = "getRecruitmentJobTemplateById";
+
+  const method = "POST";
+
+  const kwargs = data;
+
+  return await apiRequest(action, method, kwargs);
+};
+

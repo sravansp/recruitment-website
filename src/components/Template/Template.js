@@ -25,7 +25,7 @@ const Template = ({
     close = () => {},
     refresh,
     createPolicyAction,
-    updateId,
+    
     openPolicy,
 }) => {
     const { t } = useTranslation();
@@ -199,8 +199,8 @@ const Template = ({
          {
             id:3,
             title:"Status",
-            value:"Status",
-            action:true,
+            value:"",
+            actionToggle:true,
          },
         ],
         Questionaire : [ 
@@ -231,7 +231,7 @@ const Template = ({
           {
             id:1,
             title:"Name",
-            value:"Name",
+            value:"letterTemplateName",
          },
          {
             id:2,
@@ -241,8 +241,8 @@ const Template = ({
          {
             id:3,
             title:"Status",
-            value:"Status",
-            action:true,
+            value:"",
+            actionToggle: true,
          },
         ]
 
@@ -263,6 +263,7 @@ const Template = ({
    const [EvaluationLIst,setEvaluation]=useState([])
    const[QuestionaireLIst,setQuestionaire]=useState([])
    const[LetterLIst,setLetter]=useState([])
+   const[updateId,setUpdateId]=useState(null)
 
  
 //    const handleOpenModal = () => {
@@ -376,7 +377,7 @@ const Template = ({
   const getallLetter = async ()=>{
     try{
       const data = await getAllRecruitmentLetterTemplates()
-      setQuestionaire(data.result)
+      setLetter(data.result)
       console.log(data)
     }catch (error) {
       console.error(error); // Handle errors
@@ -460,6 +461,19 @@ const Template = ({
     
     },
   ];
+  const actionId= [
+    {
+      Job:{id:"jobTemplateId"},
+      JobDescription:{id:"JobDescriptionTemplateId"},
+      Workflow: {id:"workFlowId"},
+      Email:{id:"emailTemplateId"},
+      Evaluation:{id:"evaluationTemplateId"},
+      Questionaire:{id:"questionnaireTemplateId"},
+      Letter:{id:"letterTemplateId"}
+    }
+    
+
+  ]
   // const handleCreateJobClose = () => {
   //   // Perform navigation logic here
   //   // Example: navigate to the "Jobdetails" accordion
@@ -528,19 +542,44 @@ const Template = ({
                     ? actionData[0]?.[navigationPath].data
                     : null
                 }
-                
+                actionID={
+                  Object.keys(actionId[0]).includes(navigationPath)
+                    ? actionId[0]?.[navigationPath].id
+                    : null
+                }
+                buttonClick={(e) => {
+                  // console.log(company, "company", e);
+                  if (e === true) {
+                    // setShow(e);
+                  } else if (e === navigationPath) {
+                    // setShow(true);
+        
+                    // setCompanyId(company);
+                    setOpenPop(e);
+                    // setUpdateId(false);
+                  } else {
+                    setUpdateId(e);
+                    setOpenPop(navigationPath);
+        
+                    setShow(true);
+                    // console.log(company, "companyparentId");
+                    // if (company === "edit") {
+                    
+                    // }
+                  }
+                }}
               
               
               />
           </div>
-          {navigationPath === "Job" && show && (
+          { show && (
         <CreatejobTemp
           open={show}
           close={(e) => {
             setShow(e);
            
           }}
-        //   updateId={updateId}
+          updateId={updateId}
         //   companyDataId={companyId}
           refresh={() => {
             // getLocationList();

@@ -3210,3 +3210,6 @@ button.rbc-button-link {
   top: 0;
   text-align: left;
 }
+.error-border {
+  border: 1px solid red;
+}

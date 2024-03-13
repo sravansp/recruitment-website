@@ -11,14 +11,14 @@ import FormInput from '../common/FormInput';
 import VirtualList from "rc-virtual-list";
 import CheckBoxInput from '../common/CheckBoxInput';
 import { Employees } from '../data';
-import * as yup from 'yup';
+import * as Yup from 'yup';
 
 import TextArea from '../common/TextArea';
 import Radiobuttonnew from '../common/Radiobuttonnew';
 import GoogleForm from '../common/GoogleForm';
 import JobCard from '../common/JobCard';
 import { cardData, regularOvertime,Requirment,JobType,experiencelevel,eductaion,saleryCurrency } from '../data';
-import { saveRecruitmentJobApplicationFormSetting,saveRecruitmentJob,getAllRecruitmentWorkFlows,updateRecruitmentJob,getAllRecruitmentJobTeamMembers,getAllRecruitmentJobTemplates,getRecruitmentJobTemplateById } from '../Api1';
+import { saveRecruitmentJobApplicationFormSetting,saveRecruitmentJob,getAllRecruitmentWorkFlows,updateRecruitmentJob,getAllRecruitmentJobTeamMembers,getAllRecruitmentJobTemplates,getRecruitmentJobTemplateById,updateRecruitmentJobApplicationFormSetting } from '../Api1';
 import { Formik, useFormik } from 'formik';
 import { CgAdd } from "react-icons/cg";
 import { Form } from '../data';
@@ -57,6 +57,7 @@ const Createjob = ( {open = "", close = () => { },inputshow= false,isUpdate={}})
   
   const[show,setShow] =useState(open);
   const { t } = useTranslation();
+  const [errors, setErrors] = useState([]);
   // const [isUpdate, setIsUpdate] = useState();
   const [activeBtn, setActiveBtn] = useState(0);
   const [presentage, setPresentage] = useState(0);
@@ -164,24 +165,49 @@ const formik1 = useFormik({
   
 
  },
-    //  enableReinitialize: true,
-    //   validateOnChange: false,
-    //   validationSchema: yup.object().shape({
-    //     companyId: yup.string().required("First Name is Required"),
-    //     jobTitle: yup.string().required("Last Name is Required"),
-    //     departmentId: yup.string().required("Email is Required"),
-    //     jobCode: yup.string().min(10).max(10).required("Mobile is Required"),
-    //     experience: yup.string().required("Gender is Required"),
-    //     education: yup.string().required("Date of Birth Group is Required"),
-    //     searchKeywords: yup.string().required("Gender is Required"),
-       
-    //     salaryRangeFrom: yup.string().required("Gender is Required"),
-    //     salaryCurrency: yup.string().required("Date of Birth Group is Required"),
-       
-    //   }),
+   
  onSubmit: async (e) => {
   try{
     console.log(e)
+   if(jobId){
+    const response = await updateRecruitmentJob({
+    id:jobId,
+    companyId:companyId,
+    jobTitle:e.jobTitle,
+    departmentId:e.departmentId,
+    jobCode:e.jobCode,
+    workLocationType:e.workLocationType,
+    location:e.location,
+    requirementType:e.requirementType,
+    jobType:e.jobType,
+    experience:e.experience,
+    education:e.education,
+    searchKeywords:e.searchKeywords,
+    salaryRangeFrom:e.salaryRangeFrom,
+    salaryRangeTo:e.salaryRangeFrom,
+    salaryCurrency:e.salaryCurrency,
+    isSalaryPublic:e.isSalaryPublic,
+    jobDescription:e.jobDescription,
+    modifiedBy:45
+
+    })
+    console.log(response)
+    if (response.status === 200) {
+      
+      
+      openNotification(
+        "success",
+        "Successful",
+        response.message
+      );
+      setPresentage(2);
+      setNextStep(nextStep + 1);
+    }else if (response.status === 500) {
+      openNotification("error", "input field is empty..", response.message);
+    }
+
+   }else{
+    
     const response = await saveRecruitmentJob({
     companyId:companyId,
     jobTitle:e.jobTitle,
@@ -222,6 +248,7 @@ const formik1 = useFormik({
     }else if (response.status === 500) {
       openNotification("error", "input field is empty..", response.message);
     }
+  }
   }
   catch (error) {
     // Handle the error here
@@ -268,27 +295,8 @@ useEffect(() => {
   getDepartmentList();
 
 }, []);
-// const [locationList, setLocationList] = useState([]);
-// const getLocationList = async () => {
-//   console.log(companyId);
-//   console.log(API.HOST + API.GET_LOCATION + "/" + companyId);
-//   // console.log("navigationPath",navigationPath);
-//   const result = await axios.post(
-//     API.HOST + API.GET_LOCATION + "/" + companyId
-//   );
-//   // setLocationList(result.data.tbl_location);
-//   setLocationList( result.data.tbl_location.map((each) => ({
-//     label: each.location,
-//     value: each.locationId,
-//   })))
-//   console.log(result);
-// };
-// useEffect(() => {
-//   // switch (assignBtnName) {
-//   //   default:
-//   getLocationList();
 
-// }, []);
+
 const formik = useFormik({
   initialValues: {
     jobId:"1",
@@ -312,6 +320,8 @@ const formik = useFormik({
       }
     ],
   },
+  
+ 
   onSubmit: async (e) => {
     try {
       console.log(e)
@@ -321,6 +331,48 @@ const formik = useFormik({
         is_required: condition.is_required,
         answer_meta_data: condition.answerMetaData,
       }));
+      const isAnyEmpty = evaluation.some((condition) => {
+        return (
+          !condition.question ||
+          !condition.answer_type ||
+          (['Drop-down', 'MultipleChoice', 'Checkboxes'].includes(condition.answer_type) &&
+            condition.answerMetaData.some((field) => !field.value))
+        );
+      });
+
+      if (isAnyEmpty) {
+        openNotification('error', 'CustomFields', 'Please fill in all the required fields.');
+        return;
+      } 
+      if (jobId){
+        const response = await updateRecruitmentJobApplicationFormSetting({
+          jobId:jobId,
+          name: e.name,
+          email: e.email,
+          headline: e.headline,
+          phone: e.phone,
+          address: e.address,
+          country: e.country,
+          education: e.education,
+          experience: e.experience,
+          summary: e.summary,
+          resume: e.resume,
+          coverLetter: e.coverLetter,
+          
+          customFields: updatedCustomFields
+        }
+        )
+       console.log(response)
+       if (response && response.status === 200) {
+        openNotification('success', 'Successful', response.message);
+        setPresentage(2);
+        setNextStep(nextStep + 1);
+      } else {
+        // Handle other status codes or error messages here
+        openNotification('error', 'Error', 'Failed to save data.');
+      }
+      }else{
+     
      console.log(updatedCustomFields)
       // Merge the updated customFields into the form data
    
@@ -346,19 +398,15 @@ const formik = useFormik({
 
       // Handle the response if needed
       console.log('Response:', response);
-      if (response.status === 200) {
-      
-      
-        openNotification(
-          "success",
-          "Successful",
-          response.message
-        );
+      if (response && response.status === 200) {
+        openNotification('success', 'Successful', response.message);
         setPresentage(2);
         setNextStep(nextStep + 1);
-      }else if (response.status === 500) {
-        openNotification("error", response.message);
+      } else {
+        // Handle other status codes or error messages here
+        openNotification('error', 'Error', 'Failed to save data.');
       }
+    }
     } catch (error) {
       // Handle the error here
       console.error('Error:', error);
@@ -436,151 +484,7 @@ const handleAddField = (index) => {
 
 
 
-//   const generateInputField = (e, condition, conditionIndex) => {
-//     console.log("value",e)
-    
-   
-//     console.log('Saved content:', savedContent);
-//     switch (e) {
-      
-// //       case 'Paragraph':
-// //         return (
-// //           <TextArea
-// //   value={formik.values.customFields[index].answer_meta_data}
-// //   change={(e) => formik.setFieldValue(`customFields[${index}].answer_meta_data`, e)}
-// // />
-// //         );
-// //       case 'ShortAnswer':
-// //         return (
-// //           <FormInput
-// //   value={formik.values.customFields[index].answer_meta_data}
-// //   change={(e) => formik.setFieldValue(`customFields[${index}].answer_meta_data`, e)}
-// // />
-// //         );
-//       case 'Drop-down':
-//         return (
-          
-//           <>
-//           {formik.values.customFields.map((field, index) => (
-//             <div key={index} className="flex items-center">
-//               <FormInput
-//                 placeholder={"Enter value"}
-//                 value={field.answer_meta_data}
-//                 change={(e) =>
-//                   formik.setFieldValue(
-//                     `customFields[${index}].answer_meta_data`,
-//                     e
-//                   )
-//                 }
-//               />
-//               <div className="ml-2">
-//                 <MdDelete
-//                   onClick={() => handleDeleteField(index)}
-//                   className="cursor-pointer text-red-500"
-//                 />
-//               </div>
-//             </div>
-//           ))}
-//           <div>
-//             <button
-//               type="button"
-//               onClick={handleAddField}
-//               className="flex items-center mt-2"
-//             >
-//               <CgAdd className="mr-1" />
-//               Add Field
-//             </button>
-//           </div>
-//         </>
-         
-      
-        
-          
-//         );
-//         case 'MultipleChoice':
-//           return (
-          
-//             <>
-//             {formik.values.customFields.map((field, index) => (
-//               <div key={index} className="flex items-center">
-//                 <FormInput
-//                   placeholder={"Enter value"}
-//                   value={field.answer_meta_data}
-//                   change={(e) =>
-//                     formik.setFieldValue(
-//                       `customFields[${index}].answer_meta_data`,
-//                       e
-//                     )
-//                   }
-//                 />
-//                 <div className="ml-2">
-//                   <MdDelete
-//                     onClick={() => handleDeleteField(index)}
-//                     className="cursor-pointer text-red-500"
-//                   />
-//                 </div>
-//               </div>
-//             ))}
-//             <div>
-//               <button
-//                 type="button"
-//                 onClick={handleAddField}
-//                 className="flex items-center mt-2"
-//               >
-//                 <CgAdd className="mr-1" />
-//                 Add Field
-//               </button>
-//             </div>
-//           </>
-           
-        
-          
-            
-//           );
-//           case 'Checkboxes':
-//             return (
-          
-//               <>
-//               {formik.values.customFields.map((field, index) => (
-//                 <div key={index} className="flex items-center">
-//                   <FormInput
-//                     placeholder={"Enter value"}
-//                     value={field.answer_meta_data}
-//                     change={(e) =>
-//                       formik.setFieldValue(
-//                         `customFields[${index}].answer_meta_data`,
-//                         e
-//                       )
-//                     }
-//                   />
-//                   <div className="ml-2">
-//                     <MdDelete
-//                       onClick={() => handleDeleteField(index)}
-//                       className="cursor-pointer text-red-500"
-//                     />
-//                   </div>
-//                 </div>
-//               ))}
-//               <div>
-//                 <button
-//                   type="button"
-//                   onClick={handleAddField}
-//                   className="flex items-center mt-2"
-//                 >
-//                   <CgAdd className="mr-1" />
-//                   Add Field
-//                 </button>
-//               </div>
-//             </>
-             
-          
-            
-              
-//             );
-//       default:
-//         // return <FormInput value={formik.value.Default} change={(newValue) => handleChange(newValue, index)} />;
-//     }
-//   };
+
 
   const handleClose = () => {
     close(false);
@@ -832,7 +736,7 @@ const handleAddField = (index) => {
 
   const formik2 = useFormik({
     initialValues: {
-    jobId:"",
+    id:"",
     modifiedBy:"",
     workFlowId:"",
     },
@@ -843,11 +747,11 @@ const handleAddField = (index) => {
       try {
         console.log(e)
         const response = await updateRecruitmentJob(
-
-                 jobId,
-                 workFlowId,
-                 modifiedBy,
-        
+               {
+                 id:jobId,
+                 workFlowId:workFlowId,
+                 modifiedBy:modifiedBy,
+               }
                 
               );
   
@@ -861,7 +765,7 @@ const handleAddField = (index) => {
               "Successful",
               response.message
             );
-            setPresentage(2);
+            setPresentage(3.4);
             setNextStep(nextStep + 1);
           }else if (response.status === 500) {
             openNotification("error", response.message);
@@ -990,7 +894,7 @@ const handleAddField = (index) => {
     console.log(employeeList)
     
   }, []);
-  
+  const [jobdata,setJobdata]=useState([])
   const [selectedJobId, setSelectedJobId] = useState('');
   const handleValueChange = (e) => {
     setSelectedJobId(e);
@@ -1002,6 +906,7 @@ const handleAddField = (index) => {
     try {
       const response = await getRecruitmentJobTemplateById(id);
       console.log(response);
+      setJobdata(response?.result||[])
       console.log(id);
     } catch (error) {
       console.log(error);
@@ -1178,7 +1083,7 @@ const handleAddField = (index) => {
                                             title={t("Choose Company")}
                                             placeholder={t("Choose Company")}
                                             options={company}
-                                            value={formik1.values?.companyId}
+                                            value={formik1.values.companyId||jobdata.companyId||""}
                                             required={true} 
                                             change={(selectedCompanyId) => {
                                               formik1.setFieldValue('companyId', selectedCompanyId);
@@ -1198,7 +1103,7 @@ const handleAddField = (index) => {
 
 
                                             }}
-                                            value={formik1.values?.jobTitle}
+                                            value={formik1.values.jobTitle||jobdata.jobTitle||""}
                                             />
 
 
@@ -1741,171 +1646,110 @@ impactful, accurate, and personalized to your company</p>
                           initialExpanded={true}
                         >
 
-                      {evaluation.map((condition, index) => (
-                      <>
-                          {/* {conditions.map((condition, index) => (
-        <div key={index} className="grid grid-cols-4 gap-16  justify-between">
-<FormInput
-placeholder={'Type question here'}
-value={formik.values.customFields.default?.[index]?.question}
-
-change={(e) => {
-formik.setFieldValue(`customFields.default[${index}].question`, e);
-console.log("question value", e);
-}}
-/>
-
-<Dropdown
-options={Form}
-change={(e) => {
-formik.setFieldValue(`customFields.default[${index}].answer_type`, e);
-handleDropdownChange(e,index)
-console.log("dropdown", e);
-}}
-value={formik.values.customFields.default?.[index]?.answer_type}
-icondropDown={true}
-/>
-
-            <div style={{ display: 'flex', alignItems: 'center', gap: '15px' }}>
-                <p>Mandatory</p>
-                <ToggleBtn />
-            </div>
-            <div style={{ display: 'flex', alignItems: 'center', gap: '15px' }}>
-                <MdOutlineFileCopy
-                    style={{ width: '18px', height: '18px', cursor: 'pointer' }}
-                />
+{evaluation.map((condition, index) => (
+  <>
+    <div className="flex items-center justify-between">
+      <FormInput
+        title={`Question ${index + 1}`}
+        placeholder={'Type question here'}
+        value={condition.question}
+        change={(e) => {
+          setEvaluation((prevEvaluation) => prevEvaluation.map((prevCondition, i) => i === index
+            ? { ...prevCondition, question: e }
+            : prevCondition
+          )
+          );
+          console.log(e);
+        }}
+      />
+      <div className="flex items-center gap-5">
+        <div className="flex-shrink-0">
+          <Dropdown
+            options={Form}
+            change={(e) => {
+              setEvaluation((prevEvaluation) => prevEvaluation.map((prevCondition, i) => i === index
+                ? {
+                  ...prevCondition,
+                  answer_type: e,
+                  answerMetaData: [
+                    {
+                      id: 1,
+                      key: e,
+                      value: '',
+                    },
+                  ],
+                }
+                : prevCondition
+              )
+              );
+            }}
+            value={condition.answer_type || "ShortAnswer"}
+            icondropDown={true}
+          />
+        </div>
+        <div style={{ display: 'flex', alignItems: 'center', gap: '15px' }}>
+          <p>Mandatory</p>
+          <ToggleBtn />
+        </div>
+        <div style={{ display: 'flex', alignItems: 'center', gap: '15px' }}>
+          <MdOutlineFileCopy
+            style={{ width: '18px', height: '18px', cursor: 'pointer' }}
+          />
+          <MdDelete
+            style={{ width: '18px', height: '18px', cursor: 'pointer' }}
+            onClick={() => handleDeleteCondition(index)}
+          />
+        </div>
+      </div>
+    </div>
+    {condition.answerMetaData[0]?.key && (
+      <>
+        {['Drop-down', 'MultipleChoice', 'Checkboxes'].includes(condition.answerMetaData[0]?.key) && (
+          // Render existing FormInput components for these options
+          condition.answerMetaData.map((field, fieldIndex) => (
+            <div key={fieldIndex} className="flex items-center">
+              <FormInput
+                title={`Options ${fieldIndex + 1}`}
+                placeholder={'Enter value'}
+                value={field.value}
+                change={(e) => setEvaluation((prevEvaluation) => prevEvaluation.map((prevCondition, i) => i === index
+                  ? {
+                    ...prevCondition,
+                    answerMetaData: prevCondition.answerMetaData.map(
+                      (f, j) => j === fieldIndex
+                        ? { ...f, value: String(e) }
+                        : f
+                    ),
+                  }
+                  : prevCondition
+                )
+                )}
+              />
+              <div className="ml-2">
                 <MdDelete
-                    style={{ width: '18px', height: '18px', cursor: 'pointer' }}
-                    onClick={() => handleDeleteCondition(condition.id)}
+                  onClick={() => handleDeleteField(index, fieldIndex)}
+                  className="cursor-pointer text-red-500"
                 />
+              </div>
             </div>
-            {generateInputField(
-                condition.e,
-                condition,
-                index,
-                'Drop-down',
-                null,
-                condition.inputValue
-                
+          ))
+        )}
+        <div className="mt-2">
+          {['Drop-down', 'MultipleChoice', 'Checkboxes'].includes(
+            condition.answerMetaData[0]?.key
+          ) && (
+              <CgAdd
+                onClick={() => handleAddField(index, condition.answerMetaData[0]?.key)}
+                style={{ width: '18px', height: '18px', cursor: 'pointer' }}
+              />
             )}
         </div>
-    ))} */}
-
-                          <><div className="flex items-center justify-between">
-                            <FormInput
-                             title={`Question ${index + 1}`}
-                              placeholder={'Type question here'}
-                              value={condition.question}
-                              change={(e) => {
-                                setEvaluation((prevEvaluation) => prevEvaluation.map((prevCondition, i) => i === index
-                                  ? { ...prevCondition, question: e }
-                                  : prevCondition
-                                )
-                                );
-                                console.log(e);
-                              } } />
-                            <div className="flex items-center gap-5">
-                              <div className="flex-shrink-0">
-                                <Dropdown
-                                  options={Form}
-                                  change={(e) => {
-                                    setEvaluation((prevEvaluation) => prevEvaluation.map((prevCondition, i) => i === index
-                                      ? {
-                                        ...prevCondition,
-                                        answer_type: e,
-                                        answerMetaData: [
-                                          {
-                                            id: 1,
-                                            key: e,
-                                            value: '',
-                                          },
-                                        ],
-                                      }
-                                      : prevCondition
-                                    )
-                                    );
-                                  } }
-                                  value={condition.answer_type || "ShortAnswer"}
-                                  icondropDown={true} />
-                              </div>
-                              {/* Additional dynamic input fields based on the selected value in the dropdown */}
-                              {/* Add your logic here */}
-
-                              <div style={{ display: 'flex', alignItems: 'center', gap: '15px' }}>
-                                <p>Mandatory</p>
-                                <ToggleBtn />
-                              </div>
-
-                              <div style={{ display: 'flex', alignItems: 'center', gap: '15px' }}>
-                                <MdOutlineFileCopy
-                                  style={{ width: '18px', height: '18px', cursor: 'pointer' }} />
-                                <MdDelete
-                                  style={{ width: '18px', height: '18px', cursor: 'pointer' }}
-                                  onClick={() => handleDeleteCondition(index)} />
-                              </div>
-                            </div>
-
-
-                          </div>
-                            {condition.answerMetaData[0]?.key && (
-                              <>
-                                {/* Render existing FormInput components */}
-                                {condition.answerMetaData.map((field, fieldIndex) => (
-                                  <div key={fieldIndex} className="flex items-center">
-                                    {['Drop-down', 'MultipleChoice', 'Checkboxes'].includes(field.key) && (
-                                      <FormInput
-                                      title={`options ${fieldIndex + 1}`}
-                                        placeholder={'Enter value'}
-                                        value={field.value}
-                                        change={(e) => setEvaluation((prevEvaluation) => prevEvaluation.map((prevCondition, i) => i === index
-                                          ? {
-                                            ...prevCondition,
-                                            answerMetaData: prevCondition.answerMetaData.map(
-                                              (f, j) => j === fieldIndex
-                                                ? { ...f, value: String(e) }
-                                                : f
-                                            ),
-                                          }
-                                          : prevCondition
-                                        )
-                                        )} />
-                                    )}
-
-                                    {['Drop-down', 'MultipleChoice', 'Checkboxes'].includes(field.key) && (
-                                      <div className="ml-2">
-                                        <MdDelete
-                                          onClick={() => handleDeleteField(index, fieldIndex)}
-                                          className="cursor-pointer text-red-500" />
-                                      </div>
-                                    )}
-                                  </div>
-                                ))}
-
-                                <div className="mt-2">
-                                  {['Drop-down', 'MultipleChoice', 'Checkboxes'].includes(
-                                    condition.answerMetaData[0]?.key
-                                  ) && (
-                                      <CgAdd
-                                        onClick={() => handleAddField(index, condition.answerMetaData[0]?.key)}
-                                        style={{ width: '18px', height: '18px', cursor: 'pointer' }} />
-                                    )}
-                                </div>
-                              </>
-                            )}
-                          </>
-
-
-
-                          <div className="flex items-center gap-2">
-
-
-                          </div>
-
-
-                          <div className="v-divider"></div>
-                      
-                        </>
-                      ))}
+      </>
+    )}
+   
+    <div className="v-divider"></div>
+  </>
+))}
                        <AddMore name="Add Custom Field " className="!text-black" change={(e) => { handleAddCondition(); } } />
                       </Accordion>
                      
@@ -1935,7 +1779,9 @@ icondropDown={true}
         </Card>
       ))}
                 */}
-                    <Radio.Group onChange={(e) => setSelectedWorkFlowId(e.target.value)}>
+                    <Radio.Group onChange={(e) => {setSelectedWorkFlowId(e.target.value)
+            setPresentage(2.4);
+          }}>
       {Stages.map(each => (
         <Card key={each.workFlowId}>
           <JobCard options={each.stages} />
@@ -2013,7 +1859,7 @@ placeholder={"Search Employess"}/>
         value={isChecked}
         change={(checked) => {
           setIsChecked(checked);
-          setPresentage(checked ? 3.4 : 0);
+          setPresentage(3.4);
         }}
       />
           </td>

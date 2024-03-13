@@ -18,7 +18,7 @@ import Radiobuttonnew from '../common/Radiobuttonnew';
 import GoogleForm from '../common/GoogleForm';
 import JobCard from '../common/JobCard';
 import { cardData, regularOvertime,Requirment,JobType,experiencelevel,eductaion,saleryCurrency } from '../data';
-import { saveRecruitmentJobApplicationFormSetting,saveRecruitmentJobTemplate,getAllRecruitmentWorkFlows,updateRecruitmentJob,getAllRecruitmentJobTeamMembers } from '../Api1';
+import { saveRecruitmentJobApplicationFormSetting,saveRecruitmentJobTemplate,getAllRecruitmentWorkFlows,updateRecruitmentJob,getAllRecruitmentJobTeamMembers,updateRecruitmentJobTemplate } from '../Api1';
 import { Formik, useFormik } from 'formik';
 import { CgAdd } from "react-icons/cg";
 import { Form } from '../data';
@@ -53,7 +53,12 @@ import RadioButton from '../common/RadioButton';
 
  
 
-const CreatejobTemp = ( {open = "", close = () => { },inputshow= false,isUpdate={}}) => {
+const CreatejobTemp = ({
+    open = "", 
+    close = () => { },
+    inputshow= false,
+    isUpdate={},
+    updateId}) => {
   
   const[show,setShow] =useState(open);
   const { t } = useTranslation();
@@ -73,11 +78,11 @@ const CreatejobTemp = ( {open = "", close = () => { },inputshow= false,isUpdate=
   const [workFlows, setWorkFlows] = useState([]);
   const [selectedWorkFlowId, setSelectedWorkFlowId] = useState("");
   const [selectedDivs, setSelectedDivs] = useState([]);
-
+  console.log(updateId)
   useEffect(() => {
     // Retrieve the login data JSON string from local storage
     const loginDataString = localStorage.getItem('LoginData');
-
+    
     if (loginDataString) {
       // Parse the JSON string to get the LoginData object
       const loginData = JSON.parse(loginDataString);
@@ -182,7 +187,21 @@ const formik = useFormik({
        
     //   }),
  onSubmit: async (e) => {
-  try{
+  
+    try{
+
+       if (updateId){
+        const response = await updateRecruitmentJobTemplate(
+            {
+             id:updateId,
+            }
+
+        )
+      
+
+       } else{
+
+       
     console.log(e)
     const updatedCustomFields = evaluation.map((condition) => ({
         question: condition.question,
@@ -250,6 +269,7 @@ const formik = useFormik({
     }else if (response.status === 500) {
       openNotification("error", response.message);
     }
+}
   }
   catch (error) {
     // Handle the error here
@@ -291,104 +311,7 @@ useEffect(() => {
   getDepartmentList();
 
 }, []);
-// const [locationList, setLocationList] = useState([]);
-// const getLocationList = async () => {
-//   console.log(companyId);
-//   console.log(API.HOST + API.GET_LOCATION + "/" + companyId);
-//   // console.log("navigationPath",navigationPath);
-//   const result = await axios.post(
-//     API.HOST + API.GET_LOCATION + "/" + companyId
-//   );
-//   // setLocationList(result.data.tbl_location);
-//   setLocationList( result.data.tbl_location.map((each) => ({
-//     label: each.location,
-//     value: each.locationId,
-//   })))
-//   console.log(result);
-// };
-// useEffect(() => {
-//   // switch (assignBtnName) {
-//   //   default:
-//   getLocationList();
 
-// }, []);
-const formik1 = useFormik({
-  initialValues: {
-    jobId:"1",
-    name: "1",
-    email: "1",
-    headline: "1",
-    phone: "1",
-    address: "1",
-    country: "1",
-    education: "1",
-    experience: "1",
-    summary: "1",
-    resume: "1",
-    coverLetter: "1",
-    customFields: [
-      {
-        question: "",
-        answer_type: "",
-        is_required: "",
-        answer_meta_data: [],
-      }
-    ],
-  },
-  onSubmit: async (e) => {
-    try {
-      console.log(e)
-      const updatedCustomFields = evaluation.map((condition) => ({
-        question: condition.question,
-        answer_type: condition.answer_type,
-        is_required: condition.is_required,
-        answer_meta_data: condition.answerMetaData,
-      }));
-     console.log(updatedCustomFields)
-      // Merge the updated customFields into the form data
-   
-      const response = await saveRecruitmentJobApplicationFormSetting({
-        jobId:jobId,
-        name: e.name,
-        email: e.email,
-        headline: e.headline,
-        phone: e.phone,
-        address: e.address,
-        country: e.country,
-        education: e.education,
-        experience: e.experience,
-        summary: e.summary,
-        resume: e.resume,
-        coverLetter: e.coverLetter,
-        
-        customFields: updatedCustomFields
-
-
-
-      });
-
-      // Handle the response if needed
-      console.log('Response:', response);
-      if (response.status === 200) {
-      
-      
-        openNotification(
-          "success",
-          "Successful",
-          response.message
-        );
-        setPresentage(2);
-        setNextStep(nextStep + 1);
-      }else if (response.status === 500) {
-        openNotification("error", response.message);
-      }
-    } catch (error) {
-      // Handle the error here
-      console.error('Error:', error);
-      // openNotification("error", "Failed..");
-    }
-  },
-});
 
 
 
@@ -459,151 +382,6 @@ const handleAddField = (index) => {
 
 
 
-//   const generateInputField = (e, condition, conditionIndex) => {
-//     console.log("value",e)
-    
-   
-//     console.log('Saved content:', savedContent);
-//     switch (e) {
-      
-// //       case 'Paragraph':
-// //         return (
-// //           <TextArea
-// //   value={formik.values.customFields[index].answer_meta_data}
-// //   change={(e) => formik.setFieldValue(`customFields[${index}].answer_meta_data`, e)}
-// // />
-// //         );
-// //       case 'ShortAnswer':
-// //         return (
-// //           <FormInput
-// //   value={formik.values.customFields[index].answer_meta_data}
-// //   change={(e) => formik.setFieldValue(`customFields[${index}].answer_meta_data`, e)}
-// // />
-// //         );
-//       case 'Drop-down':
-//         return (
-          
-//           <>
-//           {formik.values.customFields.map((field, index) => (
-//             <div key={index} className="flex items-center">
-//               <FormInput
-//                 placeholder={"Enter value"}
-//                 value={field.answer_meta_data}
-//                 change={(e) =>
-//                   formik.setFieldValue(
-//                     `customFields[${index}].answer_meta_data`,
-//                     e
-//                   )
-//                 }
-//               />
-//               <div className="ml-2">
-//                 <MdDelete
-//                   onClick={() => handleDeleteField(index)}
-//                   className="cursor-pointer text-red-500"
-//                 />
-//               </div>
-//             </div>
-//           ))}
-//           <div>
-//             <button
-//               type="button"
-//               onClick={handleAddField}
-//               className="flex items-center mt-2"
-//             >
-//               <CgAdd className="mr-1" />
-//               Add Field
-//             </button>
-//           </div>
-//         </>
-         
-      
-        
-          
-//         );
-//         case 'MultipleChoice':
-//           return (
-          
-//             <>
-//             {formik.values.customFields.map((field, index) => (
-//               <div key={index} className="flex items-center">
-//                 <FormInput
-//                   placeholder={"Enter value"}
-//                   value={field.answer_meta_data}
-//                   change={(e) =>
-//                     formik.setFieldValue(
-//                       `customFields[${index}].answer_meta_data`,
-//                       e
-//                     )
-//                   }
-//                 />
-//                 <div className="ml-2">
-//                   <MdDelete
-//                     onClick={() => handleDeleteField(index)}
-//                     className="cursor-pointer text-red-500"
-//                   />
-//                 </div>
-//               </div>
-//             ))}
-//             <div>
-//               <button
-//                 type="button"
-//                 onClick={handleAddField}
-//                 className="flex items-center mt-2"
-//               >
-//                 <CgAdd className="mr-1" />
-//                 Add Field
-//               </button>
-//             </div>
-//           </>
-           
-        
-          
-            
-//           );
-//           case 'Checkboxes':
-//             return (
-          
-//               <>
-//               {formik.values.customFields.map((field, index) => (
-//                 <div key={index} className="flex items-center">
-//                   <FormInput
-//                     placeholder={"Enter value"}
-//                     value={field.answer_meta_data}
-//                     change={(e) =>
-//                       formik.setFieldValue(
-//                         `customFields[${index}].answer_meta_data`,
-//                         e
-//                       )
-//                     }
-//                   />
-//                   <div className="ml-2">
-//                     <MdDelete
-//                       onClick={() => handleDeleteField(index)}
-//                       className="cursor-pointer text-red-500"
-//                     />
-//                   </div>
-//                 </div>
-//               ))}
-//               <div>
-//                 <button
-//                   type="button"
-//                   onClick={handleAddField}
-//                   className="flex items-center mt-2"
-//                 >
-//                   <CgAdd className="mr-1" />
-//                   Add Field
-//                 </button>
-//               </div>
-//             </>
-             
-          
-            
-              
-//             );
-//       default:
-//         // return <FormInput value={formik.value.Default} change={(newValue) => handleChange(newValue, index)} />;
-//     }
-//   };
 
   const handleClose = () => {
     close(false);
@@ -853,49 +631,7 @@ const handleAddField = (index) => {
   //   }
   // };
 
-  const formik2 = useFormik({
-    initialValues: {
-    jobId:"",
-    modifiedBy:"",
-    workFlowId:"",
-    },
-    onSubmit: async (e) => {
-      const workFlowId = selectedWorkFlowId;
-      const modifiedBy =userid;
-      
-      try {
-        console.log(e)
-        const response = await updateRecruitmentJob(
-
-                 jobId,
-                 workFlowId,
-                 modifiedBy,
-        
-                
-              );
-  
-        // Handle the response if needed
-        console.log('Response:', response);
-        if (response.status === 200) {
-        
-        
-            openNotification(
-              "success",
-              "Successful",
-              response.message
-            );
-            setPresentage(2);
-            setNextStep(nextStep + 1);
-          }else if (response.status === 500) {
-            openNotification("error", response.message);
-          }
-      } catch (error) {
-        // Handle the error here
-        console.error('Error:', error);
-        // openNotification("error", "Failed..");
-      }
-    },
-  });
+ 
   const handleButtonClick = async (e) => {
     switch (activeBtnValue) {
       case "Jobdetails":
