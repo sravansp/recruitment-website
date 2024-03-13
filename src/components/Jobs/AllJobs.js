@@ -380,7 +380,11 @@ function AllJobs() {
         }}
         showButton={true}
         // recordId={record.jobId}
+        actionToggle={(e) => {
+          setUpdateId(e);
+        }}
         
+       
         />
       </div>
     </div>

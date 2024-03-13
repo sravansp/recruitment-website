@@ -19,7 +19,7 @@ import GoogleForm from '../common/GoogleForm';
 import JobCard from '../common/JobCard';
 import { cardData, regularOvertime,Requirment,JobType,experiencelevel,eductaion,saleryCurrency } from '../data';
 import { saveRecruitmentJobApplicationFormSetting,saveRecruitmentJob,getAllRecruitmentWorkFlows,updateRecruitmentJob,getAllRecruitmentJobTeamMembers } from '../Api1';
-import { Formik, useFormik } from 'formik';
+import { ErrorMessage, Formik, useFormik, yupToFormErrors } from 'formik';
 import { CgAdd } from "react-icons/cg";
 import { Form } from '../data';
 import { MdContentCopy, MdOutlineFileCopy } from "react-icons/md";
@@ -57,7 +57,7 @@ const Createjob = ( {open = "", close = () => { },inputshow= false,isUpdate={}})
   const [activeBtn, setActiveBtn] = useState(0);
   const [presentage, setPresentage] = useState(0);
   const [nextStep, setNextStep] = useState(0);
-  const [activeBtnValue, setActiveBtnValue] = useState("ApplicationForm"); //LeaveType
+  const [activeBtnValue, setActiveBtnValue] = useState("Jobdetails"); //LeaveType
   const [btnName, setBtnName] = useState();
   const [customRate, setCustomRate] = useState(1);
   const [savedContent, setSavedContent] = useState([]);
@@ -128,7 +128,29 @@ const Createjob = ( {open = "", close = () => { },inputshow= false,isUpdate={}})
 const [dropdownOptions, setDropdownOptions] = useState([]);
 const [jobId,setJobId] =useState("")
 
-
+const validationSchema1 = Yup.object().shape({
+  companyId: Yup.string().required('Company ID is required'),
+  jobTitle: Yup.string().required('Job Title is required'),
+  departmentId: Yup.string().required('Department ID is required'),
+  jobCode: Yup.string().required('Job Code is required'),
+  workLocationType: Yup.string().required('Work Location Type is required'),
+  
+  location: Yup.string().required('Location is required'),
+  requirementType: Yup.string().required('Requirement Type is required'),
+  jobType: Yup.string().required('Job Type is required'),
+  experience: Yup.string().required('Experience is required'),
+  education: Yup.string().required('Education is required'),
+  searchKeywords: Yup.string().required('Search Keywords is required'),
+  salaryRangeFrom: Yup.number()
+  .typeError('Salary Range From must be a number')
+  .required('Salary Range From is required'),
+salaryRangeTo: Yup.number()
+  .typeError('Salary Range To must be a number')
+  .required('Salary Range To is required'),
+  salaryCurrency: Yup.string().required('Salary Currency is required'),
+  isSalaryPublic: Yup.boolean().required('Is Salary Public is required'),
+  jobDescription: Yup.string().required('Job Description is required'),
+});
 //job applying
 
 const formik1 = useFormik({
@@ -166,6 +188,7 @@ const formik1 = useFormik({
     //     gender: yup.string().required("Gender is Required"),
     //     dateOfBirth: yup.string().required("Date of Birth Group is Required"),
     //   }),
+    validationSchema:validationSchema1,
  onSubmit: async (e) => {
   try{
     console.log(e)
@@ -264,6 +287,8 @@ useEffect(() => {
 //   getLocationList();
 
 // }, []);
+
+
 const formik = useFormik({
   initialValues: {
     jobId:"1",
@@ -287,6 +312,7 @@ const formik = useFormik({
       },
     ],
   },
+ 
   onSubmit: async (e) => {
     try {
       console.log(e)
@@ -1037,7 +1063,7 @@ const handleSaveInput = (index) => {
                                     <Dropdown
                                             title={t("Choose Template")}
                                             placeholder={t("Select")}
-                                            required={true} />
+                                            required={false} />
 
                                            
                                         
@@ -1050,6 +1076,7 @@ const handleSaveInput = (index) => {
                                             placeholder={t("Choose Company")}
                                             options={company}
                                             value={formik1.values.companyId}
+                                            error={formik1.errors.companyId}
                                             required={true} 
                                             change={(e)=>{
                                               formik1.setFieldValue('companyId',e)
@@ -1068,6 +1095,7 @@ const handleSaveInput = (index) => {
 
                                             }}
                                             value={formik1.values.jobTitle}
+                                            error={formik1.errors.jobTitle}
                                             />
 
 
@@ -1079,6 +1107,7 @@ const handleSaveInput = (index) => {
                                             required={true} 
                                             options={departmentList}
                                             value={formik1.values.departmentId}
+                                            error={formik1.errors.departmentId}
                                             change={(e)=>{
                                               formik1.setFieldValue('departmentId',e)
                                             }}
@@ -1094,6 +1123,7 @@ const handleSaveInput = (index) => {
                                             }
                                             }
                                             value={formik1.values.jobCode}
+                                            error={formik1.errors.jobCode}
                                             />
                                             
                                     </div>
@@ -1170,6 +1200,7 @@ const handleSaveInput = (index) => {
 
                                                     }}
                                                     value={formik1.values.location }
+                                                    error={formik1.errors.location}
                                                     />
                                                     
                                                     <Dropdown
@@ -1178,6 +1209,7 @@ const handleSaveInput = (index) => {
                                                     options={Requirment}
                                                     value={formik1.values.requirementType
                                                     }
+                                                    error={formik1.errors.requirementType}
                                                     change={(e)=>{
                                                       formik1.setFieldValue('requirementType',e)
                                                       console.log(e)
@@ -1207,12 +1239,14 @@ const handleSaveInput = (index) => {
                                                       console.log(e)
                                                     }}
                                                     value={formik1.values.jobType}
+                                                    error={formik1.errors.jobType}
                                                     />
                                                <Dropdown
                                                     title={'Experience'}
                                                     placeholder={'Mid-Senior level'}
                                                     options={experiencelevel} 
                                                     value={formik1.values.experience}
+                                                    error={formik1.errors.experience}
                                                     change={(e)=>{
                                                       formik1.setFieldValue('experience',e)
                                                     }}
@@ -1223,6 +1257,7 @@ const handleSaveInput = (index) => {
                                                     placeholder={'Bachelor’s Degree'} 
                                                     options={eductaion}
                                                     value={formik1.values.education}
+                                                    error={formik1.errors.education}
                                                     change={(e)=>{
                                                       formik1.setFieldValue('education',e)
                                                     }}
@@ -1237,6 +1272,7 @@ const handleSaveInput = (index) => {
                                                       formik1.setFieldValue('searchKeywords',e)
                                                     }}
                                                     value={formik1.values.searchKeywords}
+                                                    error={formik1.errors.searchKeywords}
                                                     />
                                                 {/* <Dropdown
                                                     title={'Requirement'}
@@ -1255,7 +1291,11 @@ const handleSaveInput = (index) => {
                                                     }}
                                                     value={formik1.values.salaryRangeFrom
                                                     }
+                                                   
+                                                    error={formik1.errors.salaryRangeFrom}
                                                     />
+                                                    
+                                                      
                                                 <FormInput
                                                     title={'Salary Range To'}
                                                     placeholder={'Enter value'}
@@ -1264,12 +1304,14 @@ const handleSaveInput = (index) => {
                                                     }}
                                                     value={formik1.values.salaryRangeTo
                                                     }
+                                                    error={formik1.errors.salaryRangeTo}
                                                     />
                                                     <Dropdown
                                                     title={'Salary Currency'}
                                                     placeholder={'Urgent'} 
                                                     options={saleryCurrency}
                                                     value={formik1.values.salaryCurrency}
+                                                    error={formik1.errors.salaryCurrency}
                                                     change={(e)=>{
                                                       formik1.setFieldValue('salaryCurrency',e)
                                                     }}
