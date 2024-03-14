@@ -138,7 +138,29 @@ const Createjob = ( {open = "", close = () => { },inputshow= false,isUpdate={},u
 const [dropdownOptions, setDropdownOptions] = useState([]);
 const [jobId,setJobId] =useState("")
 
-console.log(evaluation)
+// const validationSchema1 = Yup.object().shape({
+//   companyId: Yup.string().required('Company ID is required'),
+//   jobTitle: Yup.string().required('Job Title is required'),
+//   departmentId: Yup.string().required('Department ID is required'),
+//   jobCode: Yup.string().required('Job Code is required'),
+//   workLocationType: Yup.string().required('Work Location Type is required'),
+  
+//   location: Yup.string().required('Location is required'),
+//   requirementType: Yup.string().required('Requirement Type is required'),
+//   jobType: Yup.string().required('Job Type is required'),
+//   experience: Yup.string().required('Experience is required'),
+//   education: Yup.string().required('Education is required'),
+//   searchKeywords: Yup.string().required('Search Keywords is required'),
+//   salaryRangeFrom: Yup.number()
+//   .typeError('Salary Range From must be a number')
+//   .required('Salary Range From is required'),
+// salaryRangeTo: Yup.number()
+//   .typeError('Salary Range To must be a number')
+//   .required('Salary Range To is required'),
+//   salaryCurrency: Yup.string().required('Salary Currency is required'),
+//   isSalaryPublic: Yup.boolean().required('Is Salary Public is required'),
+//   jobDescription: Yup.string().required('Job Description is required'),
+// });
 //job applying
 useEffect(()=>{
   setJobId(updateId)
@@ -215,7 +237,17 @@ const formik1 = useFormik({
   
 
  },
-   
+    //  enableReinitialize: true,
+    //   validateOnChange: false,
+    //   validationSchema: yup.object().shape({
+    //     firstName: yup.string().required("First Name is Required"),
+    //     lastName: yup.string().required("Last Name is Required"),
+    //     email: yup.string().required("Email is Required"),
+    //     mobile: yup.string().min(10).max(10).required("Mobile is Required"),
+    //     gender: yup.string().required("Gender is Required"),
+    //     dateOfBirth: yup.string().required("Date of Birth Group is Required"),
+    //   }),
+    // validationSchema:validationSchema1,
  onSubmit: async (e) => {
   try{
     console.log(e)
@@ -373,7 +405,6 @@ const formik = useFormik({
       }
     ],
   },
-  
  
   onSubmit: async (e) => {
     try {
@@ -819,18 +850,15 @@ const handleAddField = (index) => {
         // Handle the response if needed
         console.log('Response:', response);
         if (response.status === 200) {
-        
-        
-            openNotification(
-              "success",
-              "Successful",
-              response.message
-            );
-            setPresentage(3.4);
-            setNextStep(nextStep + 1);
-          }else if (response.status === 500) {
-            openNotification("error", response.message);
-          }
+          openNotification("success", "Successful", response.message);
+          setPresentage(3.4)
+          // Add a delay before closing the notification
+          setTimeout(() => {
+            handleClose();
+          }, 2000); // Adjust the delay time as needed
+        } else if (response.status === 500) {
+          openNotification("error", response.message);
+        }
       } catch (error) {
         // Handle the error here
         console.error('Error:', error);
@@ -1172,6 +1200,7 @@ const handleAddField = (index) => {
                                             placeholder={t("Choose Company")}
                                             options={company}
                                             value={formik1.values.companyId}
+                                            error={formik1.errors.companyId}
                                             required={true} 
                                             change={(selectedCompanyId) => {
                                               formik1.setFieldValue('companyId', selectedCompanyId);
@@ -1192,6 +1221,7 @@ const handleAddField = (index) => {
 
                                             }}
                                             value={formik1.values.jobTitle}
+                                            error={formik1.errors.jobTitle}
                                             />
 
 
@@ -1203,6 +1233,7 @@ const handleAddField = (index) => {
                                             required={true} 
                                             options={departmentList}
                                             value={formik1.values.departmentId}
+                                            error={formik1.errors.departmentId}
                                             change={(e)=>{
                                               formik1.setFieldValue('departmentId',e)
                                             }}
@@ -1218,6 +1249,7 @@ const handleAddField = (index) => {
                                             }
                                             }
                                             value={formik1.values.jobCode}
+                                            error={formik1.errors.jobCode}
                                             />
                                             
                                     </div>
@@ -1294,7 +1326,7 @@ const handleAddField = (index) => {
 
                                                     }}
                                                     value={formik1.values.location }
-                                                    required={true}
+                                                    error={formik1.errors.location}
                                                     />
                                                     
                                                     <Dropdown
@@ -1303,6 +1335,7 @@ const handleAddField = (index) => {
                                                     options={Requirment}
                                                     value={formik1.values.requirementType
                                                     }
+                                                    error={formik1.errors.requirementType}
                                                     change={(e)=>{
                                                       formik1.setFieldValue('requirementType',e)
                                                       console.log(e)
@@ -1331,14 +1364,15 @@ const handleAddField = (index) => {
                                                       formik1.setFieldValue('jobType',e)
                                                       console.log(e)
                                                     }}
-                                                    required={true}
                                                     value={formik1.values.jobType}
+                                                    error={formik1.errors.jobType}
                                                     />
                                                <Dropdown
                                                     title={'Experience'}
                                                     placeholder={'Mid-Senior level'}
                                                     options={experiencelevel} 
                                                     value={formik1.values.experience}
+                                                    error={formik1.errors.experience}
                                                     change={(e)=>{
                                                       formik1.setFieldValue('experience',e)
                                                     }}
@@ -1349,6 +1383,7 @@ const handleAddField = (index) => {
                                                     placeholder={'Bachelor’s Degree'} 
                                                     options={eductaion}
                                                     value={formik1.values.education}
+                                                    error={formik1.errors.education}
                                                     change={(e)=>{
                                                       formik1.setFieldValue('education',e)
                                                     }}
@@ -1364,7 +1399,7 @@ const handleAddField = (index) => {
                                                       formik1.setFieldValue('searchKeywords',e)
                                                     }}
                                                     value={formik1.values.searchKeywords}
-                                                    required={true}
+                                                    error={formik1.errors.searchKeywords}
                                                     />
                                                 {/* <Dropdown
                                                     title={'Requirement'}
@@ -1383,8 +1418,11 @@ const handleAddField = (index) => {
                                                     }}
                                                     value={formik1.values.salaryRangeFrom
                                                     }
-                                                    required={true}
+                                                   
+                                                    error={formik1.errors.salaryRangeFrom}
                                                     />
+                                                    
+                                                      
                                                 <FormInput
                                                     title={'Salary Range To'}
                                                     placeholder={'Enter value'}
@@ -1393,13 +1431,14 @@ const handleAddField = (index) => {
                                                     }}
                                                     value={formik1.values.salaryRangeTo
                                                     }
-                                                    required={true}
+                                                    error={formik1.errors.salaryRangeTo}
                                                     />
                                                     <Dropdown
                                                     title={'Salary Currency'}
                                                     placeholder={'Urgent'} 
                                                     options={saleryCurrency}
                                                     value={formik1.values.salaryCurrency}
+                                                    error={formik1.errors.salaryCurrency}
                                                     change={(e)=>{
                                                       formik1.setFieldValue('salaryCurrency',e)
                                                     }}
