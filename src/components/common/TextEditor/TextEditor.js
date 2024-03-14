@@ -10,6 +10,7 @@ const TextEditor = ({
   required = false,
   initialValue, 
   onChange=()=>{}, 
+  
   className, 
   minheight = "250px",
   placeholder="" 
@@ -44,6 +45,8 @@ const TextEditor = ({
       <Editor
         editorState={editorState}
         onEditorStateChange={handleEditorChange}
+        
+       
         placeholder={placeholder}// Add placeholder here
         toolbar={{
           options: ['inline', 'fontSize', 'list', 'textAlign'],

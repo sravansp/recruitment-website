@@ -277,7 +277,7 @@ const formik1 = useFormik({
 
     
     
-    modifiedBy:45
+    modifiedBy:userid
 
     })
     console.log(response)
@@ -318,7 +318,7 @@ const formik1 = useFormik({
     jobPublishType:null,
     jobPublishDetails:null,
     jobStatus: "Draft",
-    createdBy:45
+    createdBy:userid
 
     
     })
@@ -425,7 +425,8 @@ const formik = useFormik({
           !condition.question ||
           !condition.answer_type ||
           (['Drop-down', 'MultipleChoice', 'Checkboxes'].includes(condition.answer_type) &&
-            (condition.answerMetaData.some((field) => !field.value) || !condition.answerMetaData[0]?.key))
+            (condition.answerMetaData.some((field) => !field.value) || 
+            (!condition.answerMetaData[0]?.value && condition.answerMetaData[0]?.key !== "ShortAnswer")))
         );
       });
       
@@ -1504,11 +1505,11 @@ impactful, accurate, and personalized to your company</p>
                                              required={true}
                                              hideBorder={true} 
                                              
-                                             value={formik1.values.jobDescription}
+                                             editorState={formik1.values.jobDescription}
                                             //  change={(e)=>{
                                             //    formik1.setFieldValue('jobDescription',e)
                                             //  }}
-                                            onChange={(e)=>{ formik1.setFieldValue('jobDescription',e)}}
+                                            onChange={(editorState)=>{ formik1.setFieldValue('jobDescription',editorState)}}
                                              />
                                                   {/* <TextArea
                                              title={t("Requirement")}

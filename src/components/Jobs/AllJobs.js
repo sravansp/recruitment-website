@@ -39,6 +39,7 @@ function AllJobs() {
   const handleshow = () => setShow(true);
   const handleClose = () => setShow(false);
   const [show, setShow] = useState(false);
+  const [userid, setuserid] = useState("");
   const[updateId,setUpdateId]=useState("")
   const[FilteredJobList,setFilteredJobList] =useState([])
   const[OpenJObs,setOpenJObs] = useState([])
@@ -47,6 +48,24 @@ function AllJobs() {
   const [openPop, setOpenPop] = useState("");
   const record =""
  
+
+  useEffect(() => {
+    // Retrieve the login data JSON string from local storage
+    const loginDataString = localStorage.getItem('LoginData');
+
+    if (loginDataString) {
+      // Parse the JSON string to get the LoginData object
+      const loginData = JSON.parse(loginDataString);
+
+      // Extract the username from the userData object
+      setuserid(loginData && loginData.userData && loginData.userData.id);
+      setCreatedBy(loginData && loginData.userData && loginData.userData.id)
+      // Now, 'username' variable contains the username
+      
+    } else {
+      console.error('Login data not found in local storage.');
+    }
+  }, []);
   console.log(updateId)
   const tabs =[
     {
@@ -129,7 +148,7 @@ function AllJobs() {
         {
           id: 2,
           title: "APPLIED",
-          value: "companyId",
+          value: "noOfApplicants",
         },
         {
           id: 3,
@@ -175,7 +194,7 @@ function AllJobs() {
         {
           id: 2,
           title: "APPLIED",
-          value: "companyId",
+          value: "noOfApplicants",
         },
         {
           id: 3,
@@ -221,7 +240,7 @@ function AllJobs() {
         {
           id: 2,
           title: "APPLIED",
-          value: "companyId",
+          value: "noOfApplicants",
         },
         {
           id: 3,
@@ -260,10 +279,10 @@ function AllJobs() {
       ],
     },
   ];
-  useEffect(() => {
-    setCreatedBy(1);
+  // useEffect(() => {
+  //   setCreatedBy(1);
     
-  }, []);
+  // }, []);
   useEffect(() => {
     setCompanyId(localStorage.getItem("companyId"));
     
@@ -301,9 +320,10 @@ function AllJobs() {
 }, [companyId]);
 
 useEffect(() => {
-  const getcreatedBy = async (createdBy) => {
+  const getcreatedBy = async () => {
+   const createdBy = userid
     try {
-      const response = await getAllRecruitmentJobs( {companyId,createdBy:1} );
+      const response = await getAllRecruitmentJobs( {companyId,createdBy} );
       setFilteredJobList(response.result);
       console.log(response);
 
