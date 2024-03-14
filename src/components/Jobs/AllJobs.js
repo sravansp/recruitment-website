@@ -159,12 +159,12 @@ function AllJobs() {
           title: "DATE",
           value: "createdOn",
         },
-        {
-          id: 8,
-          title: "",
-          value: "action",
-          dotsVertical: true,
-        },
+        // {
+        //   id: 8,
+        //   title: "",
+        //   value: "action",
+        //   dotsVertical: true,
+        // },
       ],
       Open: [
         {
@@ -205,12 +205,12 @@ function AllJobs() {
           title: "DATE",
           value: "createdOn",
         },
-        {
-          id: 8,
-          title: "",
-          value: "action",
-          dotsVertical: true,
-        },
+        // {
+        //   id: 8,
+        //   title: "",
+        //   value: "action",
+        //   dotsVertical: true,
+        // },
       ],
       Draft: [
         {

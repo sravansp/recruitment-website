@@ -137,7 +137,10 @@ const Createjob = ( {open = "", close = () => { },inputshow= false,isUpdate={},u
   ]);
 const [dropdownOptions, setDropdownOptions] = useState([]);
 const [jobId,setJobId] =useState("")
-
+const [UpdateId,setupdateId]=useState("")
+useEffect(()=>{
+  setupdateId(updateId)
+})
 // const validationSchema1 = Yup.object().shape({
 //   companyId: Yup.string().required('Company ID is required'),
 //   jobTitle: Yup.string().required('Job Title is required'),
@@ -162,16 +165,13 @@ const [jobId,setJobId] =useState("")
 //   jobDescription: Yup.string().required('Job Description is required'),
 // });
 //job applying
-useEffect(()=>{
-  setJobId(updateId)
-  console.log(jobId)
-})
+
 
 const[DraftJobs,setDraftJobs]=useState([])
 
 const getDraftjobs = async () => {
- console.log(jobId)
- const id =jobId
+ console.log(UpdateId)
+ const id =UpdateId
   try {
     const response = await getRecruitmentJobById({id});
     console.log(response);
@@ -211,7 +211,7 @@ const getDraftjobs = async () => {
 useEffect(()=>{
   getDraftjobs()
   console.log(DraftJobs)
-},[jobId])
+},[UpdateId])
 const formik1 = useFormik({
  initialValues: {
   companyId:"",
@@ -233,7 +233,9 @@ const formik1 = useFormik({
   workFlowId:null,
   jobPublishType:"",
   jobPublishDetails:"",
+  jobStatus: "Draft",
   createdBy:"",
+
   
 
  },
@@ -272,6 +274,8 @@ const formik1 = useFormik({
     isSalaryPublic:e.isSalaryPublic,
     jobDescription:e.jobDescription,
     workFlowId: null,
+
+    
     
     modifiedBy:45
 
@@ -313,6 +317,7 @@ const formik1 = useFormik({
     workFlowId:null,
     jobPublishType:null,
     jobPublishDetails:null,
+    jobStatus: "Draft",
     createdBy:45
 
     
@@ -384,7 +389,7 @@ useEffect(() => {
 
 const formik = useFormik({
   initialValues: {
-    jobId:"1",
+    
     name: "1",
     email: "1",
     headline: "1",
@@ -428,9 +433,11 @@ const formik = useFormik({
         openNotification('error', 'CustomFields', 'Please fill in all the required fields.');
         return;
       }
+      console.log(UpdateId)
+     
       // if (jobId){
         const response = await insertOrUpdateRecruitmentJobApplicationFormSettingWithJobId({
-          jobId:jobId,
+          jobId: UpdateId || jobId,
           name: e.name,
           email: e.email,
           headline: e.headline,
@@ -828,6 +835,7 @@ const handleAddField = (index) => {
     modifiedBy:"",
     jobPublishDetails:"",
     jobPublishType:"",
+    jobStatus:"",
     },
     onSubmit: async (e) => {
       
@@ -842,6 +850,7 @@ const handleAddField = (index) => {
                  jobPublishDetails:"this is jobPublishDetails ",
                  jobPublishType:"Confidential",
                  modifiedBy:modifiedBy,
+                 jobStatus:"Open",
                  workFlowId:workFlowId,
                }
                 
@@ -1775,7 +1784,7 @@ impactful, accurate, and personalized to your company</p>
 
 {evaluation.map((condition, index) => (
   <>
-    <div className="flex items-center justify-between">
+    <div className="flex items-center justify-between ">
       <FormInput
         title={`Question ${index + 1}`}
         placeholder={'Type question here'}
@@ -1788,6 +1797,7 @@ impactful, accurate, and personalized to your company</p>
           );
           console.log(e);
         }}
+        
       />
       <div className="flex items-center gap-5">
         <div className="flex-shrink-0">

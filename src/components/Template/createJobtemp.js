@@ -379,7 +379,7 @@ const getJobtemById = async () => {
       formik.setFieldValue("salaryRangeFrom", firstJob.salaryRangeFrom);
       formik.setFieldValue("salaryRangeTo", firstJob.salaryRangeTo);
       formik.setFieldValue("searchKeywords", firstJob.searchKeywords);
-      
+      formik.setFieldValue("experience", firstJob.experience);
 
 
       console.log(firstJob.companyId);
@@ -494,9 +494,12 @@ const handleAddField = (index) => {
 
 
 
-  const handleClose = () => {
-    close(false);
-  };
+const handleClose = () => {
+  // Reset the form values to their initial state
+  formik.resetForm();
+  // Close the modal or perform other actions
+  close(false);
+};
 
   
   const [steps, setSteps] = useState([
@@ -857,8 +860,8 @@ const handleAddField = (index) => {
     
      header={[
         !isUpdate
-          ? t("Create a Job")
-          : t("Create a Job Temaplate"),
+          ? t("Create a Job Temaplate")
+          : t("Update Job Temaplate"),
         t("Lorem ipsum dummy text doret solo."),
       ]}
       

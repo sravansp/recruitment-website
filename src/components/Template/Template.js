@@ -264,6 +264,7 @@ const Template = ({
    const[QuestionaireLIst,setQuestionaire]=useState([])
    const[LetterLIst,setLetter]=useState([])
    const[updateId,setUpdateId]=useState(null)
+   const[update,setUpdate]=useState(false)
 
  
 //    const handleOpenModal = () => {
@@ -560,7 +561,7 @@ const Template = ({
                   } else {
                     setUpdateId(e);
                     setOpenPop(navigationPath);
-        
+                    setUpdate(true)
                     setShow(true);
                     // console.log(company, "companyparentId");
                     // if (company === "edit") {
@@ -582,10 +583,10 @@ const Template = ({
           updateId={updateId}
         //   companyDataId={companyId}
           refresh={() => {
-            // getLocationList();
+            gettemaplate();
           }}
           inputshow={false}
-          isUpdate={true}
+          isUpdate={update}
           
           
         />
