@@ -18,7 +18,7 @@ import Radiobuttonnew from '../common/Radiobuttonnew';
 import GoogleForm from '../common/GoogleForm';
 import JobCard from '../common/JobCard';
 import { cardData, regularOvertime,Requirment,JobType,experiencelevel,eductaion,saleryCurrency } from '../data';
-import { saveRecruitmentJobApplicationFormSetting,saveRecruitmentJob,getAllRecruitmentWorkFlows,updateRecruitmentJob,getAllRecruitmentJobTeamMembers,getAllRecruitmentJobTemplates,getRecruitmentJobTemplateById,updateRecruitmentJobApplicationFormSettingWithJobId } from '../Api1';
+import { saveRecruitmentJobApplicationFormSetting,saveRecruitmentJob,getAllRecruitmentWorkFlows,updateRecruitmentJob,getAllRecruitmentJobTeamMembers,getAllRecruitmentJobTemplates,getRecruitmentJobTemplateById,insertOrUpdateRecruitmentJobApplicationFormSettingWithJobId,getRecruitmentJobById } from '../Api1';
 import { Formik, useFormik } from 'formik';
 import { CgAdd } from "react-icons/cg";
 import { Form } from '../data';
@@ -53,7 +53,7 @@ import RadioButton from '../common/RadioButton';
 
  
 
-const Createjob = ( {open = "", close = () => { },inputshow= false,isUpdate={}}) => {
+const Createjob = ( {open = "", close = () => { },inputshow= false,isUpdate={},updateId }) => {
   
   const[show,setShow] =useState(open);
   const { t } = useTranslation();
@@ -73,6 +73,7 @@ const Createjob = ( {open = "", close = () => { },inputshow= false,isUpdate={}})
   const [workFlows, setWorkFlows] = useState([]);
   const [selectedWorkFlowId, setSelectedWorkFlowId] = useState(null);
   const [selectedDivs, setSelectedDivs] = useState([]);
+  console.log(updateId)
 
   useEffect(() => {
     // Retrieve the login data JSON string from local storage
@@ -139,7 +140,56 @@ const [jobId,setJobId] =useState("")
 
 console.log(evaluation)
 //job applying
+useEffect(()=>{
+  setJobId(updateId)
+  console.log(jobId)
+})
 
+const[DraftJobs,setDraftJobs]=useState([])
+
+const getDraftjobs = async () => {
+ console.log(jobId)
+ const id =jobId
+  try {
+    const response = await getRecruitmentJobById({id});
+    console.log(response);
+
+    if (response.result.length > 0) {
+      const firstJob = response.result[0];
+
+      setDraftJobs(firstJob);
+
+      formik1.setFieldValue("companyId", firstJob.companyId);
+      formik1.setFieldValue("jobTitle", firstJob.jobTitle);
+      formik1.setFieldValue("departmentId", firstJob.departmentId);
+      formik1.setFieldValue("education", firstJob.education);
+      formik1.setFieldValue("isActive", firstJob.isActive);
+      formik1.setFieldValue("isSalaryPublic", firstJob.isSalaryPublic);
+      formik1.setFieldValue("jobCode", firstJob.jobCode);
+      formik1.setFieldValue("jobDescription", firstJob.jobDescription);
+      formik1.setFieldValue("jobType", firstJob.jobType);
+      formik1.setFieldValue("location", firstJob.location);
+      formik1.setFieldValue("requirementType", firstJob.requirementType);
+      formik1.setFieldValue("salaryCurrency", firstJob.salaryCurrency);
+      formik1.setFieldValue("salaryRangeFrom", firstJob.salaryRangeFrom);
+      formik1.setFieldValue("salaryRangeTo", firstJob.salaryRangeTo);
+      formik1.setFieldValue("searchKeywords", firstJob.searchKeywords);
+      formik1.setFieldValue("experience", firstJob.experience);
+      
+
+
+      console.log(firstJob.companyId);
+    } else {
+      console.error("No data found in the response.");
+    }
+  } catch (error) {
+    console.log(error);
+  }
+};
+useEffect(()=>{
+  getDraftjobs()
+  console.log(DraftJobs)
+},[jobId])
 const formik1 = useFormik({
  initialValues: {
   companyId:"",
@@ -302,7 +352,7 @@ useEffect(() => {
 
 const formik = useFormik({
   initialValues: {
-    
+    jobId:"1",
     name: "1",
     email: "1",
     headline: "1",
@@ -339,16 +389,16 @@ const formik = useFormik({
           !condition.question ||
           !condition.answer_type ||
           (['Drop-down', 'MultipleChoice', 'Checkboxes'].includes(condition.answer_type) &&
-            condition.answerMetaData.some((field) => !field.value))
+            (condition.answerMetaData.some((field) => !field.value) || !condition.answerMetaData[0]?.key))
         );
       });
-
+      
       if (isAnyEmpty) {
         openNotification('error', 'CustomFields', 'Please fill in all the required fields.');
         return;
-      } 
-      
-        const response = await updateRecruitmentJobApplicationFormSettingWithJobId({
+      }
+      // if (jobId){
+        const response = await insertOrUpdateRecruitmentJobApplicationFormSettingWithJobId({
           jobId:jobId,
           name: e.name,
           email: e.email,
@@ -366,7 +416,7 @@ const formik = useFormik({
         }
         )
        console.log(response)
-       if (response.status === 200) {
+       if (response && response.status === 200) {
         openNotification('success', 'Successful', response.message);
         setPresentage(2);
         setNextStep(nextStep + 1);
@@ -374,9 +424,41 @@ const formik = useFormik({
         // Handle other status codes or error messages here
         openNotification('error', 'Error', 'Failed to save data.');
       }
-    
-     
-    
+    //   }else{
+      
+    //  console.log(updatedCustomFields)
+    //   // Merge the updated customFields into the form data
+   
+    //   const response = await saveRecruitmentJobApplicationFormSetting({
+    //     jobId:jobId,
+    //     name: e.name,
+    //     email: e.email,
+    //     headline: e.headline,
+    //     phone: e.phone,
+    //     address: e.address,
+    //     country: e.country,
+    //     education: e.education,
+    //     experience: e.experience,
+    //     summary: e.summary,
+    //     resume: e.resume,
+    //     coverLetter: e.coverLetter,
+        
+    //     customFields: updatedCustomFields
+
+
+
+    //   });
+
+    //   // Handle the response if needed
+    //   console.log('Response:', response);
+    //   if (response && response.status === 200) {
+    //     openNotification('success', 'Successful', response.message);
+    //     setPresentage(2);
+    //     setNextStep(nextStep + 1);
+    //   } else {
+    //     // Handle other status codes or error messages here
+    //     openNotification('error', 'Error', 'Failed to save data.');
+    //   }
     // }
     } catch (error) {
       // Handle the error here
@@ -387,7 +469,17 @@ const formik = useFormik({
 });
 
 
-
+const handleDivClick = (index) => {
+  // Toggle the selection of the div
+  // if (selectedDivs.includes(index)) {
+  //   setSelectedDivs(selectedDivs.filter((i) => i !== index));
+  //   setPercentage(percentage - 1); // Decrease percentage by 1
+  // } else {
+  //   setSelectedDivs([...selectedDivs, index]);
+  //   setPercentage(percentage + 1); // Increase percentage by 1
+  // }
+  setPresentage(3.4)
+};
 
 const scrollRef = useRef();
 const handleAddCondition = () => {
@@ -699,6 +791,53 @@ const handleAddField = (index) => {
       }
     },
   });
+  const formik3 = useFormik({
+    initialValues: {
+    id:"",
+    modifiedBy:"",
+    jobPublishDetails:"",
+    jobPublishType:"",
+    },
+    onSubmit: async (e) => {
+      
+      const modifiedBy =userid;
+      
+      try {
+        console.log(e)
+        const workFlowId = selectedWorkFlowId;
+        const response = await updateRecruitmentJob(
+               {
+                 id:jobId,
+                 jobPublishDetails:"this is jobPublishDetails ",
+                 jobPublishType:"Confidential",
+                 modifiedBy:modifiedBy,
+                 workFlowId:workFlowId,
+               }
+                
+              );
+  
+        // Handle the response if needed
+        console.log('Response:', response);
+        if (response.status === 200) {
+        
+        
+            openNotification(
+              "success",
+              "Successful",
+              response.message
+            );
+            setPresentage(3.4);
+            setNextStep(nextStep + 1);
+          }else if (response.status === 500) {
+            openNotification("error", response.message);
+          }
+      } catch (error) {
+        // Handle the error here
+        console.error('Error:', error);
+        // openNotification("error", "Failed..");
+      }
+    },
+  });
   const [jobtemplate,setjobtemplate] = useState("")
   const getJobtemp = async () =>{
     try {
@@ -769,7 +908,7 @@ const handleAddField = (index) => {
                 // Your logic for Applicability form submission...
                 // Move to the next step if applicable
                 // formik1.handleSubmit();
-                handleClose()
+                formik3.handleSubmit()
                 break;
       default:
         // // Handle the case when no card is selected
@@ -1873,7 +2012,7 @@ placeholder={"Search Employess"}/>
               name={`selectAll`}
               type="checkbox"
               className="h-4 w-4 rounded border text-indigo-600 focus:ring-indigo-600 mr-2"
-              // onChange={() => handleSelectAll()}
+              onClick={() => handleDivClick(index)}
             />
             {selectedCount > 0 && (
               <span className="mr-2 h6">{`Selected ${selectedCount} portal `}</span>
@@ -1891,7 +2030,9 @@ placeholder={"Search Employess"}/>
             selectedDivs.includes(index)
               ? "border-[#6A4BFC]"
               : "border-[#DADADA]"
+             
           }`}
+          
           style={{ position: "relative" }} // Added to set position for absolute checkbox
         >
           <div className="items-center flex flex-col lg:flex-row">
@@ -1910,7 +2051,10 @@ placeholder={"Search Employess"}/>
             name={`comments-${index}`}
             type="checkbox"
             className="h-4 w-4 rounded border text-indigo-600 focus:ring-indigo-600 absolute top-4 right-4"
-            onChange={() => handleCheckboxChange(index)}
+            onChange={() => {handleCheckboxChange(index)
+            setPresentage(3.4)
+          }
+            }
             style={{ borderColor: "red" }}
           />
          
@@ -1922,21 +2066,7 @@ placeholder={"Search Employess"}/>
   </div>
 </div>
 
-                {/* </div> */}
-                {/* <div className="text-wrap">
-                  <p className="para mt-4 ">
-                    Indeed is a global job search engine for job listings with
-                    over 200 million unique monthly visitors
-                  </p>
-                </div> */}
-                {/* <div className="mt-4">
-                  <ButtonClick
-                    BtnType="text"
-                    icon={<BiEditAlt />}
-                    buttonName="Edit"
-                    className={"bg-[#e8e4e4]"}
-                  />
-                </div> */}
+             
        
                   </Accordion>
                 ) : null

@@ -22,22 +22,22 @@ const apiRequest = async (action, method, kwargs) => {
   }
 };
 
-export const getRecruitmentJobById = async (jobId) => {
-  const action = "getRecruitmentJobById";
+  export const getRecruitmentJobById = async (id) => {
+    const action = "getRecruitmentJobById";
 
-  const method = "POST";
+    const method = "POST";
 
-  const kwargs = { jobId };
+    const kwargs = id ;
+   
+    return await apiRequest(action, method, kwargs);
+  };
 
-  return await apiRequest(action, method, jobId);
-};
-
-export const getAllRecruitmentJobs = async () => {
+export const getAllRecruitmentJobs = async (Data) => {
   const action = "getAllRecruitmentJobs";
 
   const method = "POST";
 
-  const kwargs = {};
+  const kwargs = Data;
 
   return await apiRequest(action, method, kwargs);
 };
@@ -459,8 +459,8 @@ export const updateRecruitmentJobTemplate = async (data) => {
 
   return await apiRequest(action, method, kwargs);
 };
-export const updateRecruitmentJobApplicationFormSettingWithJobId = async (Data) => {
-  const action = "updateRecruitmentJobApplicationFormSettingWithJobId";
+export const insertOrUpdateRecruitmentJobApplicationFormSettingWithJobId = async (Data) => {
+  const action = "insertOrUpdateRecruitmentJobApplicationFormSettingWithJobId";
 
   const method = "POST";
 

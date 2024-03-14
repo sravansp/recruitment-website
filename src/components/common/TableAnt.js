@@ -182,8 +182,14 @@ const TableAnt = ({
   
 
   const handleRowClick = (record) => {
-    // Check if the path is present and is not an empty array
-    if (path && path.length > 0) {
+    // Check if the path is present and is not an empty array and if 'action' does not exist in the current column configuration
+    if (
+      path &&
+      path.length > 0 &&
+      !header[0]?.[tabValue || path || '']?.some(
+        column => column.value === 'action' // Check if 'action' exists in the column configuration
+      )
+    ) {
       dispatch(setSelectedDataId(record[actionID]));
       navigate(`/${path}/${record[actionID]}`);
       // Store the clicked data ID in local storage only when the path is present and not an empty array
@@ -245,7 +251,7 @@ const TableAnt = ({
                     />
                   </div>
                   <div className="">
-                    <p className="text-xs font-semibold text-black capitalize 2xl:text-sm dark:text-white">
+                    <p className="text-xs font-semibold text-black capitalize 2xl:text-sm dark:text-white" onClick={handleRowClick}>
                       {text.company}
                     </p>
                     {/* <>{alert(JSON.stringify(text[each.]))}</> */}
@@ -275,7 +281,7 @@ const TableAnt = ({
                   <p className="text-xs font-medium text-black 2xl:text-sm dark:text-white">
                     {text[each.value]}
                   </p>
-                  <p className="!font-normal para">{text[each.value]}</p>
+                  <p className="!font-normal para" >{text[each.value]}</p>
                 </div>
               ) : each.actionToggle ? (
                 <Switch
