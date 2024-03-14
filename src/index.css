@@ -51,7 +51,7 @@
 }
 
 .p6 {
-  @apply text-sm font-normal text-gray-500 md:text-base dark:text-white;
+  @apply text-sm font-normal text-gray-500 2xl:text-base dark:text-white;
 }
 
 .subhead {

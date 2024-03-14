@@ -22,6 +22,7 @@ import Intergration from "./components/Settings/Intergration";
 import SystemSettings from "./components/Settings/SystemSettings";
 
 import CandidateProfile from "./components/Candidates/CandidateProfile";
+import Discover from "./components/Discover/Discover";
 
 
 
@@ -54,16 +55,17 @@ export default function Router() {
     <BrowserRouter basename="">
         
         {loginData ?(        <div
-          className={`main_content flex bg-[#F8FAFC] dark:bg-black h-full min-h-screen font-Inter ${mode}`}
+          className={`main_content flex bg-[#F8FAFC] dark:bg-[#171C28] h-full min-h-screen font-Inter ${mode}`}
           dir={layout}
         >
           {/* <NavigationMenu /> */}
           
           <Sidebar />
-          <div className="absolute top-0 h-full overflow-auto transition-all duration-300 home dark:bg-black pink:bg-pink-600">
+          <div className="absolute top-0 h-full overflow-auto transition-all duration-300 home dark:bg-[#171C28] pink:bg-pink-600">
             <Header />
             <div className="relative px-4 py-8 md:p-4 2xl:p-8 content">
               <Routes>
+              <Route path="/" element={<Discover />} />
                 {/* Company submenus */}
                 <Route path="/JobsList" element={<JobsList />} />
                 <Route path="/Appearance" element={<Appearance />} />
