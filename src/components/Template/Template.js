@@ -35,22 +35,29 @@ const Template = ({
     const handleShow = () => setShow(true);
     const [show, setShow] = useState(open);
     const [openPop, setOpenPop] = useState("");
-    const breadcrumbItems = [
-        { label: t("Templates"), url: "/" },
+
+  
+      const [navigationPath, setNavigationPath] = useState("Job_Templates");
+      const breadcrumbItems = [
+        //{ label: t("Templates"), url: "/" },
         // { label: navigationPath.charAt(0).toUpperCase() + navigationPath.slice(1) },
+
+        { label: t("Settings"), url: "" },
+        { label: t("Other"), url: "" },
+        { label: t("Templates"), url: "" },
+        { label: navigationPath.replace(/_/g, ' '), url: "" },
       ];
-      const [navigationPath, setNavigationPath] = useState("Job");
      const tabs =[
          {
             id:1,
-            title:"Job",
-            value:"Job",
+            title:"Job Templates",
+            value:"Job_Templates",
             tabheading:"Job Template List"
          },
          {
             id:2,
             title:"Job Description",
-            value:"JobDescription",
+            value:"Job_Description",
             tabheading:"Job Description Template List"
          },
          {
@@ -89,7 +96,7 @@ const Template = ({
    
       const Header =[
     {
-        Job : [ 
+      Job_Templates : [ 
           {
             id:1,
             title:"Name",
@@ -98,7 +105,7 @@ const Template = ({
          {
             id:2,
             title:"Description",
-            value:"jobDescription",
+            value:"Job_Description",
          },
          {
             id:3,
@@ -113,7 +120,7 @@ const Template = ({
             action:true,
          },
         ],
-        JobDescription : [ 
+        Job_Description : [ 
           {
             id:1,
             title:"Name",
@@ -400,12 +407,12 @@ const Template = ({
     let newData = [];
   
     switch (navigationPath) {
-      case "Job":
+      case "Job_Templates":
         // getLocationList();
         gettemaplate();
         
         break;
-      case "JobDescription":
+      case "Job_Description":
         // getDepartmentList();
         
         console.log(newData)
@@ -451,8 +458,8 @@ const Template = ({
   const actionData = [
     {
     
-        Job: { id: 1, data:TemplateList },
-        JobDescription: { id: 2, data:JobDescriptionList },
+      Job_Templates: { id: 1, data:TemplateList },
+      Job_Description: { id: 2, data:JobDescriptionList },
         Workflow: {id:3,data:WorkflowList},
         Email:{id:4,data:EmailList},
         Evaluation:{id:5,data:EvaluationLIst},
@@ -463,8 +470,8 @@ const Template = ({
   ];
   const actionId= [
     {
-      Job:{id:"jobTemplateId"},
-      JobDescription:{id:"JobDescriptionTemplateId"},
+      Job_Templates:{id:"jobTemplateId"},
+      Job_Description:{id:"JobDescriptionTemplateId"},
       Workflow: {id:"workFlowId"},
       Email:{id:"emailTemplateId"},
       Evaluation:{id:"evaluationTemplateId"},
@@ -516,7 +523,7 @@ const Template = ({
             }
             // updateFun=""
             // updateBtn={true} // Set to true if it's an update button
-            buttonName={`Create ${navigationPath}`}// Set the button name
+            buttonName={`Create ${navigationPath.replace(/_/g, ' ')}`}// Set the button name
             className="your-custom-styles" // Add any additional class names for styling
             BtnType="Add" // Specify the button type (Add or Update)
           />

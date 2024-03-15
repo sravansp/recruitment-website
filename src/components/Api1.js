@@ -207,6 +207,19 @@ export const getAllRecruitmentQuestionnaireTemplateDetails = async () => {
 
   return await apiRequest(action, method, kwargs);
 };
+
+// export const getAllRecruitmentQuestionnaireTemplateDetails = async () => {
+//   const action = "getAllRecruitmentQuestionnaireTemplateDetails";
+
+//   const method = "POST";
+
+//   const kwargs = {};
+
+//   return await apiRequest(action, method, kwargs);
+// };
+
+
+
 // export const getAllRecruitmentLetterTemplates = async () => {
 //   const action = "getAllRecruitmentLetterTemplates";
 
@@ -306,6 +319,26 @@ export const saveRecruitmentEvaluationTemplateDetailBatch = async (formattedData
     throw error; // Re-throw the error to handle it where the function is called.
   }
 };
+
+
+export const saveRecruitmentQuestionnaireTemplateDetailBatch = async (formattedData) => {
+  try {
+    const action = "saveRecruitmentQuestionnaireTemplateDetailBatch";
+    const method = "POST";
+    const kwargs = formattedData;
+    
+    console.log("API Request Data:", { action, method, kwargs });
+
+    const response = await apiRequest(action, method, kwargs);
+
+    console.log("API Response:", response);
+
+    return response;
+  } catch (error) {
+    console.error("Error in saveRecruitmentQuestionnaireTemplateDetailBatch:", error);
+    throw error; // Re-throw the error to handle it where the function is called.
+  }
+};
 // export const getAllRecruitmentQuestionnaireTemplateDetails = async () => {
 //   const action = "getAllRecruitmentQuestionnaireTemplateDetails";
 
@@ -357,12 +390,23 @@ export const saveRecruitmentWorkFlow = async (e) => {
   }
 };
 
-export const saveRecruitmentQuestionnaireTemplateDetail = async (e) => {
-  const action = "saveRecruitmentQuestionnaireTemplateDetail";
+export const saveRecruitmentQuestionnaireTemplate = async (e) => {
+  const action = "saveRecruitmentQuestionnaireTemplate";
+
+  // const method = "POST";
+  // const kwargs = e;
+
+  // console.log("API Request Data:", { action, method, kwargs });
+
+  // const response = await apiRequest(action, method, kwargs);
+
+  // console.log("API Response:", response);
+  // return await apiRequest(action, method, kwargs);  
 
   const method = "POST";
-  const kwargs = e;
-  return await apiRequest(action, method, kwargs);
+  const kwargs=e
+  console.log("API Request Data:", { action, method, kwargs });
+return await apiRequest(action, method, kwargs);
 };
 export const saveRecruitmentEmailTemplate = async (e) => {
   const action = "saveRecruitmentEmailTemplate";
@@ -441,6 +485,7 @@ export const getAllRecruitmentEvaluationTemplates = async () => {
 
   return await apiRequest(action, method, kwargs);
 };
+
 export const getRecruitmentJobTemplateById = async (id) => {
   const action = "getRecruitmentJobTemplateById";
 
