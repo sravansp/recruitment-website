@@ -48,12 +48,12 @@ const CandidatesList = () => {
           value: "createdOn",
         },
         
-        {
-          id: 7,
-          title: "",
-          value: "action",
-          dotsVertical: true,
-        },
+        // {
+        //   id: 7,
+        //   title: "",
+        //   value: "action",
+        //   dotsVertical: true,
+        // },
       ],
     },
   ];

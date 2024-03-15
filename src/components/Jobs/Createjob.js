@@ -53,7 +53,7 @@ import RadioButton from '../common/RadioButton';
 
  
 
-const Createjob = ( {open = "", close = () => { },inputshow= false,isUpdate={},updateId }) => {
+const Createjob = ( {open = "", close = () => { },inputshow= false,isUpdate={},updateId,refresh = () => {},}) => {
   
   const[show,setShow] =useState(open);
   const { t } = useTranslation();
@@ -62,7 +62,7 @@ const Createjob = ( {open = "", close = () => { },inputshow= false,isUpdate={},u
   const [activeBtn, setActiveBtn] = useState(0);
   const [presentage, setPresentage] = useState(0);
   const [nextStep, setNextStep] = useState(0);
-  const [activeBtnValue, setActiveBtnValue] = useState("TeamMembers"); //Publish//TeamMembers//LeaveType//ApplicationForm//Jobdetails////Workflow
+  const [activeBtnValue, setActiveBtnValue] = useState("Jobdetails"); //Publish//TeamMembers//LeaveType//ApplicationForm//Jobdetails////Workflow
   const [btnName, setBtnName] = useState();
   const [customRate, setCustomRate] = useState(1);
   const [savedContent, setSavedContent] = useState([]);
@@ -295,6 +295,7 @@ const formik1 = useFormik({
       );
       setPresentage(2);
       setNextStep(nextStep + 1);
+      refresh();
     }else if (response.status === 500) {
       openNotification("error", "input field is empty..", "enter the field");
     }
@@ -338,6 +339,7 @@ const formik1 = useFormik({
         "Successful",
         response.message
       );
+      refresh();
       setPresentage(2);
       setNextStep(nextStep + 1);
     }else if (response.status === 500) {
@@ -1017,7 +1019,7 @@ const handleAddField = (index) => {
       const createdBy =userid;
       console.log(createdBy)
       const dataToSave = selectedemployee.map(employee => ({
-        jobId: 20,  // Assuming jobId is present in the employee object
+        jobId: jobId,  // Assuming jobId is present in the employee object
         userId: employee.userId,
         roleId: employee.roleId,
         createdBy: createdBy
@@ -1035,7 +1037,7 @@ const handleAddField = (index) => {
           setPresentage(3.4)
           // Add a delay before closing the notification
           setTimeout(() => {
-            handleClose();
+            setNextStep(nextStep+1)
           }, 2000); // Adjust the delay time as needed
         } else if (response.status === 500) {
           openNotification("error", response.message);

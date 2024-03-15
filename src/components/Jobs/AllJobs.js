@@ -6,7 +6,7 @@ import JobTabs from "../common/JobTabs";
 import { Add } from "@mui/icons-material";
 import API from "../Api";
 import Table from "../common/Table";
-import { getAllRecruitmentJobs } from "../Api1";
+import { getAllRecruitmentJobs,getJobStatics } from "../Api1";
 import CustomTable from "../common/Table";
 import App1 from "../common/Table";
 import TableAnt1 from "../common/Table";
@@ -301,87 +301,93 @@ function AllJobs() {
 
 
  
- useEffect(() => {
-  const callapi = async (companyId) => {
+  const callapi = async () => {
     try {
       const response = await getAllRecruitmentJobs({companyId});
       setJobList(response.result);
       console.log(response);
-
-      // Filter jobs based on createdBy
-      
-      
     } catch (error) {
       console.error(error);
     }
   };
 
-  callapi();
-}, [companyId]);
-
-useEffect(() => {
   const getcreatedBy = async () => {
-   const createdBy = userid
+    const createdBy = userid;
     try {
-      const response = await getAllRecruitmentJobs( {companyId,createdBy} );
+      const response = await getAllRecruitmentJobs({companyId, createdBy});
       setFilteredJobList(response.result);
       console.log(response);
-
-      console.log(FilteredJobList)// Filter jobs based on createdBy
-      
-      
     } catch (error) {
       console.error(error);
     }
   };
 
-  getcreatedBy();
-}, [companyId,createdBy]);
-
-const[jobStatus,setjobStatus] =useState("Open")
-useEffect(() => {
   const getOpenjobs = async () => {
     try {
-      const response = await getAllRecruitmentJobs( {companyId, jobStatus: 'Open'});
+      const response = await getAllRecruitmentJobs({companyId, jobStatus: 'Open'});
       setOpenJObs(response.result);
       console.log(response);
-
-      console.log(OpenJObs)// Filter jobs based on createdBy
-      
-      
     } catch (error) {
       console.error(error);
     }
   };
 
-  getOpenjobs();
-}, [jobStatus,companyId]);
-
-useEffect(() => {
   const getDraftjobs = async () => {
     try {
-      const response = await getAllRecruitmentJobs( {companyId, jobStatus: 'Draft'});
+      const response = await getAllRecruitmentJobs({companyId, jobStatus: 'Draft'});
       setDraftJObs(response.result);
       console.log(response);
-
-      console.log(OpenJObs)// Filter jobs based on createdBy
-      
-      
     } catch (error) {
       console.error(error);
     }
   };
 
-  getDraftjobs();
-}, [jobStatus,companyId]);
+  useEffect(() => {
+    // Retrieve the login data JSON string from local storage
+    const loginDataString = localStorage.getItem('LoginData');
+
+    if (loginDataString) {
+      // Parse the JSON string to get the LoginData object
+      const loginData = JSON.parse(loginDataString);
+
+      // Extract the username from the userData object
+      setuserid(loginData && loginData.userData && loginData.userData.employeeId);
+      setCreatedBy(loginData && loginData.userData && loginData.userData.employeeId)
+      // Now, 'username' variable contains the username
+    } else {
+      console.error('Login data not found in local storage.');
+    }
+  }, []);
+
+  useEffect(() => {
+    setCompanyId(localStorage.getItem("companyId"));
+  }, []);
+
+  useEffect(() => {
+    callapi();
+    getcreatedBy();
+    getOpenjobs();
+    getDraftjobs();
+  }, [companyId, userid]);
 
 
+  
+  const[jobstatic,setjobstatic] =useState([])
+  //static
+  
+  const getJobstat = async () => {
+    try {
+      const response = await getJobStatics({companyId});
+      setjobstatic(response.result);
+      console.log(response);
+    } catch (error) {
+      console.error(error);
+    }
+  };
   useEffect(()=>{
-  
-    console.log(JobsList)
-    console.log(FilteredJobList)
-  
-  },[])
+    getJobstat()
+    console.log("value",jobstatic)
+  },[companyId])
   return (
     <div className="flex flex-col gap-[25px]">
       <div className="flex justify-between">
@@ -415,11 +421,16 @@ useEffect(() => {
                 inputshow={true}
                 updateId={updateId}
                 refresh={() => {
-                  // getLocationList();
+                  callapi();
+                  getcreatedBy();
+                  getOpenjobs();
+                  getDraftjobs();
+
                 }}
                 // openPolicy={openPop}
                 // updateId={updateId}
                 isUpdate={false}
+               
                 
               />
             </motion.div>
@@ -427,7 +438,7 @@ useEffect(() => {
         </div>
       </div>
 
-      <JobListCopy />
+      <JobListCopy data={jobstatic} />
 
       <div className="">
         {/* <TableAnt1 data={JobsList} header={header} path="AllJobs" /> */}
@@ -457,6 +468,23 @@ useEffect(() => {
         // recordId={record.jobId}
         actionToggle={(e) => {
           setUpdateId(e);
+        }}
+        refresh={() => {
+          switch (navigationPath) {
+            default:
+              callapi();
+              break;
+            case "location":
+              getcreatedBy();
+              break;
+            case "department":
+              getOpenjobs();
+              break;
+            case "category":
+              getDraftjobs();
+              break;
+           
+          }
         }}
         
        

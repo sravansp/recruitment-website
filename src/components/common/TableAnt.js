@@ -68,6 +68,7 @@ const TableAnt = ({
   showButton = false,
   All=false,
   showsearch=false,
+  refresh = () => {},
   recordId="",
   
 }) => {
@@ -783,7 +784,7 @@ const TableAnt = ({
       {console.log(data)}
         {data && (
           <Table
-            rowSelection={{ ...rowSelection }}
+            // rowSelection={{ ...rowSelection }}
             columns={tableData}
             // dataSource={data.filter(
             //   (item) =>
