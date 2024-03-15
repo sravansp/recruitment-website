@@ -8,8 +8,8 @@ import linkedin from "../../assets/images/Linked.png";
 import gulftalent from "../../assets/images/gulftalent.png";
 import Naukrigulf from "../../assets/images/Naukrigulf.png";
 import loyaltri from "../../assets/images/logo.png";
-import { Breadcrumbs } from "@mui/material";
 import { useTranslation } from "react-i18next";
+import Breadcrumbs from "../common/BreadCrumbs";
 function Intergration() {
   const data = [
     { title: "Naukarigulf", image: Naukrigulf },
@@ -21,15 +21,15 @@ function Intergration() {
   ];
   const [selectedDivs, setSelectedDivs] = useState([]);
   const { t } = useTranslation();
-  const [navigationPath, setNavigationPath] = useState("Job_Templates");
+ 
 
   const breadcrumbItems = [
 
 
     { label: t("Settings"), url: "" },
     { label: t("Other"), url: "" },
-    { label: t("Templates"), url: "" },
-    { label: "Templates", url: "" },
+    { label: t("Intergration"), url: "" },
+    
   ];
 
   const handleCheckboxChange = (index) => {
@@ -41,7 +41,7 @@ function Intergration() {
   };
   return (
     <div className="flex flex-col gap-[25px]">
-
+    <div className="flex justify-between">
       <div>
         <Breadcrumbs items={breadcrumbItems} />
         <p className="para">{t("Lorem ipsum dolart sit dummy text.")}</p>
@@ -49,10 +49,11 @@ function Intergration() {
       <ButtonClick
             
            
-            buttonName={`Create `}// Set the button name
+            buttonName={`Add Intergration `}// Set the button name
             className="your-custom-styles" // Add any additional class names for styling
             BtnType="Add" // Specify the button type (Add or Update)
           />
+          </div>
 
       {/* <div className="flex justify-between">
         <Heading title="Intergration" description="Lorem ipsum " />

@@ -107,6 +107,9 @@ const Company = () => {
   }; 
   const breadcrumbItems = [
     { label: t("Company"), url: "/" },
+    { label: t("Other"), url: "" },
+    { label: t("Company"), url: "" },
+    { label: navigationPath, url: "" }
     // { label: navigationPath.charAt(0).toUpperCase() + navigationPath.slice(1) },
   ];
   React.useEffect(() => {
