@@ -13,10 +13,21 @@ import { BsListUl } from 'react-icons/bs';
 import Accordion from '../common/Accordion';
 import FlexCol from '../common/FlexCol';
 import FormInput from '../common/FormInput';
+import { useTranslation } from 'react-i18next';
+import Breadcrumbs from '../common/BreadCrumbs';
 
 function SystemSettings() {
     const isSmallScreen = useMediaQuery({ maxWidth: 1439 });
     const [gridList, setGridList] = useState(1);
+    const { t } = useTranslation()
+    const breadcrumbItems = [
+
+
+      { label: t("Settings"), url: "" },
+      { label: t("Other"), url: "" },
+      { label: t("System Settings"), url: "" },
+      
+    ];
 
     const gridListoptions = [
         {
@@ -31,10 +42,16 @@ function SystemSettings() {
       };
   return (
     <div className="flex flex-col gap-[25px]">
-      <div className="flex justify-between">
+       
+      <div>
+        <Breadcrumbs items={breadcrumbItems} />
+        <p className="para">{t("Lorem ipsum dolart sit dummy text.")}</p>
+      </div>
+     
+      {/* <div className="flex justify-between">
         <Heading title="System Settings" description="Lorem ipsum " />
        
-      </div>
+      </div> */}
       <div className="flex flex-col justify-between gap-3 xl:items-center xl:flex-row">
         <div className="flex items-center gap-3">
           {/* <p className="text-lg font-semibold dark:text-white"> */}
