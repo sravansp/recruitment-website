@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from 'react'
 import { getAllRecruitmentJobs } from '../Api1';
 
-function JobListCopy() {
+function  JobListCopy() {
   const [JobsList, setJobList] = useState([]);
   const [activeJobs, setActiveJobs] = useState(0);
 

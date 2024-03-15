@@ -58,8 +58,8 @@ function AllJobs() {
       const loginData = JSON.parse(loginDataString);
 
       // Extract the username from the userData object
-      setuserid(loginData && loginData.userData && loginData.userData.id);
-      setCreatedBy(loginData && loginData.userData && loginData.userData.id)
+      setuserid(loginData && loginData.userData && loginData.userData.employeeId);
+      setCreatedBy(loginData && loginData.userData && loginData.userData.employeeId)
       // Now, 'username' variable contains the username
       
     } else {
@@ -377,8 +377,7 @@ useEffect(() => {
 
 
   useEffect(()=>{
-      
-   
+  
     console.log(JobsList)
     console.log(FilteredJobList)
   
