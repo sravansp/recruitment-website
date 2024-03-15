@@ -5,6 +5,8 @@ import FormInput from "@components/ui/FormInput";
 import Dropdown from "@components/ui/Dropdown";
 import AddMore from "@components/ui/AddMore";
 import TextArea from "@components/ui/TextArea";
+import { useFormik } from "formik";
+import * as Yup from 'yup';
 
 
 
@@ -19,6 +21,32 @@ function WorkExperience() {
       setPrimaryColor(color);
     }
   }, []);
+  const validationSchema = Yup.object().shape({
+    jobTitle: Yup.string().required('Job Title is required'),
+    employmentType: Yup.string().required('Employment Type is required'),
+    companyName: Yup.string().required('Company Name is required'),
+    location: Yup.string().required('Location is required'),
+    fromDate: Yup.string().required('From Date is required'),
+    toDate: Yup.string().required('To Date is required'),
+  });
+
+  const formik = useFormik({
+    initialValues: {
+      jobTitle: "",
+      employmentType: "",
+      companyName: "",
+      location: "",
+      fromDate: "",
+      toDate: "",
+      coverLetter: "",
+    },
+    validationSchema: validationSchema,
+    onSubmit: (values, { setSubmitting }) => {
+      // Handle form submission here
+      console.log(values);
+      setSubmitting(false);
+    },
+  });
   return (
    
       
@@ -51,12 +79,26 @@ function WorkExperience() {
                     title={"Job Title"}
                     placeholder={"Eg: Retail Sales Manager"}
                     className="text-[#344054]"
+                    name="jobTitle"
+                    value={formik.values.jobTitle}
+                    change={(e)=>{
+                      formik.setFieldValue('jobTitle',e)
+                    }}
+                    required={true}
+                    error={formik.errors.jobTitle}
                   />
 
                   <Dropdown
                     title={"Employment Type"}
                     placeholder={"Eg: Fulltime"}
                     className="text-[#344054]"
+                    name="employmentType"
+                    value={formik.values.employmentType}
+                    change={(e)=>{
+                      formik.setFieldValue('employmentType',e)
+                    }}
+                    required={true}
+                    error={formik.errors.employmentType}
                   />
                 </div>
                 <div className="grid grid-cols-1 sm:grid-cols-3 gap-4">
@@ -64,12 +106,26 @@ function WorkExperience() {
                     title={"Company Name"}
                     placeholder={"Eg: Microsoft"}
                     className="text-[#344054]"
+                    name="employmentType"
+                    value={formik.values.employmentType}
+                    change={(e)=>{
+                      formik.setFieldValue('employmentType',e)
+                    }}
+                    required={true}
+                    error={formik.errors.employmentType}
                   />
 
                   <FormInput
                     title={"Location"}
                     placeholder={"Eg: London, UK"}
                     className="text-[#344054]"
+                    name="location"
+                    value={formik.values.location}
+                    change={(e)=>{
+                      formik.setFieldValue('location',e)
+                    }}
+                    required={true}
+                    error={formik.errors.location}
                   />
                 </div>
                 <div className="grid grid-cols-3 sm:grid-cols-6 gap-4">
@@ -77,11 +133,25 @@ function WorkExperience() {
                     title={"From"}
                     placeholder={"09/2023"}
                     className="text-[#344054]"
+                    name="fromDate"
+                    value={formik.values.fromDate}
+                    change={(e)=>{
+                      formik.setFieldValue('fromDate',e)
+                    }}
+                    required={true}
+                    error={formik.errors.fromDate}
                   />
                   <FormInput
                     title={"To"}
                     placeholder={"09/2024"}
                     className="text-[#344054]"
+                    name="toDate"
+                    value={formik.values.toDate}
+                    change={(e)=>{
+                      formik.setFieldValue('toDate',e)
+                    }}
+                    required={true}
+                    error={formik.errors.toDate}
                   />
                 </div>
                 <AddMore name="Add More Experience " className="text-black" />
@@ -135,6 +205,13 @@ function WorkExperience() {
                 title="Cover Letter"
                 placeholder="Type here"
                 className="!text-[#344054]"
+                name="coverLetter"
+                value={formik.values.coverLetter}
+                change={(e)=>{
+                  formik.setFieldValue('coverLetter',e)
+                }}
+                required={true}
+                error={formik.errors.coverLetter}
               />
             </div>
           </div>

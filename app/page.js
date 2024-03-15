@@ -12,29 +12,28 @@ import { useMediaQuery } from "react-responsive";
 import { useRouter } from "next/navigation";
 import Link from "next/link";
 import { jobs } from "@/Components/Data";
+import { getAllRecruitmentJobs, getRecruitmentJobById } from "@/Components/Api";
 
 const Home = () => {
   const [selectedJobId, setSelectedJobId] = useState(1);
+  const [selectedJob, setSelectedJob] = useState(); // Change to null
+  const [JobsList, setJobList] = useState([]);
+  const [searchJobTitle, setSearchJobTitle] = useState();
+  const [searchJobLocation, setSearchJobLocation] = useState();
+  const [filteredJobs, setFilteredJobs] = useState([]);
   const jobDetailsAnimation = useAnimation();
   const isSmallScreen = useMediaQuery({ maxWidth: 767 });
   const router = useRouter();
+  console.log(setSearchJobTitle);
+  // Function to find job by id
+  useEffect(() => {
+    const newSelectedJob = findJobById(selectedJobId);
+    setSelectedJob(newSelectedJob);
+  }, [selectedJobId, JobsList]);
 
-  const findJobById = (id) => {
-    // Logic to find job details by ID from your data
-    return jobs.find((job) => job.id === id);
-  };
-
-  const [selectedJob, setSelectedJob] = useState(findJobById(selectedJobId));
-
-  const handleJobSelect = (id) => {
-    setSelectedJobId(id);
-    if (isSmallScreen) {
-      router.push(`/job-details/${id}`, undefined, { shallow: true });
-      // window.location.href = `/job-details/${id}`;
-      // <Link href={`/job-details/${id}`} shallow />
-    } else {
-      animateJobDetails();
-    }
+  // Function to find job by id
+  const findJobById = (jobId) => {
+    return JobsList.find((job) => job.jobId === jobId); // Use jobId instead of id
   };
 
   const animateJobDetails = () => {
@@ -42,19 +41,63 @@ const Home = () => {
       jobDetailsAnimation.start({ opacity: 1, y: 0 });
     });
   };
+
+  useEffect(() => {
+    const callapi = async () => {
+      try {
+        const response = await getAllRecruitmentJobs();
+        setJobList(response.result);
+        console.log(setJobList, "joblist dataa");
+        setFilteredJobs(response.result);
+      } catch (error) {
+        console.error(error);
+      }
+    };
+    callapi();
+  }, []);
+
+  const handleSearch = async () => {
+    console.log("Searching...");
+    try {
+      const response = await getAllRecruitmentJobs();
+      const allJobs = response.result;
+      console.log(allJobs, "data of jobs");
+      const filteredJobs = allJobs.filter(
+        (job) =>
+          job.jobTitle.toLowerCase().includes(searchJobTitle.toLowerCase()) &&
+          job.location.toLowerCase().includes(searchJobLocation.toLowerCase())
+      
+        // JSON.parse(job.searchKeywords).some(keyword =>
+        //   keyword.toLowerCase().includes(searchJobTitle.toLowerCase())
+      );
+      console.log("Search title:", searchJobTitle);
+      console.log("Search location:", searchJobLocation);
+      console.log("Filtered jobs:", filteredJobs);
+      setFilteredJobs(filteredJobs); // Update the filtered jobs state
+    } catch (error) {
+      console.error(error);
+    }
+  };
+  console.log("Search title:", searchJobTitle);
   useEffect(() => {
     try {
-      // Initial animation when component mounts
       animateJobDetails();
     } catch (error) {
       console.error("Error in controls.start:", error);
     }
   }, [jobDetailsAnimation]);
 
+  // Update selectedJob directly with the new selected job
   useEffect(() => {
-    // Set the default selected job
-    setSelectedJob(findJobById(selectedJobId));
-  }, [selectedJobId, jobDetailsAnimation]);
+    const newSelectedJob = findJobById(selectedJobId);
+    setSelectedJob(newSelectedJob);
+  }, [selectedJobId, JobsList]);
+
+  const handleClear = () => {
+    setSearchJobTitle("");
+    setSearchJobLocation("");
+    setFilteredJobs(JobsList);
+  };
 
   return (
     <main className="flex flex-col justify-center gap-6 pb-10 scroll-smooth">
@@ -72,23 +115,29 @@ const Home = () => {
           <div className="searchJob rounded-[10px] bg-white dark:bg-secondaryDark w-full lg:h-full p-3 flex gap-3 justify-between items-center flex-col md:flex-row md:divide-x divide-y md:divide-y-0">
             <SearchBox
               placeholder="Job title or keyword"
-              items={jobs.map((job) => job.jobName)}
+              items={JobsList.map((job) => job.jobTitle)}
               icon={<PiMagnifyingGlass className="text-2xl " />}
+              onItemSelected={setSearchJobTitle}
             />
             <SearchBox
               placeholder="Location or Timezone"
               className="pt-3 md:pl-6 md:pt-0"
-              items={jobs.map((job) => job.location)}
+              items={JobsList.map((job) => job.location)}
               icon={<PiNavigationArrow className="text-2xl " />}
+              onItemSelected={setSearchJobLocation}
             />
             <div className="flex items-center w-full gap-4 pt-3 md:w-auto md:pl-6 md:pt-0">
-              <p className="para text-[#656565] hidden md:block cursor-pointer">
+              <p
+                className="para text-[#656565] hidden md:block cursor-pointer "
+                onClick={() => handleClear()}
+              >
                 Clear
               </p>
               <ButtonClick
                 buttonName="Search"
                 BtnType="primary"
                 className="w-full md:w-auto"
+                handleSubmit={handleSearch}
               />
             </div>
           </div>
@@ -96,7 +145,6 @@ const Home = () => {
       </div>
       <div className="grid items-center w-full grid-cols-12 container-wrapper">
         <div className="col-span-6 md:col-span-3">
-          {/* <p className="para text-[#656565]"> Fitler jobs</p> */}
           <Filter />
         </div>
         <div className="col-span-6 md:col-span-9">
@@ -113,24 +161,26 @@ const Home = () => {
         className="grid w-full grid-cols-12 gap-6 container-wrapper"
       >
         <div className="flex flex-col w-full col-span-12 md:col-span-5 gap-2.5 md:pr-2.5">
-          {jobs.map((job) => (
-            <JobCard
-              key={job.id}
-              id={job.id}
-              {...job}
-              onSelect={() => handleJobSelect(job.id)}
-              selected={selectedJob && selectedJob.id === job.id}
-            />
-          ))}
+          {filteredJobs.length > 0 ? (
+            filteredJobs.map((job) => (
+              <JobCard
+                key={job.jobId}
+                id={job.jobId}
+                {...job}
+                onSelect={() => setSelectedJobId(job.jobId)}
+                selected={selectedJob && selectedJob.jobId === job.jobId}
+              />
+            ))
+          ) : (
+            <p>No jobs found</p>
+          )}
         </div>
-        {/* {!isSmallScreen && ( */}
         <div className="sticky top-[1rem] hidden w-full h-[96vh] overflow-auto md:col-span-7 md:block p-3 rounded-lg borderb">
           <JobDetailsCard
             selectedJob={selectedJob}
             jobDetailsAnimation={jobDetailsAnimation}
           />
         </div>
-        {/* )} */}
       </motion.div>
     </main>
   );

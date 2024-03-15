@@ -3,6 +3,8 @@ import React, { useEffect, useState } from "react";
 import FlexCol from "@components/ui/FlexCol";
 import Dropdown from "@components/ui/Dropdown";
 import FormInput from "@components/ui/FormInput";
+import * as Yup from 'yup';
+import { useFormik } from "formik";
 
 function Questions() {
   const [primaryColor, setPrimaryColor] = useState('');
@@ -13,6 +15,24 @@ function Questions() {
       setPrimaryColor(color);
     }
   }, []);
+
+  const validationSchema = Yup.object().shape({
+    legalEligibility: Yup.string().required('This field is required'),
+    highestEducationLevel: Yup.string().required('This field is required'),
+  });
+
+  const formik = useFormik({
+    initialValues: {
+      legalEligibility: "",
+      highestEducationLevel: "",
+    },
+    validationSchema: validationSchema,
+    onSubmit: (values, { setSubmitting }) => {
+      // Handle form submission here
+      console.log(values);
+      setSubmitting(false);
+    },
+  });
   return (
     <div>
       <div className="flex flex-col gap-6">
@@ -44,6 +64,13 @@ function Questions() {
                     title={"Are you legally eligible to work in the country?"}
                     placeholder={"Answer here.."}
                     className="text-[#344054]"
+                    name="legalEligibility"
+                    value={formik.values.legalEligibility}
+                    change={(e)=>{
+                      formik.setFieldValue('legalEligibility',e)
+                    }}
+                    required={true}
+                    error={formik.errors.legalEligibility}
                   />
                 </div>
                 <div className="grid  grid-cols-1 sm:grid-cols-2 gap-4">
@@ -51,6 +78,13 @@ function Questions() {
                     title={"Highest level of education completed"}
                     placeholder={"Answer here.."}
                     className="text-[#344054]"
+                    name="highestEducationLevel"
+                    value={formik.values.highestEducationLevel}
+                    change={(e)=>{
+                      formik.setFieldValue('highestEducationLevel',e)
+                    }}
+                    required={true}
+                    error={formik.errors.highestEducationLevel}
                   />
                 </div>
 
@@ -59,6 +93,13 @@ function Questions() {
                     title={"Highest level of education completed"}
                     placeholder={"Answer here.."}
                     className="text-[#344054]"
+                    name="highestEducationLevel"
+                    value={formik.values.highestEducationLevel}
+                    change={(e)=>{
+                      formik.setFieldValue('highestEducationLevel',e)
+                    }}
+                    required={true}
+                    error={formik.errors.highestEducationLevel}
                   />
                 </div>
                 <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
@@ -66,6 +107,13 @@ function Questions() {
                     title={"Highest level of education completed"}
                     placeholder={"Answer here.."}
                     className="text-[#344054]"
+                    name="highestEducationLevel"
+                    value={formik.values.highestEducationLevel}
+                    change={(e)=>{
+                      formik.setFieldValue('highestEducationLevel',e)
+                    }}
+                    required={true}
+                    error={formik.errors.highestEducationLevel}
                   />
                 </div>
               </div>

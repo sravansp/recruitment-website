@@ -5,11 +5,11 @@ import { motion } from "framer-motion";
 import { PiFoldersLight, PiClock, PiMapPin, PiMoney } from "react-icons/pi";
 
 const JobCard = ({
-  jobName,
+  jobTitle,
   category,
   location,
   salary,
-  timeShift,
+  jobType,
   onSelect,
   selected,
   index, // Pass the index of the card as a prop
@@ -35,13 +35,13 @@ const JobCard = ({
         style={{ border: selected && "1px solid var(--primary-color)" }}
         onClick={onSelect}
       >
-        <h1 className="text-2xl font-semibold text-black h2">{jobName}</h1>
+        <h1 className="text-2xl font-semibold text-black h2">{jobTitle}</h1>
         <div className="grid grid-cols-2 gap-2">
           <div className="flex items-center gap-2 truncate">
             <PiFoldersLight className="text-xl text-black dark:text-white text-opacity-20"/> <p className="pblack !font-normal">{category}</p>
           </div>
           <div className="flex items-center gap-2 truncate">
-            <PiClock className="text-xl text-black dark:text-white text-opacity-20"/> <p className="pblack !font-normal">{timeShift}</p>
+            <PiClock className="text-xl text-black dark:text-white text-opacity-20"/> <p className="pblack !font-normal">{jobType}</p>
           </div>
           <div className="flex items-center gap-2 truncate">
             <PiMapPin className="text-xl text-black dark:text-white text-opacity-20"/> <p className="pblack !font-normal">{location}</p>

@@ -2,7 +2,7 @@
 "use client";
 import React, { useState } from "react";
 
-const SearchBox = ({ items, onItemSelected, icon, placeholder="", className=""}) => {
+const SearchBox = ({ items, onItemSelected, icon,  placeholder="", className=""}) => {
   const [searchTerm, setSearchTerm] = useState("");
   const [selectedItem, setSelectedItem] = useState(null);
 
@@ -14,11 +14,13 @@ const SearchBox = ({ items, onItemSelected, icon, placeholder="", className=""})
   const handleItemClick = (item) => {
     setSelectedItem(item);
     setSearchTerm("");
-    // onItemSelected(item); // Call the provided callback with the selected item
+    onItemSelected(item); // Call the provided callback with the selected item
   };
   const handleInputChange = (e) => {
     setSearchTerm(e.target.value);
     setSelectedItem(null); // Clear selected item when input value changes
+    
+    
   };
   return (
     <div className={`relative w-full ${className}`}>
@@ -29,7 +31,7 @@ const SearchBox = ({ items, onItemSelected, icon, placeholder="", className=""})
         placeholder={placeholder}
         className="w-full p-2 bg-transparent border-none rounded-md outline-none pblack"
         value={selectedItem ? selectedItem : searchTerm}
-        // onChange={(e) => setSearchTerm(e.target.value)}
+       
         onChange={handleInputChange}
       />
       </div>

@@ -13,6 +13,7 @@ import Header1 from "./Form-items/Header";
 import FlexCol from "@components/ui/FlexCol";
 import Review from "./Form-items/Review";
 import { useMediaQuery } from "react-responsive";
+import { saveRecruitmentJobApplicationFormSetting, saveRecruitmentResume } from "@/Components/Api";
 
 
 function Web() {
@@ -22,6 +23,7 @@ function Web() {
   const [nextStep, setNextStep] = useState(0);
   const [activeBtnValue, setActiveBtnValue] = useState(0);
   const isSmallScreen = useMediaQuery({ maxWidth: 1439 });
+  const [formData, setFormData] = useState({});
   const [steps, setSteps] = useState([
     {
       id: 1,
@@ -73,19 +75,39 @@ function Web() {
       setActiveBtn(activeBtn + 1);
     }
   };
+  // const handleSubmit = async () => {
+  //   try {
+  //     // Call the API function with the form data
+  //     const response = await saveRecruitmentJobApplicationFormSetting(formData);
+  //     console.log("API Response:", response);
+  //     // Handle the API response as needed
+  //   } catch (error) {
+  //     console.error("Error:", error);
+  //   }
+  // };
 
-  const handleSubmit = () => {
+  const handleSubmit =async (values,callback) => {
     if (activeBtn < steps.length - 1) {
       setActiveBtn(activeBtn + 1); // Increment the active step
       setCurrentStep(currentStep + 1); // Increment the current step
     }
-  };
-
-  // Render the component based on the current step
+  try {
+    // Call the API function to save recruitment resume
+    const response = await saveRecruitmentResume(values);
+    console.log("API Response:", response);
+    callback(values)
+    // Update formData state if needed
+    // setFormData(values);
+  } catch (error) {
+    console.error("Error:", error);
+  }
+  console.log(setFormData);
+};
+   
   const renderStep = () => {
     switch (currentStep) {
       case 1:
-        return <PersonalDetails />;
+        return <PersonalDetails handleSubmit={handleSubmit} />;
 
       case 2:
         return <EducationalDetails/>;
