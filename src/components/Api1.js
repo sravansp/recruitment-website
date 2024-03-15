@@ -1,7 +1,7 @@
 import axios from "axios";
 
-// const apiUrl = 'http://192.168.29.185/loyaltri-recruitment-server/api/v1';
-const apiUrl = 'https://alpha-jobs-api.loyaltri.com/api/v1';
+const apiUrl = 'http://192.168.29.185/loyaltri-recruitment-server/api/v1';
+// const apiUrl = 'https://alpha-jobs-api.loyaltri.com/api/v1';
 
 
 const apiRequest = async (action, method, kwargs) => {
@@ -22,22 +22,22 @@ const apiRequest = async (action, method, kwargs) => {
   }
 };
 
-export const getRecruitmentJobById = async (jobId) => {
-  const action = "getRecruitmentJobById";
+  export const getRecruitmentJobById = async (id) => {
+    const action = "getRecruitmentJobById";
 
-  const method = "POST";
+    const method = "POST";
 
-  const kwargs = { jobId };
+    const kwargs = id ;
+   
+    return await apiRequest(action, method, kwargs);
+  };
 
-  return await apiRequest(action, method, jobId);
-};
-
-export const getAllRecruitmentJobs = async () => {
+export const getAllRecruitmentJobs = async (Data) => {
   const action = "getAllRecruitmentJobs";
 
   const method = "POST";
 
-  const kwargs = {};
+  const kwargs = Data;
 
   return await apiRequest(action, method, kwargs);
 };
@@ -118,7 +118,7 @@ export const updateRecruitmentJob = async (data) => {
   const method = "POST";
  
   // Construct the request payload
-  const kwargs= data
+  const kwargs= data;
   
 
   return await apiRequest(action, method, kwargs);
@@ -446,12 +446,12 @@ export const getRecruitmentJobTemplateById = async (id) => {
 
   const method = "POST";
 
-  const kwargs = {id};
+  const kwargs = { id: id };
 
   return await apiRequest(action, method, kwargs);
 };
 export const updateRecruitmentJobTemplate = async (data) => {
-  const action = "getRecruitmentJobTemplateById";
+  const action = "updateRecruitmentJobTemplate";
 
   const method = "POST";
 
@@ -459,12 +459,12 @@ export const updateRecruitmentJobTemplate = async (data) => {
 
   return await apiRequest(action, method, kwargs);
 };
-export const updateRecruitmentJobApplicationFormSetting = async (data) => {
-  const action = "getRecruitmentJobTemplateById";
+export const insertOrUpdateRecruitmentJobApplicationFormSettingWithJobId = async (Data) => {
+  const action = "insertOrUpdateRecruitmentJobApplicationFormSettingWithJobId";
 
   const method = "POST";
 
-  const kwargs = data;
+  const kwargs = Data;
 
   return await apiRequest(action, method, kwargs);
 };

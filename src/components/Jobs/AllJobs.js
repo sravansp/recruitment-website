@@ -20,9 +20,11 @@ import Createjob from "./Createjob";
 import { motion } from "framer-motion";
 import JobListCopy from "../common/JobListCopy";
 import { RiRuler2Fill } from "react-icons/ri";
+import JobDetails from "./JobDetails";
 
 function AllJobs() {
   const { t } = useTranslation();
+
   const data = [
     {
       Total_number_of_jobs_posted: "3612",
@@ -32,14 +34,20 @@ function AllJobs() {
       hired_count: "152",
     },
   ];
+  const [companyId, setCompanyId] = useState(localStorage.getItem("companyId"));
   const [navigationPath, setNavigationPath] = useState("MyOpenJobs");
   const handleshow = () => setShow(true);
   const handleClose = () => setShow(false);
   const [show, setShow] = useState(false);
   const[updateId,setUpdateId]=useState("")
+  const[FilteredJobList,setFilteredJobList] =useState([])
+  const[OpenJObs,setOpenJObs] = useState([])
+  const [createdBy, setCreatedBy] = useState("");
+  const[DraftJObs,setDraftJObs] =useState([])
+  const [openPop, setOpenPop] = useState("");
   const record =""
  
-  
+  console.log(updateId)
   const tabs =[
     {
       id: 1,
@@ -105,12 +113,12 @@ function AllJobs() {
           title: "DATE",
           value: "createdOn",
         },
-        {
-          id: 8,
-          title: "",
-          value: "action",
-          dotsVertical: true,
-        },
+        // {
+        //   id: 8,
+        //   title: "",
+        //   value: "action",
+        //   dotsVertical: true,
+        // },
       ],
       MyOpenJobs: [
         {
@@ -252,65 +260,107 @@ function AllJobs() {
       ],
     },
   ];
-
+  useEffect(() => {
+    setCreatedBy(1);
+    
+  }, []);
+  useEffect(() => {
+    setCompanyId(localStorage.getItem("companyId"));
+    
+  }, []);
   const [JobsList, setJobList] = useState([]);
+  
   const actionData = [
     {
-      // MyOpenJobs: { id: 1, data: companyList },
-      AllJobs: { id: 2, response: JobsList },
-      // open: { id: 3, data: departmentList },
-      // Draft: { id: 4, data: categoryList },
-      // subcategory: { id: 5, data: subCategoryList },
+      MyOpenJobs: { id: 1, response:FilteredJobList},
+      AllJobs: { id: 2, response: JobsList},
+      Open: { id: 3, response: OpenJObs},
+      Draft: { id: 4, response: DraftJObs},
+      
     },
   ];
- const actionID = [
-  {
-    id:JobsList.map((items)=>({
-       actionID:items.jobId
+
+
+ 
+ useEffect(() => {
+  const callapi = async (companyId) => {
+    try {
+      const response = await getAllRecruitmentJobs({companyId});
+      setJobList(response.result);
+      console.log(response);
+
+      // Filter jobs based on createdBy
       
-    }))
-  }
- ]
+      
+    } catch (error) {
+      console.error(error);
+    }
+  };
+
+  callapi();
+}, [companyId]);
+
+useEffect(() => {
+  const getcreatedBy = async (createdBy) => {
+    try {
+      const response = await getAllRecruitmentJobs( {companyId,createdBy:1} );
+      setFilteredJobList(response.result);
+      console.log(response);
+
+      console.log(FilteredJobList)// Filter jobs based on createdBy
+      
+      
+    } catch (error) {
+      console.error(error);
+    }
+  };
+
+  getcreatedBy();
+}, [companyId,createdBy]);
+
+const[jobStatus,setjobStatus] =useState("Open")
+useEffect(() => {
+  const getOpenjobs = async () => {
+    try {
+      const response = await getAllRecruitmentJobs( {companyId, jobStatus: 'Open'});
+      setOpenJObs(response.result);
+      console.log(response);
+
+      console.log(OpenJObs)// Filter jobs based on createdBy
+      
+      
+    } catch (error) {
+      console.error(error);
+    }
+  };
+
+  getOpenjobs();
+}, [jobStatus,companyId]);
+
+useEffect(() => {
+  const getDraftjobs = async () => {
+    try {
+      const response = await getAllRecruitmentJobs( {companyId, jobStatus: 'Draft'});
+      setDraftJObs(response.result);
+      console.log(response);
+
+      console.log(OpenJObs)// Filter jobs based on createdBy
+      
+      
+    } catch (error) {
+      console.error(error);
+    }
+  };
+
+  getDraftjobs();
+}, [jobStatus,companyId]);
 
 
-  useEffect(() => {
-    const callapi = async () => {
-      try {
-        // const response = await axios.post(
-        //  "http://192.168.0.55/loyaltri-recruitment-server/api/v1",
-        //     {
-        //       action: "getAllRecruitmentJobs",
-        //       method: "POST",
-        //       kwargs: {
-        //         param1: "user2",
-        //         param2: "testpass1",
-        //         param3: 1,
-        //       },
-        //     }
-        // );
-        const response = await getAllRecruitmentJobs();
-        
-        setJobList(response.result);
-        const newData = {};
-        response.result.forEach((job) => {
-          newData[job.jobId] = job; // Assuming jobId is the unique identifier
-        });
-       
-        // setTableData(response.data);
-        // console.log(response.data); // Access response data
-        console.log(response);
-      } catch (error) {
-        console.error(error); // Handle errors
-      }
-    };
-    {console.log(updateId)}
-    callapi();
-   
-  }, []);
   useEffect(()=>{
       
-    
+   
     console.log(JobsList)
+    console.log(FilteredJobList)
   
   },[])
   return (
@@ -344,13 +394,14 @@ function AllJobs() {
                   handleClose();
                 }}
                 inputshow={true}
-                // updateId={updateId}
+                updateId={updateId}
                 refresh={() => {
                   // getLocationList();
                 }}
                 // openPolicy={openPop}
                 // updateId={updateId}
                 isUpdate={false}
+                
               />
             </motion.div>
           )}
@@ -362,7 +413,7 @@ function AllJobs() {
       <div className="">
         {/* <TableAnt1 data={JobsList} header={header} path="AllJobs" /> */}
         <Tabs
-        
+        path="JobDetails"
         tabs={tabs}
         header={header}
         data={
@@ -375,13 +426,21 @@ function AllJobs() {
           setNavigationPath(e);
         }}
         actionID="jobId"
-        path="JobDetails"
-        buttonClick={(e) => {
+        
+        
+        buttonClick={(e, ) => {
+          // console.log(company, "company", e);
           setUpdateId(e);
+        handleshow(true)
+        console.log(e)
         }}
         All={true}
         // recordId={record.jobId}
+        actionToggle={(e) => {
+          setUpdateId(e);
+        }}
         
+       
         />
       </div>
     </div>
