@@ -6,7 +6,7 @@ import {
   Dropdown,
   Space,
   Menu,
-  
+  notification,
   Radio,
   Switch,
   Popconfirm,
@@ -21,7 +21,7 @@ import { BsGrid } from "react-icons/bs";
 import { FiSettings } from "react-icons/fi";
 import Logo1 from "../../assets/images/logos/logo1.png";
 import axios from "axios";
-import API from "../Api";
+// import API from "../Api";
 import SearchBox from "./SearchBox";
 import { RiDeleteBin5Line } from "react-icons/ri";
 import { FaPencil } from "react-icons/fa6";
@@ -29,6 +29,7 @@ import { useTranslation } from "react-i18next";
 import { useMediaQuery } from "react-responsive";
 // import { useNavigate } from "react-router-dom";
 import ButtonClick from "./Button";
+import API, { action } from "../Api1";
 import { useDispatch, useSelector } from 'react-redux';
 import { setNavigationPath } from "../../Redux/action";
 import { setSelectedDataId } from "../../Redux/action";
@@ -95,6 +96,31 @@ const TableAnt = ({
   const [show, setShow] = useState(false);
   const [openPop, setOpenPop] = useState("");
   const handleShow = () => setShow(true);
+
+  const [api, contextHolder] = notification.useNotification();
+  const openNotification = (type, message, description, callback) => {
+    api[type]({
+      message: message,
+      description: description,
+      placement: "top",
+      onClose: callback,
+
+      // stack: 2,
+      style: {
+        background: `${
+          type === "success"
+            ? `linear-gradient(180deg, rgba(204, 255, 233, 0.8) 0%, rgba(235, 252, 248, 0.8) 51.08%, rgba(246, 251, 253, 0.8) 100%)`
+            : "linear-gradient(180deg, rgba(255, 236, 236, 0.80) 0%, rgba(253, 246, 248, 0.80) 51.13%, rgba(251, 251, 254, 0.80) 100%)"
+        }`,
+        boxShadow: `${
+          type === "success"
+            ? "0px 4.868px 11.358px rgba(62, 255, 93, 0.2)"
+            : "0px 22px 60px rgba(134, 92, 144, 0.20)"
+        }`,
+      },
+      // duration: null,
+    });
+  };
   useEffect(() => {
     // if (data) {
     setListData([...data]);
@@ -153,18 +179,37 @@ const TableAnt = ({
 
   // update Api integration
   const updateCompany = async (id, checked) => {
-    console.log(id, checked, "checked");
-    const result = await axios.post(API.HOST + updateApi, {
-      [actionID]: id, //Id
-      isActive: checked === true ? 1 : 0,
-    });
-    if (result.data.status === 200) {
-      // handleClose();
-      // setFunctionRender(!functionRender);
-      // getRecords()
-      // window.location.reload();
+    try {
+      console.log(
+        updateApi,
+        {
+          [actionID]: id, //Id
+          isActive: checked === true ? 1 : 0,
+        },
+        "updateApi"
+      );
+      // const result = await action(updateApi, {
+      //   [actionID]: id, //Id
+      //   isActive: checked === true ? 1 : 0,
+      // });
+      const result = await action(updateApi, {
+        id: id, //Id
+        // isActive: checked === true ? 1 : 0,
+      });
+      // console.log(result);
+
+      if (result.status === 200) {
+        // handleClose();
+        // setFunctionRender(!functionRender);
+        // getRecords()
+        // window.location.reload();
+        openNotification("success", "Success", result?.message);
+      } else {
+        openNotification("error", "Failed", "Unable to update status.");
+      }
+    } catch (error) {
+      openNotification("error", "Failed", error.code);
     }
-    console.log(result);
   };
   const [tableData, setTableData] = useState([]);
 

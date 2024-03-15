@@ -542,3 +542,43 @@ export const getJobStatics = async (data) => {
 };
 
 
+
+const API ={
+  UPDATE_Job_Templates: "toggleRecruitmentJobTemplateStatus",
+  UPDATE_Job_Description: "",
+  UPDATE_Workflow: "toggleRecruitmentWorkFlowStatus",
+  UPDATE_Email: "toggleRecruitmentEmailTemplateStatus",
+  UPDATE_EvaluationS: "toggleRecruitmentEvaluationTemplateStatus",
+  UPDATE_Questionaire: "toggleRecruitmentQuestionnaireTemplateStatus",
+  UPDATE_Letter: "toggleRecruitmentLetterTemplateStatus",
+
+
+}
+export default API;
+
+const action = async (actionUrl, params = {}, url = apiUrl, headers) => {
+  // let returnValue;
+  try {
+    const result = await axios.post(
+      url,
+      {
+        action: actionUrl,
+        method: "POST",
+        kwargs: params,
+      }
+      // {
+      //   headers: {
+      //     "Content-Type": "multipart/form-data",
+      //     // Authorization: "Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIi",
+      //   },
+      // }
+    );
+    // console.log(result.data);
+    return result.data;
+  } catch (error) {
+    return error;
+  }
+  // return returnValue;
+};
+
+export { action };

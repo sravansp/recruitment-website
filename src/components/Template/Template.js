@@ -2,7 +2,7 @@ import React,{useState,useEffect} from 'react'
 import TableAnt from '../common/TableAnt'
 import Breadcrumbs from '../common/BreadCrumbs';
 import { useTranslation } from 'react-i18next';
-
+import API, { action } from "../Api1";
 import ButtonClick from '../common/Button';
 import { getAllRecruitmentJobTemplates,getAllRecruitmentWorkFlows,getAllRecruitmentEmailTemplates,getAllRecruitmentQuestionnaireTemplateDetails,getAllRecruitmentEvaluationTemplates,getAllRecruitmentLetterTemplates } from '../Api1';
 import AddTemplate from './Addtemplate';
@@ -92,7 +92,18 @@ const Template = ({
          }
 
      ]
-   
+     //update
+     const updateApi = [
+      {
+        Job_Templates: { id: 1, api: API.UPDATE_Job_Templates },
+        Job_Description: { id: 2, api: API.UPDATE_Job_Description },
+        Workflow: { id: 3, api: API.UPDATE_Workflow },
+        Email: { id: 4, api: API.UPDATE_Email },
+        Evaluation: { id: 5, api: API.UPDATE_EvaluationS },
+        Questionaire: { id: 5, api: API.UPDATE_Questionaire },
+        Letter: { id: 5, api: API.UPDATE_Letter},
+      },
+    ];
    
       const Header =[
     {
@@ -553,6 +564,11 @@ const Template = ({
                 actionID={
                   Object.keys(actionId[0]).includes(navigationPath)
                     ? actionId[0]?.[navigationPath].id
+                    : null
+                }
+                updateApi={
+                  Object.keys(updateApi[0]).includes(navigationPath)
+                    ? updateApi[0]?.[navigationPath].api
                     : null
                 }
                 buttonClick={(e) => {
