@@ -192,18 +192,18 @@ const TableAnt = ({
       //   [actionID]: id, //Id
       //   isActive: checked === true ? 1 : 0,
       // });
-      const result = await action(updateApi, {
+      const response = await action(updateApi, {
         id: id, //Id
         // isActive: checked === true ? 1 : 0,
       });
-      // console.log(result);
+      console.log(response);
 
-      if (result.status === 200) {
+      if (response.status === 200) {
         // handleClose();
         // setFunctionRender(!functionRender);
         // getRecords()
         // window.location.reload();
-        openNotification("success", "Success", result?.message);
+        openNotification("success", "Success", response.message);
       } else {
         openNotification("error", "Failed", "Unable to update status.");
       }
