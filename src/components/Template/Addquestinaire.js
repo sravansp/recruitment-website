@@ -310,7 +310,7 @@ const QuestionAire = ({
             {evaluation.map((condition, index) => (
               <><div className="flex items-center justify-between">
                 <FormInput
-                  showValueParagraph={true}
+                  //showValueParagraph={true}
                   placeholder={'Type question here'}
                   value={condition.question}
                   change={(e) => {

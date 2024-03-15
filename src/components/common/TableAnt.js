@@ -285,7 +285,8 @@ const TableAnt = ({
                   <p className="!font-normal para" >{text[each.value]}</p>
                 </div>
               ) : each.actionToggle ? (
-                <Switch
+              
+               <Switch
                   checked={parseInt(text.isActive)}
                   onChange={(checked) => {
                     handleToggleList(text?.[actionID], checked);
@@ -298,6 +299,7 @@ const TableAnt = ({
                   className=" bg-[#c2c0c0aa]"
                   size={isSmallScreen ? "small" : "default"}
                 />
+               
               ) : each.action ? (
                 <div className="flex items-center justify-start gap-4">
                   <button
@@ -337,6 +339,7 @@ const TableAnt = ({
                     </button>
                   </Popconfirm>
                 </div>
+              
               ) : (
                 // </Popover>
                 <div className="text-[#667085] text-xs 2xl:text-sm dark:text-white font-medium">
@@ -784,7 +787,7 @@ const TableAnt = ({
       {console.log(data)}
         {data && (
           <Table
-            // rowSelection={{ ...rowSelection }}
+            //rowSelection={{ ...rowSelection }}
             columns={tableData}
             // dataSource={data.filter(
             //   (item) =>
