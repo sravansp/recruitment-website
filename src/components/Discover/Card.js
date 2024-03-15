@@ -1,14 +1,15 @@
 import React from "react";
+import { twMerge } from 'tailwind-merge'
 
 const Card = ({ children, className = "", cardName = "" }) => {
   return (
     <div
-      className={`bg-white dark:bg-[#0C101C] borderb dark:border-none rounded-xl h-full w-full  ${className}`}
+      className={twMerge(`bg-white dark:bg-[#0C101C] borderb dark:border-none rounded-xl h-full w-full,  ${className}`)}
     >
       {cardName && (
         <div className="header">
           <div className="p-3">
-            <h2 className="h6"> {cardName} </h2>
+            <h3 className="h3"> {cardName} </h3>
           </div>
           <div className="divider-h" />
         </div>

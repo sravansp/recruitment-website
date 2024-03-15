@@ -3,6 +3,9 @@ import Card from "./Card";
 import { PiChartBar } from "react-icons/pi";
 import { IoMdArrowDropdown, IoMdArrowDropup } from "react-icons/io";
 import PieChartWithLegends from "./PieChart";
+import FrequencyBarChart from "./FrequencyBarChart";
+import InterviewSchedules from "./InterviewSchedules";
+import LiveJobs from "./LiveJobs";
 
 const Discover = () => {
   const smallCard = [
@@ -42,12 +45,12 @@ const Discover = () => {
         </p>
       </div>
       <div className="grid grid-cols-12 gap-4">
-        {/* LEFT COLUMNV  */}
+        {/* LEFT COLUMN  */}
         <div className="flex flex-col col-span-12 gap-4 xl:col-span-8">
           {/* SMALL CARD  */}
           <div className="grid grid-cols-12 gap-3">
             {smallCard.map((card, i) => (
-              <div className="col-span-12 sm:col-span-6 lg:col-span-3">
+              <div className="col-span-12 sm:col-span-6 lg:col-span-3 2xl:col-span-3">
                 <Card className="2xl:h-[128px]">
                   <div className="flex flex-col gap-3">
                     <div className="flex justify-between">
@@ -94,15 +97,47 @@ const Discover = () => {
           </div>
 
           {/* TWO COLUMN CHART */}
-          <div className="grid">
-            
+          <div className="grid grid-cols-12 gap-4">
+            <div className="col-span-12 lg:col-span-8 xl:col-span-12 4xl:col-span-8">
+              <Card cardName="Application Frequency Rate" className="h-[397px]">
+                <FrequencyBarChart />
+              </Card>
+            </div>
+
+            {/* Hidden in small Devices with resolution from 1024px to 1800px And this Card will Visible in Right Column */}
+            <div className="col-span-12 lg:col-span-4 4xl:col-span-4 xl:hidden 4xl:block">
+              <Card cardName="Upcoming Interview Schedules">
+                <InterviewSchedules />
+              </Card>
+            </div>
           </div>
+          <Card cardName="Live Jobs" className="h-96">
+            <LiveJobs />
+          </Card>
+          <Card cardName="Age of Jobs" className="h-96"></Card>
         </div>
         {/* RIGHT COLUMN  */}
         <div className="flex flex-col col-span-12 gap-4 xl:col-span-4">
-          <Card className="2xl:min-h-[250px]" cardName="Candidate Source">
-            <PieChartWithLegends />
-          </Card>
+
+          <div className="flex flex-col gap-4 md:grid md:grid-cols-2 xl:flex">
+
+            <div className="flex flex-col gap-4 xl:flex-col">
+              <Card
+                className="2xl:min-h-[250px] h-auto"
+                cardName="Candidate Source"
+              >
+                <PieChartWithLegends />
+              </Card>
+              <div className="hidden xl:block 4xl:hidden">
+                <Card cardName="Upcoming Interview Schedules">
+                  <InterviewSchedules />
+                </Card>
+              </div>
+            </div>
+            <Card cardName="Active Employees" className="min-h-[150px]"></Card>
+          </div>
+          <Card cardName="Time to Fill" className="h-96"></Card>
+          
         </div>
       </div>
     </div>

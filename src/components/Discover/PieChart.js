@@ -1,4 +1,5 @@
 import React from "react";
+import { useDispatch, useSelector } from "react-redux";
 import {
   PieChart,
   Pie,
@@ -26,6 +27,7 @@ const getTotalSources = () => {
 };
 
 const PieChartWithLegends = () => {
+  const theme = useSelector((state) => state.layout.mode)
   const style = {
     top: "48%",
     right: 0,
@@ -38,8 +40,8 @@ const PieChartWithLegends = () => {
     const { cx, cy } = viewBox;
     return (
       <text x={cx} y={cy} textAnchor="middle" dominantBaseline="middle">
-        <tspan fontSize="14" fontWeight="normal">Total Sources</tspan>
-        <tspan x={cx} dy="20" fontSize="20" fontWeight="bold">{totalSources}</tspan>
+       <tspan fill={theme === "dark" ? "white" : "black"} fontSize="14" fontWeight="normal">Total Sources</tspan>
+<tspan x={cx} dy="20" fill={theme === "dark" ? "white" : "black"} fontSize="20" fontWeight="bold">{totalSources}</tspan>
       </text>
     );
   };
@@ -48,7 +50,7 @@ const PieChartWithLegends = () => {
       <PieChart margin={{ top: 0, right: 0, bottom: 0, left: 0 }}>
         <Pie
           data={data}
-          cx="26%"
+          cx="30%"
           cy="48%"
           innerRadius={55}
           outerRadius={80}
@@ -81,7 +83,7 @@ const PieChartWithLegends = () => {
             return (
               <div className="flex flex-col gap-2 dark:text-white">
                 {/* <p className="font-medium text-opacity-50 2xl:text-xs text-[#667085]">Leave Summary</p> */}
-                <ul className=" w-44">
+                <ul className="w-28 xss:w-44 md:w-36 lg:w-28 3xl:w-44">
                   {payload.map((entry, index) => (
                     <li
                       key={`legend-${index}`}
