@@ -220,6 +220,12 @@ const Template = ({
             value:"",
             actionToggle:true,
          },
+         {
+          id:4,
+          title:"Action",
+          value:"Action",
+          action:true,
+       },
         ],
         Questionaire : [ 
           {
@@ -635,7 +641,7 @@ const Template = ({
           close={(e) => {
             setShow(e);
           }}
-        //   updateId={updateId}
+          updateId={updateId}
         //   companyDataId={companyId}
           refresh={() => {
             // getLocationList();
@@ -661,7 +667,7 @@ const Template = ({
           close={(e) => {
             setShow(e);
           }}
-        //   updateId={updateId}
+          updateId={updateId}
         //   companyDataId={companyId}
           refresh={() => {
             // getLocationList();

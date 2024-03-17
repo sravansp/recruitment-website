@@ -9,12 +9,12 @@ import AddMore from '../common/AddMore';
 import { SlEnergy } from 'react-icons/sl';
 import { AiFillThunderbolt } from 'react-icons/ai';
 import { Formik,useFormik } from 'formik';
-import { saveRecruitmentWorkFlow,saveRecruitmentWorkFlowStage } from '../Api1';
+import { saveRecruitmentWorkFlow,saveRecruitmentWorkFlowStage,getRecruitmentWorkFlowById } from '../Api1';
 import { PiPencilSimpleLineThin } from 'react-icons/pi';
 import { Modal,Button,notification } from 'antd';
 import image from "../../assets/images/image 622.png"
 
-const Workflowstage = ({open = "", close = () => { },inputshow= false,isUpdate={}}) => {
+const Workflowstage = ({open = "", close = () => { },inputshow= false,isUpdate={},updateId}) => {
   
   
   const [successNotificationVisible, setSuccessNotificationVisible] = useState(false);   
@@ -40,7 +40,7 @@ const Workflowstage = ({open = "", close = () => { },inputshow= false,isUpdate={
       // duration: null,
     });
   };
-  
+   console.log(updateId)
   
     
     const[show,setShow] =useState(open);
@@ -57,6 +57,11 @@ const Workflowstage = ({open = "", close = () => { },inputshow= false,isUpdate={
        
       ]
       )
+      const [selectedStageName, setSelectedStageName] = useState('');
+      const handleEditStage = (stageName) => {
+        setSelectedStageName(stageName);
+        setIsModalVisible(true);
+      };
       useEffect(()=>{
         console.log(stages)
       },[stages])
@@ -84,6 +89,9 @@ const Workflowstage = ({open = "", close = () => { },inputshow= false,isUpdate={
     
         // Close the modal
         setIsModalVisible(false);
+      };
+      const handleDeleteStage = (id) => {
+        setstages((prevStages) => prevStages.filter((stage) => stage.id !== id));
       };
 //Modal
 const [isModalVisible, setIsModalVisible] = useState(false);
@@ -113,61 +121,98 @@ const [isModalVisible, setIsModalVisible] = useState(false);
 const [svgContent, setSvgContent] = useState('');
 
 const formik = useFormik({
-  initialValues :{
-    companyId : "",
-    workFlowName:"",
-    description:"",
-    createdBy:"",
-
+  initialValues: {
+    companyId: "",
+    workFlowName: "",
+    description: "",
+    createdBy: "",
   },
-  onSubmit : async (e)=>{
+  onSubmit: async (values, { setSubmitting }) => {
+    try {
+      // if(updateId){
+        
 
-   try{
-  const response = await saveRecruitmentWorkFlow({
-   companyId:companyId,
-   workFlowName:e.workFlowName,
-   description :null,
-   createdBy: 9,
+      // }else{
+        const response = await saveRecruitmentWorkFlow({
+        companyId: companyId,
+        workFlowName: values.workFlowName,
+        description: null,
+        createdBy: 9,
+      });
 
-  })
+      console.log(response);
 
-  console.log(response)
-  
-  
-   if(response.status === 200)
-   setInsertedId(response.result.insertedId)
-   {
-    const formattedData = stages.map((item) => ({
-      workFlowId: insertedId,
-      stageOrder: item.stageOrder,
-      stageName:item.stageName,
-      stageRules:JSON.stringify(item.stageRules),
-      createdBy:9
+      if (response.status === 200) {
+        const insertedId = response.result.insertedId; // Get insertedId here
+        const formattedData = stages.map((item) => ({
+          workFlowId: insertedId,
+          stageOrder: item.stageOrder,
+          stageName: item.stageName,
+          stageRules: JSON.stringify(item.stageRules),
+          createdBy: 9,
+        }));
+
+        const response2 = await saveRecruitmentWorkFlowStage(...formattedData);
+        console.log('Response2:', response2);
+        console.log(formattedData);
+        console.log(insertedId);
+
+        if (response2.status === 200) {
+          openNotification("success", "Successful", response2.message);
+          setTimeout(() => {
+            handleClose();
+          }, 2000);
+        } else if (response2.status === 500) {
+          openNotification("error", "error", response2.message);
+        }
+      }
+    // }
+  } catch (error) {
+      console.log(error);
+    }
+    setSubmitting(false);
+  },
+});
+//update
+
+
+const[workFlowsatges,setworkFlowsatges] = useState([])
+const getworkFlow =async()=>{
+  const id = updateId
+  try{
+   const response = await getRecruitmentWorkFlowById({id})
+   console.log(response)
+   setworkFlowsatges(response.result)
+   
+   if (response.result.length > 0) {
+    const firstJob = response.result[0];
+    
+    // Set workflow name
+    formik.setFieldValue("workFlowName", firstJob.workFlowName);
+
+    // Set stages
+    const stagesData = firstJob.recruitmentWorkFlowStages.map(stage => ({
+      id: stage.stageId,
+      workFlowId: stage.workFlowId,
+      stageOrder: stage.stageOrder,
+      stageName: stage.stageName,
     }));
-    const response2 = await saveRecruitmentWorkFlowStage(...formattedData
-);
-    console.log('Response2:', response2);
-          console.log(formattedData);
-          console.log(insertedId);
-          if (response2.status === 200) {
-            openNotification("success", "Successful", response2.message);
-           
-            setTimeout(() => {
-              handleClose();
-            }, 2000);
-          } else if (response2.status === 500) {
-            openNotification("error", "error", response2.message);
-          }
-   }
-
-   }catch(error)
-   {
-   console.log(error)          
-   }
-
+    setstages(stagesData);
+    console.log(stagesData); // Check here
   }
+  }catch (error){
+   
+    console.log(error)
+   
+  }
+}
+useEffect(()=>{
+  getworkFlow()
+  console.log(stages);
+},[])
 
-})
+//update workflow
+
     return (
     <DrawerPop
     
@@ -197,7 +242,7 @@ const formik = useFormik({
     header={[
        !isUpdate
          ? t("Create a Job Description Template")
-         : t("Create a Job Description Template"),
+         : t("Create Worklow stages"),
        t("Lorem ipsum dummy text doret solo."),
      ]}
      
@@ -277,6 +322,7 @@ initialExpanded={true}
 
                 </div>
                 <div className="w-full sm:w-[545px] grid grid-cols-1 gap-4">
+                {console.log(stages)}
                 {stages.map((stage) => (
         <div key={stage.id} className="flex gap-5">
            <svg
@@ -309,8 +355,8 @@ initialExpanded={true}
   <div className='flex  gap-5'> 
  
  <div className='flex items-center gap-5'>
- <PiPencilSimpleLineThin />
-   <MdDelete
+ <PiPencilSimpleLineThin onClick={() => handleEditStage(stage.stageName)}/>
+   <MdDelete onClick={() => handleDeleteStage(stage.id)}
                                            
                                            className="cursor-pointer text-red-500" />
  </div>
@@ -352,7 +398,7 @@ initialExpanded={true}
         <FormInput
         title={"Stage Name"}
         placeholder={"Type here..."}
-        value={stageName}
+        value={selectedStageName}
         change={(e) => setStageName(e)}
         
         />
