@@ -10,9 +10,16 @@ import API from "../Api";
 import { useFormik } from "formik";
 import * as yup from "yup";
 import Accordion from "../common/Accordion";
+import Breadcrumbs from "../common/BreadCrumbs";
 export default function Notification() {
   const isSmallScreen = useMediaQuery({ maxWidth: 1439 });
   const { t } = useTranslation();
+  const breadcrumbItems = [
+    { label: t("Settings"), url: "" },
+    { label: t("General"), url: "" },
+    { label: t("Notification"), url: "/" },
+    // { label: navigationPath.charAt(0).toUpperCase() + navigationPath.slice(1) },
+  ];
   const [notificationData, setNotificationData] = useState([
     {
       id: 1,
@@ -197,29 +204,33 @@ export default function Notification() {
   return (
     <div className="flex flex-col gap-6">
       <div>
+        <Breadcrumbs items={breadcrumbItems} />
+        <p className="para">{t("Lorem ipsum dolart sit dummy text.")}</p>
+      </div>
+      {/* <div>
         <h1 className="h1">{t("Notification_settings")}</h1>
         <p className="para">{t("Notification_settings_description")} </p>
       </div>
-          
-        <div className="relative flex flex-col gap-6">
+           */}
+      <div className="relative flex flex-col gap-6">
         {/*  Accordian item 1 */}
         {notificationData.map((item) => (
-          
-          <Accordion  
-           title={item.title}
-           description={item.description}
-           initialExpanded={true}
-           > <div
-            key={item.id}
-            
-          >
-            <h2>
-             
-            
 
-            
-            </h2>
-          
+          <Accordion
+            title={item.title}
+            description={item.description}
+            initialExpanded={true}
+          > <div
+            key={item.id}
+
+          >
+              <h2>
+
+
+
+
+              </h2>
+
               <div className="flex flex-col gap-8 overflow-hidden">
                 {item.contents.map((subitems) => (
                   <div
@@ -253,8 +264,8 @@ export default function Notification() {
                   </div>
                 ))}
               </div>
-            
-          </div>
+
+            </div>
           </Accordion>
         ))}
       </div>

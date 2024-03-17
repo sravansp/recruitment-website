@@ -24,6 +24,8 @@ const TeamMembers = ({
   const [openPop, setOpenPop] = useState("");
   const [TeamMembers, setTeamMembers] = useState([]);
   const breadcrumbItems = [
+    { label: t("Settings"), url: "" },
+      { label: t("Other"), url: "" },
     { label: t("Team Members"), url: "/" },
     // { label: navigationPath.charAt(0).toUpperCase() + navigationPath.slice(1) },
   ];
@@ -76,7 +78,7 @@ const TeamMembers = ({
   }, []);
   console.log("header", Header);
   return (
-    <>
+    <><div className="flex flex-col gap-6">
       <div className="flex flex-col justify-between gap-8 lg:items-center lg:flex-row">
         <div>
           <Breadcrumbs items={breadcrumbItems} />
@@ -118,6 +120,7 @@ const TeamMembers = ({
       </div>
       <div>
         <TableAnt header={Header}  data={TeamMembers}  All={true}/>
+      </div>
       </div>
       {openPop === "Members" && showPop && (
         <Addmembers

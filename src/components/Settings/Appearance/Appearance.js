@@ -5,10 +5,18 @@ import CustomAccordion from "./CustomAccordion";
 import ThemeSwitch from "./ThemeSwitch";
 // import SampleAcco from "./SampleAcco";
 import { useMediaQuery } from 'react-responsive';
+import Breadcrumbs from "../../common/BreadCrumbs";
+
 
 const Appearance = () => {
   const { t, i18n } = useTranslation();
   const isSmallScreen = useMediaQuery({ maxWidth: 1439 });
+  const breadcrumbItems = [
+    { label: t("Settings"), url: "" },
+    { label: t("General"), url: "" },
+    { label: t("Appearance"), url: "/" },
+    // { label: navigationPath.charAt(0).toUpperCase() + navigationPath.slice(1) },
+  ];
   const recentAppOptions = [
     {
       value: "1",
@@ -38,12 +46,16 @@ const Appearance = () => {
   return (
     <div className="flex flex-col gap-6">
       <div>
+        <Breadcrumbs items={breadcrumbItems} />
+        <p className="para">{t("Lorem ipsum dolart sit dummy text.")}</p>
+      </div>
+      {/* <div>
         <h1 className="h1">{t("Appearance")}</h1>
         <p className="para">
           {t("Appearance_Description")}{" "}
           <span className="text-primary">{t("Custom_theme")}</span>
         </p>
-      </div>
+      </div> */}
       <div className="flex flex-col gap-6">
         <div className="flex flex-col justify-between gap-6 md:gap-3 box-wrapper md:flex-row">
           <div>
