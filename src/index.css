@@ -51,7 +51,7 @@
 }
 
 .p6 {
-  @apply text-sm font-normal text-gray-500 md:text-base dark:text-white;
+  @apply text-sm font-normal text-gray-500 2xl:text-base dark:text-white;
 }
 
 .subhead {
@@ -61,6 +61,10 @@
 .h2 {
   @apply text-sm font-semibold text-black 2xl:text-xl dark:text-white;
 }
+.h3 {
+  @apply text-sm font-semibold text-black lg:text-xs 2xl:text-base dark:text-white;
+}
+
 
 .acco-h1 {
   @apply text-sm font-semibold leading-normal text-black 2xl:text-xl dark:text-white;

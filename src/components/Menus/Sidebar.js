@@ -210,13 +210,17 @@ const Sidebar = () => {
         {
           id: 1,
           title: t("Discover"),
+          link: "/",
           icon: (
             <IoMdCompass
               size={"100%"}
-              className={`text-white transition-all duration-300 group-hover:text-primary ${selectedMainMenu === t("Discover") ? "text-primary" : ""
-                }`}
+              className={`text-white transition-all duration-300 group-hover:text-primary ${
+                selectedMainMenu === t("Discover") ? "text-primary" : ""
+              }`}
             />
           ),
+          menuId: 1,
+          directLink: true,
         },
         {
           id: 2,

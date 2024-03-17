@@ -22,14 +22,14 @@ import AddMore from '../common/AddMore'
 const TemEvaluation = ({open = "", close = () => { },inputshow= false,isUpdate={}}) => {
     
   const [companyId, setCompanyId] = useState(localStorage.getItem("companyId"));
-  const[insertedId,setinsertedId] =useState(null)
+  const[insertedId,setinsertedId] =useState("")
   console.log(companyId)
   console.log(insertedId)
   const [evaluation, setEvaluation] = useState([
     {
       id: 1,
       companyId: companyId,
-      evaluationTemplateId: insertedId,
+      evaluationTemplateId: "",
       question: "",
       answerMetaData: '[]',
       description:"hihihihih",
@@ -45,23 +45,23 @@ console.log(evaluation)
 // const parsedAnswerMetaData = JSON.parse(evaluation[0].answerMetaData);
 // parsedAnswerMetaData[0].key = "updatedKey";
 // parsedAnswerMetaData[0].value = "updatedValue";
-useEffect(() => {
-  // Update evaluation with the new insertedId
-  setEvaluation((prevEvaluation) => {
-    return prevEvaluation.map((item) => ({
-      ...item,
-      evaluationTemplateId: insertedId,
+// useEffect(() => {
+//   // Update evaluation with the new insertedId
+//   setEvaluation((prevEvaluation) => {
+//     return prevEvaluation.map((item) => ({
+//       ...item,
+//       evaluationTemplateId: insertedId,
 
-    }));
-  });
-}, [insertedId]);
+//     }));
+//   });
+// }, [insertedId]);
 const handleAddCondition = () => {
   setEvaluation((prevEvaluation) => [
     ...prevEvaluation,
     {
       id: prevEvaluation.length + 1,
       companyId: companyId, // Replace companyId with your actual value
-      evaluationTemplateId: insertedId, // Replace insertedId with your actual value
+      evaluationTemplateId: "", // Replace insertedId with your actual value
       question: "",
       answerMetaData: '[]',
       description: "hihihihi",
@@ -154,113 +154,75 @@ const[show,setShow] =useState(open);
   
   const formik = useFormik({
     initialValues: {
-      companyId:"",
-      evaluationTemplateName:"",
-      createdBy:""
-     
-   
+      companyId: "",
+      evaluationTemplateName: "",
+      createdBy: null,
     },
-       //  enableReinitialize: true,
-       //   validateOnChange: false,
-       //   validationSchema: yup.object().shape({
-       //     firstName: yup.string().required("First Name is Required"),
-       //     lastName: yup.string().required("Last Name is Required"),
-       //     email: yup.string().required("Email is Required"),
-       //     mobile: yup.string().min(10).max(10).required("Mobile is Required"),
-       //     gender: yup.string().required("Gender is Required"),
-       //     dateOfBirth: yup.string().required("Date of Birth Group is Required"),
-       //   }),
     onSubmit: async (e) => {
-     try{
-       console.log({companyId:companyId,
-        evaluationTemplateName:e.evaluationTemplateName,
-        createdBy:null,})
-       const response = await saveRecruitmentEvaluationTemplate({
-       companyId:companyId,
-       evaluationTemplateName:e.evaluationTemplateName,
-       createdBy:null,
-   
-       
-       })
-       console.log(response)
-       
-       
-       if (response.status === 200) {
-         
-         
-         openNotification(
-           "success",
-           "Successful",
-           response.message
-         );
-         setinsertedId(response.result.insertedId)
-        
-       }else if(response.status === 500){
-        openNotification(
-          "success",
-          "Successful",
-          response.message
-        );
-       }
-       
-       if(response.result.insertedId)
-       {
-        formik1.handleSubmit()
-       }
-     }
-     catch (error) {
-       // Handle the error here
-       console.error("Error during form submission:", error);
-           openNotification(
-             "error",
-             "Error saving category",
-             "There was an error while saving the category. Please try again."
-           );
-     }
-   
-    },
-   })
-   
-   const formik1 = useFormik({
-    initialValues: {},
-    onSubmit: async (setinsertedId) => {
       try {
-        const formattedData = evaluation.map((item) => ({
-          companyId: item.companyId,
-          evaluationTemplateId: item.evaluationTemplateId,
-           
-          question: item.question,
-          answerMetaData: JSON.stringify(item.answerMetaData),
-          
-          description: item.description,
-          createdBy: item.createdBy,
-        }));
+        console.log({
+          companyId: companyId,
+          evaluationTemplateName: e.evaluationTemplateName,
+          createdBy: null,
+        });
   
-        // Call your API to save data using the formatted data
-        const response = await saveRecruitmentEvaluationTemplateDetailBatch(formattedData);
+        // Make the first API call
+        const response = await saveRecruitmentEvaluationTemplate({
+          companyId: companyId,
+          evaluationTemplateName: e.evaluationTemplateName,
+          createdBy: null,
+        });
   
-        // Handle the response if needed
-        console.log('Response:', response);
-        console.log(formattedData)
-        console.log(insertedId)
+        console.log(response);
   
         if (response.status === 200) {
+          // Update the state with the insertedId
+          setinsertedId(response.result.insertedId);
+          setEvaluation((prevEvaluation) => {
+                return prevEvaluation.map((item) => ({
+                  ...item,
+                  evaluationTemplateId: parseInt(response.result.insertedId),
+            
+                }));
+              });
+  
+          // Process the data for the second formik here
+          const formattedData = evaluation.map((item) => ({
+            companyId: companyId,
+            evaluationTemplateId: insertedId,
+            question: item.question,
+            answerMetaData: JSON.stringify(item.answerMetaData),
+            description: item.description,
+            createdBy: item.createdBy,
+          }));
+  
+          // Call your API to save data using the formatted data
+          const response2 = await saveRecruitmentEvaluationTemplateDetailBatch(formattedData);
+  
+          // Handle the response if needed
+          console.log('Response2:', response2);
+          console.log(formattedData);
+          console.log(insertedId);
+  
+          if (response2.status === 200) {
+            openNotification("success", "Successful", response2.message);
+            setSuccessNotificationVisible(true);
+            setTimeout(() => {
+              handleClose();
+            }, 2000);
+          } else if (response2.status === 500) {
+            openNotification("error", "error", response2.message);
+          }
+        } else if (response.status === 500) {
           openNotification("success", "Successful", response.message);
-          setSuccessNotificationVisible(true);
-          setTimeout(() => {
-            handleClose();
-          }, 2000);
-        } else if(response.status === 500)
-        {
-          openNotification(
-            "error",
-            "error",
-            response.message
-          );
         }
       } catch (error) {
-        // Handle the error here
-        console.error('Error:', error);
+        console.error("Error during form submission:", error);
+        openNotification(
+          "error",
+          "Error saving category",
+          "There was an error while saving the category. Please try again."
+        );
       }
     },
   });

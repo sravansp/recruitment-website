@@ -293,7 +293,7 @@ const Tabs = ({
                     // tablechange = false,
                     // children,
                     activeOrNot={activeOrNot}
-                    actionToggle={false}
+                    actionToggle={actionToggle}
                     // ListApi=""
                     addButtonName={addButtonName}
                     exportButton={false}
