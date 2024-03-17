@@ -1,7 +1,7 @@
 import React from "react";
 import {LiveJobsData} from "../common/DataArrays"  
 
-const LiveJobs = () => {
+const AgeOfJobs = () => {
 
  
   return (
@@ -36,4 +36,4 @@ const LiveJobs = () => {
   );
 };
 
-export default LiveJobs;
+export default AgeOfJobs;

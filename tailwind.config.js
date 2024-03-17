@@ -18,7 +18,8 @@ export const theme = {
 
       // primary: color, // Purple Blue
       primary: "var(--primary-color) !important", // Purple Blue
-
+      primaryalpha: "rgba(var(--primary), <alpha-value>)",
+      primaryLight: "#F1EEFF",
       // primary: "#6A4BFC", // Purple Blue
       secondary: "#111E2C", // Dark
       accent: "var(--primary-color)", // Purple Blue

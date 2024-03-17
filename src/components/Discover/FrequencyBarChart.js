@@ -126,7 +126,7 @@ export default function FrequencyBarChart() {
             stackId="a"
             fill={`url(#gradient1)`}
             barSize={32}
-            radius={[4, 4, 4, 4]} // Border radius: top-left, top-right, bottom-right, bottom-left
+            radius={[6, 6, 6, 6]} // Border radius: top-left, top-right, bottom-right, bottom-left
             background={{ fill: theme === "dark" ? "#171C28" : "#FBF9FF" }} // Background color for the bar{ fill: "#FBF9FF" }}
           >
             {/* Display total at the top of the bar */}

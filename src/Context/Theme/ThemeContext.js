@@ -19,6 +19,19 @@ const getPrimaryColor = (themeMode) => {
 };
 
 export const ThemeProvider = ({ children }) => {
+  const hexToRGBA = (hex, alpha) => {
+    let r = parseInt(hex.slice(1, 3), 16);
+    let g = parseInt(hex.slice(3, 5), 16);
+    let b = parseInt(hex.slice(5, 7), 16);
+  
+    if (alpha) {
+      return `rgba(${r}, ${g}, ${b}, ${alpha})`;
+    } else {
+      // return `rgb(${r}, ${g}, ${b})`;
+      return `${r}, ${g}, ${b}`;
+    }
+  };
+
   const dispatch = useDispatch();
   const [theme, setTheme] = useState(localStorage.getItem("theme") || "light");
   const [color, setColor] = useState(
@@ -26,7 +39,9 @@ export const ThemeProvider = ({ children }) => {
   );
 
   useEffect(() => {
+    const rgbaColor = hexToRGBA(color);
     document.documentElement.style.setProperty("--primary-color", color);
+    document.documentElement.style.setProperty("--primary", rgbaColor);
     localStorage.setItem("mainColor", color);
     dispatch(mode(theme));
     dispatch(themeColor(color));
