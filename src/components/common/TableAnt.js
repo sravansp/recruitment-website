@@ -34,6 +34,7 @@ import { useDispatch, useSelector } from 'react-redux';
 import { setNavigationPath } from "../../Redux/action";
 import { setSelectedDataId } from "../../Redux/action";
 import { useNavigate } from 'react-router-dom';
+import ModalPop from "./ModalPop";
 
 
 // Filter Dropdown
@@ -69,6 +70,7 @@ const TableAnt = ({
   showButton = false,
   All=false,
   showsearch=false,
+  viewOutside = false,
   refresh = () => {},
   recordId="",
   
@@ -96,7 +98,10 @@ const TableAnt = ({
   const [show, setShow] = useState(false);
   const [openPop, setOpenPop] = useState("");
   const handleShow = () => setShow(true);
+  const [modalData, setModalData] = useState({});
 
+  const [isModalOpen, setIsModalOpen] = useState(false);
+  const [isModalshow, setIsModalshow] = useState(true);
   const [api, contextHolder] = notification.useNotification();
   const openNotification = (type, message, description, callback) => {
     api[type]({
@@ -135,13 +140,13 @@ const TableAnt = ({
 
   const navigationPath = useSelector((state) => state.navigation.navigationPath);
   useEffect(() => {
-    console.log("Updated navigationPath:", navigationPath);
+    //console.log("Updated navigationPath:", navigationPath);
   }, [navigationPath]);
 
 
   const handleAddButtonClick = (path) => {
     // Use the path parameter as needed in your function
-    console.log(`Add button clicked for path: ${path}`);
+    //console.log(`Add button clicked for path: ${path}`);
   
     // The rest of your logic...
   };
@@ -177,17 +182,19 @@ const TableAnt = ({
   //   );
   // };
 
+  
+
   // update Api integration
   const updateCompany = async (id, checked) => {
     try {
-      console.log(
-        updateApi,
-        {
-          [actionID]: id, //Id
-          isActive: checked === true ? 1 : 0,
-        },
-        "updateApi"
-      );
+      // console.log(
+      //   updateApi,
+      //   {
+      //     [actionID]: id, //Id
+      //     isActive: checked === true ? 1 : 0,
+      //   },
+      //   "updateApi"
+      // );
       // const result = await action(updateApi, {
       //   [actionID]: id, //Id
       //   isActive: checked === true ? 1 : 0,
@@ -196,7 +203,7 @@ const TableAnt = ({
         id: id, //Id
         // isActive: checked === true ? 1 : 0,
       });
-      console.log(response);
+      //console.log(response);
 
       if (response.status === 200) {
         // handleClose();
@@ -225,29 +232,32 @@ const TableAnt = ({
   };
 
  
-  
+  console.log(modalData,"hiii");
 
-  const handleRowClick = (record) => {
+  const handleRowClick = (text,title) => {
+    setModalData({ text, title });
+    setIsModalOpen(true);
     // Check if the path is present and is not an empty array and if 'action' does not exist in the current column configuration
-    if (
-      path &&
-      path.length > 0 &&
-      !header[0]?.[tabValue || path || '']?.some(
-        column => column.value === 'action' // Check if 'action' exists in the column configuration
-      )
-    ) {
-      dispatch(setSelectedDataId(record[actionID]));
-      navigate(`/${path}/${record[actionID]}`);
-      // Store the clicked data ID in local storage only when the path is present and not an empty array
-      localStorage.setItem('selectedDataId', record[actionID]);
-    }
+    // if (
+    //   path &&
+    //   path.length > 0 &&
+    //   !header[0]?.[tabValue || path || '']?.some(
+    //     column => column.value === 'action' // Check if 'action' exists in the column configuration
+    //   )
+    // ) {
+    //   dispatch(setSelectedDataId(record[actionID]));
+    //   navigate(`/${path}/${record[actionID]}`);
+    //   // Store the clicked data ID in local storage only when the path is present and not an empty array
+    //   localStorage.setItem('selectedDataId', record[actionID]);
+    // }
+   
   };
   // useEffect(()=>{
   //   const record
   //   console.log(record.jobId)
   // })
   useEffect(() => {
-    console.log(header, "header");
+   // console.log(header, "header");
     setTableData(
       (header[0]?.[tabValue || path || ''] || []).map((each, i) => ({
         title: (
@@ -276,6 +286,10 @@ const TableAnt = ({
                       ? " bg-emerald-100 text-emerald-600"
                       : " bg-rose-100 text-rose-600"
                   } rounded-full pr-2 py-[2px] w-fit font-medium text-[10px] 2xl:text-sm vhcenter flex-nowrap`}
+                  onClick={() => {
+                    !viewOutside &&
+                      handleRowClick(text, header[0]?.[tabValue || path]);
+                  }}
                 >
                   <RxDotFilled
                     className={`${
@@ -337,8 +351,8 @@ const TableAnt = ({
                     handleToggleList(text?.[actionID], checked);
                     // buttonClick(each.companyId);
                     // activeOrNot(checked);
-                    console.log(checked);
-                    console.log(text?.[actionID]);
+                    //console.log(checked);
+                    //console.log(text?.[actionID]);
                     updateCompany(text?.[actionID], checked);
                   }}
                   className=" bg-[#c2c0c0aa]"
@@ -400,7 +414,7 @@ const TableAnt = ({
                       onClick={() => {
                         buttonClick(text[actionID], "edit"); //"8"
                         clickDrawer(true);
-                        console.log(text[actionID]);
+                       // console.log(text[actionID]);
 
                         // console.log(actionID);
                         // console.log(text[actionID], "ddddddddsfsd");
@@ -473,7 +487,7 @@ const TableAnt = ({
   // };
 
   const onSelectChange = (newSelectedRowKeys) => {
-    console.log(newSelectedRowKeys, "eeddd");
+    //console.log(newSelectedRowKeys, "eeddd");
     setSelectedRowKeys(newSelectedRowKeys);
   };
 
@@ -507,10 +521,10 @@ const TableAnt = ({
       );
     },
     onSelect: (record, selected, selectedRows) => {
-      console.log(record, selected, selectedRows);
+      //console.log(record, selected, selectedRows);
     },
     onSelectAll: (selected, selectedRows, changeRows) => {
-      console.log(selected, selectedRows, changeRows);
+      //console.log(selected, selectedRows, changeRows);
     },
   };
 
@@ -521,7 +535,7 @@ const TableAnt = ({
 
     // Filter columns based on whether their titles contain the searchValue
     const filteredColumns = tableData.filter((column) => {
-      console.log(column, "column");
+    //  console.log(column, "column");
       const titleText =
         typeof column.title === "string"
           ? column.title
@@ -661,7 +675,7 @@ const TableAnt = ({
   // const columnMenu = <Menu mode="vertical" items={columnMenuItems} />;
 
   const onChangeGridlist = ({ target: { value } }) => {
-    console.log("radio1 checked", value);
+   // console.log("radio1 checked", value);
     setGridList(value);
   };
   const splitTitle = tabTitle.split("_");
@@ -669,7 +683,7 @@ const TableAnt = ({
     .map((word) => word.charAt(0).toUpperCase() + word.slice(1))
     .join(" ");
 
-   
+ 
   return (
     <div className="flex flex-col gap-5">
       <div className="flex flex-col justify-between gap-3 xl:items-center xl:flex-row">
@@ -858,6 +872,64 @@ const TableAnt = ({
           />
         )}
       </div>
+
+      {isModalOpen && (
+        <ModalPop
+          width={1000}
+          open={isModalOpen}
+          title={
+            <div className=" flex gap-3">
+              <div className=" flex flex-col gap-2">
+                <h1 className="h1 border-b-2 border-primaryalpha pb-0.5">
+                  {tabTitle
+                    ? tabTitle?.charAt(0).toUpperCase() +
+                    tabTitle.slice(1).split("_").join(" ")
+                    : path?.charAt(0).toUpperCase() +
+                    path.slice(1).split("_").join(" ")}
+                </h1>
+                {/* <p className="text-sm">Work In Progress...</p> */}
+              </div>
+            </div>
+          }
+          close={(e) => {
+            setIsModalOpen(e);
+          }}
+        >
+          <div className="flex flex-col gap-2 dark:text-white">
+            {modalData && modalData.title ? modalData.title.map(
+              (data, index) =>
+                data.title !== "Action" &&
+                !data.notView && (
+                  <div className="flex items-center  gap-3 " key={index}>
+                    <h4 className="font-bold">{data.title + " :"}</h4>
+                    {data.value === "isActive" ? (
+                      <div
+                        className={`${parseInt(modalData.text[data.value]) === 1
+                          ? " bg-emerald-100 text-emerald-600"
+                          : " bg-rose-100 text-rose-600"
+                          } rounded-full pr-2 py-[2px] w-fit font-medium text-[10px] 2xl:text-sm vhcenter flex-nowrap`}
+                      >
+                        <RxDotFilled
+                          className={`${parseInt(modalData.text[data.value]) === 1
+                            ? "text-emerald-600"
+                            : "text-rose-600"
+                            } text-base 2xl:text-lg`}
+                        />
+                        {parseInt(modalData.text[data.value]) === 1
+                          ? "Active"
+                          : "Inactive"}
+                      </div>
+                    ) : (
+                      <h1>{modalData.text[data.value]}</h1>
+                    )}
+                  
+                  </div>
+                )
+            ):""}
+          </div>
+        </ModalPop>
+      )}
+      {contextHolder}
     </div>
   );
 };
