@@ -301,6 +301,7 @@ const Tabs = ({
                     title={title}
                     // showButton={showButton}
                     Showsearch={Showsearch }
+                    // viewOutside={true}
                     refresh={() => {
                       refresh();
                     }}
