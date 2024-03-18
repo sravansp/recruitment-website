@@ -166,6 +166,7 @@ salaryRangeTo: Yup.number()
   isSalaryPublic: Yup.boolean().required('Is Salary Public is required'),
   jobDescription: Yup.string().required('Job Description is required'),
 });
+
 //job applying
 
 

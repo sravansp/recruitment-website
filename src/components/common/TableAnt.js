@@ -233,22 +233,22 @@ const TableAnt = ({
 
 
 
-  const handleRowClick = (text, title) => {
+  const handleRowClick = (text, title,record) => {
     setModalData({ text, title });
     setIsModalOpen(true);
     // Check if the path is present and is not an empty array and if 'action' does not exist in the current column configuration
-    // if (
-    //   path &&
-    //   path.length > 0 &&
-    //   !header[0]?.[tabValue || path || '']?.some(
-    //     column => column.value === 'action' // Check if 'action' exists in the column configuration
-    //   )
-    // ) {
-    //   dispatch(setSelectedDataId(record[actionID]));
-    //   navigate(`/${path}/${record[actionID]}`);
-    //   // Store the clicked data ID in local storage only when the path is present and not an empty array
-    //   localStorage.setItem('selectedDataId', record[actionID]);
-    // }
+    if (
+      path &&
+      path.length > 0 &&
+      !header[0]?.[tabValue || path || '']?.some(
+        column => column.value === 'action' // Check if 'action' exists in the column configuration
+      )
+    ) {
+      dispatch(setSelectedDataId(record[actionID]));
+      navigate(`/${path}/${record[actionID]}`);
+      // Store the clicked data ID in local storage only when the path is present and not an empty array
+      localStorage.setItem('selectedDataId', record[actionID]);
+    }
 
 
   };
@@ -876,15 +876,15 @@ const TableAnt = ({
             //       .toLowerCase()
             //       .includes(searchValue.toLowerCase())
             // )}
-            // onRow={(record) => ({
-            //   onClick: () => handleRowClick(record),
-            // })}
+            onRow={(record) => ({
+              onClick: () => handleRowClick(record),
+            })}
             dataSource={listData}
             size={isSmallScreen ? "small" : ""}
           />
         )}
       </div>
-
+      
       {isModalOpen && (
         <ModalPop
           width={1000}
