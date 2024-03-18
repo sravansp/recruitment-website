@@ -56,7 +56,7 @@ const PieChartWithLegends = () => {
           outerRadius={80}
           labelLine={false}
           //   label={renderCustomizedLabel}
-          fill="#8884d8"
+          // fill="#8884d8"
           dataKey="value"
         >
           {data.map((entry, index) => (
@@ -64,6 +64,7 @@ const PieChartWithLegends = () => {
               className="border-none outline-none"
               key={`cell-${index}`}
               fill={COLORS[index % COLORS.length]}
+              stroke="none"
             />
           ))}
         <Label content={labelText} position="center" />
