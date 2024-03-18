@@ -40,8 +40,8 @@ const PieChartWithLegends = () => {
     const { cx, cy } = viewBox;
     return (
       <text x={cx} y={cy} textAnchor="middle" dominantBaseline="middle">
-       <tspan fill={theme === "dark" ? "white" : "black"} fontSize="14" fontWeight="normal">Total Sources</tspan>
-<tspan x={cx} dy="20" fill={theme === "dark" ? "white" : "black"} fontSize="20" fontWeight="bold">{totalSources}</tspan>
+       <tspan fill={theme === "dark" ? "white" : "black"} fontSize="10" fontWeight="normal">Total Sources</tspan>
+<tspan x={cx} dy="20" fill={theme === "dark" ? "white" : "black"} fontSize="18" fontWeight="bold">{totalSources}</tspan>
       </text>
     );
   };
