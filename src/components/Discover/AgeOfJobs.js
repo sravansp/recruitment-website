@@ -1,7 +1,9 @@
 import React from "react";
-import { LiveJobsData } from "../common/DataArrays";
+import {LiveJobsData} from "../common/DataArrays"  
 
-const LiveJobs = ({ dropdown1, dataClick = () => {} }) => {
+const AgeOfJobs = () => {
+
+ 
   return (
     <div className="w-full h-72 overflow-y-auto joblistDash">
       <table className="flex flex-row flex-no-wrap w-full">
@@ -40,4 +42,4 @@ const LiveJobs = ({ dropdown1, dataClick = () => {} }) => {
   );
 };
 
-export default LiveJobs;
+export default AgeOfJobs;

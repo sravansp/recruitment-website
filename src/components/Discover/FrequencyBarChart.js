@@ -18,7 +18,7 @@ export default function FrequencyBarChart() {
   // const theme = localStorage.getItem("theme");
   const dispatch = useDispatch();
   // const theme = useSelector((state) => state.layout.themeColor);
-  const theme = useSelector((state) => state.layout.mode)
+  const theme = useSelector((state) => state.layout.mode);
 
   const { t } = useTranslation();
   const data = [
@@ -108,7 +108,12 @@ export default function FrequencyBarChart() {
             vertical={false}
           />
 
-          <XAxis dataKey="month" axisLine={false} tickLine={false} />
+          <XAxis
+            dataKey="month"
+            axisLine={false}
+            tickLine={false}
+            tick={{ fontSize: 10 }}
+          />
           <YAxis
             // ticks={yTicks}
             // domain={yDomain}
@@ -116,6 +121,7 @@ export default function FrequencyBarChart() {
             tickFormatter={yAxisTickFormatter}
             axisLine={false}
             tickLine={false}
+            tick={{ fontSize: 10 }}
           />
           {/* <Tooltip content={<CustomTooltip />} /> */}
 
@@ -126,7 +132,7 @@ export default function FrequencyBarChart() {
             stackId="a"
             fill={`url(#gradient1)`}
             barSize={32}
-            radius={[4, 4, 4, 4]} // Border radius: top-left, top-right, bottom-right, bottom-left
+            radius={[6, 6, 6, 6]} // Border radius: top-left, top-right, bottom-right, bottom-left
             background={{ fill: theme === "dark" ? "#171C28" : "#FBF9FF" }} // Background color for the bar{ fill: "#FBF9FF" }}
           >
             {/* Display total at the top of the bar */}
@@ -134,6 +140,7 @@ export default function FrequencyBarChart() {
               dataKey="Frequency"
               position="top"
               formatter={labelFormatter}
+              fontSize={10}
             />
           </Bar>
         </BarChart>

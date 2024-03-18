@@ -6,6 +6,8 @@ import PieChartWithLegends from "./PieChart";
 import FrequencyBarChart from "./FrequencyBarChart";
 import InterviewSchedules from "./InterviewSchedules";
 import LiveJobs from "./LiveJobs";
+import ActiveEmployees from "./ActiveEmployees";
+import AgeOfJobs from "./AgeOfJobs";
 
 const Discover = () => {
   const smallCard = [
@@ -34,6 +36,53 @@ const Discover = () => {
       IODPercentage: "43%",
     },
   ];
+
+  const dropdown1 = [
+    {
+      id:1,
+      label:"Any Time",
+      value:"anytime"
+    },
+    {
+      id:2,
+      label:"Yesterday",
+      value:"yesterday"
+    },
+    {
+      id:3,
+      label:"Last 7 Days",
+      value:"last7days"
+    },
+    {
+      id:4,
+      label:"Last 30 Days",
+      value:"last30days"
+    },
+    {
+      id:5,
+      label:"Last 90 Days",
+      value:"last90days"
+    },
+    
+  ]
+  const dropdown2 = [
+    {
+      id:1,
+      label:"All Users",
+      value:"allusers"
+    },
+    {
+      id:2,
+      label:"Employees",
+      value:"employees"
+    },
+    {
+      id:3,
+      label:"Recruiters",
+      value:"recruiters"
+    },
+    
+  ]
   return (
     <div className="flex flex-col gap-4 discover">
       <div className="headerTitle">
@@ -111,10 +160,12 @@ const Discover = () => {
               </Card>
             </div>
           </div>
-          <Card cardName="Live Jobs" className="h-96">
-            <LiveJobs />
+          <Card cardName="Live Jobs" className="h-96" filters = {true} dropdown1={dropdown1} dropdown2={dropdown2}>
+            <LiveJobs  />
           </Card>
-          <Card cardName="Age of Jobs" className="h-96"></Card>
+          <Card cardName="Age of Jobs" className="h-96" filters = {true} dropdown1={dropdown1} dropdown2={dropdown2}>
+            <AgeOfJobs />
+          </Card>
         </div>
         {/* RIGHT COLUMN  */}
         <div className="flex flex-col col-span-12 gap-4 xl:col-span-4">
@@ -123,7 +174,7 @@ const Discover = () => {
 
             <div className="flex flex-col gap-4 xl:flex-col">
               <Card
-                className="2xl:min-h-[250px] h-auto"
+                className="2xl:min-h-[250px] h-full"
                 cardName="Candidate Source"
               >
                 <PieChartWithLegends />
@@ -134,7 +185,9 @@ const Discover = () => {
                 </Card>
               </div>
             </div>
-            <Card cardName="Active Employees" className="min-h-[150px]"></Card>
+            <Card cardName="Active Employees" className="min-h-[150px]">
+              <ActiveEmployees />
+            </Card>
           </div>
           <Card cardName="Time to Fill" className="h-96"></Card>
           

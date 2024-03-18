@@ -1564,7 +1564,10 @@ section {
   --text-white: #fafafa;
   --text-black: #111e2c;
 
-  --primary-color: #6a4bfc;
+ /* --primary-color: #6a4bfc; */
+ --primary: 106, 75, 252;
+ --primary-color: rgba(var(--primary));
+
   --bg-primary-color: #6a4bfc;
 
   --secondary-color: #111e2c;
@@ -3215,16 +3218,16 @@ button.rbc-button-link {
   border: 1px solid red;
 }
 @media (min-width: 640px) {
-  table {
+  .joblistDash table {
     display: inline-table !important;
   }
 
-  thead tr:not(:first-child) {
+  .joblistDash thead tr:not(:first-child) {
     display: none;
   }
 }
 
-td:not(:last-child) {
+.joblistDash td:not(:last-child) {
   border-bottom: 0;
 }
 
