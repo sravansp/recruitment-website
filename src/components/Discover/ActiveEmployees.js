@@ -1,5 +1,6 @@
 import React from "react";
 import { useTranslation } from "react-i18next";
+import { PiCaretDoubleRightLight } from "react-icons/pi";
 import { useDispatch, useSelector } from "react-redux";
 import { Link } from "react-router-dom";
 
@@ -23,7 +24,7 @@ export default function ActiveEmployees() {
     <div className="flex flex-col gap-4 h-[272px]">
         <div className="flex items-center justify-between px-4 dark:text-white">
             <p className=""><span className=" text-3xl font-semibold">{totalCount}</span> <span className=" text-2xl text-grey">employees</span></p>
-            <Link to >View all employees</Link>
+            <Link to className="pblack !font-normal text-primary flex items-center gap-2">View all employees <PiCaretDoubleRightLight /></Link>
         </div>
       <ResponsiveContainer width="45%" height="100%">
         <BarChart

@@ -36,6 +36,53 @@ const Discover = () => {
       IODPercentage: "43%",
     },
   ];
+
+  const dropdown1 = [
+    {
+      id:1,
+      label:"Any Time",
+      value:"anytime"
+    },
+    {
+      id:2,
+      label:"Yesterday",
+      value:"yesterday"
+    },
+    {
+      id:3,
+      label:"Last 7 Days",
+      value:"last7days"
+    },
+    {
+      id:4,
+      label:"Last 30 Days",
+      value:"last30days"
+    },
+    {
+      id:5,
+      label:"Last 90 Days",
+      value:"last90days"
+    },
+    
+  ]
+  const dropdown2 = [
+    {
+      id:1,
+      label:"All Users",
+      value:"allusers"
+    },
+    {
+      id:2,
+      label:"Employees",
+      value:"employees"
+    },
+    {
+      id:3,
+      label:"Recruiters",
+      value:"recruiters"
+    },
+    
+  ]
   return (
     <div className="flex flex-col gap-4 discover">
       <div className="headerTitle">
@@ -113,10 +160,10 @@ const Discover = () => {
               </Card>
             </div>
           </div>
-          <Card cardName="Live Jobs" className="h-96">
-            <LiveJobs />
+          <Card cardName="Live Jobs" className="h-96" filters = {true} dropdown1={dropdown1} dropdown2={dropdown2}>
+            <LiveJobs  />
           </Card>
-          <Card cardName="Age of Jobs" className="h-96">
+          <Card cardName="Age of Jobs" className="h-96" filters = {true} dropdown1={dropdown1} dropdown2={dropdown2}>
             <AgeOfJobs />
           </Card>
         </div>
