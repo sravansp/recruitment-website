@@ -104,7 +104,18 @@ const Template = ({
         Letter: { id: 5, api: API.UPDATE_Letter},
       },
     ];
-   
+    const deleteApi = [
+      {
+        Job_Templates: { id: 1, api: API.DELETE_Job_Templates },
+        Job_Description: { id: 2, api: API.DELETE_Job_Description },
+        Workflow: { id: 3, api: API.DELETE_Workflow },
+        Email: { id: 4, api: API.DELETE_Email },
+        Evaluation: { id: 5, api: API.DELETE_Evaluation},
+        Questionaire: { id: 5, api: API.DELETE_Questionaire },
+        Letter: { id: 5, api: API.DELETE_Letter },
+        
+      },
+    ];
       const Header =[
     {
       Job_Templates : [ 

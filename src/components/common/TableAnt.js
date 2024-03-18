@@ -217,10 +217,12 @@ const TableAnt = ({
 
   const deleteRecord = async (e) => {
     // console.log(e);
-    const result = await axios.post(API.HOST + deleteApi + "/" + e);
+    const result = await action(deleteApi, { id: e });
     // console.log(result);
-    if (result.data.status === 200) {
-      window.location.reload();
+    if (result.status === 200) {
+      // window.location.reload();
+      openNotification("success", "Success", result?.message);
+      refresh(true);
     }
   };
 
