@@ -143,29 +143,29 @@ const [UpdateId,setupdateId]=useState("")
 useEffect(()=>{
   setupdateId(updateId)
 })
-// const validationSchema1 = Yup.object().shape({
-//   companyId: Yup.string().required('Company ID is required'),
-//   jobTitle: Yup.string().required('Job Title is required'),
-//   departmentId: Yup.string().required('Department ID is required'),
-//   jobCode: Yup.string().required('Job Code is required'),
-//   workLocationType: Yup.string().required('Work Location Type is required'),
+const validationSchema1 = Yup.object().shape({
+  companyId: Yup.string().required('Company ID is required'),
+  jobTitle: Yup.string().required('Job Title is required'),
+  departmentId: Yup.string().required('Department ID is required'),
+  jobCode: Yup.string().required('Job Code is required'),
+  workLocationType: Yup.string().required('Work Location Type is required'),
   
-//   location: Yup.string().required('Location is required'),
-//   requirementType: Yup.string().required('Requirement Type is required'),
-//   jobType: Yup.string().required('Job Type is required'),
-//   experience: Yup.string().required('Experience is required'),
-//   education: Yup.string().required('Education is required'),
-//   searchKeywords: Yup.string().required('Search Keywords is required'),
-//   salaryRangeFrom: Yup.number()
-//   .typeError('Salary Range From must be a number')
-//   .required('Salary Range From is required'),
-// salaryRangeTo: Yup.number()
-//   .typeError('Salary Range To must be a number')
-//   .required('Salary Range To is required'),
-//   salaryCurrency: Yup.string().required('Salary Currency is required'),
-//   isSalaryPublic: Yup.boolean().required('Is Salary Public is required'),
-//   jobDescription: Yup.string().required('Job Description is required'),
-// });
+  location: Yup.string().required('Location is required'),
+  requirementType: Yup.string().required('Requirement Type is required'),
+  jobType: Yup.string().required('Job Type is required'),
+  experience: Yup.string().required('Experience is required'),
+  education: Yup.string().required('Education is required'),
+  searchKeywords: Yup.string().required('Search Keywords is required'),
+  salaryRangeFrom: Yup.number()
+  .typeError('Salary Range From must be a number')
+  .required('Salary Range From is required'),
+salaryRangeTo: Yup.number()
+  .typeError('Salary Range To must be a number')
+  .required('Salary Range To is required'),
+  salaryCurrency: Yup.string().required('Salary Currency is required'),
+  isSalaryPublic: Yup.boolean().required('Is Salary Public is required'),
+  jobDescription: Yup.string().required('Job Description is required'),
+});
 //job applying
 
 
@@ -252,7 +252,8 @@ const formik1 = useFormik({
     //     gender: yup.string().required("Gender is Required"),
     //     dateOfBirth: yup.string().required("Date of Birth Group is Required"),
     //   }),
-    // validationSchema:validationSchema1,
+    validationSchema:validationSchema1,
+   
  onSubmit: async (e) => {
   try{
     console.log(e)
@@ -1565,7 +1566,7 @@ impactful, accurate, and personalized to your company</p>
                                              required={true}
                                              hideBorder={true} 
                                              
-                                             value={formik1.values.jobDescription}
+                                             editorState={formik1.values.jobDescription}
                                             //  change={(e)=>{
                                             //    formik1.setFieldValue('jobDescription',e)
                                             //  }}
