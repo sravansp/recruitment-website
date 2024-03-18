@@ -49,18 +49,7 @@ const Company = () => {
             title:"Description",
             value:"description",
            },
-           {
-            id:3,
-            title:"status",
-            value:"status",
-            actionToggle:true,
-           },
-           {
-            id:4,
-            title:"actions",
-            value:"",
-            action:true,
-           },
+           
 
     ],
     Locations:[
@@ -74,18 +63,18 @@ const Company = () => {
             title:"Description",
             value:"description",
            },
-           {
-            id:3,
-            title:"status",
-            value:"status",
-            actionToggle:true,
-           },
-           {
-            id:4,
-            title:"actions",
-            value:"actions",
-            action:true,
-           },
+          //  {
+          //   id:3,
+          //   title:"status",
+          //   value:"status",
+          //   actionToggle:true,
+          //  },
+          //  {
+          //   id:4,
+          //   title:"actions",
+          //   value:"actions",
+          //   action:true,
+          //  },
 
     ]
 
@@ -129,6 +118,9 @@ const Company = () => {
   }; 
   const breadcrumbItems = [
     { label: t("Company"), url: "/" },
+    { label: t("Other"), url: "" },
+    { label: t("Company"), url: "" },
+    { label: navigationPath, url: "" }
     // { label: navigationPath.charAt(0).toUpperCase() + navigationPath.slice(1) },
   ];
   React.useEffect(() => {

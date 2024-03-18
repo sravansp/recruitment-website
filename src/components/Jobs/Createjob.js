@@ -18,7 +18,7 @@ import Radiobuttonnew from '../common/Radiobuttonnew';
 import GoogleForm from '../common/GoogleForm';
 import JobCard from '../common/JobCard';
 import { cardData, regularOvertime,Requirment,JobType,experiencelevel,eductaion,saleryCurrency } from '../data';
-import { saveRecruitmentJobApplicationFormSetting,saveRecruitmentJob,getAllRecruitmentWorkFlows,updateRecruitmentJob,getAllRecruitmentJobTeamMembers,getAllRecruitmentJobTemplates,getRecruitmentJobTemplateById,insertOrUpdateRecruitmentJobApplicationFormSettingWithJobId,getRecruitmentJobById } from '../Api1';
+import { saveRecruitmentJob,getAllRecruitmentWorkFlows,updateRecruitmentJob,getAllRecruitmentUsers,getAllRecruitmentJobTemplates,getRecruitmentJobTemplateById,insertOrUpdateRecruitmentJobApplicationFormSettingWithJobId,getRecruitmentJobById,saveRecruitmentJobTeamMemberBatch } from '../Api1';
 import { Formik, useFormik } from 'formik';
 import { CgAdd } from "react-icons/cg";
 import { Form } from '../data';
@@ -53,7 +53,7 @@ import RadioButton from '../common/RadioButton';
 
  
 
-const Createjob = ( {open = "", close = () => { },inputshow= false,isUpdate={},updateId }) => {
+const Createjob = ( {open = "", close = () => { },inputshow= false,isUpdate={},updateId,refresh = () => {},}) => {
   
   const[show,setShow] =useState(open);
   const { t } = useTranslation();
@@ -73,6 +73,8 @@ const Createjob = ( {open = "", close = () => { },inputshow= false,isUpdate={},u
   const [workFlows, setWorkFlows] = useState([]);
   const [selectedWorkFlowId, setSelectedWorkFlowId] = useState(null);
   const [selectedDivs, setSelectedDivs] = useState([]);
+  const [selectedemployee,setselectedemployee]=useState([]) 
+  const[selectedUserIds,setSelectedUserIds] =useState([]) 
   console.log(updateId)
 
   useEffect(() => {
@@ -84,7 +86,7 @@ const Createjob = ( {open = "", close = () => { },inputshow= false,isUpdate={},u
       const loginData = JSON.parse(loginDataString);
 
       // Extract the username from the userData object
-      setuserid(loginData && loginData.userData && loginData.userData.id);
+      setuserid(loginData && loginData.userData && loginData.userData.employeeId);
 
       // Now, 'username' variable contains the username
       
@@ -137,7 +139,10 @@ const Createjob = ( {open = "", close = () => { },inputshow= false,isUpdate={},u
   ]);
 const [dropdownOptions, setDropdownOptions] = useState([]);
 const [jobId,setJobId] =useState("")
-
+const [UpdateId,setupdateId]=useState("")
+useEffect(()=>{
+  setupdateId(updateId)
+})
 // const validationSchema1 = Yup.object().shape({
 //   companyId: Yup.string().required('Company ID is required'),
 //   jobTitle: Yup.string().required('Job Title is required'),
@@ -162,16 +167,13 @@ const [jobId,setJobId] =useState("")
 //   jobDescription: Yup.string().required('Job Description is required'),
 // });
 //job applying
-useEffect(()=>{
-  setJobId(updateId)
-  console.log(jobId)
-})
+
 
 const[DraftJobs,setDraftJobs]=useState([])
 
 const getDraftjobs = async () => {
- console.log(jobId)
- const id =jobId
+ console.log(UpdateId)
+ const id =UpdateId
   try {
     const response = await getRecruitmentJobById({id});
     console.log(response);
@@ -211,7 +213,7 @@ const getDraftjobs = async () => {
 useEffect(()=>{
   getDraftjobs()
   console.log(DraftJobs)
-},[jobId])
+},[UpdateId])
 const formik1 = useFormik({
  initialValues: {
   companyId:"",
@@ -233,7 +235,10 @@ const formik1 = useFormik({
   workFlowId:null,
   jobPublishType:"",
   jobPublishDetails:"",
+  jobStatus: "Draft",
   createdBy:"",
+  noOfVaccancies:"",
+
   
 
  },
@@ -272,8 +277,11 @@ const formik1 = useFormik({
     isSalaryPublic:e.isSalaryPublic,
     jobDescription:e.jobDescription,
     workFlowId: null,
+    noOfVaccancies:e.noOfVaccancies,
+
     
-    modifiedBy:45
+    
+    modifiedBy:userid
 
     })
     console.log(response)
@@ -287,6 +295,7 @@ const formik1 = useFormik({
       );
       setPresentage(2);
       setNextStep(nextStep + 1);
+      refresh();
     }else if (response.status === 500) {
       openNotification("error", "input field is empty..", "enter the field");
     }
@@ -313,7 +322,9 @@ const formik1 = useFormik({
     workFlowId:null,
     jobPublishType:null,
     jobPublishDetails:null,
-    createdBy:45
+    jobStatus: "Draft",
+    createdBy:userid,
+    noOfVaccancies:e.noOfVaccancies,
 
     
     })
@@ -328,6 +339,7 @@ const formik1 = useFormik({
         "Successful",
         response.message
       );
+      refresh();
       setPresentage(2);
       setNextStep(nextStep + 1);
     }else if (response.status === 500) {
@@ -384,7 +396,7 @@ useEffect(() => {
 
 const formik = useFormik({
   initialValues: {
-    jobId:"1",
+    
     name: "1",
     email: "1",
     headline: "1",
@@ -420,7 +432,8 @@ const formik = useFormik({
           !condition.question ||
           !condition.answer_type ||
           (['Drop-down', 'MultipleChoice', 'Checkboxes'].includes(condition.answer_type) &&
-            (condition.answerMetaData.some((field) => !field.value) || !condition.answerMetaData[0]?.key))
+            (condition.answerMetaData.some((field) => !field.value) || 
+            (!condition.answerMetaData[0]?.value && condition.answerMetaData[0]?.key !== "ShortAnswer")))
         );
       });
       
@@ -428,9 +441,11 @@ const formik = useFormik({
         openNotification('error', 'CustomFields', 'Please fill in all the required fields.');
         return;
       }
+      console.log(UpdateId)
+     
       // if (jobId){
         const response = await insertOrUpdateRecruitmentJobApplicationFormSettingWithJobId({
-          jobId:jobId,
+          jobId: UpdateId || jobId,
           name: e.name,
           email: e.email,
           headline: e.headline,
@@ -828,10 +843,12 @@ const handleAddField = (index) => {
     modifiedBy:"",
     jobPublishDetails:"",
     jobPublishType:"",
+    jobStatus:"",
     },
     onSubmit: async (e) => {
       
       const modifiedBy =userid;
+      console.log(modifiedBy)
       
       try {
         console.log(e)
@@ -842,6 +859,7 @@ const handleAddField = (index) => {
                  jobPublishDetails:"this is jobPublishDetails ",
                  jobPublishType:"Confidential",
                  modifiedBy:modifiedBy,
+                 jobStatus:"Open",
                  workFlowId:workFlowId,
                }
                 
@@ -927,8 +945,9 @@ const handleAddField = (index) => {
       // }
       break;
         case "TeamMembers":
-           
-            setNextStep(nextStep + 1);
+          AllRecruitmentJobTeamMembers();
+          formik4.handleSubmit();
+            
             break;
             case "Publish":
                 // assignPolicy();
@@ -961,17 +980,22 @@ const handleAddField = (index) => {
   const AllRecruitmentJobTeamMembers = async()=> {
       // const jobId=1;
     try {
-    const response = await getAllRecruitmentJobTeamMembers(
-      jobId,
+    const response = await getAllRecruitmentUsers(
+      
 
     );
+    console.log(response)
     setemployeeList(response.result.map((item) => ({
       username: item.userName,
       userId: item.userId,
       userimage: item.userImage,
+      modifiedOn:item.modifiedOn,
+      createdOn:item.createdOn,
+      roleId:item.roleId
+
     })));
     
-    console.log(response)
+    
    }
    
    catch (error) {
@@ -983,7 +1007,48 @@ const handleAddField = (index) => {
     console.log(employeeList)
     
   }, []);
+  const formik4 = useFormik({
+    initialValues: {
+      jobId: "",  // Assuming jobId is present in the employee object
+      userId: "",
+      roleId: "",
+      createdBy: "",
+    },
+    onSubmit: async (e) => {
+      
+      const createdBy =userid;
+      console.log(createdBy)
+      const dataToSave = selectedemployee.map(employee => ({
+        jobId: jobId,  // Assuming jobId is present in the employee object
+        userId: employee.userId,
+        roleId: employee.roleId,
+        createdBy: createdBy
+      }));
+      console.log(dataToSave)
+      try {
+        console.log(e)
+       
+        const response = await saveRecruitmentJobTeamMemberBatch(dataToSave);
   
+        // Handle the response if needed
+        console.log('Response:', response);
+        if (response.status === 200) {
+          openNotification("success", "Successful", response.message);
+          setPresentage(3.4)
+          // Add a delay before closing the notification
+          setTimeout(() => {
+            setNextStep(nextStep+1)
+          }, 2000); // Adjust the delay time as needed
+        } else if (response.status === 500) {
+          openNotification("error", response.message);
+        }
+      } catch (error) {
+        // Handle the error here
+        console.error('Error:', error);
+        // openNotification("error", "Failed..");
+      }
+    },
+  });
   const [selectedJobId, setSelectedJobId] = useState('');
   const handleValueChange = (e) => {
     setSelectedJobId(e);
@@ -1401,12 +1466,15 @@ const handleAddField = (index) => {
                                                     value={formik1.values.searchKeywords}
                                                     error={formik1.errors.searchKeywords}
                                                     />
-                                                {/* <Dropdown
-                                                    title={'Requirement'}
-                                                    placeholder={'Urgent'} />
-                                                     <Dropdown
-                                                    title={'Requirement'}
-                                                    placeholder={'Urgent'} /> */}
+                                                <FormInput
+                                                    title={'Number of Opennings'}
+                                                    placeholder={'Enter Value'}
+                                                    change={(e)=>{
+                                                      formik1.setFieldValue('noOfVaccancies',e)
+                                                    }}
+                                                    value={formik1.values.noOfVaccancies}
+                                                    error={formik1.errors.noOfVaccancies}
+                                                    />
 
                                             </div>
                                             <div className='grid grid-cols-4 gap-4'>
@@ -1495,11 +1563,11 @@ impactful, accurate, and personalized to your company</p>
                                              required={true}
                                              hideBorder={true} 
                                              
-                                             value={formik1.values.jobDescription}
+                                             editorState={formik1.values.jobDescription}
                                             //  change={(e)=>{
                                             //    formik1.setFieldValue('jobDescription',e)
                                             //  }}
-                                            onChange={(e)=>{ formik1.setFieldValue('jobDescription',e)}}
+                                            onChange={(editorState)=>{ formik1.setFieldValue('jobDescription',editorState)}}
                                              />
                                                   {/* <TextArea
                                              title={t("Requirement")}
@@ -1775,7 +1843,7 @@ impactful, accurate, and personalized to your company</p>
 
 {evaluation.map((condition, index) => (
   <>
-    <div className="flex items-center justify-between">
+    <div className="flex items-center justify-between ">
       <FormInput
         title={`Question ${index + 1}`}
         placeholder={'Type question here'}
@@ -1788,6 +1856,7 @@ impactful, accurate, and personalized to your company</p>
           );
           console.log(e);
         }}
+        
       />
       <div className="flex items-center gap-5">
         <div className="flex-shrink-0">
@@ -1963,9 +2032,8 @@ impactful, accurate, and personalized to your company</p>
     </List.Item>
   )}</VirtualList>
 </List> */}
-<div className='grid grid-cols-2 mt-8 '>
-<SearchBox
-placeholder={"Search Employess"}/>
+<div className='grid grid-cols-2 mt-8'>
+  <SearchBox placeholder={"Search Employess"} />
 </div>
 <table>
   <thead>
@@ -1978,31 +2046,49 @@ placeholder={"Search Employess"}/>
     </tr>
   </thead>
   <tbody>
-    {Employees.map((employee) => (
-      <React.Fragment key={employee.id}>
+    {employeeList.map((employee) => (
+      <React.Fragment key={employee.userId}>
         <tr>
           <td>
-          <CheckBoxInput
-        value={isChecked}
-        change={(checked) => {
-          setIsChecked(checked);
-          setPresentage(3.4);
-        }}
-      />
+            <CheckBoxInput
+              onChange={(isChecked, userId, roleId) => {
+                if (isChecked) {
+                  setSelectedUserIds((prevState) => [...prevState, userId]);
+                  setselectedemployee((prevState) => [
+                    ...prevState,
+                    {
+                      id: prevState.length + 1, // Generate a unique ID for the selected entry
+                      jobId: "", // Set the job ID accordingly
+                      userId: userId, // Set the user ID to the employee's user ID
+                      roleId: roleId, // Set the role ID accordingly
+                      createdBy: "", // Set the createdBy field accordingly
+                    },
+                  ]);
+                } else {
+                  setSelectedUserIds((prevState) => prevState.filter((id) => id !== userId));
+                  setselectedemployee((prevState) =>
+                    prevState.filter((entry) => entry.userId !== userId)
+                  );
+                }
+              }}
+              checked={selectedUserIds.includes(employee.userId)}
+              actionId={employee.userId}
+              roleId={employee.roleId}
+            />
           </td>
           <td>
             <div className='flex items-center gap-4'>
               {/* Assuming you have an 'image' property in your employee object */}
-              <img src={employee.img} alt={`${employee.name} Avatar`} style={{ width: '50px', height: '50px' }} />
+              <img src={employee.userimage} alt={`${employee.username} Avatar`} style={{ width: '50px', height: '50px' }} />
               <div className="flex flex-col">
-                <div class="text-gray-900 text-sm font-semibold font-['Inter'] leading-tight">{employee.name}</div>
+                <div class="text-gray-900 text-sm font-semibold font-['Inter'] leading-tight">{employee.username}</div>
                 <div className="text-gray-500 text-sm font-normal font-['Inter'] leading-tight">{employee.employeeid}</div>
               </div>
             </div>
           </td>
           <td></td>
-          <td><div class="text-gray-900 text-sm font-medium font-['Inter'] leading-tight">{employee.email}</div></td>
-          <td><div  class="text-gray-900 text-sm font-medium font-['Inter'] leading-tight">{employee.designation}</div></td>
+          <td><div class="text-gray-900 text-sm font-medium font-['Inter'] leading-tight">{employee.createdOn}</div></td>
+          <td><div  class="text-gray-900 text-sm font-medium font-['Inter'] leading-tight">{employee.modifiedOn}</div></td>
         </tr>
         <tr className="v-divider" key={`divider-${employee.id}`}>
           {/* Assuming you want a visual divider after each row */}

@@ -39,6 +39,7 @@ const Tabs = ({
   tabClick = () => {},
   showButton=false,
   Showsearch=false,
+  refresh = () => {},
   All=false,
   recordId="",
  
@@ -300,6 +301,9 @@ const Tabs = ({
                     title={title}
                     // showButton={showButton}
                     Showsearch={Showsearch }
+                    refresh={() => {
+                      refresh();
+                    }}
                     All={All}
                     recordId={recordId}
                     // All={All}
