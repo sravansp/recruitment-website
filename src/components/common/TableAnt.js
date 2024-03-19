@@ -233,9 +233,9 @@ const TableAnt = ({
 
 
 
-  const handleRowClick = (text, title,record) => {
-    setModalData({ text, title });
-    setIsModalOpen(true);
+  const handleRowClick = (record) => {
+    // setModalData({ text, title });
+    // setIsModalOpen(true);
     // Check if the path is present and is not an empty array and if 'action' does not exist in the current column configuration
     if (
       path &&
@@ -252,6 +252,10 @@ const TableAnt = ({
 
 
   };
+  const handleModalOpen =(text,title)=>{
+    setModalData({ text, title });
+    setIsModalOpen(true);
+  }
   console.log(modalData, "hii");
   console.log("modalData.title:", modalData.title);
   console.log("tabTitle:", tabTitle);
@@ -292,7 +296,7 @@ const TableAnt = ({
                     } rounded-full pr-2 py-[2px] w-fit font-medium text-[10px] 2xl:text-sm vhcenter flex-nowrap`}
                   onClick={() => {
                     !viewOutside &&
-                      handleRowClick(text, header[0]?.[tabValue || path]);
+                    handleModalOpen(text, header[0]?.[tabValue || path]);
                     console.log(tabValue, path, "kiok");
                   }}
                 >
@@ -308,7 +312,7 @@ const TableAnt = ({
                 <div className="flex items-center gap-4"
                   onClick={() => {
                     !viewOutside &&
-                      handleRowClick(text, header[0]?.[tabValue || path]);
+                    handleModalOpen(text, header[0]?.[tabValue || path]);
                   }}>
                   <div className="w-8 h-8 overflow-hidden rounded-full 2xl:w-10 2xl:h-10">
                     <img
@@ -345,7 +349,7 @@ const TableAnt = ({
               ) : each.block ? (
                 <div onClick={() => {
                   !viewOutside &&
-                    handleRowClick(text, header[0]?.[tabValue || path]);
+                  handleModalOpen(text, header[0]?.[tabValue || path]);
                 }}>
                   <p className="text-xs font-medium text-black 2xl:text-sm dark:text-white">
                     {text[each.value]}
@@ -412,7 +416,7 @@ const TableAnt = ({
                 // </Popover>
                 <div  onClick={() => {
                   !viewOutside &&
-                    handleRowClick(text, header[0]?.[tabValue || path]);
+                  handleModalOpen(text, header[0]?.[tabValue || path]);
                 }} className="text-[#667085] text-xs 2xl:text-sm dark:text-white font-medium">
                   <p>{record}</p>
                 </div>

@@ -13,7 +13,7 @@ import Dropdown from '../common/Dropdown'
 import { MdDelete, MdOutlineFileCopy } from 'react-icons/md'
 import { Form } from '../data'
 import { CgAdd } from 'react-icons/cg'
-import { getRecruitmentEvaluationTemplateDetailById,saveRecruitmentEvaluationTemplate,saveRecruitmentEvaluationTemplateDetailBatch} from '../Api1'
+import { updateEvaluationTemplateWithDetails,getRecruitmentEvaluationTemplateById,saveRecruitmentEvaluationTemplate,saveRecruitmentEvaluationTemplateDetailBatch} from '../Api1'
 import { Formik, useFormik } from 'formik';
 import { Value } from 'devextreme-react/range-selector'
 import AddMore from '../common/AddMore'
@@ -26,6 +26,8 @@ const TemEvaluation = ({open = "", close = () => { },inputshow= false,isUpdate={
   const[insertedId,setinsertedId] =useState("")
   console.log(companyId)
   console.log(insertedId)
+const[evaluationlist,setevaluationlist]=useState([])
+const [evaluationTemplateDetailsIds, setEvaluationTemplateDetailsIds] = useState([]);
   const [evaluation, setEvaluation] = useState([
     {
       id: 1,
@@ -168,6 +170,43 @@ const[show,setShow] =useState(open);
         });
   
         // Make the first API call
+        if(updateId){
+          const formattedData = evaluation.map((item) => ({
+            companyId: companyId,
+            evaluationTemplateId: updateId,
+            question: item.question,
+            answerMetaData: JSON.stringify(item.answerMetaData),
+            description: item.description,
+            createdBy: item.createdBy,
+            evaluationTemplateDetailsId:evaluationTemplateDetailsIds,
+            modifiedBy:null
+          }));
+          const response = await updateEvaluationTemplateWithDetails({
+            RecruitmentEvaluationTemplate:{
+              evaluationTemplateId:updateId,
+              companyId:companyId,
+              evaluationTemplateName:values.evaluationTemplateName,
+              modifiedBy:null,
+            },
+        RecruitmentEvaluationTemplateDetail: formattedData
+
+
+          })
+          console.log(response)
+          if(response.status==200)
+          {
+            openNotification("success", "Successful", response.message);
+            setSuccessNotificationVisible(true);
+            setTimeout(() => {
+              handleClose();
+            }, 2000);
+          } else if(response.status==500)
+          {
+            openNotification("error", "Error", response.message);
+           
+          }
+
+        }else{
         const response = await saveRecruitmentEvaluationTemplate({
           companyId: companyId,
           evaluationTemplateName: values.evaluationTemplateName,
@@ -210,6 +249,7 @@ const[show,setShow] =useState(open);
         } else if (response.status === 500) {
           openNotification("error", "Error", response.message);
         }
+      }
       } catch (error) {
         console.error("Error during form submission:", error);
         openNotification(
@@ -231,17 +271,41 @@ const[show,setShow] =useState(open);
   
 
   }
-const getevaluationtem = async ()=>{
-  const id = updateId
-  try{
-    const response = getRecruitmentEvaluationTemplateDetailById({id})
-    console.log(response)
-  }catch(error){
-
-  }
-}
+  const getevaluationtem = async () => {
+    const id = updateId;
+    try {
+      const response = await getRecruitmentEvaluationTemplateById({ id });
+      console.log(response.result);
+      setevaluationlist(response.result)
+      const evaluationData = response.result.flatMap(item => {
+        return item.evaluationTemplateDetailData.map(detail => ({
+          companyId: detail.companyId,
+          question: detail.question,
+          evaluationTemplateDetailsId: detail.evaluationTemplateDetailsId,
+          description: detail.description,
+          evaluationTemplateId: detail.evaluationTemplateId,
+          isActive: detail.isActive,
+          modifiedBy: null,
+          modifiedOn: detail.modifiedOn,
+          answerMetaData: detail.answerMetaData.map(metadata => ({ // Fix here
+            key: metadata.key,
+            value: metadata.value
+          }))
+        }));
+      });
+      const ids = response.result.map(item => item.evaluationTemplateDetailData.map(detail => detail.evaluationTemplateDetailsId)).flat();
+      setEvaluationTemplateDetailsIds(ids);
+      setEvaluation(evaluationData);
+      console.log(evaluationData)
+      const firstEvaluation = response.result[0];
+      formik.setFieldValue("evaluationTemplateName", firstEvaluation.evaluationTemplateName);
+    } catch (error) {
+      console.error("Error fetching evaluation data:", error);
+    }
+  };
 useEffect(() => {
   getevaluationtem()
+ 
 },[])
     return (
       <div>
@@ -275,7 +339,7 @@ useEffect(() => {
     header={[
        !isUpdate
          ? t("Create Evaluation Template")
-         : t("Create Evaluation Template"),
+         : t("update Evaluation Template"),
        t("Lorem ipsum dummy text doret solo."),
      ]}
      
@@ -361,7 +425,7 @@ useEffect(() => {
                 {
                   id: 1,
                   key: e,
-                  value: "",
+                  value: e === condition.answerMetaData[0]?.key ? condition.answerMetaData[0]?.value : '',
                 }
               ],
             }

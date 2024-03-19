@@ -6,7 +6,7 @@ import { Link } from 'react-router-dom'
 import JobListCopy from '../common/JobListCopy'
 import TableAnt from '../common/TableAnt'
 import TableCopy from '../common/TableCopy'
-import { getAllRecruitmentResumes } from '../Api1'
+import { getAllRecruitmentResumes,getJobStatics } from '../Api1'
 
 const CandidatesList = () => {
   const [jobList,setJobList]=useState([])
@@ -57,6 +57,7 @@ const CandidatesList = () => {
       ],
     },
   ];
+  const [companyId, setCompanyId] = useState(localStorage.getItem("companyId"));
   useEffect(() => {
     const callapi = async () => {
       try {
@@ -75,6 +76,20 @@ const CandidatesList = () => {
     callapi();
   }, []);
   console.log(jobList)
+  const[jobstatic,setjobstatic] = useState([])
+  const getJobstat = async () => {
+    try {
+      const response = await getJobStatics({companyId});
+      setjobstatic(response.result);
+      console.log(response);
+    } catch (error) {
+      console.error(error);
+    }
+  };
+  useEffect(()=>{
+    getJobstat()
+    console.log("value",jobstatic)
+  },[companyId])
   return (
     <div className="flex flex-col gap-[25px]">
       <div className='flex justify-between'>
@@ -90,7 +105,7 @@ const CandidatesList = () => {
           <ButtonClick buttonName={"Add Candidates"} BtnType='add' />
         </div>
       </div>
-      <JobListCopy/>
+      <JobListCopy data={jobstatic}/>
       <div className=''>
         {/* <TableCopy data={jobList} header={header} path='CandidateProfile'/> */}
         <TableAnt data={jobList} header={header} path='CandidateProfile' actionID="resumeId"/>

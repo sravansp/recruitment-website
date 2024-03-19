@@ -17,6 +17,7 @@ const Emailtemplate = ({
   close = () => {},
   inputshow = false,
   isUpdate = {},
+  updateId,
 }) => {
   const [companyId, setCompanyId] = useState(localStorage.getItem("companyId"));
   const [templateName, setTemplateName] = useState("");

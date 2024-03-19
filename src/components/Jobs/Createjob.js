@@ -138,34 +138,34 @@ const Createjob = ( {open = "", close = () => { },inputshow= false,isUpdate={},u
     },
   ]);
 const [dropdownOptions, setDropdownOptions] = useState([]);
-const [jobId,setJobId] =useState("")
-const [UpdateId,setupdateId]=useState("")
+const [jobId,setJobId] =useState(null)
+const [UpdateId,setupdateId]=useState(null)
 useEffect(()=>{
   setupdateId(updateId)
 })
-const validationSchema1 = Yup.object().shape({
-  companyId: Yup.string().required('Company ID is required'),
-  jobTitle: Yup.string().required('Job Title is required'),
-  departmentId: Yup.string().required('Department ID is required'),
-  jobCode: Yup.string().required('Job Code is required'),
-  workLocationType: Yup.string().required('Work Location Type is required'),
+// const validationSchema1 = Yup.object().shape({
+//   companyId: Yup.string().required('Company ID is required'),
+//   jobTitle: Yup.string().required('Job Title is required'),
+//   departmentId: Yup.string().required('Department ID is required'),
+//   jobCode: Yup.string().required('Job Code is required'),
+//   workLocationType: Yup.string().required('Work Location Type is required'),
   
-  location: Yup.string().required('Location is required'),
-  requirementType: Yup.string().required('Requirement Type is required'),
-  jobType: Yup.string().required('Job Type is required'),
-  experience: Yup.string().required('Experience is required'),
-  education: Yup.string().required('Education is required'),
-  searchKeywords: Yup.string().required('Search Keywords is required'),
-  salaryRangeFrom: Yup.number()
-  .typeError('Salary Range From must be a number')
-  .required('Salary Range From is required'),
-salaryRangeTo: Yup.number()
-  .typeError('Salary Range To must be a number')
-  .required('Salary Range To is required'),
-  salaryCurrency: Yup.string().required('Salary Currency is required'),
-  isSalaryPublic: Yup.boolean().required('Is Salary Public is required'),
-  jobDescription: Yup.string().required('Job Description is required'),
-});
+//   location: Yup.string().required('Location is required'),
+//   requirementType: Yup.string().required('Requirement Type is required'),
+//   jobType: Yup.string().required('Job Type is required'),
+//   experience: Yup.string().required('Experience is required'),
+//   education: Yup.string().required('Education is required'),
+//   searchKeywords: Yup.string().required('Search Keywords is required'),
+//   salaryRangeFrom: Yup.number()
+//   .typeError('Salary Range From must be a number')
+//   .required('Salary Range From is required'),
+// salaryRangeTo: Yup.number()
+//   .typeError('Salary Range To must be a number')
+//   .required('Salary Range To is required'),
+//   salaryCurrency: Yup.string().required('Salary Currency is required'),
+//   isSalaryPublic: Yup.boolean().required('Is Salary Public is required'),
+//   jobDescription: Yup.string().required('Job Description is required'),
+// });
 
 //job applying
 
@@ -253,113 +253,101 @@ const formik1 = useFormik({
     //     gender: yup.string().required("Gender is Required"),
     //     dateOfBirth: yup.string().required("Date of Birth Group is Required"),
     //   }),
-    validationSchema:validationSchema1,
+    // validationSchema:validationSchema1,
    
- onSubmit: async (e) => {
-  try{
-    console.log(e)
-    console.log(jobId)
-   if(jobId){
-    const response = await updateRecruitmentJob({
-    id:jobId,
-    companyId:companyId,
-    jobTitle:e.jobTitle,
-    departmentId:e.departmentId,
-    jobCode:e.jobCode,
-    workLocationType:e.workLocationType,
-    location:e.location,
-    requirementType:e.requirementType,
-    jobType:e.jobType,
-    experience:e.experience,
-    education:e.education,
-    searchKeywords:e.searchKeywords,
-    salaryRangeFrom:e.salaryRangeFrom,
-    salaryRangeTo:e.salaryRangeTo,
-    salaryCurrency:e.salaryCurrency,
-    isSalaryPublic:e.isSalaryPublic,
-    jobDescription:e.jobDescription,
-    workFlowId: null,
-    noOfVaccancies:e.noOfVaccancies,
-
+    onSubmit: async (e) => {
+      try {
+        console.log(e);
+        console.log(jobId);
     
+        // Check if jobId or UpdateId is present
+        if ((jobId && jobId.length > 0) || UpdateId) {
+          const response = await updateRecruitmentJob({
+            id: jobId,
+            companyId: companyId,
+            jobTitle: e.jobTitle,
+            departmentId: e.departmentId,
+            jobCode: e.jobCode,
+            workLocationType: e.workLocationType,
+            location: e.location,
+            requirementType: e.requirementType,
+            jobType: e.jobType,
+            experience: e.experience,
+            education: e.education,
+            searchKeywords: e.searchKeywords,
+            salaryRangeFrom: e.salaryRangeFrom,
+            salaryRangeTo: e.salaryRangeTo,
+            salaryCurrency: e.salaryCurrency,
+            isSalaryPublic: e.isSalaryPublic,
+            jobDescription: e.jobDescription,
+            workFlowId: null,
+            noOfVaccancies: e.noOfVaccancies,
+            modifiedBy: userid
+          });
     
-    modifiedBy:userid
-
-    })
-    console.log(response)
-    if (response.status === 200) {
-      
-      
-      openNotification(
-        "success",
-        "Successful",
-        "success"
-      );
-      setPresentage(2);
-      setNextStep(nextStep + 1);
-      refresh();
-    }else if (response.status === 500) {
-      openNotification("error", "input field is empty..", "enter the field");
+          console.log(response);
+    
+          if (response.status === 200) {
+            openNotification(
+              "success",
+              "Successful",
+              "success"
+            );
+            setPresentage(2);
+            setNextStep(nextStep + 1);
+            refresh();
+          } else if (response.status === 500) {
+            openNotification("error", "input field is empty..", "enter the field");
+          }
+        } else {
+          const response = await saveRecruitmentJob({
+            companyId: companyId,
+            jobTitle: e.jobTitle,
+            departmentId: e.departmentId,
+            jobCode: e.jobCode,
+            workLocationType: e.workLocationType,
+            location: e.location,
+            requirementType: e.requirementType,
+            jobType: e.jobType,
+            experience: e.experience,
+            education: e.education,
+            searchKeywords: e.searchKeywords,
+            salaryRangeFrom: e.salaryRangeFrom,
+            salaryRangeTo: e.salaryRangeTo,
+            salaryCurrency: e.salaryCurrency,
+            isSalaryPublic: e.isSalaryPublic,
+            jobDescription: e.jobDescription,
+            workFlowId: null,
+            jobPublishType: null,
+            jobPublishDetails: null,
+            jobStatus: "Draft",
+            createdBy: userid,
+            noOfVaccancies: e.noOfVaccancies
+          });
+    
+          console.log(response);
+    
+          setJobId(response.result.insertedId);
+          console.log(jobId);
+    
+          if (response.status === 200) {
+            openNotification(
+              "success",
+              "Successful",
+              response.message
+            );
+            refresh();
+            setPresentage(2);
+            setNextStep(nextStep + 1);
+          } else if (response.status === 500) {
+            openNotification("error", "input field is empty..", response.message);
+          }
+        }
+      } catch (error) {
+        console.error("Error during form submission:", error);
+        openNotification("error", "input field is empty..", "input field is empty..");
+      }
     }
-
-   }else{
-    
-    const response = await saveRecruitmentJob({
-    companyId:companyId,
-    jobTitle:e.jobTitle,
-    departmentId:e.departmentId,
-    jobCode:e.jobCode,
-    workLocationType:e.workLocationType,
-    location:e.location,
-    requirementType:e.requirementType,
-    jobType:e.jobType,
-    experience:e.experience,
-    education:e.education,
-    searchKeywords:e.searchKeywords,
-    salaryRangeFrom:e.salaryRangeFrom,
-    salaryRangeTo:e.salaryRangeTo,
-    salaryCurrency:e.salaryCurrency,
-    isSalaryPublic:e.isSalaryPublic,
-    jobDescription:e.jobDescription,
-    workFlowId:null,
-    jobPublishType:null,
-    jobPublishDetails:null,
-    jobStatus: "Draft",
-    createdBy:userid,
-    noOfVaccancies:e.noOfVaccancies,
-
-    
-    })
-    console.log(response)
-    setJobId(response.result.insertedId)
-    console.log(jobId)
-    if (response.status === 200) {
-      
-      
-      openNotification(
-        "success",
-        "Successful",
-        response.message
-      );
-      refresh();
-      setPresentage(2);
-      setNextStep(nextStep + 1);
-    }else if (response.status === 500) {
-      openNotification("error", "input field is empty..", response.message);
-    }
-  }
-  }
-  catch (error) {
-    // Handle the error here
-    console.error("Error during form submission:", error);
-        // openNotification(
-        //   "error",
-        //   "Error saving category",
-        //   error
-        // );
-  }
-
- },
 })
 const [departmentList, setDepartmentList] = useState();
 const [company,setCompany] =useState([])

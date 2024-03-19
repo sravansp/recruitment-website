@@ -665,7 +665,7 @@ const Template = ({
           close={(e) => {
             setShow(e);
           }}
-        //   updateId={updateId}
+          updateId={updateId}
         //   companyDataId={companyId}
           refresh={() => {
             // getLocationList();
@@ -680,6 +680,7 @@ const Template = ({
           }}
           updateId={updateId}
         //   companyDataId={companyId}
+        isUpdate={update}
           refresh={() => {
             // getLocationList();
           }}

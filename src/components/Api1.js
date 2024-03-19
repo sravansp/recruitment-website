@@ -1,7 +1,7 @@
 import axios from "axios";
 
   // const apiUrl = 'http://192.168.29.185/loyaltri-recruitment-server/api/v1';
-const apiUrl = 'https://alpha-jobs-api.loyaltri.com/api/v1';
+  const apiUrl = 'https://alpha-jobs-api.loyaltri.com/api/v1';
 
 
 const apiRequest = async (action, method, kwargs) => {
@@ -572,8 +572,8 @@ export const updateWorkFlowWithStages = async (e) => {
   }
 };
 
-export const getRecruitmentEvaluationTemplateDetailById = async (id) => {
-  const action = "getRecruitmentEvaluationTemplateDetailById";
+export const getRecruitmentEvaluationTemplateById = async (id) => {
+  const action = "getRecruitmentEvaluationTemplateById";
 
   const method = "POST";
 
@@ -581,6 +581,28 @@ export const getRecruitmentEvaluationTemplateDetailById = async (id) => {
  
   return await apiRequest(action, method, kwargs);
 };
+export const updateEvaluationTemplateWithDetails = async (e) => {
+  try {
+    const action = "updateEvaluationTemplateWithDetails";
+    const method = "POST";
+    const kwargs = e;
+    
+    console.log("API Request Data:", { action, method, kwargs });
+
+    const response = await apiRequest(action, method, kwargs);
+
+    console.log("API Response:", response);
+
+    return response;
+  } catch (error) {
+    console.error(
+      "Error in saveRecruitmentEvaluationTemplateDetailBatch:",
+      error
+    );
+    throw error; // Re-throw the error to handle it where the function is called.
+  }
+};
+
 const API ={
   UPDATE_Job_Templates: "toggleRecruitmentJobTemplateStatus",
   UPDATE_Job_Description: "",
