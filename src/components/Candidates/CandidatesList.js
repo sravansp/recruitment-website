@@ -7,9 +7,15 @@ import JobListCopy from '../common/JobListCopy'
 import TableAnt from '../common/TableAnt'
 import TableCopy from '../common/TableCopy'
 import { getAllRecruitmentResumes } from '../Api1'
+import { motion } from "framer-motion";
+import Createcandidatelist from './Createcandidatelist'
+
 
 const CandidatesList = () => {
   const [jobList,setJobList]=useState([])
+  const [show, setShow] = useState(false);
+  const [openPop, setOpenPop] = useState("");
+  const [updateId, setUpdateId] = useState("");
   const header = [
     {
       CandidateProfile: [
@@ -72,6 +78,11 @@ const CandidatesList = () => {
       }
     };
 
+    const handleClose = () => {
+      setShow(false);
+      setOpenPop(""); // Clear the value in setOpenPop
+    };
+
     callapi();
   }, []);
   console.log(jobList)
@@ -87,7 +98,11 @@ const CandidatesList = () => {
             <span className="!text-primary para">View career page</span>{" "}
             <PiArrowSquareOut size={15} className="dark:text-white" />
           </Link>
-          <ButtonClick buttonName={"Add Candidates"} BtnType='add' />
+          <ButtonClick buttonName={"Add Candidates"}
+           handleSubmit={() => {
+            setShow(true);
+            console.log(true);
+          }} BtnType='add' />
         </div>
       </div>
       <JobListCopy/>
@@ -95,6 +110,25 @@ const CandidatesList = () => {
         {/* <TableCopy data={jobList} header={header} path='CandidateProfile'/> */}
         <TableAnt data={jobList} header={header} path='CandidateProfile' actionID="resumeId"/>
       </div>
+      {show && (
+         <motion.div initial="hidden" animate="visible" >
+        <Createcandidatelist
+        open={show}
+        close={(e) => {
+          setShow(e);
+          setUpdateId(null);
+          handleClose();
+        }}
+       
+          // updateId={updateId}
+          refresh={() => {
+            // getLocationList();
+          }}
+          openPolicy={openPop}
+          updateId={updateId}
+        />
+        </motion.div>
+      )}
     </div>
   )
 }
