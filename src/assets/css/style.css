@@ -1564,7 +1564,10 @@ section {
   --text-white: #fafafa;
   --text-black: #111e2c;
 
-  --primary-color: #6a4bfc;
+ /* --primary-color: #6a4bfc; */
+ --primary: 106, 75, 252;
+ --primary-color: rgba(var(--primary));
+
   --bg-primary-color: #6a4bfc;
 
   --secondary-color: #111e2c;
@@ -3153,7 +3156,8 @@ button.rbc-button-link {
 }
 @media (-webkit-device-pixel-ratio: 1.25) {
   #root {
-    height: 100vh;
+    /* height: 100vh; */
+    height: 100%;
   }
  /* .main_content {
     zoom: 0.7;
@@ -3213,3 +3217,20 @@ button.rbc-button-link {
 .error-border {
   border: 1px solid red;
 }
+@media (min-width: 640px) {
+  .joblistDash table {
+    display: inline-table !important;
+  }
+
+  .joblistDash thead tr:not(:first-child) {
+    display: none;
+  }
+}
+
+.joblistDash td:not(:last-child) {
+  border-bottom: 0;
+}
+
+/* th:not(:last-child) {
+  border-bottom: 2px solid rgba(0, 0, 0, .1);
+} */

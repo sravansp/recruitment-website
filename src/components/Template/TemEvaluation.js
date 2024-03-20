@@ -13,13 +13,14 @@ import Dropdown from '../common/Dropdown'
 import { MdDelete, MdOutlineFileCopy } from 'react-icons/md'
 import { Form } from '../data'
 import { CgAdd } from 'react-icons/cg'
-import { saveRecruitmentEvaluationTemplate,saveRecruitmentEvaluationTemplateDetailBatch} from '../Api1'
+import { getRecruitmentEvaluationTemplateDetailById,saveRecruitmentEvaluationTemplate,saveRecruitmentEvaluationTemplateDetailBatch} from '../Api1'
 import { Formik, useFormik } from 'formik';
 import { Value } from 'devextreme-react/range-selector'
 import AddMore from '../common/AddMore'
+import { CoPresentOutlined } from '@mui/icons-material'
 
 
-const TemEvaluation = ({open = "", close = () => { },inputshow= false,isUpdate={}}) => {
+const TemEvaluation = ({open = "", close = () => { },inputshow= false,isUpdate={},updateId}) => {
     
   const [companyId, setCompanyId] = useState(localStorage.getItem("companyId"));
   const[insertedId,setinsertedId] =useState("")
@@ -41,7 +42,7 @@ const TemEvaluation = ({open = "", close = () => { },inputshow= false,isUpdate={
  //condition data
 
  
-console.log(evaluation)
+console.log(updateId)
 // const parsedAnswerMetaData = JSON.parse(evaluation[0].answerMetaData);
 // parsedAnswerMetaData[0].key = "updatedKey";
 // parsedAnswerMetaData[0].value = "updatedValue";
@@ -158,18 +159,18 @@ const[show,setShow] =useState(open);
       evaluationTemplateName: "",
       createdBy: null,
     },
-    onSubmit: async (e) => {
+    onSubmit: async (values, { setSubmitting }) => {
       try {
         console.log({
           companyId: companyId,
-          evaluationTemplateName: e.evaluationTemplateName,
+          evaluationTemplateName: values.evaluationTemplateName,
           createdBy: null,
         });
   
         // Make the first API call
         const response = await saveRecruitmentEvaluationTemplate({
           companyId: companyId,
-          evaluationTemplateName: e.evaluationTemplateName,
+          evaluationTemplateName: values.evaluationTemplateName,
           createdBy: null,
         });
   
@@ -177,14 +178,7 @@ const[show,setShow] =useState(open);
   
         if (response.status === 200) {
           // Update the state with the insertedId
-          setinsertedId(response.result.insertedId);
-          setEvaluation((prevEvaluation) => {
-                return prevEvaluation.map((item) => ({
-                  ...item,
-                  evaluationTemplateId: parseInt(response.result.insertedId),
-            
-                }));
-              });
+          const insertedId = response.result.insertedId;
   
           // Process the data for the second formik here
           const formattedData = evaluation.map((item) => ({
@@ -214,7 +208,7 @@ const[show,setShow] =useState(open);
             openNotification("error", "error", response2.message);
           }
         } else if (response.status === 500) {
-          openNotification("success", "Successful", response.message);
+          openNotification("error", "Error", response.message);
         }
       } catch (error) {
         console.error("Error during form submission:", error);
@@ -224,8 +218,10 @@ const[show,setShow] =useState(open);
           "There was an error while saving the category. Please try again."
         );
       }
+      setSubmitting(false);
     },
   });
+  
   
   
  
@@ -235,6 +231,18 @@ const[show,setShow] =useState(open);
   
 
   }
+const getevaluationtem = async ()=>{
+  const id = updateId
+  try{
+    const response = getRecruitmentEvaluationTemplateDetailById({id})
+    console.log(response)
+  }catch(error){
+
+  }
+}
+useEffect(() => {
+  getevaluationtem()
+},[])
     return (
       <div>
     

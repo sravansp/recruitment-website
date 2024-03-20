@@ -18,7 +18,8 @@ export const theme = {
 
       // primary: color, // Purple Blue
       primary: "var(--primary-color) !important", // Purple Blue
-
+      primaryalpha: "rgba(var(--primary), <alpha-value>)",
+      primaryLight: "#F1EEFF",
       // primary: "#6A4BFC", // Purple Blue
       secondary: "#111E2C", // Dark
       accent: "var(--primary-color)", // Purple Blue
@@ -75,13 +76,14 @@ export const theme = {
   },
   screens: {
     xs: "320px",
+    xss: "560px",
     sm: "640px",
     md: "768px",
     lg: "1024px",
     xl: "1280px",
     "2xl": "1440px",
-    // "2xl": "1540px",
-    "3xl": "1600px",
+    "2xxl": "1540px",
+    "3xl": "1690px",
     "4xl": "1800px",
     "5xl": "2000px",
     "6xl": "2400px",

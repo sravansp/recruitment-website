@@ -57,6 +57,7 @@
     "react-step-wizard": "^5.3.11",
     "recharts": "^2.12.2",
     "redux-persist": "^6.0.0",
+    "tailwind-merge": "^2.2.1",
     "web-vitals": "^2.1.4",
     "yup": "^1.4.0"
   },

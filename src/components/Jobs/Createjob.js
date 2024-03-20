@@ -1474,6 +1474,7 @@ const handleAddField = (index) => {
                                                     }}
                                                     value={formik1.values.noOfVaccancies}
                                                     error={formik1.errors.noOfVaccancies}
+                                                    type={"number"}
                                                     />
 
                                             </div>
@@ -1486,7 +1487,7 @@ const handleAddField = (index) => {
                                                     }}
                                                     value={formik1.values.salaryRangeFrom
                                                     }
-                                                   
+                                                   type={"number"}
                                                     error={formik1.errors.salaryRangeFrom}
                                                     />
                                                     
@@ -1500,6 +1501,7 @@ const handleAddField = (index) => {
                                                     value={formik1.values.salaryRangeTo
                                                     }
                                                     error={formik1.errors.salaryRangeTo}
+                                                    type={"number"}
                                                     />
                                                     <Dropdown
                                                     title={'Salary Currency'}
@@ -1563,7 +1565,7 @@ impactful, accurate, and personalized to your company</p>
                                              required={true}
                                              hideBorder={true} 
                                              
-                                             editorState={formik1.values.jobDescription}
+                                             value={formik1.values.jobDescription}
                                             //  change={(e)=>{
                                             //    formik1.setFieldValue('jobDescription',e)
                                             //  }}
@@ -2051,7 +2053,7 @@ impactful, accurate, and personalized to your company</p>
         <tr>
           <td>
             <CheckBoxInput
-              onChange={(isChecked, userId, roleId) => {
+              change={(isChecked, userId, roleId) => {
                 if (isChecked) {
                   setSelectedUserIds((prevState) => [...prevState, userId]);
                   setselectedemployee((prevState) => [
@@ -2071,7 +2073,7 @@ impactful, accurate, and personalized to your company</p>
                   );
                 }
               }}
-              checked={selectedUserIds.includes(employee.userId)}
+              value={selectedUserIds.includes(employee.userId)}
               actionId={employee.userId}
               roleId={employee.roleId}
             />

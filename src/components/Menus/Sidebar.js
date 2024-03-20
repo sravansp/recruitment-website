@@ -492,7 +492,7 @@ const Sidebar = () => {
                   // Add the following line to override the cursor for transparent items
                 }}
               >
-                <div className="menu-item flex flex-col items-center gap-1 2xl:gap-[6px] ">
+                <Link to={menuItem.link} className="menu-item flex flex-col items-center gap-1 2xl:gap-[6px] ">
                   <div
                     className={`w-7 h-7 2xl:h-[50px] 2xl:w-[50px] rounded-md 2xl:rounded-xl bg-white bg-opacity-10 border border-white !border-opacity-20 flex justify-center items-center p-[6px] 2xl:p-[10px] group-hover:bg-white transition-all duration-300 menu-item-cat${selectedMainMenu === menuItem.title
                         ? "bg-white bg-opacity-100"
@@ -505,7 +505,7 @@ const Sidebar = () => {
                     <Link to={menuItem.link}>{menuItem.title}</Link>
                     
                   </p>
-                </div>
+                </Link>
               </li>
             ))}
 

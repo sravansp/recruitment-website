@@ -42,6 +42,7 @@ export const educationExperiences = [
     graduationYear: "August 2019",
   },
 ];
+
 export const duration = [
   {
     id: 1,
@@ -84,6 +85,7 @@ export const duration = [
     value: "2hr",
   },
 ];
+
 export const eventType = [
   {
     id: 1,
@@ -101,6 +103,7 @@ export const eventType = [
     value: "googlemeet",
   },
 ];
+
 export const eventList = [
   {
     id: 1,
@@ -167,5 +170,18 @@ export const eventList = [
     ],
   },
   // Add more events as needed
+];
+
+export const LiveJobsData = [
+  { title: 'All Jobs', Locations: 'Dubai' , CVsINPROCESS: '10', HiresRequired: '10', JOBonWebsite: '10', Salary: 'AED 25000' },
+  { title: 'Marketing Executive', Locations: 'Dubai' , CVsINPROCESS: '1', HiresRequired: '0', JOBonWebsite: '0', Salary: 'AED 25000' },
+  { title: 'Software Engineer', Locations: 'Dubai' , CVsINPROCESS: '5', HiresRequired: '3', JOBonWebsite: '6', Salary: 'AED 35000' },
+  { title: 'Accountant', Locations: 'Dubai' , CVsINPROCESS: '3', HiresRequired: '2', JOBonWebsite: '5', Salary: 'AED 30000' },
+  { title: 'Sales Manager', Locations: 'Dubai' , CVsINPROCESS: '4', HiresRequired: '1', JOBonWebsite: '3', Salary: 'AED 40000' },
+  { title: 'HR Assistant', Locations: 'Dubai' , CVsINPROCESS: '2', HiresRequired: '1', JOBonWebsite: '2', Salary: 'AED 20000' },
+  { title: 'Graphic Designer', Locations: 'Dubai' , CVsINPROCESS: '3', HiresRequired: '2', JOBonWebsite: '4', Salary: 'AED 28000' },
+  { title: 'Customer Service Representative', Locations: 'Dubai' , CVsINPROCESS: '2', HiresRequired: '1', JOBonWebsite: '3', Salary: 'AED 22000' },
+  { title: 'Project Manager', Locations: 'Dubai' , CVsINPROCESS: '6', HiresRequired: '4', JOBonWebsite: '7', Salary: 'AED 45000' },
+  { title: 'Data Analyst', Locations: 'Dubai' , CVsINPROCESS: '4', HiresRequired: '2', JOBonWebsite: '5', Salary: 'AED 32000' }
 ];
 
