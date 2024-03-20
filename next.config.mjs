@@ -1,5 +1,6 @@
 /** @type {import('next').NextConfig} */
 const nextConfig = {
+    // output : 'export',
     webpack: (config, { isServer }) => {
       // Add a rule to handle binary files
       config.module.rules.push(

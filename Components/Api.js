@@ -58,3 +58,57 @@ export const getAllRecruitmentJobs = async () => {
   
     return await apiRequest(action, method, kwargs);
   };
+  export const saveRecruitmentJobResumesCustomField = async (e) => {
+    const action = "saveRecruitmentJobResumesCustomField";
+  
+    const method = "POST";
+    const kwargs = e;
+    const response = await apiRequest(action, method,{...e});
+    console.log("API Response:", response);
+  
+    return await apiRequest(action, method, kwargs);
+  };
+  export const saveRecruitmentResumeEducationalDetail = async (e) => {
+    const action = "saveRecruitmentResumeEducationalDetail";
+  
+    const method = "POST";
+    const kwargs = e;
+    const response = await apiRequest(action, method,{...e});
+    console.log("API Response:", response);
+  
+    return await apiRequest(action, method, kwargs);
+  };
+  export const saveRecruitmentResumesExperienceDetail = async (e) => {
+    const action = "saveRecruitmentResumesExperienceDetail";
+  
+    const method = "POST";
+    const kwargs = e;
+    const response = await apiRequest(action, method,{...e});
+    console.log("API Response:", response);
+  
+    return await apiRequest(action, method, kwargs);
+  };
+  export const getRecruitmentResumeById = async (id) => {
+    const action = "getRecruitmentResumeById";
+    const method = "POST";
+    const kwargs = { id }; 
+    return await apiRequest(action, method, kwargs);
+  };
+  export const getAllRecruitmentResumeEducationalDetails = async (id) => {
+    const action = "getAllRecruitmentResumeEducationalDetails";
+    const method = "POST";
+    const kwargs = { id }; 
+    return await apiRequest(action, method, kwargs);
+  };
+  export const getAllRecruitmentResumesExperienceDetails = async (id) => {
+    const action = "getAllRecruitmentResumesExperienceDetails";
+    const method = "POST";
+    const kwargs = { id }; 
+    return await apiRequest(action, method, kwargs);
+  };
+  export const getAllRecruitmentJobResumesCustomFields = async (id) => {
+    const action = "getAllRecruitmentJobResumesCustomFields";
+    const method = "POST";
+    const kwargs = { id }; 
+    return await apiRequest(action, method, kwargs);
+  };

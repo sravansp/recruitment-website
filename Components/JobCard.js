@@ -3,6 +3,7 @@ import React from "react";
 // import { Card } from "antd";
 import { motion } from "framer-motion";
 import { PiFoldersLight, PiClock, PiMapPin, PiMoney } from "react-icons/pi";
+import Link from "next/link";
 
 const JobCard = ({
   jobTitle,
@@ -12,7 +13,8 @@ const JobCard = ({
   jobType,
   onSelect,
   selected,
-  index, // Pass the index of the card as a prop
+  index,
+  jobId // Pass the index of the card as a prop
 }) => {
   const cardVariants = {
     initial: { opacity: 0, y: 30 },
@@ -24,6 +26,7 @@ const JobCard = ({
   };
 
   return (
+    // <Link href={`/job-details/${jobId}`} passHref>
     <motion.div
       variants={cardVariants}
       initial="initial"
@@ -52,6 +55,7 @@ const JobCard = ({
         </div>
       </div>
     </motion.div>
+    // </Link>
   );
 };
 

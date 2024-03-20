@@ -6,14 +6,16 @@ import ButtonClick from "./Button";
 import TextReadMore from "./TextReadMore";
 import Link from "next/link";
 
-const JobDetailsCard = ({ selectedJob, jobDetailsAnimation }) => {
-  const handleApply = () => {
+const JobDetailsCard = ({ selectedJob, jobDetailsAnimation,handleApply }) => {
+  // const handleApply = () => {
    
-    if (selectedJob) {
-      // Navigate to the apply page with the selected job ID
-      window.location.href = `/Form?jobId=${selectedJob.jobId}`;
-    }
-  };
+  //   if (selectedJob) {
+  //     // Navigate to the apply page with the selected job ID
+  //     window.location.href = `/Form?jobId=${selectedJob.jobId}`;
+  //     // const result = selectedJob.jobId
+      
+  //   }
+  // };
 console.log(selectedJob);
   return (
     
@@ -31,7 +33,7 @@ console.log(selectedJob);
           <div className="flex items-center justify-between">
             <h1 className="h2">{selectedJob.jobTitle}</h1>
             {/* <Link href="/login"> */}
-              <ButtonClick buttonName="Apply" BtnType="primary" handleSubmit={handleApply}/>
+              <ButtonClick buttonName="Apply" BtnType="primary"  handleSubmit={() => handleApply(selectedJob.jobId)}/>
             {/* </Link> */}
           </div>
           <div className="flex flex-col gap-2.5 2xl:gap-4 Overview">

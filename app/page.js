@@ -13,6 +13,8 @@ import { useRouter } from "next/navigation";
 import Link from "next/link";
 import { jobs } from "@/Components/Data";
 import { getAllRecruitmentJobs, getRecruitmentJobById } from "@/Components/Api";
+import { Drawer } from "antd";
+import Web from "./Form/page";
 
 const Home = () => {
   const [selectedJobId, setSelectedJobId] = useState(1);
@@ -23,6 +25,8 @@ const Home = () => {
   const [filteredJobs, setFilteredJobs] = useState([]);
   const jobDetailsAnimation = useAnimation();
   const isSmallScreen = useMediaQuery({ maxWidth: 767 });
+  const [drawerVisible, setDrawerVisible] = useState(false);
+  const [selectedJobIdForApply, setSelectedJobIdForApply] = useState(null);
   const router = useRouter();
   console.log(setSearchJobTitle);
   // Function to find job by id
@@ -40,6 +44,16 @@ const Home = () => {
     jobDetailsAnimation.start({ opacity: 0, y: 20 }).then(() => {
       jobDetailsAnimation.start({ opacity: 1, y: 0 });
     });
+  };
+  const handleJobSelect = (id) => {
+    setSelectedJobId(id);
+    if (isSmallScreen) {
+      router.push(`/job-details/${id}`, undefined, { shallow: true });
+      // window.location.href = `/job-details/${id}`;
+      // <Link href={`/job-details/${id}`} shallow />
+    } else {
+      animateJobDetails();
+    }
   };
 
   useEffect(() => {
@@ -66,7 +80,7 @@ const Home = () => {
         (job) =>
           job.jobTitle.toLowerCase().includes(searchJobTitle.toLowerCase()) &&
           job.location.toLowerCase().includes(searchJobLocation.toLowerCase())
-      
+
         // JSON.parse(job.searchKeywords).some(keyword =>
         //   keyword.toLowerCase().includes(searchJobTitle.toLowerCase())
       );
@@ -97,6 +111,20 @@ const Home = () => {
     setSearchJobTitle("");
     setSearchJobLocation("");
     setFilteredJobs(JobsList);
+  };
+  const openDrawer = () => {
+    setDrawerVisible(true);
+  };
+
+  // Function to handle closing the drawer
+  const closeDrawer = () => {
+    setDrawerVisible(false);
+  };
+  const handleApply = (jobId) => {
+    
+    setSelectedJobIdForApply(jobId);
+   console.log(selectedJobIdForApply,"hjvgvh");
+    openDrawer();
   };
 
   return (
@@ -167,7 +195,7 @@ const Home = () => {
                 key={job.jobId}
                 id={job.jobId}
                 {...job}
-                onSelect={() => setSelectedJobId(job.jobId)}
+                onSelect={() => handleJobSelect(job.jobId)}
                 selected={selectedJob && selectedJob.jobId === job.jobId}
               />
             ))
@@ -179,9 +207,21 @@ const Home = () => {
           <JobDetailsCard
             selectedJob={selectedJob}
             jobDetailsAnimation={jobDetailsAnimation}
+            handleApply={handleApply}
           />
         </div>
       </motion.div>
+      <Drawer
+        
+        placement="right"
+        closable={false}
+        onClose={closeDrawer}
+        visible={drawerVisible}
+        width="100%" // Adjust the width as needed
+        height="100%"
+      >
+       <Web closeDrawer={closeDrawer} selectedJobId={selectedJobIdForApply}/>
+      </Drawer>
     </main>
   );
 };

@@ -7,7 +7,7 @@ import * as Yup from 'yup';
 import { Formik, useFormik } from "formik";
 import { saveRecruitmentResume } from "@/Components/Api";
 
-function PersonalDetails({ handleSubmit }) {
+function PersonalDetails({ handleSubmit=()=>{} }) {
   const [primaryColor, setPrimaryColor] = useState('');
   useEffect(() => {
     const color = localStorage.getItem("mainColor");
@@ -72,13 +72,14 @@ function PersonalDetails({ handleSubmit }) {
                 </div>
               </button>
             </h2>
+            <form onSubmit={formik.handleSubmit}>
             <div
               id={`acco-text-item`}
               role="region"
               aria-labelledby={`acco-title-item`}
               className="flex flex-col gap-6  justify-between w-full px-6 py-4"
             >
-              <form onSubmit={formik.handleSubmit}>
+             
               <div className="grid  grid-cols-2 sm:grid-cols-6 gap-4">
                 <Dropdown
                   title={"Prefix"}
@@ -217,8 +218,9 @@ function PersonalDetails({ handleSubmit }) {
                   error={formik.errors.postalCode}
                 />
               </div>
-              </form>
+              
             </div>
+            </form>
           </div>
         </div>
       </div>
