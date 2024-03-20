@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react'
+import React, { useEffect, useRef, useState } from 'react'
 import InProgress from '../common/InProgres'
 import { useFormik } from 'formik';
 import * as yup from "yup";
@@ -6,8 +6,20 @@ import { useTranslation } from 'react-i18next';
 import { RxQuestionMarkCircled } from 'react-icons/rx';
 import DrawerPop from '../common/DrawerPop';
 import FlexCol from '../common/FlexCol';
-import { Flex } from 'antd';
+import { Card, Flex, Space } from 'antd';
 import Stepper from '../common/Stepper';
+import Accordion from '../common/Accordion';
+import FormInput from '../common/FormInput';
+import Dropdown from '../common/Dropdown';
+import TextEditor from '../common/TextEditor/TextEditor';
+import { Button } from 'react-bootstrap';
+import CheckBoxInput from '../common/CheckBoxInput';
+import ImageUpload from '../common/ImageUpload';
+import { RiDeleteBin6Line } from "react-icons/ri";
+import { MdDelete } from 'react-icons/md';
+import { CgAdd } from 'react-icons/cg';
+import AddMore from '../common/AddMore';
+
 
 
 export default function Createcandidatelist({ open = "", close = () => { }, refresh, ConfigurationAction, }) {
@@ -101,10 +113,19 @@ export default function Createcandidatelist({ open = "", close = () => { }, refr
 
   });
 
-  const handleClose = () => {
-    close(false);
-  };
+ 
+ 
+  const scrollRef = useRef();
+  const handleAddCondition = () => {
+    setEvaluation((prevEvaluation) => [
+      ...prevEvaluation,
+      {
+        id: prevEvaluation.length + 1,
+        city: "",
 
+      },
+    ]);
+  };
   const Formik2 = useFormik({
 
 
@@ -116,6 +137,7 @@ export default function Createcandidatelist({ open = "", close = () => { }, refr
       // console.log({
       //   applicableOn: [applicableData?.map((each) => e[each.inputTypeOne])],
       // });
+
       console.log({
         applicableOn:
           applicableData?.map((each) => e[each.inputTypeOne]) || null,
@@ -162,8 +184,22 @@ export default function Createcandidatelist({ open = "", close = () => { }, refr
       title: "Review",
       data: "Review",
     },
-   
+
   ];
+
+  const [evaluation, setEvaluation] = useState([{
+    id: 1,
+    city: "",
+  },])
+
+  const handleDeleteCondition = (index) => {
+    setEvaluation((prevEvaluation) =>
+      prevEvaluation.filter((_, i) => i !== index)
+    );
+  };
+  const handleClose = () => {
+    close(false);
+  };
 
   useEffect(() => {
     if (activeBtn < 1 && activeBtn !== nextStep) {
@@ -174,7 +210,7 @@ export default function Createcandidatelist({ open = "", close = () => { }, refr
 
   return (
     <div>
-        {show && (
+      {show && (
         <DrawerPop
           contentWrapperStyle={{
             position: "absolute",
@@ -216,7 +252,7 @@ export default function Createcandidatelist({ open = "", close = () => { }, refr
           stepsData={CreateDirectorSteps}
           buttonClick={(e) => {
             console.log(activeBtnValue);
-            setNextStep(nextStep + 1);
+
             if (activeBtnValue === "Personel") {
               formik.handleSubmit();
               // Update activeBtnValue and nextStep to navigate to the next step
@@ -226,18 +262,18 @@ export default function Createcandidatelist({ open = "", close = () => { }, refr
             } else if (activeBtnValue === "Educational") {
               console.log("click 2");
               Formik2.handleSubmit();
-              
-            
+
+
             }
             else if (activeBtnValue === "Work") {
               console.log("click 3");
               Formik2.handleSubmit();
-             
+
             }
             else if (activeBtnValue === "Questions") {
               console.log("click 4");
               Formik2.handleSubmit();
-           
+
             }
             else if (activeBtnValue === "Review") {
               console.log("click 5");
@@ -260,7 +296,7 @@ export default function Createcandidatelist({ open = "", close = () => { }, refr
           activeBtn={activeBtn}
           saveAndContinue={true}
         >
-           <FlexCol >
+          <FlexCol >
             {CreateDirectorSteps && (
               <Flex justify="center">
                 <div className=" sticky -top-6  z-50 px-5 bg-[#F8FAFC] dark:bg-[#1f1f1f] w-5/6 pb-6 ">
@@ -274,31 +310,176 @@ export default function Createcandidatelist({ open = "", close = () => { }, refr
             )}
             {activeBtnValue === "Personel" ? (
               <>
-              <h1>first page</h1>
+                <FlexCol justify="center" align="center" className="w-5/6 m-auto">
+                  <Accordion
+                    title={"Personal Information"}
+                    className="Text_area "
+                    padding={true}
+                    toggleBtn={false}
+                    click={() => {
+                      //   setPresentage(1.4);
+                    }}
+                    initialExpanded={true}
+                  >
+                   
+                      <Dropdown 
+                      title='Prefix'
+                      placeholder="Mr"
+                      className='w-24'/>
+                   
+                    <div className="grid grid-cols-2 gap-4 w-4/5">
+                      <FormInput
+                        title={t("First Name")}
+                        placeholder={t("First Name")}
+                       
+                        
+                      />
+
+                      <FormInput
+                        title={t("Last Name")}
+                        placeholder={t("Last Name")}
+                       
+                      />
+                         <FormInput
+                        title={t("Email")}
+                        placeholder={t("Email")}
+                       
+                      />
+                         <FormInput
+                        title={t("Phone number")}
+                        placeholder={t("Phone number")}
+                       
+                      />
+
+                    </div>
+
+                    <div className='w-4/5'>
+                      <p>Photo (Optional)</p>
+                      <ImageUpload />
+                    </div>
+
+                       
+                    <div className="grid grid-cols-2 gap-4 w-4/5">
+                      <FormInput
+                        title={t("Location")}
+                        placeholder={t("Location")}
+                       
+                        
+                      />
+
+                      <FormInput
+                        title={t("City Or Town")}
+                        placeholder={t("City Or Town")}
+                       
+                      />
+                         <FormInput
+                        title={t("Address Line")}
+                        placeholder={t("Address Line")}
+                       
+                      />
+                         <FormInput
+                        title={t("Postal Code")}
+                        placeholder={t("Postal Code")}
+                       
+                      />
+
+                    </div>
+
+                  </Accordion>
+
+
+                 
+
+                </FlexCol>
               </>
-              ) : activeBtnValue === "Educational" ? (
-                <>
-                  <h1>2 page</h1>
-                </>
-                ) : activeBtnValue === "Work" ? (
-                  <>
-                    <h1>3 page</h1>
-                  </>
+            ) : activeBtnValue === "Educational" ? (
+              <>
+                 <FlexCol justify="center" align="center" className="w-5/6 m-auto">
+                  <Accordion
+                    title={"Educational Details"}
+                    className="Text_area "
+                    padding={true}
+                    toggleBtn={false}
+                    click={() => {
+                      //   setPresentage(1.4);
+                    }}
+                    initialExpanded={true}
+                  >
+                     {evaluation.map((condition, index) => (
+                    <div className='flex items-end'>
+                    <div className="grid grid-cols-2 gap-4 w-4/5">
+                      <FormInput
+                       key={condition.id}
+                        title={t("School or University")}
+                        placeholder={t("School or University")}
+                       
+                        
+                      />
+
+                     
+                        <Dropdown 
+                      title='Degree'
+                      placeholder="Mr"
+                      />
+                         <FormInput
+                        title={t("Field of Study")}
+                        placeholder={t("Email")}
+                       
+                      />
+                         <FormInput
+                        title={t("Year")}
+                        placeholder={t("Phone number")}
+                       
+                      />
+                       
+                          
+
+                    </div>
+                     <div className='ml-auto '>
+                     {index !== 0 && (
+                     <RiDeleteBin6Line className='h-6 w-6' onClick={() => handleDeleteCondition(index)}/>
+                     )}
+                     </div>
+                   </div>
+                     ))}
+
+                 
+              
+
+                  <AddMore
+                        name="Add Custom Field "
+                        className="!text-black"
+                        change={(e) => {
+                          handleAddCondition();
+                        }}
+                      />
+
+                  </Accordion>
+
+
+                 
+
+                </FlexCol>
+              </>
+            ) : activeBtnValue === "Work" ? (
+              <>
+                <h1>3 page</h1>
+              </>
             ) : activeBtnValue === "Questions" ? (
               <>
                 <h1>4 page</h1>
               </>
-              ) : (activeBtnValue === "Review" && (
-                  <>
-                    <h1>5 page</h1>
-                  </>
-                     )
-                     )}
-            </FlexCol>
-          
+            ) : (activeBtnValue === "Review" && (
+              <>
+                <h1>5 page</h1>
+              </>
+            )
+            )}
+          </FlexCol>
+
 
         </DrawerPop>
-)}
+      )}
     </div>
   )
 }

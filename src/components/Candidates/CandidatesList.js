@@ -78,13 +78,14 @@ const CandidatesList = () => {
       }
     };
 
-    const handleClose = () => {
-      setShow(false);
-      setOpenPop(""); // Clear the value in setOpenPop
-    };
+   
 
     callapi();
   }, []);
+  const handleClose = () => {
+    setShow(false);
+    setOpenPop(""); // Clear the value in setOpenPop
+  };
   console.log(jobList)
   return (
     <div className="flex flex-col gap-[25px]">
