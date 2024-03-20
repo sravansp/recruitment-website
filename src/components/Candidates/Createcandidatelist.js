@@ -19,12 +19,15 @@ import { RiDeleteBin6Line } from "react-icons/ri";
 import { MdDelete } from 'react-icons/md';
 import { CgAdd } from 'react-icons/cg';
 import AddMore from '../common/AddMore';
+import TextArea from '../common/TextArea';
+import ButtonClick from '../common/Button';
 
+import { GrEdit } from "react-icons/gr";
 
 
 export default function Createcandidatelist({ open = "", close = () => { }, refresh, ConfigurationAction, }) {
   const [show, setShow] = useState(open);
-  const [activeBtnValue, setActiveBtnValue] = useState("Personel");
+  const [activeBtnValue, setActiveBtnValue] = useState("Review");
   const [nextStep, setNextStep] = useState(0);
   const [applicableData, setApplicableData] = useState([]);
   const [isUpdate, setIsUpdate] = useState();
@@ -113,8 +116,8 @@ export default function Createcandidatelist({ open = "", close = () => { }, refr
 
   });
 
- 
- 
+
+
   const scrollRef = useRef();
   const handleAddCondition = () => {
     setEvaluation((prevEvaluation) => [
@@ -253,34 +256,9 @@ export default function Createcandidatelist({ open = "", close = () => { }, refr
           buttonClick={(e) => {
             console.log(activeBtnValue);
 
-            if (activeBtnValue === "Personel") {
-              formik.handleSubmit();
-              // Update activeBtnValue and nextStep to navigate to the next step
-              setActiveBtnValue("assign");
-              setNextStep(nextStep + 1);
-              console.log("click 1");
-            } else if (activeBtnValue === "Educational") {
-              console.log("click 2");
-              Formik2.handleSubmit();
+            //setNextStep(nextStep + 1);
+            setActiveBtnValue(nextStep + 1)
 
-
-            }
-            else if (activeBtnValue === "Work") {
-              console.log("click 3");
-              Formik2.handleSubmit();
-
-            }
-            else if (activeBtnValue === "Questions") {
-              console.log("click 4");
-              Formik2.handleSubmit();
-
-            }
-            else if (activeBtnValue === "Review") {
-              console.log("click 5");
-              Formik2.handleSubmit();
-              // You may also want to update activeBtnValue and nextStep here
-              // depending on your navigation flow
-            }
           }}
 
           buttonClickCancel={(e) => {
@@ -321,34 +299,34 @@ export default function Createcandidatelist({ open = "", close = () => { }, refr
                     }}
                     initialExpanded={true}
                   >
-                   
-                      <Dropdown 
+
+                    <Dropdown
                       title='Prefix'
                       placeholder="Mr"
-                      className='w-24'/>
-                   
+                      className='w-24' />
+
                     <div className="grid grid-cols-2 gap-4 w-4/5">
                       <FormInput
                         title={t("First Name")}
                         placeholder={t("First Name")}
-                       
-                        
+
+
                       />
 
                       <FormInput
                         title={t("Last Name")}
                         placeholder={t("Last Name")}
-                       
+
                       />
-                         <FormInput
+                      <FormInput
                         title={t("Email")}
                         placeholder={t("Email")}
-                       
+
                       />
-                         <FormInput
+                      <FormInput
                         title={t("Phone number")}
                         placeholder={t("Phone number")}
-                       
+
                       />
 
                     </div>
@@ -358,29 +336,29 @@ export default function Createcandidatelist({ open = "", close = () => { }, refr
                       <ImageUpload />
                     </div>
 
-                       
+
                     <div className="grid grid-cols-2 gap-4 w-4/5">
                       <FormInput
                         title={t("Location")}
                         placeholder={t("Location")}
-                       
-                        
+
+
                       />
 
                       <FormInput
                         title={t("City Or Town")}
                         placeholder={t("City Or Town")}
-                       
+
                       />
-                         <FormInput
+                      <FormInput
                         title={t("Address Line")}
                         placeholder={t("Address Line")}
-                       
+
                       />
-                         <FormInput
+                      <FormInput
                         title={t("Postal Code")}
                         placeholder={t("Postal Code")}
-                       
+
                       />
 
                     </div>
@@ -388,13 +366,13 @@ export default function Createcandidatelist({ open = "", close = () => { }, refr
                   </Accordion>
 
 
-                 
+
 
                 </FlexCol>
               </>
             ) : activeBtnValue === "Educational" ? (
               <>
-                 <FlexCol justify="center" align="center" className="w-5/6 m-auto">
+                <FlexCol justify="center" align="center" className="w-5/6 m-auto">
                   <Accordion
                     title={"Educational Details"}
                     className="Text_area "
@@ -405,73 +383,251 @@ export default function Createcandidatelist({ open = "", close = () => { }, refr
                     }}
                     initialExpanded={true}
                   >
-                     {evaluation.map((condition, index) => (
-                    <div className='flex items-end'>
-                    <div className="grid grid-cols-2 gap-4 w-4/5">
-                      <FormInput
-                       key={condition.id}
-                        title={t("School or University")}
-                        placeholder={t("School or University")}
-                       
-                        
-                      />
+                    {evaluation.map((condition, index) => (
+                      <div className='flex items-end'>
+                        <div className="grid grid-cols-2 gap-4 w-4/5">
+                          <FormInput
+                            key={condition.id}
+                            title={t("School or University")}
+                            placeholder={t("School or University")}
 
-                     
-                        <Dropdown 
-                      title='Degree'
-                      placeholder="Mr"
-                      />
-                         <FormInput
-                        title={t("Field of Study")}
-                        placeholder={t("Email")}
-                       
-                      />
-                         <FormInput
-                        title={t("Year")}
-                        placeholder={t("Phone number")}
-                       
-                      />
-                       
-                          
 
-                    </div>
-                     <div className='ml-auto '>
-                     {index !== 0 && (
-                     <RiDeleteBin6Line className='h-6 w-6' onClick={() => handleDeleteCondition(index)}/>
-                     )}
-                     </div>
-                   </div>
-                     ))}
+                          />
 
-                 
-              
 
-                  <AddMore
-                        name="Add Custom Field "
-                        className="!text-black"
-                        change={(e) => {
-                          handleAddCondition();
-                        }}
-                      />
+                          <Dropdown
+                            title='Degree'
+                            placeholder="Mr"
+                          />
+                          <FormInput
+                            title={t("Field of Study")}
+                            placeholder={t("Email")}
+
+                          />
+                          <FormInput
+                            title={t("Year")}
+                            placeholder={t("Phone number")}
+
+                          />
+
+
+
+                        </div>
+                        <div className='ml-auto '>
+                          {index !== 0 && (
+                            <RiDeleteBin6Line className='h-6 w-6' onClick={() => handleDeleteCondition(index)} />
+                          )}
+                        </div>
+                      </div>
+                    ))}
+
+
+
+
+                    <AddMore
+                      name="Add Custom Field "
+                      className="!text-black"
+                      change={(e) => {
+                        handleAddCondition();
+                      }}
+                    />
 
                   </Accordion>
 
 
-                 
+
 
                 </FlexCol>
               </>
             ) : activeBtnValue === "Work" ? (
               <>
-                <h1>3 page</h1>
+                <FlexCol justify="center" align="center" className="w-5/6 m-auto">
+                  <Accordion
+                    title={"Work Experience Details"}
+                    className="Text_area "
+                    padding={true}
+                    toggleBtn={false}
+                    click={() => {
+                      //   setPresentage(1.4);
+                    }}
+                    initialExpanded={true}
+                  >
+
+                    {evaluation.map((condition, index) => (
+                      <div className='flex flex-col gap-3 '>
+                        <div className="grid grid-cols-2 gap-4 w-4/5">
+                          <FormInput
+                            key={condition.id}
+                            title={t("Job Title")}
+                            placeholder={t("Eg: Retail Sales Manager")}
+
+
+                          />
+
+                          <Dropdown
+                            title='Employment Type'
+                            placeholder="Eg: Fulltime"
+                          />
+                          <FormInput
+                            title={t("Company Name")}
+                            placeholder={t("Eg: Microsoft")}
+
+                          />
+                          <FormInput
+                            title={t("Location")}
+                            placeholder={t("Eg: London, UK")}
+
+                          />
+
+                        </div>
+
+
+                        <div className='flex gap-4 w-96'>
+                          <FormInput
+                            title={t("From")}
+                            type='date'
+                            placeholder={t("Eg: London, UK")}
+
+                          />
+                          <FormInput
+                            title={t("To")}
+                            type='date'
+                            placeholder={t("Eg: London, UK")}
+
+                          />
+                        </div>
+
+
+
+
+                      </div>
+                    ))}
+                    <AddMore
+                      name="Add More Experience "
+                      className="!text-black"
+                      change={(e) => {
+                        handleAddCondition();
+                      }}
+                    />
+
+                  </Accordion>
+
+
+
+
+                </FlexCol>
+                <FlexCol justify="center" align="center" className="w-5/6 m-auto">
+                  <Accordion
+                    title={"Work Experience Details"}
+                    className="Text_area "
+                    padding={true}
+                    toggleBtn={false}
+                    click={() => {
+                      //   setPresentage(1.4);
+                    }}
+                    initialExpanded={true}
+                  >
+                    <div className='flex flex-col gap-3 w-5/12'>
+                      <div >
+
+                        <ImageUpload />
+                      </div>
+                      <div>
+                        <TextArea
+                          title='Cover Letter'
+                          placeholder='Type here' />
+                      </div>
+                    </div>
+                  </Accordion>
+
+
+
+
+                </FlexCol>
               </>
             ) : activeBtnValue === "Questions" ? (
               <>
-                <h1>4 page</h1>
+                <FlexCol justify="center" align="center" className="w-5/6 m-auto">
+                  <Accordion
+                    title={"Prerequisite"}
+                    className="Text_area "
+                    padding={true}
+                    toggleBtn={false}
+                    click={() => {
+                      //   setPresentage(1.4);
+                    }}
+                    initialExpanded={true}
+                  >
+                   
+                      <div className='flex items-end'>
+                        <div className="grid grid-cols-1 gap-4 w-4/5">
+                          <FormInput
+                           
+                            title={t("Are you legally eligible to work in the country?")}
+                            placeholder={t("Answer here..")}
+
+
+                          />
+
+                          <FormInput
+                            title={t("Highest level of education completed")}
+                            placeholder={t("Answer here..")}
+
+                          />
+                            <FormInput
+                            title={t("Highest level of education completed")}
+                            placeholder={t("Answer here..")}
+
+                          />
+                          <FormInput
+                            title={t("Highest level of education completed")}
+                            placeholder={t("Answer here..")}
+
+                          />
+
+
+
+                        </div>
+                       
+                      </div>
+                    
+                  </Accordion>
+
+
+
+
+                </FlexCol>
               </>
             ) : (activeBtnValue === "Review" && (
               <>
-                <h1>5 page</h1>
+               <FlexCol justify="center" align="center" className="w-5/6 m-auto">
+                  <Accordion
+                    title={"Review"}
+                    className="Text_area "
+                    padding={true}
+                    toggleBtn={false}
+                    click={() => {
+                      //   setPresentage(1.4);
+                    }}
+                    initialExpanded={true}
+                  >
+                   
+                      <div>
+                        <div className='flex justify-between'>
+                        <h1 className='text-sm font-semibold text-black lg:text-xs 2xl:text-base dark:text-white'>Personel Details</h1>
+                        <ButtonClick 
+                        buttonName='Edit Details'
+                        icon={<GrEdit />}
+                        />
+                        </div>
+                      </div>
+                    
+                  </Accordion>
+
+
+
+
+                </FlexCol>
               </>
             )
             )}
