@@ -1,7 +1,7 @@
 import axios from "axios";
 
-  const apiUrl = 'http://192.168.29.185/loyaltri-recruitment-server/api/v1';
-  // const apiUrl = 'https://alpha-jobs-api.loyaltri.com/api/v1';
+  // const apiUrl = 'http://192.168.29.185/loyaltri-recruitment-server/api/v1';
+  const apiUrl = 'https://alpha-jobs-api.loyaltri.com/api/v1';
 
 
 const apiRequest = async (action, method, kwargs) => {
@@ -642,6 +642,43 @@ export const updateRecruitmentEmailTemplate = async (e) => {
     );
     throw error; // Re-throw the error to handle it where the function is called.
   }
+};
+export const updateRecruitmentLetterTemplate = async (data) => {
+  const action = "updateRecruitmentLetterTemplate";
+
+  const method = "POST";
+
+  const kwargs = data;
+  console.log("API Request Data:", { action, method, kwargs });
+  
+  return await apiRequest(action, method, kwargs);
+};
+export const getAllRecruitmentResumesExperienceDetails = async (resumeId) => {
+  const action = "getAllRecruitmentResumesExperienceDetails";
+
+  const method = "POST";
+
+  const kwargs = {resumeId} ;
+ 
+  return await apiRequest(action, method, kwargs);
+};
+export const getAllRecruitmentResumeEducationalDetails = async (resumeId) => {
+  const action = "getAllRecruitmentResumeEducationalDetails";
+
+  const method = "POST";
+
+  const kwargs = {resumeId} ;
+ 
+  return await apiRequest(action, method, kwargs);
+};
+export const getRecruitmentLetterTemplateById = async (id) => {
+  const action = "getRecruitmentLetterTemplateById";
+
+  const method = "POST";
+
+  const kwargs = id ;
+ 
+  return await apiRequest(action, method, kwargs);
 };
 const API ={
   UPDATE_Job_Templates: "toggleRecruitmentJobTemplateStatus",

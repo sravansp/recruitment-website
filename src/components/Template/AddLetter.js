@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState,useEffect } from "react";
 import DrawerPop from "../common/DrawerPop";
 import Accordion from "../common/Accordion";
 import { useTranslation } from "react-i18next";
@@ -10,7 +10,7 @@ import TextEditor from "../common/TextEditor/TextEditor";
 import FormInput from "../common/FormInput";
 import image from "../../assets/images/attachment-2.svg";
 import image2 from "../../assets/images/emoji-sticker-line.svg";
-import { saveRecruitmentLetterTemplate } from "../Api1";
+import {getRecruitmentLetterTemplateById, saveRecruitmentLetterTemplate,updateRecruitmentLetterTemplate } from "../Api1";
 const AddLetter = ({
   open = "",
   close = () => {},
@@ -21,21 +21,77 @@ const AddLetter = ({
   const [companyId, setCompanyId] = useState(localStorage.getItem("companyId"));
   const [templateName, setTemplateName] = useState("");
   const [show, setShow] = useState(open);
+  const [subject,setsubject] = useState("")
   const { t } = useTranslation();
   const handleClose = () => {
     close(false);
   };
   const [content, setContent] = useState("");
-
+  const [api, contextHolder] = notification.useNotification();
+  const openNotification = (type, message, description) => {
+    api[type]({
+      message: message,
+      description: description,
+      placement: "top",
+      // stack: 2,
+      style: {
+        background: `${
+          type === "success"
+            ? `linear-gradient(180deg, rgba(204, 255, 233, 0.8) 0%, rgba(235, 252, 248, 0.8) 51.08%, rgba(246, 251, 253, 0.8) 100%)`
+            : "linear-gradient(180deg, rgba(255, 236, 236, 0.80) 0%, rgba(253, 246, 248, 0.80) 51.13%, rgba(251, 251, 254, 0.80) 100%)"
+        }`,
+        boxShadow: `${
+          type === "success"
+            ? "0px 4.868px 11.358px rgba(62, 255, 93, 0.2)"
+            : "0px 22px 60px rgba(134, 92, 144, 0.20)"
+        }`,
+      },
+      // duration: null,
+    });
+  };
+  console.log(updateId)
   const handleSubmit = async () => {
     try {
       // API call
-      const response = await saveRecruitmentLetterTemplate({
+      if(updateId){
+        const id = updateId
+       const response = await updateRecruitmentLetterTemplate(
+       
+        {
+            id:id,
+            companyId: companyId,
+            letterTemplateName: templateName,
+            letterTemplate:{
+              subject: subject,
+                body: content, 
+            },
+            modifiedBy:null
+        }
+       )
+       console.log(response)
+       if (response.status === 200) {
+        
+        
+        openNotification(
+          "success",
+          "Successful",
+          response.message
+        );
+        setTimeout(() => {
+          handleClose();
+        }, 2000);
+      
+      }else if (response.status === 500) {
+        openNotification("error", "input field is empty..", response.message);
+      }
+      }
+      else{
+        const response = await saveRecruitmentLetterTemplate({
         companyId: companyId,
 
         letterTemplateName: templateName,
         letterTemplate: {
-          subject: "Invitation to Interview for [Job Title] Position",
+          subject: subject,
           body: content,
         },
         createdBy: null,
@@ -44,24 +100,41 @@ const AddLetter = ({
       // Handle API response
       console.log(response);
       if (response.status === 200) {
-        notification.success({
-          message: "Success",
-          description: "Email template saved successfully.",
-        });
+        openNotification(
+          "success",
+          "Successful",
+          response.message
+        );
       } else {
-        notification.error({
-          message: "Error",
-          description: "Failed to save email template.",
-        });
+        openNotification("error", "input field is empty..", response.message);
       }
+    }
     } catch (error) {
       console.error("Error saving email template:", error);
-      notification.error({
-        message: "Error",
-        description: "Failed to save email template. Please try again.",
-      });
+      openNotification("error", "input field is empty..", error);
     }
   };
+  const getLetterById= async()=>{
+    const id = updateId
+    try{
+    const response = await getRecruitmentLetterTemplateById({id})
+    console.log(response)
+    setTemplateName(response.result[0].letterTemplateName );
+    setContent(response.result[0].letterTemplate.body );
+    setsubject(response.result[0].letterTemplate.subject)
+    
+    }catch(error){
+    console.log(error)
+    }
+  }
+  useEffect(()=>{
+    getLetterById()
+    console.log(templateName)
+    console.log(content)  
+  },[])
+
+  
+
   const handleEditorChange = (content) => {
     setContent(content);
   };
@@ -136,11 +209,18 @@ const AddLetter = ({
           >
             <div className="grid grid-cols-2 ">
               <FormInput
+                title={"Letter Template Name"}
                 placeholder={"type here"}
                 value={templateName}
                 change={setTemplateName}
               />
             </div>
+            <FormInput
+                title={"Subject"}
+                placeholder={"type here"}
+                value={subject}
+                change={setsubject}
+              />
 
             <TextEditor
               initialValue={content}
@@ -156,6 +236,7 @@ const AddLetter = ({
           </Accordion>
         </div>
       </DrawerPop>
+      {contextHolder}
     </div>
   );
 };
