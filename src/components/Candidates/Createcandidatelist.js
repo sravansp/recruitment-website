@@ -35,7 +35,7 @@ import CVResume from './CandidateProfileTabs/CVResume';
 
 export default function Createcandidatelist({ open = "", close = () => { }, refresh, ConfigurationAction, }) {
   const [show, setShow] = useState(open);
-  const [activeBtnValue, setActiveBtnValue] = useState("Review");
+  const [activeBtnValue, setActiveBtnValue] = useState("Personel");
   const [nextStep, setNextStep] = useState(0);
   const [applicableData, setApplicableData] = useState([]);
   const [isUpdate, setIsUpdate] = useState();
