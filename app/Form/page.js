@@ -37,17 +37,19 @@ import PDFViewer from "@/Components/ui/PDFViewer";
 import candidate from "@/public/Frame 427319140.png";
 import pdfFile from "@/public/sample.pdf";
 import { useRouter } from "next/router";
+import { DatePicker } from "antd";
+import DateSelect from "@/Components/ui/DateSelect";
 
 function Web({closeDrawer,selectedJobId}) {
-  const [currentStep, setCurrentStep] = useState(0);
+  const [currentStep, setCurrentStep] = useState(2);
   const [activeBtn, setActiveBtn] = useState(0);
   const [presentage, setPresentage] = useState(0);
   const [nextStep, setNextStep] = useState(0);
   const [activeBtnValue, setActiveBtnValue] = useState(0);
   const isSmallScreen = useMediaQuery({ maxWidth: 1439 });
   const [formData, setFormData] = useState({});
-  const [insertedid1, setinsertedId1] = useState("");
-  const [data,setData]=useState("")
+  const [insertedid1, setinsertedId1] = useState(4);
+  const [data,setData]=useState(null)
   const [educationaldetails,setEducationaldetails]=useState([])
   const [experience,setExperience]=useState([])
   const [customfield,setCustomfield]=useState([])
@@ -161,9 +163,9 @@ function Web({closeDrawer,selectedJobId}) {
     // Check if the first form is valid and the necessary data is available
     if (formik.isValid) {
       // Submit the second form only if the current step is "EducationalDetails"
-      if (currentStep === "EducationalDetails") {
+      // if (currentStep === "EducationalDetails") {
         await formik1.handleSubmit();
-      }
+      // }
     }
     if (formik1.isValid) {
       await formik2.handleSubmit();
@@ -281,19 +283,67 @@ function Web({closeDrawer,selectedJobId}) {
   // };
   console.log(currentStep);
 
-  const validationSchema = Yup.object().shape({
-    firstName: Yup.string().required("First name is required"),
-    lastName: Yup.string().required("Last name is required"),
-    candidateEmail: Yup.string()
-      .email("Invalid email address")
-      .required("Email is required"),
-    candidateContact: Yup.string().required("Phone number is required"),
-    candidateLocation: Yup.string().required("Location is required"),
-    city: Yup.string().required("City is required"),
-    address: Yup.string().required("Address is required"),
-    postalCode: Yup.string().required("Postal code is required"),
-  });
+  // const validationSchema = Yup.object().shape({
+  //   firstName: Yup.string().required("First name is required"),
+  //   lastName: Yup.string().required("Last name is required"),
+  //   candidateEmail: Yup.string()
+  //     .email("Invalid email address")
+  //     .required("Email is required"),
+  //   candidateContact: Yup.string().required("Phone number is required"),
+  //   candidateLocation: Yup.string().required("Location is required"),
+  //   city: Yup.string().required("City is required"),
+  //   address: Yup.string().required("Address is required"),
+  //   postalCode: Yup.string().required("Postal code is required"),
+  // });
 
+  // const formik = useFormik({
+  //   initialValues: {
+  //     resumeCode: 21,
+  //     candidateName: "sdhbhj",
+  //     namePrefix: "Mr",
+  //     firstName: "",
+  //     lastName: "",
+  //     dob: "1998-09-23",
+  //     cityOrTown: "",
+  //     postalCode: "",
+  //     addressLine: "",
+  //     candidateLocation: "",
+  //     candidateContact: "",
+  //     candidateSource: "source1",
+  //     candidateEmail: "",
+  //     jobId: selectedJobId,
+  //     createdBy: "154", // You may need to replace this with the actual createdBy value
+  //   },
+  //   validationSchema: validationSchema,
+  //   onSubmit: async (values, { setSubmitting }) => {
+  //     try {
+  //       // Make your API call here
+        
+  //       const response = await saveRecruitmentResume(values);
+  //       console.log("API Response:", response);
+  //       console.log(response.result.insertedId,"inserted id responsee")
+        
+  //       setinsertedId1(response.result.insertedId);
+  //       console.log(insertedid1);
+  //       setActiveBtn(activeBtn + 1);
+
+  //       setCurrentStep(currentStep + 1);
+       
+  //       // You can handle the API response here
+  //       // For example, update UI, show success message, etc.
+  //     } catch (error) {
+  //       console.error("API Error:", error);
+  //       // Handle API errors here
+  //       // For example, show error message, handle form submission failure, etc.
+  //     } finally {
+  //       // Reset form state after submission (whether successful or not)
+  //       setSubmitting(false);
+  //     }
+  //   },
+  // });
+
+
+  
   const formik = useFormik({
     initialValues: {
       resumeCode: 21,
@@ -310,9 +360,22 @@ function Web({closeDrawer,selectedJobId}) {
       candidateSource: "source1",
       candidateEmail: "",
       jobId: selectedJobId,
-      createdBy: "154", // You may need to replace this with the actual createdBy value
+      createdBy: "154",
     },
-    validationSchema: validationSchema,
+    enableReinitialize: true,
+    validateOnChange: false,
+    validationSchema: Yup.object().shape({
+      firstName: Yup.string().required("First name is required"),
+      lastName: Yup.string().required("Last name is required"),
+      candidateEmail: Yup.string()
+        .email("Invalid email address")
+        .required("Email is required"),
+      candidateContact: Yup.string().required("Phone number is required"),
+      candidateLocation: Yup.string().required("Location is required"),
+      city: Yup.string().required("City is required"),
+      address: Yup.string().required("Address is required"),
+      postalCode: Yup.string().required("Postal code is required"),
+    }),
     onSubmit: async (values, { setSubmitting }) => {
       try {
         // Make your API call here
@@ -339,14 +402,17 @@ function Web({closeDrawer,selectedJobId}) {
       }
     },
   });
-  const validationSchema1 = Yup.object().shape({
-    institute: Yup.string().required("School or University is required"),
-    courseType: Yup.string().required("Degree is required"),
-    courseName: Yup.string().required("Field of Study is required"),
-    yearOfStudy: Yup.number()
-      .required("Year is required")
-      .positive("Year must be a positive number"),
-  });
+
+
+  // const validationSchema1 = Yup.object().shape({
+    
+  //   institute: Yup.string().required("School or University is required"),
+  //   courseType: Yup.string().required("Degree is required"),
+  //   courseName: Yup.string().required("Field of Study is required"),
+  //   yearOfStudy: Yup.number()
+  //     .required("Year is required")
+  //     .positive("Year must be a positive number"),
+  // });
 
   const formik1 = useFormik({
     initialValues: {
@@ -357,29 +423,44 @@ function Web({closeDrawer,selectedJobId}) {
       location: "loc1",
       yearOfStudy: "",
     },
-    validationSchema: validationSchema1,
-    onSubmit: async (values) => {
+    enableReinitialize: true,
+    validateOnChange: false,
+    validationSchema1: Yup.object().shape({
+      institute: Yup.string().required("School or University is required"),
+      courseType: Yup.string().required("Degree is required"),
+      courseName: Yup.string().required("Field of Study is required"),
+      yearOfStudy: Yup.number()
+        .required("Year is required")
+        .positive("Year must be a positive number"),
+    }),
+    onSubmit: async (values, { setSubmitting }) => {
       try {
         // Append the inserted ID to the values before submitting
         // values.resumeId = insertedid;
         // Make API call to save educational details
         const response = await saveRecruitmentResumeEducationalDetail(values);
         console.log("Educational Details API Response:", response);
+        setActiveBtn(activeBtn + 1);
+
+        setCurrentStep(currentStep + 1);
         // Handle success response if needed
       } catch (error) {
         console.error("Error saving educational details:", error);
         // Handle error if the API call fails
+      } finally {
+        // Reset form state after submission (whether successful or not)
+        setSubmitting(false);
       }
     },
   });
-  const validationSchema2 = Yup.object().shape({
-    jobTitle: Yup.string().required("Job Title is required"),
-    employmentType: Yup.string().required("Employment Type is required"),
-    companyName: Yup.string().required("Company Name is required"),
-    location: Yup.string().required("Location is required"),
-    fromDate: Yup.string().required("From Date is required"),
-    toDate: Yup.string().required("To Date is required"),
-  });
+  // const validationSchema2 = Yup.object().shape({
+  //   jobTitle: Yup.string().required("Job Title is required"),
+  //   employmentType: Yup.string().required("Employment Type is required"),
+  //   companyName: Yup.string().required("Company Name is required"),
+  //   location: Yup.string().required("Location is required"),
+  //   fromDate: Yup.string().required("From Date is required"),
+  //   toDate: Yup.string().required("To Date is required"),
+  // });
 
   const formik2 = useFormik({
     initialValues: {
@@ -392,8 +473,17 @@ function Web({closeDrawer,selectedJobId}) {
       toDate: "",
       // coverLetter: "",
     },
-    validationSchema: validationSchema2,
-    onSubmit: async (values) => {
+    enableReinitialize: true,
+    validateOnChange: false,
+    validationSchema2: Yup.object().shape({
+      jobTitle: Yup.string().required("Job Title is required"),
+    employmentType: Yup.string().required("Employment Type is required"),
+    companyName: Yup.string().required("Company Name is required"),
+    location: Yup.string().required("Location is required"),
+    fromDate: Yup.string().required("From Date is required"),
+    toDate: Yup.string().required("To Date is required"),
+  }),
+    onSubmit: async (values, { setSubmitting }) => {
       try {
         // Append the inserted ID to the values before submitting
         // values.resumeId = insertedid;
@@ -404,13 +494,16 @@ function Web({closeDrawer,selectedJobId}) {
       } catch (error) {
         console.error("Error saving work experience details:", error);
         // Handle error if the API call fails
+      } finally {
+        // Reset form state after submission (whether successful or not)
+        setSubmitting(false);
       }
     },
   });
-  const validationSchema3 = Yup.object().shape({
-    customQuestion: Yup.string().required("This field is required"),
-    highestEducationLevel: Yup.string().required("This field is required"),
-  });
+  // const validationSchema3 = Yup.object().shape({
+  //   customQuestion: Yup.string().required("This field is required"),
+  //   highestEducationLevel: Yup.string().required("This field is required"),
+  // });
 
   const formik3 = useFormik({
     initialValues: {
@@ -419,8 +512,13 @@ function Web({closeDrawer,selectedJobId}) {
       resumeId: 21,
       // highestEducationLevel: "",
     },
-    validationSchema: validationSchema3,
-    onSubmit: async (values) => {
+    enableReinitialize: true,
+    validateOnChange: false,
+    validationSchema3: Yup.object().shape({
+      customQuestion: Yup.string().required("This field is required"),
+      highestEducationLevel: Yup.string().required("This field is required"),
+    }),
+    onSubmit: async (values, { setSubmitting }) => {
       try {
         // Append the inserted ID to the values before submitting
         // values.resumeId = insertedid;
@@ -431,6 +529,9 @@ function Web({closeDrawer,selectedJobId}) {
       } catch (error) {
         console.error("Error saving question details:", error);
         // Handle error if the API call fails
+      } finally {
+        // Reset form state after submission (whether successful or not)
+        setSubmitting(false);
       }
     },
   });
@@ -445,18 +546,19 @@ function Web({closeDrawer,selectedJobId}) {
   useEffect(() => {
     const fetchapi = async () => {
       try {
-        if (currentStep === 4) { // Check if the current step is the review page
+         // Check if the current step is the review page
           const response = await getRecruitmentResumeById(insertedid1);
-          setData(response);
-          console.log(insertedid, "dfrfgreg");
-          console.log(response);
-        }
+          setData(response.result.data.data);
+          // console.log(insertedid1, "dfrfgreg");
+          console.log(response,"resume api res");
+          console.log(data,"dhcdghcvhd");
+        
       } catch (error) {
         console.error("error", error);
       }
     };
     fetchapi();
-  }, [currentStep]);
+  }, []);
 
 
   useEffect(() => {
@@ -510,7 +612,7 @@ function Web({closeDrawer,selectedJobId}) {
   
   
   return (
-    <div className="flex flex-col gap-6 py-10 container-wrapper mt-10">
+    <div className="flex flex-col gap-6  container-wrapper ">
       <FlexCol />
       <Header1 />
       <div className="flex flex-col gap-6 max-w-[1070px] w-full mx-auto  ">
@@ -587,8 +689,8 @@ function Web({closeDrawer,selectedJobId}) {
                             formik.setFieldValue("firstName", e);
                             console.log("First Name:", e);
                           }}
-                          required={true}
-                          error={formik.errors.firstName}
+                          required={false}
+                          error={ formik.errors.firstName}
                         />
                         <FormInput
                           title={"Last Name"}
@@ -777,7 +879,7 @@ function Web({closeDrawer,selectedJobId}) {
                         required={true}
                         error={formik1.errors.courseName}
                       />
-                      <FormInput
+                      {/* <FormInput
                         title={"Year"}
                         placeholder={"Year"}
                         className="text-[#344054]"
@@ -788,7 +890,26 @@ function Web({closeDrawer,selectedJobId}) {
                         }}
                         required={true}
                         error={formik1.errors.yearOfStudy}
-                      />
+                      /> */}
+                      <DateSelect
+                       title={"Year"}
+                      //  placeholder={"Year"}
+                       className="text-[#344054]"
+                       name="yearOfStudy"
+                       selectpicker="year"
+                       value={formik1.values.yearOfStudy}
+                       change={(e) => {
+                         formik1.setFieldValue("yearOfStudy", e);
+                       }}
+                       required={true}
+                       error={formik1.errors.yearOfStudy}/>
+                       {/* <DatePicker
+        onChange={(e) => {
+          formik1.setFieldValue("yearOfStudy", e);
+        }}
+        picker="year"
+        // Add your own styling here
+      /> */}
                     </div>
                     <div className="divider-h" />
 
@@ -937,7 +1058,7 @@ function Web({closeDrawer,selectedJobId}) {
                       />
                     </div>
                     <div className="grid grid-cols-3 sm:grid-cols-6 gap-4">
-                      <FormInput
+                      <DateSelect
                         title={"From"}
                         placeholder={"09/2023"}
                         className="text-[#344054]"
@@ -949,9 +1070,10 @@ function Web({closeDrawer,selectedJobId}) {
                         required={true}
                         error={formik2.errors.fromDate}
                       />
-                      <FormInput
+                      <DateSelect
                         title={"To"}
                         placeholder={"09/2024"}
+                        selectpicker="dateandtime"
                         className="text-[#344054]"
                         name="toDate"
                         value={formik2.values.toDate}
@@ -1149,7 +1271,7 @@ function Web({closeDrawer,selectedJobId}) {
                     alt=""
                   />
                   <div className="min-w-0 flex-auto mt-3">
-                    <p className="acco-h1">{data.candidateName}</p>
+                    {/* <p className="acco-h1">{data.candidateName}</p> */}
                   </div>
                 </div>
                  {/* <div>
@@ -1165,9 +1287,9 @@ function Web({closeDrawer,selectedJobId}) {
                 <div className="flex flex-col gap-4 box-wrapper">
                   <h6 className="h6">Education</h6>
                   <div className="flex flex-col divide-y">
-                    {educationaldetails.map((edu, index) => (
+                    {/* {educationaldetails.map((edu, index) => ( */}
                       <div
-                        key={index}
+                        // key={index}
                         className="flex justify-start gap-5 py-3 2xl:py-6"
                       >
                         <img
@@ -1176,35 +1298,35 @@ function Web({closeDrawer,selectedJobId}) {
                         />
                         <div className="inline-flex flex-col items-start justify-start gap-1">
                           <div className="gap-2 vhcenter">
-                            <h6 className="h6">{edu.institute}</h6>
+                            {/* <h6 className="h6">{edu.institute}</h6> */}
                             {/* <p className="para p-1.5 rounded-md bg-secondaryWhite !leading-none">
               {work.Shift}
             </p> */}
                           </div>
 
                           <div className="flex flex-col gap-4">
-                            <p className="h6 !font-medium">{edu.courseType}</p>
+                            {/* <p className="h6 !font-medium">{edu.courseType}</p> */}
                             <div className="flex gap-3">
                               <p className="para !font-normal text-opacity-70">
-                                {edu.yearOfStudy}
+                                {/* {edu.yearOfStudy} */}
                               </p>
 
                               <p className="para !font-normal text-opacity-70">
-                                {edu.location}
+                                {/* {edu.location} */}
                               </p>
                             </div>
                           </div>
                         </div>
                       </div>
-                    ))}
+                    {/* ))} */}
                   </div> 
                 </div>
                 <div className="flex flex-col gap-4 box-wrapper">
                   <h6 className="h6">All Experiences</h6>
                   <div className="flex flex-col divide-y">
-                    {experience.map((work, index) => (
+                    {/* {experience.map((work, index) => ( */}
                       <div
-                        key={index}
+                        // key={index}
                         className="flex items-center justify-start gap-5 py-3 2xl:py-6"
                       >
                         <img
@@ -1213,25 +1335,25 @@ function Web({closeDrawer,selectedJobId}) {
                         />
                         <div className="inline-flex flex-col items-start justify-start gap-1">
                           <div className="gap-2 vhcenter">
-                            <h6 className="h6">{work.companyName}</h6>
+                            {/* <h6 className="h6">{work.companyName}</h6> */}
                             <p className="para p-1.5 rounded-md bg-secondaryWhite dark:bg-secondaryDark !leading-none">
-                              {work.employmentType}
+                              {/* {work.employmentType} */}
                             </p>
                           </div>
 
                           <div className="inline-flex items-center justify-start gap-4">
-                            <p className="!text-opacity-50 h6">{work.jobTitle}</p>
+                            {/* <p className="!text-opacity-50 h6">{work.jobTitle}</p> */}
                             <p className="para !font-normal text-opacity-70">
-                              {work.experienceDuration}
+                              {/* {work.experienceDuration} */}
                             </p>
 
                             <p className="para !font-normal text-opacity-70">
-                              {work.fromDate}, {work.toDate}
+                              {/* {work.fromDate}, {work.toDate} */}
                             </p>
                           </div>
                         </div>
                       </div>
-                    ))}
+                    {/* ))} */}
                   </div>
                 </div>
               </Accordion>
@@ -1269,15 +1391,16 @@ function Web({closeDrawer,selectedJobId}) {
                   <h2 className="h6">Prerequisite</h2>
                 </div>
                 <div className="inline-flex flex-col items-start justify-start pt-4 gap-7">
-                  {customfield?.map((quest) => (
-                    <div className="flex flex-col gap-3" key={quest.id}>
+                  {/* {customfield?.map((quest) => ( */}
+                    <div className="flex flex-col gap-3">
+                    {/* key={quest.id} */}
                       <div className="flex">
                         <div className="w-12 ">
-                          <span className="pblack">Q{quest.id}.</span>
+                          {/* <span className="pblack">Q{quest.id}.</span> */}
                         </div>
                         <div>
                           <span className="pblack !text-opacity-80">
-                            {quest.customQuestion}
+                            {/* {quest.customQuestion} */}
                           </span>
                         </div>
                       </div>
@@ -1286,11 +1409,11 @@ function Web({closeDrawer,selectedJobId}) {
                           <p className="pblack">Ans.</p>
                         </div>
                         <p className="pblack !text-opacity-80">
-                          {quest.answer}
+                          {/* {quest.answer} */}
                         </p>
                       </div>
                     </div>
-                  ))}
+                  {/* // ))} */}
                 </div>
               </div>
             </div>
@@ -1298,7 +1421,7 @@ function Web({closeDrawer,selectedJobId}) {
           
         ) : null}
       </div>
-
+  
       <div className="divider-h mt-10 bottom-0" />
       <div className="flex gap-2.5 p-1.5 justify-end ">
         <ButtonClick

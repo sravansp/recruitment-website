@@ -141,7 +141,7 @@ export default function Stepper({
             </div>
             <div
               className={`absolute top-0  text-center mt-11 2xl:mt-14 w-40 text-xs 2xl:text-base font-medium ${
-                step.selected ? "text-black dark:text-white" : "text-white opacity-50"
+                step.selected ? "text-black dark:text-white" : "text-gray opacity-50"
               }`}
             >
               {step.description}

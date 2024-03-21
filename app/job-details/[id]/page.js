@@ -3,17 +3,25 @@ import { useRouter } from "next/navigation";
 import { jobs } from "@/Components/Data";
 import JobDetailsCard from "@/Components/JobDetailsCard";
 import { useParams } from "next/navigation";
+import { useEffect, useState } from "react";
 const JobDetailsPage = () => {
   const router = useRouter();
+  const [selectedJob, setSelectedJob] = useState(null)
     
   const params = useParams();
   console.log(params.id); // Correctly accessing the ID from URL parameters
-  const selectedJob = jobs.find((job) => job.id === parseInt(params.id));
-  if (!selectedJob) {
-    // Handle case where job ID is not found
-    return <div>Job not found</div>;
-  }
+  // const selectedJob = jobs.find((job) => job.id === parseInt(params.id));
+  // console.log(selectedJob)
+  // if (!selectedJob) {
+  //   // Handle case where job ID is not found
+  //   return <div>Job not found</div>;
+  // }
   //
+  useEffect(() => {
+    // Find the selected job based on the ID from the URL params
+    const foundJob = jobs.find((job) => job.jobId === parseInt(params.id));
+    setSelectedJob(foundJob);
+  }, [params.id]);
 
   return (
     <div className="flex flex-col gap-4 dark:bg-black">
@@ -32,7 +40,7 @@ const JobDetailsPage = () => {
       </div>
 
       <div className="w-full container-wrapper">
-        <h1>{params}</h1>
+        {/* <h1>{params}</h1> */}
         <JobDetailsCard selectedJob={selectedJob} />
       </div>
     </div>

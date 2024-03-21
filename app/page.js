@@ -20,16 +20,23 @@ const Home = () => {
   const [selectedJobId, setSelectedJobId] = useState(1);
   const [selectedJob, setSelectedJob] = useState(); // Change to null
   const [JobsList, setJobList] = useState([]);
-  const [searchJobTitle, setSearchJobTitle] = useState();
-  const [searchJobLocation, setSearchJobLocation] = useState();
+  const [searchJobTitle, setSearchJobTitle] = useState("");
+  const [searchJobLocation, setSearchJobLocation] = useState("");
   const [filteredJobs, setFilteredJobs] = useState([]);
   const jobDetailsAnimation = useAnimation();
   const isSmallScreen = useMediaQuery({ maxWidth: 767 });
   const [drawerVisible, setDrawerVisible] = useState(false);
   const [selectedJobIdForApply, setSelectedJobIdForApply] = useState(null);
+  const [clearInput, setClearInput] = useState(false); // State to toggle clearing input
+
   const router = useRouter();
   console.log(setSearchJobTitle);
   // Function to find job by id
+  useEffect(() => {
+    if (JobsList.length > 0) {
+      setSelectedJobId(JobsList[0].jobId); // Set selectedJobId to the id of the first job
+    }
+  }, [JobsList]);
   useEffect(() => {
     const newSelectedJob = findJobById(selectedJobId);
     setSelectedJob(newSelectedJob);
@@ -49,8 +56,6 @@ const Home = () => {
     setSelectedJobId(id);
     if (isSmallScreen) {
       router.push(`/job-details/${id}`, undefined, { shallow: true });
-      // window.location.href = `/job-details/${id}`;
-      // <Link href={`/job-details/${id}`} shallow />
     } else {
       animateJobDetails();
     }
@@ -63,6 +68,7 @@ const Home = () => {
         setJobList(response.result);
         console.log(setJobList, "joblist dataa");
         setFilteredJobs(response.result);
+       
       } catch (error) {
         console.error(error);
       }
@@ -108,9 +114,9 @@ const Home = () => {
   }, [selectedJobId, JobsList]);
 
   const handleClear = () => {
-    setSearchJobTitle("");
-    setSearchJobLocation("");
-    setFilteredJobs(JobsList);
+    setSearchJobTitle(null); // Clear the searchJobTitle state
+    setSearchJobLocation(null); // Clear the searchJobLocation state
+    setFilteredJobs(JobsList); // Reset filtered jobs to the original JobsList
   };
   const openDrawer = () => {
     setDrawerVisible(true);
@@ -121,9 +127,8 @@ const Home = () => {
     setDrawerVisible(false);
   };
   const handleApply = (jobId) => {
-    
     setSelectedJobIdForApply(jobId);
-   console.log(selectedJobIdForApply,"hjvgvh");
+    console.log(selectedJobIdForApply, "hjvgvh");
     openDrawer();
   };
 
@@ -143,14 +148,16 @@ const Home = () => {
           <div className="searchJob rounded-[10px] bg-white dark:bg-secondaryDark w-full lg:h-full p-3 flex gap-3 justify-between items-center flex-col md:flex-row md:divide-x divide-y md:divide-y-0">
             <SearchBox
               placeholder="Job title or keyword"
-              items={JobsList.map((job) => job.jobTitle)}
+              value={searchJobTitle !== undefined ? searchJobTitle : ""} 
+              items={[...new Set(JobsList.map((job) => job.jobTitle))]} // Convert the job titles to a Set to remove duplicates
               icon={<PiMagnifyingGlass className="text-2xl " />}
               onItemSelected={setSearchJobTitle}
             />
             <SearchBox
               placeholder="Location or Timezone"
+              value={searchJobLocation}
               className="pt-3 md:pl-6 md:pt-0"
-              items={JobsList.map((job) => job.location)}
+              items={[...new Set(JobsList.map((job) => job.location))]} // Convert the locations to a Set to remove duplicates
               icon={<PiNavigationArrow className="text-2xl " />}
               onItemSelected={setSearchJobLocation}
             />
@@ -212,7 +219,6 @@ const Home = () => {
         </div>
       </motion.div>
       <Drawer
-        
         placement="right"
         closable={false}
         onClose={closeDrawer}
@@ -220,7 +226,7 @@ const Home = () => {
         width="100%" // Adjust the width as needed
         height="100%"
       >
-       <Web closeDrawer={closeDrawer} selectedJobId={selectedJobIdForApply}/>
+        <Web closeDrawer={closeDrawer} selectedJobId={selectedJobIdForApply} />
       </Drawer>
     </main>
   );
