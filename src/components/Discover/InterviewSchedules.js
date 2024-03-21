@@ -142,7 +142,7 @@ export default function InterviewSchedules() {
   ));
 
   return (
-    <div className="flex flex-col gap-2 overflow-auto 2xl:max-h-[368px] max-h-72">
+    <div className="flex flex-col gap-2 overflow-auto 2xl:max-h-[322px] max-h-72">
       {accordians}
     </div>
   );

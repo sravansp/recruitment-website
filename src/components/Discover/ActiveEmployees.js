@@ -21,9 +21,9 @@ export default function ActiveEmployees() {
   ];
   const totalCount = data.reduce((total, item) => total + item.count, 0);
   return (
-    <div className="flex flex-col gap-4 h-[272px]">
+    <div className="flex flex-col gap-4 h-[220px] xl:h-[200px]">
         <div className="flex items-center justify-between px-4 dark:text-white">
-            <p className=""><span className=" text-3xl font-semibold">{totalCount}</span> <span className=" text-2xl text-grey">employees</span></p>
+            <p className=""><span className="text-3xl font-semibold ">{totalCount}</span> <span className="text-2xl text-grey">employees</span></p>
             <Link to className="pblack !font-normal text-primary flex items-center gap-2">View all employees <PiCaretDoubleRightLight /></Link>
         </div>
       <ResponsiveContainer width="45%" height="100%">

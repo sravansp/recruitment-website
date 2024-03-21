@@ -8,6 +8,8 @@ import InterviewSchedules from "./InterviewSchedules";
 import LiveJobs from "./LiveJobs";
 import ActiveEmployees from "./ActiveEmployees";
 import AgeOfJobs from "./AgeOfJobs";
+import NewApplicants from "./NewApplicants";
+import AgeDistribution from "./AgeDistribution";
 
 const Discover = () => {
   const smallCard = [
@@ -39,50 +41,48 @@ const Discover = () => {
 
   const dropdown1 = [
     {
-      id:1,
-      label:"Any Time",
-      value:"anytime"
+      id: 1,
+      label: "Any Time",
+      value: "anytime",
     },
     {
-      id:2,
-      label:"Yesterday",
-      value:"yesterday"
+      id: 2,
+      label: "Yesterday",
+      value: "yesterday",
     },
     {
-      id:3,
-      label:"Last 7 Days",
-      value:"last7days"
+      id: 3,
+      label: "Last 7 Days",
+      value: "last7days",
     },
     {
-      id:4,
-      label:"Last 30 Days",
-      value:"last30days"
+      id: 4,
+      label: "Last 30 Days",
+      value: "last30days",
     },
     {
-      id:5,
-      label:"Last 90 Days",
-      value:"last90days"
+      id: 5,
+      label: "Last 90 Days",
+      value: "last90days",
     },
-    
-  ]
+  ];
   const dropdown2 = [
     {
-      id:1,
-      label:"All Users",
-      value:"allusers"
+      id: 1,
+      label: "All Users",
+      value: "allusers",
     },
     {
-      id:2,
-      label:"Employees",
-      value:"employees"
+      id: 2,
+      label: "Employees",
+      value: "employees",
     },
     {
-      id:3,
-      label:"Recruiters",
-      value:"recruiters"
+      id: 3,
+      label: "Recruiters",
+      value: "recruiters",
     },
-    
-  ]
+  ];
   return (
     <div className="flex flex-col gap-4 discover">
       <div className="headerTitle">
@@ -160,18 +160,28 @@ const Discover = () => {
               </Card>
             </div>
           </div>
-          <Card cardName="Live Jobs" className="h-96" filters = {true} dropdown1={dropdown1} dropdown2={dropdown2}>
-            <LiveJobs  />
+          <Card
+            cardName="Live Jobs"
+            className="h-96"
+            filters={true}
+            dropdown1={dropdown1}
+            dropdown2={dropdown2}
+          >
+            <LiveJobs />
           </Card>
-          <Card cardName="Age of Jobs" className="h-96" filters = {true} dropdown1={dropdown1} dropdown2={dropdown2}>
+          <Card
+            cardName="Age of Jobs"
+            className="h-96"
+            filters={true}
+            dropdown1={dropdown1}
+            dropdown2={dropdown2}
+          >
             <AgeOfJobs />
           </Card>
         </div>
         {/* RIGHT COLUMN  */}
         <div className="flex flex-col col-span-12 gap-4 xl:col-span-4">
-
           <div className="flex flex-col gap-4 md:grid md:grid-cols-2 xl:flex">
-
             <div className="flex flex-col gap-4 xl:flex-col">
               <Card
                 className="2xl:min-h-[250px] h-full"
@@ -189,8 +199,14 @@ const Discover = () => {
               <ActiveEmployees />
             </Card>
           </div>
-          <Card cardName="Time to Fill" className="h-96"></Card>
-          
+          <div className="flex flex-col gap-4 md:grid md:grid-cols-2 xl:flex">
+            <Card cardName="New Applicants" className="">
+              <NewApplicants />
+            </Card>
+            <Card cardName="Age Distribution" className="">
+              <AgeDistribution />
+            </Card>
+          </div>
         </div>
       </div>
     </div>
