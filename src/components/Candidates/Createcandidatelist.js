@@ -21,8 +21,16 @@ import { CgAdd } from 'react-icons/cg';
 import AddMore from '../common/AddMore';
 import TextArea from '../common/TextArea';
 import ButtonClick from '../common/Button';
-
+import profile from "../../assets/images/Frame 427319140.png"
+import Frame1 from "../../assets/images/FrameG 427319587.png";
+import Frame2 from "../../assets/images/FrameG 427319587 (1).png";
+import Frame3 from "../../assets/images/FrameG 427319587 (2).png";
+import Frame4 from "../../assets/images/FrameG 427319587 (3).png";
+import LOGO from "../../assets/images/Bayt.png";
+import resume from "../../assets/images/resumep.png";
 import { GrEdit } from "react-icons/gr";
+import Header from '../Header/Header';
+import CVResume from './CandidateProfileTabs/CVResume';
 
 
 export default function Createcandidatelist({ open = "", close = () => { }, refresh, ConfigurationAction, }) {
@@ -35,6 +43,15 @@ export default function Createcandidatelist({ open = "", close = () => { }, refr
   const [presentage, setPresentage] = useState(0);
 
   const { t } = useTranslation();
+
+  const PersonelDetail = [{ id: 1, Image: Frame1, title: "Email Address", text: "grace.bennet@example.com" }, { id: 2, Image: Frame3, title: "Phone number", text: "+971 50671852" }, { id: 3, Image: Frame2, title: "DOB", text: "03 September 2000" }, { id: 4, Image: Frame4, title: "Location", text: "P156 Street, Al Qusais, UAE, 563211" }]
+
+  const educationdetail = [{ id: 1, name: "Middle Earth Technic University", text: "Master degree in computer science and mathamatics", dateplace: "january,2012 Istanbul,Turkey" }, { id: 2, name: "Bogazici Technic University", text: "Master degree in computer science and mathamatics", dateplace: "january,2012 Istanbul,Turkey" }]
+
+
+  const companydetail = [{ id: 1, name: "Trendyol.com", status: "Fulltime", domain: "Front-End-Developer", time: "1 year 2Months Oct 2021,Dec 2021" },
+  { id: 1, name: "TiklaGelsin", status: "Contract", domain: "Front-End-Developer", time: "1 year 2Months Oct 2021,Dec 2021" },
+  { id: 1, name: "Pazarama", status: "Internship", domain: "Front-End-Developer", time: "1 year 2Months Oct 2021,Dec 2021" }]
 
 
   const formik = useFormik({
@@ -236,7 +253,7 @@ export default function Createcandidatelist({ open = "", close = () => { }, refr
             !isUpdate
               ? t("Head Of Director")
               : t("Update Head Of Director"),
-            t("Create_Social_Security_Contributions_By_Simple_Steps"),
+            t("content"),
           ]}
           headerRight={
             <div className="flex items-center gap-10">
@@ -558,39 +575,39 @@ export default function Createcandidatelist({ open = "", close = () => { }, refr
                     }}
                     initialExpanded={true}
                   >
-                   
-                      <div className='flex items-end'>
-                        <div className="grid grid-cols-1 gap-4 w-4/5">
-                          <FormInput
-                           
-                            title={t("Are you legally eligible to work in the country?")}
-                            placeholder={t("Answer here..")}
+
+                    <div className='flex items-end'>
+                      <div className="grid grid-cols-1 gap-4 w-4/5">
+                        <FormInput
+
+                          title={t("Are you legally eligible to work in the country?")}
+                          placeholder={t("Answer here..")}
 
 
-                          />
+                        />
 
-                          <FormInput
-                            title={t("Highest level of education completed")}
-                            placeholder={t("Answer here..")}
+                        <FormInput
+                          title={t("Highest level of education completed")}
+                          placeholder={t("Answer here..")}
 
-                          />
-                            <FormInput
-                            title={t("Highest level of education completed")}
-                            placeholder={t("Answer here..")}
+                        />
+                        <FormInput
+                          title={t("Highest level of education completed")}
+                          placeholder={t("Answer here..")}
 
-                          />
-                          <FormInput
-                            title={t("Highest level of education completed")}
-                            placeholder={t("Answer here..")}
+                        />
+                        <FormInput
+                          title={t("Highest level of education completed")}
+                          placeholder={t("Answer here..")}
 
-                          />
+                        />
 
 
 
-                        </div>
-                       
                       </div>
-                    
+
+                    </div>
+
                   </Accordion>
 
 
@@ -600,7 +617,7 @@ export default function Createcandidatelist({ open = "", close = () => { }, refr
               </>
             ) : (activeBtnValue === "Review" && (
               <>
-               <FlexCol justify="center" align="center" className="w-5/6 m-auto">
+                <FlexCol justify="center" align="center" className="w-5/6 m-auto">
                   <Accordion
                     title={"Review"}
                     className="Text_area "
@@ -611,17 +628,91 @@ export default function Createcandidatelist({ open = "", close = () => { }, refr
                     }}
                     initialExpanded={true}
                   >
-                   
-                      <div>
+                    <div className='divide-y flex flex-col gap-8'>
+                      <div className='flex flex-col gap-4'>
                         <div className='flex justify-between'>
-                        <h1 className='text-sm font-semibold text-black lg:text-xs 2xl:text-base dark:text-white'>Personel Details</h1>
-                        <ButtonClick 
-                        buttonName='Edit Details'
-                        icon={<GrEdit />}
-                        />
+                          <h1 className='text-sm font-semibold text-black lg:text-xs 2xl:text-base dark:text-white'>Personel Details</h1>
+                          <ButtonClick
+                            buttonName='Edit Details'
+                            icon={<GrEdit />}
+                          />
+                        </div>
+
+                        <div className='flex gap-2 items-center'>
+                          <img src={profile} className='rounded-full' />
+                          <h3 className='text-sm font-semibold text-black lg:text-xs 2xl:text-base dark:text-white'>Grace Bennett Anderson</h3>
+                        </div>
+                        <div className="grid grid-cols-2 gap-4 w-4/5">
+                          {PersonelDetail.map((item) => (
+                            <div className='flex gap-2'>
+                              <img src={item.Image} className='rounded-lg h-11 w-11' />
+                              <div>
+                                <p className='text-sm font-normal text-gray-500 2xl:text-base dark:text-white'>{item.title}</p>
+                                <h3 className='text-sm font-semibold text-black 2xl:text-base dark:text-white'>{item.text}</h3>
+                              </div>
+                            </div>
+                          ))}
                         </div>
                       </div>
-                    
+
+                      <div className='flex flex-col gap-4 '>
+                        <h1 className='mt-10 text-base font-semibold text-black 2xl:text-2xl dark:text-white'>Education</h1>
+                        {educationdetail.map((each) => (
+                          <div className='flex flex-col gap-2 divide-y '>
+                            <div className='flex gap-3 '>
+                              <img src={LOGO} className='rounded-full h-12 w-12' />
+                              <div>
+                                <h2 className='text-sm font-semibold text-black lg:text-xs 2xl:text-base dark:text-white'>{each.name}</h2>
+                                <h3>{each.text}</h3>
+                                <p className='text-sm font-normal text-gray-500 2xl:text-base dark:text-white'>{each.dateplace}</p>
+                              </div>
+                            </div>
+                          </div>
+                        ))}
+                      </div>
+
+
+                      <div className='flex flex-col gap-4 '>
+                        <h1 className='mt-10 text-base font-semibold text-black 2xl:text-2xl dark:text-white'>All Experiences</h1>
+                        {companydetail.map((each) => (
+                          <div className='flex flex-col gap-2 divide-y '>
+                            <div className='flex gap-3 '>
+                              <img src={LOGO} className='rounded-full h-12 w-12' />
+                              <div>
+                                <span className='flex gap-2 items-center'>
+                                  <h2 className='text-sm font-semibold text-black lg:text-xs 2xl:text-base dark:text-white'>{each.name}</h2>
+                                  <h3 className='bg-slate-200 rounded-md'>{each.status}</h3>
+                                </span>
+                                <span className='flex gap-2 items-center'>
+                                  <p className='text-sm font-normal text-gray-500 2xl:text-base dark:text-white'>{each.domain}</p>
+                                  <p className='text-sm font-normal text-gray-500 2xl:text-base dark:text-white'>{each.time}</p>
+                                </span>
+                              </div>
+                            </div>
+                          </div>
+                        ))}
+                      </div>
+
+                      <div className='flex flex-col gap-3'>
+                      {/* <h1 className="h1 !mt-10">{t("Resume/Cv")}</h1> */}
+                        {/* <div className='flex justify-between items-center'>
+                        <div className='flex gap-2 items-center'>
+                          <img src={resume} className='rounded-lg' />
+                          <h3 className='text-sm font-semibold text-black lg:text-xs 2xl:text-base dark:text-white'>Grace Bennett Anderson</h3>
+                        </div>
+                        <ButtonClick
+                            buttonName='Edit Details'
+                            icon={<GrEdit />}
+                          />
+                          
+                        </div> */}
+                        <div>
+                          <CVResume />
+                        </div>
+                        
+                      </div>
+                    </div>
+
                   </Accordion>
 
 
