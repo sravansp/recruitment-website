@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from "react";
-import { Link,useParams } from "react-router-dom";
+import { Link,useParams,useLocation } from "react-router-dom";
 import ButtonClick from "../common/Button";
 import { Button, Divider, Dropdown, Rate, message } from "antd";
 import { useMediaQuery } from "react-responsive";
@@ -98,6 +98,7 @@ const handleTabChange = (tabId) => {
 
 const CandidateProfile = () => {
   const { t } = useTranslation();
+  const { state } = useLocation();
   const primaryColor = localStorage.getItem("mainColor");
   const isSmallScreen = useMediaQuery({ maxWidth: 1439 });
   const [messageApi, contextHolder] = message.useMessage();
@@ -111,9 +112,16 @@ const CandidateProfile = () => {
   const { resumeId } = useParams();
  
   
-  useEffect(()=>{
-    setJobId(localStorage.getItem('jobid'))
-  })
+  useEffect(() => {
+    if (state && state.jobID) {
+        setJobId(state.jobID);
+    } else {
+        const storedJobId = localStorage.getItem('jobid');
+        if (storedJobId) {
+            setJobId(storedJobId);
+        }
+    }
+}, [state]);
   const tabs = [
     {
       id: 1,
@@ -385,7 +393,7 @@ useEffect(() => {
                 </a>
               </Dropdown>
               <div className="bg-[#FFE8E8] rounded-full px-4 py-1">
-                {selectedItemLabel && selectedItemLabel}
+              {selectedItemLabel ? selectedItemLabel : items.stageName}
               </div>
             </div>
             

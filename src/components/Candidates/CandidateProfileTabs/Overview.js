@@ -24,6 +24,7 @@ import ButtonClick from "../../common/Button";
 import PDFViewer from "../../common/PDFViewer";
 import pdfFile from "../../../assets/documents/sample.pdf";
 import { workExperiences, educationExperiences } from "../../common/DataArrays";
+import { useParams } from "react-router-dom";
 
 // const userInfo = [
 //   {
@@ -76,8 +77,12 @@ const Overview = () => {
   const[candidate,setcandidate] =useState([])
   const[userdata,setuserdata]=useState([])
   const selectedDataId = useSelector((state) => state.dataId.selectedDataId);
-  const id=selectedDataId
-
+  const { resumeId } = useParams();
+  const[PdFViewer,setPdFViewer] = useState("")
+  const id = resumeId
+  const handleViewResume = () => {
+    window.open(PdFViewer, "_blank"); // Open PDF URL in a new tab
+  };
   const getCandidatesById = async () => {
     try {
       const response = await getRecruitmentResumeById(id);
@@ -124,7 +129,11 @@ const Overview = () => {
         },
       ]
       })))
+      setPdFViewer(response.result[0].resumeFile)
+
+
       console.log(response.result)
+      console.log(PdFViewer)
   
     } catch (error) {
       console.error('Error updating workflow ID:', error);
@@ -204,7 +213,7 @@ const Overview = () => {
           </div>
         </Accordion>
 
-        <div className="box-wrapper">
+        <div className="box-wrapper h-full">
           <div className="flex flex-col gap-4">
             <div className="flex items-center justify-between">
               <h6 className="h6 !text-black dark:!text-white">CV / Resume</h6>
@@ -222,13 +231,15 @@ const Overview = () => {
                 </p>
               </div>
               <ButtonClick
-                buttonName="Download"
+                buttonName="View Resume"
                 BtnType="primary"
                 icon={<RiArrowDownLine />}
+                handleSubmit={handleViewResume}
+                
               />
             </div>
             <div className="divider-h" />
-            <PDFViewer pdfUrl={pdfFile} />
+            
           </div>
         </div>
         {/* WORK EXPERIENCE  */}

@@ -262,8 +262,9 @@ const formik1 = useFormik({
     
         // Check if jobId or UpdateId is present
         if ((jobId && jobId.length > 0) || UpdateId) {
+          const idToUpdate = jobId || UpdateId;
           const response = await updateRecruitmentJob({
-            id: jobId,
+            id: idToUpdate,
             companyId: companyId,
             jobTitle: e.jobTitle,
             departmentId: e.departmentId,
@@ -594,15 +595,15 @@ const handleAddField = (index) => {
     {
       id: 1,
       value: 0,
-      title: t("Jobdetails"),
-      data: "Job details",
+      title: t("Job Details"),
+      data: "Jobdetails",
     },
 
     {
       id: 2,
       value: 1,
-      title: t("Applicationform"),
-      data: "Application Form",
+      title: t("Application Form"),
+      data: "ApplicationForm",
     },
     {
       id: 3,
@@ -613,8 +614,8 @@ const handleAddField = (index) => {
     {
         id: 4,
         value: 3,
-        title: t("TeamMembers"),
-        data: "Team Members",
+        title: t("Team Members"),
+        data: "TeamMembers",
       },
       {
         id: 5,
@@ -791,6 +792,7 @@ const handleAddField = (index) => {
     workFlowId:"",
     },
     onSubmit: async (e) => {
+      const idToUpdate = jobId || UpdateId;
       const workFlowId = selectedWorkFlowId;
       const modifiedBy =userid;
       
@@ -798,9 +800,9 @@ const handleAddField = (index) => {
         console.log(e)
         const response = await updateRecruitmentJob(
                {
-                 id:jobId,
-                 workFlowId:workFlowId,
-                 modifiedBy:modifiedBy,
+                 id:parseInt(idToUpdate),
+                 workFlowId:parseInt(workFlowId),
+                 modifiedBy:parseInt(modifiedBy),
                }
                 
               );
@@ -845,7 +847,7 @@ const handleAddField = (index) => {
         const workFlowId = selectedWorkFlowId;
         const response = await updateRecruitmentJob(
                {
-                 id:jobId,
+                 id:jobId||updateId,
                  jobPublishDetails:"this is jobPublishDetails ",
                  jobPublishType:"Confidential",
                  modifiedBy:modifiedBy,
@@ -860,6 +862,7 @@ const handleAddField = (index) => {
         if (response.status === 200) {
           openNotification("success", "Successful", response.message);
           setPresentage(3.4)
+          refresh()
           // Add a delay before closing the notification
           setTimeout(() => {
             handleClose();
@@ -897,7 +900,7 @@ const handleAddField = (index) => {
 
   const handleButtonClick = async (e) => {
     switch (activeBtnValue) {
-      case "Job Details":
+      case "Jobdetails":
         // Handle submission for Configuration
         
         console.log("valuegtgggggggggggg")
@@ -905,7 +908,7 @@ const handleAddField = (index) => {
 
         break;
 
-      case "Application Form":
+      case "ApplicationForm":
         // Handle submission for Applicability
         // Your logic for Applicability form submission...
         // Move to the next step if applicable
@@ -934,7 +937,7 @@ const handleAddField = (index) => {
       formik2.handleSubmit()
       // }
       break;
-        case "Team Members":
+        case "TeamMembers":
           AllRecruitmentJobTeamMembers();
           formik4.handleSubmit();
             
@@ -1005,11 +1008,11 @@ const handleAddField = (index) => {
       createdBy: "",
     },
     onSubmit: async (e) => {
-      
+      const idToUpdate = jobId || UpdateId;
       const createdBy =userid;
       console.log(createdBy)
       const dataToSave = selectedemployee.map(employee => ({
-        jobId: jobId,  // Assuming jobId is present in the employee object
+        jobId: idToUpdate,  // Assuming jobId is present in the employee object
         userId: employee.userId,
         roleId: employee.roleId,
         createdBy: createdBy
@@ -1144,9 +1147,9 @@ const handleAddField = (index) => {
      }}
     
      header={[
-        !isUpdate
+        !updateId
           ? t("Create a Job")
-          : t("Create a Job Temaplate"),
+          : t("Update Job "),
         t("Lorem ipsum dummy text doret solo."),
       ]}
       
@@ -1215,7 +1218,7 @@ const handleAddField = (index) => {
                   
           <div className="relative max-w-[1070px]  w-full mx-auto ">
         
-                  {activeBtnValue === "Job Details" ? (
+                  {activeBtnValue === "Jobdetails" ? (
                     <>
                    
                         <FlexCol>
@@ -1592,7 +1595,7 @@ impactful, accurate, and personalized to your company</p>
                                     </FlexCol>
                                     </>
                   
-                ) : activeBtnValue === "Application Form" ? (
+                ) : activeBtnValue === "ApplicationForm" ? (
                   <>
                   <FlexCol>
                   <Accordion
@@ -1981,7 +1984,7 @@ impactful, accurate, and personalized to your company</p>
     </Radio.Group>
                   </Accordion>
                   </FlexCol>
-                ) : activeBtnValue === "Team Members" ? (
+                ) : activeBtnValue === "TeamMembers" ? (
                   <FlexCol>
                   <Accordion
                     title={"TeamMembers"}

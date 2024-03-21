@@ -542,7 +542,7 @@ const DragView = () => {
                                 key={item.id}
                                 data={item}
                                 index={iIndex}
-                                jobId={jobId}
+                                
                                 color={colors[bIndex]}
                                 className="m-3"
                               />
@@ -586,7 +586,7 @@ const CardItem = ({ data, index, color,jobId }) => {
     localStorage.setItem("selectedDataId", data.id);
     
     // Navigate to candidateprofile page with data.id
-    navigate(`/candidateprofile/${data.id}?jobId=${jobId}`)
+    navigate(`/candidateprofile/${data.id}`, { state: { jobID: jobId } });
     
     // Optionally, update the state with the selectedId
     

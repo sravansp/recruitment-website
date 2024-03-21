@@ -9,6 +9,7 @@ pdfjs.GlobalWorkerOptions.workerSrc = `//unpkg.com/pdfjs-dist@${pdfjs.version}/b
 function PDFViewer({ pdfUrl }) {
   const [numPages, setNumPages] = useState(null);
   const [pageNumber, setPageNumber] = useState(1);
+  console.log("PDF URL:", pdfUrl);
 
   function onDocumentLoadSuccess({ numPages }) {
     setNumPages(numPages);
@@ -21,12 +22,12 @@ function PDFViewer({ pdfUrl }) {
   const goToNextPage = () => {
     setPageNumber((prevPageNumber) => Math.min(prevPageNumber + 1, numPages));
   };
+  
 
   return (
-    <div className="relative flex-col vhcenter group bg-[#F5F5F5] dark:bg-lightdark p-6 rounded-md">
-      <Document file={pdfUrl} onLoadSuccess={onDocumentLoadSuccess}>
-        <Page pageNumber={pageNumber} />
-      </Document>
+    <div className="relative flex-col vhcenter group bg-[#F5F5F5] dark:bg-lightdark  rounded-md h-full">
+    <div className="h-96 w-full">
+     <iframe src={pdfUrl} className="w-full h-full"></iframe></div> 
       <div className="page-controls flex items-center absolute bottom-[5%] left-1/2 bg-white opacity-0 group-hover:opacity-100 transform -translate-x-1/2 transition-opacity rounded z-[2]">
         <button className="relative vhcenter" onClick={goToPreviousPage} disabled={pageNumber <= 1}>
           <RiArrowLeftLine />

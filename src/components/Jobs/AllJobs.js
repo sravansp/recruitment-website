@@ -415,7 +415,7 @@ function AllJobs() {
                 open={show}
                 close={(e) => {
                   setShow(e);
-
+                  setUpdateId(false)
                   handleClose();
                 }}
                 inputshow={true}
