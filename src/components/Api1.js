@@ -1,7 +1,7 @@
 import axios from "axios";
 
-  // const apiUrl = 'http://192.168.29.185/loyaltri-recruitment-server/api/v1';
-const apiUrl = 'https://alpha-jobs-api.loyaltri.com/api/v1';
+  const apiUrl = 'http://192.168.29.185/loyaltri-recruitment-server/api/v1';
+// const apiUrl = 'https://alpha-jobs-api.loyaltri.com/api/v1';
 
 
 const apiRequest = async (action, method, kwargs) => {
@@ -550,9 +550,9 @@ export const getRecruitmentWorkFlowById = async (id) => {
  
   return await apiRequest(action, method, kwargs);
 };
-export const updateRecruitmentWorkFlow = async (e) => {
+export const updateWorkFlowWithStages = async (e) => {
   try {
-    const action = "updateRecruitmentWorkFlow";
+    const action = "updateWorkFlowWithStages";
     const method = "POST";
     const kwargs = e;
     
@@ -571,24 +571,7 @@ export const updateRecruitmentWorkFlow = async (e) => {
     throw error; // Re-throw the error to handle it where the function is called.
   }
 };
-export const updateRecruitmentWorkFlowStage = async (e) => {
-  try {
-    const action = "updateRecruitmentWorkFlowStage";
-    const method = "POST";
-    const kwargs = e;
-    
-    console.log("API Request Data:", { action, method, kwargs });
 
-    const response = await apiRequest(action, method, kwargs);
-
-    console.log("API Response:", response);
-
-    return response;
-  } catch (error) {
-    console.error("Error in saveRecruitmentWorkFlowStage:", error);
-    throw error; // Re-throw the error to handle it where the function is called.
-  }
-};
 export const getRecruitmentEvaluationTemplateDetailById = async (id) => {
   const action = "getRecruitmentEvaluationTemplateDetailById";
 
@@ -606,6 +589,16 @@ const API ={
   UPDATE_EvaluationS: "toggleRecruitmentEvaluationTemplateStatus",
   UPDATE_Questionaire: "toggleRecruitmentQuestionnaireTemplateStatus",
   UPDATE_Letter: "toggleRecruitmentLetterTemplateStatus",
+
+  //delete API
+  DELETE_Job_Templates:"deleteRecruitmentJobTemplateById",
+  DELETE_Job_Description:"",
+  DELETE_Workflow:"",
+  DELETE_Email:"",
+  DELETE_Evaluation:"",
+  DELETE_Questionaire:"",
+  DELETE_Letter:"",
+
 
 
 }

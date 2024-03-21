@@ -34,6 +34,7 @@ import { useDispatch, useSelector } from 'react-redux';
 import { setNavigationPath } from "../../Redux/action";
 import { setSelectedDataId } from "../../Redux/action";
 import { useNavigate } from 'react-router-dom';
+import ModalPop from "./ModalPop";
 
 
 // Filter Dropdown
@@ -57,21 +58,22 @@ const gridListoptions = [
 const TableAnt = ({
   data = [],
   header = [],
-  actionToggle=false,
+  actionToggle = false,
   actionID = "",
   updateApi = "",
   deleteApi = "",
   path = "",
   tabValue = "",
-  buttonClick = () => {},
-  clickDrawer = () => {},
+  buttonClick = () => { },
+  clickDrawer = () => { },
   viewDetails = false,
   showButton = false,
-  All=false,
-  showsearch=false,
-  refresh = () => {},
-  recordId="",
-  
+  All = false,
+  showsearch = false,
+  viewOutside = false,
+  refresh = () => { },
+  recordId = "",
+
 }) => {
   const { t } = useTranslation();
   const navigate = useNavigate();
@@ -85,9 +87,9 @@ const TableAnt = ({
   const [searchValue, setSearchValue] = useState("");
   const [searchFilter, setSearchFilter] = useState([...data]);
   // const [navigationPath, setNavigationPath] = useState("");
-   
+
   const dispatch = useDispatch();
-  
+
   const [updateId, setUpdateId] = useState("");
   const [visibleColumns, setVisibleColumns] = useState();
   const [dropdownVisible, setDropdownVisible] = useState(false);
@@ -96,7 +98,10 @@ const TableAnt = ({
   const [show, setShow] = useState(false);
   const [openPop, setOpenPop] = useState("");
   const handleShow = () => setShow(true);
+  const [modalData, setModalData] = useState({});
 
+  const [isModalOpen, setIsModalOpen] = useState(false);
+  const [isModalshow, setIsModalshow] = useState(true);
   const [api, contextHolder] = notification.useNotification();
   const openNotification = (type, message, description, callback) => {
     api[type]({
@@ -107,16 +112,14 @@ const TableAnt = ({
 
       // stack: 2,
       style: {
-        background: `${
-          type === "success"
+        background: `${type === "success"
             ? `linear-gradient(180deg, rgba(204, 255, 233, 0.8) 0%, rgba(235, 252, 248, 0.8) 51.08%, rgba(246, 251, 253, 0.8) 100%)`
             : "linear-gradient(180deg, rgba(255, 236, 236, 0.80) 0%, rgba(253, 246, 248, 0.80) 51.13%, rgba(251, 251, 254, 0.80) 100%)"
-        }`,
-        boxShadow: `${
-          type === "success"
+          }`,
+        boxShadow: `${type === "success"
             ? "0px 4.868px 11.358px rgba(62, 255, 93, 0.2)"
             : "0px 22px 60px rgba(134, 92, 144, 0.20)"
-        }`,
+          }`,
       },
       // duration: null,
     });
@@ -126,8 +129,8 @@ const TableAnt = ({
     setListData([...data]);
     // }
   }, [data[0]]);
-    
-  
+
+
   React.useEffect(() => {
     dispatch(setNavigationPath(tabValue));
   }, [dispatch, tabValue]);
@@ -135,14 +138,14 @@ const TableAnt = ({
 
   const navigationPath = useSelector((state) => state.navigation.navigationPath);
   useEffect(() => {
-    console.log("Updated navigationPath:", navigationPath);
+    //console.log("Updated navigationPath:", navigationPath);
   }, [navigationPath]);
 
 
   const handleAddButtonClick = (path) => {
     // Use the path parameter as needed in your function
-    console.log(`Add button clicked for path: ${path}`);
-  
+    //console.log(`Add button clicked for path: ${path}`);
+
     // The rest of your logic...
   };
   const handleToggleList = (id, checked) => {
@@ -177,17 +180,19 @@ const TableAnt = ({
   //   );
   // };
 
+
+
   // update Api integration
   const updateCompany = async (id, checked) => {
     try {
-      console.log(
-        updateApi,
-        {
-          [actionID]: id, //Id
-          isActive: checked === true ? 1 : 0,
-        },
-        "updateApi"
-      );
+      // console.log(
+      //   updateApi,
+      //   {
+      //     [actionID]: id, //Id
+      //     isActive: checked === true ? 1 : 0,
+      //   },
+      //   "updateApi"
+      // );
       // const result = await action(updateApi, {
       //   [actionID]: id, //Id
       //   isActive: checked === true ? 1 : 0,
@@ -196,7 +201,7 @@ const TableAnt = ({
         id: id, //Id
         // isActive: checked === true ? 1 : 0,
       });
-      console.log(response);
+      //console.log(response);
 
       if (response.status === 200) {
         // handleClose();
@@ -217,37 +222,47 @@ const TableAnt = ({
 
   const deleteRecord = async (e) => {
     // console.log(e);
-    const result = await axios.post(API.HOST + deleteApi + "/" + e);
+    const result = await action(deleteApi, { id: e });
     // console.log(result);
-    if (result.data.status === 200) {
-      window.location.reload();
+    if (result.status === 200) {
+      // window.location.reload();
+      openNotification("success", "Success", result?.message);
+      refresh(true);
     }
   };
 
- 
-  
 
-  const handleRowClick = (record) => {
+
+  const handleRowClick = (text, title) => {
+    setModalData({ text, title });
+    setIsModalOpen(true);
     // Check if the path is present and is not an empty array and if 'action' does not exist in the current column configuration
-    if (
-      path &&
-      path.length > 0 &&
-      !header[0]?.[tabValue || path || '']?.some(
-        column => column.value === 'action' // Check if 'action' exists in the column configuration
-      )
-    ) {
-      dispatch(setSelectedDataId(record[actionID]));
-      navigate(`/${path}/${record[actionID]}`);
-      // Store the clicked data ID in local storage only when the path is present and not an empty array
-      localStorage.setItem('selectedDataId', record[actionID]);
-    }
+    // if (
+    //   path &&
+    //   path.length > 0 &&
+    //   !header[0]?.[tabValue || path || '']?.some(
+    //     column => column.value === 'action' // Check if 'action' exists in the column configuration
+    //   )
+    // ) {
+    //   dispatch(setSelectedDataId(record[actionID]));
+    //   navigate(`/${path}/${record[actionID]}`);
+    //   // Store the clicked data ID in local storage only when the path is present and not an empty array
+    //   localStorage.setItem('selectedDataId', record[actionID]);
+    // }
+
+
   };
+  console.log(modalData, "hii");
+  console.log("modalData.title:", modalData.title);
+  console.log("tabTitle:", tabTitle);
+  console.log("path:", path);
+
   // useEffect(()=>{
   //   const record
   //   console.log(record.jobId)
   // })
   useEffect(() => {
-    console.log(header, "header");
+    // console.log(header, "header");
     setTableData(
       (header[0]?.[tabValue || path || ''] || []).map((each, i) => ({
         title: (
@@ -271,23 +286,30 @@ const TableAnt = ({
               {each.value === "isActive" ? (
                 <div
                   key={text}
-                  className={`${
-                    parseInt(record) === 1
+                  className={`${parseInt(record) === 1
                       ? " bg-emerald-100 text-emerald-600"
                       : " bg-rose-100 text-rose-600"
-                  } rounded-full pr-2 py-[2px] w-fit font-medium text-[10px] 2xl:text-sm vhcenter flex-nowrap`}
+                    } rounded-full pr-2 py-[2px] w-fit font-medium text-[10px] 2xl:text-sm vhcenter flex-nowrap`}
+                  onClick={() => {
+                    !viewOutside &&
+                      handleRowClick(text, header[0]?.[tabValue || path]);
+                    console.log(tabValue, path, "kiok");
+                  }}
                 >
                   <RxDotFilled
-                    className={`${
-                      parseInt(record) === 1
+                    className={`${parseInt(record) === 1
                         ? "text-emerald-600"
                         : "text-rose-600"
-                    } text-base 2xl:text-lg`}
+                      } text-base 2xl:text-lg`}
                   />
                   {parseInt(record) === 1 ? "Active" : "Inactive"}
                 </div>
               ) : each.flexColumn === true ? (
-                <div className="flex items-center gap-4">
+                <div className="flex items-center gap-4"
+                  onClick={() => {
+                    !viewOutside &&
+                      handleRowClick(text, header[0]?.[tabValue || path]);
+                  }}>
                   <div className="w-8 h-8 overflow-hidden rounded-full 2xl:w-10 2xl:h-10">
                     <img
                       // src={record.logo}
@@ -297,7 +319,7 @@ const TableAnt = ({
                     />
                   </div>
                   <div className="">
-                    <p className="text-xs font-semibold text-black capitalize 2xl:text-sm dark:text-white" onClick={handleRowClick}>
+                    <p className="text-xs font-semibold text-black capitalize 2xl:text-sm dark:text-white" >
                       {text.company}
                     </p>
                     {/* <>{alert(JSON.stringify(text[each.]))}</> */}
@@ -305,46 +327,47 @@ const TableAnt = ({
                   </div>
                   <div className="pl-4">
                     <div
-                      className={`${
-                        parseInt(text.isActive) === 1
+                      className={`${parseInt(text.isActive) === 1
                           ? " bg-emerald-100 text-emerald-600"
                           : " bg-rose-100 text-rose-600"
-                      } rounded-full pr-2 py-[2px] w-fit font-medium text-[10px] 2xl:text-sm vhcenter flex-nowrap`}
+                        } rounded-full pr-2 py-[2px] w-fit font-medium text-[10px] 2xl:text-sm vhcenter flex-nowrap`}
                     >
                       <RxDotFilled
-                        className={`${
-                          parseInt(text.isActive) === 1
+                        className={`${parseInt(text.isActive) === 1
                             ? "text-emerald-600"
                             : "text-rose-600"
-                        } text-base 2xl:text-lg`}
+                          } text-base 2xl:text-lg`}
                       />
                       {parseInt(text.isActive) === 1 ? "Active" : "Inactive"}
                     </div>
                   </div>
                 </div>
               ) : each.block ? (
-                <div>
+                <div onClick={() => {
+                  !viewOutside &&
+                    handleRowClick(text, header[0]?.[tabValue || path]);
+                }}>
                   <p className="text-xs font-medium text-black 2xl:text-sm dark:text-white">
                     {text[each.value]}
                   </p>
                   <p className="!font-normal para" >{text[each.value]}</p>
                 </div>
               ) : each.actionToggle ? (
-              
-               <Switch
+
+                <Switch
                   checked={parseInt(text.isActive)}
                   onChange={(checked) => {
                     handleToggleList(text?.[actionID], checked);
                     // buttonClick(each.companyId);
                     // activeOrNot(checked);
-                    console.log(checked);
-                    console.log(text?.[actionID]);
+                    //console.log(checked);
+                    //console.log(text?.[actionID]);
                     updateCompany(text?.[actionID], checked);
                   }}
                   className=" bg-[#c2c0c0aa]"
                   size={isSmallScreen ? "small" : "default"}
                 />
-               
+
               ) : each.action ? (
                 <div className="flex items-center justify-start gap-4">
                   <button
@@ -374,20 +397,23 @@ const TableAnt = ({
                   >
                     <button
                       className={`w-8 h-8 2xl:w-10 2xl:h-10 rounded-full vhcenter bg-[${primaryColor}] bg-opacity-10 hover:bg-opacity-100 text-accent hover:text-white transition-all duration-300`}
-                      // onClick={() => {
-                      //   // deleteRecord(text[actionID]);
-                      //   // clickDrawer(true);
-                      //   // console.log(text[actionID]);
-                      // }}
+                    // onClick={() => {
+                    //   // deleteRecord(text[actionID]);
+                    //   // clickDrawer(true);
+                    //   // console.log(text[actionID]);
+                    // }}
                     >
                       <RiDeleteBin5Line className="text-xs 2xl:text-sm" />
                     </button>
                   </Popconfirm>
                 </div>
-              
+
               ) : (
                 // </Popover>
-                <div className="text-[#667085] text-xs 2xl:text-sm dark:text-white font-medium">
+                <div  onClick={() => {
+                  !viewOutside &&
+                    handleRowClick(text, header[0]?.[tabValue || path]);
+                }} className="text-[#667085] text-xs 2xl:text-sm dark:text-white font-medium">
                   <p>{record}</p>
                 </div>
               )}
@@ -400,7 +426,7 @@ const TableAnt = ({
                       onClick={() => {
                         buttonClick(text[actionID], "edit"); //"8"
                         clickDrawer(true);
-                        console.log(text[actionID]);
+                        // console.log(text[actionID]);
 
                         // console.log(actionID);
                         // console.log(text[actionID], "ddddddddsfsd");
@@ -428,7 +454,7 @@ const TableAnt = ({
                     </Popconfirm>
                   </div>
                 }
-                // title="Start Action"
+              // title="Start Action"
               >
                 <BsThreeDotsVertical className=" opacity-50 cursor-pointer" />
               </Popover>
@@ -473,7 +499,7 @@ const TableAnt = ({
   // };
 
   const onSelectChange = (newSelectedRowKeys) => {
-    console.log(newSelectedRowKeys, "eeddd");
+    //console.log(newSelectedRowKeys, "eeddd");
     setSelectedRowKeys(newSelectedRowKeys);
   };
 
@@ -507,10 +533,10 @@ const TableAnt = ({
       );
     },
     onSelect: (record, selected, selectedRows) => {
-      console.log(record, selected, selectedRows);
+      //console.log(record, selected, selectedRows);
     },
     onSelectAll: (selected, selectedRows, changeRows) => {
-      console.log(selected, selectedRows, changeRows);
+      //console.log(selected, selectedRows, changeRows);
     },
   };
 
@@ -521,7 +547,7 @@ const TableAnt = ({
 
     // Filter columns based on whether their titles contain the searchValue
     const filteredColumns = tableData.filter((column) => {
-      console.log(column, "column");
+      //  console.log(column, "column");
       const titleText =
         typeof column.title === "string"
           ? column.title
@@ -661,7 +687,7 @@ const TableAnt = ({
   // const columnMenu = <Menu mode="vertical" items={columnMenuItems} />;
 
   const onChangeGridlist = ({ target: { value } }) => {
-    console.log("radio1 checked", value);
+    // console.log("radio1 checked", value);
     setGridList(value);
   };
   const splitTitle = tabTitle.split("_");
@@ -669,7 +695,7 @@ const TableAnt = ({
     .map((word) => word.charAt(0).toUpperCase() + word.slice(1))
     .join(" ");
 
-   
+
   return (
     <div className="flex flex-col gap-5">
       <div className="flex flex-col justify-between gap-3 xl:items-center xl:flex-row">
@@ -686,43 +712,43 @@ const TableAnt = ({
           >
             {console.log(...tabTitle.split("_"))}
             {All ? (
-  <div>
-     {/* {hasSelected
+              <div>
+                {/* {hasSelected
               ? `${selectedRowKeys?.length} ${
                   jsonResult ? jsonResult : path
                 } Selected`
               : `All ${jsonResult ? jsonResult : path}`} */}
-             
-               <p className="text-lg font-semibold dark:text-white">
-            {/* {tabTitle?.split("_") || path?.split("_")} */}
-            {/* {jsonResult || path} */}
-            
-            {/* (0) */}
-          </p>
-  </div>
-) : (
-  showsearch && (
-    <div className="search-All">
-      <SearchBox
-        data={data}
-        placeholder={t("Search_placeholder")}
-        value={searchValue}
-        icon={<CiSearch className=" dark:text-white" />}
-        className="mt-0 w-ful md:w-auto"
-        error=""
-        change={(value) => {
-          setSearchValue(value);
-        }}
-        onSearch={(value) => {
-          setSearchFilter(value);
-        }}
-      />
-    </div>
-  )
- 
-)}
-            
-{/*             
+
+                <p className="text-lg font-semibold dark:text-white">
+                  {/* {tabTitle?.split("_") || path?.split("_")} */}
+                  {/* {jsonResult || path} */}
+
+                  {/* (0) */}
+                </p>
+              </div>
+            ) : (
+              showsearch && (
+                <div className="search-All">
+                  <SearchBox
+                    data={data}
+                    placeholder={t("Search_placeholder")}
+                    value={searchValue}
+                    icon={<CiSearch className=" dark:text-white" />}
+                    className="mt-0 w-ful md:w-auto"
+                    error=""
+                    change={(value) => {
+                      setSearchValue(value);
+                    }}
+                    onSearch={(value) => {
+                      setSearchFilter(value);
+                    }}
+                  />
+                </div>
+              )
+
+            )}
+
+            {/*             
             {hasSelected
               ? `${selectedRowKeys?.length} ${
                   jsonResult ? jsonResult : path
@@ -732,40 +758,40 @@ const TableAnt = ({
           </div>
         </div>
         <div className="flex flex-wrap items-center gap-3">
-          
-        {
-  showButton ? (
-    <ButtonClick
 
-  handleSubmit={() => clickDrawer(true)}
-    buttonName={`Add ${navigationPath}`}
-    className="your-custom-styles"
-    BtnType="Add"
-    >
-      
-    </ButtonClick>
-  ) : (
-    <div className="flex flex-wrap items-center gap-3">
-                {All&&( 
-                <SearchBox
-            // title="Search"
-            data={data}
-            placeholder={t("Search_placeholder")}
-            value={searchValue}
-            icon={<CiSearch className=" dark:text-white" />}
-            className="mt-0 w-ful md:w-auto"
-            error=""
-            change={(value) => {
-              setSearchValue(value);
-            }}
-            onSearch={(value) => {
-              // console.log(value);
-              setSearchFilter(value);
-            }}
-          />)}
-               
-          <div>
-            {/* <Dropdown
+          {
+            showButton ? (
+              <ButtonClick
+
+                handleSubmit={() => clickDrawer(true)}
+                buttonName={`Add ${navigationPath}`}
+                className="your-custom-styles"
+                BtnType="Add"
+              >
+
+              </ButtonClick>
+            ) : (
+              <div className="flex flex-wrap items-center gap-3">
+                {All && (
+                  <SearchBox
+                    // title="Search"
+                    data={data}
+                    placeholder={t("Search_placeholder")}
+                    value={searchValue}
+                    icon={<CiSearch className=" dark:text-white" />}
+                    className="mt-0 w-ful md:w-auto"
+                    error=""
+                    change={(value) => {
+                      setSearchValue(value);
+                    }}
+                    onSearch={(value) => {
+                      // console.log(value);
+                      setSearchFilter(value);
+                    }}
+                  />)}
+
+                <div>
+                  {/* <Dropdown
               menu={{
                 items,
               }}
@@ -773,38 +799,38 @@ const TableAnt = ({
             >
               <Button>bottomRight</Button>
             </Dropdown> */}
-            <Dropdown
-              // menu={columnMenuItems.map((item, index) => ({
-              //   ...item,
-              //   key: index,
-              // }))}
-              menu={{ items }}
-              placement="bottomRight"
-              // trigger={["click"]}
-              // open={dropdownVisible}
-              // onOpenChange={(visible) => {
-              //   console.log(visible);
-              //   setDropdownVisible(visible);
-              // }}
-            >
-              {/* <Button>Filters</Button> */}
-              <Button
-                className="flex items-center dark:bg-black dark:text-white justify-center h-full font-medium flex-nowrap bg-[#FAFAFA]"
-                onClick={(e) => {
-                  // console.log(e);
-                  // e.stopPropagation(); // Prevent dropdown from closing
-                  // setDropdownVisible(!dropdownVisible);
-                }}
-                size={isSmallScreen ? "default" : "large"}
-              >
-                <span className="mr-2">{t("Filters")}</span>
-                <span className="ml-auto">
-                  <LuListFilter className="text-base 2xl:text-lg" />
-                </span>
-              </Button>
-            </Dropdown>
-          </div>
-          {/* <Radio.Group
+                  <Dropdown
+                    // menu={columnMenuItems.map((item, index) => ({
+                    //   ...item,
+                    //   key: index,
+                    // }))}
+                    menu={{ items }}
+                    placement="bottomRight"
+                  // trigger={["click"]}
+                  // open={dropdownVisible}
+                  // onOpenChange={(visible) => {
+                  //   console.log(visible);
+                  //   setDropdownVisible(visible);
+                  // }}
+                  >
+                    {/* <Button>Filters</Button> */}
+                    <Button
+                      className="flex items-center dark:bg-black dark:text-white justify-center h-full font-medium flex-nowrap bg-[#FAFAFA]"
+                      onClick={(e) => {
+                        // console.log(e);
+                        // e.stopPropagation(); // Prevent dropdown from closing
+                        // setDropdownVisible(!dropdownVisible);
+                      }}
+                      size={isSmallScreen ? "default" : "large"}
+                    >
+                      <span className="mr-2">{t("Filters")}</span>
+                      <span className="ml-auto">
+                        <LuListFilter className="text-base 2xl:text-lg" />
+                      </span>
+                    </Button>
+                  </Dropdown>
+                </div>
+                {/* <Radio.Group
             options={gridListoptions}
             onChange={onChangeGridlist}
             value={gridList}
@@ -819,17 +845,17 @@ const TableAnt = ({
             <FiSettings className="text-base 2xl:text-lg" />
           </Button> */}
 
-    </div>
-    
-  )
-}
+              </div>
+
+            )
+          }
 
 
         </div>
-        
+
       </div>
       <div className="border rounded-lg border-[#E7E7E7] dark:border-secondary relative overflow-auto">
-      {console.log(data)}
+        {console.log(data)}
         {data && (
           <Table
             //rowSelection={{ ...rowSelection }}
@@ -850,14 +876,74 @@ const TableAnt = ({
             //       .toLowerCase()
             //       .includes(searchValue.toLowerCase())
             // )}
-            onRow={(record) => ({
-              onClick: () =>handleRowClick(record),
-            })}
+            // onRow={(record) => ({
+            //   onClick: () => handleRowClick(record),
+            // })}
             dataSource={listData}
             size={isSmallScreen ? "small" : ""}
           />
         )}
       </div>
+
+      {isModalOpen && (
+        <ModalPop
+          width={1000}
+          open={isModalOpen}
+          title={
+            <div className=" flex gap-3">
+              <div className=" flex flex-col gap-2">
+                <h1 className="h1 border-b-2 border-primaryalpha pb-0.5">
+                  {tabTitle
+                    ? tabTitle?.charAt(0).toUpperCase() +
+                    tabTitle.slice(1).split("_").join(" ")
+                    : path?.charAt(0).toUpperCase() +
+                    path.slice(1).split("_").join(" ")}
+                </h1>
+                {/* <p className="text-sm">Work In Progress...</p> */}
+              </div>
+            </div>
+          }
+          close={(e) => {
+            setIsModalOpen(e);
+          }}
+        >
+          {console.log(modalData,"this is modaldata")}
+          <div className="flex flex-col gap-2 dark:text-white">
+            
+            { modalData?.title.map(
+
+              (data, index) =>
+                data.title !== "Action" &&
+                !data.notView && (
+                  <div className="flex items-center  gap-3 " key={index}>
+                    <h4 className="font-bold">{data.title + " :"}</h4>
+                    {data.value === "isActive" ? (
+                      <div
+                        className={`${parseInt(modalData.text[data.value]) === 1
+                          ? " bg-emerald-100 text-emerald-600"
+                          : " bg-rose-100 text-rose-600"
+                          } rounded-full pr-2 py-[2px] w-fit font-medium text-[10px] 2xl:text-sm vhcenter flex-nowrap`}
+                      >
+                        <RxDotFilled
+                          className={`${parseInt(modalData.text[data.value]) === 1
+                            ? "text-emerald-600"
+                            : "text-rose-600"
+                            } text-base 2xl:text-lg`}
+                        />
+                        {parseInt(modalData.text[data.value]) === 1
+                          ? "Active"
+                          : "Inactive"}
+                      </div>
+                    ) : (
+                      <h1>{modalData.text[data.value]}</h1>
+                    )}
+
+                  </div>
+                )
+            ) }
+          </div>
+        </ModalPop>
+      )}
       {contextHolder}
     </div>
   );

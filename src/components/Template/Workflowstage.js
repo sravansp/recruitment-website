@@ -9,7 +9,7 @@ import AddMore from '../common/AddMore';
 import { SlEnergy } from 'react-icons/sl';
 import { AiFillThunderbolt } from 'react-icons/ai';
 import { Formik,useFormik } from 'formik';
-import { saveRecruitmentWorkFlow,saveRecruitmentWorkFlowStage,getRecruitmentWorkFlowById } from '../Api1';
+import { saveRecruitmentWorkFlow,saveRecruitmentWorkFlowStage,getRecruitmentWorkFlowById,updateWorkFlowWithStages } from '../Api1';
 import { PiPencilSimpleLineThin } from 'react-icons/pi';
 import { Modal,Button,notification } from 'antd';
 import image from "../../assets/images/image 622.png"
@@ -48,6 +48,7 @@ const Workflowstage = ({open = "", close = () => { },inputshow= false,isUpdate={
     const handleClose = () => {
         close(false);
       };
+      const [editStageIndex, setEditStageIndex] = useState(null)
       const [companyId, setCompanyId] = useState(localStorage.getItem("companyId"));
       const [presentage, setPresentage] = useState(0);
       const [stageName, setStageName] = useState('');
@@ -58,37 +59,52 @@ const Workflowstage = ({open = "", close = () => { },inputshow= false,isUpdate={
       ]
       )
       const [selectedStageName, setSelectedStageName] = useState('');
-      const handleEditStage = (stageName) => {
-        setSelectedStageName(stageName);
-        setIsModalVisible(true);
+      const handleEditStage = (stageIndex) => {
+        // Find the index of the stage with the given stage name
+        const index = stages.findIndex(stage => stage.stageName === stageIndex);
+      
+        if (index !== -1) { // Check if the stage name exists in the stages array
+          setSelectedStageName(stages[index].stageName);
+          setEditStageIndex(index);
+          setIsModalVisible(true);
+        } else {
+          console.error('Invalid stage name:', stageIndex);
+        }
       };
       useEffect(()=>{
         console.log(stages)
       },[stages])
       const handleAddStageClick = () => {
-        // Create a new stage object
-        
-        setstages((prevEvaluation) =>[
-          ...prevEvaluation,
-          {
-            id: stages.length + 1, // You can use stages.length + 1 as the new id
-            workFlowId: insertedId, // Update this as needed
-            stageOrder: stages.length + 1, // Update this as needed
-            stageName: stageName,
-            stageRules: {
-              id: 1, // Update this as needed
-              key1: '', // Update this as needed
-              value: '', // Update this as needed
+        if (editStageIndex !== null) {
+          // If editStageIndex is not null, it means we're editing an existing stage
+          // Update the corresponding stage name in the stages array
+          setstages((prevStages) =>
+            prevStages.map((stage, index) =>
+              index === editStageIndex ? { ...stage, stageName: stageName } : stage
+            )
+          );
+        } else {
+          // Otherwise, we're adding a new stage
+          // Add the new stage to the stages array
+          setstages ((prevEvaluation) => [
+            ...prevEvaluation,
+            {
+              id: stages.length + 1,
+              workFlowId: insertedId,
+              stageOrder: stages.length + 1,
+              stageName: stageName,
+              stageRules: {
+                id: 1,
+                key1: '',
+                value: '',
+              },
+              createdBy: 9,
             },
-            createdBy:9
-          },
-        ]); 
+          ]);
+        }
     
-        // Update the stages array
-
-    
-        // Close the modal
-        setIsModalVisible(false);
+        setIsModalVisible(false); // Close the modal
+        setEditStageIndex(null); // Clear the editStageIndex
       };
       const handleDeleteStage = (id) => {
         setstages((prevStages) => prevStages.filter((stage) => stage.id !== id));
@@ -129,10 +145,41 @@ const formik = useFormik({
   },
   onSubmit: async (values, { setSubmitting }) => {
     try {
-      // if(updateId){
-        
+      if(updateId){
+        const formattedData = stages.map((item) => ({
+          stageId: item.id, // Add stageId property
+          stageOrder: item.stageOrder,
+          stageName: item.stageName,
+          stageRules: JSON.stringify(item.stageRules),
+          workFlowId:updateId,  // Assuming stageRules is available in item
+          createdBy: 9,
+        }));
+        const response = await updateWorkFlowWithStages({
+          RecruitmentWorkFlow:{
+            workFlowId:updateId,
+            companyId: companyId,
+            workFlowName:values.workFlowName,
+            modifiedBy:9,
 
-      // }else{
+          },
+          RecruitmentWorkFlowStage:[
+            ...formattedData
+
+          ]
+         
+        });
+        console.log(response)
+        if (response.status === 200) {
+          openNotification("success", "Successful", response.message);
+          setTimeout(() => {
+            handleClose();
+          }, 2000);
+        } else if (response.status === 500) {
+          openNotification("error", "error", response.message);
+        }
+
+
+      }else{
         const response = await saveRecruitmentWorkFlow({
         companyId: companyId,
         workFlowName: values.workFlowName,
@@ -166,7 +213,7 @@ const formik = useFormik({
           openNotification("error", "error", response2.message);
         }
       }
-    // }
+    }
   } catch (error) {
       console.log(error);
     }
@@ -196,6 +243,7 @@ const getworkFlow =async()=>{
       workFlowId: stage.workFlowId,
       stageOrder: stage.stageOrder,
       stageName: stage.stageName,
+      stageRules:stage.stageRules
     }));
     setstages(stagesData);
     console.log(stagesData); // Check here
@@ -399,7 +447,11 @@ initialExpanded={true}
         title={"Stage Name"}
         placeholder={"Type here..."}
         value={selectedStageName}
-        change={(e) => setStageName(e)}
+        change={(e) => {
+          setStageName(e)
+          setSelectedStageName(e)
+        
+        }}
         
         />
         <AddMore name="Add stage rule" className="text-black" />
