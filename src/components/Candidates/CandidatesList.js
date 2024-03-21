@@ -10,6 +10,7 @@ import { getAllRecruitmentResumes,getJobStatics } from '../Api1'
 
 const CandidatesList = () => {
   const [jobList,setJobList]=useState([])
+  const[jobId,setJobId]=useState(null)
   const header = [
     {
       CandidateProfile: [
@@ -65,6 +66,9 @@ const CandidatesList = () => {
         const response = await getAllRecruitmentResumes();
         console.log(response.result);
         setJobList(response.result);
+        // const jobIds = response.result.map(resume => resume.jobId);
+        // console.log("Job IDs:", jobIds);
+        // setJobId(jobIds)
 
         // setTableData(response.data);
         // console.log(response.data); // Access response data
@@ -108,7 +112,7 @@ const CandidatesList = () => {
       <JobListCopy data={jobstatic}/>
       <div className=''>
         {/* <TableCopy data={jobList} header={header} path='CandidateProfile'/> */}
-        <TableAnt data={jobList} header={header} path='CandidateProfile' actionID="resumeId"/>
+        <TableAnt data={jobList} header={header} path='CandidateProfile' actionID="resumeId" jobId="jobId"/>
       </div>
     </div>
   )

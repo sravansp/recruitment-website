@@ -1,12 +1,12 @@
 import React, { useEffect, useState } from "react";
-import { Link } from "react-router-dom";
+import { Link,useParams } from "react-router-dom";
 import ButtonClick from "../common/Button";
 import { Button, Divider, Dropdown, Rate, message } from "antd";
 import { useMediaQuery } from "react-responsive";
 import copy from "clipboard-copy";
 import { Menu, Space } from "antd";
 import { useTranslation } from "react-i18next";
-import { getRecruitmentResumeById } from "../Api1";
+import { getRecruitmentResumeById,getAllRecruitmentJobWorkFlowDetails,saveRecruitmentJobResumesStage } from "../Api1";
 // Icons
 import {
   PiArrowLeftBold,
@@ -68,20 +68,20 @@ const items = [
   },
 ];
 
-const dropdown = [
-  {
-    label: "1st menu item",
-    key: "0",
-  },
-  {
-    label: "2nd menu item",
-    key: "1",
-  },
-  {
-    label: "3rd menu item",
-    key: "3",
-  },
-];
+// const dropdown = [
+//   {
+//     label: "1st menu item",
+//     key: "0",
+//   },
+//   {
+//     label: "2nd menu item",
+//     key: "1",
+//   },
+//   {
+//     label: "3rd menu item",
+//     key: "2",
+//   },
+// ];
 
 const handleTabChange = (tabId) => {
   // Do something when the tab changes if needed
@@ -102,9 +102,18 @@ const CandidateProfile = () => {
   const isSmallScreen = useMediaQuery({ maxWidth: 1439 });
   const [messageApi, contextHolder] = message.useMessage();
   const [selectedItem, setSelectedItem] = useState("0");
-  const [selectedItemLabel, setSelectedItemLabel] = useState("1st menu item");
+  const [selectedItemLabel, setSelectedItemLabel] = useState(null);
   const[Candidate,setcandidate]=useState([])
   const[userdata,setuserdata]=useState([])
+  const[jobId,setJobId]=useState(null)
+  const[stageName,setstageName]=useState([])
+  const[stageId,setstageId]=useState("")
+  const { resumeId } = useParams();
+ 
+  
+  useEffect(()=>{
+    setJobId(localStorage.getItem('jobid'))
+  })
   const tabs = [
     {
       id: 1,
@@ -164,11 +173,56 @@ const CandidateProfile = () => {
       icon: <RiCouponLine className="text-base" />,
     },
   ];
+
+  const getstagename = async () => {
+    try {
+      const response = await getAllRecruitmentJobWorkFlowDetails(jobId);
+      console.log(response);
+  
+      // Extract stage ID and stage name from the response
+      const stages = response.result.map(stage => ({
+        label: stage.stageName,
+        key: stage.stageId
+      }));
+      console.log("Stages:", stages);
+  
+      // Save stage ID and stage name using setstageName
+      setstageName(stages);
+  
+    } catch (error) {
+      console.log(error);
+    }
+  }
+  useEffect(()=>{
+    getstagename()
+  },[jobId])
+  
+  const updatestage = async()=>{
+    try{
+     const response = await saveRecruitmentJobResumesStage({
+      jobId:parseInt(jobId),
+      stageId:parseInt(stageId),
+      resumeId:parseInt(resumeId)
+     
+
+     })
+     console.log(response)
+    }catch (error){
+      console.log (error)
+    }
+  }
+  useEffect(() => {
+    if (stageId) { 
+      updatestage();
+    }
+  }, [stageId]);
   const handleMenuClick = (e) => {
     setSelectedItem(e.key);
-    const selectedItemLabel = dropdown.find((item) => item.key === e.key).label;
+    const selectedItemLabel = stageName.find((item) => item.key === e.key).label;
     setSelectedItemLabel(selectedItemLabel);
+    setstageId(e.key);
   };
+
 
   const handleCopyClick = (value) => {
     copy(value);
@@ -181,7 +235,7 @@ const CandidateProfile = () => {
   
   const menu = (
     <Menu onClick={handleMenuClick}>
-      {dropdown.map((item) => (
+      {stageName.map((item) => (
         <Menu.Item key={item.key}>{item.label}</Menu.Item>
       ))}
     </Menu>
@@ -253,6 +307,8 @@ useEffect(() => {
 
 
 }, []);
+
+
 
   return (
     <div className="flex flex-col gap-6">

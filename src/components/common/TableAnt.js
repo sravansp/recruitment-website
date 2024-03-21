@@ -73,6 +73,7 @@ const TableAnt = ({
   viewOutside = false,
   refresh = () => { },
   recordId = "",
+  jobId=""
 
 }) => {
   const { t } = useTranslation();
@@ -201,7 +202,8 @@ const TableAnt = ({
         id: id, //Id
         // isActive: checked === true ? 1 : 0,
       });
-      //console.log(response);
+      console.log(id)
+      console.log(response);
 
       if (response.status === 200) {
         // handleClose();
@@ -248,6 +250,7 @@ const TableAnt = ({
       navigate(`/${path}/${record[actionID]}`);
       // Store the clicked data ID in local storage only when the path is present and not an empty array
       localStorage.setItem('selectedDataId', record[actionID]);
+      localStorage.setItem('jobid', record[jobId]);
     }
 
 

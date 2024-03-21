@@ -9,12 +9,13 @@ import AddMore from '../common/AddMore';
 import { SlEnergy } from 'react-icons/sl';
 import { AiFillThunderbolt } from 'react-icons/ai';
 import { Formik,useFormik } from 'formik';
-import { saveRecruitmentWorkFlow,saveRecruitmentWorkFlowStage,getRecruitmentWorkFlowById,updateWorkFlowWithStages } from '../Api1';
+import { saveRecruitmentWorkFlow,saveRecruitmentWorkFlowStageBatch,getRecruitmentWorkFlowById,updateWorkFlowWithStages } from '../Api1';
 import { PiPencilSimpleLineThin } from 'react-icons/pi';
 import { Modal,Button,notification } from 'antd';
 import image from "../../assets/images/image 622.png"
+import TextArea from '../common/TextArea';
 
-const Workflowstage = ({open = "", close = () => { },inputshow= false,isUpdate={},updateId}) => {
+const Workflowstage = ({open = "", close = () => { },inputshow= false,isUpdate={},updateId,refresh}) => {
   
   
   const [successNotificationVisible, setSuccessNotificationVisible] = useState(false);   
@@ -47,6 +48,9 @@ const Workflowstage = ({open = "", close = () => { },inputshow= false,isUpdate={
     const { t } = useTranslation();
     const handleClose = () => {
         close(false);
+        formik.resetForm();
+        
+        
       };
       const [editStageIndex, setEditStageIndex] = useState(null)
       const [companyId, setCompanyId] = useState(localStorage.getItem("companyId"));
@@ -59,9 +63,11 @@ const Workflowstage = ({open = "", close = () => { },inputshow= false,isUpdate={
       ]
       )
       const [selectedStageName, setSelectedStageName] = useState('');
+      
       const handleEditStage = (stageIndex) => {
         // Find the index of the stage with the given stage name
         const index = stages.findIndex(stage => stage.stageName === stageIndex);
+        
       
         if (index !== -1) { // Check if the stage name exists in the stages array
           setSelectedStageName(stages[index].stageName);
@@ -173,6 +179,7 @@ const formik = useFormik({
           openNotification("success", "Successful", response.message);
           setTimeout(() => {
             handleClose();
+            refresh();
           }, 2000);
         } else if (response.status === 500) {
           openNotification("error", "error", response.message);
@@ -183,7 +190,7 @@ const formik = useFormik({
         const response = await saveRecruitmentWorkFlow({
         companyId: companyId,
         workFlowName: values.workFlowName,
-        description: null,
+        description: values.description,
         createdBy: 9,
       });
 
@@ -199,7 +206,7 @@ const formik = useFormik({
           createdBy: 9,
         }));
 
-        const response2 = await saveRecruitmentWorkFlowStage(...formattedData);
+        const response2 = await saveRecruitmentWorkFlowStageBatch(formattedData);
         console.log('Response2:', response2);
         console.log(formattedData);
         console.log(insertedId);
@@ -208,6 +215,7 @@ const formik = useFormik({
           openNotification("success", "Successful", response2.message);
           setTimeout(() => {
             handleClose();
+            refresh();
           }, 2000);
         } else if (response2.status === 500) {
           openNotification("error", "error", response2.message);
@@ -288,9 +296,9 @@ useEffect(()=>{
     }}
    
     header={[
-       !isUpdate
-         ? t("Create a Job Description Template")
-         : t("Create Worklow stages"),
+       !updateId
+         ? t("Create a Worklow Template")
+         : t("Update Worklow stages"),
        t("Lorem ipsum dummy text doret solo."),
      ]}
      
@@ -368,6 +376,18 @@ initialExpanded={true}
                 />
 
 
+                </div>
+                <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
+                <TextArea
+                title={"Description"}
+                placeholder={"Type here..."}
+                className="!text-[#344054]"
+                change={(e)=>{
+                  formik.setFieldValue('description',e)
+                }}
+                value={formik.values.description}
+                
+                />
                 </div>
                 <div className="w-full sm:w-[545px] grid grid-cols-1 gap-4">
                 {console.log(stages)}

@@ -348,7 +348,10 @@ const DragView = () => {
   const JobResumesStage = async (jobId,stageId,resumeId) => {
     console.log(jobId)
     try {
-      const response = await saveRecruitmentJobResumesStage(jobId, stageId, resumeId);
+      const response = await saveRecruitmentJobResumesStage({
+        jobId:jobId, 
+        stageId:stageId, 
+        resumeId:resumeId});
 
       
       console.log(response);
@@ -370,8 +373,11 @@ const DragView = () => {
     const dragItem =
       newBoardData[re.source.droppableId].items[re.source.index];
 
-    setCurrentResumeId(destinationStageId);
-    setCurrentStageId(dragItem.id);
+      setCurrentStageId(destinationStageId);
+      setCurrentResumeId(dragItem.id);
+    console.log(destinationStageId)
+    console.log(dragItem.id)
+
 
     newBoardData[re.source.droppableId].items.splice(re.source.index, 1);
     newBoardData[re.destination.droppableId].items.splice(
@@ -536,6 +542,7 @@ const DragView = () => {
                                 key={item.id}
                                 data={item}
                                 index={iIndex}
+                                jobId={jobId}
                                 color={colors[bIndex]}
                                 className="m-3"
                               />
@@ -564,7 +571,7 @@ const DragView = () => {
   );
 };
 
-const CardItem = ({ data, index, color }) => {
+const CardItem = ({ data, index, color,jobId }) => {
   const [bookmarkState, setBookmarkState] = useState({});
   const navigate = useNavigate();
 
@@ -579,7 +586,7 @@ const CardItem = ({ data, index, color }) => {
     localStorage.setItem("selectedDataId", data.id);
     
     // Navigate to candidateprofile page with data.id
-    navigate(`/candidateprofile/${data.id}`)
+    navigate(`/candidateprofile/${data.id}?jobId=${jobId}`)
     
     // Optionally, update the state with the selectedId
     

@@ -118,7 +118,9 @@ const [successNotificationVisible, setSuccessNotificationVisible] = useState(fal
 const[show,setShow] =useState(open);
     const { t } = useTranslation();
     const handleClose = () => {
+     
      close(false)
+
       
       };
       const [content, setContent] = useState("")
@@ -159,6 +161,7 @@ const[show,setShow] =useState(open);
     initialValues: {
       companyId: "",
       evaluationTemplateName: "",
+      description:"",
       createdBy: null,
     },
     onSubmit: async (values, { setSubmitting }) => {
@@ -166,19 +169,21 @@ const[show,setShow] =useState(open);
         console.log({
           companyId: companyId,
           evaluationTemplateName: values.evaluationTemplateName,
+          description:values.description,
           createdBy: null,
         });
   
         // Make the first API call
         if(updateId){
-          const formattedData = evaluation.map((item) => ({
+          const formattedData = evaluation.map((item,index) => ({
             companyId: companyId,
             evaluationTemplateId: updateId,
             question: item.question,
-            answerMetaData: JSON.stringify(item.answerMetaData),
+            answerMetaData: item.answerMetaData,
             description: item.description,
             createdBy: item.createdBy,
-            evaluationTemplateDetailsId:evaluationTemplateDetailsIds,
+            evaluationTemplateDetailsId: evaluationTemplateDetailsIds[index],
+            
             modifiedBy:null
           }));
           const response = await updateEvaluationTemplateWithDetails({
@@ -186,6 +191,7 @@ const[show,setShow] =useState(open);
               evaluationTemplateId:updateId,
               companyId:companyId,
               evaluationTemplateName:values.evaluationTemplateName,
+              description:values.description,
               modifiedBy:null,
             },
         RecruitmentEvaluationTemplateDetail: formattedData
@@ -210,6 +216,7 @@ const[show,setShow] =useState(open);
         const response = await saveRecruitmentEvaluationTemplate({
           companyId: companyId,
           evaluationTemplateName: values.evaluationTemplateName,
+          description:values.description,
           createdBy: null,
         });
   
@@ -224,7 +231,7 @@ const[show,setShow] =useState(open);
             companyId: companyId,
             evaluationTemplateId: insertedId,
             question: item.question,
-            answerMetaData: JSON.stringify(item.answerMetaData),
+            answerMetaData:JSON.stringify(item.answerMetaData),
             description: item.description,
             createdBy: item.createdBy,
           }));
@@ -275,7 +282,7 @@ const[show,setShow] =useState(open);
     const id = updateId;
     try {
       const response = await getRecruitmentEvaluationTemplateById({ id });
-      console.log(response.result);
+      console.log(response);
       setevaluationlist(response.result)
       const evaluationData = response.result.flatMap(item => {
         return item.evaluationTemplateDetailData.map(detail => ({
@@ -299,6 +306,8 @@ const[show,setShow] =useState(open);
       console.log(evaluationData)
       const firstEvaluation = response.result[0];
       formik.setFieldValue("evaluationTemplateName", firstEvaluation.evaluationTemplateName);
+      formik.setFieldValue("description", firstEvaluation.description);
+      
     } catch (error) {
       console.error("Error fetching evaluation data:", error);
     }
@@ -337,7 +346,7 @@ useEffect(() => {
     }}
    
     header={[
-       !isUpdate
+       !updateId
          ? t("Create Evaluation Template")
          : t("update Evaluation Template"),
        t("Lorem ipsum dummy text doret solo."),
@@ -397,7 +406,17 @@ useEffect(() => {
                                        
                                        />
                                        </div>
-                                    
+                                       <div className='grid grid-cols-2'>
+                                        <TextArea
+                                         title={"Decription"}
+                                         placeholder={"Type here..."}
+                                         value={formik.values.description}
+                                         change={(e)=>{
+                                          formik.setFieldValue('description',e)
+                                         }}
+                                        
+                                        />
+                                        </div>
                                       
                                        {evaluation.map((condition, index) => (
   <><div className="flex items-center justify-between">

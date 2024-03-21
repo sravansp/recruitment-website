@@ -4,8 +4,8 @@ import Breadcrumbs from '../common/BreadCrumbs';
 import { useTranslation } from 'react-i18next';
 import API, { action } from "../Api1";
 import ButtonClick from '../common/Button';
-import { getAllRecruitmentJobTemplates,getAllRecruitmentWorkFlows,getAllRecruitmentEmailTemplates,getAllRecruitmentQuestionnaireTemplateDetails,getAllRecruitmentEvaluationTemplates,getAllRecruitmentLetterTemplates } from '../Api1';
-import AddTemplate from './Addtemplate';
+import { getAllRecruitmentJobTemplates,getAllRecruitmentWorkFlows,getAllRecruitmentEmailTemplates,getAllRecruitmentQuestionnaireTemplates,getAllRecruitmentEvaluationTemplates,getAllRecruitmentLetterTemplates } from '../Api1';
+// import AddTemplate from './Addtemplate';
 import Tabs from '../common/Tabs';
 import Departments from '../Company/Add _departments';
 import Location from '../Company/Addlocation';
@@ -19,6 +19,7 @@ import QuestionAire from './Addquestinaire';
 import AddLetter from './AddLetter';
 import Workflowstage from './Workflowstage';
 import CreatejobTemp from './createJobtemp';
+import { FaBullseye } from 'react-icons/fa';
 
 const Template = ({
     open = "",
@@ -36,7 +37,7 @@ const Template = ({
     const [show, setShow] = useState(open);
     const [openPop, setOpenPop] = useState("");
 
-  
+    const [emailSubject,setEmailSubject] = useState("")
       const [navigationPath, setNavigationPath] = useState("Job_Templates");
       const breadcrumbItems = [
         //{ label: t("Templates"), url: "/" },
@@ -194,12 +195,12 @@ const Template = ({
           {
             id:1,
             title:"Name",
-            value:"emailTemplateName",
+            value:"title",
          },
          {
             id:2,
             title:"Description",
-            value:"subject",
+            value:"value",
          },
          {
           id:3,
@@ -223,7 +224,7 @@ const Template = ({
          {
             id:2,
             title:"Description",
-            value:"Description",
+            value:"description",
          },
          {
             id:3,
@@ -242,7 +243,7 @@ const Template = ({
           {
             id:1,
             title:"Name",
-            value:"question",
+            value:"questionnaireTemplateName",
          },
          {
             id:2,
@@ -377,6 +378,13 @@ const Template = ({
       
     
       setEmail(response.result)
+      setEmailSubject( response.result.map((email) => ({
+        emailTemplateId: email.emailTemplateId,
+        title: email.emailTemplateName,
+        value: email.emailTemplate.subject, // Use the subject as the description value
+        actionToggle: true,
+        action: true,
+      })));
       // const newData = {};
       // response.result.forEach((job) => {
       //   newData[job.jobId] = job; // Assuming jobId is the unique identifier
@@ -384,6 +392,7 @@ const Template = ({
      
       // setTableData(response.data);
       // console.log(response.data); // Access response data
+      console.log(emailSubject)
       console.log(response);
       console.log(EmailList);
     } catch (error) {
@@ -392,7 +401,7 @@ const Template = ({
   };
   const getallquestionaire = async ()=>{
     try{
-      const data = await getAllRecruitmentQuestionnaireTemplateDetails()
+      const data = await getAllRecruitmentQuestionnaireTemplates()
       setQuestionaire(data.result)
       console.log(data)
     }catch (error) {
@@ -490,7 +499,7 @@ const Template = ({
       Job_Templates: { id: 1, data:TemplateList },
       Job_Description: { id: 2, data:JobDescriptionList },
         Workflow: {id:3,data:WorkflowList},
-        Email:{id:4,data:EmailList},
+        Email:{id:4,data:emailSubject},
         Evaluation:{id:5,data:EvaluationLIst},
         Questionaire:{id:6,data:QuestionaireLIst},
         Letter:{id:7,data:LetterLIst}
@@ -596,8 +605,9 @@ const Template = ({
                     // setShow(true);
         
                     // setCompanyId(company);
+                    console.log("HIIIIII")
                     setOpenPop(e);
-                    // setUpdateId(false);
+                    
                   } else {
                     setUpdateId(e);
                     setOpenPop(navigationPath);
@@ -617,6 +627,7 @@ const Template = ({
         <CreatejobTemp
           open={show}
           close={(e) => {
+            setUpdateId(null)
             setShow(e);
            
           }}
@@ -636,6 +647,7 @@ const Template = ({
         <TemplateDec
           open={show}
           close={(e) => {
+            setUpdateId(null)
             setShow(e);
           }}
         //   updateId={updateId}
@@ -650,12 +662,13 @@ const Template = ({
         <Workflowstage
           open={show}
           close={(e) => {
+            setUpdateId(null)
             setShow(e);
           }}
           updateId={updateId}
         //   companyDataId={companyId}
           refresh={() => {
-            // getLocationList();
+            
           }}
         />
       )}
@@ -663,6 +676,7 @@ const Template = ({
         <Emailtemplate
           open={show}
           close={(e) => {
+            setUpdateId(null)
             setShow(e);
           }}
           updateId={updateId}
@@ -676,6 +690,7 @@ const Template = ({
         <TemEvaluation
           open={show}
           close={(e) => {
+            setUpdateId(null)
             setShow(e);
           }}
           updateId={updateId}
@@ -691,10 +706,11 @@ const Template = ({
           open={show}
           close={(e) => {
             setShow(e);
+            setUpdateId(null)
             
           }}
           questionaireList={QuestionaireLIst}
-        //   updateId={updateId}
+          updateId={updateId}
         //   companyDataId={companyId}
           refresh={() => {
             // getLocationList();
@@ -705,6 +721,7 @@ const Template = ({
         <AddLetter
           open={show}
           close={(e) => {
+            setUpdateId(null)
             setShow(e);
           }}
           letterList={LetterLIst}

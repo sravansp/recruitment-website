@@ -595,14 +595,14 @@ const handleAddField = (index) => {
       id: 1,
       value: 0,
       title: t("Jobdetails"),
-      data: "Jobdetails",
+      data: "Job details",
     },
 
     {
       id: 2,
       value: 1,
       title: t("Applicationform"),
-      data: "ApplicationForm",
+      data: "Application Form",
     },
     {
       id: 3,
@@ -614,7 +614,7 @@ const handleAddField = (index) => {
         id: 4,
         value: 3,
         title: t("TeamMembers"),
-        data: "TeamMembers",
+        data: "Team Members",
       },
       {
         id: 5,
@@ -897,7 +897,7 @@ const handleAddField = (index) => {
 
   const handleButtonClick = async (e) => {
     switch (activeBtnValue) {
-      case "Jobdetails":
+      case "Job Details":
         // Handle submission for Configuration
         
         console.log("valuegtgggggggggggg")
@@ -905,7 +905,7 @@ const handleAddField = (index) => {
 
         break;
 
-      case "ApplicationForm":
+      case "Application Form":
         // Handle submission for Applicability
         // Your logic for Applicability form submission...
         // Move to the next step if applicable
@@ -934,7 +934,7 @@ const handleAddField = (index) => {
       formik2.handleSubmit()
       // }
       break;
-        case "TeamMembers":
+        case "Team Members":
           AllRecruitmentJobTeamMembers();
           formik4.handleSubmit();
             
@@ -1215,7 +1215,7 @@ const handleAddField = (index) => {
                   
           <div className="relative max-w-[1070px]  w-full mx-auto ">
         
-                  {activeBtnValue === "Jobdetails" ? (
+                  {activeBtnValue === "Job Details" ? (
                     <>
                    
                         <FlexCol>
@@ -1555,7 +1555,7 @@ impactful, accurate, and personalized to your company</p>
                                              required={true}
                                              hideBorder={true} 
                                              
-                                             editorState={formik1.values.jobDescription}
+                                             initialValue={formik1.values.jobDescription}
                                             //  change={(e)=>{
                                             //    formik1.setFieldValue('jobDescription',e)
                                             //  }}
@@ -1592,7 +1592,7 @@ impactful, accurate, and personalized to your company</p>
                                     </FlexCol>
                                     </>
                   
-                ) : activeBtnValue === "ApplicationForm" ? (
+                ) : activeBtnValue === "Application Form" ? (
                   <>
                   <FlexCol>
                   <Accordion
@@ -1981,7 +1981,7 @@ impactful, accurate, and personalized to your company</p>
     </Radio.Group>
                   </Accordion>
                   </FlexCol>
-                ) : activeBtnValue === "TeamMembers" ? (
+                ) : activeBtnValue === "Team Members" ? (
                   <FlexCol>
                   <Accordion
                     title={"TeamMembers"}

@@ -78,6 +78,7 @@ const CreatejobTemp = ({
   inputshow = false,
   isUpdate = {},
   updateId,
+  refresh=()=>{}
 }) => {
   const [show, setShow] = useState(open);
   const { t } = useTranslation();
@@ -817,9 +818,10 @@ const CreatejobTemp = ({
           setShow(e);
           //    setUpdateId(null);
           handleClose();
+          refresh()
         }}
         header={[
-          !isUpdate ? t("Create a Job Temaplate") : t("Update Job Temaplate"),
+          !updateId ? t("Create a Job Temaplate") : t("Update Job Temaplate"),
           t("Lorem ipsum dummy text doret solo."),
         ]}
         headerRight={

@@ -16,6 +16,7 @@ const AddLetter = ({
   close = () => {},
   inputshow = false,
   isUpdate = {},
+  updateId
 }) => {
   const [companyId, setCompanyId] = useState(localStorage.getItem("companyId"));
   const [templateName, setTemplateName] = useState("");
@@ -86,7 +87,7 @@ const AddLetter = ({
           handleClose();
         }}
         header={[
-          !isUpdate ? t("Create Letter Template") : t("Create Letter Template"),
+          !updateId ? t("Create Letter Template") : t("Update Letter Template"),
           t("Lorem ipsum dummy text doret solo."),
         ]}
         //  headerRight={
