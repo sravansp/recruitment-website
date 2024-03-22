@@ -31,11 +31,11 @@ import resume from "../../assets/images/resumep.png";
 import { GrEdit } from "react-icons/gr";
 import Header from '../Header/Header';
 import CVResume from './CandidateProfileTabs/CVResume';
-
+import {genderoption} from "../common/DataArrays"
 
 export default function Createcandidatelist({ open = "", close = () => { }, refresh, ConfigurationAction, }) {
   const [show, setShow] = useState(open);
-  const [activeBtnValue, setActiveBtnValue] = useState("Review");//Review
+  const [activeBtnValue, setActiveBtnValue] = useState("Personel");//Review
   const [nextStep, setNextStep] = useState(0);
   const [applicableData, setApplicableData] = useState([]);
   const [isUpdate, setIsUpdate] = useState();
@@ -53,6 +53,10 @@ export default function Createcandidatelist({ open = "", close = () => { }, refr
   { id: 1, name: "TiklaGelsin", status: "Contract", domain: "Front-End-Developer", time: "1 year 2Months Oct 2021,Dec 2021" },
   { id: 1, name: "Pazarama", status: "Internship", domain: "Front-End-Developer", time: "1 year 2Months Oct 2021,Dec 2021" }]
 
+
+  const handleClose = () => {
+    close(false);
+  };
 
   const formik = useFormik({
     initialValues: {
@@ -175,31 +179,31 @@ export default function Createcandidatelist({ open = "", close = () => { }, refr
 
   const CreateDirectorSteps = [
     {
-      id: 0,
+      id: 1,
       value: 0,
       title: "Personel Details",
       data: "Personel",
     },
     {
-      id: 1,
+      id: 2,
       value: 1,
       title: "Educational Details",
       data: "Educational",
     },
     {
-      id: 2,
+      id: 3,
       value: 2,
       title: "Work Experience",
       data: "Work",
     },
     {
-      id: 3,
+      id: 4,
       value: 3,
       title: "Questions",
       data: "Questions",
     },
     {
-      id: 4,
+      id: 5,
       value: 4,
       title: "Review",
       data: "Review",
@@ -217,16 +221,21 @@ export default function Createcandidatelist({ open = "", close = () => { }, refr
       prevEvaluation.filter((_, i) => i !== index)
     );
   };
-  const handleClose = () => {
-    close(false);
-  };
 
   useEffect(() => {
-    if (activeBtn < 1 && activeBtn !== nextStep) {
+    // console.log(nextStep, activeBtn);
+    if (activeBtn < 4 && activeBtn !== nextStep) {
+      /// && activeBtn !== nextStep
       setActiveBtn(1 + activeBtn);
+      // setNextStep(nextStep);
+      // console.log(1 + activeBtn);
+      // console.log(steps?.[activeBtn + 1].data, "data");
       setActiveBtnValue(CreateDirectorSteps?.[activeBtn + 1].data);
     }
   }, [nextStep]);
+  
+
+ 
 
   return (
     <div>
@@ -247,37 +256,78 @@ export default function Createcandidatelist({ open = "", close = () => { }, refr
           open={show}
           close={(e) => {
             // console.log(e);
+            
             handleClose();
+          }}
+          // className={classNames}
+          handleSubmit={(e) => {
+            // console.log(e);
+            //formik.handleSubmit();
+          }}
+        
+          updateFun={() => {
+            // updateCompany();
           }}
           header={[
             !isUpdate
               ? t("Head Of Director")
-              : t("Update Head Of Director"),
-            t("content"),
+              : t("Update_Employee_Onboarding"),
+            t("at Dubai, United Arab Emirates"),
           ]}
           headerRight={
-            <div className="flex items-center gap-10">
+            <div className="flex md:gap-10 items-center">
+              <p className="xl:text-sm text-[10px] font-medium text-gray-400">
+                Draft Saved 10 Seconds ago
+              </p>
               <div className="flex items-center gap-2.5">
-                <p className="text-sm font-medium text-gray-400">{t("Help")}</p>
-                <RxQuestionMarkCircled className="text-2xl font-medium text-gray-400 " />
+                <p className="xl:text-sm text-xs font-medium text-gray-400">
+                  help
+                </p>
+                <RxQuestionMarkCircled className=" xl:text-2xl text-sm font-medium text-gray-400" />
               </div>
             </div>
           }
-
           footerBtn={[
             t("Cancel"),
-            t("Save"),
+            !isUpdate ? t("Save&Continue") : t("Update  Company"),
           ]}
           className="widthFull"
           stepsData={CreateDirectorSteps}
           buttonClick={(e) => {
-            console.log(activeBtnValue);
+            if (activeBtnValue === "Personel") {
+              
+                setNextStep(nextStep + 1);
+                // updateemployeeBasic();
+              
+              // console.log("click 1");
+            } else if (activeBtnValue === "Educational") {
+              // console.log("click 2");
 
-            //setNextStep(nextStep + 1);
-            setActiveBtnValue(nextStep + 1)
+              // setBtnName("Add Employee");
+             
+                setNextStep(nextStep + 1);
+                // updateemployeeAddress();
+             
+            } else if (activeBtnValue === "Work") {
+              console.log("click 3");
 
+              // setBtnName("Add Employee");
+              
+                setNextStep(nextStep + 1);
+              
+            } else if (activeBtnValue === "Questions") {
+             
+              
+                setNextStep(nextStep + 1);
+              
+            } else if (activeBtnValue === "Review") {
+              // setBtnName("Add Employee");
+             
+              setNextStep(nextStep + 1);
+            }
+
+           
           }}
-
           buttonClickCancel={(e) => {
             if (activeBtn > 0) {
               setActiveBtn(activeBtn - 1);
@@ -285,27 +335,45 @@ export default function Createcandidatelist({ open = "", close = () => { }, refr
               setActiveBtnValue(CreateDirectorSteps?.[activeBtn - 1].data);
               console.log(activeBtn - 1);
             }
-            //   setBtnName("");
+           
           }}
           nextStep={nextStep}
           activeBtn={activeBtn}
           saveAndContinue={true}
+
+          
         >
           <FlexCol >
-            {CreateDirectorSteps && (
-              <Flex justify="center">
-                <div className=" sticky -top-6  z-50 px-5 bg-[#F8FAFC] dark:bg-[#1f1f1f] w-5/6 pb-6 ">
-                  <Stepper
-                    steps={CreateDirectorSteps}
-                    currentStepNumber={activeBtn}
-                    presentage={presentage}
-                  />
-                </div>
-              </Flex>
-            )}
+            <div className='mt-5'>
+          {CreateDirectorSteps && (
+                <Stepper
+                  currentStepNumber={activeBtn}
+                  presentage={presentage}
+                  // direction="left"
+                  // labelPlacement="vertical"
+                  steps={CreateDirectorSteps}
+                 
+                  data={{
+                    id: 2,
+                    value: 1,
+
+                    title: "Address Details ",
+                    data: "addressDetails",
+                  }}
+
+                  // className=" text-sm font-medium"
+                  // style={{
+                  //   fontSize: isSmallScreen ? "8px" : "10px",
+                  //   fontWeight: 600,
+                  // }}
+                  // // className="text-[10px]"
+                  // size={isSmallScreen ? "default" : "large"}
+                />
+              )}
+              </div>
             {activeBtnValue === "Personel" ? (
               <>
-                <FlexCol justify="center" align="center" className="w-5/6 m-auto">
+                <FlexCol justify="center" align="center" className="w-5/6 m-auto mt-10">
                   <Accordion
                     title={"Personal Information"}
                     className="Text_area "
@@ -389,7 +457,7 @@ export default function Createcandidatelist({ open = "", close = () => { }, refr
               </>
             ) : activeBtnValue === "Educational" ? (
               <>
-                <FlexCol justify="center" align="center" className="w-5/6 m-auto">
+                <FlexCol justify="center" align="center" className="w-5/6 m-auto mt-10">
                   <Accordion
                     title={"Educational Details"}
                     className="Text_area "
@@ -458,7 +526,7 @@ export default function Createcandidatelist({ open = "", close = () => { }, refr
               </>
             ) : activeBtnValue === "Work" ? (
               <>
-                <FlexCol justify="center" align="center" className="w-5/6 m-auto">
+                <FlexCol justify="center" align="center" className="w-5/6 m-auto mt-10">
                   <Accordion
                     title={"Work Experience Details"}
                     className="Text_area "
@@ -484,6 +552,7 @@ export default function Createcandidatelist({ open = "", close = () => { }, refr
                           <Dropdown
                             title='Employment Type'
                             placeholder="Eg: Fulltime"
+                            options={genderoption}
                           />
                           <FormInput
                             title={t("Company Name")}
@@ -564,7 +633,7 @@ export default function Createcandidatelist({ open = "", close = () => { }, refr
               </>
             ) : activeBtnValue === "Questions" ? (
               <>
-                <FlexCol justify="center" align="center" className="w-5/6 m-auto">
+                <FlexCol justify="center" align="center" className="w-5/6 m-auto  mt-10">
                   <Accordion
                     title={"Prerequisite"}
                     className="Text_area "
@@ -617,7 +686,7 @@ export default function Createcandidatelist({ open = "", close = () => { }, refr
               </>
             ) : (activeBtnValue === "Review" && (
               <>
-                <FlexCol justify="center" align="center" className="w-5/6 m-auto">
+                <FlexCol justify="center" align="center" className="w-5/6 m-auto  mt-10">
                   <Accordion
                     title={"Review"}
                     className="Text_area "
