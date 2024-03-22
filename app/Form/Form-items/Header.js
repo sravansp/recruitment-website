@@ -2,18 +2,18 @@ import Link from "next/link";
 import React from "react";
 import { FaArrowLeft } from "react-icons/fa";
 
-function Header1() {
+function Header1({closeDrawer}) {
   return (
     <div>
     <div className="bg-white flex items-center     dark:bg-black dark:text-white h-[65px] w-full">
       <div className="flex mt-3 ml-5 float-end ">
-        <Link href="/" className="rounded-full  size-9 borderb vhcenter text-primary">
+      <button onClick={closeDrawer} className="rounded-full  size-9 borderb vhcenter text-primary">
           {/* <span className="inset-0 flex items-center justify-center bg-white rounded-md "> */}
             {/* <span className="flex items-center justify-center w-[35px] h-[36px]  rounded-full border-[1px]  bg-[#FAFAFA]"> */}
               <FaArrowLeft size={15}/>
             {/* </span> */}
           {/* </span> */}
-        </Link>
+       </button>
         {/* <button className="w-16 border-2 border-#FDFDFD  rounded-md  text-primary mt-10 text-sm font-semibold ">
           <b>Edit</b>
         </button> */}

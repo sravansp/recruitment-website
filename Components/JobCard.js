@@ -9,7 +9,8 @@ const JobCard = ({
   jobTitle,
   category,
   location,
-  salary,
+  salaryRangeFrom,
+  salaryRangeTo,
   jobType,
   onSelect,
   selected,
@@ -50,7 +51,7 @@ const JobCard = ({
             <PiMapPin className="text-xl text-black dark:text-white text-opacity-20"/> <p className="pblack !font-normal">{location}</p>
           </div>
           <div className="flex items-center gap-2 truncate">
-            <PiMoney className="text-xl text-black dark:text-white text-opacity-20"/> <p className="pblack !font-normal">{salary}</p>
+            <PiMoney className="text-xl text-black dark:text-white text-opacity-20"/> <p className="pblack !font-normal">{salaryRangeFrom}-{salaryRangeTo   }</p>
           </div>
         </div>
       </div>
