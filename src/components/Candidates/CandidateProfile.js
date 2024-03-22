@@ -122,7 +122,9 @@ const CandidateProfile = () => {
         }
     }
 }, [state]);
-  const tabs = [
+  
+
+const tabs = [
     {
       id: 1,
       title: t("Overview"),

@@ -680,6 +680,15 @@ export const getRecruitmentLetterTemplateById = async (id) => {
  
   return await apiRequest(action, method, kwargs);
 };
+export const getAllRecruitmentJobResumeActivities = async (resumeId) => {
+  const action = "getAllRecruitmentJobResumeActivities";
+
+  const method = "POST";
+
+  const kwargs = {resumeId} ;
+ 
+  return await apiRequest(action, method, kwargs);
+};
 const API ={
   UPDATE_Job_Templates: "toggleRecruitmentJobTemplateStatus",
   UPDATE_Job_Description: "",
