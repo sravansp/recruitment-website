@@ -53,6 +53,8 @@ function Web({closeDrawer,selectedJobId}) {
   const [educationaldetails,setEducationaldetails]=useState([])
   const [experience,setExperience]=useState([])
   const [customfield,setCustomfield]=useState([])
+  const [additionalExperienceCount, setAdditionalExperienceCount] = useState(1);
+  const [additionalEducationalDetailsCount, setAdditionalEducationalDetailsCount] = useState(1);
   const [steps, setSteps] = useState([
     {
       id: 1,
@@ -504,6 +506,14 @@ function Web({closeDrawer,selectedJobId}) {
   //   customQuestion: Yup.string().required("This field is required"),
   //   highestEducationLevel: Yup.string().required("This field is required"),
   // });
+  const handleAddMoreExperience = () => {
+    // Increase the count to display additional input fields
+    setAdditionalExperienceCount(prevCount => prevCount + 1);
+  };
+  const handleAddMoreWorkDetails = () => {
+    // Increase the count to display additional input fields
+    setAdditionalEducationalDetailsCount(prevCount => prevCount + 1);
+  };
 
   const formik3 = useFormik({
     initialValues: {
@@ -840,6 +850,8 @@ function Web({closeDrawer,selectedJobId}) {
                     aria-labelledby={`acco-title-item`}
                     className="flex flex-col gap-6  justify-between w-full px-6 py-4"
                   >
+                     {[...Array(additionalEducationalDetailsCount)].map((_, index) => (
+                      <>
                     <div className="grid grid-cols-1  sm:grid-cols-3 gap-4">
                       <FormInput
                         title={"School or University"}
@@ -911,6 +923,8 @@ function Web({closeDrawer,selectedJobId}) {
         // Add your own styling here
       /> */}
                     </div>
+                    </>
+                    ))}
                     <div className="divider-h" />
 
                     {/* <div className="grid  grid-cols-1  sm:grid-cols-3 gap-4">
@@ -970,7 +984,8 @@ function Web({closeDrawer,selectedJobId}) {
 
                   <RiDeleteBin5Line className="text-gray-500 w-[17px] h-[17px] justify-end " />
                 </div> */}
-                    <AddMore name="Add More Experience " />
+                    <AddMore name="Add More Experience " 
+                    change={handleAddMoreWorkDetails}/>
                   </div>
                 </div>
               </div>
@@ -978,6 +993,7 @@ function Web({closeDrawer,selectedJobId}) {
           </>
         ) : currentStep === 2 ? (
           <>
+          
             <FlexCol />
             <div className="relative  w-full mx-auto borderb rounded-md">
               <FlexCol />
@@ -1003,7 +1019,9 @@ function Web({closeDrawer,selectedJobId}) {
                     aria-labelledby={`acco-title-item`}
                     className="flex flex-col gap-6  justify-between w-full px-6 py-4"
                   >
-                    <div className="grid grid-cols-1 sm:grid-cols-3 gap-4">
+                     {[...Array(additionalExperienceCount)].map((_, index) => (
+                      <>
+                    <div  key={index} className="grid grid-cols-1 sm:grid-cols-3 gap-4">
                       <FormInput
                         title={"Job Title"}
                         placeholder={"Eg: Retail Sales Manager"}
@@ -1084,9 +1102,12 @@ function Web({closeDrawer,selectedJobId}) {
                         error={formik2.errors.toDate}
                       />
                     </div>
+                    </>
+                    ))}
                     <AddMore
                       name="Add More Experience "
                       className="text-black"
+                      change={handleAddMoreExperience}
                     />
                   </div>
                 </div>
