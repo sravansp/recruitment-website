@@ -19,7 +19,7 @@ const Login = () => {
             Start your Application
           </div>
           <div className="text-base font-semibold text-black dark:text-white">
-            UI UX Designer{" "}
+            UI UX Designer
           </div>
         </div>
         <div className="inline-flex flex-col items-start justify-start gap-4 h-44">
