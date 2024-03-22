@@ -4,6 +4,7 @@ import axios from "axios";
 const apiUrl = 'https://alpha-jobs-api.loyaltri.com/api/v1';
 
 
+
 const apiRequest = async (action, method, kwargs) => {
   try {
     const response = await axios.post(apiUrl, {
