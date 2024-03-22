@@ -267,12 +267,12 @@ export default function Stepper({
           <div className="relative z-50 flex flex-col items-center">
             <div className="w-8 h-8 bg-white rounded-full 2xl:h-11 2xl:w-11">
               <div
-                className={`rounded-full 2xl:h-11 2xl:w-11 h-8 w-8 shadow-stepShadowInset vhcenter bg-[${primaryColor}] bg-opacity-30 border-[0.5px] border-[${primaryColor}] ${
+                className={`rounded-full 2xl:h-11 2xl:w-11 h-8 w-8 shadow-stepShadowInset vhcenter bg-primaryalpha/30 border-[0.5px] border-[${primaryColor}] ${
                   step.selected && step.completed
                     ? "border-opacity-40"
                     : " border-[#E4E4E4] border-opacity-100"
                 }`}
-                style={{backgroundColor: `${primaryColor}44`}}
+                // style={{backgroundColor: `${primaryColor}44`}}
               >
                 <div
                   style={{

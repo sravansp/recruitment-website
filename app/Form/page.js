@@ -156,15 +156,13 @@ function Web({closeDrawer,selectedJobId}) {
       setActiveBtn(0)
     }
   }, [closeDrawer]);
-  const [primaryColor, setPrimaryColor] = useState("");
-
+  const [primaryColor, setPrimaryColor] = useState(null);
+  const color = localStorage.themeColor;
+  if (color) {
+    setPrimaryColor(color);
+  }
  
-  useEffect(() => {
-    const color = localStorage.getItem("themeColor");
-    if (color) {
-      setPrimaryColor(color);
-    }
-  }, []);
+
   const handleSubmitAllForms = async () => {
     // Submit the first form
     await formik.handleSubmit();
@@ -635,7 +633,7 @@ function Web({closeDrawer,selectedJobId}) {
   
   
   return (
-    <div className="flex flex-col gap-6  container-wrapper ">
+    <div className="flex flex-col gap-6 container-wrapper ">
       <FlexCol />
       <Header1 closeDrawer={closeDrawer} />
       <div className="flex flex-col gap-6 max-w-[1070px] w-full mx-auto  ">
@@ -647,7 +645,7 @@ function Web({closeDrawer,selectedJobId}) {
               // direction="left"
               // labelPlacement="vertical"
               steps={steps}
-              // className=" text-sm font-medium"
+              // className="text-sm font-medium "
               // style={{
               //   fontSize: isSmallScreen ? "8px" : "10px",
               //   fontWeight: 600,
@@ -663,7 +661,7 @@ function Web({closeDrawer,selectedJobId}) {
         {currentStep === 0 ? (
           <>
             <FlexCol />
-            <div className="relative  w-full mx-auto borderb rounded-md">
+            <div className="relative w-full mx-auto rounded-md borderb">
               <FlexCol />
               <div className="relative flex flex-col gap-12">
                 <div className="p-1 bg-white rounded-[10px] dark:bg-transparent dark:border dark:border-secondaryWhite border-opacity-20 dark:border-opacity-10">
@@ -687,9 +685,9 @@ function Web({closeDrawer,selectedJobId}) {
                       id={`acco-text-item`}
                       role="region"
                       aria-labelledby={`acco-title-item`}
-                      className="flex flex-col gap-6  justify-between w-full px-6 py-4"
+                      className="flex flex-col justify-between w-full gap-6 px-6 py-4"
                     >
-                      <div className="grid  grid-cols-2 sm:grid-cols-6 gap-4">
+                      <div className="grid grid-cols-2 gap-4 sm:grid-cols-6">
                         <Dropdown
                           title={"Prefix"}
                           placeholder={"Mr"}
@@ -701,7 +699,7 @@ function Web({closeDrawer,selectedJobId}) {
                           value={formik.values.namePrefix}
                         />
                       </div>
-                      <div className="grid grid-cols-1 sm:grid-cols-3 gap-4">
+                      <div className="grid grid-cols-1 gap-4 sm:grid-cols-3">
                         <FormInput
                           title={"First Name"}
                           placeholder={"First Name"}
@@ -728,7 +726,7 @@ function Web({closeDrawer,selectedJobId}) {
                           error={formik.errors.lastName}
                         />
                       </div>
-                      <div className="grid grid-cols-1 sm:grid-cols-3 gap-4">
+                      <div className="grid grid-cols-1 gap-4 sm:grid-cols-3">
                         <FormInput
                           title={"Email"}
                           placeholder={"Email Address"}
@@ -754,13 +752,13 @@ function Web({closeDrawer,selectedJobId}) {
                         />
                       </div>
                       <div className="relative max-w-[1070px] sm:w-[492px] w-full borderb rounded-md h-24 bg-[#FAFAFA] dark:bg-black">
-                        <div className="flex min-w-0 gap-x-4 pt-5 pl-5">
+                        <div className="flex min-w-0 pt-5 pl-5 gap-x-4">
                           <img
-                            className="h-12 w-12 flex-none rounded-full bg-gray-50"
+                            className="flex-none w-12 h-12 rounded-full bg-gray-50"
                             src=""
                             alt=""
                           />
-                          <div className="min-w-0 flex-auto">
+                          <div className="flex-auto min-w-0">
                             <label
                               htmlFor="resumeUpload"
                               className="cursor-pointer"
@@ -768,7 +766,7 @@ function Web({closeDrawer,selectedJobId}) {
                               <p className="text-sm font-semibold leading-6 text-gray-900 dark:text-white">
                                 Click to upload or drag and drop{" "}
                               </p>
-                              <p className="mt-1 truncate text-xs leading-5 text-gray-500 dark:text-white dark:text-opacity-50">
+                              <p className="mt-1 text-xs leading-5 text-gray-500 truncate dark:text-white dark:text-opacity-50">
                                 PDF, DOCX Format only (5 mb max)
                               </p>
                             </label>
@@ -782,7 +780,7 @@ function Web({closeDrawer,selectedJobId}) {
                           </div>
                         </div>
                       </div>
-                      <div className="grid grid-cols-1 sm:grid-cols-3 gap-4">
+                      <div className="grid grid-cols-1 gap-4 sm:grid-cols-3">
                         <FormInput
                           title={"Location"}
                           placeholder={"United Arab Emirates"}
@@ -806,7 +804,7 @@ function Web({closeDrawer,selectedJobId}) {
                           error={formik.errors.city}
                         />
                       </div>
-                      <div className="grid grid-cols-1 sm:grid-cols-3 gap-4">
+                      <div className="grid grid-cols-1 gap-4 sm:grid-cols-3">
                         <FormInput
                           title={"Address Line"}
                           placeholder={"Type here..."}
@@ -839,7 +837,7 @@ function Web({closeDrawer,selectedJobId}) {
         ) : currentStep === 1 ? (
           <>
             <FlexCol />
-            <div className="relative  w-full mx-auto borderb rounded-md">
+            <div className="relative w-full mx-auto rounded-md borderb">
               <FlexCol />
               <div className="relative flex flex-col gap-12">
                 <div className="p-1 bg-white rounded-[10px] dark:bg-transparent dark:border dark:border-secondaryWhite border-opacity-20 dark:border-opacity-10">
@@ -861,11 +859,11 @@ function Web({closeDrawer,selectedJobId}) {
                     id={`acco-text-item`}
                     role="region"
                     aria-labelledby={`acco-title-item`}
-                    className="flex flex-col gap-6  justify-between w-full px-6 py-4"
+                    className="flex flex-col justify-between w-full gap-6 px-6 py-4"
                   >
                      {[...Array(additionalEducationalDetailsCount)].map((_, index) => (
                       <>
-                    <div className="grid grid-cols-1  sm:grid-cols-3 gap-4">
+                    <div className="grid grid-cols-1 gap-4 sm:grid-cols-3">
                       <FormInput
                         title={"School or University"}
                         placeholder={"Eg: Boston University"}
@@ -891,7 +889,7 @@ function Web({closeDrawer,selectedJobId}) {
                         error={formik1.errors.courseType}
                       />
                     </div>
-                    <div className="grid  grid-cols-1  sm:grid-cols-3 gap-4">
+                    <div className="grid grid-cols-1 gap-4 sm:grid-cols-3">
                       <FormInput
                         title={"Field of Study"}
                         placeholder={"Eg: Business"}
@@ -946,7 +944,7 @@ function Web({closeDrawer,selectedJobId}) {
                     <div className="divider-h" />
                     </>
                     ))}
-                    {/* <div className="grid  grid-cols-1  sm:grid-cols-3 gap-4">
+                    {/* <div className="grid grid-cols-1 gap-4 sm:grid-cols-3">
                   <FormInput
                     title={"School or University"}
                     placeholder={"Eg: Boston University"}
@@ -973,7 +971,7 @@ function Web({closeDrawer,selectedJobId}) {
                     error={formik1.errors.degree}
                   />
                 </div>
-                <div className="grid  grid-cols-1  sm:grid-cols-3 gap-4">
+                <div className="grid grid-cols-1 gap-4 sm:grid-cols-3">
                   <FormInput
                     title={"Field of Study"}
                     placeholder={"Eg: Business"}
@@ -1015,7 +1013,7 @@ function Web({closeDrawer,selectedJobId}) {
           <>
           
             <FlexCol />
-            <div className="relative  w-full mx-auto borderb rounded-md">
+            <div className="relative w-full mx-auto rounded-md borderb">
               <FlexCol />
               <div className="relative flex flex-col gap-12">
                 <div className="p-1 bg-white rounded-[10px] dark:bg-transparent dark:border dark:border-secondaryWhite border-opacity-20 dark:border-opacity-10">
@@ -1037,11 +1035,11 @@ function Web({closeDrawer,selectedJobId}) {
                     id={`acco-text-item`}
                     role="region"
                     aria-labelledby={`acco-title-item`}
-                    className="flex flex-col gap-6  justify-between w-full px-6 py-4"
+                    className="flex flex-col justify-between w-full gap-6 px-6 py-4"
                   >
                      {[...Array(additionalExperienceCount)].map((_, index) => (
                       <>
-                    <div  key={index} className="grid grid-cols-1 sm:grid-cols-3 gap-4">
+                    <div  key={index} className="grid grid-cols-1 gap-4 sm:grid-cols-3">
                       <FormInput
                         title={"Job Title"}
                         placeholder={"Eg: Retail Sales Manager"}
@@ -1068,7 +1066,7 @@ function Web({closeDrawer,selectedJobId}) {
                         error={formik2.errors.employmentType}
                       />
                     </div>
-                    <div className="grid grid-cols-1 sm:grid-cols-3 gap-4">
+                    <div className="grid grid-cols-1 gap-4 sm:grid-cols-3">
                       <FormInput
                         title={"Company Name"}
                         placeholder={"Eg: Microsoft"}
@@ -1095,7 +1093,7 @@ function Web({closeDrawer,selectedJobId}) {
                         error={formik2.errors.location}
                       />
                     </div>
-                    <div className="grid grid-cols-3 sm:grid-cols-6 gap-4">
+                    <div className="grid grid-cols-3 gap-4 sm:grid-cols-6">
                       <DateSelect
                         title={"From"}
                         placeholder={"09/2023"}
@@ -1136,7 +1134,7 @@ function Web({closeDrawer,selectedJobId}) {
             </div>
             <div className="flex flex-col gap-6">
               <FlexCol />
-              <div className="relative   w-full mx-auto borderb rounded-md ">
+              <div className="relative w-full mx-auto rounded-md borderb ">
                 <FlexCol />
                 <div className="relative flex flex-col gap-12">
                   <div className="p-1 bg-white rounded-[10px] dark:bg-transparent dark:border dark:border-secondaryWhite border-opacity-20 dark:border-opacity-10">
@@ -1158,20 +1156,20 @@ function Web({closeDrawer,selectedJobId}) {
                       id={`acco-text-item`}
                       role="region"
                       aria-labelledby={`acco-title-item`}
-                      className="flex flex-col gap-6  justify-between w-full px-6 py-4"
+                      className="flex flex-col justify-between w-full gap-6 px-6 py-4"
                     >
                       <div className="relative max-w-[1070px] sm:w-[492px] w-full borderb rounded-md h-24 bg-[#FAFAFA] dark:bg-black">
-                        <div className="flex min-w-0 gap-x-4 pt-5 pl-5">
+                        <div className="flex min-w-0 pt-5 pl-5 gap-x-4">
                           <img
-                            className="h-12 w-12 flex-none rounded-full bg-gray-50"
+                            className="flex-none w-12 h-12 rounded-full bg-gray-50"
                             src=""
                             alt=""
                           />
-                          <div className="min-w-0 flex-auto">
+                          <div className="flex-auto min-w-0">
                             <p className="text-sm font-semibold leading-6 text-gray-900 dark:text-white">
                               Click to upload or drag and drop{" "}
                             </p>
-                            <p className="mt-1 truncate text-xs leading-5 text-gray-500">
+                            <p className="mt-1 text-xs leading-5 text-gray-500 truncate">
                               PDF, DOCX Format only (5 mb max)
                             </p>
                           </div>
@@ -1198,7 +1196,7 @@ function Web({closeDrawer,selectedJobId}) {
         ) : currentStep === 3 ? (
           <>
             <FlexCol />
-            <div className="relative  w-full mx-auto borderb rounded-md">
+            <div className="relative w-full mx-auto rounded-md borderb">
               <FlexCol />
               <div className="relative flex flex-col gap-12">
                 <div className="p-1 bg-white rounded-[10px] dark:bg-transparent dark:border dark:border-secondaryWhite border-opacity-20 dark:border-opacity-10">
@@ -1220,9 +1218,9 @@ function Web({closeDrawer,selectedJobId}) {
                     id={`acco-text-item`}
                     role="region"
                     aria-labelledby={`acco-title-item`}
-                    className="flex flex-col gap-6  justify-between w-full px-6 py-4"
+                    className="flex flex-col justify-between w-full gap-6 px-6 py-4"
                   >
-                    <div className="grid grid-cols-1 sm:grid-cols-2 gap-4 ">
+                    <div className="grid grid-cols-1 gap-4 sm:grid-cols-2 ">
                       <FormInput
                         title={
                           "Are you legally eligible to work in the country?"
@@ -1238,7 +1236,7 @@ function Web({closeDrawer,selectedJobId}) {
                         error={formik3.errors.customQuestion}
                       />
                     </div>
-                    <div className="grid  grid-cols-1 sm:grid-cols-2 gap-4">
+                    <div className="grid grid-cols-1 gap-4 sm:grid-cols-2">
                       <FormInput
                         title={"Highest level of education completed"}
                         placeholder={"Answer here.."}
@@ -1253,7 +1251,7 @@ function Web({closeDrawer,selectedJobId}) {
                       />
                     </div>
 
-                    <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
+                    <div className="grid grid-cols-1 gap-4 sm:grid-cols-2">
                       <FormInput
                         title={"Highest level of education completed"}
                         placeholder={"Answer here.."}
@@ -1267,7 +1265,7 @@ function Web({closeDrawer,selectedJobId}) {
                         error={formik3.errors.highestEducationLevel}
                       />
                     </div>
-                    <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
+                    <div className="grid grid-cols-1 gap-4 sm:grid-cols-2">
                       <FormInput
                         title={"Highest level of education completed"}
                         placeholder={"Answer here.."}
@@ -1290,7 +1288,7 @@ function Web({closeDrawer,selectedJobId}) {
           <>
             <FlexCol />
 
-            <div className="relative  w-full mx-auto borderb rounded-md">
+            <div className="relative w-full mx-auto rounded-md borderb">
               <Accordion
                 title="Review"
                 description="lorem ipsum dummy text dolar sit."
@@ -1306,13 +1304,13 @@ function Web({closeDrawer,selectedJobId}) {
                     icon={<AiTwotoneEdit />}
                   />
                 </div>
-                <div className="flex min-w-0 gap-x-4 pt-3 pl-5">
+                <div className="flex min-w-0 pt-3 pl-5 gap-x-4">
                   <Image
-                    className="h-18 w-18 flex-none rounded-full bg-cover "
+                    className="flex-none bg-cover rounded-full h-18 w-18 "
                     src={candidate}
                     alt=""
                   />
-                  <div className="min-w-0 flex-auto mt-3">
+                  <div className="flex-auto min-w-0 mt-3">
                     {/* <p className="acco-h1">{data.candidateName}</p> */}
                   </div>
                 </div>
@@ -1464,7 +1462,7 @@ function Web({closeDrawer,selectedJobId}) {
         ) : null}
       </div>
   
-      <div className="divider-h mt-10 bottom-0" />
+      <div className="bottom-0 mt-10 divider-h" />
       <div className="flex gap-2.5 p-1.5 justify-end ">
         <ButtonClick
           buttonName="Cancel"
