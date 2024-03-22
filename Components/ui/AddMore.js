@@ -18,7 +18,7 @@ export default function AddMore({
         {icon}
       </div>
 
-      <p className={`text-sm  font-semibold text-gray-400 dark:text-white ${className} `}>
+      <p className={`text-sm  font-semibold text-black dark:text-white ${className} `}>
         {name}
       </p>
     </div>

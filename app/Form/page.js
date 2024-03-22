@@ -41,7 +41,7 @@ import { DatePicker } from "antd";
 import DateSelect from "@/Components/ui/DateSelect";
 
 function Web({closeDrawer,selectedJobId}) {
-  const [currentStep, setCurrentStep] = useState(2);
+  const [currentStep, setCurrentStep] = useState(0);
   const [activeBtn, setActiveBtn] = useState(0);
   const [presentage, setPresentage] = useState(0);
   const [nextStep, setNextStep] = useState(0);
@@ -54,7 +54,7 @@ function Web({closeDrawer,selectedJobId}) {
   const [experience,setExperience]=useState([])
   const [customfield,setCustomfield]=useState([])
   const [additionalExperienceCount, setAdditionalExperienceCount] = useState(1);
-  const [additionalEducationalDetailsCount, setAdditionalEducationalDetailsCount] = useState(1);
+  const [additionalEducationalDetailsCount, setAdditionalEducationalDetailsCount] = useState(2);
   const [steps, setSteps] = useState([
     {
       id: 1,
@@ -150,6 +150,12 @@ function Web({closeDrawer,selectedJobId}) {
       answer: "Yes, I’ve resident visa",
     },
   ];
+  useEffect(() => {
+    if (closeDrawer) {
+      setCurrentStep(0);
+      setActiveBtn(0)
+    }
+  }, [closeDrawer]);
   const [primaryColor, setPrimaryColor] = useState("");
 
  
@@ -174,6 +180,9 @@ function Web({closeDrawer,selectedJobId}) {
     }
     if (formik2.isValid) {
       await formik3.handleSubmit();
+    }
+    if (currentStep === 4 && closeDrawer) {
+      closeDrawer();
     }
   };
   // const router = useRouter();
@@ -514,6 +523,10 @@ function Web({closeDrawer,selectedJobId}) {
     // Increase the count to display additional input fields
     setAdditionalEducationalDetailsCount(prevCount => prevCount + 1);
   };
+  const handledelete =()=>{
+    setAdditionalEducationalDetailsCount(prevCount=>prevCount-1)
+  }
+  
 
   const formik3 = useFormik({
     initialValues: {
@@ -624,7 +637,7 @@ function Web({closeDrawer,selectedJobId}) {
   return (
     <div className="flex flex-col gap-6  container-wrapper ">
       <FlexCol />
-      <Header1 />
+      <Header1 closeDrawer={closeDrawer} />
       <div className="flex flex-col gap-6 max-w-[1070px] w-full mx-auto  ">
         {steps && (
           <div className=" sticky -top-6 w-full z-50 px-5  dark:bg-[#1f1f1f] pb-10 ">
@@ -922,11 +935,17 @@ function Web({closeDrawer,selectedJobId}) {
         picker="year"
         // Add your own styling here
       /> */}
+      <div className="flex items-center justify-end">
+        <button onClick={handledelete}>
+                    <RiDeleteBin5Line className="text-gray-500 w-[17px] h-[17px]" />
+                    </button>
+                </div>
                     </div>
+                   
+                   
+                    <div className="divider-h" />
                     </>
                     ))}
-                    <div className="divider-h" />
-
                     {/* <div className="grid  grid-cols-1  sm:grid-cols-3 gap-4">
                   <FormInput
                     title={"School or University"}
@@ -984,7 +1003,8 @@ function Web({closeDrawer,selectedJobId}) {
 
                   <RiDeleteBin5Line className="text-gray-500 w-[17px] h-[17px] justify-end " />
                 </div> */}
-                    <AddMore name="Add More Experience " 
+                
+                    <AddMore name="Add More Education "  
                     change={handleAddMoreWorkDetails}/>
                   </div>
                 </div>
@@ -1101,6 +1121,7 @@ function Web({closeDrawer,selectedJobId}) {
                         required={true}
                         error={formik2.errors.toDate}
                       />
+                      
                     </div>
                     </>
                     ))}

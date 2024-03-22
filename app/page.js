@@ -94,6 +94,9 @@ const Home = () => {
       console.log("Search location:", searchJobLocation);
       console.log("Filtered jobs:", filteredJobs);
       setFilteredJobs(filteredJobs); // Update the filtered jobs state
+      setSearchJobTitle(""); // Clear the searchJobTitle state
+      setSearchJobLocation(""); // Clear the searchJobLocation state
+      setClearInput(prevState => !prevState);
     } catch (error) {
       console.error(error);
     }
@@ -114,9 +117,10 @@ const Home = () => {
   }, [selectedJobId, JobsList]);
 
   const handleClear = () => {
-    setSearchJobTitle(null); // Clear the searchJobTitle state
-    setSearchJobLocation(null); // Clear the searchJobLocation state
+    setSearchJobTitle(""); // Clear the searchJobTitle state
+    setSearchJobLocation(""); // Clear the searchJobLocation state
     setFilteredJobs(JobsList); // Reset filtered jobs to the original JobsList
+    setClearInput(prevState => !prevState);
   };
   const openDrawer = () => {
     setDrawerVisible(true);
@@ -148,18 +152,23 @@ const Home = () => {
           <div className="searchJob rounded-[10px] bg-white dark:bg-secondaryDark w-full lg:h-full p-3 flex gap-3 justify-between items-center flex-col md:flex-row md:divide-x divide-y md:divide-y-0">
             <SearchBox
               placeholder="Job title or keyword"
-              value={searchJobTitle !== undefined ? searchJobTitle : ""} 
+              // value={searchJobTitle !== undefined ? searchJobTitle : ""} 
+              value={clearInput ? "" : searchJobTitle} 
               items={[...new Set(JobsList.map((job) => job.jobTitle))]} // Convert the job titles to a Set to remove duplicates
               icon={<PiMagnifyingGlass className="text-2xl " />}
+              clearInput={clearInput}
               onItemSelected={setSearchJobTitle}
             />
             <SearchBox
               placeholder="Location or Timezone"
-              value={searchJobLocation}
+              // value={searchJobLocation}
+              value={clearInput ? "" : searchJobLocation}
               className="pt-3 md:pl-6 md:pt-0"
               items={[...new Set(JobsList.map((job) => job.location))]} // Convert the locations to a Set to remove duplicates
               icon={<PiNavigationArrow className="text-2xl " />}
               onItemSelected={setSearchJobLocation}
+              clearInput={clearInput}
+              
             />
             <div className="flex items-center w-full gap-4 pt-3 md:w-auto md:pl-6 md:pt-0">
               <p

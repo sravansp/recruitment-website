@@ -1,14 +1,19 @@
 // SearchBox.js
 "use client";
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 
-const SearchBox = ({ items, onItemSelected, icon,  placeholder="", className=""}) => {
+const SearchBox = ({ items, onItemSelected, icon,  placeholder="",clearInput, className=""}) => {
   const [searchTerm, setSearchTerm] = useState("");
   const [selectedItem, setSelectedItem] = useState(null);
 
   const filteredItems = items.filter((item) =>
     item.toLowerCase().includes(searchTerm.toLowerCase())
   );
+  useEffect(() => {
+    if (clearInput) {
+      setSearchTerm("");
+    }
+  }, [clearInput]);
 
   const hasResults = searchTerm && filteredItems.length > 0;
   const handleItemClick = (item) => {
