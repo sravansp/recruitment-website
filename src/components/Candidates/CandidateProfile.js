@@ -6,7 +6,7 @@ import { useMediaQuery } from "react-responsive";
 import copy from "clipboard-copy";
 import { Menu, Space } from "antd";
 import { useTranslation } from "react-i18next";
-import { getRecruitmentResumeById,getAllRecruitmentJobWorkFlowDetails,saveRecruitmentJobResumesStage } from "../Api1";
+import { updateRecruitmentJobResumesMapping,getResumeJobDetails,getRecruitmentResumeById,getAllRecruitmentJobWorkFlowDetails,saveRecruitmentJobResumesStage } from "../Api1";
 // Icons
 import {
   PiArrowLeftBold,
@@ -110,6 +110,10 @@ const CandidateProfile = () => {
   const[stageName,setstageName]=useState([])
   const[stageId,setstageId]=useState("")
   const { resumeId } = useParams();
+  const[resumejob,setresumejob]=useState([])
+  const[jobResumeMapping,setjobResumeMapping]=useState("")
+  const [currentStatus, setCurrentStatus] = useState(0);
+  
  
   
   useEffect(() => {
@@ -185,6 +189,7 @@ const tabs = [
   ];
 
   const getstagename = async () => {
+    console.log(jobId)
     try {
       const response = await getAllRecruitmentJobWorkFlowDetails(jobId);
       console.log(response);
@@ -205,6 +210,7 @@ const tabs = [
   }
   useEffect(()=>{
     getstagename()
+    getResumeJob()
   },[jobId])
   
   const updatestage = async()=>{
@@ -257,8 +263,14 @@ const tabs = [
 const getCandidatesById = async () => {
   try {
     const response = await getRecruitmentResumeById(id);
+    console.log(response)
+    const updatedCandidates = response.result.map(candidate => ({
+      ...candidate,
+      stageName: resumejob
+    }));
      
-    setcandidate(response.result)
+    setcandidate(updatedCandidates);
+    
     // setuserdata(response.result.map((items)=>({
     //  personal:[ 
     //   {id:1,
@@ -306,17 +318,63 @@ const getCandidatesById = async () => {
     console.error('Error updating workflow ID:', error);
   }
 };
-
 useEffect(() => {
  
   getCandidatesById()
+  
   console.log(id)
   console.log(userdata)
+  console.log(Candidate)
+  console.log(resumejob)
+  console.log(currentStatus)
  
   
 
 
 }, []);
+const getResumeJob =async ()=>{
+  console.log(jobId)
+
+  try{
+   const response = await getResumeJobDetails(
+    {
+      jobId:jobId,
+      resumeId:resumeId
+    }
+   )
+   
+   
+   setSelectedItemLabel(response.result.stageName)
+   setjobResumeMapping(response.result.jobResumeMappingId)
+   setCurrentStatus(response.result.currentStatus)
+
+  }catch(error){
+    console.log(error)
+
+  }
+}
+
+const handleButtonClick = async (status) => {
+  try {
+    const response = await updateRecruitmentJobResumesMapping({
+      id: jobResumeMapping,
+      modifiedBy: null,
+      currentStatus: status,
+    });
+    console.log(response)
+    if(response.status===200){
+      messageApi.open({
+        type: "success",
+        content: `${response.message} `,
+      });
+    }
+    // Handle response if needed
+  } catch (error) {
+    console.log(error);
+  }
+};
+
+
 
 
 
@@ -331,8 +389,18 @@ useEffect(() => {
           <p className="pblack">Back to All Candidates</p>
         </Link>
         <div className="gap-2 vhcenter">
-          <ButtonClick buttonName="Disqualify" icon={<FcHighPriority />} />
-          <ButtonClick buttonName="Hire" icon={<FcCheckmark />} />
+        <ButtonClick
+  buttonName="Disqualify"
+  icon={<FcHighPriority />}
+  handleSubmit={() => handleButtonClick(2)}
+  backgroundColor={currentStatus === 2 ? 'red' : 'inherit'}
+/>
+<ButtonClick
+  buttonName="Hire"
+  icon={<FcCheckmark />}
+  handleSubmit={() => handleButtonClick(1)}
+  backgroundColor={currentStatus === 1 ? 'green' : 'inherit'}
+/>
           <ButtonClick buttonName="Share" icon={<FcShare />} />
           <Dropdown
             menu={{
@@ -395,7 +463,7 @@ useEffect(() => {
                 </a>
               </Dropdown>
               <div className="bg-[#FFE8E8] rounded-full px-4 py-1">
-              {selectedItemLabel ? selectedItemLabel : items.stageName}
+              {selectedItemLabel}
               </div>
             </div>
             
