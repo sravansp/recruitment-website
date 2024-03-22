@@ -28,7 +28,7 @@ export default function Dropdown({
   icon = false,
   image = false,
 }) {
-  // console.log(options);
+  console.log(options,"hi");
   const isSmallScreen = useMediaQuery({ maxWidth: 1439 });
   const filterOption = (input, option) =>
     (option?.label ?? "").toLowerCase().includes(input.toLowerCase());
