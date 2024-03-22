@@ -294,7 +294,7 @@ export default function Createcandidatelist({ open = "", close = () => { }, refr
           <FlexCol >
             {CreateDirectorSteps && (
               <Flex justify="center">
-                <div className=" sticky -top-6  z-50 px-5 bg-[#F8FAFC] dark:bg-[#1f1f1f] w-5/6 pb-6 ">
+                <div className=" sticky -top-6  z-50 px-5 dark:bg-[#1f1f1f] w-5/6 pb-6 ">
                   <Stepper
                     steps={CreateDirectorSteps}
                     currentStepNumber={activeBtn}
