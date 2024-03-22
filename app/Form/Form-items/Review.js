@@ -89,7 +89,7 @@ const Questions = [
 ];
 const Review = () => {
   const [content, setContent] = useState("");
-  const primaryColor = localStorage.getItem("mainColor");
+  const primaryColor = localStorage.getItem("themeColor");
 
   const handleEditorChange = (content) => {
     setContent(content);

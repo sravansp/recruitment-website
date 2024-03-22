@@ -24,7 +24,7 @@
 //     // setNewSteps(steps);
 //   }, [steps]);
 //   useEffect(() => {
-//     const color = localStorage.getItem("mainColor");
+//     const color = localStorage.getItem("themeColor");
 //     if (color) {
 //       setPrimaryColor(color);
 //     }
@@ -106,7 +106,7 @@
 //           }
 //         >
 //           <div className="relative z-50 flex flex-col items-center">
-//             <div className="w-8 h-8 bg-white dark:bg-black rounded-full 2xl:h-11 2xl:w-11">
+//             <div className="w-8 h-8 bg-white rounded-full dark:bg-black 2xl:h-11 2xl:w-11">
 //               <div
 //                 className={`rounded-full 2xl:h-11 2xl:w-11 h-8 w-8 shadow-stepShadowInset vhcenter bg-[${primaryColor}] bg-opacity-30 border-[0.5px] border-[${primaryColor}] ${
 //                   step.selected && step.completed
@@ -176,7 +176,7 @@ export default function Stepper({
 }) {
   const [stepperSteps, setStep] = useState([]);
   const [newSteps, setNewSteps] = useState([]);
-  const primaryColor = localStorage.getItem("mainColor");
+  const primaryColor = localStorage.getItem("themeColor");
   const stepsStateRef = useRef();
   useEffect(() => {
     console.log(steps);

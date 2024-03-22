@@ -16,7 +16,7 @@ function WorkExperience() {
   const [primaryColor, setPrimaryColor] = useState('');
   useEffect(() => {
     
-    const color = localStorage.getItem("mainColor");
+    const color = localStorage.getItem("themeColor");
     if (color) {
       setPrimaryColor(color);
     }

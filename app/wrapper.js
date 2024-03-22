@@ -10,6 +10,7 @@ export default function Wrapper(props) {
 
   const colorPrimary = "#6A4BFC";
 
+
   // Use state to manage the current theme
   const [currentTheme, setCurrentTheme] = useState(() => {
     // Check if localStorage is available and retrieve the theme
@@ -21,6 +22,7 @@ export default function Wrapper(props) {
   useEffect(() => {
     // Update localStorage when the theme changes
     localStorage.setItem("theme", currentTheme);
+    localStorage.setItem("themeColor", colorPrimary);
   }, [currentTheme]);
 
   return (
