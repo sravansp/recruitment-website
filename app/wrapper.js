@@ -16,14 +16,19 @@ export default function Wrapper(props) {
     // Check if localStorage is available and retrieve the theme
     return typeof window !== "undefined" ? localStorage.theme || defaultTheme : defaultTheme;
   });
+  // Use state to manage the current theme
+  const [themeColor, setthemeColor] = useState(() => {
+    // Check if localStorage is available and retrieve the theme
+    return typeof window !== "undefined" ? localStorage.themeColor || colorPrimary : colorPrimary;
+  });
 
   const { children } = props;
 
   useEffect(() => {
     // Update localStorage when the theme changes
     localStorage.setItem("theme", currentTheme);
-    localStorage.setItem("themeColor", colorPrimary);
-  }, [currentTheme]);
+    localStorage.setItem("themeColor", themeColor);
+  }, [currentTheme, themeColor]);
 
   return (
      <ConfigProvider
