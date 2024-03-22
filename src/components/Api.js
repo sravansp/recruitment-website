@@ -186,6 +186,10 @@ const API = {
   // Religion List
 
   GET_RELIGION_LIST: "/religion",
+
+  //Add Candidate 
+
+  SAVE_RECRUITMENT_RESUME:"saveRecruitmentResume"
 };
 
 export default API;

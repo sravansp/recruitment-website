@@ -6,7 +6,7 @@ import { useTranslation } from 'react-i18next';
 import { RxQuestionMarkCircled } from 'react-icons/rx';
 import DrawerPop from '../common/DrawerPop';
 import FlexCol from '../common/FlexCol';
-import { Card, Flex, Space } from 'antd';
+import { Card, Flex, Space, notification } from 'antd';
 import Stepper from '../common/Stepper';
 import Accordion from '../common/Accordion';
 import FormInput from '../common/FormInput';
@@ -31,9 +31,9 @@ import resume from "../../assets/images/resumep.png";
 import { GrEdit } from "react-icons/gr";
 import Header from '../Header/Header';
 import CVResume from './CandidateProfileTabs/CVResume';
-import {genderoption} from "../common/DataArrays"
+import API, { action } from '../Api1';
 
-export default function Createcandidatelist({ open = "", close = () => { }, refresh, ConfigurationAction, }) {
+export default function Createcandidatelist({ open = "", close = () => { }, refresh, ConfigurationAction,updateId = null, }) {
   const [show, setShow] = useState(open);
   const [activeBtnValue, setActiveBtnValue] = useState("Personel");//Review
   const [nextStep, setNextStep] = useState(0);
@@ -41,9 +41,31 @@ export default function Createcandidatelist({ open = "", close = () => { }, refr
   const [isUpdate, setIsUpdate] = useState();
   const [activeBtn, setActiveBtn] = useState(0);
   const [presentage, setPresentage] = useState(0);
-
+  const [Gendervalue, setgender] = useState("Male");
+  const [data,setData] = useState ([])
   const { t } = useTranslation();
+  const [api, contextHolder] = notification.useNotification();
+  const openNotification = (type, message, description, callback) => {
+    api[type]({
+      message: message,
+      description: description,
+      placement: "top",
+      onClose: callback,
 
+      // stack: 2,
+      style: {
+        background: `${type === "success"
+          ? `linear-gradient(180deg, rgba(204, 255, 233, 0.8) 0%, rgba(235, 252, 248, 0.8) 51.08%, rgba(246, 251, 253, 0.8) 100%)`
+          : "linear-gradient(180deg, rgba(255, 236, 236, 0.80) 0%, rgba(253, 246, 248, 0.80) 51.13%, rgba(251, 251, 254, 0.80) 100%)"
+          }`,
+        boxShadow: `${type === "success"
+          ? "0px 4.868px 11.358px rgba(62, 255, 93, 0.2)"
+          : "0px 22px 60px rgba(134, 92, 144, 0.20)"
+          }`,
+      },
+      // duration: null,
+    });
+  };
   const PersonelDetail = [{ id: 1, Image: Frame1, title: "Email Address", text: "grace.bennet@example.com" }, { id: 2, Image: Frame3, title: "Phone number", text: "+971 50671852" }, { id: 3, Image: Frame2, title: "DOB", text: "03 September 2000" }, { id: 4, Image: Frame4, title: "Location", text: "P156 Street, Al Qusais, UAE, 563211" }]
 
   const educationdetail = [{ id: 1, name: "Middle Earth Technic University", text: "Master degree in computer science and mathamatics", dateplace: "january,2012 Istanbul,Turkey" }, { id: 2, name: "Bogazici Technic University", text: "Master degree in computer science and mathamatics", dateplace: "january,2012 Istanbul,Turkey" }]
@@ -151,7 +173,17 @@ export default function Createcandidatelist({ open = "", close = () => { }, refr
     ]);
   };
   const Formik2 = useFormik({
-
+    initialValues: {
+      firstName: "",
+      lastName: "",
+      candidateEmail: "",
+      candidateContact: "",
+      namePrefix:"",
+      cityOrTown:"",
+      candidateLocation:"",
+        addressLine:"",
+        postalCode:"",
+    },
 
     enableReinitialize: true,
     validateOnChange: false,
@@ -161,22 +193,41 @@ export default function Createcandidatelist({ open = "", close = () => { }, refr
       // console.log({
       //   applicableOn: [applicableData?.map((each) => e[each.inputTypeOne])],
       // });
-
-      console.log({
-        applicableOn:
-          applicableData?.map((each) => e[each.inputTypeOne]) || null,
-        employeeId: e.employee ? e.employee : null,
-        departmentId: e.department ? e.department : null,
-        designationId: e.designation ? e.designation : null,
-        locationId: e.location ? e.location : null,
-        entityId: e.entityId ? e.entityId : null,
-        companyId: e.company ? e.company : null,
-        branchId: e.branch ? e.branch : null,
-        gradeId: e.grade ? e.grade : null,
+      try{
+      const result = await action(API.SAVE_RECRUITMENT_RESUME, {
+        firstName: e.firstName,
+        lastName: e.lastName,
+        namePrefix:e.namePrefix,
+        candidateEmail: e.candidateEmail,
+        candidateContact: e.candidateContact,
+        cityOrTown:e.cityOrTown,
+        candidateLocation:e.candidateLocation,
+        addressLine:e.addressLine,
+        postalCode:e.postalCode,
       });
+      
+      if (result.status === 200) {
+        openNotification("success", "Successful", result.message);
+        formik.resetForm();
+        setTimeout(() => {
+          handleClose();
+          // getRecords();
+          refresh();
+        }, 1500);
+      }else if (result.status === 500) {
+        openNotification("error", "Failed..", result.message);
+      }
+      console.log(result,"resultttttt");
+    }catch (error) {
+     
+      openNotification("error", "Failed",  error.code);
+      console.log(error);
+    }
+      
+     
     }
   });
-
+  console.log(data,"hi this is result");
   const CreateDirectorSteps = [
     {
       id: 1,
@@ -234,6 +285,10 @@ export default function Createcandidatelist({ open = "", close = () => { }, refr
     }
   }, [nextStep]);
   
+  const genderoption = [{id:1,title:"Male",value:"Male"},{id:2,title:"Female",value:"Female"}
+];
+  
+
 
  
 
@@ -262,7 +317,7 @@ export default function Createcandidatelist({ open = "", close = () => { }, refr
           // className={classNames}
           handleSubmit={(e) => {
             // console.log(e);
-            //formik.handleSubmit();
+            Formik2.handleSubmit();
           }}
         
           updateFun={() => {
@@ -296,9 +351,12 @@ export default function Createcandidatelist({ open = "", close = () => { }, refr
           buttonClick={(e) => {
             if (activeBtnValue === "Personel") {
               
+              if (!updateId) {
+                formik.handleSubmit();
+              } else {
                 setNextStep(nextStep + 1);
                 // updateemployeeBasic();
-              
+              }
               // console.log("click 1");
             } else if (activeBtnValue === "Educational") {
               // console.log("click 2");
@@ -343,8 +401,8 @@ export default function Createcandidatelist({ open = "", close = () => { }, refr
 
           
         >
-          <FlexCol >
-            <div className='mt-5'>
+          <FlexCol justify="center" align="center" >
+            <div className='mt-5 m-auto w-5/6'>
           {CreateDirectorSteps && (
                 <Stepper
                   currentStepNumber={activeBtn}
@@ -376,7 +434,7 @@ export default function Createcandidatelist({ open = "", close = () => { }, refr
                 <FlexCol justify="center" align="center" className="w-5/6 m-auto mt-10">
                   <Accordion
                     title={"Personal Information"}
-                    className="Text_area "
+                    className="Text_area"
                     padding={true}
                     toggleBtn={false}
                     click={() => {
@@ -388,33 +446,59 @@ export default function Createcandidatelist({ open = "", close = () => { }, refr
                     <Dropdown
                       title='Prefix'
                       placeholder="Mr"
-                      className='w-24' />
+                      options={genderoption}
+                      className='w-24'
+                      change={(e) => {
+                        Formik2.setFieldValue("namePrefix", e);
+                      }}
+                    
+                      value={Formik2.values.namePrefix} />
 
                     <div className="grid grid-cols-2 gap-4 w-4/5">
                       <FormInput
                         title={t("First Name")}
                         placeholder={t("First Name")}
-
+                        change={(e) => {
+                          Formik2.setFieldValue("firstName", e);
+                        }}
+                      
+                        value={Formik2.values.firstName}
 
                       />
 
                       <FormInput
                         title={t("Last Name")}
                         placeholder={t("Last Name")}
+                        change={(e) => {
+                          Formik2.setFieldValue("lastName", e);
+                        }}
+                      
+                        value={Formik2.values.lastName}
 
                       />
                       <FormInput
                         title={t("Email")}
                         placeholder={t("Email")}
+                        change={(e) => {
+                          Formik2.setFieldValue("candidateEmail", e);
+                        }}
+                      
+                        value={Formik2.values.candidateEmail
+                        }
 
                       />
                       <FormInput
                         title={t("Phone number")}
                         placeholder={t("Phone number")}
-
+                        change={(e) => {
+                          Formik2.setFieldValue("candidateContact", e);
+                        }}
+                         value={Formik2.values.candidateContact }
                       />
 
                     </div>
+                   
+      
 
                     <div className='w-4/5'>
                       <p>Photo (Optional)</p>
@@ -426,24 +510,36 @@ export default function Createcandidatelist({ open = "", close = () => { }, refr
                       <FormInput
                         title={t("Location")}
                         placeholder={t("Location")}
-
+                        change={(e) => {
+                          Formik2.setFieldValue("candidateLocation", e);
+                        }}
+                         value={Formik2.values.candidateLocation }
 
                       />
 
                       <FormInput
                         title={t("City Or Town")}
                         placeholder={t("City Or Town")}
-
+                        change={(e) => {
+                          Formik2.setFieldValue("cityOrTown", e);
+                        }}
+                         value={Formik2.values.cityOrTown }
                       />
                       <FormInput
                         title={t("Address Line")}
                         placeholder={t("Address Line")}
-
+                        change={(e) => {
+                          Formik2.setFieldValue("addressLine", e);
+                        }}
+                         value={Formik2.values.addressLine }
                       />
                       <FormInput
                         title={t("Postal Code")}
                         placeholder={t("Postal Code")}
-
+                        change={(e) => {
+                          Formik2.setFieldValue("postalCode", e);
+                        }}
+                         value={Formik2.values.postalCode }
                       />
 
                     </div>
@@ -552,7 +648,8 @@ export default function Createcandidatelist({ open = "", close = () => { }, refr
                           <Dropdown
                             title='Employment Type'
                             placeholder="Eg: Fulltime"
-                            options={genderoption}
+                           
+                            
                           />
                           <FormInput
                             title={t("Company Name")}
@@ -584,7 +681,11 @@ export default function Createcandidatelist({ open = "", close = () => { }, refr
                         </div>
 
 
-
+                        <div className='ml-auto '>
+                          {index !== 0 && (
+                            <RiDeleteBin6Line className='h-6 w-6' onClick={() => handleDeleteCondition(index)} />
+                          )}
+                        </div>
 
                       </div>
                     ))}
@@ -796,6 +897,7 @@ export default function Createcandidatelist({ open = "", close = () => { }, refr
 
         </DrawerPop>
       )}
+      {contextHolder}
     </div>
   )
 }

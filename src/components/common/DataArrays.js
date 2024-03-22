@@ -25,8 +25,7 @@ export const workExperiences = [
     experienceDuration: "1 year 11 months",
   },
 ];
-export const genderoption = [{id:1,value:"Male",label:"Male"},{id:2,value:"Female",label:"Female"}
-];
+
   
 
 export const educationExperiences = [
