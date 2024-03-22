@@ -174,9 +174,16 @@ export default function Stepper({
   currentStepNumber,
   presentage,
 }) {
+  
   const [stepperSteps, setStep] = useState([]);
   const [newSteps, setNewSteps] = useState([]);
-  const primaryColor = localStorage.getItem("themeColor");
+  const [primaryColor, setPrimaryColor] = useState("");
+  useEffect(() => {
+    const color = localStorage.getItem("themeColor");
+    if (color) {
+      setPrimaryColor(color);
+    }
+  }, []);
   const stepsStateRef = useRef();
   useEffect(() => {
     console.log(steps);
@@ -323,5 +330,3 @@ export default function Stepper({
     </div>
   );
 }
-
-

@@ -156,13 +156,15 @@ function Web({closeDrawer,selectedJobId}) {
       setActiveBtn(0)
     }
   }, [closeDrawer]);
-  const [primaryColor, setPrimaryColor] = useState(null);
-  const color = localStorage.themeColor;
-  if (color) {
-    setPrimaryColor(color);
-  }
- 
+  const [primaryColor, setPrimaryColor] = useState("");
 
+ 
+  useEffect(() => {
+    const color = localStorage.getItem("mainColor");
+    if (color) {
+      setPrimaryColor(color);
+    }
+  }, []);
   const handleSubmitAllForms = async () => {
     // Submit the first form
     await formik.handleSubmit();
