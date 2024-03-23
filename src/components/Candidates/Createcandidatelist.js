@@ -32,6 +32,7 @@ import { GrEdit } from "react-icons/gr";
 import Header from '../Header/Header';
 import CVResume from './CandidateProfileTabs/CVResume';
 import API, { action } from '../Api1';
+import {saveRecruitmentResume} from '../Api1'
 
 export default function Createcandidatelist({ open = "", close = () => { }, refresh, ConfigurationAction,updateId = null, }) {
   const [show, setShow] = useState(open);
@@ -43,6 +44,7 @@ export default function Createcandidatelist({ open = "", close = () => { }, refr
   const [presentage, setPresentage] = useState(0);
   const [Gendervalue, setgender] = useState("Male");
   const [data,setData] = useState ([])
+  const [jobId,setJobId] =useState()
   const { t } = useTranslation();
   const [api, contextHolder] = notification.useNotification();
   const openNotification = (type, message, description, callback) => {
@@ -80,84 +82,84 @@ export default function Createcandidatelist({ open = "", close = () => { }, refr
     close(false);
   };
 
-  const formik = useFormik({
-    initialValues: {
-      leaveType: "",
-      categoryId: "",
-      leaveName: "",
-      description: "",
-      leaveCount: "",
-      isProrata: "",
-      maxLeaveLimit: "",
-      leaveLimitPer: "",
-      isProrataProbationIncluded: "",
-      leavePaytype: "",
+  // const formik = useFormik({
+  //   initialValues: {
+  //     leaveType: "",
+  //     categoryId: "",
+  //     leaveName: "",
+  //     description: "",
+  //     leaveCount: "",
+  //     isProrata: "",
+  //     maxLeaveLimit: "",
+  //     leaveLimitPer: "",
+  //     isProrataProbationIncluded: "",
+  //     leavePaytype: "",
 
-      isProbationRestricted: "",
-      unusedLeaveRule: "",
-      maxlimit: "",
-
-
-      leaveDaysType: "",
-      isAnnualleave: "",
-      leaveDays: "",
-      isProbationRestricted: "",
-
-      leavePaidRules: {
-        between: [
-          {
-            fromDate: "",
-            toDate: ""
-          }
-        ],
-        greaterthanEqualto: [
-          {
-            fromDate: "",
-            toDate: ""
-          }
-        ],
-
-        lessThan: [
-          {
-            fromDate: "",
-            toDate: ""
-          }
-        ],
-        unpaidleave: [
-          {
-
-            Paycalculation: "",
-            days: "",
+  //     isProbationRestricted: "",
+  //     unusedLeaveRule: "",
+  //     maxlimit: "",
 
 
-          }
-        ],
+  //     leaveDaysType: "",
+  //     isAnnualleave: "",
+  //     leaveDays: "",
+  //     isProbationRestricted: "",
 
-        partiallyPaid: [
-          {
+  //     leavePaidRules: {
+  //       between: [
+  //         {
+  //           fromDate: "",
+  //           toDate: ""
+  //         }
+  //       ],
+  //       greaterthanEqualto: [
+  //         {
+  //           fromDate: "",
+  //           toDate: ""
+  //         }
+  //       ],
 
-            percentagepaid: "",
-            Paycalculation: "",
-            days: "",
+  //       lessThan: [
+  //         {
+  //           fromDate: "",
+  //           toDate: ""
+  //         }
+  //       ],
+  //       unpaidleave: [
+  //         {
+
+  //           Paycalculation: "",
+  //           days: "",
 
 
-          }
-        ]
+  //         }
+  //       ],
 
-      },
-      isActive: "",
-    },
+  //       partiallyPaid: [
+  //         {
 
-    enableReinitialize: true,
-    validateOnChange: false,
-    validationSchema: yup.object().shape({
-      leaveType: yup.string().required("leaveType is Required"),
+  //           percentagepaid: "",
+  //           Paycalculation: "",
+  //           days: "",
 
-      leaveCount: yup.string().required("leaveCount is Required"),
 
-    }),
+  //         }
+  //       ]
 
-  });
+  //     },
+  //     isActive: "",
+  //   },
+
+  //   enableReinitialize: true,
+  //   validateOnChange: false,
+  //   validationSchema: yup.object().shape({
+  //     leaveType: yup.string().required("leaveType is Required"),
+
+  //     leaveCount: yup.string().required("leaveCount is Required"),
+
+  //   }),
+
+  // });
 
 
 
@@ -172,6 +174,7 @@ export default function Createcandidatelist({ open = "", close = () => { }, refr
       },
     ]);
   };
+  
   const Formik2 = useFormik({
     initialValues: {
       firstName: "",
@@ -183,49 +186,50 @@ export default function Createcandidatelist({ open = "", close = () => { }, refr
       candidateLocation:"",
         addressLine:"",
         postalCode:"",
+        createdBy:"",
+        candidateName:""
     },
 
     enableReinitialize: true,
     validateOnChange: false,
-    validationSchema: yup.object({}),
-    onSubmit: async (e) => {
-      // console.log({ ...e });
-      // console.log({
-      //   applicableOn: [applicableData?.map((each) => e[each.inputTypeOne])],
-      // });
-      try{
-      const result = await action(API.SAVE_RECRUITMENT_RESUME, {
-        firstName: e.firstName,
-        lastName: e.lastName,
-        namePrefix:e.namePrefix,
-        candidateEmail: e.candidateEmail,
-        candidateContact: e.candidateContact,
-        cityOrTown:e.cityOrTown,
-        candidateLocation:e.candidateLocation,
-        addressLine:e.addressLine,
-        postalCode:e.postalCode,
-      });
+    validationSchema: yup.object({
+      firstName: yup.string().required("First name is required"),
+    }),
+    onSubmit: async (values) => {
       
-      if (result.status === 200) {
-        openNotification("success", "Successful", result.message);
-        formik.resetForm();
-        setTimeout(() => {
-          handleClose();
-          // getRecords();
-          refresh();
-        }, 1500);
-      }else if (result.status === 500) {
-        openNotification("error", "Failed..", result.message);
+      try {
+        const candidateName = `${values.namePrefix} ${values.firstName} ${values.lastName}`;
+        const result = await saveRecruitmentResume( {
+          candidateName:candidateName,
+          firstName: values.firstName,
+          lastName: values.lastName,
+          namePrefix: values.namePrefix,
+          candidateEmail: values.candidateEmail,
+          candidateContact: values.candidateContact,
+          cityOrTown: values.cityOrTown,
+          candidateLocation: values.candidateLocation,
+          addressLine: values.addressLine,
+          postalCode: values.postalCode,
+          jobId: 1, // Assuming jobId is fixed for this form
+          // createdBy: createdBy // Assuming createdBy is defined elsewhere
+        });
+        
+        if (result.status === 200) {
+          setNextStep(nextStep + 1);
+          setPresentage(1);
+          openNotification("success", "Success...", result.message);
+          setJobId(result.result.insertedId);
+        } else if (result.status === 500) {
+          openNotification("error", "Failed..", result.message);
+        }
+        console.log(result);
+        console.log(result.errors);
+      } catch (error) {
+        openNotification("error", "Failed..", error.message);
+        console.log(error);
       }
-      console.log(result,"resultttttt");
-    }catch (error) {
-     
-      openNotification("error", "Failed",  error.code);
-      console.log(error);
     }
-      
-     
-    }
+    
   });
   console.log(data,"hi this is result");
   const CreateDirectorSteps = [
@@ -352,7 +356,7 @@ export default function Createcandidatelist({ open = "", close = () => { }, refr
             if (activeBtnValue === "Personel") {
               
               if (!updateId) {
-                formik.handleSubmit();
+                Formik2.handleSubmit();
               } else {
                 setNextStep(nextStep + 1);
                 // updateemployeeBasic();
@@ -463,6 +467,9 @@ export default function Createcandidatelist({ open = "", close = () => { }, refr
                         }}
                       
                         value={Formik2.values.firstName}
+                       
+                        error={Formik2.errors.firstName}
+                        required={true}
 
                       />
 

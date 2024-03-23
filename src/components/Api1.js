@@ -265,7 +265,14 @@ export const saveRecruitmentJobResumesStage = async (data) => {
   console.log("API Request Data:", { action, method, kwargs });
   return await apiRequest(action, method, kwargs);
 };
-
+export const saveRecruitmentResume = async (data) => {
+  const action = "saveRecruitmentResume";
+  
+  const method = "POST";
+  const kwargs = data;
+  console.log("API Request Data:", { action, method, kwargs });
+  return await apiRequest(action, method, kwargs);
+};
 // export const saveRecruitmentEvaluationTemplateDetailBatch = async (data) => {
 //   const action = "saveRecruitmentEvaluationTemplateDetailBatch";
 
