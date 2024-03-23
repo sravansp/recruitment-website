@@ -210,6 +210,9 @@ export default function Createcandidatelist({ open = "", close = () => { }, refr
           candidateLocation: values.candidateLocation,
           addressLine: values.addressLine,
           postalCode: values.postalCode,
+          candidateSource:null,
+          resumeCode:27,
+          createdBy:"ha",  
           jobId: 1, // Assuming jobId is fixed for this form
           // createdBy: createdBy // Assuming createdBy is defined elsewhere
         });
