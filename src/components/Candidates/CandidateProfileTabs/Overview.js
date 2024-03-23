@@ -1,7 +1,7 @@
 import Accordion from "../../common/Accordion";
 import React, { useState,useEffect } from "react";
 import TabsNew from "../../common/TabsNew";
-import { getRecruitmentResumeById } from "../../Api1";
+import {getAllRecruitmentResumeEducationalDetails,getAllRecruitmentResumesExperienceDetails, getRecruitmentResumeById } from "../../Api1";
 import { useDispatch, useSelector } from 'react-redux';
 
 // ICONS
@@ -23,7 +23,7 @@ import TextEditor from "../../common/TextEditor/TextEditor";
 import ButtonClick from "../../common/Button";
 import PDFViewer from "../../common/PDFViewer";
 import pdfFile from "../../../assets/documents/sample.pdf";
-import { workExperiences, educationExperiences } from "../../common/DataArrays";
+// import {educationExperiences } from "../../common/DataArrays";
 import { useParams } from "react-router-dom";
 
 // const userInfo = [
@@ -150,6 +150,49 @@ const Overview = () => {
   
   
   }, []);
+  const[workExperiences,setexperience] =useState([])
+
+  const getEmployeExperiance = async()=>{
+    try{
+      const response = await getAllRecruitmentResumesExperienceDetails(id);
+      console.log(response)
+      setexperience(response.result.map((items)=>({
+        companyName:items.companyName,
+        Shift:items.employmentType,
+        role:items.jobTitle,
+        startDate:items.fromDate,
+        endDate:items.toDate,
+        experienceDuration:items.location
+      })))
+    }catch(error){
+     console.log(error)
+    }
+  }
+  const[educationExperiences,seteducationExperiences] = useState([])
+  const getEducationList = async ()=>{
+   try
+      {
+       const response = await getAllRecruitmentResumeEducationalDetails(id)
+      console.log(response)
+      seteducationExperiences(response.result.map((item)=>({
+        institution:item.institute,
+        degree:item.courseType,
+        fieldOfStudy:item.courseName,
+        location:item.location,
+        graduationYear:item.yearOfStudy,
+      })))
+      }catch(error){
+        console.log(error)
+      }
+
+  }
+
+
+
+  useEffect(()=>{
+    getEmployeExperiance()
+    getEducationList()
+  },[])
 
   const handleEditorChange = (content) => {
     setContent(content);
@@ -322,7 +365,7 @@ const Overview = () => {
       {/* RIGHT COLUMN  */}
       <div className="lg:col-span-4">
         <div className="rounded-lg bg-white dark:bg-secondaryDark p-1.5 ">
-          <TabsNew tabs={tabData} onTabChange={onTabChange} initialTab={1} />
+          <TabsNew tabs={tabData} onTabChange={onTabChange} initialTab={1}  />
           <TextEditor
             initialValue={content}
             onChange={handleEditorChange}

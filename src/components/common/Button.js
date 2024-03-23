@@ -1,5 +1,5 @@
-import { Button } from "antd";
 import React from "react";
+import { Button } from "antd";
 import { IoMdAdd } from "react-icons/io";
 import { useMediaQuery } from "react-responsive";
 
@@ -9,9 +9,10 @@ export default function ButtonClick({
   updateBtn = false,
   buttonName = "",
   className,
-  BtnType = "", // Updated prop name to avoid conflict with BtnType
+  BtnType = "",
   icon,
-  iconAdd = false
+  iconAdd = false,
+  backgroundColor
 }) {
   const isSmallScreen = useMediaQuery({ maxWidth: 1439 });
 
@@ -26,14 +27,12 @@ export default function ButtonClick({
       case "primary":
         return "primary";
       default:
-        return "default"; // Default to "primary" type if the type is not recognized
+        return "default";
     }
   };
 
   return (
-    // <div className={`${className} `}>
     <Button
-      // icon={BtnType.toLowerCase() === "add" ? <IoMdAdd /> : icon}
       icon={BtnType.toLowerCase() === "add" ? (
         <IoMdAdd />
       ) : icon ? (
@@ -45,18 +44,17 @@ export default function ButtonClick({
       type={getButtonType()}
       size={isSmallScreen ? "default" : "large"}
       className={`
-  ${
-    (BtnType.toLowerCase() === "add" || getButtonType() === "primary") &&
-    "bg-accent"
-  } ${
-        getButtonType() === "default" || getButtonType() === ""
-          ? "!bg-white dark:!bg-transparent"
-          : ""
-      } text-xs 2xl:text-sm font-medium w-fit flex items-center justify-center leading-6 z-50 ${className}`}
+        ${
+          (BtnType.toLowerCase() === "add" || getButtonType() === "primary") &&
+          "bg-accent"
+        } ${
+          getButtonType() === "default" || getButtonType() === ""
+            ? "!bg-white dark:!bg-transparent"
+            : ""
+        } text-xs 2xl:text-sm font-medium w-fit flex items-center justify-center leading-6 z-50 ${className}`}
+      style={{ backgroundColor }} // Set background color inline style
     >
       {buttonName}
     </Button>
-    // </div>
   );
-  console.log("ButtonClick Component - HandleSubmit called!");
 }

@@ -267,12 +267,12 @@ const Template = ({
           {
             id:1,
             title:"Name",
-            value:"letterTemplateName",
+            value:"title",
          },
          {
             id:2,
             title:"Description",
-            value:"Description",
+            value:"value",
          },
          {
             id:3,
@@ -280,6 +280,12 @@ const Template = ({
             value:"",
             actionToggle: true,
          },
+         {
+          id:4,
+          title:"",
+          value:"actions",
+          action:true,
+       },
         ]
 
     } 
@@ -384,7 +390,8 @@ const Template = ({
         value: email.emailTemplate.subject, // Use the subject as the description value
         actionToggle: true,
         action: true,
-      })));
+      }))
+      );
       // const newData = {};
       // response.result.forEach((job) => {
       //   newData[job.jobId] = job; // Assuming jobId is the unique identifier
@@ -422,7 +429,13 @@ const Template = ({
   const getallLetter = async ()=>{
     try{
       const data = await getAllRecruitmentLetterTemplates()
-      setLetter(data.result)
+      setLetter(data.result.map((Letter) => ({
+        letterTemplateId: Letter.letterTemplateId,
+        title: Letter.letterTemplateName,
+        value: Letter.letterTemplate.subject, // Use the subject as the description value
+        actionToggle: true,
+        action: true,
+      })))
       console.log(data)
     }catch (error) {
       console.error(error); // Handle errors
@@ -725,7 +738,7 @@ const Template = ({
             setShow(e);
           }}
           letterList={LetterLIst}
-        //   updateId={updateId}
+          updateId={updateId}
         //   companyDataId={companyId}
           refresh={() => {
             // getLocationList();

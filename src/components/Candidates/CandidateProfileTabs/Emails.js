@@ -1,7 +1,8 @@
-import React, { useState } from "react";
+import React, { useState,useEffect } from "react";
 import TabsNew from "../../common/TabsNew";
 import TextEditor from "../../common/TextEditor/TextEditor";
 import ButtonClick from "../../common/Button";
+import { Link,useParams,useLocation } from "react-router-dom";
 import { RiAttachment2, RiDeleteBin6Line, RiStickyNoteLine } from "react-icons/ri";
 import {
   BsFileEarmarkRichtext,
@@ -9,6 +10,8 @@ import {
   BsFileWord,
   BsFiletypePdf,
 } from "react-icons/bs";
+import {Formik, useFormik } from "formik";
+import {saveRecruitmentJobResumesEmailCommunication} from "../../Api1";
 
 const tabData = [
   {
@@ -28,9 +31,12 @@ const tabData = [
 ];
 const Emails = () => {
   const [content, setContent] = useState("");
+  const { state } = useLocation();
   const [emailContent, setEmailContent] = useState("");
   const [uploadedFiles, setUploadedFiles] = useState([]);
   const primaryColor = localStorage.getItem("mainColor");
+  const[jobId,setJobId]=useState(null)
+  const resumeId =useParams()
 
   const handleEditorChange = (content) => {
     setContent(content);
@@ -47,6 +53,17 @@ const Emails = () => {
     }
   };
 
+  useEffect(() => {
+    if (state && state.jobID) {
+        setJobId(state.jobID);
+    } else {
+        const storedJobId = localStorage.getItem('jobid');
+        if (storedJobId) {
+            setJobId(storedJobId);
+        }
+    }
+}, [state]);
+
   // File Uploader JS
   const handleFileChange = (event) => {
     const files = event.target.files;
@@ -58,6 +75,46 @@ const Emails = () => {
     updatedFiles.splice(index, 1);
     setUploadedFiles(updatedFiles);
   };
+
+  const formik = useFormik ({
+    initialValues:{
+      jobId:"",
+      resumeId:"",
+      emailContent:{
+        subject:"",
+        body:"",
+      },
+      emailSentDate:"",
+      emailSentId:"",
+      emailSentFrom:"",
+      emailSentStatus:"",
+      createdBy:"",
+
+    },
+    onSubmit: async (e) => {
+     try {
+      const response = await saveRecruitmentJobResumesEmailCommunication({
+        jobId:jobId,
+        resumeId:resumeId,
+        emailContent:{
+          subject:e.subject,
+          body:e.body,
+        },
+        // emailSentDate:emailSentDate,
+        // emailSentId:emailSentId,
+        // emailSentFrom:emailSentFrom,
+        // emailSentStatus:emailSentStatus,
+        // createdBy:null
+      })
+      console.log(response)
+     } catch(error) {
+
+     }
+
+    }
+
+    
+  })
 
   const getFileIcon = (fileType) => {
     switch (fileType) {
@@ -80,6 +137,8 @@ const Emails = () => {
     const i = parseInt(Math.floor(Math.log(bytes) / Math.log(1024)));
     return Math.round(bytes / Math.pow(1024, i), 2) + ' ' + sizes[i];
   };
+  
+
   return (
     <div className="grid gap-6 lg:grid-cols-12">
       {/* LEFT COLUMN  */}
@@ -95,12 +154,15 @@ const Emails = () => {
               <input
                 type="text"
                 className="w-full bg-transparent border-none outline-none"
+                // onChange={(e)=>{formik.setFieldValue.emailContent.subject}}
               />
             </div>
             <div className="pt-4">
               <TextEditor
-                initialValue={emailContent}
-                onChange={handleEditorChange2}
+                // initialValue={formik.values.body}
+                // onChange={(e)=>{
+                //   formik.setFieldValue("emailContent.subject", e);
+                // }}
                 minheight="300px"
                 className="border-none"
               />

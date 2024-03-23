@@ -1,7 +1,9 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import TabsNew from "../../common/TabsNew";
 import TextEditor from "../../common/TextEditor/TextEditor";
 import ButtonClick from "../../common/Button";
+import { useParams } from "react-router-dom";
+import {getAllRecruitmentJobResumeActivities} from "../../Api1" 
 import {
   RiArticleLine,
   RiCalendarLine,
@@ -10,52 +12,52 @@ import {
 } from "react-icons/ri";
 import { BsFileEarmarkRichtext } from "react-icons/bs";
 
-const candidateStatus = [
-  {
-    name: "Grace Bennet Anderson",
-    currentStage: "Rejected",
-    previousStage: "Interview",
-    position: "Marketing Manager",
-    company: "Emirates",
-    scheduled: 0,
-    InterviewDate: "",
-    InterviewTime: "",
-    date: "24 May 2024",
-  },
-  {
-    name: "Grace Bennet Anderson",
-    currentStage: "Interview",
-    previousStage: "Second Round Interview",
-    position: "Marketing Manager",
-    company: "Emirates",
-    scheduled: 1,
-    InterviewDate: "19 May 2024",
-    InterviewTime: "14:30",
-    date: "17 May 2024",
-  },
-  {
-    name: "Grace Bennet Anderson",
-    currentStage: "Second Round Interview",
-    previousStage: "HR First Interview",
-    position: "Marketing Manager",
-    company: "Emirates",
-    scheduled: 0,
-    InterviewDate: "",
-    InterviewTime: "",
-    date: "16 May 2024",
-  },
-  {
-    name: "Grace Bennet Anderson",
-    currentStage: "Applied",
-    previousStage: "",
-    position: "Marketing Manager",
-    company: "Emirates",
-    scheduled: 0,
-    InterviewDate: "",
-    InterviewTime: "",
-    date: "14 May 2024",
-  },
-];
+// const candidateStatus = [
+//   {
+//     name: "Grace Bennet Anderson",
+//     currentStage: "Rejected",
+//     previousStage: "Interview",
+//     position: "Marketing Manager",
+//     company: "Emirates",
+//     scheduled: 0,
+//     InterviewDate: "",
+//     InterviewTime: "",
+//     date: "24 May 2024",
+//   },
+//   {
+//     name: "Grace Bennet Anderson",
+//     currentStage: "Interview",
+//     previousStage: "Second Round Interview",
+//     position: "Marketing Manager",
+//     company: "Emirates",
+//     scheduled: 1,
+//     InterviewDate: "19 May 2024",
+//     InterviewTime: "14:30",
+//     date: "17 May 2024",
+//   },
+//   {
+//     name: "Grace Bennet Anderson",
+//     currentStage: "Second Round Interview",
+//     previousStage: "HR First Interview",
+//     position: "Marketing Manager",
+//     company: "Emirates",
+//     scheduled: 0,
+//     InterviewDate: "",
+//     InterviewTime: "",
+//     date: "16 May 2024",
+//   },
+//   {
+//     name: "Grace Bennet Anderson",
+//     currentStage: "Applied",
+//     previousStage: "",
+//     position: "Marketing Manager",
+//     company: "Emirates",
+//     scheduled: 0,
+//     InterviewDate: "",
+//     InterviewTime: "",
+//     date: "14 May 2024",
+//   },
+// ];
 
 const tabData = [
   {
@@ -76,7 +78,25 @@ const tabData = [
 const ActivityFeed = () => {
   const [content, setContent] = useState("");
   const primaryColor = localStorage.getItem("mainColor");
+  const { resumeId } = useParams();
+  const[candidateStatus,setcandidateStatus]=useState([])
+  
+  const getActivities = async()=>{
+    try{
+    const response = await getAllRecruitmentJobResumeActivities(resumeId)
 
+    console.log(response)
+    setcandidateStatus(response.result)
+
+
+    }catch(error){
+
+    }
+
+  }
+  useEffect(()=>{
+    getActivities()
+  },[])
   const handleEditorChange = (content) => {
     setContent(content);
   };
@@ -118,13 +138,14 @@ const ActivityFeed = () => {
                   </div>
                   <div className="flex items-center justify-between w-full">
                     <p className="pblack flex-grow pl-4 !font-normal">
+                    <span className="font-semibold" dangerouslySetInnerHTML={{ __html: status.description }} />
                       {status.scheduled === 1 ? (
                         <>
-                          <span className="!font-semibold">
+                          {/* <span className="!font-semibold">
                             {status.currentStage}
                           </span>
                           {" scheduled with "}
-                          <span className="!font-semibold">{status.name}</span>
+                          <span className="!font-semibold">{status.description}</span>
                           {" for "}
                           <span className="!font-semibold">
                             {status.InterviewDate}
@@ -132,25 +153,25 @@ const ActivityFeed = () => {
                           {" at "}
                           <span className="!font-semibold">
                             {status.InterviewTime}
-                          </span>
+                          </span> */}
                         </>
                       ) : status.previousStage === "" ? (
                         // `${status.name} applied to ${status.position} at ${status.company}`
                         <>
-                          <span className="!font-semibold">{status.name}</span>
-                          {" applied to "}
+                          {/* <span className="!font-semibold">{status.name}</span> */}
+                          {/* {" applied to "}
                           <span className="!font-semibold">
                             {status.position}
                           </span>
                           {" at "}
                           <span className="!font-semibold">
                             {status.company}
-                          </span>
+                          </span> */}
                         </>
                       ) : (
                         // `${status.name} was moved from ${status.previousStage} to ${status.currentStage}`
                         <>
-                          <span className="!font-semibold">{status.name}</span>
+                          {/* <span className="!font-semibold">{status.name}</span>
                           {" was moved from "}
                           <span className="!font-semibold">
                             {status.previousStage}
@@ -158,7 +179,7 @@ const ActivityFeed = () => {
                           {" to "}
                           <span className="!font-semibold">
                             {status.currentStage}
-                          </span>
+                          </span> */}
                         </>
                       )}
                     </p>

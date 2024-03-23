@@ -1207,7 +1207,7 @@ const CreatejobTemp = ({
                           )}
                           required={true}
                           hideBorder={true}
-                          value={formik.values.jobDescription}
+                          initialValue={formik.values.jobDescription}
                           //  change={(e)=>{
                           //    formik1.setFieldValue('jobDescription',e)
                           //  }}
