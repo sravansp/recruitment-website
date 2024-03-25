@@ -71,7 +71,7 @@ import { useParams } from "react-router-dom";
 //   },
 // ];
 
-const Overview = () => {
+const Overview = ({ onEmailSelect }) => {
   const [content, setContent] = useState("");
   const primaryColor = localStorage.getItem("mainColor");
   const[candidate,setcandidate] =useState([])
@@ -80,6 +80,8 @@ const Overview = () => {
   const { resumeId } = useParams();
   const[PdFViewer,setPdFViewer] = useState("")
   const id = resumeId
+  const [candidateEmail, setCandidateEmail] = useState(""); // State to store candidate email
+
   const handleViewResume = () => {
     window.open(PdFViewer, "_blank"); // Open PDF URL in a new tab
   };
@@ -88,6 +90,7 @@ const Overview = () => {
       const response = await getRecruitmentResumeById(id);
        
       setcandidate(response.result)
+      setCandidateEmail(response.result[0].candidateEmail)
       setuserdata(response.result.map((items)=>({
        personal:[ 
         {id:1,
@@ -150,6 +153,12 @@ const Overview = () => {
   
   
   }, []);
+
+  useEffect(() => {
+    if (candidateEmail) {
+      onEmailSelect(candidateEmail); // Trigger the callback when the email is available
+    }
+  }, [candidateEmail, onEmailSelect]);
   const[workExperiences,setexperience] =useState([])
 
   const getEmployeExperiance = async()=>{
