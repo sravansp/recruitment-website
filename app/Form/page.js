@@ -963,7 +963,7 @@ function Web({ closeDrawer, selectedJobId }) {
                     className="flex flex-col justify-between w-full gap-6 px-6 py-4"
                   >
                  {additionalEducationalDetails.map((detail, index) => (
-  <div key={index}>
+  <div key={index}  className="flex flex-col justify-between w-full gap-6 px-6 py-4">
     <div className="grid grid-cols-1 gap-4 sm:grid-cols-3">
       <FormInput
         title={"School or University"}
@@ -1136,7 +1136,7 @@ function Web({ closeDrawer, selectedJobId }) {
                     className="flex flex-col justify-between w-full gap-6 px-6 py-4"
                   >
                     {additionalExperiences.map((experience, index) => (
-  <div key={index}>
+  <div key={index} className="flex flex-col justify-between w-full gap-6 px-6 py-4"  >
     <div className="grid grid-cols-1 gap-4 sm:grid-cols-3">
       <FormInput
         title={"Job Title"}
@@ -1171,7 +1171,7 @@ function Web({ closeDrawer, selectedJobId }) {
         }
       />
     </div>
-    <div className="grid grid-cols-1 gap-4 sm:grid-cols-3">
+    <div className="grid grid-cols-1 gap-4 sm:grid-cols-3 ">
       <FormInput
         title={"Company Name"}
         placeholder={"Eg: Microsoft"}
