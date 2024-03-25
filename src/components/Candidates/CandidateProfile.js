@@ -126,6 +126,12 @@ const CandidateProfile = () => {
         }
     }
 }, [state]);
+const [selectedEmail, setSelectedEmail] = useState(""); // State to store selected email
+
+// Function to update selectedEmail state
+const handleEmailSelect = (email) => {
+  setSelectedEmail(email);
+};
   
 
 const tabs = [
@@ -133,7 +139,7 @@ const tabs = [
       id: 1,
       title: t("Overview"),
       value: "overview",
-      content: <Overview  data={userdata}/>,
+      content:  <Overview onEmailSelect={handleEmailSelect} />,
       icon: <RiHome6Line className="text-base" />,
     },
     {
@@ -154,7 +160,7 @@ const tabs = [
       id: 4,
       title: t("Emails"),
       value: "emails",
-      content: <Emails />,
+      content: <Emails Email={selectedEmail}/>,
       icon: <RiMailUnreadLine className="text-base" />,
     },
 

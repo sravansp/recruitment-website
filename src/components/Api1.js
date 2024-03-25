@@ -741,6 +741,24 @@ export const saveRecruitmentJobResumesEmailCommunication = async (e) => {
   console.log("API Request Data:", { action, method, kwargs })
   return await apiRequest(action, method, kwargs);
 };
+
+export const getAllRecruitmentJobResumesEmailCommunications = async (resumeId) => {
+  const action = "getAllRecruitmentJobResumesEmailCommunications";
+
+  const method = "POST";
+
+  const kwargs = resumeId;
+ 
+  return await apiRequest(action, method, kwargs);
+};
+export const saveRecruitmentJobResumesEvent = async (e) => {
+  const action = "saveRecruitmentJobResumesEvent";
+
+  const method = "POST";
+  const kwargs = e;
+  console.log("API Request Data:", { action, method, kwargs })
+  return await apiRequest(action, method, kwargs);
+};
 const API ={
   UPDATE_Job_Templates: "toggleRecruitmentJobTemplateStatus",
   UPDATE_Job_Description: "",

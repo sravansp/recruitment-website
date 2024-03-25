@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState,useEffect } from "react";
 import TabsNew from "../../common/TabsNew";
 import TextEditor from "../../common/TextEditor/TextEditor";
 import ButtonClick from "../../common/Button";
@@ -13,7 +13,9 @@ import { duration, eventType, eventList } from "../../common/DataArrays";
 import TextArea from "../../common/TextArea";
 import MultiSelect from "../../common/MultiSelect";
 import { PiDotsThreeOutlineFill } from "react-icons/pi";
-
+import { saveRecruitmentJobResumesEvent,getAllRecruitmentUsers } from "../../Api1";
+import { Link,useParams,useLocation } from "react-router-dom";
+import {Formik, useFormik } from "formik";
 const tabData = [
   {
     id: 9,
@@ -175,30 +177,149 @@ const FormSection = ({ onCancel }) => {
   const [EventDropValue, setEventDropValue] = useState("online");
   const [durationValue, setDurationValue] = useState("15min");
   const primaryColor = localStorage.getItem("mainColor");
+  const[jobId,setJobId]=useState(null)
+  const { state } = useLocation();
+  const {resumeId} =useParams()
+  useEffect(() => {
+    if (state && state.jobID) {
+        setJobId(state.jobID);
+    } else {
+        const storedJobId = localStorage.getItem('jobid');
+        if (storedJobId) {
+            setJobId(storedJobId);
+        }
+    }
+}, [state]);
+  const formik= useFormik ({
+    initialValues:{
+      jobId: "",
+      resumeId: "",
+      eventName: "",
+      eventDetails: {
+          eventType: "",
+          eventDate: "",
+          eventTime: "",
+          duration: "",
+          eventUrl: ""
+      },
+      attendees: [
+          
+          
+          
+        
+      ],
+      createdBy: ""
+    },
+    onSubmit: async (e)=>{
+    try{
+      const response = await saveRecruitmentJobResumesEvent({
+
+        jobId: jobId,
+        resumeId: resumeId,
+        eventName: e.eventName,
+        eventDetails: {
+            eventType: e.eventType,
+            eventDate: e.eventDate,
+            eventTime: e.eventTime,
+            duration: e.duration,
+            eventUrl: e.eventUrl,
+        },
+        attendees: [
+            
+            
+            
+          
+        ],
+        createdBy: null
+      })
+     console.log (response)
+    }catch(error){
+
+    }
+
+   }, 
+
+
+  })
+  const [selectedUserIds, setSelectedUserIds] = useState([]);
+
+  const handleAddUser = (userId) => {
+    setSelectedUserIds([...selectedUserIds, userId]);
+    
+  };
+
+  const handleMultiSelectChange = (selectedOption) => {
+    // Assuming the selectedOption contains the user ID as value
+    const userId = selectedOption.value;
+    handleAddUser(userId);
+  };
+   const[employee,setEmpoloyee] = useState([])
+  const employeeList = async()=>{
+try{
+  const response = await getAllRecruitmentUsers()
+  console.log(response)
+  setEmpoloyee(response.result.map((item) => ({
+    value: item.userName,
+    userId: item.userId,
+    userimage: item.userImage,
+    modifiedOn:item.modifiedOn,
+    createdOn:item.createdOn,
+    roleId:item.roleId
+
+  })))
+
+}catch(error){
+
+}
+
+  }
+  useEffect(()=>{
+   employeeList()
+   console.log(employee)
+
+    
+  },[])
 
   return (
     <div className="flex flex-col h-full gap-8 box-wrapper borderb">
       <h6 className="h6">Schedule Event</h6>
       <div className="flex flex-col gap-4">
-        <FormInput title="Event Name" placeholder="Enter Event Name" />
+        <FormInput title="Event Name" placeholder="Enter Event Name" 
+        value={formik.values.eventName}
+        change={(e)=>{
+          formik.setFieldValue('eventName',e)
+          console.log(e)
+        }}
+        />
         <div className="grid gap-4 md:grid-cols-3">
-          <DateSelect title="Date" className="w-full" />
-          <TimeSelect title="Time" />
+          <DateSelect title="Date" className="w-full" 
+          value={formik.values.eventDate}
+          change={(e)=>{
+            formik.setFieldValue("eventDate",e)
+          }}
+          
+          />
+          <TimeSelect title="Time"
+          value={formik.values.eventTime}
+          change={(e)=>{
+            formik.setFieldValue("eventTime",e)
+          }}
+          />
           <Dropdown
             title="Duration"
             options={duration}
             change={(e) => {
-              setDurationValue(e);
+              formik.setFieldValue("duration",e)
             }}
-            value={durationValue}
+            value={formik.values.duration}
           />
         </div>
         <div className="grid gap-4 md:grid-cols-3">
           <Dropdown
             change={(e) => {
-              setEventDropValue(e);
+             formik.setFieldValue("eventType",e)
             }}
-            value={EventDropValue}
+            value={formik.values.eventType}
             title="Event type"
             options={eventType}
             className="md:col-span-1"
@@ -209,6 +330,10 @@ const FormSection = ({ onCancel }) => {
                 title="URL Link"
                 placeholder="Enter URL Link"
                 websiteLink={true}
+                value={formik.values.eventUrl}
+                change={(e)=>{
+                  formik.setFieldValue("eventUrl",e)
+                }}
               />
             </div>
           )}
@@ -220,10 +345,10 @@ const FormSection = ({ onCancel }) => {
         <div className="flex flex-col gap-4">
           <div className="grid grid-cols-3 gap-4">
             <div className="col-span-2">
-              <MultiSelect title="Attendees" className="" />
+              <MultiSelect title="Attendees" className="" options={employee} change={(e)=>{handleMultiSelectChange(e)}}/>
             </div>
             <div className="flex items-end col-span-1">
-              <ButtonClick buttonName="Add" />
+              <ButtonClick buttonName="Add"  handleSubmit={handleAddUser}/>
             </div>
           </div>
           <div className="flex items-center gap-3 selectedAtendies">
@@ -281,7 +406,7 @@ const FormSection = ({ onCancel }) => {
         <ButtonClick
           buttonName="Send Invitation"
           BtnType="primary"
-          handleSubmit={onCancel}
+          handleSubmit={formik.handleSubmit}
         />
       </div>
     </div>

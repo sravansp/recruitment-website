@@ -11,7 +11,8 @@ import {
   BsFiletypePdf,
 } from "react-icons/bs";
 import {Formik, useFormik } from "formik";
-import {saveRecruitmentJobResumesEmailCommunication} from "../../Api1";
+import {saveRecruitmentJobResumesEmailCommunication,getAllRecruitmentJobResumesEmailCommunications} from "../../Api1";
+import {notification} from 'antd';
 
 const tabData = [
   {
@@ -29,14 +30,38 @@ const tabData = [
     icon: <BsFileEarmarkRichtext className="text-base" />,
   },
 ];
-const Emails = () => {
+const Emails = ({Email}) => {
   const [content, setContent] = useState("");
   const { state } = useLocation();
   const [emailContent, setEmailContent] = useState("");
   const [uploadedFiles, setUploadedFiles] = useState([]);
   const primaryColor = localStorage.getItem("mainColor");
   const[jobId,setJobId]=useState(null)
-  const resumeId =useParams()
+  const {resumeId} =useParams()
+  const [emailSentDate, setEmailSentDate] = useState(""); 
+
+  const [api, contextHolder] = notification.useNotification();
+  const openNotification = (type, message, description) => {
+    api[type]({
+      message: message,
+      description: description,
+      placement: "top",
+      // stack: 2,
+      style: {
+        background: `${
+          type === "success"
+            ? `linear-gradient(180deg, rgba(204, 255, 233, 0.8) 0%, rgba(235, 252, 248, 0.8) 51.08%, rgba(246, 251, 253, 0.8) 100%)`
+            : "linear-gradient(180deg, rgba(255, 236, 236, 0.80) 0%, rgba(253, 246, 248, 0.80) 51.13%, rgba(251, 251, 254, 0.80) 100%)"
+        }`,
+        boxShadow: `${
+          type === "success"
+            ? "0px 4.868px 11.358px rgba(62, 255, 93, 0.2)"
+            : "0px 22px 60px rgba(134, 92, 144, 0.20)"
+        }`,
+      },
+      // duration: null,
+    });
+  };
 
   const handleEditorChange = (content) => {
     setContent(content);
@@ -44,7 +69,7 @@ const Emails = () => {
   const handleEditorChange2 = (emailContent) => {
     setEmailContent(emailContent);
   };
-
+  console.log(Email)
   const onTabChange = (tabId) => {
     // Do something when the tab changes if needed
     console.log(`Tab changed to ${tabId}`);
@@ -91,8 +116,11 @@ const Emails = () => {
       createdBy:"",
 
     },
-    onSubmit: async (e) => {
+    onSubmit: async (e,{ resetForm }) => {
      try {
+      const currentDate = new Date().toISOString(); 
+      setEmailSentDate(currentDate);
+
       const response = await saveRecruitmentJobResumesEmailCommunication({
         jobId:jobId,
         resumeId:resumeId,
@@ -100,13 +128,24 @@ const Emails = () => {
           subject:e.subject,
           body:e.body,
         },
-        // emailSentDate:emailSentDate,
-        // emailSentId:emailSentId,
-        // emailSentFrom:emailSentFrom,
-        // emailSentStatus:emailSentStatus,
-        // createdBy:null
+        emailSentDate:currentDate,
+        emailSentId:Email,
+        emailSentFrom:"ekbwekj@gmail.com",
+       
+        createdBy:null
       })
       console.log(response)
+      if (response.status === 200) {
+        openNotification(
+          "success",
+          "Successful",
+          response.message
+        );
+        resetForm();
+       
+      } else if (response.status === 500) {
+        openNotification("error", "input field is empty..", response.message);
+      }
      } catch(error) {
 
      }
@@ -115,6 +154,20 @@ const Emails = () => {
 
     
   })
+  const[allEmail,setAllemail]=useState([])
+  const getEmailCommunication = async()=>{
+    try{
+      const response= await getAllRecruitmentJobResumesEmailCommunications({resumeId})
+       console.log(response)
+       setAllemail(response.result)
+    }catch(error){
+
+    }
+  }
+  useEffect(()=>{
+    getEmailCommunication()
+    console.log(allEmail)
+  },[])
 
   const getFileIcon = (fileType) => {
     switch (fileType) {
@@ -152,17 +205,20 @@ const Emails = () => {
             <div className="flex items-center gap-2 pt-4">
               <p>Subject:</p>
               <input
-                type="text"
-                className="w-full bg-transparent border-none outline-none"
-                // onChange={(e)=>{formik.setFieldValue.emailContent.subject}}
-              />
+  type="text"
+  className="w-full bg-transparent border-none outline-none"
+  
+  onChange={(e) => {
+    formik.setFieldValue("subject", e.target.value);
+  }}
+/>
             </div>
             <div className="pt-4">
               <TextEditor
-                // initialValue={formik.values.body}
-                // onChange={(e)=>{
-                //   formik.setFieldValue("emailContent.subject", e);
-                // }}
+                 initialValue={formik.values.emailContent.body} // Corrected
+                 onChange={(e) => {
+                     formik.setFieldValue("body", e); // Corrected
+                 }}
                 minheight="300px"
                 className="border-none"
               />
@@ -202,11 +258,13 @@ const Emails = () => {
             </label>
             <div className="flex items-center gap-2.5">
               <ButtonClick buttonName="Cancel" />
-              <ButtonClick buttonName="Send Now" BtnType="primary" />
+              <ButtonClick handleSubmit={formik.handleSubmit} buttonName="Send Now" BtnType="primary"  />
             </div>
           </div>
         </div>
-        <div className="flex flex-col gap-4 divide-y box-wrapper">
+        {allEmail.map((email, index) => (
+        <div className="flex flex-col gap-4 divide-y box-wrapper"
+        key={index}>
           <h6 className="h6">Previously Sent Email</h6>
           {/* <div className="v-divider h-[2px]" /> */}
           <div className="flex flex-col gap-4 pt-4 prevemail">
@@ -216,19 +274,20 @@ const Emails = () => {
               </div>
               <div className="inline-flex flex-col items-start justify-start gap-1">
                 <p className="text-xs font-semibold leading-tight text-black dark:text-white ">
-                  You sent an email to Haseeb
+                  
                 </p>
                 <p className="text-xs font-normal leading-none text-black opacity-50 dark:text-white">
-                  Jan 26 - 11:34
+                  {email.emailSentDate}
                 </p>
               </div>
             </div>
             <div className="v-divider" />
             <div className="space-y-3 pblack !font-normal">
               <div className="subject !font-semibold">
-                <p> Subject: haseeb, regarding your Web Designer application</p>
+                <p> Subject: {email.emailContent.subject}</p>
               </div>
-              <p>Dear Haseeb, </p>
+              <p>{email.emailContent.body}</p>
+              {/* <p>Dear Haseeb, </p>
 
               <p>
                 We're sorry to inform you that your application for Web Designer
@@ -260,10 +319,10 @@ const Emails = () => {
                 <span>Sharekh Nair</span>
                 <br />
                 <span>Oryx Digital</span>
-              </p>
+              </p> */}
             </div>
           </div>
-          <div className="flex flex-col gap-4 pt-4 prevemail">
+          {/* <div className="flex flex-col gap-4 pt-4 prevemail">
             <div className="flex items-center gap-2.5">
               <div className="size-8 iconI vhcenter bg-[#F5F5F5] dark:bg-secondaryDark text-base rounded-full">
                 <p className="para">SN</p>
@@ -316,8 +375,10 @@ const Emails = () => {
                 <span>Oryx Digital</span>
               </p>
             </div>
-          </div>
+          </div> */}
         </div>
+        ))}
+
       </div>
 
       {/* RIGHT COLUMN  */}
@@ -338,6 +399,7 @@ const Emails = () => {
           </div>
         </div>
       </div>
+      {contextHolder}
     </div>
   );
 };
