@@ -40,7 +40,7 @@ export default function Wrapper(props) {
     >
       <AntdRegistry>
         <div className="relative h-screen overflow-auto dark:bg-black">
-          <Navbar />
+          {/* <Navbar /> */}
           {children}
         </div>
       </AntdRegistry>

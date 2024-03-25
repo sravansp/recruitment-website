@@ -46,11 +46,10 @@ import candidate from "@/public/Frame 427319140.png";
 import uploader from "@/public/image 339.png";
 import pdfFile from "@/public/sample.pdf";
 import { useRouter } from "next/router";
-import { Button, DatePicker, AntdModal, Modal} from "antd";
+import { Button, DatePicker, AntdModal, Modal } from "antd";
 import DateSelect from "@/Components/ui/DateSelect";
 // import { Button, Modal as AntdModal } from 'antd';
 import CountdownModal from "@/Components/ui/Modal";
-
 
 function Web({ closeDrawer, selectedJobId }) {
   const [currentStep, setCurrentStep] = useState(0);
@@ -60,7 +59,7 @@ function Web({ closeDrawer, selectedJobId }) {
   const [activeBtnValue, setActiveBtnValue] = useState(0);
   const isSmallScreen = useMediaQuery({ maxWidth: 1439 });
   const [formData, setFormData] = useState({});
-  const [insertedid1, setinsertedId1] = useState(4);
+  const [insertedid1, setinsertedId1] = useState();
   const [data, setData] = useState(null);
   const [educationaldetails, setEducationaldetails] = useState([]);
   const [experience, setExperience] = useState([]);
@@ -74,15 +73,16 @@ function Web({ closeDrawer, selectedJobId }) {
   ] = useState(1);
   const [isFormSubmitted, setIsFormSubmitted] = useState(false);
 
-  const [additionalEducationalDetails, setAdditionalEducationalDetails] = useState(
-    Array.from({ length: additionalEducationalDetailsCount }, () => ({
-      institute: "",
-      courseType: "",
-      courseName: "",
-      yearOfStudy: "",
-    }))
-  );
-  const [additionalExperiences,setAdditionalExperiences ] = useState(
+  const [additionalEducationalDetails, setAdditionalEducationalDetails] =
+    useState(
+      Array.from({ length: additionalEducationalDetailsCount }, () => ({
+        institute: "",
+        courseType: "",
+        courseName: "",
+        yearOfStudy: "",
+      }))
+    );
+  const [additionalExperiences, setAdditionalExperiences] = useState(
     Array.from({ length: additionalExperienceCount }, () => ({
       jobTitle: "",
       employmentType: "",
@@ -92,8 +92,7 @@ function Web({ closeDrawer, selectedJobId }) {
       toDate: "",
     }))
   );
-  
-  
+
   const [steps, setSteps] = useState([
     {
       id: 1,
@@ -221,16 +220,15 @@ function Web({ closeDrawer, selectedJobId }) {
       await formik3.handleSubmit();
     }
     // if (currentStep === 4 && closeDrawer) {
-      if (currentStep === 4 && closeDrawer) {
+    if (currentStep === 4 && closeDrawer) {
       //  openModal()
-        closeDrawer()
-      }
-       
-    };
-    // const handleCloseModal = () => {
-    //   setIsModalVisible(false);
-      
-    // };
+      closeDrawer();
+    }
+  };
+  // const handleCloseModal = () => {
+  //   setIsModalVisible(false);
+
+  // };
   // const router = useRouter();
   // const { jobId } = router.query;
 
@@ -401,8 +399,8 @@ function Web({ closeDrawer, selectedJobId }) {
 
   const formik = useFormik({
     initialValues: {
-      resumeCode: 21,
-      candidateName: "sdhbhj",
+      resumeCode: null,
+      candidateName: "",
       namePrefix: "Mr",
       firstName: "",
       lastName: "",
@@ -434,13 +432,14 @@ function Web({ closeDrawer, selectedJobId }) {
     onSubmit: async (values, { setSubmitting }) => {
       try {
         // Make your API call here
+        values.candidateName = `${values.namePrefix} ${values.firstName} ${values.lastName}`.trim();
 
         const response = await saveRecruitmentResume(values);
         console.log("API Response:", response);
         console.log(response.result.insertedId, "inserted id responsee");
 
         setinsertedId1(response.result.insertedId);
-        console.log(insertedid1);
+        console.log(insertedid1,"insertede i");
         setActiveBtn(activeBtn + 1);
 
         setCurrentStep(currentStep + 1);
@@ -472,12 +471,16 @@ function Web({ closeDrawer, selectedJobId }) {
   const formik1 = useFormik({
     initialValues: {
       // ...existing fields
-      additionalEducationalDetails: Array.from({ length: additionalEducationalDetailsCount }, () => ({
-        institute: "",
-        courseType: "",
-        courseName: "",
-        yearOfStudy: "",
-      })),
+      additionalEducationalDetails: Array.from(
+        { length: additionalEducationalDetailsCount },
+        () => ({
+          resumeId:insertedid1,
+          institute: "",
+          courseType: "",
+          courseName: "",
+          yearOfStudy: "",
+        })
+      ),
     },
     enableReinitialize: true,
     validateOnChange: false,
@@ -492,12 +495,12 @@ function Web({ closeDrawer, selectedJobId }) {
         })
       ),
     }),
-    
+
     onSubmit: async (values, { setSubmitting }) => {
       try {
         const response = await saveRecruitmentResume(values);
         console.log("API Response:", response);
-    
+
         setinsertedId1(response.result.insertedId);
         setActiveBtn(activeBtn + 1);
         setCurrentStep(currentStep + 1);
@@ -507,10 +510,8 @@ function Web({ closeDrawer, selectedJobId }) {
       } finally {
         setSubmitting(false);
         setIsFormSubmitted(true);
-
       }
     },
-    
   });
   // const validationSchema2 = Yup.object().shape({
   //   jobTitle: Yup.string().required("Job Title is required"),
@@ -524,16 +525,20 @@ function Web({ closeDrawer, selectedJobId }) {
   const formik2 = useFormik({
     initialValues: {
       // ...existing fields
-      additionalExperiences: Array.from({ length: additionalExperienceCount }, () => ({
-        jobTitle: "",
-        employmentType: "",
-        companyName: "",
-        location: "",
-        fromDate: "",
-        toDate: "",
-      })),
+      additionalExperiences: Array.from(
+        { length: additionalExperienceCount },
+        () => ({
+          resumeId:insertedid1,
+          jobTitle: "",
+          employmentType: "",
+          companyName: "",
+          location: "",
+          fromDate: "",
+          toDate: "",
+        })
+      ),
     },
-    
+
     enableReinitialize: true,
     validateOnChange: false,
     validationSchema: Yup.object().shape({
@@ -547,8 +552,8 @@ function Web({ closeDrawer, selectedJobId }) {
           fromDate: Yup.string().required("From Date is required"),
           toDate: Yup.string().required("To Date is required"),
         })
-        ),
-      }),
+      ),
+    }),
     onSubmit: async (values, { setSubmitting }) => {
       try {
         const response = await saveRecruitmentResumesExperienceDetail(values);
@@ -559,12 +564,10 @@ function Web({ closeDrawer, selectedJobId }) {
       } finally {
         setSubmitting(false);
         setIsFormSubmitted(true);
-        
       }
     },
-    
   });
-    
+
   // const validationSchema3 = Yup.object().shape({
   //   customQuestion: Yup.string().required("This field is required"),
   //   highestEducationLevel: Yup.string().required("This field is required"),
@@ -585,7 +588,7 @@ function Web({ closeDrawer, selectedJobId }) {
     initialValues: {
       customQuestion: "",
       jobId: selectedJobId,
-      resumeId: 21,
+      resumeId: insertedid1,
       // highestEducationLevel: "",
     },
     enableReinitialize: true,
@@ -731,7 +734,6 @@ function Web({ closeDrawer, selectedJobId }) {
     ]);
     setAdditionalExperienceCount((prevCount) => prevCount + 1);
   };
-  
 
   return (
     <div className="flex flex-col gap-6 container-wrapper ">
@@ -962,84 +964,107 @@ function Web({ closeDrawer, selectedJobId }) {
                     aria-labelledby={`acco-title-item`}
                     className="flex flex-col justify-between w-full gap-6 px-6 py-4"
                   >
-                 {additionalEducationalDetails.map((detail, index) => (
-  <div key={index}  className="flex flex-col justify-between w-full gap-6 px-6 py-4">
-    <div className="grid grid-cols-1 gap-4 sm:grid-cols-3">
-      <FormInput
-        title={"School or University"}
-        placeholder={"Eg: Boston University"}
-        className="text-[#344054]"
-        name={`additionalEducationalDetails[${index}].institute`}
-        value={detail.institute}
-        change={(e) => {
-          const updatedDetails = [...additionalEducationalDetails];
-          updatedDetails[index].institute = e;
-          setAdditionalEducationalDetails(updatedDetails);
-        }}
-        required={true}
-        error={
-          isFormSubmitted ? formik1.errors.additionalExperiences?.[index]?.institute : ""
-        }      
-        />
-      <FormInput
-        title={"Degree"}
-        placeholder={"Eg: Bachelor’s"}
-        name={`additionalEducationalDetails[${index}].courseType`}
-        className="text-[#344054]"
-        value={detail.courseType}
-        change={(e) => {
-          const updatedDetails = [...additionalEducationalDetails];
-          updatedDetails[index].courseType = e;
-          setAdditionalEducationalDetails(updatedDetails);
-        }}
-        required={true}
-        error={
-          isFormSubmitted ? formik1.errors.additionalExperiences?.[index]?.courseType : ""
-        }
-      />
-    </div>
-    <div className="grid grid-cols-1 gap-4 sm:grid-cols-3">
-      <FormInput
-        title={"Field of Study"}
-        placeholder={"Eg: Business"}
-        className="text-[#344054]"
-        name={`additionalEducationalDetails[${index}].courseName`}
-        value={detail.courseName}
-        change={(e) => {
-          const updatedDetails = [...additionalEducationalDetails];
-          updatedDetails[index].courseName = e;
-          setAdditionalEducationalDetails(updatedDetails);
-        }}
-        required={true}
-        error={
-          isFormSubmitted ? formik1.errors.additionalExperiences?.[index]?.courseName : ""
-        }
-      />
-      <DateSelect
-        title={"Year"}
-        className="text-[#344054]"
-        name={`additionalEducationalDetails[${index}].yearOfStudy`}
-        selectpicker="year"
-        value={detail.yearOfStudy}
-        change={(e) => {
-          const updatedDetails = [...additionalEducationalDetails];
-          updatedDetails[index].yearOfStudy = e;
-          setAdditionalEducationalDetails(updatedDetails);
-        }}
-        required={true}
-        error={
-          isFormSubmitted ? formik1.errors.additionalExperiences?.[index]?.yearOfStudy : ""
-        }
-      />
-      <div className="flex items-center justify-end">
-        <button onClick={() => handleDelete(index)}>
-          <RiDeleteBin5Line className="text-gray-500 w-[17px] h-[17px]" />
-        </button>
-      </div>
-    </div>
-    <div className="divider-h" />
-  </div>
-))}
+                    {additionalEducationalDetails.map((detail, index) => (
+                      <div
+                        key={index}
+                        className="flex flex-col justify-between w-full gap-6 px-6 py-4"
+                      >
+                        <div className="grid grid-cols-1 gap-4 sm:grid-cols-3">
+                          <FormInput
+                            title={"School or University"}
+                            placeholder={"Eg: Boston University"}
+                            className="text-[#344054]"
+                            name={`additionalEducationalDetails[${index}].institute`}
+                            value={detail.institute}
+                            change={(e) => {
+                              const updatedDetails = [
+                                ...additionalEducationalDetails,
+                              ];
+                              updatedDetails[index].institute = e;
+                              setAdditionalEducationalDetails(updatedDetails);
+                            }}
+                            required={true}
+                            error={
+                              isFormSubmitted
+                                ? formik1.errors.additionalExperiences?.[index]
+                                    ?.institute
+                                : ""
+                            }
+                          />
+                          <FormInput
+                            title={"Degree"}
+                            placeholder={"Eg: Bachelor’s"}
+                            name={`additionalEducationalDetails[${index}].courseType`}
+                            className="text-[#344054]"
+                            value={detail.courseType}
+                            change={(e) => {
+                              const updatedDetails = [
+                                ...additionalEducationalDetails,
+                              ];
+                              updatedDetails[index].courseType = e;
+                              setAdditionalEducationalDetails(updatedDetails);
+                            }}
+                            required={true}
+                            error={
+                              isFormSubmitted
+                                ? formik1.errors.additionalExperiences?.[index]
+                                    ?.courseType
+                                : ""
+                            }
+                          />
+                        </div>
+                        <div className="grid grid-cols-1 gap-4 sm:grid-cols-3">
+                          <FormInput
+                            title={"Field of Study"}
+                            placeholder={"Eg: Business"}
+                            className="text-[#344054]"
+                            name={`additionalEducationalDetails[${index}].courseName`}
+                            value={detail.courseName}
+                            change={(e) => {
+                              const updatedDetails = [
+                                ...additionalEducationalDetails,
+                              ];
+                              updatedDetails[index].courseName = e;
+                              setAdditionalEducationalDetails(updatedDetails);
+                            }}
+                            required={true}
+                            error={
+                              isFormSubmitted
+                                ? formik1.errors.additionalExperiences?.[index]
+                                    ?.courseName
+                                : ""
+                            }
+                          />
+                          <DateSelect
+                            title={"Year"}
+                            className="text-[#344054]"
+                            name={`additionalEducationalDetails[${index}].yearOfStudy`}
+                            selectpicker="year"
+                            value={detail.yearOfStudy}
+                            change={(e) => {
+                              const updatedDetails = [
+                                ...additionalEducationalDetails,
+                              ];
+                              updatedDetails[index].yearOfStudy = e;
+                              setAdditionalEducationalDetails(updatedDetails);
+                            }}
+                            required={true}
+                            error={
+                              isFormSubmitted
+                                ? formik1.errors.additionalExperiences?.[index]
+                                    ?.yearOfStudy
+                                : ""
+                            }
+                          />
+                          <div className="flex items-center justify-end">
+                            <button onClick={() => handleDelete(index)}>
+                              <RiDeleteBin5Line className="text-gray-500 w-[17px] h-[17px]" />
+                            </button>
+                          </div>
+                        </div>
+                        <div className="divider-h" />
+                      </div>
+                    ))}
 
                     {/* <div className="grid grid-cols-1 gap-4 sm:grid-cols-3">
                   <FormInput
@@ -1136,117 +1161,150 @@ function Web({ closeDrawer, selectedJobId }) {
                     className="flex flex-col justify-between w-full gap-6 px-6 py-4"
                   >
                     {additionalExperiences.map((experience, index) => (
-  <div key={index} className="flex flex-col justify-between w-full gap-6 px-6 py-4"  >
-    <div className="grid grid-cols-1 gap-4 sm:grid-cols-3">
-      <FormInput
-        title={"Job Title"}
-        placeholder={"Eg: Retail Sales Manager"}
-        className="text-[#344054]"
-        name={`additionalExperiences[${index}].jobTitle`}
-        value={experience.jobTitle}
-        change={(e) => {
-          const updatedExperiences = [...additionalExperiences];
-          updatedExperiences[index].jobTitle = e;
-          setAdditionalExperiences(updatedExperiences);
-        }}
-        required={true}
-        error={
-          isFormSubmitted ? formik2.errors.additionalExperiences?.[index]?.jobTitle : ""
-        }
-      />
-      <FormInput
-        title={"Employment Type"}
-        placeholder={"Eg: Fulltime"}
-        className="text-[#344054]"
-        name={`additionalExperiences[${index}].employmentType`}
-        value={experience.employmentType}
-        change={(e) => {
-          const updatedExperiences = [...additionalExperiences];
-          updatedExperiences[index].employmentType = e;
-          setAdditionalExperiences(updatedExperiences);
-        }}
-        required={true}
-        error={
-          isFormSubmitted ? formik2.errors.additionalExperiences?.[index]?.employmentType : ""
-        }
-      />
-    </div>
-    <div className="grid grid-cols-1 gap-4 sm:grid-cols-3 ">
-      <FormInput
-        title={"Company Name"}
-        placeholder={"Eg: Microsoft"}
-        className="text-[#344054]"
-        name={`additionalExperiences[${index}].companyName`}
-        value={experience.companyName}
-        change={(e) => {
-          const updatedExperiences = [...additionalExperiences];
-          updatedExperiences[index].companyName = e;
-          setAdditionalExperiences(updatedExperiences);
-        }}
-        required={true}
-        error={
-          isFormSubmitted ? formik2.errors.additionalExperiences?.[index]?.companyName : ""
-        }
-      />
-      <FormInput
-        title={"Location"}
-        placeholder={"Eg: London, UK"}
-        className="text-[#344054]"
-        name={`additionalExperiences[${index}].location`}
-        value={experience.location}
-        change={(e) => {
-          const updatedExperiences = [...additionalExperiences];
-          updatedExperiences[index].location = e;
-          setAdditionalExperiences(updatedExperiences);
-        }}
-        required={true}
-        error={
-          isFormSubmitted ? formik2.errors.additionalExperiences?.[index]?.location : ""
-        }
-      />
-    </div>
-    <div className="grid grid-cols-3 gap-4 sm:grid-cols-6">
-      <DateSelect
-        title={"From"}
-        placeholder={"09/2023"}
-        className="text-[#344054]"
-        name={`additionalExperiences[${index}].fromDate`}
-        value={experience.fromDate}
-        change={(e) => {
-          const updatedExperiences = [...additionalExperiences];
-          updatedExperiences[index].fromDate = e;
-          setAdditionalExperiences(updatedExperiences);
-        }}
-        required={true}
-        error={
-          isFormSubmitted ? formik2.errors.additionalExperiences?.[index]?.fromDate : ""
-        }
-      />
-      <DateSelect
-        title={"To"}
-        placeholder={"09/2024"}
-        selectpicker="dateandtime"
-        className="text-[#344054]"
-        name={`additionalExperiences[${index}].toDate`}
-        value={experience.toDate}
-        change={(e) => {
-          const updatedExperiences = [...additionalExperiences];
-          updatedExperiences[index].toDate = e;
-          setAdditionalExperiences(updatedExperiences);
-        }}
-        required={true}
-        error={
-          isFormSubmitted ? formik2.errors.additionalExperiences?.[index]?.toDate : ""
-        }
-      />
-        <div className="flex items-center justify-end">
-        <button onClick={() => handleDelete1(index)}>
-          <RiDeleteBin5Line className="text-gray-500 w-[17px] h-[17px]" />
-        </button>
-      </div>
-    </div>
-  </div>
-))}
+                      <div
+                        key={index}
+                        className="flex flex-col justify-between w-full gap-6 px-6 py-4"
+                      >
+                        <div className="grid grid-cols-1 gap-4 sm:grid-cols-3">
+                          <FormInput
+                            title={"Job Title"}
+                            placeholder={"Eg: Retail Sales Manager"}
+                            className="text-[#344054]"
+                            name={`additionalExperiences[${index}].jobTitle`}
+                            value={experience.jobTitle}
+                            change={(e) => {
+                              const updatedExperiences = [
+                                ...additionalExperiences,
+                              ];
+                              updatedExperiences[index].jobTitle = e;
+                              setAdditionalExperiences(updatedExperiences);
+                            }}
+                            required={true}
+                            error={
+                              isFormSubmitted
+                                ? formik2.errors.additionalExperiences?.[index]
+                                    ?.jobTitle
+                                : ""
+                            }
+                          />
+                          <FormInput
+                            title={"Employment Type"}
+                            placeholder={"Eg: Fulltime"}
+                            className="text-[#344054]"
+                            name={`additionalExperiences[${index}].employmentType`}
+                            value={experience.employmentType}
+                            change={(e) => {
+                              const updatedExperiences = [
+                                ...additionalExperiences,
+                              ];
+                              updatedExperiences[index].employmentType = e;
+                              setAdditionalExperiences(updatedExperiences);
+                            }}
+                            required={true}
+                            error={
+                              isFormSubmitted
+                                ? formik2.errors.additionalExperiences?.[index]
+                                    ?.employmentType
+                                : ""
+                            }
+                          />
+                        </div>
+                        <div className="grid grid-cols-1 gap-4 sm:grid-cols-3 ">
+                          <FormInput
+                            title={"Company Name"}
+                            placeholder={"Eg: Microsoft"}
+                            className="text-[#344054]"
+                            name={`additionalExperiences[${index}].companyName`}
+                            value={experience.companyName}
+                            change={(e) => {
+                              const updatedExperiences = [
+                                ...additionalExperiences,
+                              ];
+                              updatedExperiences[index].companyName = e;
+                              setAdditionalExperiences(updatedExperiences);
+                            }}
+                            required={true}
+                            error={
+                              isFormSubmitted
+                                ? formik2.errors.additionalExperiences?.[index]
+                                    ?.companyName
+                                : ""
+                            }
+                          />
+                          <FormInput
+                            title={"Location"}
+                            placeholder={"Eg: London, UK"}
+                            className="text-[#344054]"
+                            name={`additionalExperiences[${index}].location`}
+                            value={experience.location}
+                            change={(e) => {
+                              const updatedExperiences = [
+                                ...additionalExperiences,
+                              ];
+                              updatedExperiences[index].location = e;
+                              setAdditionalExperiences(updatedExperiences);
+                            }}
+                            required={true}
+                            error={
+                              isFormSubmitted
+                                ? formik2.errors.additionalExperiences?.[index]
+                                    ?.location
+                                : ""
+                            }
+                          />
+                        </div>
+                        <div className="grid grid-cols-3 gap-4 sm:grid-cols-6">
+                          <DateSelect
+                            title={"From"}
+                            placeholder={"09/2023"}
+                            className="text-[#344054]"
+                            name={`additionalExperiences[${index}].fromDate`}
+                            value={experience.fromDate}
+                            change={(e) => {
+                              const updatedExperiences = [
+                                ...additionalExperiences,
+                              ];
+                              updatedExperiences[index].fromDate = e;
+                              setAdditionalExperiences(updatedExperiences);
+                            }}
+                            required={true}
+                            error={
+                              isFormSubmitted
+                                ? formik2.errors.additionalExperiences?.[index]
+                                    ?.fromDate
+                                : ""
+                            }
+                          />
+                          <DateSelect
+                            title={"To"}
+                            placeholder={"09/2024"}
+                            selectpicker="dateandtime"
+                            className="text-[#344054]"
+                            name={`additionalExperiences[${index}].toDate`}
+                            value={experience.toDate}
+                            change={(e) => {
+                              const updatedExperiences = [
+                                ...additionalExperiences,
+                              ];
+                              updatedExperiences[index].toDate = e;
+                              setAdditionalExperiences(updatedExperiences);
+                            }}
+                            required={true}
+                            error={
+                              isFormSubmitted
+                                ? formik2.errors.additionalExperiences?.[index]
+                                    ?.toDate
+                                : ""
+                            }
+                          />
+                          <div className="flex items-center justify-end">
+                            <button onClick={() => handleDelete1(index)}>
+                              <RiDeleteBin5Line className="text-gray-500 w-[17px] h-[17px]" />
+                            </button>
+                          </div>
+                        </div>
+                      </div>
+                    ))}
 
                     <AddMore
                       name="Add More Experience "
@@ -1611,7 +1669,7 @@ function Web({ closeDrawer, selectedJobId }) {
             </Button>,
           ]}
         > */}
-         
+
         {/* </AntdModal>
       )}
       </> */}
