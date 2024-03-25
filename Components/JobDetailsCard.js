@@ -85,22 +85,22 @@ console.log(selectedJob);
             <div className="bg-[#f2f0fd] dark:bg-[#4a4a4a] p-2.5 rounded-md">
               <h3 className="pblack">Other Details</h3>
             </div>
-            {/* {selectedJob (
-              <div className="p-2.5 flex flex-col gap-4" key={i}>
+            {/* {selectedJob ( */}
+              <div className="p-2.5 flex flex-col gap-4" >
                 <div className="grid grid-cols-6">
                   <p className="!font-normal !text-opacity-50 capitalize pblack col-span-1">
                     industry
                   </p>
-                  <p className="col-span-5 pblack">{industry}</p>
+                  <p className="col-span-5 pblack"></p>
                 </div>
                 <div className="grid grid-cols-6">
                   <p className="!font-normal !text-opacity-50 capitalize pblack col-span-1">
                     type
                   </p>
-                  <p className="col-span-4 pblack">{type}</p>
+                  <p className="col-span-4 pblack">{selectedJob.jobType}</p>
                 </div>
               </div>
-            )} */}
+            {/* )} */}
           </div>
         </div>
       )}
