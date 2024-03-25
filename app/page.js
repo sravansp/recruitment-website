@@ -52,10 +52,11 @@ const Home = () => {
       jobDetailsAnimation.start({ opacity: 1, y: 0 });
     });
   };
-  const handleJobSelect = (id) => {
-    setSelectedJobId(id);
+  const handleJobSelect = (jobId) => {
+    setSelectedJobId(jobId);
+    console.log(selectedJobId,"selected job :");
     if (isSmallScreen) {
-      router.push(`/job-details/${id}`, undefined, { shallow: true });
+      router.push(`/job-details/${jobId}`, undefined, { shallow: true });
     } else {
       animateJobDetails();
     }

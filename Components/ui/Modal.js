@@ -1,38 +1,67 @@
-import React, { useEffect } from 'react';
-import { Button, Modal } from 'antd';
+"use client";
+import React, { useState, useEffect } from "react";
+import {
+  Button,
+  Dialog,
+  DialogHeader,
+  DialogBody as MaterialDialogBody,
+  DialogFooter,
+} from "@material-tailwind/react";
 
-const CountdownModal = ({ title, duration, modal, contextHolder, openModal }) => {
+export function Modal1({
+  isOpen,
+  onClose,
+  onConfirm,
+  onCancel,
+  buttonLabel,
+  dialogHeader,
+  dialogBody,
+}) {
+  const [open, setOpen] = useState(false);
+
   useEffect(() => {
-    if (openModal) {
-      countDown();
-    }
-  }, [openModal]);
+    setOpen(isOpen);
+  }, [isOpen]);
 
-  const countDown = () => {
-    let secondsToGo = duration || 5; // Default duration is 5 seconds
-    const instance = modal.success({
-      title: title || 'Notification',
-      content: `This modal will be destroyed after ${secondsToGo} second.`,
-    });
+  const handleClose = () => {
+    setOpen(false);
+    onClose && onClose(); // Call onClose if provided
+  };
 
-    const timer = setInterval(() => {
-      secondsToGo -= 1;
-      instance.update({
-        content: `This modal will be destroyed after ${secondsToGo} second.`,
-      });
-    }, 1000);
+  const handleConfirm = () => {
+    onConfirm && onConfirm(); // Call onConfirm if provided
+    handleClose();
+  };
 
-    setTimeout(() => {
-      clearInterval(timer);
-      instance.destroy();
-    }, secondsToGo * 1000);
+  const handleCancel = () => {
+    onCancel && onCancel(); // Call onCancel if provided
+    handleClose();
   };
 
   return (
-    <>
-      {contextHolder}
-    </>
+    <div className="flex flex-col items-center justify-center h-screen">
+      <Button onClick={() => setOpen(true)} variant="gradient">
+        {buttonLabel || "Open Dialog"}
+      </Button>
+      <Dialog open={open} onClose={handleClose}>
+        <DialogHeader>{dialogHeader || "Dialog Header"}</DialogHeader>
+        <MaterialDialogBody>
+          {dialogBody || "Dialog Body"}
+        </MaterialDialogBody>
+        <DialogFooter>
+          <Button
+            variant="text"
+            color="red"
+            onClick={handleCancel}
+            className="mr-1"
+          >
+            <span>Cancel</span>
+          </Button>
+          <Button variant="gradient" color="green" onClick={handleConfirm}>
+            <span>Confirm</span>
+          </Button>
+        </DialogFooter>
+      </Dialog>
+      </div>
   );
-};
-
-export default CountdownModal;
+}

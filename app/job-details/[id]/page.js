@@ -1,27 +1,58 @@
 "use client";
 import { useRouter } from "next/navigation";
-import { jobs } from "@/Components/Data";
+// import { jobs } from "@/Components/Data";
 import JobDetailsCard from "@/Components/JobDetailsCard";
 import { useParams } from "next/navigation";
 import { useEffect, useState } from "react";
+import { getRecruitmentJobById } from "@/Components/Api";
 const JobDetailsPage = () => {
   const router = useRouter();
-  const [selectedJob, setSelectedJob] = useState(null)
-    
-  const params = useParams();
-  console.log(params.id); // Correctly accessing the ID from URL parameters
+  const [selectedJob, setSelectedJob] = useState("")
+    const {id}=useParams()
+  // const { jobId } = router.query;
+  // console.log(jobId);
+  // console.log(params.id); // Correctly accessing the ID from URL parameters
   // const selectedJob = jobs.find((job) => job.id === parseInt(params.id));
   // console.log(selectedJob)
   // if (!selectedJob) {
   //   // Handle case where job ID is not found
   //   return <div>Job not found</div>;
   // }
+  // useEffect(() => {
+  //   const fetchJobDetails = async () => {
+  //     try {
+  //       const response = await getRecruitmentJobById(19); // Pass jobId to the API function
+  //       if (response && response.result && response.result.length > 0) {
+  //         setSelectedJob(response.result[0]); // Set selectedJob with the first item from result array
+  //       } else {
+  //         console.error("Failed to fetch job details");
+  //       }
+  //     } catch (error) {
+  //       console.error("Error fetching job details:", error);
+  //     }
+  //   };
+
+  //   fetchJobDetails();
+  // }, []);
+  const getjobById = async () => {
+    try {
+      const response = await getRecruitmentJobById(id);
+      console.log(response);
+      setSelectedJob(response?.result||[])
+      console.log(id);
+    } catch (error) {
+      console.log(error);
+    }
+  };
+  getjobById()
+
   //
-  useEffect(() => {
-    // Find the selected job based on the ID from the URL params
-    const foundJob = jobs.find((job) => job.jobId === parseInt(params.id));
-    setSelectedJob(foundJob);
-  }, [params.id]);
+  // useEffect(() => {
+  //   // Find the selected job based on the ID from the URL params
+  //   const foundJob = jobs.find((job) => job.jobId === parseInt(params.id, 10));
+  //   setSelectedJob(foundJob);
+  //   console.log(foundJob,"fjhdvhvjf")
+  // }, [params.id]);
 
   return (
     <div className="flex flex-col gap-4 dark:bg-black">

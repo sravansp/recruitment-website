@@ -49,7 +49,7 @@ import { useRouter } from "next/router";
 import { Button, DatePicker, AntdModal, Modal } from "antd";
 import DateSelect from "@/Components/ui/DateSelect";
 // import { Button, Modal as AntdModal } from 'antd';
-import CountdownModal from "@/Components/ui/Modal";
+import CountdownModal, { Modal1 } from "@/Components/ui/Modal";
 
 function Web({ closeDrawer, selectedJobId }) {
   const [currentStep, setCurrentStep] = useState(0);
@@ -64,8 +64,8 @@ function Web({ closeDrawer, selectedJobId }) {
   const [educationaldetails, setEducationaldetails] = useState([]);
   const [experience, setExperience] = useState([]);
   const [customfield, setCustomfield] = useState([]);
-  const [modal, contextHolder] = Modal.useModal();
-  const [isModalVisible, setIsModalVisible] = useState(false);
+  // const [isModalOpen, setIsModalOpen] = useState(false);
+  const [isModalOpen, setIsModalOpen] = useState(false);
   const [additionalExperienceCount, setAdditionalExperienceCount] = useState(1);
   const [
     additionalEducationalDetailsCount,
@@ -203,15 +203,24 @@ function Web({ closeDrawer, selectedJobId }) {
       setPrimaryColor(color);
     }
   }, []);
-  const handleSubmitAllForms = async () => {
-    // Submit the first form
+
+
+  
+  const openModal = () => {
+    setIsModalOpen(true);
+  };
+
+  const closeModal = () => {
+    setIsModalOpen(false);
+  };
+  const handleSubmitAllForms = async (event) => {
+    if (event) {
+      event.preventDefault(); // Prevent default behavior if event object is available
+    }
+    
     await formik.handleSubmit();
-    // Check if the first form is valid and the necessary data is available
     if (formik.isValid) {
-      // Submit the second form only if the current step is "EducationalDetails"
-      // if (currentStep === "EducationalDetails") {
       await formik1.handleSubmit();
-      // }
     }
     if (formik1.isValid) {
       await formik2.handleSubmit();
@@ -219,12 +228,20 @@ function Web({ closeDrawer, selectedJobId }) {
     if (formik2.isValid) {
       await formik3.handleSubmit();
     }
-    // if (currentStep === 4 && closeDrawer) {
     if (currentStep === 4 && closeDrawer) {
-      //  openModal()
       closeDrawer();
+      setIsModalOpen(true); // Set isModalOpen to true to display the modal
     }
   };
+
+  const handleCloseModal = () => {
+    setIsModalOpen(false);
+    // Navigate to the desired location after closing the modal
+    // For example:
+    // history.push('/desired-route');
+  };
+
+
   // const handleCloseModal = () => {
   //   setIsModalVisible(false);
 
@@ -1655,7 +1672,7 @@ function Web({ closeDrawer, selectedJobId }) {
         <ButtonClick
           buttonName="Save & Continue"
           BtnType="primary"
-          handleSubmit={handleSubmitAllForms}
+          handleSubmit={(event) => handleSubmitAllForms(event)}
           disabled={formik.isSubmitting}
         />
         {/* <>
@@ -1681,6 +1698,28 @@ function Web({ closeDrawer, selectedJobId }) {
         openModal={openModal} 
         contextHolder={contextHolder} 
       /> */}
+     {/* {currentStep === 4 && isModalOpen && (
+        // <Modal handleOpen={openModal} DialogBody={() => <div>Modal Content</div>} />
+        <Modal1 handleOpen={() => setIsModalOpen(true)} DialogBody={() => <div>Modal Content</div>}/>
+      )} */}
+      <Modal1
+        isOpen={isModalOpen}
+        onClose={handleCloseModal}
+        // onConfirm={() => {
+        //   // Handle confirm action
+        //   handleCloseModal(); // Close the modal after confirming
+        // }}
+        // onCancel={() => {
+        //   // Handle cancel action
+        //   handleCloseModal(); // Close the modal after canceling
+        // }}
+        // buttonLabel="Open Custom Dialog"
+        dialogHeader="Custom Dialog Header"
+        dialogBody="Custom Dialog Body"
+      />
+
+      {/* Your other components and logic */}
+    
     </div>
   );
 }
