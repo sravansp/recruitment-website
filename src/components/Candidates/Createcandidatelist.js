@@ -32,9 +32,9 @@ import { GrEdit } from "react-icons/gr";
 import Header from '../Header/Header';
 import CVResume from './CandidateProfileTabs/CVResume';
 import API, { action } from '../Api1';
-import {saveRecruitmentResume,saveRecruitmentResumeEducationalDetailBatch} from '../Api1'
+import { saveRecruitmentResume, saveRecruitmentResumeEducationalDetailBatch } from '../Api1'
 
-export default function Createcandidatelist({ open = "", close = () => { }, refresh, ConfigurationAction,updateId = null, }) {
+export default function Createcandidatelist({ open = "", close = () => { }, refresh, ConfigurationAction, updateId = null, }) {
   const [show, setShow] = useState(open);
   const [activeBtnValue, setActiveBtnValue] = useState("Personel");//Review
   const [nextStep, setNextStep] = useState(0);
@@ -43,17 +43,49 @@ export default function Createcandidatelist({ open = "", close = () => { }, refr
   const [activeBtn, setActiveBtn] = useState(0);
   const [presentage, setPresentage] = useState(0);
   const [Gendervalue, setgender] = useState("Male");
-  const [data,setData] = useState ([])
-  const [resumeId,setResumeId] =useState()
+  const [data, setData] = useState([])
+  const [resumeId, setResumeId] = useState()
   const { t } = useTranslation();
   const [api, contextHolder] = notification.useNotification();
-  const [education,setEducation] =useState([{courseType:"",
-  courseName:"",
-   institute:"",
- yearOfStudy:"",
-    location:"",
-   createdBy:"",}])
+  //   const [education,setEducation] =useState([{
+  //     id:1,
+  //     courseType:"",
+  //   courseName:"",
+  //    institute:"",
+  //  yearOfStudy:"",
+  //     location:"",
+  //    createdBy:"",}])
+  const [education, setEducation] = useState([
+    {
+      id: 1,
+      row: "one",
+      field: [
+        {
+          title: "School Or University",
+          inputName: "institute",
+          type: "input"
+        },
+        {
+          title: "Degree",
+          inputName: "courseType",
+          type: "dropdown"
 
+        },
+        {
+          title: "Field of Study",
+          inputName: "courseName",
+          type: "input"
+        }, {
+          title: "Year",
+          inputName: "yearOfStudy",
+          type: "input"
+        }, {
+          title: "Location",
+          inputName: "location",
+          type: "input"
+        },]
+    }
+   ])
 
 
   const openNotification = (type, message, description, callback) => {
@@ -91,41 +123,92 @@ export default function Createcandidatelist({ open = "", close = () => { }, refr
     close(false);
   };
 
+  const handleAddCondition = (e,i) => {
+    setEducation((prevEvaluation) => [
+      ...prevEvaluation,
+      {
+        id: 2,
+        row: "two"+i,
+        field: [
+          {
+            title: "School Or University",
+            inputName: "institute"+i,
+            type: "input"
+          },
+          {
+            title: "Degree",
+            inputName: "courseType"+i,
+            type: "dropdown"
+  
+          },
+          {
+            title: "Field of Study",
+            inputName: "courseName"+i,
+            type: "input"
+          }, {
+            title: "Year",
+            inputName: "yearOfStudy"+i,
+            type: "input"
+          }, {
+            title: "Location",
+            inputName: "location"+i,
+            type: "input"
+          }]}
+    ]);
+  };
+
+
+  const personalInfo=education.reduce((ac, each) => {
+    each.field.reduce((acc, value) => {
+      acc[each.inputName] = "";
+      console.log(each.inputName);
+      return acc;
+    });
+  }, {});
+  // const initialValues={
+    
+  // }
+
+
   const formik = useFormik({
     initialValues: {
-       
-      courseType:"",
-      courseName:"",
-       institute:"",
-     yearOfStudy:"",
-        location:"",
-       createdBy:localStorage.getItem('employeeId'),
 
-      },
-      enableReinitialize: true,
-      validateOnChange: false,
-      validationSchema: yup.object({
-        courseName: yup.string().required("First Name is required"),
-      }),
-    
-      onSubmit: async (values) => {
-        try{
+      // courseType: "",
+      // courseName: "",
+      // institute: "",
+      // yearOfStudy: "",
+      // location: "",
+      ...personalInfo,
+      createdBy: localStorage.getItem('employeeId'),
 
-        const result = await saveRecruitmentResumeEducationalDetailBatch([{
-          resumeId:resumeId,
-        courseType:values.courseType, 
-        courseName:values.courseName,
-         institute:values.institute, 
-       yearOfStudy:values.yearOfStudy,
-          location:values.location, 
-         createdBy: localStorage.getItem('employeeId')
+    },
+    enableReinitialize: true,
+    validateOnChange: false,
+    validationSchema: yup.object({
+      courseName: yup.string().required("First Name is required"),
+    }),
 
-        }]);
+    onSubmit: async (values) => {
+      try {
+   const result = await saveRecruitmentResumeEducationalDetailBatch(
+
+        education.map((each)=>({
+           resumeId: resumeId,
+           institute: values[each.field[0].inputName],
+          courseType: values[each.field[1].inputName],
+          courseName: values[each.field[2].inputName],
+          
+          yearOfStudy: values[each.field[3].inputName],
+          location: values[each.field[4].inputName],
+          createdBy: localStorage.getItem('employeeId')
+        })),
+
+        );
         if (result.status === 200) {
           setNextStep(nextStep + 1);
           setPresentage(1);
           openNotification("success", "Success...", result.message);
-          
+
         } else if (result.status === 500) {
           openNotification("error", "Failed..", result.message);
         }
@@ -138,44 +221,26 @@ export default function Createcandidatelist({ open = "", close = () => { }, refr
         console.log(error);
       }
     }
-
-    
-  
-
-     
-
-   
-
   });
 
 
-  const Degree = [{id:1,title:"Bachelors",value:"Bachelors"},{id:2,title:"other",value:"other"}
-];
+  const Degree = [{ id: 1, title: "Bachelors", value: "Bachelors" }, { id: 2, title: "other", value: "other" }
+  ];
   const scrollRef = useRef();
-  const handleAddCondition = () => {
-    setEvaluation((prevEvaluation) => [
-      ...prevEvaluation,
-      {
-        id: prevEvaluation.length + 1,
-        city: "",
 
-      },
-    ]);
-  };
-  
   const Formik2 = useFormik({
     initialValues: {
       firstName: "",
       lastName: "",
       candidateEmail: "",
       candidateContact: "",
-      namePrefix:"",
-      cityOrTown:"",
-      candidateLocation:"",
-        addressLine:"",
-        postalCode:"",
-        createdBy:"",
-        candidateName:""
+      namePrefix: "",
+      cityOrTown: "",
+      candidateLocation: "",
+      addressLine: "",
+      postalCode: "",
+      createdBy: "",
+      candidateName: ""
     },
 
     enableReinitialize: true,
@@ -184,11 +249,11 @@ export default function Createcandidatelist({ open = "", close = () => { }, refr
       firstName: yup.string().required("First Name is required"),
     }),
     onSubmit: async (values) => {
-      
+
       try {
         const candidateName = `${values.namePrefix} ${values.firstName} ${values.lastName}`;
-        const result = await saveRecruitmentResume( {
-          candidateName:candidateName,
+        const result = await saveRecruitmentResume({
+          candidateName: candidateName,
           firstName: values.firstName,
           lastName: values.lastName,
           namePrefix: values.namePrefix,
@@ -198,13 +263,13 @@ export default function Createcandidatelist({ open = "", close = () => { }, refr
           candidateLocation: values.candidateLocation,
           addressLine: values.addressLine,
           postalCode: values.postalCode,
-          candidateSource:"source1",
-          resumeCode:null,
-          createdBy:localStorage.getItem('employeeId'),  
+          candidateSource: "source1",
+          resumeCode: null,
+          createdBy: localStorage.getItem('employeeId'),
           jobId: localStorage.getItem('jobid'), // Assuming jobId is fixed for this form
           // createdBy: createdBy // Assuming createdBy is defined elsewhere
         });
-        
+
         if (result.status === 200) {
           setNextStep(nextStep + 1);
           setPresentage(1);
@@ -220,7 +285,7 @@ export default function Createcandidatelist({ open = "", close = () => { }, refr
         console.log(error);
       }
     }
-    
+
   });
 
   const CreateDirectorSteps = [
@@ -257,13 +322,13 @@ export default function Createcandidatelist({ open = "", close = () => { }, refr
 
   ];
 
-  const [evaluation, setEvaluation] = useState([{
-    id: 1,
-    city: "",
-  },])
+  // const [evaluation, setEvaluation] = useState([{
+  //   id: 1,
+  //   city: "",
+  // },])
 
   const handleDeleteCondition = (index) => {
-    setEvaluation((prevEvaluation) =>
+    setEducation((prevEvaluation) =>
       prevEvaluation.filter((_, i) => i !== index)
     );
   };
@@ -279,13 +344,13 @@ export default function Createcandidatelist({ open = "", close = () => { }, refr
       setActiveBtnValue(CreateDirectorSteps?.[activeBtn + 1].data);
     }
   }, [nextStep]);
-  
-  const genderoption = [{id:1,title:"Mr",value:"Mr"},{id:2,title:"Mrs",value:"Mrs"}
-];
-  
-console.log(resumeId,"resumeid");
 
- 
+  const genderoption = [{ id: 1, title: "Mr", value: "Mr" }, { id: 2, title: "Mrs", value: "Mrs" }
+  ];
+
+  console.log(resumeId, "resumeid");
+
+
 
   return (
     <div>
@@ -306,7 +371,7 @@ console.log(resumeId,"resumeid");
           open={show}
           close={(e) => {
             // console.log(e);
-            
+
             handleClose();
           }}
           // className={classNames}
@@ -314,7 +379,7 @@ console.log(resumeId,"resumeid");
             // console.log(e);
             Formik2.handleSubmit();
           }}
-        
+
           updateFun={() => {
             // updateCompany();
           }}
@@ -345,47 +410,47 @@ console.log(resumeId,"resumeid");
           stepsData={CreateDirectorSteps}
           buttonClick={(e) => {
             if (activeBtnValue === "Personel") {
-              
+
               if (!updateId) {
                 Formik2.handleSubmit();
               } else {
                 setNextStep(nextStep + 1);
                 // updateemployeeBasic();
               }
-             // setNextStep(nextStep + 1);
+              // setNextStep(nextStep + 1);
               // console.log("click 1");
             } else if (activeBtnValue === "Educational") {
               // console.log("click 2");
               if (!updateId) {
-                 formik.handleSubmit();
-               } else {
-                 setNextStep(nextStep + 1);
-                 // updateemployeeBasic();
-               }
+                formik.handleSubmit();
+              } else {
+                setNextStep(nextStep + 1);
+                // updateemployeeBasic();
+              }
               // setBtnName("Add Employee");
-             
-                // setNextStep(nextStep + 1);
-                // updateemployeeAddress();
-             
+
+              // setNextStep(nextStep + 1);
+              // updateemployeeAddress();
+
             } else if (activeBtnValue === "Work") {
               console.log("click 3");
 
               // setBtnName("Add Employee");
-              
-                setNextStep(nextStep + 1);
-              
+
+              setNextStep(nextStep + 1);
+
             } else if (activeBtnValue === "Questions") {
-             
-              
-                setNextStep(nextStep + 1);
-              
+
+
+              setNextStep(nextStep + 1);
+
             } else if (activeBtnValue === "Review") {
               // setBtnName("Add Employee");
-             
+
               setNextStep(nextStep + 1);
             }
 
-           
+
           }}
           buttonClickCancel={(e) => {
             if (activeBtn > 0) {
@@ -394,24 +459,24 @@ console.log(resumeId,"resumeid");
               setActiveBtnValue(CreateDirectorSteps?.[activeBtn - 1].data);
               console.log(activeBtn - 1);
             }
-           
+
           }}
           nextStep={nextStep}
           activeBtn={activeBtn}
           saveAndContinue={true}
 
-          
+
         >
           <FlexCol justify="center" align="center" >
             <div className='mt-5 m-auto w-5/6'>
-          {CreateDirectorSteps && (
+              {CreateDirectorSteps && (
                 <Stepper
                   currentStepNumber={activeBtn}
                   presentage={presentage}
                   // direction="left"
                   // labelPlacement="vertical"
                   steps={CreateDirectorSteps}
-                 
+
                   data={{
                     id: 2,
                     value: 1,
@@ -420,16 +485,16 @@ console.log(resumeId,"resumeid");
                     data: "addressDetails",
                   }}
 
-                  // className=" text-sm font-medium"
-                  // style={{
-                  //   fontSize: isSmallScreen ? "8px" : "10px",
-                  //   fontWeight: 600,
-                  // }}
-                  // // className="text-[10px]"
-                  // size={isSmallScreen ? "default" : "large"}
+                // className=" text-sm font-medium"
+                // style={{
+                //   fontSize: isSmallScreen ? "8px" : "10px",
+                //   fontWeight: 600,
+                // }}
+                // // className="text-[10px]"
+                // size={isSmallScreen ? "default" : "large"}
                 />
               )}
-              </div>
+            </div>
             {activeBtnValue === "Personel" ? (
               <>
                 <FlexCol justify="center" align="center" className="w-5/6 m-auto mt-10">
@@ -452,7 +517,7 @@ console.log(resumeId,"resumeid");
                       change={(e) => {
                         Formik2.setFieldValue("namePrefix", e);
                       }}
-                    
+
                       value={Formik2.values.namePrefix} />
 
                     <div className="grid grid-cols-2 gap-4 w-4/5">
@@ -462,9 +527,9 @@ console.log(resumeId,"resumeid");
                         change={(e) => {
                           Formik2.setFieldValue("firstName", e);
                         }}
-                      
+
                         value={Formik2.values.firstName}
-                       
+
                         error={Formik2.errors.firstName}
                         required={true}
 
@@ -476,7 +541,7 @@ console.log(resumeId,"resumeid");
                         change={(e) => {
                           Formik2.setFieldValue("lastName", e);
                         }}
-                      
+
                         value={Formik2.values.lastName}
 
                       />
@@ -486,7 +551,7 @@ console.log(resumeId,"resumeid");
                         change={(e) => {
                           Formik2.setFieldValue("candidateEmail", e);
                         }}
-                      
+
                         value={Formik2.values.candidateEmail
                         }
 
@@ -497,12 +562,12 @@ console.log(resumeId,"resumeid");
                         change={(e) => {
                           Formik2.setFieldValue("candidateContact", e);
                         }}
-                         value={Formik2.values.candidateContact }
+                        value={Formik2.values.candidateContact}
                       />
 
                     </div>
-                   
-      
+
+
 
                     <div className='w-4/5'>
                       <p>Photo (Optional)</p>
@@ -517,7 +582,7 @@ console.log(resumeId,"resumeid");
                         change={(e) => {
                           Formik2.setFieldValue("candidateLocation", e);
                         }}
-                         value={Formik2.values.candidateLocation }
+                        value={Formik2.values.candidateLocation}
 
                       />
 
@@ -527,7 +592,7 @@ console.log(resumeId,"resumeid");
                         change={(e) => {
                           Formik2.setFieldValue("cityOrTown", e);
                         }}
-                         value={Formik2.values.cityOrTown }
+                        value={Formik2.values.cityOrTown}
                       />
                       <FormInput
                         title={t("Address Line")}
@@ -535,7 +600,7 @@ console.log(resumeId,"resumeid");
                         change={(e) => {
                           Formik2.setFieldValue("addressLine", e);
                         }}
-                         value={Formik2.values.addressLine }
+                        value={Formik2.values.addressLine}
                       />
                       <FormInput
                         title={t("Postal Code")}
@@ -543,7 +608,7 @@ console.log(resumeId,"resumeid");
                         change={(e) => {
                           Formik2.setFieldValue("postalCode", e);
                         }}
-                         value={Formik2.values.postalCode }
+                        value={Formik2.values.postalCode}
                       />
 
                     </div>
@@ -568,65 +633,65 @@ console.log(resumeId,"resumeid");
                     }}
                     initialExpanded={true}
                   >
-                    {evaluation.map((condition, index) => (
+                    {education.map((condition, index) => (
                       <div className='flex items-end'>
                         <div className="grid grid-cols-2 gap-4 w-4/5">
-                          <FormInput
-                            key={condition.id}
-                            title={t("School or University")}
-                            placeholder={t("School or University")}
-                            change={(e) => {
-                              formik.setFieldValue("institute", e);
-                            }}
-                             value={formik.values.institute }
+                          {condition.field.map((each) =>
+                            each.type === "input" ? <FormInput
+                              key={each.id}
+                              title={each.title}
+                              placeholder={t("School or University")}
+                              change={(e) => {
+                                formik.setFieldValue(each.inputName, e);
+                              }}
+                              value={formik.values[each.inputName]}
 
-                          />
-
-
-                          <Dropdown
-                            title='Degree'
-                            placeholder="Degree"
-                            options={Degree}
-                            change={(e) => {
-                              formik.setFieldValue("courseType", e);
-                            }}
-                             value={formik.values.courseType }
-                          />
-                          <FormInput
+                            />
+                              :
+                              <Dropdown
+                                title={each.title}
+                                placeholder="Degree"
+                                options={Degree}
+                                change={(e) => {
+                                  formik.setFieldValue(each.inputName, e);
+                                }}
+                                value={formik.values[each.inputName]}
+                              />)}
+                          {/* <FormInput
                             title={t("Field of Study")}
-                            
-                           
+
+
                             placeholder={t("Field of Study")}
                             change={(e) => {
                               formik.setFieldValue("courseName", e);
                             }}
-                             value={formik.values.courseName }
+                            value={formik.values.courseName}
                           />
                           <FormInput
                             title={t("Year")}
                             placeholder={t("Year")}
-                            type="number" 
-                            id="yearInput" 
-                             min="1900" 
-                             max="2100" 
-                             step="1"
+                            type="number"
+                            id="yearInput"
+                            min="1900"
+                            max="2100"
+                            step="1"
                             change={(e) => {
                               formik.setFieldValue("yearOfStudy", e);
                             }}
-                             value={formik.values.yearOfStudy }
+                            value={formik.values.yearOfStudy}
 
                           />
-                           <FormInput
+                          <FormInput
                             title={t("Location")}
                             placeholder={t("Location")}
-                           
-                            
+
+
                             change={(e) => {
                               formik.setFieldValue("location", e);
                             }}
-                             value={formik.values.location }
+                            value={formik.values.location}
 
-                          />
+                          /> */}
 
 
 
@@ -671,7 +736,7 @@ console.log(resumeId,"resumeid");
                     initialExpanded={true}
                   >
 
-                    {evaluation.map((condition, index) => (
+                    {education.map((condition, index) => (
                       <div className='flex flex-col gap-3 '>
                         <div className="grid grid-cols-2 gap-4 w-4/5">
                           <FormInput
@@ -685,8 +750,8 @@ console.log(resumeId,"resumeid");
                           <Dropdown
                             title='Employment Type'
                             placeholder="Eg: Fulltime"
-                           
-                            
+
+
                           />
                           <FormInput
                             title={t("Company Name")}
@@ -901,7 +966,7 @@ console.log(resumeId,"resumeid");
                       </div>
 
                       <div className='flex flex-col gap-3'>
-                      {/* <h1 className="h1 !mt-10">{t("Resume/Cv")}</h1> */}
+                        {/* <h1 className="h1 !mt-10">{t("Resume/Cv")}</h1> */}
                         {/* <div className='flex justify-between items-center'>
                         <div className='flex gap-2 items-center'>
                           <img src={resume} className='rounded-lg' />
@@ -916,7 +981,7 @@ console.log(resumeId,"resumeid");
                         <div>
                           <CVResume />
                         </div>
-                        
+
                       </div>
                     </div>
 
