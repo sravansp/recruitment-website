@@ -32,7 +32,7 @@ import { GrEdit } from "react-icons/gr";
 import Header from '../Header/Header';
 import CVResume from './CandidateProfileTabs/CVResume';
 import API, { action } from '../Api1';
-import {saveRecruitmentResume} from '../Api1'
+import {saveRecruitmentResume,saveRecruitmentResumeEducationalDetailBatch} from '../Api1'
 
 export default function Createcandidatelist({ open = "", close = () => { }, refresh, ConfigurationAction,updateId = null, }) {
   const [show, setShow] = useState(open);
@@ -44,9 +44,18 @@ export default function Createcandidatelist({ open = "", close = () => { }, refr
   const [presentage, setPresentage] = useState(0);
   const [Gendervalue, setgender] = useState("Male");
   const [data,setData] = useState ([])
-  const [jobId,setJobId] =useState()
+  const [resumeId,setResumeId] =useState()
   const { t } = useTranslation();
   const [api, contextHolder] = notification.useNotification();
+  const [education,setEducation] =useState([{courseType:"",
+  courseName:"",
+   institute:"",
+ yearOfStudy:"",
+    location:"",
+   createdBy:"",}])
+
+
+
   const openNotification = (type, message, description, callback) => {
     api[type]({
       message: message,
@@ -82,87 +91,66 @@ export default function Createcandidatelist({ open = "", close = () => { }, refr
     close(false);
   };
 
-  // const formik = useFormik({
-  //   initialValues: {
-  //     leaveType: "",
-  //     categoryId: "",
-  //     leaveName: "",
-  //     description: "",
-  //     leaveCount: "",
-  //     isProrata: "",
-  //     maxLeaveLimit: "",
-  //     leaveLimitPer: "",
-  //     isProrataProbationIncluded: "",
-  //     leavePaytype: "",
+  const formik = useFormik({
+    initialValues: {
+       
+      courseType:"",
+      courseName:"",
+       institute:"",
+     yearOfStudy:"",
+        location:"",
+       createdBy:localStorage.getItem('employeeId'),
 
-  //     isProbationRestricted: "",
-  //     unusedLeaveRule: "",
-  //     maxlimit: "",
+      },
+      enableReinitialize: true,
+      validateOnChange: false,
+      validationSchema: yup.object({
+        courseName: yup.string().required("First Name is required"),
+      }),
+    
+      onSubmit: async (values) => {
+        try{
 
+        const result = await saveRecruitmentResumeEducationalDetailBatch([{
+          resumeId:resumeId,
+        courseType:values.courseType, 
+        courseName:values.courseName,
+         institute:values.institute, 
+       yearOfStudy:values.yearOfStudy,
+          location:values.location, 
+         createdBy: localStorage.getItem('employeeId')
 
-  //     leaveDaysType: "",
-  //     isAnnualleave: "",
-  //     leaveDays: "",
-  //     isProbationRestricted: "",
+        }]);
+        if (result.status === 200) {
+          setNextStep(nextStep + 1);
+          setPresentage(1);
+          openNotification("success", "Success...", result.message);
+          
+        } else if (result.status === 500) {
+          openNotification("error", "Failed..", result.message);
+        }
+        console.log(result);
+        console.log(result.errors);
 
-  //     leavePaidRules: {
-  //       between: [
-  //         {
-  //           fromDate: "",
-  //           toDate: ""
-  //         }
-  //       ],
-  //       greaterthanEqualto: [
-  //         {
-  //           fromDate: "",
-  //           toDate: ""
-  //         }
-  //       ],
+      }
+      catch (error) {
+        openNotification("error", "Failed..", error.message);
+        console.log(error);
+      }
+    }
 
-  //       lessThan: [
-  //         {
-  //           fromDate: "",
-  //           toDate: ""
-  //         }
-  //       ],
-  //       unpaidleave: [
-  //         {
+    
+  
 
-  //           Paycalculation: "",
-  //           days: "",
+     
 
+   
 
-  //         }
-  //       ],
-
-  //       partiallyPaid: [
-  //         {
-
-  //           percentagepaid: "",
-  //           Paycalculation: "",
-  //           days: "",
+  });
 
 
-  //         }
-  //       ]
-
-  //     },
-  //     isActive: "",
-  //   },
-
-  //   enableReinitialize: true,
-  //   validateOnChange: false,
-  //   validationSchema: yup.object().shape({
-  //     leaveType: yup.string().required("leaveType is Required"),
-
-  //     leaveCount: yup.string().required("leaveCount is Required"),
-
-  //   }),
-
-  // });
-
-
-
+  const Degree = [{id:1,title:"Bachelors",value:"Bachelors"},{id:2,title:"other",value:"other"}
+];
   const scrollRef = useRef();
   const handleAddCondition = () => {
     setEvaluation((prevEvaluation) => [
@@ -193,7 +181,7 @@ export default function Createcandidatelist({ open = "", close = () => { }, refr
     enableReinitialize: true,
     validateOnChange: false,
     validationSchema: yup.object({
-      firstName: yup.string().required("First name is required"),
+      firstName: yup.string().required("First Name is required"),
     }),
     onSubmit: async (values) => {
       
@@ -210,10 +198,10 @@ export default function Createcandidatelist({ open = "", close = () => { }, refr
           candidateLocation: values.candidateLocation,
           addressLine: values.addressLine,
           postalCode: values.postalCode,
-          candidateSource:null,
-          resumeCode:27,
-          createdBy:"ha",  
-          jobId: 1, // Assuming jobId is fixed for this form
+          candidateSource:"source1",
+          resumeCode:null,
+          createdBy:localStorage.getItem('employeeId'),  
+          jobId: localStorage.getItem('jobid'), // Assuming jobId is fixed for this form
           // createdBy: createdBy // Assuming createdBy is defined elsewhere
         });
         
@@ -221,7 +209,7 @@ export default function Createcandidatelist({ open = "", close = () => { }, refr
           setNextStep(nextStep + 1);
           setPresentage(1);
           openNotification("success", "Success...", result.message);
-          setJobId(result.result.insertedId);
+          setResumeId(result.result.insertedId);
         } else if (result.status === 500) {
           openNotification("error", "Failed..", result.message);
         }
@@ -234,7 +222,7 @@ export default function Createcandidatelist({ open = "", close = () => { }, refr
     }
     
   });
-  console.log(data,"hi this is result");
+
   const CreateDirectorSteps = [
     {
       id: 1,
@@ -292,10 +280,10 @@ export default function Createcandidatelist({ open = "", close = () => { }, refr
     }
   }, [nextStep]);
   
-  const genderoption = [{id:1,title:"Male",value:"Male"},{id:2,title:"Female",value:"Female"}
+  const genderoption = [{id:1,title:"Mr",value:"Mr"},{id:2,title:"Mrs",value:"Mrs"}
 ];
   
-
+console.log(resumeId,"resumeid");
 
  
 
@@ -364,13 +352,19 @@ export default function Createcandidatelist({ open = "", close = () => { }, refr
                 setNextStep(nextStep + 1);
                 // updateemployeeBasic();
               }
+             // setNextStep(nextStep + 1);
               // console.log("click 1");
             } else if (activeBtnValue === "Educational") {
               // console.log("click 2");
-
+              if (!updateId) {
+                 formik.handleSubmit();
+               } else {
+                 setNextStep(nextStep + 1);
+                 // updateemployeeBasic();
+               }
               // setBtnName("Add Employee");
              
-                setNextStep(nextStep + 1);
+                // setNextStep(nextStep + 1);
                 // updateemployeeAddress();
              
             } else if (activeBtnValue === "Work") {
@@ -452,7 +446,7 @@ export default function Createcandidatelist({ open = "", close = () => { }, refr
 
                     <Dropdown
                       title='Prefix'
-                      placeholder="Mr"
+                      placeholder={`Mr`}
                       options={genderoption}
                       className='w-24'
                       change={(e) => {
@@ -581,23 +575,56 @@ export default function Createcandidatelist({ open = "", close = () => { }, refr
                             key={condition.id}
                             title={t("School or University")}
                             placeholder={t("School or University")}
-
+                            change={(e) => {
+                              formik.setFieldValue("institute", e);
+                            }}
+                             value={formik.values.institute }
 
                           />
 
 
                           <Dropdown
                             title='Degree'
-                            placeholder="Mr"
+                            placeholder="Degree"
+                            options={Degree}
+                            change={(e) => {
+                              formik.setFieldValue("courseType", e);
+                            }}
+                             value={formik.values.courseType }
                           />
                           <FormInput
                             title={t("Field of Study")}
-                            placeholder={t("Email")}
-
+                            
+                           
+                            placeholder={t("Field of Study")}
+                            change={(e) => {
+                              formik.setFieldValue("courseName", e);
+                            }}
+                             value={formik.values.courseName }
                           />
                           <FormInput
                             title={t("Year")}
-                            placeholder={t("Phone number")}
+                            placeholder={t("Year")}
+                            type="number" 
+                            id="yearInput" 
+                             min="1900" 
+                             max="2100" 
+                             step="1"
+                            change={(e) => {
+                              formik.setFieldValue("yearOfStudy", e);
+                            }}
+                             value={formik.values.yearOfStudy }
+
+                          />
+                           <FormInput
+                            title={t("Location")}
+                            placeholder={t("Location")}
+                           
+                            
+                            change={(e) => {
+                              formik.setFieldValue("location", e);
+                            }}
+                             value={formik.values.location }
 
                           />
 

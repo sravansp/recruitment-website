@@ -307,7 +307,24 @@ export const saveRecruitmentEvaluationTemplateDetailBatch = async (formattedData
     throw error; // Re-throw the error to handle it where the function is called.
   }
 };
+export const saveRecruitmentResumeEducationalDetailBatch = async (formattedData) => {
+  try {
+    const action = "saveRecruitmentResumeEducationalDetailBatch";
+    const method = "POST";
+    const kwargs = formattedData;
+    
+    console.log("API Request Data:", { action, method, kwargs });
 
+    const response = await apiRequest(action, method, kwargs);
+
+    console.log("API Response:", response);
+
+    return response;
+  } catch (error) {
+    console.error("Error in saveRecruitmentResumeEducationalDetailBatch:", error);
+    throw error; // Re-throw the error to handle it where the function is called.
+  }
+};
 
 export const saveRecruitmentQuestionnaireTemplateDetailBatch = async (formattedData) => {
   try {
