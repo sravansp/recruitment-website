@@ -11,7 +11,7 @@ const Navbar = () => {
         <div className="flex flex-row items-center justify-between py-5">
           <a className="flex items-center font-medium text-gray-900 cursor-pointer title-font md:mb-0">
          {/* <Image src={logo} alt="logo" width={80} height={80} /> */}
-         <p className= "h1  !text-[#6A4BFC] !font-[Red Hat Display] py-2 p-2">Loyaltri</p>
+         <p className= "h1  !text-[#6A4BFC] !font-[Red Hat Display] pr-2">Loyaltri</p>
 <p className="h2">RECRUITMENT</p>
         
           </a>
