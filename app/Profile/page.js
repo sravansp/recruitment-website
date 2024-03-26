@@ -11,6 +11,9 @@ import Footer from "@/Components/ui/Footer";
 import Navbar1 from "@/Components/ui/Navbar1";
 import { BsThreeDotsVertical } from "react-icons/bs";
 import { FaRegFileExcel } from "react-icons/fa";
+import { Button, Dropdown } from "antd";
+import { IoEyeOutline } from "react-icons/io5";
+
 
 function profile() {
     const [primaryColor, setPrimaryColor] = useState('');
@@ -21,6 +24,25 @@ function profile() {
       { label: "Submission Date", value: "Mar 15, 2024" },
       { label: "Action", value: "Action " },
     ];
+    const items = [
+      {
+        key: '1',
+        label: (
+          <Link href="/Profile/Withdrawapplication">  <p className="flex items-center ">
+            <FaRegFileExcel className="mr-2"/> Withdraw Application
+          </p>
+          </Link>
+        ),
+      },
+      {
+        key: '2',
+        label: (
+          <p  className="flex items-center ">
+           <IoEyeOutline className="mr-2" /> View Applicaton
+          </p>
+        ),
+      },
+    ]
     const [showDropdown, setShowDropdown] = useState(false);
   useEffect(() => {
     
@@ -85,18 +107,28 @@ function profile() {
           </p>
           {item.label === "Action" ? (
         <div className="relative">
-        <BsThreeDotsVertical className="mt-4 cursor-pointer" onClick={toggleDropdown} />
+        {/* <BsThreeDotsVertical className="mt-4 cursor-pointer" onClick={toggleDropdown} />
         {showDropdown && (
          <div className="absolute top-full left-0 z-10 bg-white border rounded shadow-lg">
-         {/* Dropdown content here */}
+        
          <Link href="/Profile/Withdrawapplication" className="flex items-center">
            <FaRegFileExcel className="mr-2" />
            <p className="mt-2 inline-block w-64">Withdraw Application</p>
          </Link>
          <p className="mt-2 inline-block w-64">View Application</p>
-         {/* Add more dropdown options as needed */}
+        
        </div>
-        )}
+        )} */}
+         <Dropdown
+      menu={{
+        items,
+      }}
+      placement="bottomRight"
+      
+    >
+      <BsThreeDotsVertical className="mt-4"/>
+    </Dropdown>
+       
       </div>
       ) : (
         <p className="pblack mt-4 ">

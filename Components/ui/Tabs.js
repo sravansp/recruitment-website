@@ -5,6 +5,9 @@ import {
   Tab,
   TabPanel,
 } from "@material-tailwind/react";
+import { useState } from "react";
+import { Segmented } from 'antd';
+
  
 export function TabsCustomAnimation() {
   const data = [
@@ -45,20 +48,26 @@ export function TabsCustomAnimation() {
     //   constantly trying to express ourselves and actualize our dreams.`,
     // },
   ];
- 
+  const [activeTab, setActiveTab] = useState(data[0].value); // Set the initial active tab
+
+  const handleTabChange = (value) => {
+    setActiveTab(value);
+  };
   return (
-    <Tabs id="custom-animation" value="html" >
-      <TabsHeader className="bg-[#F1F1F1] w-48">
+    <div>
+    {/* <Tabs id="custom-animation"  value={activeTab} > */}
+      {/* <TabsHeader className="bg-[#F1F1F1] w-48 text-black">
         {data.map(({ label, value }) => (
-          <Tab 
-            key={value} 
-            value={value}
-            className="px-4 py-2 w-24" // Adjust width using padding
-          >
+         <Tab 
+         key={value} 
+         value={value}
+         className={`px-4 py-2 w-24 ${activeTab === value ? 'text-black z-10 bg-white' : ''}`}
+         onClick={() => handleTabChange(value)}
+       >
             {label}
           </Tab>
         ))}
-      </TabsHeader>
+      </TabsHeader> */}
       {/* <TabsBody
         animate={{
           initial: { y: 250 },
@@ -72,6 +81,15 @@ export function TabsCustomAnimation() {
           </TabPanel>
         ))}
       </TabsBody> */}
-    </Tabs>
+    {/* </Tabs> */}
+    <Segmented
+        defaultValue="center"
+        style={{ marginBottom: 8 }}
+        className="px-4 py-2 w-32 "
+            
+           options={['Active','Inactive']}
+
+      />
+    </div>
   );
 }

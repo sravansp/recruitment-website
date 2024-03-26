@@ -23,10 +23,10 @@ const apiRequest = async (action, method, kwargs) => {
   }
 };
 
-export const getRecruitmentJobById = async (jobId) => {
+export const getRecruitmentJobById = async (id) => {
     const action = "getRecruitmentJobById";
     const method = "POST";
-    const kwargs = { jobId }; 
+    const kwargs = { id }; 
     return await apiRequest(action, method, kwargs);
   };
 export const getAllRecruitmentJobs = async () => {

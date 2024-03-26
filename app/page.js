@@ -15,6 +15,7 @@ import { jobs } from "@/Components/Data";
 import { getAllRecruitmentJobs, getRecruitmentJobById } from "@/Components/Api";
 import { Drawer } from "antd";
 import Web from "./Form/page";
+import Navbar from "@/Components/Navbar";
 
 const Home = () => {
   const [selectedJobId, setSelectedJobId] = useState(1);
@@ -138,6 +139,8 @@ const Home = () => {
   };
 
   return (
+    <>
+    <Navbar/>
     <main className="flex flex-col justify-center gap-6 pb-10 scroll-smooth">
       <div className="md:h-[288px] xl:h-[300px] h-full w-full bg-TopSection py-5">
         <div className="flex flex-col gap-3 px-5 pt-16 md:pt-24 container-wrapper">
@@ -239,6 +242,7 @@ const Home = () => {
         <Web closeDrawer={closeDrawer} selectedJobId={selectedJobIdForApply} />
       </Drawer>
     </main>
+    </>
   );
 };
 

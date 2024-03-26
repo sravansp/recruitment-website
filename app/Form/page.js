@@ -48,10 +48,11 @@ import pdfFile from "@/public/sample.pdf";
 import { useRouter } from "next/router";
 import { Button, DatePicker, AntdModal, Modal } from "antd";
 import DateSelect from "@/Components/ui/DateSelect";
-// import { Button, Modal as AntdModal } from 'antd';
-import CountdownModal, { Modal1 } from "@/Components/ui/Modal";
+import Modal2 from "@/Components/ui/Modal";
 
-function Web({ closeDrawer, selectedJobId }) {
+
+
+function Web({ closeDrawer, selectedJobId , onClick }) {
   const [currentStep, setCurrentStep] = useState(0);
   const [activeBtn, setActiveBtn] = useState(0);
   const [presentage, setPresentage] = useState(0);
@@ -229,8 +230,12 @@ function Web({ closeDrawer, selectedJobId }) {
       await formik3.handleSubmit();
     }
     if (currentStep === 4 && closeDrawer) {
+      
+     
       closeDrawer();
-      setIsModalOpen(true); // Set isModalOpen to true to display the modal
+     
+     
+      
     }
   };
 
@@ -613,6 +618,8 @@ function Web({ closeDrawer, selectedJobId }) {
     validationSchema3: Yup.object().shape({
       customQuestion: Yup.string().required("This field is required"),
       highestEducationLevel: Yup.string().required("This field is required"),
+      highestEducationLevel2: Yup.string().required("This field is required"),
+      highestEducationLevel3: Yup.string().required("This field is required"),
     }),
     onSubmit: async (values, { setSubmitting }) => {
       try {
@@ -753,6 +760,7 @@ function Web({ closeDrawer, selectedJobId }) {
   };
 
   return (
+    
     <div className="flex flex-col gap-6 container-wrapper ">
       <FlexCol />
       <Header1 closeDrawer={closeDrawer} />
@@ -1456,10 +1464,10 @@ function Web({ closeDrawer, selectedJobId }) {
                         title={"Highest level of education completed"}
                         placeholder={"Answer here.."}
                         className="text-[#344054]"
-                        name="highestEducationLevel"
-                        value={formik3.values.highestEducationLevel}
+                        name="highestEducationLevel2"
+                        value={formik3.values.highestEducationLevel2}
                         change={(e) => {
-                          formik3.setFieldValue("highestEducationLevel", e);
+                          formik3.setFieldValue("highestEducationLevel2", e);
                         }}
                         required={true}
                         error={formik3.errors.highestEducationLevel}
@@ -1470,10 +1478,10 @@ function Web({ closeDrawer, selectedJobId }) {
                         title={"Highest level of education completed"}
                         placeholder={"Answer here.."}
                         className="text-[#344054]"
-                        name="highestEducationLevel"
-                        value={formik3.values.highestEducationLevel}
+                        name="highestEducationLevel3"
+                        value={formik3.values.highestEducationLevel3}
                         change={(e) => {
-                          formik3.setFieldValue("highestEducationLevel", e);
+                          formik3.setFieldValue("highestEducationLevel3", e);
                         }}
                         required={true}
                         error={formik3.errors.highestEducationLevel}
@@ -1702,23 +1710,26 @@ function Web({ closeDrawer, selectedJobId }) {
         // <Modal handleOpen={openModal} DialogBody={() => <div>Modal Content</div>} />
         <Modal1 handleOpen={() => setIsModalOpen(true)} DialogBody={() => <div>Modal Content</div>}/>
       )} */}
-      <Modal1
+       {/* <Modal1
         isOpen={isModalOpen}
         onClose={handleCloseModal}
-        // onConfirm={() => {
-        //   // Handle confirm action
-        //   handleCloseModal(); // Close the modal after confirming
-        // }}
-        // onCancel={() => {
-        //   // Handle cancel action
-        //   handleCloseModal(); // Close the modal after canceling
-        // }}
+        onConfirm={() => {
+          // Handle confirm action
+          handleCloseModal(); // Close the modal after confirming
+        }}
+        onCancel={() => {
+          // Handle cancel action
+          handleCloseModal(); // Close the modal after canceling
+        }}
         // buttonLabel="Open Custom Dialog"
         dialogHeader="Custom Dialog Header"
         dialogBody="Custom Dialog Body"
-      />
+      /> */}
+      <Modal2 countDown={closeDrawer}/>
 
-      {/* Your other components and logic */}
+      
+      
+      
     
     </div>
   );

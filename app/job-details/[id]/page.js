@@ -44,8 +44,11 @@ const JobDetailsPage = () => {
       console.log(error);
     }
   };
-  getjobById()
 
+  useEffect(()=>{
+    getjobById()
+  },[])
+console.log(selectedJob);
   //
   // useEffect(() => {
   //   // Find the selected job based on the ID from the URL params
@@ -72,7 +75,7 @@ const JobDetailsPage = () => {
 
       <div className="w-full container-wrapper">
         {/* <h1>{params}</h1> */}
-        <JobDetailsCard selectedJob={selectedJob} />
+        <JobDetailsCard selectedJob={selectedJob}  />
       </div>
     </div>
   );
