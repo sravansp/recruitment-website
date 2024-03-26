@@ -2,7 +2,7 @@ import Image from "next/image";
 import React from "react";
 import logo from '@/public/brand/logo.png'
 import { HiOutlineMenuAlt3 } from "react-icons/hi";
-import Switcher from "./Switcher";
+// import Switcher from "./Switcher";
 
 const Navbar = () => {
   return (
@@ -20,7 +20,7 @@ const Navbar = () => {
             <a className="mr-5 cursor-pointer hover:text-gray-900">Jobs worldwide</a>
             <a className="mr-5 cursor-pointer hover:text-gray-900">Menu</a>
           </nav> */}
-          <Switcher />
+          {/* <Switcher /> */}
           {/* <div className="transition-all duration-300 cursor-pointer hover:text-black">
             <HiOutlineMenuAlt3 size={23} />
           </div> */}
