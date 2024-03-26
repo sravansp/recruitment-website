@@ -32,7 +32,9 @@ import { GrEdit } from "react-icons/gr";
 import Header from '../Header/Header';
 import CVResume from './CandidateProfileTabs/CVResume';
 import API, { action } from '../Api1';
-import { saveRecruitmentResume, saveRecruitmentResumeEducationalDetailBatch } from '../Api1'
+import { saveRecruitmentResume, saveRecruitmentResumeEducationalDetailBatch,saveRecruitmentResumesExperienceDetailBatch } from '../Api1'
+import RangeDatePicker from '../common/RangeDatePicker';
+import DateSelect from '../common/DateSelect';
 
 export default function Createcandidatelist({ open = "", close = () => { }, refresh, ConfigurationAction, updateId = null, }) {
   const [show, setShow] = useState(open);
@@ -54,33 +56,35 @@ export default function Createcandidatelist({ open = "", close = () => { }, refr
       field: [
         {
           title: "Job Title",
-          inputName: "institute",
+          inputFeild: "jobTitle",
           type: "input"
         },
         {
           title: "Employment Type",
-          inputName: "courseType",
+          inputFeild: "employmentType",
           type: "dropdown"
 
         },
         {
           title: "Company Name",
-          inputName: "courseName",
+          inputFeild: "companyName",
           type: "input"
         }, {
           title: "Location  ",
-          inputName: "yearOfStudy",
-          type: "input"
-        }, ],
-        date:[{
-          title: "From",
-          inputName: "location",
+          inputFeild: "location",
           type: "input"
         }, {
-          title: "To",
-          inputName: "location",
-          type: "input"
-        }]
+          title: " from Date",
+          inputFeild: "fromDate",
+        
+          
+        },{
+          title: "to date",
+          inputFeild: "fromDate",
+          
+          
+        }],
+        
       }
 
   ])
@@ -178,11 +182,11 @@ export default function Createcandidatelist({ open = "", close = () => { }, refr
           }, {
             title: "Year",
             inputName: "yearOfStudy"+i,
-            type: "input"
+            type: "inputdate"
           }, {
             title: "Location",
             inputName: "location"+i,
-            type: "input"
+            type: "inputdate"
           }]}
     ]);
   };
@@ -195,32 +199,35 @@ export default function Createcandidatelist({ open = "", close = () => { }, refr
         field: [
           {
             title: "Job Title",
-            inputName: "institute"+i,
+            inputFeild: "jobTitle"+i,
             type: "input"
           },
           {
             title: "Employment Type",
-            inputName: "courseType"+i,
+            inputFeild: "employmentType"+i,
             type: "dropdown"
   
           },
           {
             title: "Company Name",
-            inputName: "courseName"+i,
+            inputFeild: "companyName"+i,
             type: "input"
           }, {
             title: "Location  ",
-            inputName: "yearOfStudy"+i,
+            inputFeild: "location"+i,
             type: "input"
           }, {
-            title: "From",
-            inputName: "location"+i,
-            type: "input"
-          }, {
-            title: "To",
-            inputName: "location"+i,
-            type: "input"
-          }]}
+            title: "From Date",
+            inputFeild: "fromDate"+i,
+            
+            
+          },{
+            title: "To date",
+            inputName: "fromDate"+i,
+           
+            
+          } ],
+          }
     ]);
   };
 
@@ -233,6 +240,61 @@ export default function Createcandidatelist({ open = "", close = () => { }, refr
     });
   }, {});
 
+  const personWorkExp=workexp.reduce((ac, each) => {
+    each.field.reduce((acc, value) => {
+      acc[each.inputFeild] = "";
+      console.log(each.inputFeild);
+      return acc;
+    });
+  }, {});
+
+
+  const formik3 = useFormik({
+    initialValues: {
+      ...personWorkExp,
+      createdBy: localStorage.getItem('employeeId'),
+
+    },
+    enableReinitialize: true,
+    validateOnChange: false,
+    validationSchema: yup.object({
+      companyName: yup.string().required("Company Name is required"),
+    }),
+
+    onSubmit: async (values) => {
+      try {
+   const result = await saveRecruitmentResumesExperienceDetailBatch(
+
+    workexp.map((each)=>({
+           resumeId: resumeId,          
+           jobTitle: values[each.field[0].inputFeild],
+           employmentType: values[each.field[1].inputFeild],
+          companyName: values[each.field[2].inputFeild],
+          location: values[each.field[3].inputFeild],
+          fromDate: values[each.field[4].inputFeild],
+          toDate: values[each.field[5].inputFeild],
+          createdBy: localStorage.getItem('employeeId')
+        })),
+
+        );
+        if (result.status === 200) {
+          setNextStep(nextStep + 1);
+          setPresentage(1);
+          openNotification("success", "Success...", result.message);
+
+        } else if (result.status === 500) {
+          openNotification("error", "Failed..", result.message);
+        }
+        console.log(result);
+        console.log(result.errors);
+
+      }
+      catch (error) {
+        openNotification("error", "Failed..", error.message);
+        console.log(error);
+      }
+    }
+  });
 
   const formik = useFormik({
     initialValues: {
@@ -385,6 +447,11 @@ export default function Createcandidatelist({ open = "", close = () => { }, refr
       prevEvaluation.filter((_, i) => i !== index)
     );
   };
+  const handleDeleteWork = (index) => {
+    setWorkexp((prevWorkexp) =>
+    prevWorkexp.filter((_, i) => i !== index)
+    );
+  };
 
   useEffect(() => {
     // console.log(nextStep, activeBtn);
@@ -400,6 +467,7 @@ export default function Createcandidatelist({ open = "", close = () => { }, refr
 
   const genderoption = [{ id: 1, title: "Mr", value: "Mr" }, { id: 2, title: "Mrs", value: "Mrs" }
   ];
+  const Jobtype = [{ id: 1, title: "Full Time", value: "fulltime" }, { id: 2, title: "Part Time", value: "parttime" }]
 
   console.log(resumeId, "resumeid");
 
@@ -464,33 +532,38 @@ export default function Createcandidatelist({ open = "", close = () => { }, refr
           buttonClick={(e) => {
             if (activeBtnValue === "Personel") {
 
-              // if (!updateId) {
-              //   Formik2.handleSubmit();
-              // } else {
-              //   setNextStep(nextStep + 1);
-              //   // updateemployeeBasic();
-              // }
-               setNextStep(nextStep + 1);
+              if (!updateId) {
+                Formik2.handleSubmit();
+              } else {
+                setNextStep(nextStep + 1);
+                // updateemployeeBasic();
+              }
+               //setNextStep(nextStep + 1);
               // console.log("click 1");
             } else if (activeBtnValue === "Educational") {
               // console.log("click 2");
-              // if (!updateId) {
-              //   formik.handleSubmit();
-              // } else {
-              //   setNextStep(nextStep + 1);
-              //   // updateemployeeBasic();
-              // }
+              if (!updateId) {
+                formik.handleSubmit();
+              } else {
+                setNextStep(nextStep + 1);
+                // updateemployeeBasic();
+              }
               // setBtnName("Add Employee");
 
-             setNextStep(nextStep + 1);
+            // setNextStep(nextStep + 1);
               // updateemployeeAddress();
 
             } else if (activeBtnValue === "Work") {
               console.log("click 3");
-
+              if (!updateId) {
+                   formik3.handleSubmit();
+                 } else {
+                   setNextStep(nextStep + 1);
+                   // updateemployeeBasic();
+                 }
               // setBtnName("Add Employee");
 
-              setNextStep(nextStep + 1);
+              // setNextStep(nextStep + 1);
 
             } else if (activeBtnValue === "Questions") {
 
@@ -743,16 +816,36 @@ export default function Createcandidatelist({ open = "", close = () => { }, refr
                           title={each.title}
                             
                             placeholder={t("Eg: Retail Sales Manager")}
+                            change={(e) => {
+                              formik3.setFieldValue(each.inputFeild, e);
+                            }}
+                            value={formik3.values[each.inputFeild]}
 
 
-                          />:
+
+                          />:each.type === "dropdown"?
 
                           <Dropdown
                           title={each.title}
-                            placeholder="Eg: Fulltime"
+                          options={Jobtype}
+                            
+                            change={(e) => {
+                              formik3.setFieldValue(each.inputFeild, e);
+                            }}
+                            value={formik3.values[each.inputFeild]}
 
 
-                          />)}
+
+                          />:
+                          <div className="grid grid-cols-3 gap-2 ">
+                          <DateSelect dateFormat="YYYY-MM-DD" title={each.title}
+                            change={(e) => {
+                              formik3.setFieldValue(each.inputFeild, e);
+                            }}
+                            value={formik3.values[each.inputFeild]}
+                            />
+                          </div>
+                          )}
                           {/* <FormInput
                             title={t("Company Name")}
                             placeholder={t("Eg: Microsoft")}
@@ -765,21 +858,12 @@ export default function Createcandidatelist({ open = "", close = () => { }, refr
                           /> */}
 
                         </div>
-                        <div className='flex gap-4 w-96'>
-                          
-                          <FormInput
-                            title={t("From")}
-                            type='date'
-                            placeholder={t("Eg: London, UK")}
-
-                          />
-                         
-                        </div>
+                      
 
 
                         <div className='ml-auto '>
                           {index !== 0 && (
-                            <RiDeleteBin6Line className='h-6 w-6' onClick={() => handleDeleteCondition(index)} />
+                            <RiDeleteBin6Line className='h-6 w-6' onClick={() => handleDeleteWork(index)} />
                           )}
                         </div>
 
@@ -799,7 +883,7 @@ export default function Createcandidatelist({ open = "", close = () => { }, refr
                 </FlexCol>
                 <FlexCol justify="center" align="center" className="w-5/6 m-auto">
                   <Accordion
-                    title={"Work Experience Details"}
+                    title={"Resume & Cover Letter"}
                     className="Text_area "
                     padding={true}
                     toggleBtn={false}
