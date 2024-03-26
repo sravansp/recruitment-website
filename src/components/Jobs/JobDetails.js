@@ -11,7 +11,7 @@ import { Link } from "react-router-dom";
 import ButtonClick from "../common/Button";
 import SearchBox from "../common/SearchBox";
 import { FilterBtn } from "../common/FilterBtn";
-import { useNavigate } from 'react-router-dom';
+import { useNavigate,useParams } from 'react-router-dom';
 
 import User from "../../assets/images/user1.jpeg";
 // ICONS
@@ -220,7 +220,13 @@ const DragView = () => {
   const[Workflow,setWorkflow]=useState([])
   // const selectedDataId = useSelector((state) => state.dataId.selectedDataId);
   const selectedDataId = localStorage.getItem('selectedDataId');
-  const jobId = selectedDataId
+  const {jobId} = useParams();
+  useEffect(() => {
+    localStorage.setItem('jobid', jobId);
+  }, [jobId]); // Run this effect whenever jobId changes
+
+  
+  
   const [boardData, setBoardData] = useState([]);
   const getCandidatesById = async () => {
     try {
@@ -583,12 +589,12 @@ const CardItem = ({ data, index, color,jobId }) => {
   };
   const navigateToCandidateProfile = () => {
     // Set data.id as the selectedId in localStorage
-    localStorage.setItem("selectedDataId", data.id);
+    
     
     // Navigate to candidateprofile page with data.id
-    // navigate(`/candidateprofile/${data.id}`, { state: { jobID: jobId } });
+    navigate(`/candidateprofile/${data.id}`, { state: { jobID: jobId } });
     
-    navigate(`/candidateprofile/${data.id}`);
+    // navigate(`/candidateprofile/${data.id}`);
     
     
     // Optionally, update the state with the selectedId
