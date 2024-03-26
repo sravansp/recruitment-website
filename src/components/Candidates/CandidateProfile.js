@@ -119,6 +119,7 @@ const CandidateProfile = () => {
   useEffect(() => {
     if (state && state.jobID) {
         setJobId(state.jobID);
+        console.log(state.jobID)
     } else {
         const storedJobId = localStorage.getItem('jobid');
         if (storedJobId) {

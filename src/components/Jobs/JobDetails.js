@@ -586,7 +586,10 @@ const CardItem = ({ data, index, color,jobId }) => {
     localStorage.setItem("selectedDataId", data.id);
     
     // Navigate to candidateprofile page with data.id
-    navigate(`/candidateprofile/${data.id}`, { state: { jobID: jobId } });
+    // navigate(`/candidateprofile/${data.id}`, { state: { jobID: jobId } });
+    
+    navigate(`/candidateprofile/${data.id}`);
+    
     
     // Optionally, update the state with the selectedId
     
