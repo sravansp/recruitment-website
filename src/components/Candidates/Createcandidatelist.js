@@ -32,9 +32,11 @@ import { GrEdit } from "react-icons/gr";
 import Header from '../Header/Header';
 import CVResume from './CandidateProfileTabs/CVResume';
 import API, { action } from '../Api1';
-import {saveRecruitmentResume} from '../Api1'
+import { saveRecruitmentResume, saveRecruitmentResumeEducationalDetailBatch,saveRecruitmentResumesExperienceDetailBatch } from '../Api1'
+import RangeDatePicker from '../common/RangeDatePicker';
+import DateSelect from '../common/DateSelect';
 
-export default function Createcandidatelist({ open = "", close = () => { }, refresh, ConfigurationAction,updateId = null, }) {
+export default function Createcandidatelist({ open = "", close = () => { }, refresh, ConfigurationAction, updateId = null, }) {
   const [show, setShow] = useState(open);
   const [activeBtnValue, setActiveBtnValue] = useState("Personel");//Review
   const [nextStep, setNextStep] = useState(0);
@@ -43,10 +45,83 @@ export default function Createcandidatelist({ open = "", close = () => { }, refr
   const [activeBtn, setActiveBtn] = useState(0);
   const [presentage, setPresentage] = useState(0);
   const [Gendervalue, setgender] = useState("Male");
-  const [data,setData] = useState ([])
-  const [jobId,setJobId] =useState()
+  const [data, setData] = useState([])
+  const [resumeId, setResumeId] = useState()
   const { t } = useTranslation();
   const [api, contextHolder] = notification.useNotification();
+  const [workexp,setWorkexp] =useState ([
+    {
+      id: 1,
+      row: "one",
+      field: [
+        {
+          title: "Job Title",
+          inputFeild: "jobTitle",
+          type: "input"
+        },
+        {
+          title: "Employment Type",
+          inputFeild: "employmentType",
+          type: "dropdown"
+
+        },
+        {
+          title: "Company Name",
+          inputFeild: "companyName",
+          type: "input"
+        }, {
+          title: "Location  ",
+          inputFeild: "location",
+          type: "input"
+        }, {
+          title: " from Date",
+          inputFeild: "fromDate",
+        
+          
+        },{
+          title: "to date",
+          inputFeild: "fromDate",
+          
+          
+        }],
+        
+      }
+
+  ])
+  
+  const [education, setEducation] = useState([
+    {
+      id: 1,
+      row: "one",
+      field: [
+        {
+          title: "School Or University",
+          inputName: "institute",
+          type: "input"
+        },
+        {
+          title: "Degree",
+          inputName: "courseType",
+          type: "dropdown"
+
+        },
+        {
+          title: "Field of Study",
+          inputName: "courseName",
+          type: "input"
+        }, {
+          title: "Year",
+          inputName: "yearOfStudy",
+          type: "input"
+        }, {
+          title: "Location",
+          inputName: "location",
+          type: "input"
+        },]
+    }
+   ])
+
+
   const openNotification = (type, message, description, callback) => {
     api[type]({
       message: message,
@@ -82,125 +157,223 @@ export default function Createcandidatelist({ open = "", close = () => { }, refr
     close(false);
   };
 
-  // const formik = useFormik({
-  //   initialValues: {
-  //     leaveType: "",
-  //     categoryId: "",
-  //     leaveName: "",
-  //     description: "",
-  //     leaveCount: "",
-  //     isProrata: "",
-  //     maxLeaveLimit: "",
-  //     leaveLimitPer: "",
-  //     isProrataProbationIncluded: "",
-  //     leavePaytype: "",
-
-  //     isProbationRestricted: "",
-  //     unusedLeaveRule: "",
-  //     maxlimit: "",
-
-
-  //     leaveDaysType: "",
-  //     isAnnualleave: "",
-  //     leaveDays: "",
-  //     isProbationRestricted: "",
-
-  //     leavePaidRules: {
-  //       between: [
-  //         {
-  //           fromDate: "",
-  //           toDate: ""
-  //         }
-  //       ],
-  //       greaterthanEqualto: [
-  //         {
-  //           fromDate: "",
-  //           toDate: ""
-  //         }
-  //       ],
-
-  //       lessThan: [
-  //         {
-  //           fromDate: "",
-  //           toDate: ""
-  //         }
-  //       ],
-  //       unpaidleave: [
-  //         {
-
-  //           Paycalculation: "",
-  //           days: "",
-
-
-  //         }
-  //       ],
-
-  //       partiallyPaid: [
-  //         {
-
-  //           percentagepaid: "",
-  //           Paycalculation: "",
-  //           days: "",
-
-
-  //         }
-  //       ]
-
-  //     },
-  //     isActive: "",
-  //   },
-
-  //   enableReinitialize: true,
-  //   validateOnChange: false,
-  //   validationSchema: yup.object().shape({
-  //     leaveType: yup.string().required("leaveType is Required"),
-
-  //     leaveCount: yup.string().required("leaveCount is Required"),
-
-  //   }),
-
-  // });
-
-
-
-  const scrollRef = useRef();
-  const handleAddCondition = () => {
-    setEvaluation((prevEvaluation) => [
+  const handleAddCondition = (e,i) => {
+    setEducation((prevEvaluation) => [
       ...prevEvaluation,
       {
-        id: prevEvaluation.length + 1,
-        city: "",
-
-      },
+        id: 2,
+        row: "two"+i,
+        field: [
+          {
+            title: "School Or University",
+            inputName: "institute"+i,
+            type: "input"
+          },
+          {
+            title: "Degree",
+            inputName: "courseType"+i,
+            type: "dropdown"
+  
+          },
+          {
+            title: "Field of Study",
+            inputName: "courseName"+i,
+            type: "input"
+          }, {
+            title: "Year",
+            inputName: "yearOfStudy"+i,
+            type: "inputdate"
+          }, {
+            title: "Location",
+            inputName: "location"+i,
+            type: "inputdate"
+          }]}
     ]);
   };
+  const handleAddWrok = (e,i) => {
+    setWorkexp((prevWorkexp) => [
+      ...prevWorkexp,
+      {
+        id: 2,
+        row: "two"+i,
+        field: [
+          {
+            title: "Job Title",
+            inputFeild: "jobTitle"+i,
+            type: "input"
+          },
+          {
+            title: "Employment Type",
+            inputFeild: "employmentType"+i,
+            type: "dropdown"
   
+          },
+          {
+            title: "Company Name",
+            inputFeild: "companyName"+i,
+            type: "input"
+          }, {
+            title: "Location  ",
+            inputFeild: "location"+i,
+            type: "input"
+          }, {
+            title: "From Date",
+            inputFeild: "fromDate"+i,
+            
+            
+          },{
+            title: "To date",
+            inputName: "fromDate"+i,
+           
+            
+          } ],
+          }
+    ]);
+  };
+
+
+  const personalInfo=education.reduce((ac, each) => {
+    each.field.reduce((acc, value) => {
+      acc[each.inputName] = "";
+      console.log(each.inputName);
+      return acc;
+    });
+  }, {});
+
+  const personWorkExp=workexp.reduce((ac, each) => {
+    each.field.reduce((acc, value) => {
+      acc[each.inputFeild] = "";
+      console.log(each.inputFeild);
+      return acc;
+    });
+  }, {});
+
+
+  const formik3 = useFormik({
+    initialValues: {
+      ...personWorkExp,
+      createdBy: localStorage.getItem('employeeId'),
+
+    },
+    enableReinitialize: true,
+    validateOnChange: false,
+    validationSchema: yup.object({
+      companyName: yup.string().required("Company Name is required"),
+    }),
+
+    onSubmit: async (values) => {
+      try {
+   const result = await saveRecruitmentResumesExperienceDetailBatch(
+
+    workexp.map((each)=>({
+           resumeId: resumeId,          
+           jobTitle: values[each.field[0].inputFeild],
+           employmentType: values[each.field[1].inputFeild],
+          companyName: values[each.field[2].inputFeild],
+          location: values[each.field[3].inputFeild],
+          fromDate: values[each.field[4].inputFeild],
+          toDate: values[each.field[5].inputFeild],
+          createdBy: localStorage.getItem('employeeId')
+        })),
+
+        );
+        if (result.status === 200) {
+          setNextStep(nextStep + 1);
+          setPresentage(1);
+          openNotification("success", "Success...", result.message);
+
+        } else if (result.status === 500) {
+          openNotification("error", "Failed..", result.message);
+        }
+        console.log(result);
+        console.log(result.errors);
+
+      }
+      catch (error) {
+        openNotification("error", "Failed..", error.message);
+        console.log(error);
+      }
+    }
+  });
+
+  const formik = useFormik({
+    initialValues: {
+      ...personalInfo,
+      createdBy: localStorage.getItem('employeeId'),
+
+    },
+    enableReinitialize: true,
+    validateOnChange: false,
+    validationSchema: yup.object({
+      courseName: yup.string().required("First Name is required"),
+    }),
+
+    onSubmit: async (values) => {
+      try {
+   const result = await saveRecruitmentResumeEducationalDetailBatch(
+
+        education.map((each)=>({
+           resumeId: resumeId,
+           institute: values[each.field[0].inputName],
+          courseType: values[each.field[1].inputName],
+          courseName: values[each.field[2].inputName],
+          
+          yearOfStudy: values[each.field[3].inputName],
+          location: values[each.field[4].inputName],
+          createdBy: localStorage.getItem('employeeId')
+        })),
+
+        );
+        if (result.status === 200) {
+          setNextStep(nextStep + 1);
+          setPresentage(1);
+          openNotification("success", "Success...", result.message);
+
+        } else if (result.status === 500) {
+          openNotification("error", "Failed..", result.message);
+        }
+        console.log(result);
+        console.log(result.errors);
+
+      }
+      catch (error) {
+        openNotification("error", "Failed..", error.message);
+        console.log(error);
+      }
+    }
+  });
+
+
+  const Degree = [{ id: 1, title: "Bachelors", value: "Bachelors" }, { id: 2, title: "other", value: "other" }
+  ];
+  const scrollRef = useRef();
+
   const Formik2 = useFormik({
     initialValues: {
       firstName: "",
       lastName: "",
       candidateEmail: "",
       candidateContact: "",
-      namePrefix:"",
-      cityOrTown:"",
-      candidateLocation:"",
-        addressLine:"",
-        postalCode:"",
-        createdBy:"",
-        candidateName:""
+      namePrefix: "",
+      cityOrTown: "",
+      candidateLocation: "",
+      addressLine: "",
+      postalCode: "",
+      createdBy: "",
+      candidateName: ""
     },
 
     enableReinitialize: true,
     validateOnChange: false,
     validationSchema: yup.object({
-      firstName: yup.string().required("First name is required"),
+      firstName: yup.string().required("First Name is required"),
     }),
     onSubmit: async (values) => {
-      
+
       try {
         const candidateName = `${values.namePrefix} ${values.firstName} ${values.lastName}`;
-        const result = await saveRecruitmentResume( {
-          candidateName:candidateName,
+        const result = await saveRecruitmentResume({
+          candidateName: candidateName,
           firstName: values.firstName,
           lastName: values.lastName,
           namePrefix: values.namePrefix,
@@ -210,18 +383,18 @@ export default function Createcandidatelist({ open = "", close = () => { }, refr
           candidateLocation: values.candidateLocation,
           addressLine: values.addressLine,
           postalCode: values.postalCode,
-          candidateSource:null,
-          resumeCode:27,
-          createdBy:"ha",  
-          jobId: 1, // Assuming jobId is fixed for this form
+          candidateSource: "source1",
+          resumeCode: null,
+          createdBy: localStorage.getItem('employeeId'),
+          jobId: localStorage.getItem('jobid'), // Assuming jobId is fixed for this form
           // createdBy: createdBy // Assuming createdBy is defined elsewhere
         });
-        
+
         if (result.status === 200) {
           setNextStep(nextStep + 1);
           setPresentage(1);
           openNotification("success", "Success...", result.message);
-          setJobId(result.result.insertedId);
+          setResumeId(result.result.insertedId);
         } else if (result.status === 500) {
           openNotification("error", "Failed..", result.message);
         }
@@ -232,9 +405,9 @@ export default function Createcandidatelist({ open = "", close = () => { }, refr
         console.log(error);
       }
     }
-    
+
   });
-  console.log(data,"hi this is result");
+
   const CreateDirectorSteps = [
     {
       id: 1,
@@ -269,14 +442,14 @@ export default function Createcandidatelist({ open = "", close = () => { }, refr
 
   ];
 
-  const [evaluation, setEvaluation] = useState([{
-    id: 1,
-    city: "",
-  },])
-
   const handleDeleteCondition = (index) => {
-    setEvaluation((prevEvaluation) =>
+    setEducation((prevEvaluation) =>
       prevEvaluation.filter((_, i) => i !== index)
+    );
+  };
+  const handleDeleteWork = (index) => {
+    setWorkexp((prevWorkexp) =>
+    prevWorkexp.filter((_, i) => i !== index)
     );
   };
 
@@ -291,13 +464,14 @@ export default function Createcandidatelist({ open = "", close = () => { }, refr
       setActiveBtnValue(CreateDirectorSteps?.[activeBtn + 1].data);
     }
   }, [nextStep]);
-  
-  const genderoption = [{id:1,title:"Male",value:"Male"},{id:2,title:"Female",value:"Female"}
-];
-  
+
+  const genderoption = [{ id: 1, title: "Mr", value: "Mr" }, { id: 2, title: "Mrs", value: "Mrs" }
+  ];
+  const Jobtype = [{ id: 1, title: "Full Time", value: "fulltime" }, { id: 2, title: "Part Time", value: "parttime" }]
+
+  console.log(resumeId, "resumeid");
 
 
- 
 
   return (
     <div>
@@ -318,7 +492,7 @@ export default function Createcandidatelist({ open = "", close = () => { }, refr
           open={show}
           close={(e) => {
             // console.log(e);
-            
+
             handleClose();
           }}
           // className={classNames}
@@ -326,7 +500,7 @@ export default function Createcandidatelist({ open = "", close = () => { }, refr
             // console.log(e);
             Formik2.handleSubmit();
           }}
-        
+
           updateFun={() => {
             // updateCompany();
           }}
@@ -357,41 +531,52 @@ export default function Createcandidatelist({ open = "", close = () => { }, refr
           stepsData={CreateDirectorSteps}
           buttonClick={(e) => {
             if (activeBtnValue === "Personel") {
-              
+
               if (!updateId) {
                 Formik2.handleSubmit();
               } else {
                 setNextStep(nextStep + 1);
                 // updateemployeeBasic();
               }
+               //setNextStep(nextStep + 1);
               // console.log("click 1");
             } else if (activeBtnValue === "Educational") {
               // console.log("click 2");
-
-              // setBtnName("Add Employee");
-             
+              if (!updateId) {
+                formik.handleSubmit();
+              } else {
                 setNextStep(nextStep + 1);
-                // updateemployeeAddress();
-             
+                // updateemployeeBasic();
+              }
+              // setBtnName("Add Employee");
+
+            // setNextStep(nextStep + 1);
+              // updateemployeeAddress();
+
             } else if (activeBtnValue === "Work") {
               console.log("click 3");
-
+              if (!updateId) {
+                   formik3.handleSubmit();
+                 } else {
+                   setNextStep(nextStep + 1);
+                   // updateemployeeBasic();
+                 }
               // setBtnName("Add Employee");
-              
-                setNextStep(nextStep + 1);
-              
+
+              // setNextStep(nextStep + 1);
+
             } else if (activeBtnValue === "Questions") {
-             
-              
-                setNextStep(nextStep + 1);
-              
+
+
+              setNextStep(nextStep + 1);
+
             } else if (activeBtnValue === "Review") {
               // setBtnName("Add Employee");
-             
+
               setNextStep(nextStep + 1);
             }
 
-           
+
           }}
           buttonClickCancel={(e) => {
             if (activeBtn > 0) {
@@ -400,42 +585,34 @@ export default function Createcandidatelist({ open = "", close = () => { }, refr
               setActiveBtnValue(CreateDirectorSteps?.[activeBtn - 1].data);
               console.log(activeBtn - 1);
             }
-           
+
           }}
           nextStep={nextStep}
           activeBtn={activeBtn}
           saveAndContinue={true}
 
-          
+
         >
           <FlexCol justify="center" align="center" >
             <div className='mt-5 m-auto w-5/6'>
-          {CreateDirectorSteps && (
+              {CreateDirectorSteps && (
                 <Stepper
                   currentStepNumber={activeBtn}
                   presentage={presentage}
                   // direction="left"
                   // labelPlacement="vertical"
                   steps={CreateDirectorSteps}
-                 
+
                   data={{
                     id: 2,
                     value: 1,
-
                     title: "Address Details ",
                     data: "addressDetails",
                   }}
 
-                  // className=" text-sm font-medium"
-                  // style={{
-                  //   fontSize: isSmallScreen ? "8px" : "10px",
-                  //   fontWeight: 600,
-                  // }}
-                  // // className="text-[10px]"
-                  // size={isSmallScreen ? "default" : "large"}
                 />
               )}
-              </div>
+            </div>
             {activeBtnValue === "Personel" ? (
               <>
                 <FlexCol justify="center" align="center" className="w-5/6 m-auto mt-10">
@@ -452,13 +629,13 @@ export default function Createcandidatelist({ open = "", close = () => { }, refr
 
                     <Dropdown
                       title='Prefix'
-                      placeholder="Mr"
+                      placeholder={`Mr`}
                       options={genderoption}
                       className='w-24'
                       change={(e) => {
                         Formik2.setFieldValue("namePrefix", e);
                       }}
-                    
+
                       value={Formik2.values.namePrefix} />
 
                     <div className="grid grid-cols-2 gap-4 w-4/5">
@@ -468,9 +645,9 @@ export default function Createcandidatelist({ open = "", close = () => { }, refr
                         change={(e) => {
                           Formik2.setFieldValue("firstName", e);
                         }}
-                      
+
                         value={Formik2.values.firstName}
-                       
+
                         error={Formik2.errors.firstName}
                         required={true}
 
@@ -482,7 +659,7 @@ export default function Createcandidatelist({ open = "", close = () => { }, refr
                         change={(e) => {
                           Formik2.setFieldValue("lastName", e);
                         }}
-                      
+
                         value={Formik2.values.lastName}
 
                       />
@@ -492,7 +669,7 @@ export default function Createcandidatelist({ open = "", close = () => { }, refr
                         change={(e) => {
                           Formik2.setFieldValue("candidateEmail", e);
                         }}
-                      
+
                         value={Formik2.values.candidateEmail
                         }
 
@@ -503,12 +680,10 @@ export default function Createcandidatelist({ open = "", close = () => { }, refr
                         change={(e) => {
                           Formik2.setFieldValue("candidateContact", e);
                         }}
-                         value={Formik2.values.candidateContact }
+                        value={Formik2.values.candidateContact}
                       />
 
                     </div>
-                   
-      
 
                     <div className='w-4/5'>
                       <p>Photo (Optional)</p>
@@ -523,7 +698,7 @@ export default function Createcandidatelist({ open = "", close = () => { }, refr
                         change={(e) => {
                           Formik2.setFieldValue("candidateLocation", e);
                         }}
-                         value={Formik2.values.candidateLocation }
+                        value={Formik2.values.candidateLocation}
 
                       />
 
@@ -533,7 +708,7 @@ export default function Createcandidatelist({ open = "", close = () => { }, refr
                         change={(e) => {
                           Formik2.setFieldValue("cityOrTown", e);
                         }}
-                         value={Formik2.values.cityOrTown }
+                        value={Formik2.values.cityOrTown}
                       />
                       <FormInput
                         title={t("Address Line")}
@@ -541,7 +716,7 @@ export default function Createcandidatelist({ open = "", close = () => { }, refr
                         change={(e) => {
                           Formik2.setFieldValue("addressLine", e);
                         }}
-                         value={Formik2.values.addressLine }
+                        value={Formik2.values.addressLine}
                       />
                       <FormInput
                         title={t("Postal Code")}
@@ -549,15 +724,12 @@ export default function Createcandidatelist({ open = "", close = () => { }, refr
                         change={(e) => {
                           Formik2.setFieldValue("postalCode", e);
                         }}
-                         value={Formik2.values.postalCode }
+                        value={Formik2.values.postalCode}
                       />
 
                     </div>
 
                   </Accordion>
-
-
-
 
                 </FlexCol>
               </>
@@ -574,33 +746,31 @@ export default function Createcandidatelist({ open = "", close = () => { }, refr
                     }}
                     initialExpanded={true}
                   >
-                    {evaluation.map((condition, index) => (
+                    {education.map((condition, index) => (
                       <div className='flex items-end'>
                         <div className="grid grid-cols-2 gap-4 w-4/5">
-                          <FormInput
-                            key={condition.id}
-                            title={t("School or University")}
-                            placeholder={t("School or University")}
+                          {condition.field.map((each) =>
+                            each.type === "input" ? <FormInput
+                              key={each.id}
+                              title={each.title}
+                              placeholder={t("School or University")}
+                              change={(e) => {
+                                formik.setFieldValue(each.inputName, e);
+                              }}
+                              value={formik.values[each.inputName]}
 
-
-                          />
-
-
-                          <Dropdown
-                            title='Degree'
-                            placeholder="Mr"
-                          />
-                          <FormInput
-                            title={t("Field of Study")}
-                            placeholder={t("Email")}
-
-                          />
-                          <FormInput
-                            title={t("Year")}
-                            placeholder={t("Phone number")}
-
-                          />
-
+                            />
+                              :
+                              <Dropdown
+                                title={each.title}
+                                placeholder="Degree"
+                                options={Degree}
+                                change={(e) => {
+                                  formik.setFieldValue(each.inputName, e);
+                                }}
+                                value={formik.values[each.inputName]}
+                              />)}
+                        
 
 
                         </div>
@@ -611,10 +781,6 @@ export default function Createcandidatelist({ open = "", close = () => { }, refr
                         </div>
                       </div>
                     ))}
-
-
-
-
                     <AddMore
                       name="Add Custom Field "
                       className="!text-black"
@@ -624,9 +790,6 @@ export default function Createcandidatelist({ open = "", close = () => { }, refr
                     />
 
                   </Accordion>
-
-
-
 
                 </FlexCol>
               </>
@@ -644,24 +807,46 @@ export default function Createcandidatelist({ open = "", close = () => { }, refr
                     initialExpanded={true}
                   >
 
-                    {evaluation.map((condition, index) => (
+                    {workexp.map((condition, index) => (
                       <div className='flex flex-col gap-3 '>
                         <div className="grid grid-cols-2 gap-4 w-4/5">
+                        {condition.field.map((each) =>  each.type === "input" ?
                           <FormInput
-                            key={condition.id}
-                            title={t("Job Title")}
+                          key={each.id}
+                          title={each.title}
+                            
                             placeholder={t("Eg: Retail Sales Manager")}
+                            change={(e) => {
+                              formik3.setFieldValue(each.inputFeild, e);
+                            }}
+                            value={formik3.values[each.inputFeild]}
 
 
-                          />
+
+                          />:each.type === "dropdown"?
 
                           <Dropdown
-                            title='Employment Type'
-                            placeholder="Eg: Fulltime"
-                           
+                          title={each.title}
+                          options={Jobtype}
                             
-                          />
-                          <FormInput
+                            change={(e) => {
+                              formik3.setFieldValue(each.inputFeild, e);
+                            }}
+                            value={formik3.values[each.inputFeild]}
+
+
+
+                          />:
+                          <div className="grid grid-cols-3 gap-2 ">
+                          <DateSelect dateFormat="YYYY-MM-DD" title={each.title}
+                            change={(e) => {
+                              formik3.setFieldValue(each.inputFeild, e);
+                            }}
+                            value={formik3.values[each.inputFeild]}
+                            />
+                          </div>
+                          )}
+                          {/* <FormInput
                             title={t("Company Name")}
                             placeholder={t("Eg: Microsoft")}
 
@@ -670,30 +855,15 @@ export default function Createcandidatelist({ open = "", close = () => { }, refr
                             title={t("Location")}
                             placeholder={t("Eg: London, UK")}
 
-                          />
+                          /> */}
 
                         </div>
-
-
-                        <div className='flex gap-4 w-96'>
-                          <FormInput
-                            title={t("From")}
-                            type='date'
-                            placeholder={t("Eg: London, UK")}
-
-                          />
-                          <FormInput
-                            title={t("To")}
-                            type='date'
-                            placeholder={t("Eg: London, UK")}
-
-                          />
-                        </div>
+                      
 
 
                         <div className='ml-auto '>
                           {index !== 0 && (
-                            <RiDeleteBin6Line className='h-6 w-6' onClick={() => handleDeleteCondition(index)} />
+                            <RiDeleteBin6Line className='h-6 w-6' onClick={() => handleDeleteWork(index)} />
                           )}
                         </div>
 
@@ -703,19 +873,17 @@ export default function Createcandidatelist({ open = "", close = () => { }, refr
                       name="Add More Experience "
                       className="!text-black"
                       change={(e) => {
-                        handleAddCondition();
+                        handleAddWrok();
                       }}
                     />
 
                   </Accordion>
 
 
-
-
                 </FlexCol>
                 <FlexCol justify="center" align="center" className="w-5/6 m-auto">
                   <Accordion
-                    title={"Work Experience Details"}
+                    title={"Resume & Cover Letter"}
                     className="Text_area "
                     padding={true}
                     toggleBtn={false}
@@ -736,10 +904,6 @@ export default function Createcandidatelist({ open = "", close = () => { }, refr
                       </div>
                     </div>
                   </Accordion>
-
-
-
-
                 </FlexCol>
               </>
             ) : activeBtnValue === "Questions" ? (
@@ -765,7 +929,6 @@ export default function Createcandidatelist({ open = "", close = () => { }, refr
 
 
                         />
-
                         <FormInput
                           title={t("Highest level of education completed")}
                           placeholder={t("Answer here..")}
@@ -781,18 +944,11 @@ export default function Createcandidatelist({ open = "", close = () => { }, refr
                           placeholder={t("Answer here..")}
 
                         />
-
-
-
                       </div>
 
                     </div>
 
                   </Accordion>
-
-
-
-
                 </FlexCol>
               </>
             ) : (activeBtnValue === "Review" && (
@@ -874,37 +1030,20 @@ export default function Createcandidatelist({ open = "", close = () => { }, refr
                       </div>
 
                       <div className='flex flex-col gap-3'>
-                      {/* <h1 className="h1 !mt-10">{t("Resume/Cv")}</h1> */}
-                        {/* <div className='flex justify-between items-center'>
-                        <div className='flex gap-2 items-center'>
-                          <img src={resume} className='rounded-lg' />
-                          <h3 className='text-sm font-semibold text-black lg:text-xs 2xl:text-base dark:text-white'>Grace Bennett Anderson</h3>
-                        </div>
-                        <ButtonClick
-                            buttonName='Edit Details'
-                            icon={<GrEdit />}
-                          />
-                          
-                        </div> */}
+                       
                         <div>
                           <CVResume />
                         </div>
-                        
+
                       </div>
                     </div>
 
                   </Accordion>
-
-
-
-
                 </FlexCol>
               </>
             )
             )}
           </FlexCol>
-
-
         </DrawerPop>
       )}
       {contextHolder}
