@@ -312,7 +312,7 @@ export default function Createcandidatelist({ open = "", close = () => { }, file
       }
     }
   });
-
+  
 
   const formik = useFormik({
     initialValues: {
@@ -407,11 +407,29 @@ export default function Createcandidatelist({ open = "", close = () => { }, file
           jobId: localStorage.getItem('jobid'), // Assuming jobId is fixed for this form
           // createdBy: createdBy // Assuming createdBy is defined elsewhere
         });
+        if (file) {
+          console.log("inside file upload api");
+          const formData = new FormData();
+          formData.append('action', 'resumePhotoUpload');
+          formData.append('resumeId', resumeId);
+          formData.append('file', values.file);
+         
+
+          const response = await fileAction(formData);
+          console.log(response, "fileUploadResult")
+          if (response.status === 200) {
+            setNextStep(nextStep + 1);
+            setPresentage(1);
+            openNotification("success", "Success...", result.message);
+          } else {
+            openNotification("error", "Failed..", response.message);
+          }
+        }
 
         if (result.status === 200) {
           setNextStep(nextStep + 1);
           setPresentage(1);
-          openNotification("success", "Success...", result.message);
+         
           setResumeId(result.result.insertedId);
         } else if (result.status === 500) {
           openNotification("error", "Failed..", result.message);
@@ -705,7 +723,12 @@ export default function Createcandidatelist({ open = "", close = () => { }, file
 
                     <div className='w-4/5'>
                       <p>Photo (Optional)</p>
-                      <ImageUpload />
+                      <FileUpload change={(e) => {
+                          if (e) {
+                            formik.setFieldValue("file", e);
+                            setFile(e)
+                          }
+                        }} />
                     </div>
 
 
