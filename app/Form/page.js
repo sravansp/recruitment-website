@@ -65,8 +65,9 @@ function Web({ closeDrawer, selectedJobId , onClick }) {
   const [educationaldetails, setEducationaldetails] = useState([]);
   const [experience, setExperience] = useState([]);
   const [customfield, setCustomfield] = useState([]);
+  const [currentStage, setCurrentStage] = useState(1);
   // const [isModalOpen, setIsModalOpen] = useState(false);
-  const [isModalOpen, setIsModalOpen] = useState(false);
+  const [showModal, setShowModal] = useState(false);
   const [additionalExperienceCount, setAdditionalExperienceCount] = useState(1);
   const [
     additionalEducationalDetailsCount,
@@ -214,36 +215,83 @@ function Web({ closeDrawer, selectedJobId , onClick }) {
   const closeModal = () => {
     setIsModalOpen(false);
   };
-  const handleSubmitAllForms = async (event) => {
-    if (event) {
-      event.preventDefault(); // Prevent default behavior if event object is available
-    }
+  // const handleSubmitAllForms = async (event) => {
+  //   console.log("handleSubmitAllForms called");
+  //   if (event) {
+  //     event.preventDefault();
+  //   }
     
-    await formik.handleSubmit();
-    if (formik.isValid) {
-      await formik1.handleSubmit();
-    }
-    if (formik1.isValid) {
-      await formik2.handleSubmit();
-    }
-    if (formik2.isValid) {
-      await formik3.handleSubmit();
-    }
-    if (currentStep === 4 && closeDrawer) {
-      
-     
-      closeDrawer();
-     
-     
-      
-    }
-  };
+  //   await formik.handleSubmit();
+  //   console.log("formik.handleSubmit called");
+  //   if (formik.isValid) {
+  //     await formik1.handleSubmit();
+  //     console.log("formik1.handleSubmit called");
+  //   }
+  //   if (formik1.isValid) {
+  //     await formik2.handleSubmit();
+  //     console.log("formik2.handleSubmit called");
+  //   }
+  //   if (formik2.isValid) {
+  //     await formik3.handleSubmit();
+  //     console.log("formik3.handleSubmit called");
+  //   }
+  //   if (currentStep === 4 && closeDrawer) {
+  //     closeDrawer();
+  //     setShowModal(true);
+  //   }
+  // };
+
+ 
+  
+
+
+  // const handleSubmitAllForms = (event) => {
+  //   console.log("handleSubmitAllForms called");
+    
+  //   if (event) {
+  //     event.preventDefault();
+  //   }
+  
+  //   formik.handleSubmit(() => {
+  //     console.log("formik.handleSubmit called");
+  
+  //     // Call the API after the first form (formik) is submitted
+  //     saveRecruitmentResume(formik.values, () => {
+  //       console.log("saveRecruitmentResume API called");
+  
+  //       if (formik1.isValid) {
+  //         formik1.handleSubmit(() => {
+  //           console.log("formik1.handleSubmit called");
+  
+  //           // Call the API after the second form (formik1) is submitted
+  //           saveRecruitmentResumesExperienceDetail(formik1.values, () => {
+  //             console.log("saveRecruitmentResumesExperienceDetail API called");
+  
+  //             if (formik2.isValid) {
+  //               formik2.handleSubmit(() => {
+  //                 console.log("formik2.handleSubmit called");
+  
+  //                 // Call the API after the third form (formik2) is submitted
+  //                 saveRecruitmentJobResumesCustomField(formik2.values, () => {
+  //                   console.log("saveRecruitmentJobResumesCustomField API called");
+  
+  //                   if (currentStep === 4 && closeDrawer) {
+  //                     closeDrawer();
+  //                     setShowModal(true);
+  //                   }
+  //                 });
+  //               });
+  //             }
+  //           });
+  //         });
+  //       }
+  //     });
+  //   });
+  // };
+  
 
   const handleCloseModal = () => {
-    setIsModalOpen(false);
-    // Navigate to the desired location after closing the modal
-    // For example:
-    // history.push('/desired-route');
+    setShowModal(false);
   };
 
 
@@ -475,7 +523,7 @@ function Web({ closeDrawer, selectedJobId , onClick }) {
         // For example, show error message, handle form submission failure, etc.
       } finally {
         // Reset form state after submission (whether successful or not)
-        setSubmitting(false);
+        setSubmitting(true);
       }
     },
   });
@@ -506,7 +554,7 @@ function Web({ closeDrawer, selectedJobId , onClick }) {
     },
     enableReinitialize: true,
     validateOnChange: false,
-    validationSchema: Yup.object().shape({
+    validationSchema1: Yup.object().shape({
       // ...existing validations
       additionalEducationalDetails: Yup.array().of(
         Yup.object().shape({
@@ -520,7 +568,7 @@ function Web({ closeDrawer, selectedJobId , onClick }) {
 
     onSubmit: async (values, { setSubmitting }) => {
       try {
-        const response = await saveRecruitmentResume(values);
+        const response = await saveRecruitmentResumeEducationalDetail(values);
         console.log("API Response:", response);
 
         setinsertedId1(response.result.insertedId);
@@ -531,7 +579,7 @@ function Web({ closeDrawer, selectedJobId , onClick }) {
         console.error("API Error:", error);
       } finally {
         setSubmitting(false);
-        setIsFormSubmitted(true);
+        // setIsFormSubmitted(true);
       }
     },
   });
@@ -563,7 +611,7 @@ function Web({ closeDrawer, selectedJobId , onClick }) {
 
     enableReinitialize: true,
     validateOnChange: false,
-    validationSchema: Yup.object().shape({
+    validationSchema2: Yup.object().shape({
       // ...existing validations
       additionalExperiences: Yup.array().of(
         Yup.object().shape({
@@ -580,12 +628,14 @@ function Web({ closeDrawer, selectedJobId , onClick }) {
       try {
         const response = await saveRecruitmentResumesExperienceDetail(values);
         console.log("work experience Details API Response:", response);
+        setActiveBtn(activeBtn + 1);
+        setCurrentStep(currentStep + 1);
         setPresentage(presentage + 1);
       } catch (error) {
         console.error("Error saving work experience details:", error);
       } finally {
         setSubmitting(false);
-        setIsFormSubmitted(true);
+        // setIsFormSubmitted(true);
       }
     },
   });
@@ -628,6 +678,8 @@ function Web({ closeDrawer, selectedJobId , onClick }) {
         // Make API call to save educational details
         const response = await saveRecruitmentJobResumesCustomField(values);
         console.log("question Details API Response:", response);
+        setActiveBtn(activeBtn + 1);
+        setCurrentStep(currentStep + 1);
         setPresentage(presentage + 1);
         // Handle success response if needed
       } catch (error) {
@@ -691,7 +743,7 @@ function Web({ closeDrawer, selectedJobId , onClick }) {
             insertedid1
           );
           setExperience(response);
-          console.log(insertedid, "dfrfgreg");
+          console.log(insertedid1, "dfrfgreg");
           console.log(response);
         }
       } catch (error) {
@@ -738,12 +790,41 @@ function Web({ closeDrawer, selectedJobId , onClick }) {
     );
     setAdditionalEducationalDetailsCount((prevCount) => prevCount - 1);
   };
+  // const handleDelete1 = (indexToRemove) => {
+  //   setAdditionalExperiences((prevDetails) =>
+  //     prevDetails.filter((_, index) => index !== indexToRemove)
+  //   );
+  //   setAdditionalEducationalDetailsCount((prevCount) => prevCount - 1);
+  // };
+  // const handleAddMoreExperience = () => {
+  //   setAdditionalExperiences((prevExperiences) => [
+  //     ...prevExperiences,
+  //     {
+  //       jobTitle: "",
+  //       employmentType: "",
+  //       companyName: "",
+  //       location: "",
+  //       fromDate: "",
+  //       toDate: "",
+  //     },
+  //   ]);
+  //   setAdditionalExperienceCount((prevCount) => prevCount + 1);
+  // };
+  const updateExperience = (index, field, value) => {
+    setAdditionalExperiences(prevExperiences => {
+      const updatedExperiences = [...prevExperiences];
+      updatedExperiences[index][field] = value;
+      return updatedExperiences;
+    });
+  };
+  
   const handleDelete1 = (indexToRemove) => {
     setAdditionalExperiences((prevDetails) =>
       prevDetails.filter((_, index) => index !== indexToRemove)
     );
     setAdditionalEducationalDetailsCount((prevCount) => prevCount - 1);
   };
+  
   const handleAddMoreExperience = () => {
     setAdditionalExperiences((prevExperiences) => [
       ...prevExperiences,
@@ -758,6 +839,53 @@ function Web({ closeDrawer, selectedJobId , onClick }) {
     ]);
     setAdditionalExperienceCount((prevCount) => prevCount + 1);
   };
+
+
+  const handleSubmitAllForms = async () => {
+    switch (currentStage) {
+      case 1:
+        try {
+          await formik.handleSubmit();
+          setCurrentStage(currentStage + 1); // Move to next stage after successful submission
+        } catch (error) {
+          console.error("Error submitting formik:", error);
+        }
+        break;
+      case 2:
+        try {
+          await formik1.handleSubmit();
+          setCurrentStage(currentStage + 1); // Move to next stage after successful submission
+        } catch (error) {
+          console.error("Error submitting formik1:", error);
+        }
+        break;
+      case 3:
+        try {
+          await formik2.handleSubmit();
+          setCurrentStage(currentStage + 1); // Move to next stage after successful submission
+        } catch (error) {
+          console.error("Error submitting formik2:", error);
+        }
+        break;
+      case 4:
+        try {
+          await formik3.handleSubmit();
+         setCurrentStage(currentStage+1)
+        } catch (error) {
+          console.error("Error submitting formik3:", error);
+        }
+        case 5:
+         
+        // closeDrawer()
+        // setShowModal(true);
+        
+        break;
+      default:
+        break;
+    }
+  };
+  
+    
 
   return (
     
@@ -1680,8 +1808,16 @@ function Web({ closeDrawer, selectedJobId , onClick }) {
         <ButtonClick
           buttonName="Save & Continue"
           BtnType="primary"
-          handleSubmit={(event) => handleSubmitAllForms(event)}
-          disabled={formik.isSubmitting}
+          // handleSubmit={(event) => handleSubmitAllForms(event)}  // Use onClick instead of handleSubmit
+          // disabled={formik.isSubmitting || formik1.isSubmitting || formik2.isSubmitting || formik3.isSubmitting}
+          
+          handleSubmit={handleSubmitAllForms}
+          disabled={
+            (currentStage === 1 && formik.isSubmitting) ||
+            (currentStage === 2 && formik1.isSubmitting) ||
+            (currentStage === 3 && formik2.isSubmitting) ||
+            (currentStage === 4 && formik3.isSubmitting)
+          }
         />
         {/* <>
         {isModalVisible && (
@@ -1725,7 +1861,13 @@ function Web({ closeDrawer, selectedJobId , onClick }) {
         dialogHeader="Custom Dialog Header"
         dialogBody="Custom Dialog Body"
       /> */}
-      <Modal2 countDown={closeDrawer}/>
+      <di>
+      <Modal2
+        show={showModal}
+        handleClose={handleCloseModal}
+        countDown={handleCloseModal}
+      />
+      </di>
 
       
       
