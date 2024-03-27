@@ -79,14 +79,11 @@ export default function Createcandidatelist({ open = "", close = () => { }, file
         }, {
           title: " from Date",
           inputFeild: "fromDate",
+          type: "date"
 
 
-        }, {
-          title: "to date",
-          inputFeild: "fromDate",
 
-
-        }],
+        }, ],
 
     }
 
@@ -221,16 +218,12 @@ export default function Createcandidatelist({ open = "", close = () => { }, file
             inputFeild: "location" + i,
             type: "input"
           }, {
-            title: "From Date",
+            title: "Date",
             inputFeild: "fromDate" + i,
+            type: "date"
 
 
-          }, {
-            title: "To date",
-            inputName: "fromDate" + i,
-
-
-          }],
+          }, ],
       }
     ]);
   };
@@ -256,6 +249,7 @@ export default function Createcandidatelist({ open = "", close = () => { }, file
   useEffect(() => {
     console.log(FormData, "form data")
   }, [])
+ 
   const formik3 = useFormik({
     initialValues: {
       ...personWorkExp,
@@ -268,19 +262,25 @@ export default function Createcandidatelist({ open = "", close = () => { }, file
     validationSchema: yup.object({
       companyName: yup.string().required("Company Name is required"),
     }),
+    
     onSubmit: async (values, { setSubmitting }) => {
       try {
         const result = await saveRecruitmentResumesExperienceDetailBatch(
-          workexp.map((each) => ({
-            resumeId: resumeId,
-            jobTitle: values[each.field[0].inputFeild],
-            employmentType: values[each.field[1].inputFeild],
-            companyName: values[each.field[2].inputFeild],
-            location: values[each.field[3].inputFeild],
-            fromDate: values[each.field[4].inputFeild],
-            toDate: values[each.field[5].inputFeild],
-            createdBy: localStorage.getItem('employeeId')
-          }))
+          workexp.map((each) => {
+            const fromDate = values[each.field[4].inputFeild][0]; // Extracting start date from range picker
+            const toDate = values[each.field[4].inputFeild][1]; // Extracting end date from range picker
+    
+            return {
+              resumeId: resumeId,
+              jobTitle: values[each.field[0].inputFeild],
+              employmentType: values[each.field[1].inputFeild],
+              companyName: values[each.field[2].inputFeild],
+              location: values[each.field[3].inputFeild],
+              fromDate: fromDate,
+              toDate: toDate,
+              createdBy: localStorage.getItem('employeeId')
+            };
+          })
         );
 
 
@@ -304,12 +304,22 @@ export default function Createcandidatelist({ open = "", close = () => { }, file
             openNotification("error", "Failed..", response.message);
           }
         }
+        if (result.status === 200) {
+          setNextStep(nextStep + 1);
+          setPresentage(1);
+          
 
+        } else if (result.status === 500) {
+          openNotification("error", "Failed..", result.message);
+        }
+        console.log(result);
+        console.log(result.errors);
       } catch (error) {
         openNotification("error", "Failed..", error.message);
-      } finally {
-        setSubmitting(false);
-      }
+      } 
+      // finally {
+      //   setSubmitting(false);
+      // }
     }
   });
   
@@ -878,14 +888,12 @@ export default function Createcandidatelist({ open = "", close = () => { }, file
 
 
                               /> :
-                              <div className="flex gap-2 ">
-                                <DateSelect dateFormat="YYYY-MM-DD" title={each.title}
+                                <RangeDatePicker dateFormat="YYYY-MM-DD" title={each.title}
                                   change={(e) => {
                                     formik3.setFieldValue(each.inputFeild, e);
                                   }}
                                   value={formik3.values[each.inputFeild]}
                                 />
-                              </div>
                           )}
                           {/* <FormInput
                             title={t("Company Name")}
