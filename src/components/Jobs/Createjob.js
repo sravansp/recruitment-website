@@ -177,7 +177,7 @@ const getDraftjobs = async () => {
  const id =UpdateId
   try {
     const response = await getRecruitmentJobById({id});
-    console.log(response);
+    
 
     if (response.result.length > 0) {
       const firstJob = response.result[0];
@@ -202,8 +202,11 @@ const getDraftjobs = async () => {
       formik1.setFieldValue("experience", firstJob.experience);
       
 
+      
+
 
       console.log(firstJob.companyId);
+      console.log(response);
     } else {
       console.error("No data found in the response.");
     }
@@ -352,16 +355,16 @@ const formik1 = useFormik({
 })
 const [departmentList, setDepartmentList] = useState();
 const [company,setCompany] =useState([])
- const getDepartmentList = async (selectedCompanyId) => {
+ const getDepartmentList = async (e) => {
   try {
-    if (!selectedCompanyId) {
+    if (!e) {
       // Handle the case where no company is selected
       console.log("No company selected");
       return;
     }
 
     const result = await axios.post(
-      API.HOST + API.GET_DEPARTMENT + "/" + selectedCompanyId
+      API.HOST + API.GET_DEPARTMENT + "/" + e
     );
 
     setDepartmentList(
@@ -1075,6 +1078,18 @@ const handleAddField = (index) => {
         formik1.setFieldValue("salaryRangeFrom", firstJob.salaryRangeFrom);
         formik1.setFieldValue("salaryRangeTo", firstJob.salaryRangeTo);
         formik1.setFieldValue("searchKeywords", firstJob.searchKeywords);
+        const formattedCustomFields = firstJob.jobApplicationFormData.customFields.map(field => ({
+          id: firstJob.jobTemplateId,
+          answer_type: field.answer_type || '', // Fill with appropriate value
+          question: field.question || '',
+          answerMetaData: field.answer_meta_data || '[]',
+          is_required: field.is_required || 0
+        }));
+        setEvaluation(formattedCustomFields);
+        setSelectedWorkFlowId(firstJob.workFlowId);
+        
+        
+
         
   
   
@@ -1260,9 +1275,9 @@ const handleAddField = (index) => {
                                             value={formik1.values.companyId}
                                             error={formik1.errors.companyId}
                                             required={true} 
-                                            change={(selectedCompanyId) => {
-                                              formik1.setFieldValue('companyId', selectedCompanyId);
-                                              getDepartmentList(selectedCompanyId);
+                                            change={(e) => {
+                                              formik1.setFieldValue('companyId', e);
+                                              getDepartmentList(e);
                                             }}
                                             />
                                     </div>
@@ -1977,7 +1992,7 @@ impactful, accurate, and personalized to your company</p>
         <Card key={each.workFlowId}>
           <JobCard options={each.stages} />
           <div style={{ position: 'absolute', top: 0, right: 0, padding: '8px' }}>
-            <Radio value={each.workFlowId}></Radio>
+            <Radio value={each.workFlowId||selectedWorkFlowId}></Radio>
           </div>
         </Card>
       ))}

@@ -165,6 +165,7 @@ const formik = useFormik({
             workFlowId:updateId,
             companyId: companyId,
             workFlowName:values.workFlowName,
+            description:values.description,
             modifiedBy:9,
 
           },
@@ -244,6 +245,7 @@ const getworkFlow =async()=>{
     
     // Set workflow name
     formik.setFieldValue("workFlowName", firstJob.workFlowName);
+    formik.setFieldValue("description",firstJob.description)
 
     // Set stages
     const stagesData = firstJob.recruitmentWorkFlowStages.map(stage => ({

@@ -106,11 +106,11 @@ const CreateEventSection = ({ onCreateEventClick }) => {
           You can schedule meeting at any moment you want, Click at Create Event
           meeting to set one.
         </p>
-        {/* <ButtonClick
+        <ButtonClick
           buttonName="Create Event"
           BtnType="primary"
           handleSubmit={onCreateEventClick}
-        /> */}
+        />
       </div>
     </div>
   );
@@ -225,12 +225,7 @@ const FormSection = ({ onCancel }) => {
             duration: e.duration,
             eventUrl: e.eventUrl,
         },
-        attendees: [
-            
-            
-            
-          
-        ],
+        attendees:selectedvalue,
         createdBy: null
       })
      console.log (response)
@@ -245,16 +240,13 @@ const FormSection = ({ onCancel }) => {
   const [selectedUserIds, setSelectedUserIds] = useState([]);
 
   const handleAddUser = (userId) => {
-    setSelectedUserIds([...selectedUserIds, userId]);
-    
+    if (!selectedUserIds.includes(userId)) {
+      setSelectedUserIds([...selectedUserIds, userId]);
+    }
+    setselectedvalue(userId); // Set selectedValue to the updated selectedUserIds array
   };
+  console.log(selectedvalue)
 
-  const handleMultiSelectChange = (selectedOption) => {
-    // Assuming the selectedOption contains the user ID as value
-    const userId = selectedOption.value;
-    handleAddUser(userId);
-    setselectedvalue(selectedOption)
-  };
    const[employee,setEmpoloyee] = useState([])
   const employeeList = async()=>{
 try{
@@ -347,13 +339,9 @@ try{
         <div className="flex flex-col gap-4">
           <div className="grid grid-cols-3 gap-4">
             <div className="col-span-2">
-              <MultiSelect 
-              
-              title="Attendees" className="" options={employee} change={(e)=>{handleMultiSelectChange(e)}} value={selectedvalue}/>
+              <MultiSelect title="Attendees" className="" options={employee} value={selectedvalue} change={(e)=>{handleAddUser(e)}}/>
             </div>
-            {/* <div className="flex items-end col-span-1">
-              <ButtonClick buttonName="Add"  handleSubmit={handleAddUser}/>
-            </div> */}
+          
           </div>
           {/* <div className="flex items-center gap-3 selectedAtendies">
             
@@ -373,7 +361,7 @@ try{
                 alt=""
                 className="rounded-full size-12"
               />
-              <div className="absolute top-0 right-0 text-white rounded-full cursor-pointer deleteImg size-4 vhcenter bg-slate-500 ring-2 ring-white">
+               <div className="absolute top-0 right-0 text-white rounded-full cursor-pointer deleteImg size-4 vhcenter bg-slate-500 ring-2 ring-white">
                 <RiCloseLine />
               </div>
             </div>
@@ -399,6 +387,7 @@ try{
             </div>
           </div> */}
         </div>
+
         <TextArea title="Note" placeholder="Add note..." />
       </div>
 

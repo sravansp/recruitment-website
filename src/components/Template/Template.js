@@ -656,7 +656,7 @@ const Template = ({
         />
       )}
 
-{navigationPath === "JobDescription" && show && (
+{navigationPath === "Job_Description" && show && (
         <TemplateDec
           open={show}
           close={(e) => {

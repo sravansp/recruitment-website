@@ -12,6 +12,7 @@ import { ThemeProvider } from "./Context/Theme/ThemeContext";
 import axios from "axios";
 import API from "./components/Api";
 import JobCard from "./components/common/JobCard";
+import { getAllOrganisation } from "./components/Api";
 
 function App() {
   const dispatch = useDispatch();
@@ -25,12 +26,12 @@ function App() {
   // Only use For temp
 
   const getOrganisaction = async () => {
-    const result = await axios.get(API.HOST + API.GET_ORGANISACTION_RECORDS);
-    console.log(result);
+    const response = await getAllOrganisation();
+    console.log(response);
     localStorage.setItem(
       "organisationId",
       JSON.stringify(
-        parseInt(result?.data?.tbl_organisation[0]?.organisationId)
+        parseInt(response?.result[0]?.organisationId)
       )
     );
   };
