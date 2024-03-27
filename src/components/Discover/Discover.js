@@ -95,7 +95,7 @@ const Discover = () => {
       </div>
       <div className="grid grid-cols-12 gap-4">
         {/* LEFT COLUMN  */}
-        <div className="flex flex-col col-span-12 gap-4 xl:col-span-8">
+        <div className="flex flex-col col-span-12 gap-4 xl:col-span-8 2xl:col-span-9 3xl:col-span-8 4xl:col-span-9">
           {/* SMALL CARD  */}
           <div className="grid grid-cols-12 gap-3">
             {smallCard.map((card, i) => (
@@ -147,14 +147,14 @@ const Discover = () => {
 
           {/* TWO COLUMN CHART */}
           <div className="grid grid-cols-12 gap-4">
-            <div className="col-span-12 lg:col-span-8 xl:col-span-12 4xl:col-span-8">
+            <div className="col-span-12 lg:col-span-8 xl:col-span-12 2xl:col-span-8">
               <Card cardName="Application Frequency Rate" className="h-[397px]">
                 <FrequencyBarChart />
               </Card>
             </div>
 
             {/* Hidden in small Devices with resolution from 1024px to 1800px And this Card will Visible in Right Column */}
-            <div className="col-span-12 lg:col-span-4 4xl:col-span-4 xl:hidden 4xl:block">
+            <div className="col-span-12 lg:col-span-4 2xl:col-span-4 xl:hidden 2xl:block">
               <Card cardName="Upcoming Interview Schedules">
                 <InterviewSchedules />
               </Card>
@@ -180,7 +180,7 @@ const Discover = () => {
           </Card>
         </div>
         {/* RIGHT COLUMN  */}
-        <div className="flex flex-col col-span-12 gap-4 xl:col-span-4">
+        <div className="flex flex-col col-span-12 gap-4 xl:col-span-4 2xl:col-span-3 3xl:col-span-4 4xl:col-span-3">
           <div className="flex flex-col gap-4 md:grid md:grid-cols-2 xl:flex">
             <div className="flex flex-col gap-4 xl:flex-col">
               <Card
@@ -189,7 +189,7 @@ const Discover = () => {
               >
                 <PieChartWithLegends />
               </Card>
-              <div className="hidden xl:block 4xl:hidden">
+              <div className="hidden xl:block 2xl:hidden">
                 <Card cardName="Upcoming Interview Schedules">
                   <InterviewSchedules />
                 </Card>
