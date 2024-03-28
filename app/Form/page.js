@@ -549,6 +549,7 @@ function Web({ closeDrawer, selectedJobId , onClick }) {
           courseType: "",
           courseName: "",
           yearOfStudy: "",
+          location:"hfvhjd"
         })
       ),
     },
@@ -571,7 +572,7 @@ function Web({ closeDrawer, selectedJobId , onClick }) {
         const response = await saveRecruitmentResumeEducationalDetail(values);
         console.log("API Response:", response);
 
-        setinsertedId1(response.result.insertedId);
+        // setinsertedId1(response.result.insertedId);
         setActiveBtn(activeBtn + 1);
         setCurrentStep(currentStep + 1);
         setPresentage(presentage + 1);
@@ -871,10 +872,17 @@ function Web({ closeDrawer, selectedJobId , onClick }) {
         try {
           await formik3.handleSubmit();
          setCurrentStage(currentStage+1)
+         formik.resetForm();
+         formik1.resetForm();
+         formik2.resetForm();
+         formik3.resetForm();
+         closeDrawer()
+         window.location.reload();
         } catch (error) {
           console.error("Error submitting formik3:", error);
         }
-        case 5:
+       
+        // case 5:
          
         // closeDrawer()
         // setShowModal(true);
@@ -883,6 +891,8 @@ function Web({ closeDrawer, selectedJobId , onClick }) {
       default:
         break;
     }
+    // closeDrawer()
+    //      setShowModal(true);
   };
   
     
