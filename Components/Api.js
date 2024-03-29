@@ -94,7 +94,7 @@ export const getAllRecruitmentJobs = async () => {
   export const getRecruitmentResumeById = async (id) => {
     const action = "getRecruitmentResumeById";
     const method = "POST";
-    const kwargs = { id }; 
+    const kwargs = {  id: id }; 
     return await apiRequest(action, method, kwargs);
   };
   export const getAllRecruitmentResumeEducationalDetails = async (id) => {

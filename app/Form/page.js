@@ -52,9 +52,7 @@ import { Button, DatePicker, AntdModal, Modal } from "antd";
 import DateSelect from "@/Components/ui/DateSelect";
 import Modal2 from "@/Components/ui/Modal";
 
-
-
-function Web({ closeDrawer, selectedJobId , onClick }) {
+function Web({ closeDrawer, selectedJobId, onClick }) {
   const [currentStep, setCurrentStep] = useState(0);
   const [activeBtn, setActiveBtn] = useState(0);
   const [presentage, setPresentage] = useState(0);
@@ -63,7 +61,7 @@ function Web({ closeDrawer, selectedJobId , onClick }) {
   const isSmallScreen = useMediaQuery({ maxWidth: 1439 });
   const [formData, setFormData] = useState({});
   const [insertedid1, setinsertedId1] = useState();
-  const [data, setData] = useState(null);
+  const [data, setData] = useState([{}]);
   const [educationaldetails, setEducationaldetails] = useState([]);
   const [experience, setExperience] = useState([]);
   const [customfield, setCustomfield] = useState([]);
@@ -89,7 +87,7 @@ function Web({ closeDrawer, selectedJobId , onClick }) {
   const [additionalExperiences, setAdditionalExperiences] = useState([
     {
       id: 1,
-      resumeId:insertedid1,
+      resumeId: insertedid1,
       jobTitle: "",
       employmentType: "",
       companyName: "",
@@ -97,11 +95,12 @@ function Web({ closeDrawer, selectedJobId , onClick }) {
       fromDate: "",
       toDate: "",
     },
-   ] );
+  ]);
   const handleAddMoreExperience = () => {
     setAdditionalExperiences((prevadditionalExperiences) => [
       ...prevadditionalExperiences,
-      { id: prevadditionalExperiences.length + 1,
+      {
+        id: prevadditionalExperiences.length + 1,
         jobTitle: "",
         employmentType: "",
         companyName: "",
@@ -110,46 +109,41 @@ function Web({ closeDrawer, selectedJobId , onClick }) {
         toDate: "",
       },
     ]);
-   
   };
-
 
   const handleAddMoreEducationalDetails = () => {
     setAdditionalEducationalDetails((prevadditionalEducationalDetails) => [
       ...prevadditionalEducationalDetails,
       {
         id: prevadditionalEducationalDetails.length + 1,
-        resumeId:insertedid1,
-          institute: "",
-          courseType: "",
-          courseName: "",
-          yearOfStudy: "",
-          location:""
+        resumeId: insertedid1,
+        institute: "",
+        courseType: "",
+        courseName: "",
+        yearOfStudy: "",
+        location: "",
       },
     ]);
   };
-  
-  const [additionalEducationalDetails, setAdditionalEducationalDetails] = useState([
-    {
-      id: 1,
-      resumeId:insertedid1,
-          institute: "",
-          courseType: "",
-          courseName: "",
-          yearOfStudy: "",
-          location:"jnvkjdn"
-    },
-  ]);
-  
+
+  const [additionalEducationalDetails, setAdditionalEducationalDetails] =
+    useState([
+      {
+        id: 1,
+        resumeId: insertedid1,
+        institute: "",
+        courseType: "",
+        courseName: "",
+        yearOfStudy: "",
+        location: "jnvkjdn",
+      },
+    ]);
+
   const handleDeleteEducationalDetails = (index) => {
-    const updatedDetails = [{...additionalEducationalDetails}];
+    const updatedDetails = [{ ...additionalEducationalDetails }];
     updatedDetails.splice(index, 1);
     setAdditionalEducationalDetails(updatedDetails);
   };
-
-  
-  
-
 
   const [steps, setSteps] = useState([
     {
@@ -262,8 +256,6 @@ function Web({ closeDrawer, selectedJobId , onClick }) {
     }
   }, []);
 
-
-  
   const openModal = () => {
     setIsModalOpen(true);
   };
@@ -276,7 +268,7 @@ function Web({ closeDrawer, selectedJobId , onClick }) {
   //   if (event) {
   //     event.preventDefault();
   //   }
-    
+
   //   await formik.handleSubmit();
   //   console.log("formik.handleSubmit called");
   //   if (formik.isValid) {
@@ -297,40 +289,36 @@ function Web({ closeDrawer, selectedJobId , onClick }) {
   //   }
   // };
 
- 
-  
-
-
   // const handleSubmitAllForms = (event) => {
   //   console.log("handleSubmitAllForms called");
-    
+
   //   if (event) {
   //     event.preventDefault();
   //   }
-  
+
   //   formik.handleSubmit(() => {
   //     console.log("formik.handleSubmit called");
-  
+
   //     // Call the API after the first form (formik) is submitted
   //     saveRecruitmentResume(formik.values, () => {
   //       console.log("saveRecruitmentResume API called");
-  
+
   //       if (formik1.isValid) {
   //         formik1.handleSubmit(() => {
   //           console.log("formik1.handleSubmit called");
-  
+
   //           // Call the API after the second form (formik1) is submitted
   //           saveRecruitmentResumesExperienceDetail(formik1.values, () => {
   //             console.log("saveRecruitmentResumesExperienceDetail API called");
-  
+
   //             if (formik2.isValid) {
   //               formik2.handleSubmit(() => {
   //                 console.log("formik2.handleSubmit called");
-  
+
   //                 // Call the API after the third form (formik2) is submitted
   //                 saveRecruitmentJobResumesCustomField(formik2.values, () => {
   //                   console.log("saveRecruitmentJobResumesCustomField API called");
-  
+
   //                   if (currentStep === 4 && closeDrawer) {
   //                     closeDrawer();
   //                     setShowModal(true);
@@ -344,12 +332,10 @@ function Web({ closeDrawer, selectedJobId , onClick }) {
   //     });
   //   });
   // };
-  
 
   const handleCloseModal = () => {
     setShowModal(false);
   };
-
 
   // const handleCloseModal = () => {
   //   setIsModalVisible(false);
@@ -558,14 +544,15 @@ function Web({ closeDrawer, selectedJobId , onClick }) {
     onSubmit: async (values) => {
       try {
         // Make your API call here
-        values.candidateName = `${values.namePrefix} ${values.firstName} ${values.lastName}`.trim();
+        values.candidateName =
+          `${values.namePrefix} ${values.firstName} ${values.lastName}`.trim();
 
         const response = await saveRecruitmentResume(values);
         console.log("API Response:", response);
         console.log(response.result.insertedId, "inserted id responsee");
 
         setinsertedId1(response.result.insertedId);
-        console.log(insertedid1,"insertede i");
+        console.log(insertedid1, "insertede i");
         setActiveBtn(activeBtn + 1);
 
         setCurrentStep(currentStep + 1);
@@ -597,15 +584,13 @@ function Web({ closeDrawer, selectedJobId , onClick }) {
   const formik1 = useFormik({
     initialValues: {
       // ...existing fields
-    
 
-      resumeId:insertedid1,
+      resumeId: insertedid1,
       institute: "",
       courseType: "",
       courseName: "",
       yearOfStudy: "",
-      location:"jnvkjdn"
-
+      location: "jnvkjdn",
     },
     enableReinitialize: true,
     validateOnChange: false,
@@ -621,23 +606,23 @@ function Web({ closeDrawer, selectedJobId , onClick }) {
       ),
     }),
 
-    onSubmit: async ( values , { setSubmitting }) => {
-      console.log(values,"submiteddd valuess")
+    onSubmit: async (values, { setSubmitting }) => {
+      console.log(values, "submiteddd valuess");
       try {
-
         // const transformedData = Object.values(additionalEducationalDetails);
-
 
         // const response = await saveRecruitmentResumeEducationalDetailBatch(Object.entries(additionalEducationalDetails).map(([_, value]) => value));
         const formattedData = additionalEducationalDetails.map((item) => ({
-          resumeId:insertedid1,
+          resumeId: insertedid1,
           institute: item.institute,
           courseType: item.courseType,
           courseName: item.courseName,
           yearOfStudy: item.yearOfStudy,
-          location:"jnvkjdn"
+          location: "jnvkjdn",
         }));
-        const response = await saveRecruitmentResumeEducationalDetailBatch(formattedData);
+        const response = await saveRecruitmentResumeEducationalDetailBatch(
+          formattedData
+        );
         console.log("API Response:", response);
 
         // setinsertedId1(response.result.insertedId);
@@ -664,15 +649,14 @@ function Web({ closeDrawer, selectedJobId , onClick }) {
   const formik2 = useFormik({
     initialValues: {
       // ...existing fields
-     
-          resumeId:insertedid1,
-          jobTitle: "",
-          employmentType: "",
-          companyName: "",
-          location: "",
-          fromDate: "",
-          toDate: "",
-    
+
+      resumeId: insertedid1,
+      jobTitle: "",
+      employmentType: "",
+      companyName: "",
+      location: "",
+      fromDate: "",
+      toDate: "",
     },
 
     enableReinitialize: true,
@@ -693,7 +677,7 @@ function Web({ closeDrawer, selectedJobId , onClick }) {
     onSubmit: async (values, { setSubmitting }) => {
       try {
         const formattedData1 = additionalExperiences.map((item) => ({
-          resumeId:insertedid1,
+          resumeId: insertedid1,
           jobTitle: item.jobTitle,
           employmentType: item.employmentType,
           companyName: item.companyName,
@@ -701,7 +685,9 @@ function Web({ closeDrawer, selectedJobId , onClick }) {
           fromDate: item.fromDate,
           toDate: item.toDate,
         }));
-        const response = await saveRecruitmentResumesExperienceDetailBatch(formattedData1);
+        const response = await saveRecruitmentResumesExperienceDetailBatch(
+          formattedData1
+        );
         console.log("work experience Details API Response:", response);
         setActiveBtn(activeBtn + 1);
         setCurrentStep(currentStep + 1);
@@ -774,22 +760,55 @@ function Web({ closeDrawer, selectedJobId , onClick }) {
   //     formikEducationalDetails.handleSubmit(); // Submit educational details form
   //   }
   // };
+
+  const id=226
+  // useEffect(() => {
+  //   const fetchapi = async () => {
+      
+  //     try {
+  //       if (currentStep === 4) {
+  //       // Check if the current step is the review page
+  //       const response = await getRecruitmentResumeById(id);
+  //       // if (response.result.length > 0) {
+  //       //   const resume = response.result[0];
+          
+  //       //   setData(resume);
+  //       // }
+  //       setData(response.result)
+        
+  //       // console.log(insertedid1, "dfrfgreg");
+  //       console.log(response, "resume api res");
+  //       console.log(data, "dhcdghcvhd");
+  //    } } catch (error) {
+  //       console.error("error", error);
+  //     }
+  //   };
+  //   fetchapi();
+  //   console.log(data, "dhcdghcvhd");
+  // }, [currentStep]);
+
+
   useEffect(() => {
     const fetchapi = async () => {
-      try {
-        // Check if the current step is the review page
-        const response = await getRecruitmentResumeById(insertedid1);
-        setData(response.result.data.data);
-        // console.log(insertedid1, "dfrfgreg");
-        console.log(response, "resume api res");
-        console.log(data, "dhcdghcvhd");
-      } catch (error) {
-        console.error("error", error);
-      }
+        try {
+            if (currentStep === 4) {
+                const response = await getRecruitmentResumeById(insertedid1);
+                setData(response.result);
+                console.log(response, "resume api res");
+            }
+        } catch (error) {
+            console.error("error", error);
+        }
     };
-    fetchapi();
-  }, []);
 
+    fetchapi();
+}, [currentStep]);
+
+useEffect(() => {
+    console.log(data, "dhcdghcvhd");
+}, [data]);
+
+  
   useEffect(() => {
     const callapi = async () => {
       try {
@@ -799,7 +818,7 @@ function Web({ closeDrawer, selectedJobId , onClick }) {
             insertedid1
           );
           setEducationaldetails(response);
-          console.log(insertedid, "dfrfgreg");
+          console.log(insertedid1, "dfrfgreg");
           console.log(response);
         }
       } catch (error) {
@@ -886,13 +905,13 @@ function Web({ closeDrawer, selectedJobId , onClick }) {
   //   setAdditionalExperienceCount((prevCount) => prevCount + 1);
   // };
   const updateExperience = (index, field, value) => {
-    setAdditionalExperiences(prevExperiences => {
+    setAdditionalExperiences((prevExperiences) => {
       const updatedExperiences = [...prevExperiences];
       updatedExperiences[index][field] = value;
       return updatedExperiences;
     });
   };
-  
+
   const handleDelete1 = (indexToRemove) => {
     setAdditionalExperiences((prevDetails) =>
       prevDetails.filter((_, index) => index !== indexToRemove)
@@ -905,49 +924,41 @@ function Web({ closeDrawer, selectedJobId , onClick }) {
     updatedDetails.splice(index, 1);
     setAdditionalEducationalDetails(updatedDetails);
   };
-  
-  
-  
 
-  const handleSubmitAllForms =  () => {
+  const handleSubmitAllForms = () => {
     switch (currentStage) {
       case 1:
-        
-           formik.handleSubmit();
-          setCurrentStage(currentStage + 1); // Move to next stage after successful submission
-       
+        formik.handleSubmit();
+        setCurrentStage(currentStage + 1); // Move to next stage after successful submission
+
         break;
       case 2:
-        
-           formik1.handleSubmit();
-          setCurrentStage(currentStage + 1); // Move to next stage after successful submission
-      
+        formik1.handleSubmit();
+        setCurrentStage(currentStage + 1); // Move to next stage after successful submission
+
         break;
       case 3:
-       
-           formik2.handleSubmit();
-          setCurrentStage(currentStage + 1); // Move to next stage after successful submission
-       
+        formik2.handleSubmit();
+        setCurrentStage(currentStage + 1); // Move to next stage after successful submission
+
         break;
       case 4:
-       
-           formik3.handleSubmit();
-         setCurrentStage(currentStage+1)
-         formik.resetForm();
-         formik1.resetForm();
-         formik2.resetForm();
-         formik3.resetForm();
-         break;
-         case 5:
-         closeDrawer()
-         window.location.reload();
-       
-       
+        formik3.handleSubmit();
+        setCurrentStage(currentStage + 1);
+        formik.resetForm();
+        formik1.resetForm();
+        formik2.resetForm();
+        formik3.resetForm();
+        break;
+      case 5:
+        closeDrawer();
+        window.location.reload();
+
         // case 5:
-         
+
         // closeDrawer()
         // setShowModal(true);
-        
+
         break;
       default:
         break;
@@ -955,11 +966,8 @@ function Web({ closeDrawer, selectedJobId , onClick }) {
     // closeDrawer()
     //      setShowModal(true);
   };
-  
-    
 
   return (
-    
     <div className="flex flex-col gap-6 container-wrapper ">
       <FlexCol />
       <Header1 closeDrawer={closeDrawer} />
@@ -1201,7 +1209,9 @@ function Web({ closeDrawer, selectedJobId , onClick }) {
                             name={`additionalEducationalDetails[${index}].institute`}
                             value={detail.institute}
                             change={(e) => {
-                              const updatedDetails = [...additionalEducationalDetails];
+                              const updatedDetails = [
+                                ...additionalEducationalDetails,
+                              ];
                               updatedDetails[index].institute = e;
                               setAdditionalEducationalDetails(updatedDetails);
                             }}
@@ -1279,7 +1289,11 @@ function Web({ closeDrawer, selectedJobId , onClick }) {
                             }
                           />
                           <div className="flex items-center justify-end">
-                            <button onClick={() => handleDeleteEducationalDetails(index)}>
+                            <button
+                              onClick={() =>
+                                handleDeleteEducationalDetails(index)
+                              }
+                            >
                               <RiDeleteBin5Line className="text-gray-500 w-[17px] h-[17px]" />
                             </button>
                           </div>
@@ -1483,11 +1497,17 @@ function Web({ closeDrawer, selectedJobId , onClick }) {
                             name={`additionalExperiences[${index}].fromDate`}
                             value={experience.fromDate}
                             change={(e) => {
-                              const formattedDate = e.split('/').reverse().join('-');
-      
-                              const updatedExperiences = [...additionalExperiences];
-                              updatedExperiences[index].fromDate = formattedDate;
-                              
+                              const formattedDate = e
+                                .split("/")
+                                .reverse()
+                                .join("-");
+
+                              const updatedExperiences = [
+                                ...additionalExperiences,
+                              ];
+                              updatedExperiences[index].fromDate =
+                                formattedDate;
+
                               setAdditionalExperiences(updatedExperiences);
                             }}
                             required={false}
@@ -1506,11 +1526,16 @@ function Web({ closeDrawer, selectedJobId , onClick }) {
                             name={`additionalExperiences[${index}].toDate`}
                             value={experience.toDate}
                             change={(e) => {
-                              const formattedDate = e.split('/').reverse().join('-');
-      
-                              const updatedExperiences = [...additionalExperiences];
+                              const formattedDate = e
+                                .split("/")
+                                .reverse()
+                                .join("-");
+
+                              const updatedExperiences = [
+                                ...additionalExperiences,
+                              ];
                               updatedExperiences[index].toDate = formattedDate;
-                              
+
                               setAdditionalExperiences(updatedExperiences);
                             }}
                             required={false}
@@ -1717,10 +1742,21 @@ function Web({ closeDrawer, selectedJobId , onClick }) {
                     src={candidate}
                     alt=""
                   />
+                  { data.map((item, index) => (
                   <div className="flex-auto min-w-0 mt-3">
-                    {/* <p className="acco-h1">{data.candidateName}</p> */}
+                    <p className="acco-h1">  {item.candidateName}</p>
                   </div>
+                  
+                  ))}
                 </div>
+                <div>
+                {userInfo.map((user) => (
+              <UserInfoComponent
+                key={user.personal[0].id}
+                personalInfo={user.personal}
+              />
+            ))}
+          </div>
                 {/* <div>
                   {educationaldetails.map((user) => (
                     <UserInfoComponent
@@ -1881,7 +1917,7 @@ function Web({ closeDrawer, selectedJobId , onClick }) {
           BtnType="primary"
           // handleSubmit={(event) => handleSubmitAllForms(event)}  // Use onClick instead of handleSubmit
           // disabled={formik.isSubmitting || formik1.isSubmitting || formik2.isSubmitting || formik3.isSubmitting}
-          
+
           handleSubmit={handleSubmitAllForms}
           disabled={
             (currentStage === 1 && formik.isSubmitting) ||
@@ -1913,11 +1949,11 @@ function Web({ closeDrawer, selectedJobId , onClick }) {
         openModal={openModal} 
         contextHolder={contextHolder} 
       /> */}
-     {/* {currentStep === 4 && isModalOpen && (
+      {/* {currentStep === 4 && isModalOpen && (
         // <Modal handleOpen={openModal} DialogBody={() => <div>Modal Content</div>} />
         <Modal1 handleOpen={() => setIsModalOpen(true)} DialogBody={() => <div>Modal Content</div>}/>
       )} */}
-       {/* <Modal1
+      {/* <Modal1
         isOpen={isModalOpen}
         onClose={handleCloseModal}
         onConfirm={() => {
@@ -1933,19 +1969,43 @@ function Web({ closeDrawer, selectedJobId , onClick }) {
         dialogBody="Custom Dialog Body"
       /> */}
       <di>
-      <Modal2
-        show={showModal}
-        handleClose={handleCloseModal}
-        countDown={handleCloseModal}
-      />
+        <Modal2
+          show={showModal}
+          handleClose={handleCloseModal}
+          countDown={handleCloseModal}
+        />
       </di>
 
+
       
-      
-      
-    
     </div>
+
+
+
   );
 }
+
+
+const UserInfoComponent = ({ personalInfo }) => {
+  return (
+    <div className="grid md:grid-cols-2 gap-7">
+      {personalInfo.map((info) => (
+        <div className="flex items-center gap-2.5">
+          <div className="w-8 h-8 iconI vhcenter bg-[#F5F5F5] dark:bg-secondaryDark text-base rounded-lg ">
+            <div className="text-black opacity-50 ">{info.icon}</div>
+          </div>
+          <div className="inline-flex flex-col items-start justify-start ">
+            <p className="text-xs font-normal leading-none text-black opacity-50 dark:text-white">
+              {info.label}
+            </p>
+            <p className="text-xs font-semibold leading-tight text-black dark:text-white">
+              {info.value}
+            </p>
+          </div>
+        </div>
+      ))}
+    </div>
+  );
+};
 
 export default Web;
