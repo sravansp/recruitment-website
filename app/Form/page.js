@@ -1049,7 +1049,7 @@ function Web({ closeDrawer, selectedJobId , onClick }) {
                           change={(e) => {
                             formik.setFieldValue("lastName", e);
                           }}
-                          required={true}
+                          required={false}
                           error={formik.errors.lastName}
                         />
                       </div>
@@ -1063,7 +1063,7 @@ function Web({ closeDrawer, selectedJobId , onClick }) {
                           change={(e) => {
                             formik.setFieldValue("candidateEmail", e);
                           }}
-                          required={true}
+                          required={false}
                           error={formik.errors.candidateEmail}
                         />
                         <FormInput
@@ -1074,7 +1074,7 @@ function Web({ closeDrawer, selectedJobId , onClick }) {
                           change={(e) => {
                             formik.setFieldValue("candidateContact", e);
                           }}
-                          required={true}
+                          required={false}
                           error={formik.errors.candidateContact}
                         />
                       </div>
@@ -1116,7 +1116,7 @@ function Web({ closeDrawer, selectedJobId , onClick }) {
                           change={(e) => {
                             formik.setFieldValue("candidateLocation", e);
                           }}
-                          required={true}
+                          required={false}
                           error={formik.errors.candidateLocation}
                         />
                         <FormInput
@@ -1127,7 +1127,7 @@ function Web({ closeDrawer, selectedJobId , onClick }) {
                           change={(e) => {
                             formik.setFieldValue("city", e);
                           }}
-                          required={true}
+                          required={false}
                           error={formik.errors.city}
                         />
                       </div>
@@ -1140,7 +1140,7 @@ function Web({ closeDrawer, selectedJobId , onClick }) {
                           change={(e) => {
                             formik.setFieldValue("address", e);
                           }}
-                          required={true}
+                          required={false}
                           error={formik.errors.address}
                         />
                         <FormInput
@@ -1151,7 +1151,7 @@ function Web({ closeDrawer, selectedJobId , onClick }) {
                           change={(e) => {
                             formik.setFieldValue("postalCode", e);
                           }}
-                          required={true}
+                          required={false}
                           error={formik.errors.postalCode}
                         />
                       </div>
@@ -1205,7 +1205,7 @@ function Web({ closeDrawer, selectedJobId , onClick }) {
                               updatedDetails[index].institute = e;
                               setAdditionalEducationalDetails(updatedDetails);
                             }}
-                            required={true}
+                            required={false}
                             error={
                               isFormSubmitted
                                 ? formik1.errors.additionalExperiences?.[index]
@@ -1226,7 +1226,7 @@ function Web({ closeDrawer, selectedJobId , onClick }) {
                               updatedDetails[index].courseType = e;
                               setAdditionalEducationalDetails(updatedDetails);
                             }}
-                            required={true}
+                            required={false}
                             error={
                               isFormSubmitted
                                 ? formik1.errors.additionalExperiences?.[index]
@@ -1249,7 +1249,7 @@ function Web({ closeDrawer, selectedJobId , onClick }) {
                               updatedDetails[index].courseName = e;
                               setAdditionalEducationalDetails(updatedDetails);
                             }}
-                            required={true}
+                            required={false}
                             error={
                               isFormSubmitted
                                 ? formik1.errors.additionalExperiences?.[index]
@@ -1270,7 +1270,7 @@ function Web({ closeDrawer, selectedJobId , onClick }) {
                               updatedDetails[index].yearOfStudy = e;
                               setAdditionalEducationalDetails(updatedDetails);
                             }}
-                            required={true}
+                            required={false}
                             error={
                               isFormSubmitted
                                 ? formik1.errors.additionalExperiences?.[index]
@@ -1401,7 +1401,7 @@ function Web({ closeDrawer, selectedJobId , onClick }) {
                               updatedExperiences[index].jobTitle = e;
                               setAdditionalExperiences(updatedExperiences);
                             }}
-                            required={true}
+                            required={false}
                             error={
                               isFormSubmitted
                                 ? formik2.errors.additionalExperiences?.[index]
@@ -1422,7 +1422,7 @@ function Web({ closeDrawer, selectedJobId , onClick }) {
                               updatedExperiences[index].employmentType = e;
                               setAdditionalExperiences(updatedExperiences);
                             }}
-                            required={true}
+                            required={false}
                             error={
                               isFormSubmitted
                                 ? formik2.errors.additionalExperiences?.[index]
@@ -1445,7 +1445,7 @@ function Web({ closeDrawer, selectedJobId , onClick }) {
                               updatedExperiences[index].companyName = e;
                               setAdditionalExperiences(updatedExperiences);
                             }}
-                            required={true}
+                            required={false}
                             error={
                               isFormSubmitted
                                 ? formik2.errors.additionalExperiences?.[index]
@@ -1466,7 +1466,7 @@ function Web({ closeDrawer, selectedJobId , onClick }) {
                               updatedExperiences[index].location = e;
                               setAdditionalExperiences(updatedExperiences);
                             }}
-                            required={true}
+                            required={false}
                             error={
                               isFormSubmitted
                                 ? formik2.errors.additionalExperiences?.[index]
@@ -1490,7 +1490,7 @@ function Web({ closeDrawer, selectedJobId , onClick }) {
                               
                               setAdditionalExperiences(updatedExperiences);
                             }}
-                            required={true}
+                            required={false}
                             error={
                               isFormSubmitted
                                 ? formik2.errors.additionalExperiences?.[index]
@@ -1513,7 +1513,7 @@ function Web({ closeDrawer, selectedJobId , onClick }) {
                               
                               setAdditionalExperiences(updatedExperiences);
                             }}
-                            required={true}
+                            required={false}
                             error={
                               isFormSubmitted
                                 ? formik2.errors.additionalExperiences?.[index]
@@ -1591,7 +1591,7 @@ function Web({ closeDrawer, selectedJobId , onClick }) {
                         change={(e) => {
                           formik.setFieldValue("coverLetter", e);
                         }}
-                        required={true}
+                        required={false}
                         error={formik.errors.coverLetter}
                       />
                     </div>
@@ -1639,7 +1639,7 @@ function Web({ closeDrawer, selectedJobId , onClick }) {
                         change={(e) => {
                           formik3.setFieldValue("customQuestion", e);
                         }}
-                        required={true}
+                        required={false}
                         error={formik3.errors.customQuestion}
                       />
                     </div>
@@ -1653,7 +1653,7 @@ function Web({ closeDrawer, selectedJobId , onClick }) {
                         change={(e) => {
                           formik3.setFieldValue("highestEducationLevel", e);
                         }}
-                        required={true}
+                        required={false}
                         error={formik3.errors.highestEducationLevel}
                       />
                     </div>
@@ -1668,7 +1668,7 @@ function Web({ closeDrawer, selectedJobId , onClick }) {
                         change={(e) => {
                           formik3.setFieldValue("highestEducationLevel2", e);
                         }}
-                        required={true}
+                        required={false}
                         error={formik3.errors.highestEducationLevel}
                       />
                     </div>
@@ -1682,7 +1682,7 @@ function Web({ closeDrawer, selectedJobId , onClick }) {
                         change={(e) => {
                           formik3.setFieldValue("highestEducationLevel3", e);
                         }}
-                        required={true}
+                        required={false}
                         error={formik3.errors.highestEducationLevel}
                       />
                     </div>
