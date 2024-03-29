@@ -22,7 +22,9 @@ import {
   saveRecruitmentJobResumesCustomField,
   saveRecruitmentResume,
   saveRecruitmentResumeEducationalDetail,
+  saveRecruitmentResumeEducationalDetailBatch,
   saveRecruitmentResumesExperienceDetail,
+  saveRecruitmentResumesExperienceDetailBatch,
 } from "@/Components/Api";
 import Dropdown from "@/Components/ui/Dropdown";
 import FormInput from "@/Components/ui/FormInput";
@@ -72,28 +74,82 @@ function Web({ closeDrawer, selectedJobId , onClick }) {
   const [
     additionalEducationalDetailsCount,
     setAdditionalEducationalDetailsCount,
-  ] = useState(1);
+  ] = useState([1]);
   const [isFormSubmitted, setIsFormSubmitted] = useState(false);
 
-  const [additionalEducationalDetails, setAdditionalEducationalDetails] =
-    useState(
-      Array.from({ length: additionalEducationalDetailsCount }, () => ({
-        institute: "",
-        courseType: "",
-        courseName: "",
-        yearOfStudy: "",
-      }))
-    );
-  const [additionalExperiences, setAdditionalExperiences] = useState(
-    Array.from({ length: additionalExperienceCount }, () => ({
+  // const [additionalEducationalDetails, setAdditionalEducationalDetails] =
+  //   useState(
+  //     Array.from({ length: additionalEducationalDetailsCount }, () => ({
+  //       institute: "",
+  //       courseType: "",
+  //       courseName: "",
+  //       yearOfStudy: "",
+  //     }))
+  //   );
+  const [additionalExperiences, setAdditionalExperiences] = useState([
+    {
+      id: 1,
+      resumeId:insertedid1,
       jobTitle: "",
       employmentType: "",
       companyName: "",
       location: "",
       fromDate: "",
       toDate: "",
-    }))
-  );
+    },
+   ] );
+  const handleAddMoreExperience = () => {
+    setAdditionalExperiences((prevadditionalExperiences) => [
+      ...prevadditionalExperiences,
+      { id: prevadditionalExperiences.length + 1,
+        jobTitle: "",
+        employmentType: "",
+        companyName: "",
+        location: "",
+        fromDate: "",
+        toDate: "",
+      },
+    ]);
+   
+  };
+
+
+  const handleAddMoreEducationalDetails = () => {
+    setAdditionalEducationalDetails((prevadditionalEducationalDetails) => [
+      ...prevadditionalEducationalDetails,
+      {
+        id: prevadditionalEducationalDetails.length + 1,
+        resumeId:insertedid1,
+          institute: "",
+          courseType: "",
+          courseName: "",
+          yearOfStudy: "",
+          location:""
+      },
+    ]);
+  };
+  
+  const [additionalEducationalDetails, setAdditionalEducationalDetails] = useState([
+    {
+      id: 1,
+      resumeId:insertedid1,
+          institute: "",
+          courseType: "",
+          courseName: "",
+          yearOfStudy: "",
+          location:"jnvkjdn"
+    },
+  ]);
+  
+  const handleDeleteEducationalDetails = (index) => {
+    const updatedDetails = [{...additionalEducationalDetails}];
+    updatedDetails.splice(index, 1);
+    setAdditionalEducationalDetails(updatedDetails);
+  };
+
+  
+  
+
 
   const [steps, setSteps] = useState([
     {
@@ -487,19 +543,19 @@ function Web({ closeDrawer, selectedJobId , onClick }) {
     },
     enableReinitialize: true,
     validateOnChange: false,
-    validationSchema: Yup.object().shape({
-      firstName: Yup.string().required("First name is required"),
-      lastName: Yup.string().required("Last name is required"),
-      candidateEmail: Yup.string()
-        .email("Invalid email address")
-        .required("Email is required"),
-      candidateContact: Yup.string().required("Phone number is required"),
-      candidateLocation: Yup.string().required("Location is required"),
-      city: Yup.string().required("City is required"),
-      address: Yup.string().required("Address is required"),
-      postalCode: Yup.string().required("Postal code is required"),
-    }),
-    onSubmit: async (values, { setSubmitting }) => {
+    // validationSchema: Yup.object().shape({
+    //   firstName: Yup.string().required("First name is required"),
+    //   lastName: Yup.string().required("Last name is required"),
+    //   candidateEmail: Yup.string()
+    //     .email("Invalid email address")
+    //     .required("Email is required"),
+    //   candidateContact: Yup.string().required("Phone number is required"),
+    //   candidateLocation: Yup.string().required("Location is required"),
+    //   city: Yup.string().required("City is required"),
+    //   address: Yup.string().required("Address is required"),
+    //   postalCode: Yup.string().required("Postal code is required"),
+    // }),
+    onSubmit: async (values) => {
       try {
         // Make your API call here
         values.candidateName = `${values.namePrefix} ${values.firstName} ${values.lastName}`.trim();
@@ -523,7 +579,7 @@ function Web({ closeDrawer, selectedJobId , onClick }) {
         // For example, show error message, handle form submission failure, etc.
       } finally {
         // Reset form state after submission (whether successful or not)
-        setSubmitting(true);
+        // setSubmitting(true);
       }
     },
   });
@@ -541,17 +597,15 @@ function Web({ closeDrawer, selectedJobId , onClick }) {
   const formik1 = useFormik({
     initialValues: {
       // ...existing fields
-      additionalEducationalDetails: Array.from(
-        { length: additionalEducationalDetailsCount },
-        () => ({
-          resumeId:insertedid1,
-          institute: "",
-          courseType: "",
-          courseName: "",
-          yearOfStudy: "",
-          location:"hfvhjd"
-        })
-      ),
+    
+
+      resumeId:insertedid1,
+      institute: "",
+      courseType: "",
+      courseName: "",
+      yearOfStudy: "",
+      location:"jnvkjdn"
+
     },
     enableReinitialize: true,
     validateOnChange: false,
@@ -567,9 +621,23 @@ function Web({ closeDrawer, selectedJobId , onClick }) {
       ),
     }),
 
-    onSubmit: async (values, { setSubmitting }) => {
+    onSubmit: async ( values , { setSubmitting }) => {
+      console.log(values,"submiteddd valuess")
       try {
-        const response = await saveRecruitmentResumeEducationalDetail(values);
+
+        // const transformedData = Object.values(additionalEducationalDetails);
+
+
+        // const response = await saveRecruitmentResumeEducationalDetailBatch(Object.entries(additionalEducationalDetails).map(([_, value]) => value));
+        const formattedData = additionalEducationalDetails.map((item) => ({
+          resumeId:insertedid1,
+          institute: item.institute,
+          courseType: item.courseType,
+          courseName: item.courseName,
+          yearOfStudy: item.yearOfStudy,
+          location:"jnvkjdn"
+        }));
+        const response = await saveRecruitmentResumeEducationalDetailBatch(formattedData);
         console.log("API Response:", response);
 
         // setinsertedId1(response.result.insertedId);
@@ -596,9 +664,7 @@ function Web({ closeDrawer, selectedJobId , onClick }) {
   const formik2 = useFormik({
     initialValues: {
       // ...existing fields
-      additionalExperiences: Array.from(
-        { length: additionalExperienceCount },
-        () => ({
+     
           resumeId:insertedid1,
           jobTitle: "",
           employmentType: "",
@@ -606,8 +672,7 @@ function Web({ closeDrawer, selectedJobId , onClick }) {
           location: "",
           fromDate: "",
           toDate: "",
-        })
-      ),
+    
     },
 
     enableReinitialize: true,
@@ -627,7 +692,16 @@ function Web({ closeDrawer, selectedJobId , onClick }) {
     }),
     onSubmit: async (values, { setSubmitting }) => {
       try {
-        const response = await saveRecruitmentResumesExperienceDetail(values);
+        const formattedData1 = additionalExperiences.map((item) => ({
+          resumeId:insertedid1,
+          jobTitle: item.jobTitle,
+          employmentType: item.employmentType,
+          companyName: item.companyName,
+          location: item.location,
+          fromDate: item.fromDate,
+          toDate: item.toDate,
+        }));
+        const response = await saveRecruitmentResumesExperienceDetailBatch(formattedData1);
         console.log("work experience Details API Response:", response);
         setActiveBtn(activeBtn + 1);
         setCurrentStep(currentStep + 1);
@@ -825,52 +899,39 @@ function Web({ closeDrawer, selectedJobId , onClick }) {
     );
     setAdditionalEducationalDetailsCount((prevCount) => prevCount - 1);
   };
-  
-  const handleAddMoreExperience = () => {
-    setAdditionalExperiences((prevExperiences) => [
-      ...prevExperiences,
-      {
-        jobTitle: "",
-        employmentType: "",
-        companyName: "",
-        location: "",
-        fromDate: "",
-        toDate: "",
-      },
-    ]);
-    setAdditionalExperienceCount((prevCount) => prevCount + 1);
+
+  const handleDeletee = (index) => {
+    const updatedDetails = [...additionalEducationalDetails];
+    updatedDetails.splice(index, 1);
+    setAdditionalEducationalDetails(updatedDetails);
   };
+  
+  
+  
 
-
-  const handleSubmitAllForms = async () => {
+  const handleSubmitAllForms =  () => {
     switch (currentStage) {
       case 1:
-        try {
-          await formik.handleSubmit();
+        
+           formik.handleSubmit();
           setCurrentStage(currentStage + 1); // Move to next stage after successful submission
-        } catch (error) {
-          console.error("Error submitting formik:", error);
-        }
+       
         break;
       case 2:
-        try {
-          await formik1.handleSubmit();
+        
+           formik1.handleSubmit();
           setCurrentStage(currentStage + 1); // Move to next stage after successful submission
-        } catch (error) {
-          console.error("Error submitting formik1:", error);
-        }
+      
         break;
       case 3:
-        try {
-          await formik2.handleSubmit();
+       
+           formik2.handleSubmit();
           setCurrentStage(currentStage + 1); // Move to next stage after successful submission
-        } catch (error) {
-          console.error("Error submitting formik2:", error);
-        }
+       
         break;
       case 4:
-        try {
-          await formik3.handleSubmit();
+       
+           formik3.handleSubmit();
          setCurrentStage(currentStage+1)
          formik.resetForm();
          formik1.resetForm();
@@ -878,9 +939,7 @@ function Web({ closeDrawer, selectedJobId , onClick }) {
          formik3.resetForm();
          closeDrawer()
          window.location.reload();
-        } catch (error) {
-          console.error("Error submitting formik3:", error);
-        }
+       
        
         // case 5:
          
@@ -1140,9 +1199,7 @@ function Web({ closeDrawer, selectedJobId , onClick }) {
                             name={`additionalEducationalDetails[${index}].institute`}
                             value={detail.institute}
                             change={(e) => {
-                              const updatedDetails = [
-                                ...additionalEducationalDetails,
-                              ];
+                              const updatedDetails = [...additionalEducationalDetails];
                               updatedDetails[index].institute = e;
                               setAdditionalEducationalDetails(updatedDetails);
                             }}
@@ -1220,7 +1277,7 @@ function Web({ closeDrawer, selectedJobId , onClick }) {
                             }
                           />
                           <div className="flex items-center justify-end">
-                            <button onClick={() => handleDelete(index)}>
+                            <button onClick={() => handleDeleteEducationalDetails(index)}>
                               <RiDeleteBin5Line className="text-gray-500 w-[17px] h-[17px]" />
                             </button>
                           </div>
@@ -1289,7 +1346,7 @@ function Web({ closeDrawer, selectedJobId , onClick }) {
 
                     <AddMore
                       name="Add More Education "
-                      change={handleAddMoreWorkDetailss}
+                      change={handleAddMoreEducationalDetails}
                     />
                   </div>
                 </div>
@@ -1424,10 +1481,11 @@ function Web({ closeDrawer, selectedJobId , onClick }) {
                             name={`additionalExperiences[${index}].fromDate`}
                             value={experience.fromDate}
                             change={(e) => {
-                              const updatedExperiences = [
-                                ...additionalExperiences,
-                              ];
-                              updatedExperiences[index].fromDate = e;
+                              const formattedDate = e.split('/').reverse().join('-');
+      
+                              const updatedExperiences = [...additionalExperiences];
+                              updatedExperiences[index].fromDate = formattedDate;
+                              
                               setAdditionalExperiences(updatedExperiences);
                             }}
                             required={true}
@@ -1446,10 +1504,11 @@ function Web({ closeDrawer, selectedJobId , onClick }) {
                             name={`additionalExperiences[${index}].toDate`}
                             value={experience.toDate}
                             change={(e) => {
-                              const updatedExperiences = [
-                                ...additionalExperiences,
-                              ];
-                              updatedExperiences[index].toDate = e;
+                              const formattedDate = e.split('/').reverse().join('-');
+      
+                              const updatedExperiences = [...additionalExperiences];
+                              updatedExperiences[index].toDate = formattedDate;
+                              
                               setAdditionalExperiences(updatedExperiences);
                             }}
                             required={true}

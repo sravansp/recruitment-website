@@ -69,22 +69,24 @@ export const getAllRecruitmentJobs = async () => {
   
     return await apiRequest(action, method, kwargs);
   };
-  export const saveRecruitmentResumeEducationalDetail = async (e) => {
-    const action = "saveRecruitmentResumeEducationalDetail";
+  export const saveRecruitmentResumeEducationalDetailBatch = async (e) => {
+    const action = "saveRecruitmentResumeEducationalDetailBatch";
   
     const method = "POST";
     const kwargs = e;
-    const response = await apiRequest(action, method,{...e});
+    const response = await apiRequest(action, method,[...e]);
+    
+    console.log("API Request Data:", { action, method, kwargs });
     console.log("API Response:", response);
   
     return await apiRequest(action, method, kwargs);
   };
-  export const saveRecruitmentResumesExperienceDetail = async (e) => {
-    const action = "saveRecruitmentResumesExperienceDetail";
+  export const saveRecruitmentResumesExperienceDetailBatch = async (e) => {
+    const action = "saveRecruitmentResumesExperienceDetailBatch";
   
     const method = "POST";
     const kwargs = e;
-    const response = await apiRequest(action, method,{...e});
+    const response = await apiRequest(action, method,[...e]);
     console.log("API Response:", response);
   
     return await apiRequest(action, method, kwargs);
