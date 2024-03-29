@@ -543,18 +543,18 @@ function Web({ closeDrawer, selectedJobId , onClick }) {
     },
     enableReinitialize: true,
     validateOnChange: false,
-    // validationSchema: Yup.object().shape({
-    //   firstName: Yup.string().required("First name is required"),
-    //   lastName: Yup.string().required("Last name is required"),
-    //   candidateEmail: Yup.string()
-    //     .email("Invalid email address")
-    //     .required("Email is required"),
-    //   candidateContact: Yup.string().required("Phone number is required"),
-    //   candidateLocation: Yup.string().required("Location is required"),
-    //   city: Yup.string().required("City is required"),
-    //   address: Yup.string().required("Address is required"),
-    //   postalCode: Yup.string().required("Postal code is required"),
-    // }),
+    validationSchema: Yup.object().shape({
+      firstName: Yup.string().required("First name is required"),
+      lastName: Yup.string().required("Last name is required"),
+      candidateEmail: Yup.string()
+        .email("Invalid email address")
+        .required("Email is required"),
+      candidateContact: Yup.string().required("Phone number is required"),
+      candidateLocation: Yup.string().required("Location is required"),
+      city: Yup.string().required("City is required"),
+      address: Yup.string().required("Address is required"),
+      postalCode: Yup.string().required("Postal code is required"),
+    }),
     onSubmit: async (values) => {
       try {
         // Make your API call here
@@ -937,6 +937,8 @@ function Web({ closeDrawer, selectedJobId , onClick }) {
          formik1.resetForm();
          formik2.resetForm();
          formik3.resetForm();
+         break;
+         case 5:
          closeDrawer()
          window.location.reload();
        

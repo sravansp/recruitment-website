@@ -54,8 +54,8 @@ export const getAllRecruitmentJobs = async () => {
   
     const method = "POST";
     const kwargs = e;
-    const response = await apiRequest(action, method,{...e});
-    console.log("API Response:", response);
+    // const response = await apiRequest(action, method,{...e});
+    // console.log("API Response:", response);
   
     return await apiRequest(action, method, kwargs);
   };
@@ -64,8 +64,8 @@ export const getAllRecruitmentJobs = async () => {
   
     const method = "POST";
     const kwargs = e;
-    const response = await apiRequest(action, method,{...e});
-    console.log("API Response:", response);
+    // const response = await apiRequest(action, method,{...e});
+    // console.log("API Response:", response);
   
     return await apiRequest(action, method, kwargs);
   };
@@ -74,22 +74,22 @@ export const getAllRecruitmentJobs = async () => {
   
     const method = "POST";
     const kwargs = e;
-    const response = await apiRequest(action, method,[...e]);
+    // const response = await apiRequest(action, method,[...e]);
     
-    console.log("API Request Data:", { action, method, kwargs });
-    console.log("API Response:", response);
+    // console.log("API Request Data:", { action, method, kwargs });
+    // console.log("API Response:", response);
   
-    return await apiRequest(action, method, kwargs);
+    return await apiRequest(action, method, [...kwargs]);
   };
   export const saveRecruitmentResumesExperienceDetailBatch = async (e) => {
     const action = "saveRecruitmentResumesExperienceDetailBatch";
   
     const method = "POST";
     const kwargs = e;
-    const response = await apiRequest(action, method,[...e]);
-    console.log("API Response:", response);
+    // const response = await apiRequest(action, method,[...e]);
+    // console.log("API Response:", response);
   
-    return await apiRequest(action, method, kwargs);
+    return await apiRequest(action, method, [...kwargs]);
   };
   export const getRecruitmentResumeById = async (id) => {
     const action = "getRecruitmentResumeById";
