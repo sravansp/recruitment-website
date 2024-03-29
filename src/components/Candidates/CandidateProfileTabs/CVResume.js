@@ -1,8 +1,9 @@
-import React, { useState } from "react";
+import React, { useState,useEffect } from "react";
 import TabsNew from "../../common/TabsNew";
 import TextEditor from "../../common/TextEditor/TextEditor";
 import ButtonClick from "../../common/Button";
 import { IoMdAdd } from "react-icons/io";
+import {getAllRecruitmentJobResumesNotes,insertOrUpdateRecruitmentJobResumesNoteWithResumeId } from "../../Api1";
 import {
   RiArrowDownLine,
   RiFileList3Line,
@@ -11,6 +12,8 @@ import {
 import PDFViewer from "../../common/PDFViewer";
 import { BsFileEarmarkRichtext } from "react-icons/bs";
 import pdfFile from "../../../assets/documents/sample.pdf";
+import {Formik, useFormik } from "formik";
+import { Link,useParams,useLocation } from "react-router-dom";
 
 const tabData = [
   {
@@ -48,11 +51,23 @@ const QA = [
 const CVResume = () => {
   const [content, setContent] = useState("");
   const primaryColor = localStorage.getItem("mainColor");
-
+  const {resumeId} =useParams()
+  const[jobId,setJobId] = useState(null)
+  const { state } = useLocation();
+  useEffect(() => {
+    if (state && state.jobID) {
+        setJobId(state.jobID);
+    } else {
+        const storedJobId = localStorage.getItem('jobid');
+        if (storedJobId) {
+            setJobId(storedJobId);
+        }
+    }
+}, [state]);
   const handleEditorChange = (content) => {
     setContent(content);
   };
-
+  
   const onTabChange = (tabId) => {
     // Do something when the tab changes if needed
     console.log(`Tab changed to ${tabId}`);
@@ -60,6 +75,48 @@ const CVResume = () => {
     } else if (tabId === 2) {
     }
   };
+
+  
+ const[notes,setnotes]= useState("")
+
+
+ const formik = useFormik ({
+     initialValues :{
+       jobId:"",
+         resumeId:"",
+         notes:"",
+         createdBy: ""
+     },
+     onSubmit: async (e)=>{
+       try {
+         const response = await insertOrUpdateRecruitmentJobResumesNoteWithResumeId({
+          jobId:jobId,
+          resumeId:resumeId,
+          notes:e.notes,
+          createdBy:null,
+         })
+         console.log(response)
+       }catch(error){
+         console.log(error)
+       }
+     }
+   })
+  const getnotes = async()=>{
+     try{
+      const response = await getAllRecruitmentJobResumesNotes({resumeId:resumeId})
+      console.log(response)
+      setnotes(response.result[0].notes)
+      const data = response.result[0]
+      formik.setFieldValue("notes",data.notes)
+     }catch(error){
+       console.log(error)
+     }
+   }
+   useEffect(()=>{
+     getnotes()
+     console.log(notes)
+     
+   },[])
   return (
     <div className="grid gap-6 lg:grid-cols-12">
       {/* LEFT COLUMN  */}
@@ -125,8 +182,10 @@ const CVResume = () => {
         <div className="rounded-lg bg-white dark:bg-secondaryDark p-1.5 ">
           <TabsNew tabs={tabData} onTabChange={onTabChange} initialTab={1} />
           <TextEditor
-            initialValue={content}
-            onChange={handleEditorChange}
+            initialValue={formik.values.notes}
+            onChange={(e)=>{
+              formik.setFieldValue('notes',e)
+            }}
             minheight="250px"
           />
           <div
@@ -134,7 +193,7 @@ const CVResume = () => {
             style={{ backgroundColor: `${primaryColor}10` }}
           >
             <ButtonClick buttonName="Cancel" />
-            <ButtonClick buttonName="Save" BtnType="primary" />
+            <ButtonClick buttonName="Save" BtnType="primary" handleSubmit={formik.handleSubmit} />
           </div>
         </div>
       </div>

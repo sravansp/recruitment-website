@@ -38,7 +38,7 @@ const TextEditor = ({
       const plainText = rawContentState.blocks
         .map((block) => block.text)
         .join('\n');
-      onChange(plainText);
+      onChange(plainText); // Ensure onChange is called with plainText, which is a string
     }
   };
   

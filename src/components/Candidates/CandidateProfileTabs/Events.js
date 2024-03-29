@@ -9,13 +9,14 @@ import DateSelect from "../../common/DateSelect";
 import TimeSelect from "../../common/TimeSelect";
 import Dropdown from "../../common/Dropdown";
 // Sample Data
-import { duration, eventType, eventList } from "../../common/DataArrays";
+import { duration, eventType } from "../../common/DataArrays";
 import TextArea from "../../common/TextArea";
 import MultiSelect from "../../common/MultiSelect";
 import { PiDotsThreeOutlineFill } from "react-icons/pi";
-import { saveRecruitmentJobResumesEvent,getAllRecruitmentUsers } from "../../Api1";
+import {getAllRecruitmentJobResumesNotes,insertOrUpdateRecruitmentJobResumesNoteWithResumeId,getAllRecruitmentJobResumesEvents, saveRecruitmentJobResumesEvent,getAllRecruitmentUsers } from "../../Api1";
 import { Link,useParams,useLocation } from "react-router-dom";
 import {Formik, useFormik } from "formik";
+import {notification} from "antd"
 const tabData = [
   {
     id: 9,
@@ -34,8 +35,24 @@ const tabData = [
 ];
 const Events = () => {
   const [content, setContent] = useState("");
+  const { state } = useLocation();
   const [showAddEventSection, setShowAddEventSection] = useState(false); // New state to manage the visibility of AddEventSection
   const primaryColor = localStorage.getItem("mainColor");
+  const {resumeId} =useParams()
+  const[eventList,seteventList]=useState([])
+  const[jobId,setJobId] = useState(null)
+  const[notes,setnotes]= useState("")
+
+  useEffect(() => {
+    if (state && state.jobID) {
+        setJobId(state.jobID);
+    } else {
+        const storedJobId = localStorage.getItem('jobid');
+        if (storedJobId) {
+            setJobId(storedJobId);
+        }
+    }
+}, [state]);
 
   // console.log(showAddEventSection);
   const handleEditorChange = (content) => {
@@ -52,6 +69,64 @@ const Events = () => {
     } else if (tabId === 2) {
     }
   };
+  const getEvents = async ()=>{
+   try{
+   const response = await getAllRecruitmentJobResumesEvents(
+   {
+    resumeId:resumeId
+   }
+   )
+
+   console.log(response)
+   seteventList(response)
+
+   }catch(errro){
+    console.log(errro)
+   }
+
+  }
+  useEffect(()=>{
+    getEvents()
+  },[])
+  const formik = useFormik ({
+    initialValues :{
+      jobId:"",
+        resumeId:"",
+        notes:"",
+        createdBy: ""
+    },
+    onSubmit: async (e)=>{
+      try {
+        const response = await insertOrUpdateRecruitmentJobResumesNoteWithResumeId({
+         jobId:jobId,
+         resumeId:resumeId,
+         notes:e.notes,
+         createdBy:null,
+        })
+        console.log(response)
+      }catch(error){
+        console.log(error)
+      }
+    }
+  })
+  const getnotes = async()=>{
+    try{
+     const response = await getAllRecruitmentJobResumesNotes({resumeId:resumeId})
+     console.log(response)
+     setnotes(response.result[0].notes)
+     const data = response.result[0]
+     formik.setFieldValue("notes",data.notes)
+    }catch(error){
+      console.log(error)
+    }
+  }
+  useEffect(()=>{
+    getnotes()
+    console.log(notes)
+    
+  },[])
+  
+
   return (
     <div className="grid gap-6 lg:grid-cols-12">
       {/* LEFT COLUMN  */}
@@ -76,8 +151,10 @@ const Events = () => {
         <div className="rounded-lg bg-white dark:bg-secondaryDark p-1.5 ">
           <TabsNew tabs={tabData} onTabChange={onTabChange} initialTab={1} />
           <TextEditor
-            initialValue={content}
-            onChange={handleEditorChange}
+            initialValue={formik.values.notes}
+            onChange={(e)=>{
+              formik.setFieldValue('notes',e)
+            }}
             minheight="250px"
           />
           <div
@@ -85,7 +162,7 @@ const Events = () => {
             style={{ backgroundColor: `${primaryColor}10` }}
           >
             <ButtonClick buttonName="Cancel" />
-            <ButtonClick buttonName="Save" BtnType="primary" />
+            <ButtonClick buttonName="Save" BtnType="primary"  handleSubmit={formik.handleSubmit}/>
           </div>
         </div>
       </div>
@@ -118,6 +195,45 @@ const CreateEventSection = ({ onCreateEventClick }) => {
 
 // EVENT LIST SECTION
 const Eventlist = ({ onCreateEventClick, primaryColor }) => {
+  
+  const {resumeId} =useParams()
+  const[eventList,seteventList]=useState([])
+  
+  const getEvents = async ()=>{
+    try{
+    const response = await getAllRecruitmentJobResumesEvents(
+    {
+     resumeId:resumeId
+    }
+    )
+ 
+    console.log(response)
+    seteventList(response.result.map(item => ({
+      id: item.jobResumeEventId,
+      eventName: item.eventName,
+      date: new Date(item.eventDateTime).toLocaleDateString(),
+      time: new Date(item.eventDateTime).toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' }),
+      duration: item.eventDetails.duration,
+      type: item.eventDetails.eventType,
+      url: item.eventDetails.eventUrl,
+      note: "", // You can add your own logic to populate this field
+      attendees: item.attendees.map(attendee => ({
+          name: attendee.userName,
+          img: attendee.userImage,
+      }))
+  }))
+    )
+ 
+    }catch(errro){
+     console.log(errro)
+    }
+ 
+   }
+   useEffect(()=>{
+     getEvents()
+    console.log(eventList)
+   },[])
+  
   return (
     <div className="flex flex-col h-full gap-4">
       <div
@@ -131,43 +247,44 @@ const Eventlist = ({ onCreateEventClick, primaryColor }) => {
         />
       </div>
 
-      {eventList.map((events, i) => (
-        <div
-          className="flex flex-col gap-3 p-4 bg-white rounded-lg borderb dark:bg-transparent"
-          key={i}
-        >
-          <div className="flex items-center justify-between">
-            <h6 className="h6">{events.eventName}</h6>
-            <a
-              onClick={(e) => e.preventDefault()}
-              className="p-1 border border-transparent rounded cursor-pointer text-primary hover:border-primary"
-            >
-              <PiDotsThreeOutlineFill className="text-xl" />
-            </a>
+      {eventList.map((event, index) => (
+  <div
+    className="flex flex-col gap-3 p-4 bg-white rounded-lg borderb dark:bg-transparent"
+    key={index}
+  >
+    <div className="flex items-center justify-between">
+      <h6 className="h6">{event.eventName}</h6>
+      <a
+        onClick={(e) => e.preventDefault()}
+        className="p-1 border border-transparent rounded cursor-pointer text-primary hover:border-primary"
+      >
+        <PiDotsThreeOutlineFill className="text-xl" />
+      </a>
+    </div>
+    <div className="grid grid-cols-6">
+      <p className="col-span-1 para">Date: {event.date}</p>
+      <p className="col-span-1 para">Time: {event.time}</p>
+      <p className="col-span-1 para">Duration: {event.duration}</p>
+    </div>
+    <p className="pblack !font-normal">{event.note}</p>
+    <div className="divider-h" />
+    <div className="flex items-center gap-3">
+      <p className="para">Attendees: </p>
+      <div className="flex items-center gap-3">
+        {event.attendees.map((attendee, attendeeIndex) => (
+          <div className="relative" key={attendeeIndex}>
+            {/* Render attendee image here */}
+            <img
+              src={attendee.img || "https://via.placeholder.com/60x60"}
+              alt={attendee.name}
+              className="rounded-full size-9"
+            />
           </div>
-          <div className="grid grid-cols-6">
-            <p className="col-span-1 para">Date: {events.date}</p>
-            <p className="col-span-1 para">Time: {events.time}</p>
-            <p className="col-span-1 para">Duration: {events.duration}</p>
-          </div>
-          <p className="pblack !font-normal">{events.note}</p>
-          <div className="divider-h" />
-          <div className="flex items-center gap-3">
-            <p className="para">Attendies: </p>
-            <div className="flex items-center gap-3">
-              {events.attendies.map((atd, i) => (
-                <div className="relative" key={i}>
-                  <img
-                    src="https://via.placeholder.com/60x60"
-                    alt=""
-                    className="rounded-full size-9"
-                  />
-                </div>
-              ))}
-            </div>
-          </div>
-        </div>
-      ))}
+        ))}
+      </div>
+    </div>
+  </div>
+))}
     </div>
   );
 };
@@ -181,6 +298,28 @@ const FormSection = ({ onCancel }) => {
   const { state } = useLocation();
   const {resumeId} =useParams()
   const[selectedvalue,setselectedvalue]=useState("")
+  const [api, contextHolder] = notification.useNotification();
+  const openNotification = (type, message, description) => {
+    api[type]({
+      message: message,
+      description: description,
+      placement: "top",
+      // stack: 2,
+      style: {
+        background: `${
+          type === "success"
+            ? `linear-gradient(180deg, rgba(204, 255, 233, 0.8) 0%, rgba(235, 252, 248, 0.8) 51.08%, rgba(246, 251, 253, 0.8) 100%)`
+            : "linear-gradient(180deg, rgba(255, 236, 236, 0.80) 0%, rgba(253, 246, 248, 0.80) 51.13%, rgba(251, 251, 254, 0.80) 100%)"
+        }`,
+        boxShadow: `${
+          type === "success"
+            ? "0px 4.868px 11.358px rgba(62, 255, 93, 0.2)"
+            : "0px 22px 60px rgba(134, 92, 144, 0.20)"
+        }`,
+      },
+      // duration: null,
+    });
+  };
   useEffect(() => {
     if (state && state.jobID) {
         setJobId(state.jobID);
@@ -201,7 +340,8 @@ const FormSection = ({ onCancel }) => {
           eventDate: "",
           eventTime: "",
           duration: "",
-          eventUrl: ""
+          eventUrl: "",
+          notes:""
       },
       attendees: [
           
@@ -209,6 +349,7 @@ const FormSection = ({ onCancel }) => {
           
         
       ],
+
       createdBy: ""
     },
     onSubmit: async (e)=>{
@@ -224,11 +365,24 @@ const FormSection = ({ onCancel }) => {
             eventTime: e.eventTime,
             duration: e.duration,
             eventUrl: e.eventUrl,
+            notes:e.notes,
         },
         attendees:selectedvalue,
         createdBy: null
       })
      console.log (response)
+     if(response.status ==200){
+    
+      openNotification(
+        "success",
+        "Successful",
+        response.message
+      );
+      formik.resetForm();
+      
+    } else if (response.status === 500) {
+      openNotification("error", response.message);
+    }
     }catch(error){
 
     }
@@ -388,7 +542,9 @@ try{
           </div> */}
         </div>
 
-        <TextArea title="Note" placeholder="Add note..." />
+        <TextArea title="Note" placeholder="Add note..." value={formik.values.notes}
+        change={(e)=>{formik.setFieldValue("notes",e)}}
+        />
       </div>
 
       <div
@@ -402,6 +558,7 @@ try{
           handleSubmit={formik.handleSubmit}
         />
       </div>
+      {contextHolder}
     </div>
   );
 };

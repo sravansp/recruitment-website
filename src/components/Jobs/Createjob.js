@@ -18,7 +18,7 @@ import Radiobuttonnew from '../common/Radiobuttonnew';
 import GoogleForm from '../common/GoogleForm';
 import JobCard from '../common/JobCard';
 import { cardData, regularOvertime,Requirment,JobType,experiencelevel,eductaion,saleryCurrency } from '../data';
-import { saveRecruitmentJob,getAllRecruitmentWorkFlows,updateRecruitmentJob,getAllRecruitmentUsers,getAllRecruitmentJobTemplates,getRecruitmentJobTemplateById,insertOrUpdateRecruitmentJobApplicationFormSettingWithJobId,getRecruitmentJobById,saveRecruitmentJobTeamMemberBatch } from '../Api1';
+import {getAllRecruitmentQuestionnaireTemplates,getAllRecruitmentEvaluationTemplates, saveRecruitmentJob,getAllRecruitmentWorkFlows,updateRecruitmentJob,getAllRecruitmentUsers,getAllRecruitmentJobTemplates,getRecruitmentJobTemplateById,insertOrUpdateRecruitmentJobApplicationFormSettingWithJobId,getRecruitmentJobById,saveRecruitmentJobTeamMemberBatch } from '../Api1';
 import { Formik, useFormik } from 'formik';
 import { CgAdd } from "react-icons/cg";
 import { Form } from '../data';
@@ -142,7 +142,8 @@ const [jobId,setJobId] =useState(null)
 const [UpdateId,setupdateId]=useState(null)
 useEffect(()=>{
   setupdateId(updateId)
-})
+  
+},[])
 // const validationSchema1 = Yup.object().shape({
 //   companyId: Yup.string().required('Company ID is required'),
 //   jobTitle: Yup.string().required('Job Title is required'),
@@ -242,6 +243,9 @@ const formik1 = useFormik({
   jobStatus: "Draft",
   createdBy:"",
   noOfVaccancies:"",
+  evaluationTemplateId:"",
+  questionnaireTemplateId:"",
+
 
   
 
@@ -264,46 +268,44 @@ const formik1 = useFormik({
         console.log(jobId);
     
         // Check if jobId or UpdateId is present
-        if ((jobId && jobId.length > 0) || UpdateId) {
-          const idToUpdate = jobId || UpdateId;
-          const response = await updateRecruitmentJob({
-            id: idToUpdate,
-            companyId: companyId,
-            jobTitle: e.jobTitle,
-            departmentId: e.departmentId,
-            jobCode: e.jobCode,
-            workLocationType: e.workLocationType,
-            location: e.location,
-            requirementType: e.requirementType,
-            jobType: e.jobType,
-            experience: e.experience,
-            education: e.education,
-            searchKeywords: e.searchKeywords,
-            salaryRangeFrom: e.salaryRangeFrom,
-            salaryRangeTo: e.salaryRangeTo,
-            salaryCurrency: e.salaryCurrency,
-            isSalaryPublic: e.isSalaryPublic,
-            jobDescription: e.jobDescription,
-            workFlowId: null,
-            noOfVaccancies: e.noOfVaccancies,
-            modifiedBy: userid
-          });
+        if ((!jobId || jobId.length === 0) && !UpdateId) {
+          // const idToUpdate = jobId || UpdateId;
+          // const response = await updateRecruitmentJob({
+          //   id: idToUpdate,
+          //   companyId: companyId,
+          //   jobTitle: e.jobTitle,
+          //   departmentId: e.departmentId,
+          //   jobCode: e.jobCode,
+          //   workLocationType: e.workLocationType,
+          //   location: e.location,
+          //   requirementType: e.requirementType,
+          //   jobType: e.jobType,
+          //   experience: e.experience,
+          //   education: e.education,
+          //   searchKeywords: e.searchKeywords,
+          //   salaryRangeFrom: e.salaryRangeFrom,
+          //   salaryRangeTo: e.salaryRangeTo,
+          //   salaryCurrency: e.salaryCurrency,
+          //   isSalaryPublic: e.isSalaryPublic,
+          //   jobDescription: e.jobDescription,
+          //   workFlowId: null,
+          //   noOfVaccancies: e.noOfVaccancies,
+          //   modifiedBy: userid
+          // });
     
-          console.log(response);
+          // console.log(response);
     
-          if (response.status === 200) {
-            openNotification(
-              "success",
-              "Successful",
-              "success"
-            );
-            setPresentage(2);
-            setNextStep(nextStep + 1);
-            refresh();
-          } else if (response.status === 500) {
-            openNotification("error", "input field is empty..", "enter the field");
-          }
-        } else {
+          // if (response.status === 200) {
+          //   openNotification(
+          //     "success",
+          //     "Successful",
+          //     "success"
+          //   );
+          //   setPresentage(2);
+          //   setNextStep(nextStep + 1);
+          
+          // } else if (response.status === 500) {
+          //   openNotification("error", "input field is empty..", "enter the field");
           const response = await saveRecruitmentJob({
             companyId: companyId,
             jobTitle: e.jobTitle,
@@ -326,12 +328,16 @@ const formik1 = useFormik({
             jobPublishDetails: null,
             jobStatus: "Draft",
             createdBy: userid,
-            noOfVaccancies: e.noOfVaccancies
+            noOfVaccancies: e.noOfVaccancies,
+            questionnaireTemplateId:e.questionnaireTemplateId,
+            evaluationTemplateId:e.evaluationTemplateId,
+
           });
-    
-          console.log(response);
-    
           setJobId(response.result.insertedId);
+          
+          console.log(response);
+          
+          
           console.log(jobId);
     
           if (response.status === 200) {
@@ -340,19 +346,67 @@ const formik1 = useFormik({
               "Successful",
               response.message
             );
-            refresh();
+           
             setPresentage(2);
             setNextStep(nextStep + 1);
           } else if (response.status === 500) {
             openNotification("error", "input field is empty..", response.message);
           }
+          // }
+        } else {
+                 const idToUpdate = jobId || UpdateId;
+          const response = await updateRecruitmentJob({
+            id: idToUpdate,
+            companyId: companyId,
+            jobTitle: e.jobTitle,
+            departmentId: e.departmentId,
+            jobCode: e.jobCode,
+            workLocationType: e.workLocationType,
+            location: e.location,
+            requirementType: e.requirementType,
+            jobType: e.jobType,
+            experience: e.experience,
+            education: e.education,
+            searchKeywords: e.searchKeywords,
+            salaryRangeFrom: e.salaryRangeFrom,
+            salaryRangeTo: e.salaryRangeTo,
+            salaryCurrency: e.salaryCurrency,
+            isSalaryPublic: e.isSalaryPublic,
+            jobDescription: e.jobDescription,
+            workFlowId: null,
+            noOfVaccancies: e.noOfVaccancies,
+            modifiedBy: userid,
+            questionnaireTemplateId:e.questionnaireTemplateId,
+            evaluationTemplateId:e.evaluationTemplateId,
+
+          });
+    
+          console.log(response);
+    
+          if (response.status === 200) {
+            openNotification(
+              "success",
+              "Successful",
+              "success"
+            );
+            setPresentage(2);
+            setNextStep(nextStep + 1);
+          
+          } else if (response.status === 500) {
+            openNotification("error", "input field is empty..", "enter the field");
         }
+      }
       } catch (error) {
         console.error("Error during form submission:", error);
         openNotification("error", "input field is empty..", "input field is empty..");
       }
     }
 })
+
+useEffect(() => {
+  console.log("Job ID:", jobId);
+  
+}, [jobId]);
 const [departmentList, setDepartmentList] = useState();
 const [company,setCompany] =useState([])
  const getDepartmentList = async (e) => {
@@ -900,6 +954,41 @@ const handleAddField = (index) => {
     getJobtemp()
     console.log(jobtemplate)
   },[])
+  const [evalutaionTem,setEvalutaionTem]=useState([])
+  const getEvaluationtem = async ()=>{
+    try {
+      const response = await getAllRecruitmentEvaluationTemplates()
+      console.log(response)
+      setEvalutaionTem( response.result.map((each) => ({
+        label: each.evaluationTemplateName,
+        value: each.evaluationTemplateId,
+      })))
+    }catch(error){
+      console.log(error)
+    }
+  }
+  useEffect(()=>{
+    getEvaluationtem()
+    console.log(evalutaionTem)
+  },[])
+
+  const [questionareTem,setQuestionare]=useState([])
+  const getQuestionare = async ()=>{
+    try {
+      const response = await getAllRecruitmentQuestionnaireTemplates()
+      console.log(response)
+      setQuestionare( response.result.map((each) => ({
+        label: each.questionnaireTemplateName,
+        value: each.questionnaireTemplateId,
+      })))
+    }catch(error){
+      console.log(error)
+    }
+  }
+  useEffect(()=>{
+    getQuestionare()
+    console.log(evalutaionTem)
+  },[])
 
   const handleButtonClick = async (e) => {
     switch (activeBtnValue) {
@@ -1325,6 +1414,32 @@ const handleAddField = (index) => {
                                             error={formik1.errors.jobCode}
                                             />
                                             
+                                    </div>
+                                    <div className='grid grid-cols-3 gap-4'>
+                                    <Dropdown
+                                            title={t("Choose Evaluation template")}
+                                            placeholder={t("Select...")}
+                                           
+                                            options={evalutaionTem}
+                                            value={formik1.values.evaluationTemplateId}
+                                            error={formik1.errors.evaluationTemplateId}
+                                            change={(e)=>{
+                                              formik1.setFieldValue('evaluationTemplateId',e)
+                                            }}
+                                            />
+                                            <Dropdown
+                                            title={t("choose Questionare Template")}
+                                            placeholder={t("Select...")}
+                                            
+                                            options={questionareTem}
+                                            value={formik1.values.questionnaireTemplateId}
+                                            error={formik1.errors.questionnaireTemplateId}
+                                            change={(e)=>{
+                                              formik1.setFieldValue('questionnaireTemplateId',e)
+                                            }}
+                                            />
+                                         
+
                                     </div>
                                     
                                 </Accordion>

@@ -245,7 +245,7 @@ const tabs = [
     setSelectedItemLabel(selectedItemLabel);
     setstageId(e.key);
   };
-
+  
 
   const handleCopyClick = (value) => {
     copy(value);

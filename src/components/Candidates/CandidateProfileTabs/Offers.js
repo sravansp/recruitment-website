@@ -1,7 +1,10 @@
-import React, { useState } from "react";
+import React, { useState,useEffect } from "react";
 import ButtonClick from "../../common/Button";
 import TextEditor from "../../common/TextEditor/TextEditor";
 import TabsNew from "../../common/TabsNew";
+import {getRecruitmentLetterTemplateById,saveRecruitmentJobResumesOfferLetter,getAllRecruitmentLetterTemplates,getAllRecruitmentJobResumesNotes,insertOrUpdateRecruitmentJobResumesNoteWithResumeId } from "../../Api1";
+import { EditorState, convertToRaw, convertFromRaw, ContentState } from 'draft-js';
+import { format } from 'date-fns';
 import {
   RiAttachment2,
   RiEmojiStickerFill,
@@ -13,15 +16,57 @@ import { Editor } from "react-draft-wysiwyg";
 import "react-draft-wysiwyg/dist/react-draft-wysiwyg.css";
 import { FcCheckmark } from "react-icons/fc";
 import { ImAttachment } from "react-icons/im";
+import { Link,useParams,useLocation } from "react-router-dom";
+import {Formik, useFormik } from "formik";
+import Dropdown from "../../common/Dropdown";
+import { Button, Card, Space, notification } from "antd";
+
 
 const Offers = () => {
   const [content, setContent] = useState("");
   const [uploadedFiles, setUploadedFiles] = useState([]);
   const primaryColor = localStorage.getItem("mainColor");
+  const {resumeId} =useParams()
+  const[jobId,setJobId] = useState(null)
+  const[LetterTemplate,setLetterTemplate] = useState([])
+  const { state } = useLocation();
+  const [LetterTemplateId,setLetterTemplateId] =useState("")
+  const[Letterdata,setLetterdata] = useState([])
+ 
+  useEffect(() => {
+    if (state && state.jobID) {
+        setJobId(state.jobID);
+    } else {
+        const storedJobId = localStorage.getItem('jobid');
+        if (storedJobId) {
+            setJobId(storedJobId);
+        }
+    }
+}, [state]);
 
-  const handleEditorChange = (content) => {
-    setContent(content);
-  };
+
+const [api, contextHolder] = notification.useNotification();
+const openNotification = (type, message, description) => {
+  api[type]({
+    message: message,
+    description: description,
+    placement: "top",
+    // stack: 2,
+    style: {
+      background: `${
+        type === "success"
+          ? `linear-gradient(180deg, rgba(204, 255, 233, 0.8) 0%, rgba(235, 252, 248, 0.8) 51.08%, rgba(246, 251, 253, 0.8) 100%)`
+          : "linear-gradient(180deg, rgba(255, 236, 236, 0.80) 0%, rgba(253, 246, 248, 0.80) 51.13%, rgba(251, 251, 254, 0.80) 100%)"
+      }`,
+      boxShadow: `${
+        type === "success"
+          ? "0px 4.868px 11.358px rgba(62, 255, 93, 0.2)"
+          : "0px 22px 60px rgba(134, 92, 144, 0.20)"
+      }`,
+    },
+    // duration: null,
+  });
+};
 
   const onTabChange = (tabId) => {
     // Do something when the tab changes if needed
@@ -59,6 +104,118 @@ const Offers = () => {
       icon: <BsFileEarmarkRichtext className="text-base" />,
     },
   ];
+
+  
+ const[notes,setnotes]= useState("")
+ 
+
+ const handlesubmit = async()=>{
+  try {
+    const currentDate = new Date();
+    const formattedDate = format(currentDate, 'yyyy-MM-dd HH:mm:ss');
+  const response = await saveRecruitmentJobResumesOfferLetter(
+    {
+      jobId:jobId,
+        resumeId:resumeId,
+        offerLetterData:content,
+        offerLetterTemplateId:LetterTemplateId||null,
+        offerLetterStatusDate:formattedDate,
+        createdBy: null
+    }
+  )
+   console.log (response)
+   if (response.status === 200) {
+        
+        
+    openNotification(
+      "success",
+      "Successful",
+      response.message
+    );
+   formik.resetForm()
+  
+  }else if (response.status === 500) {
+    openNotification("error", "input field is empty..", response.message);
+  }
+  }catch(error){
+    console.log(error)
+  }
+
+ }
+
+   const formik = useFormik ({
+    initialValues :{
+      jobId:"",
+        resumeId:"",
+        notes:"",
+        createdBy: ""
+    },
+    onSubmit: async (e)=>{
+      try {
+        const response = await insertOrUpdateRecruitmentJobResumesNoteWithResumeId({
+         jobId:jobId,
+         resumeId:resumeId,
+         notes:e.notes,
+         createdBy:null,
+        })
+        console.log(response)
+      }catch(error){
+        console.log(error)
+      }
+    }
+  })
+   const getLetterTemplate = async ()=>{
+    try {
+       const response = await getAllRecruitmentLetterTemplates()
+       console.log(response)
+       setLetterTemplate(response.result.map((each) => ({
+        label: each.letterTemplateName,
+        value: each.letterTemplateId,
+      })))
+    }catch(error){
+      console.log(error)
+    }
+   }
+   useEffect(()=>{
+    getLetterTemplate()
+   },[])
+   const getletteTemplateByid = async (id) => {
+    try {
+      const response = await getRecruitmentLetterTemplateById({ id });
+      console.log(response);
+      setContent(response.result[0].letterTemplate.body);
+    } catch (error) {
+      console.log(error);
+    }
+  };
+
+  useEffect(() => {
+    if (LetterTemplateId !== null) {
+      getletteTemplateByid(LetterTemplateId);
+    }
+  }, [LetterTemplateId]);
+  
+   const handleEditorChange = (content) => {
+    setContent(content);
+  };
+  const getnotes = async()=>{
+     try{
+      const response = await getAllRecruitmentJobResumesNotes({resumeId:resumeId})
+      console.log(response)
+      setnotes(response.result[0].notes)
+      const data = response.result[0]
+      formik.setFieldValue("notes",data.notes)
+     }catch(error){
+       console.log(error)
+     }
+   }
+   useEffect(()=>{
+     getnotes()
+     console.log(notes)
+     
+   },[])
+  
+
   return (
     <div className="grid gap-6 lg:grid-cols-12">
       {/* LEFT COLUMN  */}
@@ -73,18 +230,26 @@ const Offers = () => {
               >
                 <ButtonClick buttonName="Reject" />
                 <ButtonClick buttonName="Accept" icon={<FcCheckmark />} />
-                <ButtonClick buttonName="Choose Template" BtnType="primary" />
+               <Dropdown
+               placeholder={"Choose template"}
+               options={LetterTemplate}
+               change={(e)=>{
+               
+                setLetterTemplateId(e)
+               }}
+               value={LetterTemplateId}
+
+               />
               </div>
             </div>
 
             <div>
               <div className="pt-4">
-                <TextEditor
-                  // initialValue={emailContent}
-                  // onChange={handleEditorChange2}
-                  minheight="300px"
-                  className="border-none"
-                />
+              <TextEditor
+  initialValue={content}
+  onChange={handleEditorChange}
+  minheight="250px"
+/>
               </div>
               <div
                 className="flex justify-between items-center gap-2.5 p-1.5  rounded-lg "
@@ -116,7 +281,7 @@ const Offers = () => {
                 </div>
                 <div className="flex gap-2.5 p-1.5">
                   <ButtonClick buttonName="Cancel" />
-                  <ButtonClick buttonName="Send now" BtnType="primary" />
+                  <ButtonClick buttonName="Send now" BtnType="primary"  handleSubmit={handlesubmit}  />
                 </div>
               </div>
             </div>
@@ -128,8 +293,10 @@ const Offers = () => {
         <div className="rounded-lg bg-white dark:bg-secondaryDark p-1.5 ">
           <TabsNew tabs={tabData} onTabChange={onTabChange} initialTab={1} />
           <TextEditor
-            initialValue={content}
-            onChange={handleEditorChange}
+            initialValue={formik.values.notes}
+            onChange={(e)=>{
+              formik.setFieldValue('notes',e)
+            }}
             minheight="250px"
           />
           <div
@@ -137,10 +304,11 @@ const Offers = () => {
             style={{ backgroundColor: `${primaryColor}10` }}
           >
             <ButtonClick buttonName="Cancel" />
-            <ButtonClick buttonName="Save" BtnType="primary" />
+            <ButtonClick buttonName="Save" BtnType="primary" handleSubmit={formik.handleSubmit}/>
           </div>
         </div>
       </div>
+      {contextHolder}
     </div>
   );
 };

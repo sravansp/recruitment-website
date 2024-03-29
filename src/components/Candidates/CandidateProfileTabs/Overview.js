@@ -1,9 +1,10 @@
 import Accordion from "../../common/Accordion";
 import React, { useState,useEffect } from "react";
 import TabsNew from "../../common/TabsNew";
-import {getAllRecruitmentResumeEducationalDetails,getAllRecruitmentResumesExperienceDetails, getRecruitmentResumeById } from "../../Api1";
+import {insertOrUpdateRecruitmentJobResumesNoteWithResumeId,getAllRecruitmentResumeEducationalDetails,getAllRecruitmentResumesExperienceDetails, getRecruitmentResumeById,getAllRecruitmentJobResumesNotes } from "../../Api1";
 import { useDispatch, useSelector } from 'react-redux';
-
+import {Formik, useFormik } from "formik";
+import { Link,useParams,useLocation } from "react-router-dom";
 // ICONS
 import {
   RiArrowDownLine,
@@ -24,7 +25,7 @@ import ButtonClick from "../../common/Button";
 import PDFViewer from "../../common/PDFViewer";
 import pdfFile from "../../../assets/documents/sample.pdf";
 // import {educationExperiences } from "../../common/DataArrays";
-import { useParams } from "react-router-dom";
+
 
 // const userInfo = [
 //   {
@@ -79,9 +80,20 @@ const Overview = ({ onEmailSelect }) => {
   const selectedDataId = useSelector((state) => state.dataId.selectedDataId);
   const { resumeId } = useParams();
   const[PdFViewer,setPdFViewer] = useState("")
+  const { state } = useLocation();
+  const[jobId,setJobId] = useState(null)
   const id = resumeId
   const [candidateEmail, setCandidateEmail] = useState(""); // State to store candidate email
-
+  useEffect(() => {
+    if (state && state.jobID) {
+        setJobId(state.jobID);
+    } else {
+        const storedJobId = localStorage.getItem('jobid');
+        if (storedJobId) {
+            setJobId(storedJobId);
+        }
+    }
+}, [state]);
   const handleViewResume = () => {
     window.open(PdFViewer, "_blank"); // Open PDF URL in a new tab
   };
@@ -230,6 +242,46 @@ const Overview = ({ onEmailSelect }) => {
       icon: <BsFileEarmarkRichtext className="text-base" />,
     },
   ];
+  const[notes,setnotes]= useState("")
+
+
+const formik = useFormik ({
+    initialValues :{
+      jobId:"",
+        resumeId:"",
+        notes:"",
+        createdBy: ""
+    },
+    onSubmit: async (e)=>{
+      try {
+        const response = await insertOrUpdateRecruitmentJobResumesNoteWithResumeId({
+         jobId:jobId,
+         resumeId:resumeId,
+         notes:e.notes,
+         createdBy:null,
+        })
+        console.log(response)
+      }catch(error){
+        console.log(error)
+      }
+    }
+  })
+ const getnotes = async()=>{
+    try{
+     const response = await getAllRecruitmentJobResumesNotes({resumeId:resumeId})
+     console.log(response)
+     setnotes(response.result[0].notes)
+     const data = response.result[0]
+     formik.setFieldValue("notes",data.notes)
+    }catch(error){
+      console.log(error)
+    }
+  }
+  useEffect(()=>{
+    getnotes()
+    console.log(notes)
+    
+  },[])
 
   return (
   
@@ -376,8 +428,10 @@ const Overview = ({ onEmailSelect }) => {
         <div className="rounded-lg bg-white dark:bg-secondaryDark p-1.5 ">
           <TabsNew tabs={tabData} onTabChange={onTabChange} initialTab={1}  />
           <TextEditor
-            initialValue={content}
-            onChange={handleEditorChange}
+            initialValue={formik.values.notes}
+            onChange={(e)=>{
+              formik.setFieldValue('notes',e)
+            }}
             minheight="250px"
           />
           <div
@@ -385,7 +439,7 @@ const Overview = ({ onEmailSelect }) => {
             style={{ backgroundColor: `${primaryColor}10` }}
           >
             <ButtonClick buttonName="Cancel" />
-            <ButtonClick buttonName="Save" BtnType="primary" />
+            <ButtonClick buttonName="Save" BtnType="primary" handleSubmit={formik.handleSubmit} />
           </div>
         </div>
       </div>
