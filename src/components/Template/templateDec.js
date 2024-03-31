@@ -1,18 +1,128 @@
-import React,{useState} from 'react'
+import React,{useEffect, useState} from 'react'
 import DrawerPop from '../common/DrawerPop'
 import Accordion from '../common/Accordion'
 import { useTranslation } from 'react-i18next'
-import { Button, Card, Space } from 'antd'
+import { Button, Card, Space,notification } from 'antd'
 import { DownOutlined, UserOutlined } from '@ant-design/icons';
 import TextArea from '../common/TextArea'
 import image from '../../assets/images/generate-ai-img.png'
+import TextEditor from '../common/TextEditor/TextEditor'
+import {updateRecruitmentJobDescriptionTemplate, saveRecruitmentJobDescriptionTemplate,getRecruitmentJobDescriptionTemplateById } from '../Api1'
+import FormInput from '../common/FormInput'
 
-const TemplateDec = ({open = "", close = () => { },inputshow= false,isUpdate={}}) => {
-  
-    const[show,setShow] =useState(open);
+const TemplateDec = ({open = "", close = () => { },inputshow= false,isUpdate={},updateId}) => {
+    
+  const [companyId, setCompanyId] = useState(localStorage.getItem("companyId"));
+  const [templateName, setTemplateName] = useState("");  
+  const[show,setShow] =useState(open);
+    const [content, setContent] = useState("");
+    console.log(updateId)
     const { t } = useTranslation();
     const handleClose = () => {
         close(false);
+
+      };
+      const [api, contextHolder] = notification.useNotification();
+      const openNotification = (type, message, description) => {
+        api[type]({
+          message: message,
+          description: description,
+          placement: "top",
+          // stack: 2,
+          style: {
+            background: `${
+              type === "success"
+                ? `linear-gradient(180deg, rgba(204, 255, 233, 0.8) 0%, rgba(235, 252, 248, 0.8) 51.08%, rgba(246, 251, 253, 0.8) 100%)`
+                : "linear-gradient(180deg, rgba(255, 236, 236, 0.80) 0%, rgba(253, 246, 248, 0.80) 51.13%, rgba(251, 251, 254, 0.80) 100%)"
+            }`,
+            boxShadow: `${
+              type === "success"
+                ? "0px 4.868px 11.358px rgba(62, 255, 93, 0.2)"
+                : "0px 22px 60px rgba(134, 92, 144, 0.20)"
+            }`,
+          },
+          // duration: null,
+        });
+      };
+
+      const handlesubmit =async ()=>{
+      try{
+        if(!updateId){
+        const response = await saveRecruitmentJobDescriptionTemplate({
+        companyId: companyId,
+        descriptionTemplateName: templateName ,
+        descriptionTemplate: content ,
+        createdBy: null
+        })
+        console.log(response)
+        if (response.status === 200) {
+        
+        
+          openNotification(
+            "success",
+            "Successful",
+            response.message
+          );
+          setTimeout(() => {
+            handleClose();
+          }, 2000);
+        
+        }else if (response.status === 500) {
+          openNotification("error", "input field is empty..", response.message);
+        }
+      }else{
+        const id= updateId
+        const response = await updateRecruitmentJobDescriptionTemplate({
+          id:id,
+          companyId:companyId,
+          descriptionTemplateName:templateName,
+          descriptionTemplate:content,
+          modifiedBy:null
+        })
+        console.log(response)
+        if (response.status === 200) {
+        
+        
+          openNotification(
+            "success",
+            "Successful",
+            response.message
+          );
+          setTimeout(() => {
+            handleClose();
+          }, 2000);
+        
+        }else if (response.status === 500) {
+          openNotification("error", "input field is empty..", response.message);
+        }
+
+      }
+      }catch(error){
+         console.log(error)
+      }
+
+      }
+      const getDecriptionById= async()=>{
+        const id = updateId
+        try{
+        const response = await getRecruitmentJobDescriptionTemplateById({id:id})
+        console.log(response)
+        setTemplateName(response.result[0].descriptionTemplateName );
+        setContent(response.result[0].descriptionTemplate );
+        
+        
+        }catch(error){
+        console.log(error)
+        }
+      }
+      useEffect(()=>{
+        getDecriptionById()
+        console.log(templateName)
+        console.log(content)  
+      },[])
+
+      const handleEditorChange = (content) => {
+        setContent(content);
       };
     return (
     <DrawerPop
@@ -43,7 +153,7 @@ const TemplateDec = ({open = "", close = () => { },inputshow= false,isUpdate={}}
     header={[
        !isUpdate
          ? t("Create a Job Description Template")
-         : t("Create a Job Description Template"),
+         : t("Update Job Description Template"),
        t("Lorem ipsum dummy text doret solo."),
      ]}
      
@@ -60,10 +170,11 @@ const TemplateDec = ({open = "", close = () => { },inputshow= false,isUpdate={}}
     //  }
      footerBtn={[
        t("Cancel"),
-       !isUpdate ? t("Save Template") : t("Save Template"),
+       !updateId ? t("Save Template") : t("Update Template"),
+       
      ]}
      className="widthFull"
-     
+     handleSubmit={handlesubmit}
     //  buttonClickCancel={(e) => {
     //    if (activeBtn > 0) {
     //      setActiveBtn(activeBtn - 1);
@@ -91,6 +202,14 @@ const TemplateDec = ({open = "", close = () => { },inputshow= false,isUpdate={}}
                                                }}
                                                initialExpanded={true}
                                         > 
+                                        <div className="grid grid-cols-2 ">
+                <FormInput
+                  title={"Template Name"}
+                  placeholder={"type here"}
+                  value={templateName}
+                  change={setTemplateName}
+                />
+              </div>
                                         <Card>
                                          <div>
                                         <img alt=''></img>
@@ -112,46 +231,16 @@ impactful, accurate, and personalized to your company</p>
       
           </Button>
                                         </div>
-                                        <Card>
-                                            <TextArea
-                                             title={t("Description")}
-                                             placeholder={t("Enter the Job description here; include key reas of responsibility an what the candidate mi ht do on a typical day.")}
-                                             required={true}
-                                             hideBorder={true} 
-                                             
-                                            //  value={formik1.values.jobDescription}
-                                            //  change={(e)=>{
-                                            //    formik1.setFieldValue('jobDescription',e)
-                                            //  }}
-                                             />
-                                                  <TextArea
-                                             title={t("Requirement")}
-                                             placeholder={t("Enter the job requirements here; from soft skills to the specific qualifications needed to perform the role.")}
-                                             required={true}
-                                             hideBorder={true} 
-                                              // value={formik1.values.jobDescription}
-                                              // change={(e)=>{
-                                              //   formik1.setFieldValue('jobDescription',e)
-                                              // }}
-                                             />
-                                                  <TextArea
-                                             title={t("Benefits")}
-                                             placeholder={t("Enter the benefits here; Include nat just sa aty details but the perks that make your ca:npany unique.")}
-                                             required={true}
-                                             hideBorder={true} 
-                                            //  change={(e) => {
-                                            //    formik.setFieldValue("description", e);
-                                            //    if (presentage < 1.3)
-                                            //          setPresentage(presentage + 0.1);
-                                               
-                                            //  }}
-                                            //  value={formik.values.description || selectedAccordionItem?.description || fetchedData.description}
-                                            //  error={formik.errors.description}
-                                             />
-                                             </Card>
+                                    
+              <TextEditor
+                initialValue={content}
+                onChange={handleEditorChange}
+                minheight="250px"
+              />
 
                                         </Accordion>
                                         </div>
+                                        {contextHolder}
     </DrawerPop>
   )
 }
