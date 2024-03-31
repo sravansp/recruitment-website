@@ -452,7 +452,11 @@ useEffect(() => {
       <div key={idx}>
         {metadata.key === 'Drop-down' && idx === 0 && (
           <Dropdown
-            options={metadata.value.split(',').map(option => ({ label: option.trim(), value: option.trim() }))}
+            options={condition.answerMetaData
+              .filter(meta => meta.key === 'Drop-down')
+              .flatMap(meta => meta.value.split(','))
+              .map(option => ({ label: option.trim(), value: option.trim() }))
+            }
             change={Setdopdownvalue}
             value={dropdownvalue}
           />
@@ -470,12 +474,7 @@ useEffect(() => {
               <label key={optIdx}>
                 <Checkbox
                   value={option.trim()}
-                  checked={evaluationAnswers.some(answer => (
-                    answer.evaluationTemplateDetailsId === condition.evaluationTemplateDetailsId &&
-                    answer.jobId === jobId &&
-                    answer.resumeId === resumeId &&
-                    answer.evaluationAnswer === option.trim()
-                  ))}
+                  checked={selectedCheckboxes.includes(option.trim())}
                   onChange={() => handleCheckboxChange(option.trim())}
                 />
                 {option.trim()}
