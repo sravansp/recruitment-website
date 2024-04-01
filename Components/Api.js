@@ -115,3 +115,17 @@ export const getAllRecruitmentJobs = async () => {
     const kwargs = { resumeId: id }; 
     return await apiRequest(action, method, kwargs);
   };
+  export const updateRecruitmentResume = async (e) => {
+    const action = "updateRecruitmentResume";
+    const method = "POST";
+    const kwargs =  e ; 
+    console.log(e);
+    return await apiRequest(action, method, kwargs);
+  };
+  export const updateRecruitmentResumeEducationalDetail = async (e) => {
+    const action = "updateRecruitmentResumeEducationalDetail";
+    const method = "POST";
+    const kwargs =  e ; 
+    console.log(e);
+    return await apiRequest(action, method, kwargs);
+  };

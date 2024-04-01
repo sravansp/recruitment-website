@@ -17,6 +17,7 @@ import { Drawer } from "antd";
 import Web from "./Form/page";
 import Navbar from "@/Components/Navbar";
 
+
 const Home = () => {
   const [selectedJobId, setSelectedJobId] = useState(1);
   const [selectedJob, setSelectedJob] = useState(); // Change to null
@@ -239,7 +240,7 @@ const Home = () => {
         width="100%" // Adjust the width as needed
         height="100%"
       >
-        <Web closeDrawer={closeDrawer} selectedJobId={selectedJobIdForApply} />
+        <Web closeDrawer={closeDrawer} selectedJobId={selectedJobIdForApply} selectedJob />
       </Drawer>
     </main>
     </>

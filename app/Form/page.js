@@ -25,6 +25,8 @@ import {
   saveRecruitmentResumeEducationalDetailBatch,
   saveRecruitmentResumesExperienceDetail,
   saveRecruitmentResumesExperienceDetailBatch,
+  updateRecruitmentResume,
+  updateRecruitmentResumeEducationalDetail,
 } from "@/Components/Api";
 import Dropdown from "@/Components/ui/Dropdown";
 import FormInput from "@/Components/ui/FormInput";
@@ -49,9 +51,10 @@ import candidate from "@/public/Frame 427319140.png";
 import uploader from "@/public/image 339.png";
 import pdfFile from "@/public/sample.pdf";
 import { useRouter } from "next/router";
-import { Button, DatePicker, AntdModal, Modal } from "antd";
+import { Button, DatePicker, AntdModal, Modal,notification } from "antd";
 import DateSelect from "@/Components/ui/DateSelect";
 import Modal2 from "@/Components/ui/Modal";
+import { IoIosArrowBack } from "react-icons/io";
 
 function Web({ closeDrawer, selectedJobId, onClick }) {
   const [currentStep, setCurrentStep] = useState(0);
@@ -68,7 +71,8 @@ function Web({ closeDrawer, selectedJobId, onClick }) {
   const [customfield, setCustomfield] = useState([]);
   const [currentStage, setCurrentStage] = useState(1);
   const [candidateEmail, setCandidateEmail] = useState("");
-  const[userdata,setuserdata]=useState([])
+  const [userdata, setuserdata] = useState([]);
+  const [eduinsertedid,seteduinsertedid]=useState()
 
   // const [isModalOpen, setIsModalOpen] = useState(false);
   const [showModal, setShowModal] = useState(false);
@@ -227,6 +231,7 @@ function Web({ closeDrawer, selectedJobId, onClick }) {
   //     ],
   //   },
   // ];
+  const jobid = selectedJobId;
   const Questions = [
     {
       id: 1,
@@ -244,6 +249,28 @@ function Web({ closeDrawer, selectedJobId, onClick }) {
       answer: "Yes, I’ve resident visa",
     },
   ];
+  const [api, contextHolder] = notification.useNotification();
+  const openNotification = (type, message, description) => {
+    api[type]({
+      message: message,
+      description: description,
+      placement: "top",
+      // stack: 2,
+      style: {
+        background: `${
+          type === "success"
+            ? `linear-gradient(180deg, rgba(204, 255, 233, 0.8) 0%, rgba(235, 252, 248, 0.8) 51.08%, rgba(246, 251, 253, 0.8) 100%)`
+            : "linear-gradient(180deg, rgba(255, 236, 236, 0.80) 0%, rgba(253, 246, 248, 0.80) 51.13%, rgba(251, 251, 254, 0.80) 100%)"
+        }`,
+        boxShadow: `${
+          type === "success"
+            ? "0px 4.868px 11.358px rgba(62, 255, 93, 0.2)"
+            : "0px 22px 60px rgba(134, 92, 144, 0.20)"
+        }`,
+      },
+      // duration: null,
+    });
+  };
   useEffect(() => {
     if (closeDrawer) {
       setCurrentStep(0);
@@ -517,7 +544,7 @@ function Web({ closeDrawer, selectedJobId, onClick }) {
     initialValues: {
       resumeCode: null,
       candidateName: "",
-      namePrefix: "Mr",
+      namePrefix: "",
       firstName: "",
       lastName: "",
       dob: "1998-09-23",
@@ -546,34 +573,62 @@ function Web({ closeDrawer, selectedJobId, onClick }) {
       postalCode: Yup.string().required("Postal code is required"),
     }),
     onSubmit: async (values) => {
+
       try {
+        console.log(values,"gggg");
         // Make your API call here
         values.candidateName =
           `${values.namePrefix} ${values.firstName} ${values.lastName}`.trim();
+        if (insertedid1) {
+          console.log(values,"gggg");
+          const update = await updateRecruitmentResume({id:insertedid1, ...values});
+          console.log(update);
+          if (update.status === 200) {
+            openNotification(
+              "success",
+              "Successful",
+              "success"
+            );
+            setActiveBtn(activeBtn + 1);
 
-        const response = await saveRecruitmentResume(values);
-        console.log("API Response:", response);
-        console.log(response.result.insertedId, "inserted id responsee");
+            setCurrentStep(currentStep + 1);
+            setPresentage(presentage + 1);
+          } else if (response.status === 500) {
+            openNotification("error", "input field is empty..", "enter the field");
+          }
+        } else {
+          
+          const response = await saveRecruitmentResume(values);
+          console.log("API Response:", response);
+          console.log(response.result.insertedId, "inserted id responsee");
 
-        setinsertedId1(response.result.insertedId);
-        console.log(insertedid1, "insertede i");
-        setActiveBtn(activeBtn + 1);
+          setinsertedId1(response.result.insertedId);
+          console.log(insertedid1, "insertede i");
+          if (response.status === 200) {
+            openNotification(
+              "success",
+              "Successful",
+              response.message
+            );
+            setActiveBtn(activeBtn + 1);
 
-        setCurrentStep(currentStep + 1);
-        setPresentage(presentage + 1);
-
-        // You can handle the API response here
-        // For example, update UI, show success message, etc.
+            setCurrentStep(currentStep + 1);
+            setPresentage(presentage + 1);
+          } else if (response.status === 500) {
+            openNotification("error", "input field is empty..", response.message);
+          }
+        }
       } catch (error) {
-        console.error("API Error:", error);
-        // Handle API errors here
-        // For example, show error message, handle form submission failure, etc.
-      } finally {
-        // Reset form state after submission (whether successful or not)
-        // setSubmitting(true);
+        console.error("Error during form submission:", error);
+        openNotification("error", "input field is empty..", "input field is empty..");
       }
-    },
-  });
+    }
+})
+        
+
+          // You can handle the API response here
+         // For example, update UI, show success message, etc.
+
 
   // const validationSchema1 = Yup.object().shape({
 
@@ -613,6 +668,7 @@ function Web({ closeDrawer, selectedJobId, onClick }) {
     onSubmit: async (values, { setSubmitting }) => {
       console.log(values, "submiteddd valuess");
       try {
+        
         // const transformedData = Object.values(additionalEducationalDetails);
 
         // const response = await saveRecruitmentResumeEducationalDetailBatch(Object.entries(additionalEducationalDetails).map(([_, value]) => value));
@@ -624,16 +680,25 @@ function Web({ closeDrawer, selectedJobId, onClick }) {
           yearOfStudy: item.yearOfStudy,
           location: "jnvkjdn",
         }));
+        if (eduinsertedid) {
+          console.log(values,"gggg");
+          const update = await updateRecruitmentResumeEducationalDetail({id:eduinsertedid, ...values});
+          console.log(update);
+          setActiveBtn(activeBtn + 1);
+
+          setCurrentStep(currentStep + 1);
+          setPresentage(presentage + 1);
+        } else {
         const response = await saveRecruitmentResumeEducationalDetailBatch(
           formattedData
         );
         console.log("API Response:", response);
-
+        seteduinsertedid(response.result.insertedId);
         // setinsertedId1(response.result.insertedId);
         setActiveBtn(activeBtn + 1);
         setCurrentStep(currentStep + 1);
         setPresentage(presentage + 1);
-      } catch (error) {
+     } } catch (error) {
         console.error("API Error:", error);
       } finally {
         setSubmitting(false);
@@ -765,21 +830,21 @@ function Web({ closeDrawer, selectedJobId, onClick }) {
   //   }
   // };
 
-  const id=226
+  const id = 226;
   // useEffect(() => {
   //   const fetchapi = async () => {
-      
+
   //     try {
   //       if (currentStep === 4) {
   //       // Check if the current step is the review page
   //       const response = await getRecruitmentResumeById(id);
   //       // if (response.result.length > 0) {
   //       //   const resume = response.result[0];
-          
+
   //       //   setData(resume);
   //       // }
   //       setData(response.result)
-        
+
   //       // console.log(insertedid1, "dfrfgreg");
   //       console.log(response, "resume api res");
   //       console.log(data, "dhcdghcvhd");
@@ -791,87 +856,90 @@ function Web({ closeDrawer, selectedJobId, onClick }) {
   //   console.log(data, "dhcdghcvhd");
   // }, [currentStep]);
 
-
   useEffect(() => {
     const fetchapi = async () => {
-        try {
-            if (currentStep === 4) {
-                const response = await getRecruitmentResumeById(insertedid1);
-                setData(response.result);
-                setCandidateEmail(response.result[0].candidateEmail)
-      setuserdata(response.result.map((items)=>({
-       personal:[ 
-        {id:1,
-          label:"Email Address",
-          value:items.candidateEmail,
-          icon: <RiMailSendLine />,
-        },
-        {
-          id:2,
-          label:"Phone number",
-          value:items.candidateContact,
-          icon: <RiSmartphoneLine />,
-        },
-        {
-          id: 3,
-          label: "Date of Birth",
-          value: "03 September 2000",
-          icon: <RiCake2Line />,
-        },
-        {
-          id: 4,
-          label: "Salary Expectation",
-          value: "AED 25000",
-          icon: <RiMoneyDollarBoxLine />,
-        },
-      ],
-      other:[
-        {
-          id: 5,
-          label: "Location",
-          value: items.candidateLocation,
-          icon: <RiMapPin2Line />,
-        },
-        {
-          id: 6,
-          label: "Work Type",
-          value: "Work Type",
-          icon: <RiMouseLine />,
-        },
-      ]
-      })))
-      console.log(userdata);
-                console.log(response, "resume api res");
-            }
-        } catch (error) {
-            console.error("error", error);
+      try {
+        if (currentStep === 4) {
+          const response = await getRecruitmentResumeById(insertedid1);
+          setData(response.result);
+          setCandidateEmail(response.result[0].candidateEmail);
+          setuserdata(
+            response.result.map((items) => ({
+              personal: [
+                {
+                  id: 1,
+                  label: "Email Address",
+                  value: items.candidateEmail,
+                  icon: <RiMailSendLine />,
+                },
+                {
+                  id: 2,
+                  label: "Phone number",
+                  value: items.candidateContact,
+                  icon: <RiSmartphoneLine />,
+                },
+                {
+                  id: 3,
+                  label: "Date of Birth",
+                  value: "03 September 2000",
+                  icon: <RiCake2Line />,
+                },
+                {
+                  id: 4,
+                  label: "Salary Expectation",
+                  value: "AED 25000",
+                  icon: <RiMoneyDollarBoxLine />,
+                },
+              ],
+              other: [
+                {
+                  id: 5,
+                  label: "Location",
+                  value: items.candidateLocation,
+                  icon: <RiMapPin2Line />,
+                },
+                {
+                  id: 6,
+                  label: "Work Type",
+                  value: "Work Type",
+                  icon: <RiMouseLine />,
+                },
+              ],
+            }))
+          );
+          console.log(userdata);
+          console.log(response, "resume api res");
         }
+      } catch (error) {
+        console.error("error", error);
+      }
     };
     console.log(setuserdata);
 
     fetchapi();
-}, [currentStep]);
+  }, [currentStep]);
 
-useEffect(() => {
+  useEffect(() => {
     console.log(data, "dhcdghcvhd");
-}, [data]);
+  }, [data]);
 
-  
   useEffect(() => {
     const callapi = async () => {
       try {
         if (currentStep === 4) {
           // Check if the current step is the review page
           const response = await getAllRecruitmentResumeEducationalDetails(
-          insertedid1  
+            insertedid1
           );
-          setEducationaldetails(response.result.map((item)=>({
-            institution:item.institute,
-            degree:item.courseType,
-            fieldOfStudy:item.courseName,
-            location:item.location,
-            graduationYear:item.yearOfStudy,
-          })))
+          setEducationaldetails(
+            response.result.map((item) => ({
+              institution: item.institute,
+              degree: item.courseType,
+              fieldOfStudy: item.courseName,
+              location: item.location,
+              graduationYear: item.yearOfStudy,
+            }))
+          );
           console.log(insertedid1, "dfrfgreg");
           console.log(response);
         }
@@ -890,14 +958,16 @@ useEffect(() => {
           const response = await getAllRecruitmentResumesExperienceDetails(
             insertedid1
           );
-          setExperience(response.result.map((items)=>({
-            companyName:items.companyName,
-            Shift:items.employmentType,
-            role:items.jobTitle,
-            startDate:items.fromDate,
-            endDate:items.toDate,
-            experienceDuration:items.location
-          })))
+          setExperience(
+            response.result.map((items) => ({
+              companyName: items.companyName,
+              Shift: items.employmentType,
+              role: items.jobTitle,
+              startDate: items.fromDate,
+              endDate: items.toDate,
+              experienceDuration: items.location,
+            }))
+          );
           console.log(insertedid1, "dfrfgreg");
           console.log(response);
         }
@@ -1027,11 +1097,22 @@ useEffect(() => {
     // closeDrawer()
     //      setShowModal(true);
   };
+  const previous = () => {
+    // Exit early if currentStage is 0
+    if (currentStep === 0) {
+      return;
+    }
+
+    setActiveBtn(activeBtn - 1);
+    setCurrentStage(currentStage - 1);
+    setCurrentStep(currentStep - 1);
+    setPresentage(presentage - 1);
+  };
 
   return (
     <div className="flex flex-col gap-6 container-wrapper ">
       <FlexCol />
-      <Header1 closeDrawer={closeDrawer} />
+      <Header1 closeDrawer={closeDrawer} jobid={jobid} />
       <div className="flex flex-col gap-6 max-w-[1070px] w-full mx-auto  ">
         {steps && (
           <div className=" sticky -top-6 w-full z-50 px-5  dark:bg-[#1f1f1f] pb-10 ">
@@ -1087,10 +1168,16 @@ useEffect(() => {
                         <Dropdown
                           title={"Prefix"}
                           placeholder={"Mr"}
-                          options={[{ label: "Miss", value: "miss" }]}
+                          options={[
+                            { label: "Mr", value: "mr" },
+                            { label: "Miss", value: "miss" },
+                          ]}
                           // className="text-[#344054]"
                           // onChange={formik.handleChange}
-
+                          change={(e) => {
+                            formik.setFieldValue("namePrefix", e);
+                            console.log("First Name:", e);
+                          }}
                           name="namePrefix"
                           value={formik.values.namePrefix}
                         />
@@ -1484,9 +1571,13 @@ useEffect(() => {
                                 : ""
                             }
                           />
-                          <FormInput
+                          <Dropdown
                             title={"Employment Type"}
                             placeholder={"Eg: Fulltime"}
+                            options={[
+                              { value: "Fulltime", label: "Full-time" },
+                              { value: "Parttime", label: "Part-time" },
+                            ]}
                             className="text-[#344054]"
                             name={`additionalExperiences[${index}].employmentType`}
                             value={experience.employmentType}
@@ -1803,22 +1894,21 @@ useEffect(() => {
                     src={candidate}
                     alt=""
                   />
-                  { data.map((item, index) => (
-                  <div className="flex-auto min-w-0 mt-3">
-                    <p className="acco-h1">  {item.candidateName}</p>
-                  </div>
-                  
+                  {data.map((item, index) => (
+                    <div className="flex-auto min-w-0 mt-3">
+                      <p className="acco-h1"> {item.candidateName}</p>
+                    </div>
                   ))}
-                   </div>
-              
+                </div>
+
                 <div>
-                {userdata.map((user) => (
-              <UserInfoComponent
-                key={user.personal[0].id}
-                personalInfo={user.personal}
-              />
-            ))}
-             {/* <div className="grid md:grid-cols-2 gap-7">
+                  {userdata.map((user) => (
+                    <UserInfoComponent
+                      key={user.personal[0].id}
+                      personalInfo={user.personal}
+                    />
+                  ))}
+                  {/* <div className="grid md:grid-cols-2 gap-7">
              { data.map((item, index) => (
         <div className="flex items-center gap-2.5">
           <div className="w-8 h-8 iconI vhcenter bg-[#F5F5F5] dark:bg-secondaryDark text-base rounded-lg ">
@@ -1845,9 +1935,9 @@ useEffect(() => {
           </div>
         </div>
      ))} */}
-    </div>
-   
-          {/* </div> */}
+                </div>
+
+                {/* </div> */}
                 {/* <div>
                   {educationaldetails.map((user) => (
                     <UserInfoComponent
@@ -1862,72 +1952,72 @@ useEffect(() => {
                   <h6 className="h6">Education</h6>
                   <div className="flex flex-col divide-y">
                     {educationaldetails.map((edu, index) => (
-                    <div
-                    key={index}
-                    className="flex justify-start gap-5 py-3 2xl:py-6"
-                  >
-                    <img
-                      className="2xl:w-[60px] 2xl:h-[60px] w-11 h-11 rounded-full shadow"
-                      src="https://via.placeholder.com/60x60"
-                    />
-                    <div className="inline-flex flex-col items-start justify-start gap-1">
-                      <div className="gap-2 vhcenter">
-                        <h6 className="h6">{edu.institution}</h6>
-                        {/* <p className="para p-1.5 rounded-md bg-secondaryWhite !leading-none">
+                      <div
+                        key={index}
+                        className="flex justify-start gap-5 py-3 2xl:py-6"
+                      >
+                        <img
+                          className="2xl:w-[60px] 2xl:h-[60px] w-11 h-11 rounded-full shadow"
+                          src="https://via.placeholder.com/60x60"
+                        />
+                        <div className="inline-flex flex-col items-start justify-start gap-1">
+                          <div className="gap-2 vhcenter">
+                            <h6 className="h6">{edu.institution}</h6>
+                            {/* <p className="para p-1.5 rounded-md bg-secondaryWhite !leading-none">
                         {work.Shift}
                       </p> */}
-                      </div>
-    
-                      <div className="flex flex-col gap-4">
-                        <p className="h6 !font-medium">{edu.degree}</p>
-                        <div className="flex gap-3">
-                          <p className="para !font-normal text-opacity-70">
-                            {edu.graduationYear}
-                          </p>
-    
-                          <p className="para !font-normal text-opacity-70">
-                            {edu.location}
-                          </p>
+                          </div>
+
+                          <div className="flex flex-col gap-4">
+                            <p className="h6 !font-medium">{edu.degree}</p>
+                            <div className="flex gap-3">
+                              <p className="para !font-normal text-opacity-70">
+                                {edu.graduationYear}
+                              </p>
+
+                              <p className="para !font-normal text-opacity-70">
+                                {edu.location}
+                              </p>
+                            </div>
+                          </div>
                         </div>
                       </div>
-                    </div>
+                    ))}
                   </div>
-                ))}  
-                   </div> 
                 </div>
                 <div className="flex flex-col gap-4 box-wrapper">
                   <h6 className="h6">All Experiences</h6>
                   <div className="flex flex-col divide-y">
-                  {experience.map((work, index) => (
-              <div
-                key={index}
-                className="flex items-center justify-start gap-5 py-3 2xl:py-6"
-              >
-                <img
-                  className="2xl:w-[60px] 2xl:h-[60px] w-11 h-11 rounded-full shadow"
-                  src="https://via.placeholder.com/60x60"
-                />
-                <div className="inline-flex flex-col items-start justify-start gap-1">
-                  <div className="gap-2 vhcenter">
-                    <h6 className="h6">{work.companyName}</h6>
-                    <p className="para p-1.5 rounded-md bg-secondaryWhite dark:bg-secondaryDark !leading-none">
-                      {work.Shift}
-                    </p>
-                  </div>
+                    {experience.map((work, index) => (
+                      <div
+                        key={index}
+                        className="flex items-center justify-start gap-5 py-3 2xl:py-6"
+                      >
+                        <img
+                          className="2xl:w-[60px] 2xl:h-[60px] w-11 h-11 rounded-full shadow"
+                          src="https://via.placeholder.com/60x60"
+                        />
+                        <div className="inline-flex flex-col items-start justify-start gap-1">
+                          <div className="gap-2 vhcenter">
+                            <h6 className="h6">{work.companyName}</h6>
+                            <p className="para p-1.5 rounded-md bg-secondaryWhite dark:bg-secondaryDark !leading-none">
+                              {work.Shift}
+                            </p>
+                          </div>
 
-                  <div className="inline-flex items-center justify-start gap-4">
-                    <p className="!text-opacity-50 h6">{work.role}</p>
-                    <p className="para !font-normal text-opacity-70">
-                      {work.experienceDuration}
-                    </p>
+                          <div className="inline-flex items-center justify-start gap-4">
+                            <p className="!text-opacity-50 h6">{work.role}</p>
+                            <p className="para !font-normal text-opacity-70">
+                              {work.experienceDuration}
+                            </p>
 
-                    <p className="para !font-normal text-opacity-70">
-                      {work.startDate}, {work.endDate}
-                    </p>
-                  </div>
-                </div>
-              </div>
-            ))} 
+                            <p className="para !font-normal text-opacity-70">
+                              {work.startDate}, {work.endDate}
+                            </p>
+                          </div>
+                        </div>
+                      </div>
+                    ))}
                   </div>
                 </div>
               </Accordion>
@@ -1996,27 +2086,36 @@ useEffect(() => {
       </div>
 
       <div className="bottom-0 mt-10 divider-h" />
-      <div className="flex gap-2.5 p-1.5 justify-end ">
-        <ButtonClick
-          buttonName="Cancel"
-          icon={<RxCross2 />}
-          className={"dark:text-white"}
-          handleSubmit={closeDrawer}
-        />
-        <ButtonClick
-          buttonName="Save & Continue"
-          BtnType="primary"
-          // handleSubmit={(event) => handleSubmitAllForms(event)}  // Use onClick instead of handleSubmit
-          // disabled={formik.isSubmitting || formik1.isSubmitting || formik2.isSubmitting || formik3.isSubmitting}
+      <div className="flex justify-between">
+        <div>
+          <ButtonClick
+            buttonName="previous"
+            BtnType="secondary"
+            icon={<IoIosArrowBack />}
+            handleSubmit={previous}
+            disabled={currentStage === 0}
+          />
+        </div>
+        <div className="flex gap-2.5 p-1.5 justify-end">
+          <ButtonClick
+            buttonName="Cancel"
+            icon={<RxCross2 />}
+            className={"dark:text-white"}
+            handleSubmit={closeDrawer}
+          />
+          <ButtonClick
+            buttonName="Save & Continue"
+            BtnType="primary"
+            handleSubmit={handleSubmitAllForms}
+            disabled={
+              (currentStage === 1 && formik.isSubmitting) ||
+              (currentStage === 2 && formik1.isSubmitting) ||
+              (currentStage === 3 && formik2.isSubmitting) ||
+              (currentStage === 4 && formik3.isSubmitting)
+            }
+          />
+        </div>
 
-          handleSubmit={handleSubmitAllForms}
-          disabled={
-            (currentStage === 1 && formik.isSubmitting) ||
-            (currentStage === 2 && formik1.isSubmitting) ||
-            (currentStage === 3 && formik2.isSubmitting) ||
-            (currentStage === 4 && formik3.isSubmitting)
-          }
-        />
         {/* <>
         {isModalVisible && (
         <AntdModal
@@ -2066,16 +2165,10 @@ useEffect(() => {
           countDown={handleCloseModal}
         />
       </di>
-
-
-      
+      {contextHolder}
     </div>
-
-
-
   );
 }
-
 
 const UserInfoComponent = ({ personalInfo }) => {
   return (
