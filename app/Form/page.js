@@ -66,6 +66,9 @@ function Web({ closeDrawer, selectedJobId, onClick }) {
   const [experience, setExperience] = useState([]);
   const [customfield, setCustomfield] = useState([]);
   const [currentStage, setCurrentStage] = useState(1);
+  const [candidateEmail, setCandidateEmail] = useState("");
+  const[userdata,setuserdata]=useState([])
+
   // const [isModalOpen, setIsModalOpen] = useState(false);
   const [showModal, setShowModal] = useState(false);
   const [additionalExperienceCount, setAdditionalExperienceCount] = useState(1);
@@ -179,50 +182,50 @@ function Web({ closeDrawer, selectedJobId, onClick }) {
       data: "review",
     },
   ]);
-  const userInfo = [
-    {
-      personal: [
-        {
-          id: 1,
-          label: "Email Address",
-          value: "grace.bennet@example.com",
-          icon: <RiMailSendLine />,
-        },
-        {
-          id: 2,
-          label: "Phone number",
-          value: "+1234567890",
-          icon: <RiSmartphoneLine />,
-        },
-        {
-          id: 3,
-          label: "Date of Birth",
-          value: "03 September 2000",
-          icon: <RiCake2Line />,
-        },
-        {
-          id: 4,
-          label: "Location",
-          value: "Istanbul, Izmir, Ankara, Turkey, US, Europe",
-          icon: <RiMapPin2Line />,
-        },
-      ],
-      other: [
-        {
-          id: 5,
-          label: "Location",
-          value: "Istanbul, Izmir, Ankara, Turkey, US, Europe",
-          icon: <RiMapPin2Line />,
-        },
-        {
-          id: 6,
-          label: "Work Type",
-          value: "Remote. Fulltime. Part-Timet Internship, Freelance",
-          icon: <RiMouseLine />,
-        },
-      ],
-    },
-  ];
+  // const userInfo = [
+  //   {
+  //     personal: [
+  //       {
+  //         id: 1,
+  //         label: "Email Address",
+  //         value: "grace.bennet@example.com",
+  //         icon: <RiMailSendLine />,
+  //       },
+  //       {
+  //         id: 2,
+  //         label: "Phone number",
+  //         value: "+1234567890",
+  //         icon: <RiSmartphoneLine />,
+  //       },
+  //       {
+  //         id: 3,
+  //         label: "Date of Birth",
+  //         value: "03 September 2000",
+  //         icon: <RiCake2Line />,
+  //       },
+  //       {
+  //         id: 4,
+  //         label: "Location",
+  //         value: "Istanbul, Izmir, Ankara, Turkey, US, Europe",
+  //         icon: <RiMapPin2Line />,
+  //       },
+  //     ],
+  //     other: [
+  //       {
+  //         id: 5,
+  //         label: "Location",
+  //         value: "Istanbul, Izmir, Ankara, Turkey, US, Europe",
+  //         icon: <RiMapPin2Line />,
+  //       },
+  //       {
+  //         id: 6,
+  //         label: "Work Type",
+  //         value: "Remote. Fulltime. Part-Timet Internship, Freelance",
+  //         icon: <RiMouseLine />,
+  //       },
+  //     ],
+  //   },
+  // ];
   const Questions = [
     {
       id: 1,
@@ -794,12 +797,56 @@ function Web({ closeDrawer, selectedJobId, onClick }) {
             if (currentStep === 4) {
                 const response = await getRecruitmentResumeById(insertedid1);
                 setData(response.result);
+                setCandidateEmail(response.result[0].candidateEmail)
+      setuserdata(response.result.map((items)=>({
+       personal:[ 
+        {id:1,
+          label:"Email Address",
+          value:items.candidateEmail,
+          icon: <RiMailSendLine />,
+        },
+        {
+          id:2,
+          label:"Phone number",
+          value:items.candidateContact,
+          icon: <RiSmartphoneLine />,
+        },
+        {
+          id: 3,
+          label: "Date of Birth",
+          value: "03 September 2000",
+          icon: <RiCake2Line />,
+        },
+        {
+          id: 4,
+          label: "Salary Expectation",
+          value: "AED 25000",
+          icon: <RiMoneyDollarBoxLine />,
+        },
+      ],
+      other:[
+        {
+          id: 5,
+          label: "Location",
+          value: items.candidateLocation,
+          icon: <RiMapPin2Line />,
+        },
+        {
+          id: 6,
+          label: "Work Type",
+          value: "Work Type",
+          icon: <RiMouseLine />,
+        },
+      ]
+      })))
+      console.log(userdata);
                 console.log(response, "resume api res");
             }
         } catch (error) {
             console.error("error", error);
         }
     };
+    console.log(setuserdata);
 
     fetchapi();
 }, [currentStep]);
@@ -1736,7 +1783,7 @@ useEffect(() => {
                     icon={<AiTwotoneEdit />}
                   />
                 </div>
-                <div className="flex min-w-0 pt-3 pl-5 gap-x-4">
+                <div className="flex min-w-0 pt-3  gap-x-4">
                   <Image
                     className="flex-none bg-cover rounded-full h-18 w-18 "
                     src={candidate}
@@ -1748,15 +1795,45 @@ useEffect(() => {
                   </div>
                   
                   ))}
-                </div>
+                   </div>
+              
                 <div>
-                {userInfo.map((user) => (
+                {userdata.map((user) => (
               <UserInfoComponent
                 key={user.personal[0].id}
                 personalInfo={user.personal}
               />
             ))}
+             {/* <div className="grid md:grid-cols-2 gap-7">
+             { data.map((item, index) => (
+        <div className="flex items-center gap-2.5">
+          <div className="w-8 h-8 iconI vhcenter bg-[#F5F5F5] dark:bg-secondaryDark text-base rounded-lg ">
+            <div className="text-black opacity-50 "><RiMailSendLine /></div>
           </div>
+          <div className="inline-flex flex-col items-start justify-start ">
+            <p className="text-xs font-normal leading-none text-black opacity-50 dark:text-white">
+            Email Address
+            </p>
+            <p className="text-xs font-semibold leading-tight text-black dark:text-white">
+              {item.candidateEmail}
+            </p>
+          </div>
+          <div className="w-8 h-8 iconI vhcenter bg-[#F5F5F5] dark:bg-secondaryDark text-base rounded-lg ml-12 ">
+            <div className="text-black opacity-50 "><RiMailSendLine /></div>
+          </div>
+          <div className="inline-flex flex-col items-start justify-start ">
+            <p className="text-xs font-normal leading-none text-black opacity-50 dark:text-white">
+            Email Address
+            </p>
+            <p className="text-xs font-semibold leading-tight text-black dark:text-white">
+              {item.candidateEmail}
+            </p>
+          </div>
+        </div>
+     ))} */}
+    </div>
+   
+          {/* </div> */}
                 {/* <div>
                   {educationaldetails.map((user) => (
                     <UserInfoComponent
@@ -1770,11 +1847,11 @@ useEffect(() => {
                 <div className="flex flex-col gap-4 box-wrapper">
                   <h6 className="h6">Education</h6>
                   <div className="flex flex-col divide-y">
-                    {/* {educationaldetails.map((edu, index) => ( */}
+                    {/* {educationaldetails.map((edu, index) => (
                     <div
-                      // key={index}
+                      key={index}
                       className="flex justify-start gap-5 py-3 2xl:py-6"
-                    >
+                    > */}
                       <img
                         className="2xl:w-[60px] 2xl:h-[60px] w-11 h-11 rounded-full shadow"
                         src="https://via.placeholder.com/60x60"
@@ -1782,9 +1859,9 @@ useEffect(() => {
                       <div className="inline-flex flex-col items-start justify-start gap-1">
                         <div className="gap-2 vhcenter">
                           {/* <h6 className="h6">{edu.institute}</h6> */}
-                          {/* <p className="para p-1.5 rounded-md bg-secondaryWhite !leading-none">
-              {work.Shift}
-            </p> */}
+                          <p className="para p-1.5 rounded-md bg-secondaryWhite !leading-none">
+              {/* {work.Shift} */}
+            </p>
                         </div>
 
                         <div className="flex flex-col gap-4">
@@ -1801,8 +1878,8 @@ useEffect(() => {
                         </div>
                       </div>
                     </div>
-                    {/* ))} */}
-                  </div>
+                     {/* ))}  */}
+                  {/* </div> */}
                 </div>
                 <div className="flex flex-col gap-4 box-wrapper">
                   <h6 className="h6">All Experiences</h6>

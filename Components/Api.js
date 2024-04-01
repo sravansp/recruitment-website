@@ -100,18 +100,18 @@ export const getAllRecruitmentJobs = async () => {
   export const getAllRecruitmentResumeEducationalDetails = async (id) => {
     const action = "getAllRecruitmentResumeEducationalDetails";
     const method = "POST";
-    const kwargs = { id }; 
+    const kwargs = {resumeId: id }; 
     return await apiRequest(action, method, kwargs);
   };
   export const getAllRecruitmentResumesExperienceDetails = async (id) => {
     const action = "getAllRecruitmentResumesExperienceDetails";
     const method = "POST";
-    const kwargs = { id }; 
+    const kwargs = { resumeId: id }; 
     return await apiRequest(action, method, kwargs);
   };
   export const getAllRecruitmentJobResumesCustomFields = async (id) => {
     const action = "getAllRecruitmentJobResumesCustomFields";
     const method = "POST";
-    const kwargs = { id }; 
+    const kwargs = { resumeId: id }; 
     return await apiRequest(action, method, kwargs);
   };
