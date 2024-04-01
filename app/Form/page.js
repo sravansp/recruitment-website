@@ -36,6 +36,7 @@ import {
   RiFileList3Line,
   RiMailSendLine,
   RiMapPin2Line,
+  RiMoneyDollarBoxLine,
   RiMouseLine,
   RiSmartphoneLine,
 } from "react-icons/ri";
@@ -862,9 +863,15 @@ useEffect(() => {
         if (currentStep === 4) {
           // Check if the current step is the review page
           const response = await getAllRecruitmentResumeEducationalDetails(
-            insertedid1
+          insertedid1  
           );
-          setEducationaldetails(response);
+          setEducationaldetails(response.result.map((item)=>({
+            institution:item.institute,
+            degree:item.courseType,
+            fieldOfStudy:item.courseName,
+            location:item.location,
+            graduationYear:item.yearOfStudy,
+          })))
           console.log(insertedid1, "dfrfgreg");
           console.log(response);
         }
@@ -883,7 +890,14 @@ useEffect(() => {
           const response = await getAllRecruitmentResumesExperienceDetails(
             insertedid1
           );
-          setExperience(response);
+          setExperience(response.result.map((items)=>({
+            companyName:items.companyName,
+            Shift:items.employmentType,
+            role:items.jobTitle,
+            startDate:items.fromDate,
+            endDate:items.toDate,
+            experienceDuration:items.location
+          })))
           console.log(insertedid1, "dfrfgreg");
           console.log(response);
         }
@@ -1847,73 +1861,73 @@ useEffect(() => {
                 <div className="flex flex-col gap-4 box-wrapper">
                   <h6 className="h6">Education</h6>
                   <div className="flex flex-col divide-y">
-                    {/* {educationaldetails.map((edu, index) => (
+                    {educationaldetails.map((edu, index) => (
                     <div
-                      key={index}
-                      className="flex justify-start gap-5 py-3 2xl:py-6"
-                    > */}
-                      <img
-                        className="2xl:w-[60px] 2xl:h-[60px] w-11 h-11 rounded-full shadow"
-                        src="https://via.placeholder.com/60x60"
-                      />
-                      <div className="inline-flex flex-col items-start justify-start gap-1">
-                        <div className="gap-2 vhcenter">
-                          {/* <h6 className="h6">{edu.institute}</h6> */}
-                          <p className="para p-1.5 rounded-md bg-secondaryWhite !leading-none">
-              {/* {work.Shift} */}
-            </p>
-                        </div>
-
-                        <div className="flex flex-col gap-4">
-                          {/* <p className="h6 !font-medium">{edu.courseType}</p> */}
-                          <div className="flex gap-3">
-                            <p className="para !font-normal text-opacity-70">
-                              {/* {edu.yearOfStudy} */}
-                            </p>
-
-                            <p className="para !font-normal text-opacity-70">
-                              {/* {edu.location} */}
-                            </p>
-                          </div>
+                    key={index}
+                    className="flex justify-start gap-5 py-3 2xl:py-6"
+                  >
+                    <img
+                      className="2xl:w-[60px] 2xl:h-[60px] w-11 h-11 rounded-full shadow"
+                      src="https://via.placeholder.com/60x60"
+                    />
+                    <div className="inline-flex flex-col items-start justify-start gap-1">
+                      <div className="gap-2 vhcenter">
+                        <h6 className="h6">{edu.institution}</h6>
+                        {/* <p className="para p-1.5 rounded-md bg-secondaryWhite !leading-none">
+                        {work.Shift}
+                      </p> */}
+                      </div>
+    
+                      <div className="flex flex-col gap-4">
+                        <p className="h6 !font-medium">{edu.degree}</p>
+                        <div className="flex gap-3">
+                          <p className="para !font-normal text-opacity-70">
+                            {edu.graduationYear}
+                          </p>
+    
+                          <p className="para !font-normal text-opacity-70">
+                            {edu.location}
+                          </p>
                         </div>
                       </div>
                     </div>
-                     {/* ))}  */}
-                  {/* </div> */}
+                  </div>
+                ))}  
+                   </div> 
                 </div>
                 <div className="flex flex-col gap-4 box-wrapper">
                   <h6 className="h6">All Experiences</h6>
                   <div className="flex flex-col divide-y">
-                    {/* {experience.map((work, index) => ( */}
-                    <div
-                      // key={index}
-                      className="flex items-center justify-start gap-5 py-3 2xl:py-6"
-                    >
-                      <img
-                        className="2xl:w-[60px] 2xl:h-[60px] w-11 h-11 rounded-full shadow"
-                        src="https://via.placeholder.com/60x60"
-                      />
-                      <div className="inline-flex flex-col items-start justify-start gap-1">
-                        <div className="gap-2 vhcenter">
-                          {/* <h6 className="h6">{work.companyName}</h6> */}
-                          <p className="para p-1.5 rounded-md bg-secondaryWhite dark:bg-secondaryDark !leading-none">
-                            {/* {work.employmentType} */}
-                          </p>
-                        </div>
+                  {experience.map((work, index) => (
+              <div
+                key={index}
+                className="flex items-center justify-start gap-5 py-3 2xl:py-6"
+              >
+                <img
+                  className="2xl:w-[60px] 2xl:h-[60px] w-11 h-11 rounded-full shadow"
+                  src="https://via.placeholder.com/60x60"
+                />
+                <div className="inline-flex flex-col items-start justify-start gap-1">
+                  <div className="gap-2 vhcenter">
+                    <h6 className="h6">{work.companyName}</h6>
+                    <p className="para p-1.5 rounded-md bg-secondaryWhite dark:bg-secondaryDark !leading-none">
+                      {work.Shift}
+                    </p>
+                  </div>
 
-                        <div className="inline-flex items-center justify-start gap-4">
-                          {/* <p className="!text-opacity-50 h6">{work.jobTitle}</p> */}
-                          <p className="para !font-normal text-opacity-70">
-                            {/* {work.experienceDuration} */}
-                          </p>
+                  <div className="inline-flex items-center justify-start gap-4">
+                    <p className="!text-opacity-50 h6">{work.role}</p>
+                    <p className="para !font-normal text-opacity-70">
+                      {work.experienceDuration}
+                    </p>
 
-                          <p className="para !font-normal text-opacity-70">
-                            {/* {work.fromDate}, {work.toDate} */}
-                          </p>
-                        </div>
-                      </div>
-                    </div>
-                    {/* ))} */}
+                    <p className="para !font-normal text-opacity-70">
+                      {work.startDate}, {work.endDate}
+                    </p>
+                  </div>
+                </div>
+              </div>
+            ))} 
                   </div>
                 </div>
               </Accordion>
