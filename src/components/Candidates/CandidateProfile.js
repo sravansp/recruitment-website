@@ -245,7 +245,7 @@ const tabs = [
     setSelectedItemLabel(selectedItemLabel);
     setstageId(e.key);
   };
-
+  
 
   const handleCopyClick = (value) => {
     copy(value);
@@ -263,8 +263,8 @@ const tabs = [
       ))}
     </Menu>
   );
-  const selectedDataId = localStorage.getItem('selectedDataId');
-  const id=selectedDataId
+
+  const id=resumeId
   
 //back end
 const getCandidatesById = async () => {

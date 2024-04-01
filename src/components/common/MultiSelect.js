@@ -1,44 +1,137 @@
-import React, { useState } from "react";
-import { Select, Space } from "antd";
+import { Select, Space, Tag } from "antd";
+import React, { useEffect, useState } from "react";
 import { FiAlertCircle } from "react-icons/fi";
 import { IoClose } from "react-icons/io5";
 import { RiCloseLine } from "react-icons/ri";
-import ButtonClick from "./Button";
+import { useMediaQuery } from "react-responsive";
+
+// const options = [
+//   {
+//     value: "goldw",
+//   },
+//   {
+//     value: "limex",
+//   },
+//   {
+//     value: "green",
+//   },
+//   {
+//     value: "cyan",
+//   },
+// ];
+// const tagRender = (props) => {
+//   const { label, value, closable, onClose } = props;
+//   const onPreventMouseDown = (event) => {
+//     event.preventDefault();
+//     event.stopPropagation();
+//   };
+//   return (
+//     <Tag
+//       color={value}
+//       onMouseDown={onPreventMouseDown}
+//       closable={closable}
+//       onClose={onClose}
+//       style={{
+//         marginRight: 3,
+//       }}
+//       bordered={false}
+//     >
+//       {label}
+//     </Tag>
+//   );
+// };
 
 export default function MultiSelect({
   title = "",
-  value = null,
+  value = [],
   options = [],
   placeholder = "",
   change = () => {},
+  onSearch = () => {},
   error = "",
 }) {
-  const [selectedAttendees, setSelectedAttendees] = useState([]);
-  const [showAttendees, setShowAttendees] = useState(false); // State variable to track if attendees should be displayed
+  const isSmallScreen = useMediaQuery({ maxWidth: 1439 });
+  let textColor = "black"; // Default text color
 
-  const handleMultiSelectChange = (selectedOptions) => {
-    const selectedAttendeesInfo = selectedOptions.map(option => {
-      const { value: id, label: name, userimage: image } = option;
-      return { id, name, image };
-    });
-    setSelectedAttendees(selectedAttendeesInfo);
+  const filterOption = (input, option) =>
+    (option?.label ?? "").toLowerCase().includes(input.toLowerCase());
+
+  const getOptionStyle = (optionValue) => {
+    if (optionValue === "break") {
+      textColor = "#fff";
+    } else if (optionValue === "c12") {
+      textColor = "blue";
+    } else if (optionValue === "h17") {
+      textColor = "green";
+    } else if (optionValue === "j19") {
+      textColor = "purple";
+    } else if (optionValue === "k20") {
+      textColor = "orange";
+    }
+
+    return {
+      textColor,
+    };
   };
 
-  const handleAddClick = () => {
-    setShowAttendees(true);
-    // Pass selected attendee IDs to the parent component
-    const selectedIds = selectedAttendees.map(attendee => attendee.id);
-    change(selectedIds);
+  const selectProps = {
+    mode: "multiple",
+    style: {
+      color: textColor,
+      width: "100%",
+      // height: 40,
+      boxShadow: error
+        && "0px 0px 0px 4px #FEE4E2, 0px 1px 2px 0px rgba(16, 24, 40, 0.05)",
+        // : value &&
+          // "0px 0px 0px 4px #F4EBFF, 0px 1px 2px 0px rgba(16, 24, 40, 0.05)",
+      // borderRadius: error ? "8px" : "none",
+      border: error ? "0.5px solid #f76002" : "none",
+      borderRadius: "7px",
+    },
+    value,
+    options,
+    onChange: (newValue) => {
+      change(newValue);
+    },
+    filterOption: { filterOption },
+    placeholder: placeholder,
+    maxTagCount: "responsive",
   };
-
-  const handleRemoveAttendee = (id) => {
-    const updatedAttendees = selectedAttendees.filter(attendee => attendee.id !== id);
-    setSelectedAttendees(updatedAttendees);
-    // Pass updated attendee IDs to the parent component
-    const updatedIds = updatedAttendees.map(attendee => attendee.id);
-    change(updatedIds);
+  const tagRender = (props) => {
+    const { label, value, closable, onClose, color } = props;
+    const onPreventMouseDown = (event) => {
+      event.preventDefault();
+      event.stopPropagation();
+    };
+    
+    return (
+      <div className=" px-0.5" onMouseDown={onPreventMouseDown}>
+        <span className=" flex items-center gap-1 bg-[#F9F5FF] rounded-xl p-1 ">
+          <p className=" text-[#6941C6] font-medium">{label}</p>
+          {closable && (
+            <IoClose
+              className=" cursor-pointer font-bold text-[10px] text-[#9E77ED]"
+              onClick={(e) => onClose(e)}
+            />
+          )}
+        </span>
+      </div>
+      // <Tag
+      //   color={color}
+      //   onMouseDown={onPreventMouseDown}
+      //   closable={closable}
+      //   onClose={onClose}
+      //   style={{
+      //     marginRight: 3,
+      //   }}
+      //   className={`text-[${"primary"}]`}
+      //   optionSelectedColor="primary  "
+      // >
+      //   {label}
+      // </Tag>
+    );
   };
-
+  const selectedValues = options.filter((option) => value.includes(option.value));
   return (
     <div className="relative block dark:text-white ">
       {title && (
@@ -46,60 +139,69 @@ export default function MultiSelect({
           {title}
         </label>
       )}
+ 
+
+      <Space
+        direction="vertical"
+        style={{ width: "100%" }}
+        className="mt-[6px]"
+        status={`  ${error && "error"}`}
+      ></Space>
       <Space
         direction="vertical"
         style={{ width: "100%" }}
         className="mt-[6px]"
         status={`  ${error && "error"}`}
       >
-      <Select
-  mode="multiple"
-  showSearch
-  style={{
-    width: "100%",
-    border: error ? "0.5px solid #f76002" : "none",
-    borderRadius: "7px",
-  }}
-  value={value}
-  options={options}
-  onChange={handleMultiSelectChange}
-  placeholder={placeholder}
-  maxTagCount="responsive"
-  // Custom rendering for selected options
- 
-/>
-        <ButtonClick buttonName="Add" handleSubmit={handleAddClick} />
-        {showAttendees && (
-          <div className="flex flex-col gap-4">
-            <div className="grid grid-cols-3 gap-4">
-              {selectedAttendees.map(attendee => (
-                <div key={attendee.id} className="relative">
-                  <img
-                    src={attendee.image} // Assuming image is provided in the options
-                    alt={attendee.name}
-                    className="rounded-full size-12"
-                  />
-                  <div
-                    className="absolute top-0 right-0 text-white rounded-full cursor-pointer deleteImg size-4 vhcenter bg-slate-500 ring-2 ring-white"
-                    onClick={() => handleRemoveAttendee(attendee.id)}
-                  >
-                    <RiCloseLine />
-                  </div>
-                </div>
-              ))}
-            </div>
-          </div>
-        )}
-        
+        <Select
+          tagRender={tagRender}
+          showSearch
+          onSearch={onSearch}
+          size={isSmallScreen ? "default" : "large"}
+          style={{
+            option: (base, state) => ({
+              ...base,
+              ...getOptionStyle(state.isSelected),
+              ":active": {
+                ...getOptionStyle(state.isSelected),
+                backgroundColor: state.isSelected ? "blue" : "green",
+              },
+              optionSelectedColor: "black",
+            }),
+          }}
+          {...selectProps}
+        />
         {error && (
           <FiAlertCircle className="absolute top-3.5 right-4 mr-5 mt-5 transform -translate-y-3/5 text-red-400" />
         )}
       </Space>
+
       {error && (
         <p className=" flex justify-start items-center mb-0 text-[10px] text-red-600 ">
           <span className="text-[10px] pl-1">{error}</span>
         </p>
       )}
+       <div className="flex items-center gap-3 selectedAtendies">
+       {selectedValues.length > 0 && (
+        <div className="flex ">
+          {selectedValues.map((selected) => (
+            <div key={selected.value} className="mr-2">
+                       <div className="relative">
+              <img
+                src="https://via.placeholder.com/60x60"
+                alt=""
+                className="rounded-full size-12"
+              />
+              <div className="absolute top-0 right-0 text-white rounded-full cursor-pointer deleteImg size-4 vhcenter bg-slate-500 ring-2 ring-white">
+                <RiCloseLine/>
+              </div>
+              {selected.label}
+            </div>
+            </div>
+          ))}
+        </div>
+      )}
+      </div>
     </div>
   );
 }

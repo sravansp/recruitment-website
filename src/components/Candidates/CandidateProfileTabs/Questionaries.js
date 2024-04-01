@@ -1,10 +1,14 @@
-import React, { useState } from "react";
+import React, { useState,useEffect } from "react";
 import TextEditor from "../../common/TextEditor/TextEditor";
 import ButtonClick from "../../common/Button";
 import TabsNew from "../../common/TabsNew";
 import { Editor } from "draft-js";
 import { BsFileEarmarkRichtext } from "react-icons/bs";
 import { RiHome6Line, RiStickyNoteLine } from "react-icons/ri";
+import {Formik, useFormik } from "formik";
+import { Link,useParams,useLocation } from "react-router-dom";
+import {getRecruitmentQuestionnaireTemplateById,getRecruitmentJobById,getAllRecruitmentJobResumesNotes,insertOrUpdateRecruitmentJobResumesNoteWithResumeId } from "../../Api1";
+
 
 const Questionaries = () => {
   const primaryColor = localStorage.getItem("mainColor");
@@ -15,6 +19,19 @@ const Questionaries = () => {
     } else if (tabId === 2) {
     }
   };
+  const {resumeId} =useParams()
+  const[jobId,setJobId] = useState(null)
+  const { state } = useLocation();
+  useEffect(() => {
+    if (state && state.jobID) {
+        setJobId(state.jobID);
+    } else {
+        const storedJobId = localStorage.getItem('jobid');
+        if (storedJobId) {
+            setJobId(storedJobId);
+        }
+    }
+}, [state]);
   const tabData = [
     {
       id: 9,
@@ -37,6 +54,83 @@ const Questionaries = () => {
       icon: <BsFileEarmarkRichtext className="text-base" />,
     },
   ];
+
+  const[notes,setnotes]= useState("")
+
+
+  const formik = useFormik ({
+      initialValues :{
+        jobId:"",
+          resumeId:"",
+          notes:"",
+          createdBy: ""
+      },
+      onSubmit: async (e)=>{
+        try {
+          const response = await insertOrUpdateRecruitmentJobResumesNoteWithResumeId({
+           jobId:jobId,
+           resumeId:resumeId,
+           notes:e.notes,
+           createdBy:null,
+          })
+          console.log(response)
+        }catch(error){
+          console.log(error)
+        }
+      }
+    })
+   const getnotes = async()=>{
+      try{
+       const response = await getAllRecruitmentJobResumesNotes({resumeId:resumeId})
+       console.log(response)
+       setnotes(response.result[0].notes)
+       const data = response.result[0]
+       formik.setFieldValue("notes",data.notes)
+      }catch(error){
+        console.log(error)
+      }
+    }
+    useEffect(()=>{
+      getnotes()
+      console.log(notes)
+      
+    },[])
+
+  
+
+    const[questionareId,setquestionareId] = useState("")
+    const[questionnaireData,setquestionnaireData]=useState([])
+
+    const getJodbyId = async ()=>{
+     const response =   await getRecruitmentJobById({id:localStorage.getItem('jobid')})
+     setquestionareId(response.result[0].questionnaireTemplateId)
+     
+     console.log(response)
+     
+    }
+    useEffect(()=>{
+      getJodbyId()
+    },[])
+
+    const getQuestionare = async ()=>{
+      try{
+        const response = await getRecruitmentQuestionnaireTemplateById({
+          
+          id:parseInt(questionareId)
+         
+        })
+        setquestionnaireData(response.result)
+         console.log(response)
+      }catch(error){
+       console.log(error)
+      }
+  
+      }
+      useEffect(()=>{
+        getQuestionare()
+      },[questionareId])
+
+
   return (
     <div className="grid gap-6 lg:grid-cols-12">
       {/* LEFT COLUMN  */}
@@ -57,37 +151,23 @@ const Questionaries = () => {
             </div>
 
             <div className=" ">
-              <p className="text-gray-700 dark:text-white font-Inter font-weight:500 mt-5">
-                <strong>Q1.</strong> &nbsp; &nbsp;Can you provide an overview of
-                your experience in designing and managing network
-                infrastructures? <br />
-                <br /> <strong> Ans.</strong> &nbsp;In my previous role, I
-                designed and maintained a robust network infrastructure that
-                included routers, switches, and firewalls. I ensured high <br />{" "}
-                &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;availability by
-                implementing redundancy and conducted regular performance
-                assessments to optimize network efficiency. <br /> <br />
-                <strong>Q2.</strong> &nbsp; &nbsp;How do you approach network
-                security, and what measures have you implemented to protect
-                against potential threats? <br />
-                <br /> <strong> Ans.</strong> &nbsp;I prioritize security
-                through measures such as implementing firewalls, intrusion
-                detection systems, and regularly updating security policies.{" "}
-                <br />{" "}
-                &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Additionally, I
-                conduct regular vulnerability assessments and penetration
-                testing to identify and address potential vulnerabilities.{" "}
-                <br /> <br />
-                <strong>Q3.</strong> &nbsp; &nbsp;Can you provide an overview of
-                your experience in designing and managing network
-                infrastructures? <br />
-                <br /> <strong> Ans.</strong> &nbsp;In my previous role, I
-                designed and maintained a robust network infrastructure that
-                included routers, switches, and firewalls. I ensured high <br />{" "}
-                &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;availability by
-                implementing redundancy and conducted regular performance
-                assessments to optimize network efficiency. <br />
-              </p>
+            {questionnaireData && questionnaireData.map((questionnaire, index) => (
+  <div key={index} className="mt-5">
+    <p className="text-gray-700 dark:text-white font-Inter font-weight:500">
+      <strong>{`Q${index + 1}. ${questionnaire.questionnaireTemplateName}`}</strong>
+    </p>
+    {questionnaire.questionaireTemplateDetailData && questionnaire.questionaireTemplateDetailData.map((question, idx) => (
+      <div key={idx} className="mt-3">
+        <p className="text-gray-700 dark:text-white font-Inter font-weight:500">
+          <strong>{`Q${question.questionnaireTemplateDetailsId}. ${question.question}`}</strong>
+        </p>
+        <p className="text-gray-700 dark:text-white font-Inter font-weight:500">
+          <strong>Ans.</strong> {question.answerMetaData[0]?.value || ''}
+        </p>
+      </div>
+    ))}
+  </div>
+))}
             </div>
           </div>
         </div>
@@ -96,8 +176,10 @@ const Questionaries = () => {
         <div className="rounded-lg bg-white dark:bg-secondaryDark p-1.5 ">
           <TabsNew tabs={tabData} onTabChange={onTabChange} initialTab={1} />
           <TextEditor
-            // initialValue={content}
-            // onChange={handleEditorChange}
+            initialValue={formik.values.notes}
+            onChange={(e)=>{
+              formik.setFieldValue('notes',e)
+            }}
             minheight="250px"
           />
           <div
@@ -105,7 +187,7 @@ const Questionaries = () => {
             style={{ backgroundColor: `${primaryColor}10` }}
           >
             <ButtonClick buttonName="Cancel" />
-            <ButtonClick buttonName="Save" BtnType="primary" />
+            <ButtonClick buttonName="Save" BtnType="primary" handleSubmit={formik.handleSubmit}/>
           </div>
         </div>
       </div>

@@ -1,8 +1,12 @@
+import axios from "axios";
+
+const apiUrl="https://alpha-api.loyaltri.com/api/main"
 const API = {
   // HOST: "http://192.168.29.111/loyaltri-server",
   // HOST: "http://192.168.0.37/ci-news",
    
   HOST: "https://alpha-api.loyaltri.com",
+ 
   // HOST: "http://192.168.0.55/loyaltri-recruitment-server/api/v1",
 
   // theme settings
@@ -193,3 +197,30 @@ const API = {
 };
 
 export default API;
+const apiRequest = async (action, method, kwargs) => {
+  try {
+    const response = await axios.post(apiUrl, {
+      action,
+
+      method,
+
+      kwargs,
+    });
+
+    return response.data;
+  } catch (error) {
+    console.error("API request error:", error);
+
+    throw error;
+  }
+};
+
+export const getAllOrganisation = async () => {
+  const action = "getAllOrganisation";
+
+  const method = "POST";
+
+  const kwargs = {} ;
+ 
+  return await apiRequest(action, method, kwargs);
+};

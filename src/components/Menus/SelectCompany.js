@@ -19,9 +19,9 @@ const SelectCompany = () => {
     localStorage.getItem("organisationId")
   );
   const selectedCompany = companyData?.find(
-    (item) => item.companyId === selectedItemId
+    (item) => parseInt(item.companyId) === parseInt(selectedItemId)
   );
-
+  console.log(selectedCompany)
   const handleItemClick = (itemId) => {
     dispatch(companyIdSet(itemId));
     setSelectedItemId(itemId);

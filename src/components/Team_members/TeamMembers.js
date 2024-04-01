@@ -5,7 +5,7 @@ import { useTranslation } from "react-i18next";
 
 import ButtonClick from "../common/Button";
 import Addmembers from "./Add-members";
-import { getAllRecruitmentJobTeamMembers } from "../Api1";
+import { getAllRecruitmentUsers } from "../Api1";
 
 const TeamMembers = ({
   open = "",
@@ -35,17 +35,17 @@ const TeamMembers = ({
         {
           id: 1,
           title: "Name",
-          value: "userId",
+          value: "userName",
         },
         {
           id: 2,
           title: "Contact",
-          value: "Contact",
+          value: "userEmail",
         },
         {
           id: 3,
-          title: "Designation",
-          value: "roleName",
+          title: "Image",
+          value: "userImage",
         },
         {
           id: 4,
@@ -66,9 +66,9 @@ const TeamMembers = ({
   useEffect(() => {
     const callapi = async () => {
       try {
-        const data = await getAllRecruitmentJobTeamMembers();
+        const data = await getAllRecruitmentUsers();
         console.log(data.result);
-        setTeamMembers(data.result);
+        setTeamMembers(data?.result);
       } catch (error) {
         console.error(error); // Handle errors
       }
@@ -119,7 +119,7 @@ const TeamMembers = ({
         </div>
       </div>
       <div>
-        <TableAnt header={Header}  data={TeamMembers}  All={true}/>
+        <TableAnt header={Header}  data={TeamMembers}  actionID="employeeId" path="Employee"/>
       </div>
       </div>
       {openPop === "Members" && showPop && (

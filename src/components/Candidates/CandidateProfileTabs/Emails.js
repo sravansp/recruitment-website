@@ -13,6 +13,8 @@ import {
 import {Formik, useFormik } from "formik";
 import {saveRecruitmentJobResumesEmailCommunication,getAllRecruitmentJobResumesEmailCommunications} from "../../Api1";
 import {notification} from 'antd';
+import {getAllRecruitmentJobResumesNotes,insertOrUpdateRecruitmentJobResumesNoteWithResumeId } from "../../Api1";
+
 
 const tabData = [
   {
@@ -191,6 +193,47 @@ const Emails = ({Email}) => {
     return Math.round(bytes / Math.pow(1024, i), 2) + ' ' + sizes[i];
   };
   
+  
+ const[notes,setnotes]= useState("")
+
+
+ const formik1 = useFormik ({
+     initialValues :{
+       jobId:"",
+         resumeId:"",
+         notes:"",
+         createdBy: ""
+     },
+     onSubmit: async (e)=>{
+       try {
+         const response = await insertOrUpdateRecruitmentJobResumesNoteWithResumeId({
+          jobId:jobId,
+          resumeId:resumeId,
+          notes:e.notes,
+          createdBy:null,
+         })
+         console.log(response)
+       }catch(error){
+         console.log(error)
+       }
+     }
+   })
+  const getnotes = async()=>{
+     try{
+      const response = await getAllRecruitmentJobResumesNotes({resumeId:resumeId})
+      console.log(response)
+      setnotes(response.result[0].notes)
+      const data = response.result[0]
+      formik1.setFieldValue("notes",data.notes)
+     }catch(error){
+       console.log(error)
+     }
+   }
+   useEffect(()=>{
+     getnotes()
+     console.log(notes)
+     
+   },[])
 
   return (
     <div className="grid gap-6 lg:grid-cols-12">
@@ -386,16 +429,18 @@ const Emails = ({Email}) => {
         <div className="rounded-lg bg-white dark:bg-secondaryDark p-1.5 ">
           <TabsNew tabs={tabData} onTabChange={onTabChange} initialTab={1} />
           <TextEditor
-              initialValue={content}
-              onChange={handleEditorChange}
-              minheight="250px"
+            initialValue={formik1.values.notes}
+            onChange={(e)=>{
+              formik1.setFieldValue('notes',e)
+            }}
+            minheight="250px"
           />
           <div
             className="flex items-center justify-end gap-2.5 p-1.5 mt-4 rounded-lg"
             style={{ backgroundColor: `${primaryColor}10` }}
           >
             <ButtonClick buttonName="Cancel" />
-            <ButtonClick buttonName="Save" BtnType="primary" />
+            <ButtonClick buttonName="Save" BtnType="primary" handleSubmit={formik1.handleSubmit} />
           </div>
         </div>
       </div>

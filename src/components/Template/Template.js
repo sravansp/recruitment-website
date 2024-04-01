@@ -4,7 +4,7 @@ import Breadcrumbs from '../common/BreadCrumbs';
 import { useTranslation } from 'react-i18next';
 import API, { action } from "../Api1";
 import ButtonClick from '../common/Button';
-import { getAllRecruitmentJobTemplates,getAllRecruitmentWorkFlows,getAllRecruitmentEmailTemplates,getAllRecruitmentQuestionnaireTemplates,getAllRecruitmentEvaluationTemplates,getAllRecruitmentLetterTemplates } from '../Api1';
+import {getAllRecruitmentJobDescriptionTemplates, getAllRecruitmentJobTemplates,getAllRecruitmentWorkFlows,getAllRecruitmentEmailTemplates,getAllRecruitmentQuestionnaireTemplates,getAllRecruitmentEvaluationTemplates,getAllRecruitmentLetterTemplates } from '../Api1';
 // import AddTemplate from './Addtemplate';
 import Tabs from '../common/Tabs';
 import Departments from '../Company/Add _departments';
@@ -147,12 +147,12 @@ const Template = ({
           {
             id:1,
             title:"Name",
-            value:"Name",
+            value:"descriptionTemplateName",
          },
          {
             id:2,
             title:"Description",
-            value:"Description",
+            value:"descriptionTemplate",
          },
          {
           id:3,
@@ -442,8 +442,18 @@ const Template = ({
     }
 
   }
+  const getAllJobdescription = async ()=>{
+    try{
+     const data = await getAllRecruitmentJobDescriptionTemplates()
+     console.log(data)
+    // 
+    setJobDescriptionList(data.result)
+    }catch(error){
+      console.log(error)
+    }
+  }
 
- 
+
 //  useEffect(()=>{
 //   getEmailLsit();
 //   console.log(EmailList);
@@ -465,7 +475,7 @@ const Template = ({
         break;
       case "Job_Description":
         // getDepartmentList();
-        
+        getAllJobdescription()
         console.log(newData)
         break;
       // Add more cases as needed
@@ -522,7 +532,7 @@ const Template = ({
   const actionId= [
     {
       Job_Templates:{id:"jobTemplateId"},
-      Job_Description:{id:"JobDescriptionTemplateId"},
+      Job_Description:{id:"descriptionTemplateId"},
       Workflow: {id:"workFlowId"},
       Email:{id:"emailTemplateId"},
       Evaluation:{id:"evaluationTemplateId"},
@@ -656,14 +666,14 @@ const Template = ({
         />
       )}
 
-{navigationPath === "JobDescription" && show && (
+{navigationPath === "Job_Description" && show && (
         <TemplateDec
           open={show}
           close={(e) => {
             setUpdateId(null)
             setShow(e);
           }}
-        //   updateId={updateId}
+          updateId={updateId}
         //   companyDataId={companyId}
           refresh={() => {
             // getLocationList();

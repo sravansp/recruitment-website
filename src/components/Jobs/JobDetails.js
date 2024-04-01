@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from "react";
 import { useDispatch, useSelector } from 'react-redux';
-import {getAllCandidatesByjobId,saveRecruitmentJobResumesStage } from "../Api1";
+import {getRecruitmentJobById,getAllCandidatesByjobId,saveRecruitmentJobResumesStage } from "../Api1";
 // import BoardData from "../../data/board.json";
 import { DragDropContext, Droppable, Draggable } from "react-beautiful-dnd";
 import { Dropdown, Tooltip, Radio, Alert } from "antd";
@@ -60,9 +60,11 @@ const customColors = [
 const JobDetails = () => {
   const isSmallScreen = useMediaQuery({ maxWidth: 1439 });
   const [viewType, setViewType] = useState("grid");
+  const {jobId} = useParams();
+  const [jobTitle,setjobTitle]=useState("")
    // Initial view type
-  const breadcrumbItems = [{ label: "Jobs",
-  url:"/AllJobs" }, { label: "Assign stages" }];
+    const breadcrumbItems = [{ label: "Jobs",
+    url:"/AllJobs" }, { label: jobTitle }];
   const handleshow =()=>setShow(true);
   const handleClose =()=>setShow(false)
   const [show, setShow] = useState(false);
@@ -76,11 +78,34 @@ const JobDetails = () => {
       value: "grid",
     },
   ];
-
+  
   const onChangeView = (e) => {
     setViewType(e.target.value);
     // Additional logic if needed when view type changes
   };
+  const getjobTitle = async () => {
+    
+    try {
+      const response = await getRecruitmentJobById({
+        id:jobId
+      });
+      console.log(response);
+  
+     
+        setjobTitle(response.result[0].jobTitle); // Access jobTitle from the first object in the array
+  
+        // Update the breadcrumb label to include the job title
+        breadcrumbItems[breadcrumbItems.length - 1].label = jobTitle;
+      
+    } catch (error) {
+      console.error("Error fetching job title:", error);
+    }
+  };
+  useEffect(()=>{
+    console.log(jobTitle,"jobTitle")  
+    getjobTitle()
+  
+  },[jobTitle])
   const customMessage = (
     <p>
       <span>
@@ -592,7 +617,7 @@ const CardItem = ({ data, index, color,jobId }) => {
     
     
     // Navigate to candidateprofile page with data.id
-    navigate(`/candidateprofile/${data.id}`, { state: { jobID: jobId } });
+    navigate(`/candidateprofile/${data.id}`);
     
     // navigate(`/candidateprofile/${data.id}`);
     

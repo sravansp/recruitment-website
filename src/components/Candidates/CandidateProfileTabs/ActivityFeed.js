@@ -2,8 +2,9 @@ import React, { useEffect, useState } from "react";
 import TabsNew from "../../common/TabsNew";
 import TextEditor from "../../common/TextEditor/TextEditor";
 import ButtonClick from "../../common/Button";
-import { useParams } from "react-router-dom";
-import {getAllRecruitmentJobResumeActivities} from "../../Api1" 
+import { useParams,useLocation } from "react-router-dom";
+import {insertOrUpdateRecruitmentJobResumesNoteWithResumeId,getAllRecruitmentJobResumesNotes,getAllRecruitmentJobResumeActivities} from "../../Api1" 
+import {Formik, useFormik } from "formik";
 import {
   RiArticleLine,
   RiCalendarLine,
@@ -80,7 +81,19 @@ const ActivityFeed = () => {
   const primaryColor = localStorage.getItem("mainColor");
   const { resumeId } = useParams();
   const[candidateStatus,setcandidateStatus]=useState([])
-  
+  const[jobId,setJobId] = useState(null)
+  const { state } = useLocation();
+
+  useEffect(() => {
+    if (state && state.jobID) {
+        setJobId(state.jobID);
+    } else {
+        const storedJobId = localStorage.getItem('jobid');
+        if (storedJobId) {
+            setJobId(storedJobId);
+        }
+    }
+}, [state]);
   const getActivities = async()=>{
     try{
     const response = await getAllRecruitmentJobResumeActivities(resumeId)
@@ -108,6 +121,48 @@ const ActivityFeed = () => {
     } else if (tabId === 2) {
     }
   };
+
+  
+ const[notes,setnotes]= useState("")
+
+
+ const formik = useFormik ({
+     initialValues :{
+       jobId:"",
+         resumeId:"",
+         notes:"",
+         createdBy: ""
+     },
+     onSubmit: async (e)=>{
+       try {
+         const response = await insertOrUpdateRecruitmentJobResumesNoteWithResumeId({
+          jobId:jobId,
+          resumeId:resumeId,
+          notes:e.notes,
+          createdBy:null,
+         })
+         console.log(response)
+       }catch(error){
+         console.log(error)
+       }
+     }
+   })
+  const getnotes = async()=>{
+     try{
+      const response = await getAllRecruitmentJobResumesNotes({resumeId:resumeId})
+      console.log(response)
+      setnotes(response.result[0].notes)
+      const data = response.result[0]
+      formik.setFieldValue("notes",data.notes)
+     }catch(error){
+       console.log(error)
+     }
+   }
+   useEffect(()=>{
+     getnotes()
+     console.log(notes)
+     
+   },[])
   return (
     <div className="grid gap-6 lg:grid-cols-12">
       <div className="flex flex-col gap-6 lg:col-span-8">
@@ -201,8 +256,10 @@ const ActivityFeed = () => {
         <div className="rounded-lg bg-white dark:bg-secondaryDark p-1.5 ">
           <TabsNew tabs={tabData} onTabChange={onTabChange} initialTab={1} />
           <TextEditor
-            initialValue={content}
-            onChange={handleEditorChange}
+            initialValue={formik.values.notes}
+            onChange={(e)=>{
+              formik.setFieldValue('notes',e)
+            }}
             minheight="250px"
           />
           <div
@@ -210,7 +267,7 @@ const ActivityFeed = () => {
             style={{ backgroundColor: `${primaryColor}10` }}
           >
             <ButtonClick buttonName="Cancel" />
-            <ButtonClick buttonName="Save" BtnType="primary" />
+            <ButtonClick buttonName="Save" BtnType="primary" handleSubmit={formik.handleSubmit} />
           </div>
         </div>
       </div>
