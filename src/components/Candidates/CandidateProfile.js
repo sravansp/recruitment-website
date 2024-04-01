@@ -389,11 +389,14 @@ const handleButtonClick = async (status) => {
     <div className="flex flex-col gap-6">
       {contextHolder}
       <div className="flex flex-col justify-between lg:flex-row lg:items-center">
-        <Link className="backBtn vhcenter gap-2.5" to="/CandidateList">
+        <Link  className="backBtn vhcenter gap-2.5" to="/CandidateList">
           <div className="bg-white border border-black rounded-full w-9 h-9 border-opacity-5 vhcenter">
+           
             <PiArrowLeftBold className="text-xl text-primary" />
           </div>
-          <p className="pblack">Back to All Candidates</p>
+          
+           <p  className="pblack">Back to All Candidates</p>
+         
         </Link>
         <div className="gap-2 vhcenter">
         <ButtonClick

@@ -105,6 +105,9 @@ const AddLetter = ({
           "Successful",
           response.message
         );
+        setTimeout(() => {
+          handleClose();
+        }, 2000);
       } else {
         openNotification("error", "input field is empty..", response.message);
       }

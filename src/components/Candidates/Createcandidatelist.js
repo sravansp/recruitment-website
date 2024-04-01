@@ -286,7 +286,7 @@ export default function Createcandidatelist({ open = "", close = () => { }, file
 
         // File upload
 
-        if (file) {
+        
           console.log("inside file upload api");
           const formData = new FormData();
           formData.append('action', 'resumeFileUpload');
@@ -303,7 +303,7 @@ export default function Createcandidatelist({ open = "", close = () => { }, file
           } else {
             openNotification("error", "Failed..", response.message);
           }
-        }
+        
         if (result.status === 200) {
           setNextStep(nextStep + 1);
           setPresentage(1);

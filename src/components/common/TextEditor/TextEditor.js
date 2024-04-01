@@ -22,13 +22,30 @@ const TextEditor = ({
       return EditorState.createEmpty();
     }
   });
+  // useEffect(() => {
+  //   if (!editorState.getCurrentContent().hasText() && initialValue) {
+  //     const contentState = ContentState.createFromText(initialValue);
+  //     const newEditorState = EditorState.createWithContent(contentState);
+  //     setEditorState(newEditorState);
+  //   }
+  // }, [initialValue]);
   useEffect(() => {
-    if (!editorState.getCurrentContent().hasText() && initialValue) {
+    // Check if initialValue exists and if it's different from the current editor content
+    if (initialValue && initialValue !== editorState.getCurrentContent().getPlainText()) {
       const contentState = ContentState.createFromText(initialValue);
       const newEditorState = EditorState.createWithContent(contentState);
       setEditorState(newEditorState);
     }
-  }, [initialValue]);
+  }, [initialValue, editorState]);
+  
+  // useEffect(() => {
+  //   if (initialValue) {
+  //     const contentState = ContentState.createFromText(initialValue);
+  //     const newEditorState = EditorState.createWithContent(contentState);
+  //     setEditorState(newEditorState);
+  //   }
+  // }, [initialValue]);
+  
 
   const handleEditorChange = (state) => {
     setEditorState(state);

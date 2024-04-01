@@ -887,9 +887,90 @@ export const saveRecruitmentJobResumesOfferLetter = async (e) => {
   }
 };
 
+export const getAllEmployee = async (data) => {
+  const action = "getAllEmployee";
+
+  const method = "POST";
+
+  const kwargs = data;
+  console.log("API Request Data:", { action, method, kwargs })
+
+  return await apiRequest(action, method, kwargs);
+};
+export const getAllRecruitmentRoles = async () => {
+  const action = "getAllRecruitmentRoles";
+
+  const method = "POST";
+
+  const kwargs = {};
+  console.log("API Request Data:", { action, method, kwargs })
+
+  return await apiRequest(action, method, kwargs);
+};
+export const addRecruitmentUserWithRoleMapping = async (e) => {
+  try {
+    const action = "addRecruitmentUserWithRoleMapping";
+    const method = "POST";
+    const kwargs = e;
+
+    console.log("API Request Data:", { action, method, kwargs });
+
+    const response = await apiRequest(action, method, kwargs);
+
+    console.log("API Response:", response);
+
+    return response;
+  } catch (error) {
+    console.error(
+      "Error in saveRecruitmentJobResumesOfferLetter:",
+      error
+    );
+    throw error; // Re-throw the error to handle it where the function is called.
+  }
+};
+export const saveRecruitmentJobDescriptionTemplate = async (Data) => {
+  const action = "saveRecruitmentJobDescriptionTemplate";
+
+  const method = "POST";
+
+  const kwargs = Data;
+  console.log("API Request Data:", { action, method, kwargs })
+
+  return await apiRequest(action, method, kwargs);
+};
+export const getAllRecruitmentJobDescriptionTemplates = async () => {
+  const action = "getAllRecruitmentJobDescriptionTemplates";
+
+  const method = "POST";
+
+  const kwargs = {};
+  console.log("API Request Data:", { action, method, kwargs })
+
+  return await apiRequest(action, method, kwargs);
+};
+export const getRecruitmentJobDescriptionTemplateById = async (data) => {
+  const action = "getRecruitmentJobDescriptionTemplateById";
+
+  const method = "POST";
+
+  const kwargs = data;
+  console.log("API Request Data:", { action, method, kwargs })
+
+  return await apiRequest(action, method, kwargs);
+};
+export const updateRecruitmentJobDescriptionTemplate = async (data) => {
+  const action = "updateRecruitmentJobDescriptionTemplate";
+
+  const method = "POST";
+
+  const kwargs = data;
+  console.log("API Request Data:", { action, method, kwargs })
+
+  return await apiRequest(action, method, kwargs);
+};
 const API = {
   UPDATE_Job_Templates: "toggleRecruitmentJobTemplateStatus",
-  UPDATE_Job_Description: "",
+  UPDATE_Job_Description: "toggleRecruitmentJobDescriptionTemplateStatus",
   UPDATE_Workflow: "toggleRecruitmentWorkFlowStatus",
   UPDATE_Email: "toggleRecruitmentEmailTemplateStatus",
   UPDATE_EvaluationS: "toggleRecruitmentEvaluationTemplateStatus",

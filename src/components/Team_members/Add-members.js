@@ -7,7 +7,9 @@ import TextArea from '../common/TextArea';
 import FlexCol from '../common/FlexCol';
 import { notification } from 'antd';
 import Dropdown from '../common/Dropdown';
-import { getAllRecruitmentUserRoleMappings } from '../Api1';
+import { addRecruitmentUserWithRoleMapping,getAllEmployee,getAllRecruitmentRoles } from '../Api1';
+import { Value } from 'devextreme-react/range-selector';
+import { Formik, useFormik } from 'formik';
 
 const Addmembers = ({
     open,
@@ -15,13 +17,27 @@ const Addmembers = ({
     updateId,
     refresh = () => {},
     companyDataId = "",} ) => {
-
-
+ 
+        const[employeeList,setEmployeeList] = useState([])
         const [jobRole,setJobRole]=useState([])
         const [show, setShow] = useState(open);
         const { t } = useTranslation();
         const [isUpdate, setIsUpdate] = useState();
         const [api, contextHolder] = notification.useNotification();
+        const [companyId, setCompanyId] = useState(localStorage.getItem("companyId"));
+        const[role,setRole]=useState([])
+        const[EmployeeName,setEmployeeName] = useState("")
+        const[EmployeeEmail,setEmployeeEmail] =useState("")
+        useEffect(() => {
+          setCompanyId(localStorage.getItem("companyId"));
+          
+        }, []);
+        const handleClose = () => {
+     
+          close(false)
+     
+           
+           };
         const openNotification = (type, message, description, callback) => {
           api[type]({
             message: message,
@@ -45,42 +61,108 @@ const Addmembers = ({
             // duration: null,
           });
         };
-        useEffect(() => {
-          const callapi = async () => {
-            try {
-             
-              const data = await getAllRecruitmentUserRoleMappings();
-              console.log(data.result);
-              setJobRole(data.result);
-        
-             
-            } catch (error) {
-              console.error(error); // Handle errors
-            }
-          };
-        
-          callapi();
-        }, []);
+       const getTeamMembers = async ()=>{
+        try {
+          const response = await getAllEmployee({companyId:companyId})
+          console.log(response)
+          const formattedEmployeeList = response.result.map((employee) => ({
+            label: `${employee.firstName} ${employee.middleName ? employee.middleName + ' ' : ''}${employee.lastName}`,
+            value: employee.employeeId,
+            email: employee.email,
+
+          }));
+          setEmployeeList(formattedEmployeeList);
+          // setEmployeeName()
+        }catch(error){
+          console.log(error)
+        }
+       }
+       useEffect(()=>{
+        getTeamMembers()
+       },[])
+       const getRoles= async ()=>{
+        try {
+          const response = await getAllRecruitmentRoles()
+          console.log(response)
+          setRole(response.result.map((each)=>({
+            label:each.roleName,
+            value:each.roleId
+          }))
+          )
+          
+        }catch(error){
+          console.log(error)
+        }
+       }
+      useEffect(()=>{
+        getRoles()
+      },[])
+const formik = useFormik({
+        initialValues:{
+          userName: "", 
+        userEmail: "", 
+        employeeId: "", 
+        userImage: null, 
+
+        roleId:"",
+        createdBy: null
+        },
+        onSubmit : async(e)=>{
+          try{
+           const response = await addRecruitmentUserWithRoleMapping({
+            userName: EmployeeName, 
+            userEmail: EmployeeEmail, 
+            employeeId: e.employeeId, 
+            userImage: null, 
+    
+            roleId:e.roleId,
+            createdBy: null      
+
+           })
+           console.log(response)
+           if (response.status === 200) {
+            openNotification(
+              "success",
+              "Successful",
+              response.message
+            );
+            formik.resetForm()
+            setTimeout(() => {
+              handleClose();
+            }, 2000)
+
+          } else if (response.status === 500) {
+            openNotification("error", "input field is empty..", response.message);
+          }
+
+          }catch(error){
+            console.log(error)
+          }
+        }
+      })
+      
   return (
     <DrawerPop
     open={show}
     close={(e) => {
       // console.log(e);
       close(e);
+      handleClose();
+
     }}
     contentWrapperStyle={{
       maxWidth: "540px",
     }}
     handleSubmit={(e) => {
       // console.log(e);
-    //   formik.handleSubmit();
+      formik.handleSubmit();
     }}
     updateBtn={isUpdate}
     updateFun={() => {
     //   updateIdBasedLocation();
     }}
     header={[
-      !isUpdate ? t("Add Team Members") : t("Update_Location"),
+      !isUpdate ? t("Add Team Members") : t("Update Team Members"),
       !isUpdate
         ? t("lorem ipusm")
         : t("Update_Selected_Location"),
@@ -88,32 +170,41 @@ const Addmembers = ({
     ]}
     footerBtn={[
       t("Cancel"),
-      !isUpdate ? t("Add_Location") : t("Update_Location"),
+      !isUpdate ? t("Add-Teammebers") : t("Update-Teammebers"),
     ]}
     
     
     >  
           <FlexCol className="relative w-full h-full ">
-        <FormInput
-          title={t("Name")}
-          placeholder={t("Location")}
-        //   value={formik.values.location}
-          change={(e) => {
-            // formik.setFieldValue("location", e);
-          }}
-        //   error={formik.errors.location}
-        />
+          <Dropdown
+  title={t("Name")}
+  placeholder={t("Location")}
+  value={formik.values.employeeId}
+  options={employeeList}
+  change={(e) => {
+   
+    const selectedEmployee = employeeList.find(employee => employee.value === e);
+    console.log(selectedEmployee)
+    if (selectedEmployee) {
+      // Set the values to the other Formik form
+     setEmployeeName(selectedEmployee.label)
+     setEmployeeEmail(selectedEmployee.email)
+    }
+    // Set the value for the current Formik form
+    formik.setFieldValue("employeeId", e);
+  }}
+/>
 
         <Dropdown
           title={t("Role")}
           placeholder={t("Marketing Manager")}
-          options={jobRole}
+          options={role}
           
           className=""
           change={(e) => {
-            // formik.setFieldValue("description", e);
+            formik.setFieldValue("roleId", e);
           }}
-        //   value={formik.values.description}
+          value={formik.values.roleId}
         //   error={formik.errors.description}
         />
         {/* <ToggleBtn
@@ -126,8 +217,9 @@ const Addmembers = ({
         /> */}
         {contextHolder}
       </FlexCol>
-        
+      {contextHolder}
     </DrawerPop>
+    
   )
 }
 

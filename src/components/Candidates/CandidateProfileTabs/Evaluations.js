@@ -85,6 +85,7 @@ const Evaluations = () => {
   const[textAreaValue,setTextAreavalue]=useState(null)
   const[forminputvalue,setForminputValue]=useState(null)
   const[jobResumeEvaluationId,setjobResumeEvaluationId]=useState([])
+  const[fetchedAnswers,setfetchedAnswers]=useState([])
 
   const getresumeEvalutionId = async () => {
     try {
@@ -93,7 +94,7 @@ const Evaluations = () => {
         resumeId:resumeId
       });
       console.log(response);
-      setEvaluationAnswers(response.result);
+      setfetchedAnswers(response.result);
        // Set the fetched evaluation answers to state
       
       
@@ -124,11 +125,12 @@ const Evaluations = () => {
             case 'Paragraph':
               evaluationAnswer = textAreaValue;
               break;
-            case 'Checkboxes':
-              evaluationAnswer = selectedCheckboxes
-                .filter(option => metadata.value.split(',').includes(option.trim()))
-                .join(', ');
-              break;
+              case 'Checkboxes':
+                const selectedCheckboxValues = selectedCheckboxes.filter(option =>
+                  metadata.value.split(',').includes(option.trim())
+                );
+                evaluationAnswer = selectedCheckboxValues.join(', ');
+                break;
             case 'ShortAnswer':
               evaluationAnswer = forminputvalue;
               break;
@@ -296,10 +298,10 @@ const handleRadioChange = (e, index) => {
    
   },[evalutaionId])
 useEffect(() => {
-    evaluationAnswers.forEach(answer => {
+    fetchedAnswers.forEach(answer => {
         const { evaluationTemplateDetailsId, evaluationAnswer } = answer;
         const matchedCondition = evaluationList.find(condition => condition.evaluationTemplateDetailsId === evaluationTemplateDetailsId);
-        
+        console.log(matchedCondition)
         if (matchedCondition) {
             const metaData = matchedCondition.answerMetaData.find(meta => meta.key);
             if (metaData) {
@@ -314,6 +316,7 @@ useEffect(() => {
                     case 'Checkboxes':
                         const selectedOptions = evaluationAnswer.split(',').map(option => option.trim());
                         setSelectedCheckboxes(selectedOptions);
+                        console.log(selectedOptions)
                         break;
                     case 'ShortAnswer':
                         setForminputValue(evaluationAnswer);

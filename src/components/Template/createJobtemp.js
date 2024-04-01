@@ -1747,7 +1747,9 @@ icondropDown={true}
       ))}
                 */}
                     <Radio.Group
-                      onChange={(e) => setSelectedWorkFlowId(e.target.value)}
+                      onChange={(e) => {setSelectedWorkFlowId(e.target.value)
+                        setPresentage(3.5)
+                      }}
                     >
                       {Stages.map((each) => (
                         <Card key={each.workFlowId}>

@@ -346,8 +346,8 @@ const QuestionAire = ({
 
         header={[
           !updateId
-            ? t("Create Evaluation Template")
-            : t("update Evaluation Template"),
+            ? t("Create Questionaire Template")
+            : t("update Questionaire Template"),
           t("Lorem ipsum dummy text doret solo."),
         ]}
 
@@ -385,7 +385,7 @@ const QuestionAire = ({
 
       > <div className="relative max-w-[1070px]  w-full mx-auto">
           <Accordion
-            title={"New Evaluation Templates"}
+            title={"New Questionaire Templates"}
             className="Text_area"
             padding={true}
 

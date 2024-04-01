@@ -5,24 +5,25 @@ import { useTranslation } from "react-i18next";
 
 import ButtonClick from "../common/Button";
 import Addmembers from "./Add-members";
-import { getAllRecruitmentJobTeamMembers } from "../Api1";
+import { getAllRecruitmentUsers } from "../Api1";
 
 const TeamMembers = ({
   open = "",
   close = () => {},
   refresh,
   createPolicyAction,
-  updateId,
+  
   openPolicy,
 }) => {
   const { t } = useTranslation();
-
+  const[updateId,setUpdateId]=useState(null)
   const [showPop, setShowPop] = useState(false);
   const handleClose = () => setOpenPop(false);
   const handleShow = () => setShow(true);
   const [show, setShow] = useState(open);
   const [openPop, setOpenPop] = useState("");
   const [TeamMembers, setTeamMembers] = useState([]);
+  const [navigationValue, setNavigationValue] = useState(t("Members"));
   const breadcrumbItems = [
     { label: t("Settings"), url: "" },
       { label: t("Other"), url: "" },
@@ -35,22 +36,22 @@ const TeamMembers = ({
         {
           id: 1,
           title: "Name",
-          value: "userId",
+          value: "userName",
         },
         {
           id: 2,
           title: "Contact",
-          value: "Contact",
+          value: "userEmail",
         },
         {
           id: 3,
-          title: "Designation",
-          value: "roleName",
+          title: "Image",
+          value: "userImage",
         },
         {
           id: 4,
-          title: "Action",
-          value: "Action",
+          title: "",
+          value: "action",
           action: true,
         },
       ],
@@ -66,9 +67,9 @@ const TeamMembers = ({
   useEffect(() => {
     const callapi = async () => {
       try {
-        const data = await getAllRecruitmentJobTeamMembers();
+        const data = await getAllRecruitmentUsers();
         console.log(data.result);
-        setTeamMembers(data.result);
+        setTeamMembers(data?.result);
       } catch (error) {
         console.error(error); // Handle errors
       }
@@ -119,7 +120,23 @@ const TeamMembers = ({
         </div>
       </div>
       <div>
-        <TableAnt header={Header}  data={TeamMembers}  All={true}/>
+        <TableAnt 
+        header={Header}  
+        data={TeamMembers}  
+        actionID="userId" 
+        path="Employee"
+        clickDrawer={(e) => {
+          handleShow();
+        }}
+        navigationValue={navigationValue}
+        buttonClick={(e, company) => {
+          console.log(e);
+          setUpdateId(e);
+          setShow(true);
+          setOpenPop("Members");
+          setShowPop(true);
+        }}
+        />
       </div>
       </div>
       {openPop === "Members" && showPop && (
@@ -137,6 +154,7 @@ const TeamMembers = ({
           //   action={(e) => {
           //     handleLeaveTemplateAction();
           //   }}
+       
         />
       )}
     </>
