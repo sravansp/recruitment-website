@@ -136,7 +136,7 @@ const items = [
 const CustomDropdown = () => {
   const [checkedItems, setCheckedItems] = useState({});
   const [accordionStates, setAccordionStates] = useState(true);
-  const [isDropdownOpen, setIsDropdownOpen] = useState(true); // Set to true initially
+  const [isDropdownOpen, setIsDropdownOpen] = useState(false); // Set to true initially
   
   const dropdownRef = useRef(null);
 

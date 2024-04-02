@@ -18,7 +18,7 @@ function Navbar1() {
 
         {/* Second div with image and text */}
         <div className="flex items-center ml-auto">
-          <Image className="h-12 w-12 flex-none rounded-full" src={candidate} alt="" />
+          <Image className="h-20 w-20 flex-none rounded-full" src={candidate} alt="" />
           <div className="">
             <p className="h6 !text-white">Grace Bennet</p>
             <p className="para !text-gray-300">gracebennet@gmail.com</p>

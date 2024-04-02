@@ -693,7 +693,9 @@ function Web({ closeDrawer, selectedJobId, onClick }) {
           formattedData
         );
         console.log("API Response:", response);
-        seteduinsertedid(response.result.insertedId);
+        console.log(response.result,"result edu");
+        seteduinsertedid(response.result.resumeEducationalDetailsId);
+        console.log(eduinsertedid);
         // setinsertedId1(response.result.insertedId);
         setActiveBtn(activeBtn + 1);
         setCurrentStep(currentStep + 1);
@@ -1110,6 +1112,7 @@ function Web({ closeDrawer, selectedJobId, onClick }) {
   };
 
   return (
+    
     <div className="flex flex-col gap-6 container-wrapper ">
       <FlexCol />
       <Header1 closeDrawer={closeDrawer} jobid={jobid} />
@@ -1167,7 +1170,7 @@ function Web({ closeDrawer, selectedJobId, onClick }) {
                       <div className="grid grid-cols-2 gap-4 sm:grid-cols-6">
                         <Dropdown
                           title={"Prefix"}
-                          placeholder={"Mr"}
+                          placeholder="Mr/Miss"
                           options={[
                             { label: "Mr", value: "mr" },
                             { label: "Miss", value: "miss" },
@@ -1573,7 +1576,7 @@ function Web({ closeDrawer, selectedJobId, onClick }) {
                           />
                           <Dropdown
                             title={"Employment Type"}
-                            placeholder={"Eg: Fulltime"}
+                            placeholder="Eg: Fulltime"
                             options={[
                               { value: "Fulltime", label: "Full-time" },
                               { value: "Parttime", label: "Part-time" },
