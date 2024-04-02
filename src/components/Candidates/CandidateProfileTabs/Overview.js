@@ -1,10 +1,12 @@
 import Accordion from "../../common/Accordion";
 import React, { useState,useEffect } from "react";
 import TabsNew from "../../common/TabsNew";
-import {insertOrUpdateRecruitmentJobResumesNoteWithResumeId,getAllRecruitmentResumeEducationalDetails,getAllRecruitmentResumesExperienceDetails, getRecruitmentResumeById,getAllRecruitmentJobResumesNotes } from "../../Api1";
+import {updateRecruitmentJobResumesNote,getRecruitmentJobResumesNoteById,saveRecruitmentJobResumesNote,getAllRecruitmentResumeEducationalDetails,getAllRecruitmentResumesExperienceDetails, getRecruitmentResumeById,getAllRecruitmentJobResumesNotes } from "../../Api1";
 import { useDispatch, useSelector } from 'react-redux';
 import {Formik, useFormik } from "formik";
 import { Link,useParams,useLocation } from "react-router-dom";
+import { TiPin } from "react-icons/ti";
+import { MdDeleteSweep } from "react-icons/md";
 // ICONS
 import {
   RiArrowDownLine,
@@ -24,6 +26,7 @@ import TextEditor from "../../common/TextEditor/TextEditor";
 import ButtonClick from "../../common/Button";
 import PDFViewer from "../../common/PDFViewer";
 import pdfFile from "../../../assets/documents/sample.pdf";
+import { FaRegEdit } from "react-icons/fa";
 // import {educationExperiences } from "../../common/DataArrays";
 
 
@@ -83,7 +86,20 @@ const Overview = ({ onEmailSelect }) => {
   const { state } = useLocation();
   const[jobId,setJobId] = useState(null)
   const id = resumeId
-  const [candidateEmail, setCandidateEmail] = useState(""); // State to store candidate email
+  const [candidateEmail, setCandidateEmail] = useState(""); 
+  const [selectedNoteId, setSelectedNoteId] = useState(null);
+  const [isPinned, setIsPinned] = useState(0);
+  const handlePinClick = (jobResumeNoteId) => {
+    setSelectedNoteId(jobResumeNoteId);
+    setIsPinned(isPinned === 1 ? 0 : 1);
+     // Toggle the pin state between 0 and 1
+    // You can perform any additional actions here, such as saving the pin state to a database.
+  };
+  const handleEditClick = (jobResumeNoteId) => {
+    setSelectedNoteId(jobResumeNoteId);
+    getnotesbyId(jobResumeNoteId)
+    // You can perform any additional actions here, such as opening a modal or navigating to another page.
+  }; // State to store candidate email
   useEffect(() => {
     if (state && state.jobID) {
         setJobId(state.jobID);
@@ -214,7 +230,7 @@ const Overview = ({ onEmailSelect }) => {
     getEmployeExperiance()
     getEducationList()
   },[])
-
+ 
   const handleEditorChange = (content) => {
     setContent(content);
   };
@@ -254,13 +270,27 @@ const formik = useFormik ({
     },
     onSubmit: async (e)=>{
       try {
-        const response = await insertOrUpdateRecruitmentJobResumesNoteWithResumeId({
+        if(!selectedNoteId){
+        const response = await saveRecruitmentJobResumesNote({
          jobId:jobId,
          resumeId:resumeId,
          notes:e.notes,
          createdBy:null,
         })
         console.log(response)
+        getnotes()
+      }else{
+        const response= await updateRecruitmentJobResumesNote({
+          id:selectedNoteId,
+          jobId:jobId,
+          resumeId:resumeId,
+          notes:e.notes,
+          isPinned:isPinned,
+          modifiedBy:null
+        })
+        console.log(response)
+        getnotes()
+      }
       }catch(error){
         console.log(error)
       }
@@ -270,9 +300,8 @@ const formik = useFormik ({
     try{
      const response = await getAllRecruitmentJobResumesNotes({resumeId:resumeId})
      console.log(response)
-     setnotes(response.result[0].notes)
-     const data = response.result[0]
-     formik.setFieldValue("notes",data.notes)
+     setnotes(response.result)
+    
     }catch(error){
       console.log(error)
     }
@@ -281,7 +310,20 @@ const formik = useFormik ({
     getnotes()
     console.log(notes)
     
-  },[])
+  },[resumeId])
+
+  const getnotesbyId = async(jobResumeNoteId)=>{
+    try{
+    const response = await getRecruitmentJobResumesNoteById({id:jobResumeNoteId})
+    console.log(response);
+    formik.setFieldValue('notes',response.result[0].notes)
+    }catch(error){
+      console.log(error)
+    }
+
+  }
+  
+
 
   return (
   
@@ -442,6 +484,34 @@ const formik = useFormik ({
             <ButtonClick buttonName="Save" BtnType="primary" handleSubmit={formik.handleSubmit} />
           </div>
         </div>
+        <div className="rounded-lg bg-white dark:bg-secondaryDark p-1.5 ">
+        {notes && notes.map((note, index) => (
+  <div className="relative flex pb-6" key={index}>
+    <div className="flex items-center justify-between w-full">
+      <p className="pblack flex-grow pl-4 !font-normal">
+        <strong>{note.notes}</strong>
+      </p>
+      <div className="flex items-center gap-6"> {/* Added gap between createdOn and icons */}
+        <p className="para !font-normal">{note.createdOn}</p>
+        <div className="flex items-center gap-3">
+        {/* <TiPin
+                  onClick={() => handlePinClick(note.jobResumeNoteId)}
+                  style={{ color: selectedNoteId === note.jobResumeNoteId && isPinned === 1 ? 'blue' : 'gray' }}
+                />  */}
+          <FaRegEdit onClick={() => handleEditClick(note.jobResumeNoteId)} />
+        </div>
+      </div>
+    </div>
+  </div>
+))}
+</div>
+                {/* {notes.map((note) => (
+    <div key={note.jobResumeNoteId} className="mb-4">
+      <p className="font-bold">{note.notes}</p>
+      <p className="font-bold">Created On: {note.createdOn}</p>
+    </div> */}
+  
+
       </div>
     </div>
   );

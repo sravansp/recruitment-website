@@ -4,10 +4,11 @@ import ButtonClick from "../../common/Button";
 import TabsNew from "../../common/TabsNew";
 import { Editor } from "draft-js";
 import { BsFileEarmarkRichtext } from "react-icons/bs";
-import { RiHome6Line, RiStickyNoteLine } from "react-icons/ri";
+import { RiHome6Line, RiImage2Fill, RiStickyNoteLine } from "react-icons/ri";
 import {Formik, useFormik } from "formik";
 import { Link,useParams,useLocation } from "react-router-dom";
-import {getRecruitmentQuestionnaireTemplateById,getRecruitmentJobById,getAllRecruitmentJobResumesNotes,insertOrUpdateRecruitmentJobResumesNoteWithResumeId } from "../../Api1";
+import {updateRecruitmentJobResumesNote,getRecruitmentJobResumesNoteById,getRecruitmentQuestionnaireTemplateById,getRecruitmentJobById,getAllRecruitmentJobResumesNotes,saveRecruitmentJobResumesNote } from "../../Api1";
+import { FaRegEdit } from "react-icons/fa";
 
 
 const Questionaries = () => {
@@ -22,6 +23,13 @@ const Questionaries = () => {
   const {resumeId} =useParams()
   const[jobId,setJobId] = useState(null)
   const { state } = useLocation();
+  const [selectedNoteId, setSelectedNoteId] = useState(null);
+  const [isPinned, setIsPinned] = useState(0);
+  const handleEditClick = (jobResumeNoteId) => {
+    setSelectedNoteId(jobResumeNoteId);
+    getnotesbyId(jobResumeNoteId)
+    // You can perform any additional actions here, such as opening a modal or navigating to another page.
+  }; //
   useEffect(() => {
     if (state && state.jobID) {
         setJobId(state.jobID);
@@ -59,43 +67,66 @@ const Questionaries = () => {
 
 
   const formik = useFormik ({
-      initialValues :{
-        jobId:"",
-          resumeId:"",
-          notes:"",
-          createdBy: ""
-      },
-      onSubmit: async (e)=>{
-        try {
-          const response = await insertOrUpdateRecruitmentJobResumesNoteWithResumeId({
-           jobId:jobId,
-           resumeId:resumeId,
-           notes:e.notes,
-           createdBy:null,
-          })
-          console.log(response)
-        }catch(error){
-          console.log(error)
-        }
+    initialValues :{
+      jobId:"",
+        resumeId:"",
+        notes:"",
+        createdBy: ""
+    },
+    onSubmit: async (e)=>{
+      try {
+        if(!selectedNoteId){
+        const response = await saveRecruitmentJobResumesNote({
+         jobId:jobId,
+         resumeId:resumeId,
+         notes:e.notes,
+         createdBy:null,
+        })
+        console.log(response)
+        getnotes()
+      }else{
+        const response= await updateRecruitmentJobResumesNote({
+          id:selectedNoteId,
+          jobId:jobId,
+          resumeId:resumeId,
+          notes:e.notes,
+          isPinned:isPinned,
+          modifiedBy:null
+        })
+        console.log(response)
+        getnotes()
       }
-    })
-   const getnotes = async()=>{
-      try{
-       const response = await getAllRecruitmentJobResumesNotes({resumeId:resumeId})
-       console.log(response)
-       setnotes(response.result[0].notes)
-       const data = response.result[0]
-       formik.setFieldValue("notes",data.notes)
       }catch(error){
         console.log(error)
       }
     }
-    useEffect(()=>{
-      getnotes()
-      console.log(notes)
-      
-    },[])
+  })
+ const getnotes = async()=>{
+    try{
+     const response = await getAllRecruitmentJobResumesNotes({resumeId:resumeId})
+     console.log(response)
+     setnotes(response.result)
+    
+    }catch(error){
+      console.log(error)
+    }
+  }
+  useEffect(()=>{
+    getnotes()
+    console.log(notes)
+    
+  },[resumeId])
 
+  const getnotesbyId = async(jobResumeNoteId)=>{
+    try{
+    const response = await getRecruitmentJobResumesNoteById({id:jobResumeNoteId})
+    console.log(response);
+    formik.setFieldValue('notes',response.result[0].notes)
+    }catch(error){
+      console.log(error)
+    }
+
+  }
   
 
     const[questionareId,setquestionareId] = useState("")
@@ -151,23 +182,37 @@ const Questionaries = () => {
             </div>
 
             <div className=" ">
-            {questionnaireData && questionnaireData.map((questionnaire, index) => (
-  <div key={index} className="mt-5">
-    <p className="text-gray-700 dark:text-white font-Inter font-weight:500">
-      <strong>{`Q${index + 1}. ${questionnaire.questionnaireTemplateName}`}</strong>
-    </p>
-    {questionnaire.questionaireTemplateDetailData && questionnaire.questionaireTemplateDetailData.map((question, idx) => (
-      <div key={idx} className="mt-3">
-        <p className="text-gray-700 dark:text-white font-Inter font-weight:500">
-          <strong>{`Q${question.questionnaireTemplateDetailsId}. ${question.question}`}</strong>
-        </p>
-        <p className="text-gray-700 dark:text-white font-Inter font-weight:500">
-          <strong>Ans.</strong> {question.answerMetaData[0]?.value || ''}
-        </p>
+            {questionnaireData && questionnaireData.length > 0 ? (
+  questionnaireData.map((questionnaire, index) => (
+    <div key={index} className="mt-5">
+      <p className="text-gray-700 dark:text-white font-Inter font-weight:500">
+        <strong>{`Q${index + 1}. ${questionnaire.questionnaireTemplateName}`}</strong>
+      </p>
+      {questionnaire.questionaireTemplateDetailData && questionnaire.questionaireTemplateDetailData.map((question, idx) => (
+        <div key={idx} className="mt-3">
+          <p className="text-gray-700 dark:text-white font-Inter font-weight:500">
+            <strong>{`Q${question.questionnaireTemplateDetailsId}. ${question.question}`}</strong>
+          </p>
+          <p className="text-gray-700 dark:text-white font-Inter font-weight:500">
+            <strong>Ans.</strong> {question.answerMetaData[0]?.value || ''}
+          </p>
+        </div>
+      ))}
+    </div>
+  ))
+) : (
+  <div className="h-full gap-4 vhcenter box-wrapper borderb">
+    <div className="flex flex-col items-center gap-4">
+      <div className="size-11 bg-[#F9FAFB] dark:bg-secondaryDark rounded-full vhcenter">
+        <RiImage2Fill className="text-black text-opacity-50 dark:text-white" />
       </div>
-    ))}
+      <h6 className="h6">No questionnaire data available</h6>
+      <p className="para">
+        There is currently no questionnaire data to display.
+      </p>
+    </div>
   </div>
-))}
+)}
             </div>
           </div>
         </div>
@@ -190,6 +235,27 @@ const Questionaries = () => {
             <ButtonClick buttonName="Save" BtnType="primary" handleSubmit={formik.handleSubmit}/>
           </div>
         </div>
+        <div className="rounded-lg bg-white dark:bg-secondaryDark p-1.5 ">
+        {notes && notes.map((note, index) => (
+  <div className="relative flex pb-6" key={index}>
+    <div className="flex items-center justify-between w-full">
+      <p className="pblack flex-grow pl-4 !font-normal">
+        <strong>{note.notes}</strong>
+      </p>
+      <div className="flex items-center gap-6"> {/* Added gap between createdOn and icons */}
+        <p className="para !font-normal">{note.createdOn}</p>
+        <div className="flex items-center gap-3">
+        {/* <TiPin
+                  onClick={() => handlePinClick(note.jobResumeNoteId)}
+                  style={{ color: selectedNoteId === note.jobResumeNoteId && isPinned === 1 ? 'blue' : 'gray' }}
+                />  */}
+          <FaRegEdit onClick={() => handleEditClick(note.jobResumeNoteId)} />
+        </div>
+      </div>
+    </div>
+  </div>
+))}
+</div>
       </div>
     </div>
   );

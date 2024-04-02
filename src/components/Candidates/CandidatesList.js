@@ -34,13 +34,13 @@ const CandidatesList = () => {
         {
           id: 3,
           title: "JOB",
-          value: "jobDetail",
+          value: "jobTitle",
         },
 
         {
           id: 4,
           title: "STAGE",
-          value: "candidateStage",
+          value: "stageName",
          
         },
         {
@@ -52,6 +52,13 @@ const CandidatesList = () => {
         },
         {
           id: 6,
+
+          title: "Status",
+          value: "currentStatus",
+         
+        },
+        {
+          id: 7,
           title: "APPLIED DATE",
           value: "createdOn",
         },

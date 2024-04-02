@@ -329,8 +329,8 @@ const formik1 = useFormik({
             jobStatus: "Draft",
             createdBy: userid,
             noOfVaccancies: e.noOfVaccancies,
-            questionnaireTemplateId:e.questionnaireTemplateId,
-            evaluationTemplateId:e.evaluationTemplateId,
+            questionnaireTemplateId:e.questionnaireTemplateId||null,
+            evaluationTemplateId:e.evaluationTemplateId||null,
 
           });
           setJobId(response.result.insertedId);
@@ -376,8 +376,8 @@ const formik1 = useFormik({
             workFlowId: null,
             noOfVaccancies: e.noOfVaccancies,
             modifiedBy: userid,
-            questionnaireTemplateId:e.questionnaireTemplateId,
-            evaluationTemplateId:e.evaluationTemplateId,
+            questionnaireTemplateId:e.questionnaireTemplateId||null,
+            evaluationTemplateId:e.evaluationTemplateId||null,
 
           });
     
@@ -2122,7 +2122,7 @@ impactful, accurate, and personalized to your company</p>
                     padding={false}
                     toggleBtn={false}
                     click={() => {
-                      setPresentage(1.4);
+                      setPresentage(4.1);
                     }}
                     tableshow={true}
                     initialExpanded={true}
@@ -2176,7 +2176,9 @@ impactful, accurate, and personalized to your company</p>
         <tr>
           <td>
             <CheckBoxInput
+            
               change={(isChecked, userId, roleId) => {
+                setPresentage(3.4);
                 if (isChecked) {
                   setSelectedUserIds((prevState) => [...prevState, userId]);
                   setselectedemployee((prevState) => [
@@ -2250,23 +2252,26 @@ impactful, accurate, and personalized to your company</p>
                     padding={false}
                     toggleBtn={false}
                     click={() => {
-                      setPresentage(1.4);
+                      setPresentage(4.1);;
                     }}
                     initialExpanded={true}
                   >
                     <div className='flex justify-between'>
                 <TabsNew tabs={tabs}/>
                 <div className="flex items-center">
-            <input
+            {/* <input
               id={`selectAll`}
               name={`selectAll`}
               type="checkbox"
               className="h-4 w-4 rounded border text-indigo-600 focus:ring-indigo-600 mr-2"
-              onClick={() => handleDivClick(index)}
-            />
-            {selectedCount > 0 && (
+              onClick={() => {handleDivClick(index)
+                setPresentage(5.5);
+              }
+              }
+            /> */}
+            {/* {selectedCount > 0 && (
               <span className="mr-2 h6">{`Selected ${selectedCount} portal `}</span>
-            )}
+            )} */}
           </div>
                 </div>
                 <div className="grid gap-6 lg:grid-cols-6 ">
@@ -2302,7 +2307,7 @@ impactful, accurate, and personalized to your company</p>
             type="checkbox"
             className="h-4 w-4 rounded border text-indigo-600 focus:ring-indigo-600 absolute top-4 right-4"
             onChange={() => {handleCheckboxChange(index)
-            setPresentage(3.4)
+              setPresentage(4.8);
           }
             }
             style={{ borderColor: "red" }}

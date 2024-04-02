@@ -13,10 +13,11 @@ import { duration, eventType } from "../../common/DataArrays";
 import TextArea from "../../common/TextArea";
 import MultiSelect from "../../common/MultiSelect";
 import { PiDotsThreeOutlineFill } from "react-icons/pi";
-import {getAllRecruitmentJobResumesNotes,insertOrUpdateRecruitmentJobResumesNoteWithResumeId,getAllRecruitmentJobResumesEvents, saveRecruitmentJobResumesEvent,getAllRecruitmentUsers } from "../../Api1";
+import {getRecruitmentJobResumesNoteById,updateRecruitmentJobResumesNote,getAllRecruitmentJobResumesNotes,saveRecruitmentJobResumesNote,getAllRecruitmentJobResumesEvents, saveRecruitmentJobResumesEvent,getAllRecruitmentUsers } from "../../Api1";
 import { Link,useParams,useLocation } from "react-router-dom";
 import {Formik, useFormik } from "formik";
 import {notification} from "antd"
+import { FaRegEdit } from "react-icons/fa";
 const tabData = [
   {
     id: 9,
@@ -42,6 +43,13 @@ const Events = () => {
   const[eventList,seteventList]=useState([])
   const[jobId,setJobId] = useState(null)
   const[notes,setnotes]= useState("")
+  const [selectedNoteId, setSelectedNoteId] = useState(null);
+  const [isPinned, setIsPinned] = useState(0);
+  const handleEditClick = (jobResumeNoteId) => {
+    setSelectedNoteId(jobResumeNoteId);
+    getnotesbyId(jobResumeNoteId)
+    // You can perform any additional actions here, such as opening a modal or navigating to another page.
+  }; //
 
   useEffect(() => {
     if (state && state.jobID) {
@@ -78,7 +86,7 @@ const Events = () => {
    )
 
    console.log(response)
-   seteventList(response)
+   seteventList(response.result)
 
    }catch(errro){
     console.log(errro)
@@ -97,25 +105,38 @@ const Events = () => {
     },
     onSubmit: async (e)=>{
       try {
-        const response = await insertOrUpdateRecruitmentJobResumesNoteWithResumeId({
+        if(!selectedNoteId){
+        const response = await saveRecruitmentJobResumesNote({
          jobId:jobId,
          resumeId:resumeId,
          notes:e.notes,
          createdBy:null,
         })
         console.log(response)
+        getnotes()
+      }else{
+        const response= await updateRecruitmentJobResumesNote({
+          id:selectedNoteId,
+          jobId:jobId,
+          resumeId:resumeId,
+          notes:e.notes,
+          isPinned:isPinned,
+          modifiedBy:null
+        })
+        console.log(response)
+        getnotes()
+      }
       }catch(error){
         console.log(error)
       }
     }
   })
-  const getnotes = async()=>{
+ const getnotes = async()=>{
     try{
      const response = await getAllRecruitmentJobResumesNotes({resumeId:resumeId})
      console.log(response)
-     setnotes(response.result[0].notes)
-     const data = response.result[0]
-     formik.setFieldValue("notes",data.notes)
+     setnotes(response.result)
+    
     }catch(error){
       console.log(error)
     }
@@ -124,7 +145,18 @@ const Events = () => {
     getnotes()
     console.log(notes)
     
-  },[])
+  },[resumeId])
+
+  const getnotesbyId = async(jobResumeNoteId)=>{
+    try{
+    const response = await getRecruitmentJobResumesNoteById({id:jobResumeNoteId})
+    console.log(response);
+    formik.setFieldValue('notes',response.result[0].notes)
+    }catch(error){
+      console.log(error)
+    }
+
+  }
   
 
   return (
@@ -165,6 +197,27 @@ const Events = () => {
             <ButtonClick buttonName="Save" BtnType="primary"  handleSubmit={formik.handleSubmit}/>
           </div>
         </div>
+        <div className="rounded-lg bg-white dark:bg-secondaryDark p-1.5 ">
+        {notes && notes.map((note, index) => (
+  <div className="relative flex pb-6" key={index}>
+    <div className="flex items-center justify-between w-full">
+      <p className="pblack flex-grow pl-4 !font-normal">
+        <strong>{note.notes}</strong>
+      </p>
+      <div className="flex items-center gap-6"> {/* Added gap between createdOn and icons */}
+        <p className="para !font-normal">{note.createdOn}</p>
+        <div className="flex items-center gap-3">
+        {/* <TiPin
+                  onClick={() => handlePinClick(note.jobResumeNoteId)}
+                  style={{ color: selectedNoteId === note.jobResumeNoteId && isPinned === 1 ? 'blue' : 'gray' }}
+                />  */}
+          <FaRegEdit onClick={() => handleEditClick(note.jobResumeNoteId)} />
+        </div>
+      </div>
+    </div>
+  </div>
+))}
+</div>
       </div>
     </div>
   );

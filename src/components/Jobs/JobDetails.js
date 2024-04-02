@@ -42,6 +42,7 @@ import { ColumnChooserSelection } from "devextreme-react/data-grid";
 import JobCard from "../common/JobCard";
 import FlexCol from "../common/FlexCol";
 import TableAnt from "../common/TableAnt";
+import { RxDotFilled } from "react-icons/rx";
 
 const customColors = [
   "#00B23C",
@@ -62,6 +63,7 @@ const JobDetails = () => {
   const [viewType, setViewType] = useState("grid");
   const {jobId} = useParams();
   const [jobTitle,setjobTitle]=useState("")
+  const[Jobdetails,setJobdetails]=useState([])
    // Initial view type
     const breadcrumbItems = [{ label: "Jobs",
     url:"/AllJobs" }, { label: jobTitle }];
@@ -92,7 +94,8 @@ const JobDetails = () => {
       console.log(response);
   
      
-        setjobTitle(response.result[0].jobTitle); // Access jobTitle from the first object in the array
+        setjobTitle(response.result[0].jobTitle);
+        setJobdetails(response.result[0]) // Access jobTitle from the first object in the array
   
         // Update the breadcrumb label to include the job title
         breadcrumbItems[breadcrumbItems.length - 1].label = jobTitle;
@@ -155,67 +158,67 @@ const JobDetails = () => {
       )}
       {/* FILTER SECTON AND DETAILS  */}
       <div className="flex flex-col items-baseline justify-between gap-4 lg:items-center lg:gap-0 lg:flex-row">
-        <div className="flex flex-wrap items-center gap-7">
-          <div className="px-2.5 py-1 bg-emerald-500 bg-opacity-10 dark:bg-opacity-50 rounded-[18px] gap-[7px] vhcenter">
-            <div className="w-2.5 h-2.5 relative bg-emerald-500 rounded-[5px] border border-white shrink-0" />
-            <p className="para dark:text-white !font-normal">Open</p>
-          </div>
-          <div className="gap-2 vhcenter ">
-            <PiUsersThreeFill size={20} className="text-[#DFDFDF]" />
-            <p className="para !text-black dark:!text-white !font-normal">
-              250
-            </p>
-          </div>
-          <div className="gap-2 vhcenter ">
-            <PiTreeStructureFill size={20} className="text-[#DFDFDF]" />
-            <p className="para !text-black dark:!text-white !font-normal">
-              General
-            </p>
-          </div>
-          <div className="gap-2 vhcenter ">
-            <PiCalendarFill size={20} className="text-[#DFDFDF]" />
-            <p className="para !text-black dark:!text-white !font-normal">
-              Jan 12, 2024
-            </p>
-          </div>
-          <div className="gap-2 vhcenter ">
-            <PiNavigationArrowFill size={20} className="text-[#DFDFDF]" />
-            <p className="para !text-black dark:!text-white !font-normal">
-              Remote
-            </p>
-          </div>
-          <div className="gap-2 vhcenter ">
-            <PiMapPinFill size={20} className="text-[#DFDFDF]" />
-            <p className="para !text-black dark:!text-white !font-normal">
-              Dubai,UAE
-            </p>
-          </div>
-          <div className="vhcenter gap-2.5">
-            <img
-              className="w-6 h-6 border-2 rounded-full border-stone-50"
-              src={User}
-            />
-            <div className="para !text-black dark:!text-white !font-normal">
-              Cody Fisher
-            </div>
-          </div>
-        </div>
-        <div className="flex items-center gap-4 ">
-          <SearchBox
-            className="text-[#667085]"
-            placeholder="Search candidate"
-          />
-          <FilterBtn colors={customColors} />
-          <Radio.Group
-            options={gridListoptions}
-            onChange={onChangeView}
-            value={viewType}
-            optionType="button"
-            className="flex items-center py-1.5 h-full"
-            size={isSmallScreen ? "" : "large"}
-          />
-        </div>
+  <div className="flex flex-wrap items-center gap-7">
+    <div className={`px-2.5 py-1 ${Jobdetails.jobStatus === "Open" ? "bg-emerald-500 bg-opacity-10 dark:bg-opacity-50" : "bg-rose-500 bg-opacity-10 dark:bg-opacity-50"} rounded-[18px] gap-[7px] vhcenter`}>
+      <div className="w-2.5 h-2.5 relative bg-emerald-500 rounded-[5px] border border-white shrink-0" />
+      <p className="para dark:text-white !font-normal">{Jobdetails.jobStatus}</p>
+    </div>
+    <div className="gap-2 vhcenter">
+      <PiUsersThreeFill size={20} className="text-[#DFDFDF]" />
+      <p className="para !text-black dark:!text-white !font-normal">
+        {Jobdetails.noOfApplicants}
+      </p>
+    </div>
+    <div className="gap-2 vhcenter">
+      <PiTreeStructureFill size={20} className="text-[#DFDFDF]" />
+      <p className="para !text-black dark:!text-white !font-normal">
+        {Jobdetails.jobType}
+      </p>
+    </div>
+    <div className="gap-2 vhcenter">
+      <PiCalendarFill size={20} className="text-[#DFDFDF]" />
+      <p className="para !text-black dark:!text-white !font-normal">
+        {Jobdetails.createdOn}
+      </p>
+    </div>
+    <div className="gap-2 vhcenter">
+      <PiNavigationArrowFill size={20} className="text-[#DFDFDF]" />
+      <p className="para !text-black dark:!text-white !font-normal">
+        {Jobdetails.workLocationType}
+      </p>
+    </div>
+    <div className="gap-2 vhcenter">
+      <PiMapPinFill size={20} className="text-[#DFDFDF]" />
+      <p className="para !text-black dark:!text-white !font-normal">
+        {Jobdetails.location}
+      </p>
+    </div>
+    <div className="vhcenter gap-2.5">
+      <img
+        className="w-6 h-6 border-2 rounded-full border-stone-50"
+        src={User}
+      />
+      <div className="para !text-black dark:!text-white !font-normal">
+        {Jobdetails.jobCreatedBy}
       </div>
+    </div>
+  </div>
+  <div className="flex items-center gap-4 ">
+    <SearchBox
+      className="text-[#667085]"
+      placeholder="Search candidate"
+    />
+    <FilterBtn colors={customColors} />
+    <Radio.Group
+      options={gridListoptions}
+      onChange={onChangeView}
+      value={viewType}
+      optionType="button"
+      className="flex items-center py-1.5 h-full"
+      size={isSmallScreen ? "" : "large"}
+    />
+  </div>
+</div>
 
       <Alert
         message={customMessage}
@@ -264,6 +267,8 @@ const DragView = () => {
           id:candidate.resumeId,
           name:candidate.candidateName,
           image:candidate.image,
+          date:candidate.createdOn,
+          currentStatus:candidate.currentStatus
         }))
       })));
        
@@ -669,7 +674,7 @@ const CardItem = ({ data, index, color,jobId }) => {
     <Draggable
       index={index}
       draggableId={data.id.toString()}
-      isDragDisabled={bookmarkState[data.id]}
+      isDragDisabled={parseInt(data.currentStatus) !== 0}
     >
       {(provided, snapshot) => (
         <div
@@ -686,9 +691,9 @@ const CardItem = ({ data, index, color,jobId }) => {
             snapshot.isDragging &&
             "shadow-dragShadow dark:shadow-dragShadowDark"
           } p-3 mb-1.5 bg-white border rounded-md ${
-            bookmarkState[data.id] ? " cursor-default" : "cursor-grab"
+            parseInt(data.currentStatus) !== 0 ? " cursor-default" : "cursor-grab"
           }  border-borderlight dark:border-borderdark dark:bg-secondaryDark dark:text-white`}
-          onClick={navigateToCandidateProfile}
+          
         >
           <div className="flex flex-col gap-1 2xl:gap-2">
             <div className="flex items-center gap-3">
@@ -697,6 +702,7 @@ const CardItem = ({ data, index, color,jobId }) => {
                 style={{
                   backgroundColor: `${data?.image ? "" : color}`,
                 }}
+                onClick={navigateToCandidateProfile}
               >
                 {data?.image ? (
                   <img
@@ -710,7 +716,7 @@ const CardItem = ({ data, index, color,jobId }) => {
                   </span>
                 )}
               </div>
-              <p className="!font-semibold h6 !text-black dark:!text-white">
+              <p onClick={navigateToCandidateProfile} className="!font-semibold h6 !text-black dark:!text-white">
                 {" "}
                 {data?.name && data?.name}
               </p>
@@ -719,9 +725,33 @@ const CardItem = ({ data, index, color,jobId }) => {
               <div className="flex items-center gap-2">
                 <GoClock className="text-lg 2xl:text-2xl opacity-30" />
                 <p className="para !text-black !font-normal dark:!text-white">
-                  4d ago
+                  {data?.date}
                 </p>
               </div>
+              <div
+  key={data?.currentStatus}
+  className={`${parseInt(data?.currentStatus) === 0
+    ? "bg-yellow-100 text-yellow-600"
+    : parseInt(data?.currentStatus) === 1
+    ? "bg-emerald-100 text-emerald-600"
+    : "bg-rose-100 text-rose-600"
+  } rounded-full pr-2 py-[2px] w-fit font-medium text-[10px] 2xl:text-sm vhcenter flex-nowrap`}
+ 
+>
+  <RxDotFilled
+    className={`${parseInt(data?.currentStatus) === 0
+      ? "text-yellow-600"
+      : parseInt(data?.currentStatus) === 1
+      ? "text-emerald-600"
+      : "text-rose-600"
+    } text-base 2xl:text-lg`}
+  />
+  {parseInt(data?.currentStatus) === 0
+    ? "Under Process"
+    : parseInt(data?.currentStatus) === 1
+    ? "Hired"
+    : "Disqualified"}
+</div>
               <div className="flex items-center gap-2">
                 <Tooltip
                   title={`${
@@ -732,19 +762,7 @@ const CardItem = ({ data, index, color,jobId }) => {
                   color={color}
                   key={color}
                 >
-                  <span
-                    className={` p-1 ${
-                      bookmarkState[data.id]
-                        ? "text-[#15A61B]"
-                        : "text-[#DFDFDF]"
-                    } cursor-pointer`}
-                    onClick={(e) => {
-                      e.preventDefault();
-                      toggleBookmark(data.id);
-                    }}
-                  >
-                    <PiBookmarkSimpleFill className="text-xl" />
-                  </span>
+       
                 </Tooltip>
 
                 <Dropdown

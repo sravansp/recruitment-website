@@ -7,7 +7,7 @@ import TextArea from '../common/TextArea';
 import FlexCol from '../common/FlexCol';
 import { notification } from 'antd';
 import Dropdown from '../common/Dropdown';
-import { addRecruitmentUserWithRoleMapping,getAllEmployee,getAllRecruitmentRoles } from '../Api1';
+import {getRecruitmentUserById, addRecruitmentUserWithRoleMapping,getAllEmployee,getAllRecruitmentRoles } from '../Api1';
 import { Value } from 'devextreme-react/range-selector';
 import { Formik, useFormik } from 'formik';
 
@@ -28,6 +28,7 @@ const Addmembers = ({
         const[role,setRole]=useState([])
         const[EmployeeName,setEmployeeName] = useState("")
         const[EmployeeEmail,setEmployeeEmail] =useState("")
+        console.log(updateId);
         useEffect(() => {
           setCompanyId(localStorage.getItem("companyId"));
           
@@ -140,6 +141,19 @@ const formik = useFormik({
           }
         }
       })
+
+      const getUserByid= async()=>{
+        try{
+         const response = await getRecruitmentUserById({id:updateId})
+        console.log(response)         
+        }catch(error){
+          console.log(error)
+        }
+        
+      }
+      useEffect(()=>{
+        getUserByid()
+      },[])
       
   return (
     <DrawerPop

@@ -74,8 +74,8 @@
                         <React.Fragment >
                            <b>{data[key].prefix}</b>
                            {/* <b>{data[key].suffix}</b> */}
-                           <b>{data[key].isPositive}</b>
-                           <b>{data[key].message}</b>
+                           {/* <b>{data[key].isPositive}</b>
+                           <b>{data[key].message}</b> */}
                         </React.Fragment>
                    
                     </h1>

@@ -800,8 +800,8 @@ export const getAllRecruitmentJobResumesEvents = async () => {
   return await apiRequest(action, method, kwargs);
 };
 
-export const insertOrUpdateRecruitmentJobResumesNoteWithResumeId = async (data) => {
-  const action = "insertOrUpdateRecruitmentJobResumesNoteWithResumeId";
+export const saveRecruitmentJobResumesNote = async (data) => {
+  const action = "saveRecruitmentJobResumesNote";
 
   const method = "POST";
 
@@ -960,6 +960,36 @@ export const getRecruitmentJobDescriptionTemplateById = async (data) => {
 };
 export const updateRecruitmentJobDescriptionTemplate = async (data) => {
   const action = "updateRecruitmentJobDescriptionTemplate";
+
+  const method = "POST";
+
+  const kwargs = data;
+  console.log("API Request Data:", { action, method, kwargs })
+
+  return await apiRequest(action, method, kwargs);
+};
+export const getRecruitmentJobResumesNoteById = async (data) => {
+  const action = "getRecruitmentJobResumesNoteById";
+
+  const method = "POST";
+
+  const kwargs = data;
+  console.log("API Request Data:", { action, method, kwargs })
+
+  return await apiRequest(action, method, kwargs);
+};
+export const updateRecruitmentJobResumesNote = async (data) => {
+  const action = "updateRecruitmentJobResumesNote";
+
+  const method = "POST";
+
+  const kwargs = data;
+  console.log("API Request Data:", { action, method, kwargs })
+
+  return await apiRequest(action, method, kwargs);
+};
+export const getRecruitmentUserById = async (data) => {
+  const action = "getRecruitmentUserById";
 
   const method = "POST";
 

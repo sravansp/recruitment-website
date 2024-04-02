@@ -311,7 +311,36 @@ const TableAnt = ({
                   />
                   {parseInt(record) === 1 ? "Active" : "Inactive"}
                 </div>
-              ) : each.flexColumn === true ? (
+              ): each.value === "currentStatus" ? (
+                <div
+                  key={text}
+                  className={`${parseInt(record) === 0
+                      ? " bg-yellow-100 text-yellow-600"
+                      : parseInt(record) === 1
+                        ? " bg-emerald-100 text-emerald-600"
+                        : " bg-rose-100 text-rose-600"
+                    } rounded-full pr-2 py-[2px] w-fit font-medium text-[10px] 2xl:text-sm vhcenter flex-nowrap`}
+                  onClick={() => {
+                    !viewOutside &&
+                    handleModalOpen(text, header[0]?.[tabValue || path]);
+                    console.log(tabValue, path, "kiok");
+                  }}
+                >
+                  <RxDotFilled
+                    className={`${parseInt(record) === 0
+                        ? "text-yellow-600"
+                        : parseInt(record) === 1
+                          ? "text-emerald-600"
+                          : "text-rose-600"
+                      } text-base 2xl:text-lg`}
+                  />
+                  {parseInt(record) === 0
+                    ? "Under Process"
+                    : parseInt(record) === 1
+                      ? "Hired"
+                      : "Disqualified"}
+                </div>
+              )  : each.flexColumn === true ? (
                 <div className="flex items-center gap-4"
                   onClick={() => {
                     !viewOutside &&

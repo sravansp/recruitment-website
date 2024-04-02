@@ -2,7 +2,7 @@ import React, { useState,useEffect } from "react";
 import ButtonClick from "../../common/Button";
 import TextEditor from "../../common/TextEditor/TextEditor";
 import TabsNew from "../../common/TabsNew";
-import {getRecruitmentLetterTemplateById,saveRecruitmentJobResumesOfferLetter,getAllRecruitmentLetterTemplates,getAllRecruitmentJobResumesNotes,insertOrUpdateRecruitmentJobResumesNoteWithResumeId } from "../../Api1";
+import {getRecruitmentJobResumesNoteById,updateRecruitmentJobResumesNote,getRecruitmentLetterTemplateById,saveRecruitmentJobResumesOfferLetter,getAllRecruitmentLetterTemplates,getAllRecruitmentJobResumesNotes,saveRecruitmentJobResumesNote } from "../../Api1";
 import { EditorState, convertToRaw, convertFromRaw, ContentState } from 'draft-js';
 import { format } from 'date-fns';
 import {
@@ -20,6 +20,7 @@ import { Link,useParams,useLocation } from "react-router-dom";
 import {Formik, useFormik } from "formik";
 import Dropdown from "../../common/Dropdown";
 import { Button, Card, Space, notification } from "antd";
+import { FaRegEdit } from "react-icons/fa";
 
 
 const Offers = () => {
@@ -32,6 +33,14 @@ const Offers = () => {
   const { state } = useLocation();
   const [LetterTemplateId,setLetterTemplateId] =useState("")
   const[Letterdata,setLetterdata] = useState([])
+  const [selectedNoteId, setSelectedNoteId] = useState(null);
+  const [isPinned, setIsPinned] = useState(0);
+
+  const handleEditClick = (jobResumeNoteId) => {
+    setSelectedNoteId(jobResumeNoteId);
+    getnotesbyId(jobResumeNoteId)
+    // You can perform any additional actions here, such as opening a modal or navigating to another page.
+  }; 
  
   useEffect(() => {
     if (state && state.jobID) {
@@ -143,27 +152,67 @@ const openNotification = (type, message, description) => {
 
  }
 
-   const formik = useFormik ({
-    initialValues :{
-      jobId:"",
-        resumeId:"",
-        notes:"",
-        createdBy: ""
-    },
-    onSubmit: async (e)=>{
-      try {
-        const response = await insertOrUpdateRecruitmentJobResumesNoteWithResumeId({
-         jobId:jobId,
-         resumeId:resumeId,
-         notes:e.notes,
-         createdBy:null,
-        })
-        console.log(response)
-      }catch(error){
-        console.log(error)
-      }
+ const formik = useFormik ({
+  initialValues :{
+    jobId:"",
+      resumeId:"",
+      notes:"",
+      createdBy: ""
+  },
+  onSubmit: async (e)=>{
+    try {
+      if(!selectedNoteId){
+      const response = await saveRecruitmentJobResumesNote({
+       jobId:jobId,
+       resumeId:resumeId,
+       notes:e.notes,
+       createdBy:null,
+      })
+      console.log(response)
+      getnotes()
+    }else{
+      const response= await updateRecruitmentJobResumesNote({
+        id:selectedNoteId,
+        jobId:jobId,
+        resumeId:resumeId,
+        notes:e.notes,
+        isPinned:isPinned,
+        modifiedBy:null
+      })
+      console.log(response)
+      getnotes()
     }
-  })
+    }catch(error){
+      console.log(error)
+    }
+  }
+})
+const getnotes = async()=>{
+  try{
+   const response = await getAllRecruitmentJobResumesNotes({resumeId:resumeId})
+   console.log(response)
+   setnotes(response.result)
+  
+  }catch(error){
+    console.log(error)
+  }
+}
+useEffect(()=>{
+  getnotes()
+  console.log(notes)
+  
+},[resumeId])
+
+const getnotesbyId = async(jobResumeNoteId)=>{
+  try{
+  const response = await getRecruitmentJobResumesNoteById({id:jobResumeNoteId})
+  console.log(response);
+  formik.setFieldValue('notes',response.result[0].notes)
+  }catch(error){
+    console.log(error)
+  }
+
+}
    const getLetterTemplate = async ()=>{
     try {
        const response = await getAllRecruitmentLetterTemplates()
@@ -198,22 +247,6 @@ const openNotification = (type, message, description) => {
    const handleEditorChange = (content) => {
     setContent(content);
   };
-  const getnotes = async()=>{
-     try{
-      const response = await getAllRecruitmentJobResumesNotes({resumeId:resumeId})
-      console.log(response)
-      setnotes(response.result[0].notes)
-      const data = response.result[0]
-      formik.setFieldValue("notes",data.notes)
-     }catch(error){
-       console.log(error)
-     }
-   }
-   useEffect(()=>{
-     getnotes()
-     console.log(notes)
-     
-   },[])
   
 
   return (
@@ -307,6 +340,27 @@ const openNotification = (type, message, description) => {
             <ButtonClick buttonName="Save" BtnType="primary" handleSubmit={formik.handleSubmit}/>
           </div>
         </div>
+        <div className="rounded-lg bg-white dark:bg-secondaryDark p-1.5 ">
+        {notes && notes.map((note, index) => (
+  <div className="relative flex pb-6" key={index}>
+    <div className="flex items-center justify-between w-full">
+      <p className="pblack flex-grow pl-4 !font-normal">
+        <strong>{note.notes}</strong>
+      </p>
+      <div className="flex items-center gap-6"> {/* Added gap between createdOn and icons */}
+        <p className="para !font-normal">{note.createdOn}</p>
+        <div className="flex items-center gap-3">
+        {/* <TiPin
+                  onClick={() => handlePinClick(note.jobResumeNoteId)}
+                  style={{ color: selectedNoteId === note.jobResumeNoteId && isPinned === 1 ? 'blue' : 'gray' }}
+                />  */}
+          <FaRegEdit onClick={() => handleEditClick(note.jobResumeNoteId)} />
+        </div>
+      </div>
+    </div>
+  </div>
+))}
+</div>
       </div>
       {contextHolder}
     </div>

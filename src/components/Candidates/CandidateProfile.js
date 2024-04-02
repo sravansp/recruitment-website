@@ -6,7 +6,8 @@ import { useMediaQuery } from "react-responsive";
 import copy from "clipboard-copy";
 import { Menu, Space } from "antd";
 import { useTranslation } from "react-i18next";
-import { updateRecruitmentJobResumesMapping,getResumeJobDetails,getRecruitmentResumeById,getAllRecruitmentJobWorkFlowDetails,saveRecruitmentJobResumesStage } from "../Api1";
+import {Formik, useFormik } from "formik";
+import {getAllRecruitmentJobResumesNotes,updateRecruitmentJobResumesMapping,getResumeJobDetails,getRecruitmentResumeById,getAllRecruitmentJobWorkFlowDetails,saveRecruitmentJobResumesStage } from "../Api1";
 // Icons
 import {
   PiArrowLeftBold,
@@ -30,6 +31,7 @@ import {
   RiMouseLine,
   RiQuestionnaireLine,
   RiSmartphoneLine,
+  RiStickyNoteLine,
   RiSurveyLine,
 } from "react-icons/ri";
 
@@ -44,6 +46,8 @@ import Questionaries from "./CandidateProfileTabs/Questionaries";
 import Offers from "./CandidateProfileTabs/Offers";
 import Events from "./CandidateProfileTabs/Events";
 import { useDispatch, useSelector } from 'react-redux';
+import TextEditor from "../common/TextEditor/TextEditor";
+import { BsFileEarmarkRichtext } from "react-icons/bs";
 
 const items = [
   {
@@ -95,7 +99,13 @@ const handleTabChange = (tabId) => {
   } else if (tabId === 7) {
   }
 };
-
+const onTabChange = (tabId) => {
+  // Do something when the tab changes if needed
+  console.log(`Tab changed to ${tabId}`);
+  if (tabId === 1) {
+  } else if (tabId === 2) {
+  }
+};
 const CandidateProfile = () => {
   const { t } = useTranslation();
   const { state } = useLocation();
@@ -113,8 +123,25 @@ const CandidateProfile = () => {
   const[resumejob,setresumejob]=useState([])
   const[jobResumeMapping,setjobResumeMapping]=useState("")
   const [currentStatus, setCurrentStatus] = useState(0);
+  const[notes,setnotes]= useState("")
   
- 
+ console.log(resumeId)
+ const tabData = [
+  {
+    id: 9,
+    title: "Notes",
+    value: "notes",
+    // content: <Overview />,
+    icon: <RiStickyNoteLine className="text-base" />,
+  },
+  {
+    id: 10,
+    title: "Documents",
+    value: "documents",
+    // content: <ActivityFeed />,
+    icon: <BsFileEarmarkRichtext className="text-base" />,
+  },
+];
   
   useEffect(() => {
     if (state && state.jobID) {
@@ -134,6 +161,8 @@ const handleEmailSelect = (email) => {
   setSelectedEmail(email);
 };
   
+
+
 
 const tabs = [
     {
@@ -349,7 +378,7 @@ const getResumeJob =async ()=>{
       resumeId:resumeId
     }
    )
-   
+   console.log(response);
    
    setSelectedItemLabel(response.result.stageName)
    setjobResumeMapping(response.result.jobResumeMappingId)
@@ -386,6 +415,7 @@ const handleButtonClick = async (status) => {
 
 
   return (
+    
     <div className="flex flex-col gap-6">
       {contextHolder}
       <div className="flex flex-col justify-between lg:flex-row lg:items-center">
@@ -490,7 +520,10 @@ const handleButtonClick = async (status) => {
 ))}
 
       <TabsNew tabs={tabs} onTabChange={handleTabChange} initialTab={1} />
+      
     </div>
+    
+    
   );
 };
 

@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from "react";
 import ButtonClick from "../../common/Button";
 import { BsFileEarmarkRichtext } from "react-icons/bs";
-import { RiHome6Line, RiStickyNoteLine } from "react-icons/ri";
+import { RiHome6Line, RiImage2Fill, RiStickyNoteLine } from "react-icons/ri";
 import TextEditor from "../../common/TextEditor/TextEditor";
 import TabsNew from "../../common/TabsNew";
 import RadioButton from "../../common/RadioButton";
@@ -12,11 +12,12 @@ import { FaCircleMinus, FaThumbsDown, FaThumbsUp } from "react-icons/fa6";
 import { GoStarFill } from "react-icons/go";
 import { RxCrossCircled } from "react-icons/rx";
 import { useParams,useLocation } from "react-router-dom";
-import {getAllRecruitmentJobResumesEvaluations,saveOrUpdateRecruitmentJobResumesEvaluationBatch,insertOrUpdateRecruitmentJobResumesNoteWithResumeId,getAllRecruitmentJobResumesNotes,getRecruitmentEvaluationTemplateById,getRecruitmentJobById} from "../../Api1";
+import {updateRecruitmentJobResumesNote,getRecruitmentJobResumesNoteById,getAllRecruitmentJobResumesEvaluations,saveOrUpdateRecruitmentJobResumesEvaluationBatch,saveRecruitmentJobResumesNote,getAllRecruitmentJobResumesNotes,getRecruitmentEvaluationTemplateById,getRecruitmentJobById} from "../../Api1";
 import { Formik, useFormik } from 'formik';
 import TextArea from "../../common/TextArea";
 import CheckBoxInput from "../../common/CheckBoxInput";
 import FormInput from "../../common/FormInput";
+import { FaRegEdit } from "react-icons/fa";
 
 
 
@@ -27,6 +28,13 @@ const Evaluations = () => {
   const { state } = useLocation();
   const[jobId,setJobId]=useState(null)
   const{resumeId} = useParams()
+  const [selectedNoteId, setSelectedNoteId] = useState(null);
+  const [isPinned, setIsPinned] = useState(0);
+  const handleEditClick = (jobResumeNoteId) => {
+    setSelectedNoteId(jobResumeNoteId);
+    getnotesbyId(jobResumeNoteId)
+    // You can perform any additional actions here, such as opening a modal or navigating to another page.
+  };
   const onTabChange = (tabId) => {
     // Do something when the tab changes if needed
     console.log(`Tab changed to ${tabId}`);
@@ -241,26 +249,38 @@ const handleRadioChange = (e, index) => {
     },
     onSubmit: async (e)=>{
       try {
-        const response = await insertOrUpdateRecruitmentJobResumesNoteWithResumeId({
+        if(!selectedNoteId){
+        const response = await saveRecruitmentJobResumesNote({
          jobId:jobId,
          resumeId:resumeId,
          notes:e.notes,
          createdBy:null,
         })
         console.log(response)
+        getnotes()
+      }else{
+        const response= await updateRecruitmentJobResumesNote({
+          id:selectedNoteId,
+          jobId:jobId,
+          resumeId:resumeId,
+          notes:e.notes,
+          isPinned:isPinned,
+          modifiedBy:null
+        })
+        console.log(response)
+        getnotes()
+      }
       }catch(error){
         console.log(error)
       }
     }
   })
-  
   const getnotes = async()=>{
     try{
      const response = await getAllRecruitmentJobResumesNotes({resumeId:resumeId})
      console.log(response)
-     setnotes(response.result[0].notes)
-     const data = response.result[0]
-     formik.setFieldValue("notes",data.notes)
+     setnotes(response.result)
+    
     }catch(error){
       console.log(error)
     }
@@ -269,8 +289,19 @@ const handleRadioChange = (e, index) => {
     getnotes()
     console.log(notes)
     
-  },[])
+  },[resumeId])
 
+  const getnotesbyId = async(jobResumeNoteId)=>{
+    try{
+    const response = await getRecruitmentJobResumesNoteById({id:jobResumeNoteId})
+    console.log(response);
+    formik.setFieldValue('notes',response.result[0].notes)
+    }catch(error){
+      console.log(error)
+    }
+
+  }
+  
  
   const getevaluation = async ()=>{
     try {
@@ -448,8 +479,9 @@ useEffect(() => {
                 </Radio.Button>
               </Radio.Group>
             </div> */}
-{evaluationList.map((condition, index) => (
-  <div key={index}>
+            {evaluationList.length > 0 ? (
+evaluationList.map((condition, index) => (
+  <><div key={index}>
     <h4>{condition.question}</h4>
     {condition.answerMetaData.map((metadata, idx) => (
       <div key={idx}>
@@ -458,18 +490,15 @@ useEffect(() => {
             options={condition.answerMetaData
               .filter(meta => meta.key === 'Drop-down')
               .flatMap(meta => meta.value.split(','))
-              .map(option => ({ label: option.trim(), value: option.trim() }))
-            }
+              .map(option => ({ label: option.trim(), value: option.trim() }))}
             change={Setdopdownvalue}
-            value={dropdownvalue}
-          />
+            value={dropdownvalue} />
         )}
         {metadata.key === 'Paragraph' && (
           <TextArea
             rows={4}
             change={setTextAreavalue}
-            value={textAreaValue}
-          />
+            value={textAreaValue} />
         )}
         {metadata.key === 'Checkboxes' && (
           <div>
@@ -478,8 +507,7 @@ useEffect(() => {
                 <Checkbox
                   value={option.trim()}
                   checked={selectedCheckboxes.includes(option.trim())}
-                  onChange={() => handleCheckboxChange(option.trim())}
-                />
+                  onChange={() => handleCheckboxChange(option.trim())} />
                 {option.trim()}
               </label>
             ))}
@@ -488,8 +516,7 @@ useEffect(() => {
         {metadata.key === 'ShortAnswer' && (
           <FormInput
             change={setForminputValue}
-            value={forminputvalue}
-          />
+            value={forminputvalue} />
         )}
         {metadata.key === 'MultipleChoice' && (
           <div>
@@ -508,13 +535,31 @@ useEffect(() => {
       </div>
     ))}
   </div>
-))}
   <div
-                className="flex items-center justify-end gap-2.5 p-1.5 mt-[18.88px] rounded-lg"
-                // style={{ backgroundColor: `${primaryColor}10` }}
-              >
-                <ButtonClick handleSubmit={handleSubmit} buttonName="save" BtnType="primary" />
+    className="flex items-center justify-end gap-2.5 p-1.5 mt-[18.88px] rounded-lg"
+  >
+      <ButtonClick handleSubmit={handleSubmit} buttonName="save" BtnType="primary" />
+    </div></>
+))
+            ):( 
+            <div className="h-full gap-4 vhcenter box-wrapper borderb">
+            <div className="flex flex-col items-center gap-4">
+              <div className="size-11 bg-[#F9FAFB] dark:bg-secondaryDark rounded-full vhcenter">
+                <RiImage2Fill className="text-black text-opacity-50 dark:text-white" />
               </div>
+              <h6 className="h6">You don't have any evaluation now</h6>
+              {/* <p className="para">
+                You can schedule a meeting at any moment you want. Click "Create Event" to set one.
+              </p>
+              <ButtonClick
+                buttonName="Create Event"
+                BtnType="primary"
+                handleSubmit={onCreateEventClick}
+              /> */}
+            </div>
+          </div>
+             )}
+ 
             
           </div>
         </div>
@@ -538,6 +583,27 @@ useEffect(() => {
             <ButtonClick buttonName="Save" BtnType="primary" handleSubmit={formik.handleSubmit} />
           </div>
         </div>
+        <div className="rounded-lg bg-white dark:bg-secondaryDark p-1.5 ">
+        {notes && notes.map((note, index) => (
+  <div className="relative flex pb-6" key={index}>
+    <div className="flex items-center justify-between w-full">
+      <p className="pblack flex-grow pl-4 !font-normal">
+        <strong>{note.notes}</strong>
+      </p>
+      <div className="flex items-center gap-6"> {/* Added gap between createdOn and icons */}
+        <p className="para !font-normal">{note.createdOn}</p>
+        <div className="flex items-center gap-3">
+        {/* <TiPin
+                  onClick={() => handlePinClick(note.jobResumeNoteId)}
+                  style={{ color: selectedNoteId === note.jobResumeNoteId && isPinned === 1 ? 'blue' : 'gray' }}
+                />  */}
+          <FaRegEdit onClick={() => handleEditClick(note.jobResumeNoteId)} />
+        </div>
+      </div>
+    </div>
+  </div>
+))}
+</div>
       </div>
       {contextHolder}
     </div>

@@ -141,15 +141,10 @@ export default function MultiSelect({
       )}
  
 
+      
       <Space
         direction="vertical"
-        style={{ width: "100%" }}
-        className="mt-[6px]"
-        status={`  ${error && "error"}`}
-      ></Space>
-      <Space
-        direction="vertical"
-        style={{ width: "100%" }}
+        style={{ width: "100%", marginBottom: "16px" }}
         className="mt-[6px]"
         status={`  ${error && "error"}`}
       >
@@ -181,27 +176,32 @@ export default function MultiSelect({
           <span className="text-[10px] pl-1">{error}</span>
         </p>
       )}
-       <div className="flex items-center gap-3 selectedAtendies">
-       {selectedValues.length > 0 && (
-        <div className="flex ">
-          {selectedValues.map((selected) => (
-            <div key={selected.value} className="mr-2">
-                       <div className="relative">
-              <img
-                src="https://via.placeholder.com/60x60"
-                alt=""
-                className="rounded-full size-12"
-              />
-              <div className="absolute top-0 right-0 text-white rounded-full cursor-pointer deleteImg size-4 vhcenter bg-slate-500 ring-2 ring-white">
-                <RiCloseLine/>
+      <div className="flex items-center gap-3 selectedAttendies">
+      {selectedValues.length > 0 && (
+        <div className="flex">
+          {selectedValues.map((selected) => {
+            const fullNameParts = selected.label.split(' ');
+            let displayName = fullNameParts[0]; // First name
+            if (fullNameParts.length > 2) {
+              displayName += ` ${fullNameParts[1]}`; // Middle name
+            }
+            return (
+              <div key={selected.value} className="mr-2">
+                <div className="relative">
+                  <img
+                    src="https://via.placeholder.com/60x60"
+                    alt=""
+                    className="rounded-full size-12"
+                  />
+                  
+                  <span title={selected.label}>{displayName}</span>
+                </div>
               </div>
-              {selected.label}
-            </div>
-            </div>
-          ))}
+            );
+          })}
         </div>
       )}
-      </div>
+    </div>
     </div>
   );
 }

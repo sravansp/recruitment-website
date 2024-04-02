@@ -3,7 +3,7 @@ import TabsNew from "../../common/TabsNew";
 import TextEditor from "../../common/TextEditor/TextEditor";
 import ButtonClick from "../../common/Button";
 import { useParams,useLocation } from "react-router-dom";
-import {insertOrUpdateRecruitmentJobResumesNoteWithResumeId,getAllRecruitmentJobResumesNotes,getAllRecruitmentJobResumeActivities} from "../../Api1" 
+import {getRecruitmentJobResumesNoteById,updateRecruitmentJobResumesNote,saveRecruitmentJobResumesNote,getAllRecruitmentJobResumesNotes,getAllRecruitmentJobResumeActivities} from "../../Api1" 
 import {Formik, useFormik } from "formik";
 import {
   RiArticleLine,
@@ -12,6 +12,7 @@ import {
   RiStickyNoteLine,
 } from "react-icons/ri";
 import { BsFileEarmarkRichtext } from "react-icons/bs";
+import { FaRegEdit } from "react-icons/fa";
 
 // const candidateStatus = [
 //   {
@@ -83,7 +84,13 @@ const ActivityFeed = () => {
   const[candidateStatus,setcandidateStatus]=useState([])
   const[jobId,setJobId] = useState(null)
   const { state } = useLocation();
-
+  const [selectedNoteId, setSelectedNoteId] = useState(null);
+  const [isPinned, setIsPinned] = useState(0);
+  const handleEditClick = (jobResumeNoteId) => {
+    setSelectedNoteId(jobResumeNoteId);
+    getnotesbyId(jobResumeNoteId)
+    // You can perform any additional actions here, such as opening a modal or navigating to another page.
+  };
   useEffect(() => {
     if (state && state.jobID) {
         setJobId(state.jobID);
@@ -127,33 +134,46 @@ const ActivityFeed = () => {
 
 
  const formik = useFormik ({
-     initialValues :{
-       jobId:"",
-         resumeId:"",
-         notes:"",
-         createdBy: ""
-     },
-     onSubmit: async (e)=>{
-       try {
-         const response = await insertOrUpdateRecruitmentJobResumesNoteWithResumeId({
-          jobId:jobId,
-          resumeId:resumeId,
-          notes:e.notes,
-          createdBy:null,
-         })
-         console.log(response)
-       }catch(error){
-         console.log(error)
-       }
-     }
-   })
+  initialValues :{
+    jobId:"",
+      resumeId:"",
+      notes:"",
+      createdBy: ""
+  },
+  onSubmit: async (e)=>{
+    try {
+      if(!selectedNoteId){
+      const response = await saveRecruitmentJobResumesNote({
+       jobId:jobId,
+       resumeId:resumeId,
+       notes:e.notes,
+       createdBy:null,
+      })
+      console.log(response)
+      getnotes()
+    }else{
+      const response= await updateRecruitmentJobResumesNote({
+        id:selectedNoteId,
+        jobId:jobId,
+        resumeId:resumeId,
+        notes:e.notes,
+        isPinned:isPinned,
+        modifiedBy:null
+      })
+      console.log(response)
+      getnotes()
+    }
+    }catch(error){
+      console.log(error)
+    }
+  }
+})
   const getnotes = async()=>{
      try{
       const response = await getAllRecruitmentJobResumesNotes({resumeId:resumeId})
       console.log(response)
-      setnotes(response.result[0].notes)
-      const data = response.result[0]
-      formik.setFieldValue("notes",data.notes)
+      setnotes(response.result)
+    
      }catch(error){
        console.log(error)
      }
@@ -163,6 +183,16 @@ const ActivityFeed = () => {
      console.log(notes)
      
    },[])
+   const getnotesbyId = async(jobResumeNoteId)=>{
+    try{
+    const response = await getRecruitmentJobResumesNoteById({id:jobResumeNoteId})
+    console.log(response);
+    formik.setFieldValue('notes',response.result[0].notes)
+    }catch(error){
+      console.log(error)
+    }
+
+  }
   return (
     <div className="grid gap-6 lg:grid-cols-12">
       <div className="flex flex-col gap-6 lg:col-span-8">
@@ -239,7 +269,7 @@ const ActivityFeed = () => {
                       )}
                     </p>
                     <p className="para !font-normal">
-                      {status.date}
+                      {status.modifiedOn}
                     </p>
                   </div>
                 </div>
@@ -270,6 +300,27 @@ const ActivityFeed = () => {
             <ButtonClick buttonName="Save" BtnType="primary" handleSubmit={formik.handleSubmit} />
           </div>
         </div>
+        <div className="rounded-lg bg-white dark:bg-secondaryDark p-1.5 ">
+        {notes && notes.map((note, index) => (
+  <div className="relative flex pb-6" key={index}>
+    <div className="flex items-center justify-between w-full">
+      <p className="pblack flex-grow pl-4 !font-normal">
+        <strong>{note.notes}</strong>
+      </p>
+      <div className="flex items-center gap-6"> {/* Added gap between createdOn and icons */}
+        <p className="para !font-normal">{note.createdOn}</p>
+        <div className="flex items-center gap-3">
+        {/* <TiPin
+                  onClick={() => handlePinClick(note.jobResumeNoteId)}
+                  style={{ color: selectedNoteId === note.jobResumeNoteId && isPinned === 1 ? 'blue' : 'gray' }}
+                />  */}
+          <FaRegEdit onClick={() => handleEditClick(note.jobResumeNoteId)} />
+        </div>
+      </div>
+    </div>
+  </div>
+))}
+</div>
       </div>
     </div>
   );

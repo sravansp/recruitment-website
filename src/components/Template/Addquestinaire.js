@@ -420,7 +420,8 @@ const QuestionAire = ({
             {evaluation.map((condition, index) => (
               <><div className="flex items-center justify-between">
                 <FormInput
-                  showValueParagraph={true}
+                  // showValueParagraph={true}
+                  title={`Question ${index + 1}`}
                   placeholder={'Type question here'}
                   value={condition.question}
                   change={(e) => {
@@ -476,7 +477,7 @@ const QuestionAire = ({
                       <div key={fieldIndex} className="flex items-center">
                         {['Drop-down', 'MultipleChoice', 'Checkboxes'].includes(field.key) && (
                           <FormInput
-
+                          title={`Options ${fieldIndex + 1}`}
                             placeholder={'Enter value'}
                             value={field.value}
                             change={(e) => setEvaluation((prevEvaluation) => prevEvaluation.map((prevCondition, i) => i === index
