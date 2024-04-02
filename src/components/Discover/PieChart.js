@@ -84,7 +84,7 @@ const PieChartWithLegends = () => {
             return (
               <div className="flex flex-col gap-2 dark:text-white">
                 {/* <p className="font-medium text-opacity-50 2xl:text-xs text-[#667085]">Leave Summary</p> */}
-                <ul className="w-28 xss:w-44 md:w-36 lg:w-28 3xl:w-44">
+                <ul className="w-28 xss:w-44 md:w-36 lg:w-40 2xl:w-36 3xl:w-44">
                   {payload.map((entry, index) => (
                     <li
                       key={`legend-${index}`}

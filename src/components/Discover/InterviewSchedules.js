@@ -1,5 +1,6 @@
 import React, { useState, useMemo } from "react";
 import DashboardAccordian from "./DashboardAccordian";
+import { useSelector } from "react-redux";
 
 // const getRandomColor = () => {
 //   const letters = "0123456789ABCDEF";
@@ -55,6 +56,7 @@ const getRandomColorWithOpacity = () => {
 };
 
 export default function InterviewSchedules() {
+  const themeMode = useSelector((state) => state.layout.mode);
   // Memoize the array of random colors to ensure they don't change on re-renders
   const randomColors = useMemo(
     () => Array.from({ length: 3 }, getRandomColorWithOpacity),
@@ -107,20 +109,15 @@ export default function InterviewSchedules() {
       time={data.time}
       className={"rounded-xl"}
       initialExpanded={index === 0}
-      color={randomColors[index].randomColor}
+      color={themeMode == "dark" ? "#ffffff" : randomColors[index].randomColor}
       style={{
-        background: randomColors[index].linearGradient,
-        border: `1px solid ${randomColors[index].randomColor}`,
+        background: themeMode == "dark" ? "linear-gradient(180deg, rgba(197, 216, 255, 0.20) 0%, rgba(214, 226, 255, 0.20) 100%)" : randomColors[index].linearGradient,
+        border: themeMode == "dark" ? `1px solid #000000` : `1px solid ${randomColors[index].randomColor}60`,
       }}
     >
       <div className="flex items-center justify-between ">
         <div className="flex gap-2">
-          <p
-            className=" 2xl:text-xs text-[9px]"
-            style={{ color: randomColors[index].randomColor }}
-          >
-            {data.meetingType}
-          </p>
+        <p className=" 2xl:text-xs text-[9px]" style={{color:  themeMode == "dark" ? "#ffffff" : randomColors[index].randomColor}}>{data.meetingType}</p>
         </div>
 
         <div className="bg-white rounded-full p-0.5">

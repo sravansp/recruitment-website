@@ -3,12 +3,12 @@ import { LiveJobsData } from "../common/DataArrays";
 
 const LiveJobs = ({ dropdown1, dataClick = () => {} }) => {
   return (
-    <div className="w-full h-72 overflow-y-auto joblistDash">
+    <div className="w-full overflow-y-auto h-72 joblistDash">
       <table className="flex flex-row flex-no-wrap w-full">
         <thead className="text-gray-500">
           {LiveJobsData.map((item, index) => (
             <tr
-              className="flex flex-col mb-2 text-xs xl:text-[9px] 2xl:text-xs uppercase rounded-l-lg flex-no wrap sm:table-row sm:rounded-none sm:mb-0 bg-primaryalpha/10 dark:bg-white/20 sm:bg-transparent dark:sm:bg-transparent"
+              className="flex flex-col mb-2 text-xs xl:text-[9px] 2xl:text-xs uppercase rounded-l-lg flex-no wrap sm:table-row sm:rounded-none sm:mb-0 bg-primaryalpha/10 dark:bg-white/20 sm:bg-transparent dark:sm:bg-transparent sm:sticky sm:top-0 sm:bg-white sm:dark:bg-slate-800"
               key={index}
             >
               <th className="p-3 font-normal text-left">Title</th>
