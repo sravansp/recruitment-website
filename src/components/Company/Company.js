@@ -82,6 +82,58 @@ const Company = () => {
 }
 
   ]
+
+
+
+
+
+
+  const drawerheadre = [
+    {    
+        Departments:[
+        {
+         id:1,
+         title:"Name",
+         value:"department",
+        },
+        {
+            id:2,
+            title:"Created By",
+            value:"createdBy",
+           },
+           
+
+    ],
+    Locations:[
+        {
+         id:1,
+         title:"Name",
+         value:"location",
+        },
+        {
+            id:2,
+            title:"Created By",
+            value:"createdBy",
+           },
+          //  {
+          //   id:3,
+          //   title:"status",
+          //   value:"status",
+          //   actionToggle:true,
+          //  },
+          //  {
+          //   id:4,
+          //   title:"actions",
+          //   value:"actions",
+          //   action:true,
+          //  },
+
+    ]
+
+
+}
+
+  ]
   const [locationList, setLocationList] = useState();
   const [departmentList, setDepartmentList] = useState();
   const actionData = [
@@ -163,6 +215,7 @@ const Company = () => {
         <Tabs
        tabs={tabs}
        header={header}
+       drawerH={drawerheadre}
        All={true}
        clickDrawer={(e) => {
         handleShow();

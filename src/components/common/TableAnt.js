@@ -58,6 +58,7 @@ const gridListoptions = [
 const TableAnt = ({
   data = [],
   header = [],
+  drawerH=[],
   actionToggle = false,
   actionID = "",
   updateApi = "",
@@ -73,7 +74,7 @@ const TableAnt = ({
   viewOutside = false,
   refresh = () => { },
   recordId = "",
-  jobId=""
+  jobId = ""
 
 }) => {
   const { t } = useTranslation();
@@ -114,12 +115,12 @@ const TableAnt = ({
       // stack: 2,
       style: {
         background: `${type === "success"
-            ? `linear-gradient(180deg, rgba(204, 255, 233, 0.8) 0%, rgba(235, 252, 248, 0.8) 51.08%, rgba(246, 251, 253, 0.8) 100%)`
-            : "linear-gradient(180deg, rgba(255, 236, 236, 0.80) 0%, rgba(253, 246, 248, 0.80) 51.13%, rgba(251, 251, 254, 0.80) 100%)"
+          ? `linear-gradient(180deg, rgba(204, 255, 233, 0.8) 0%, rgba(235, 252, 248, 0.8) 51.08%, rgba(246, 251, 253, 0.8) 100%)`
+          : "linear-gradient(180deg, rgba(255, 236, 236, 0.80) 0%, rgba(253, 246, 248, 0.80) 51.13%, rgba(251, 251, 254, 0.80) 100%)"
           }`,
         boxShadow: `${type === "success"
-            ? "0px 4.868px 11.358px rgba(62, 255, 93, 0.2)"
-            : "0px 22px 60px rgba(134, 92, 144, 0.20)"
+          ? "0px 4.868px 11.358px rgba(62, 255, 93, 0.2)"
+          : "0px 22px 60px rgba(134, 92, 144, 0.20)"
           }`,
       },
       // duration: null,
@@ -255,7 +256,7 @@ const TableAnt = ({
 
 
   };
-  const handleModalOpen =(text,title)=>{
+  const handleModalOpen = (text, title) => {
     setModalData({ text, title });
     setIsModalOpen(true);
   }
@@ -294,19 +295,19 @@ const TableAnt = ({
                 <div
                   key={text}
                   className={`${parseInt(record) === 1
-                      ? " bg-emerald-100 text-emerald-600"
-                      : " bg-rose-100 text-rose-600"
+                    ? " bg-emerald-100 text-emerald-600"
+                    : " bg-rose-100 text-rose-600"
                     } rounded-full pr-2 py-[2px] w-fit font-medium text-[10px] 2xl:text-sm vhcenter flex-nowrap`}
                   onClick={() => {
                     !viewOutside &&
-                    handleModalOpen(text, header[0]?.[tabValue || path]);
+                      handleModalOpen(text, drawerH[0]?.[tabValue || path]);
                     console.log(tabValue, path, "kiok");
                   }}
                 >
                   <RxDotFilled
                     className={`${parseInt(record) === 1
-                        ? "text-emerald-600"
-                        : "text-rose-600"
+                      ? "text-emerald-600"
+                      : "text-rose-600"
                       } text-base 2xl:text-lg`}
                   />
                   {parseInt(record) === 1 ? "Active" : "Inactive"}
@@ -344,7 +345,7 @@ const TableAnt = ({
                 <div className="flex items-center gap-4"
                   onClick={() => {
                     !viewOutside &&
-                    handleModalOpen(text, header[0]?.[tabValue || path]);
+                      handleModalOpen(text, drawerH[0]?.[tabValue || path]);
                   }}>
                   <div className="w-8 h-8 overflow-hidden rounded-full 2xl:w-10 2xl:h-10">
                     <img
@@ -364,14 +365,14 @@ const TableAnt = ({
                   <div className="pl-4">
                     <div
                       className={`${parseInt(text.isActive) === 1
-                          ? " bg-emerald-100 text-emerald-600"
-                          : " bg-rose-100 text-rose-600"
+                        ? " bg-emerald-100 text-emerald-600"
+                        : " bg-rose-100 text-rose-600"
                         } rounded-full pr-2 py-[2px] w-fit font-medium text-[10px] 2xl:text-sm vhcenter flex-nowrap`}
                     >
                       <RxDotFilled
                         className={`${parseInt(text.isActive) === 1
-                            ? "text-emerald-600"
-                            : "text-rose-600"
+                          ? "text-emerald-600"
+                          : "text-rose-600"
                           } text-base 2xl:text-lg`}
                       />
                       {parseInt(text.isActive) === 1 ? "Active" : "Inactive"}
@@ -381,7 +382,7 @@ const TableAnt = ({
               ) : each.block ? (
                 <div onClick={() => {
                   !viewOutside &&
-                  handleModalOpen(text, header[0]?.[tabValue || path]);
+                    handleModalOpen(text, drawerH[0]?.[tabValue || path]);
                 }}>
                   <p className="text-xs font-medium text-black 2xl:text-sm dark:text-white">
                     {text[each.value]}
@@ -446,9 +447,9 @@ const TableAnt = ({
 
               ) : (
                 // </Popover>
-                <div  onClick={() => {
+                <div onClick={() => {
                   !viewOutside &&
-                  handleModalOpen(text, header[0]?.[tabValue || path]);
+                    handleModalOpen(text, drawerH[0]?.[tabValue || path]);
                 }} className="text-[#667085] text-xs 2xl:text-sm dark:text-white font-medium">
                   <p>{record}</p>
                 </div>
@@ -920,14 +921,14 @@ const TableAnt = ({
           />
         )}
       </div>
-      
+
       {isModalOpen && (
         <ModalPop
           width={1000}
           open={isModalOpen}
           title={
-            <div className=" flex gap-3">
-              <div className=" flex flex-col gap-2">
+            <div className="flex gap-3">
+              <div className="flex flex-col gap-2">
                 <h1 className="h1 border-b-2 border-primaryalpha pb-0.5">
                   {tabTitle
                     ? tabTitle?.charAt(0).toUpperCase() +
@@ -943,43 +944,39 @@ const TableAnt = ({
             setIsModalOpen(e);
           }}
         >
-          {console.log(modalData,"this is modaldata")}
+          {console.log(modalData, "this is modaldata")}
           <div className="flex flex-col gap-2 dark:text-white">
-            
-            { modalData?.title.map(
-
-              (data, index) =>
-                data.title !== "Action" &&
-                !data.notView && (
-                  <div className="flex items-center  gap-3 " key={index}>
-                    <h4 className="font-bold">{data.title + " :"}</h4>
-                    {data.value === "isActive" ? (
-                      <div
-                        className={`${parseInt(modalData.text[data.value]) === 1
-                          ? " bg-emerald-100 text-emerald-600"
-                          : " bg-rose-100 text-rose-600"
-                          } rounded-full pr-2 py-[2px] w-fit font-medium text-[10px] 2xl:text-sm vhcenter flex-nowrap`}
-                      >
-                        <RxDotFilled
-                          className={`${parseInt(modalData.text[data.value]) === 1
-                            ? "text-emerald-600"
-                            : "text-rose-600"
-                            } text-base 2xl:text-lg`}
-                        />
-                        {parseInt(modalData.text[data.value]) === 1
-                          ? "Active"
-                          : "Inactive"}
-                      </div>
-                    ) : (
-                      <h1>{modalData.text[data.value]}</h1>
-                    )}
-
+            {/* Render all title-value pairs */}
+            {modalData.title.map((titleItem, index) => (
+              <div className="flex items-center gap-3" key={index}>
+                <h4 className="font-bold">{titleItem.title + " :"}</h4>
+                {/* Render corresponding value for the title */}
+                {titleItem.value === "isActive" ? (
+                  <div
+                    className={`${parseInt(modalData.text[titleItem.value]) === 1
+                        ? " bg-emerald-100 text-emerald-600"
+                        : " bg-rose-100 text-rose-600"
+                      } rounded-full pr-2 py-[2px] w-fit font-medium text-[10px] 2xl:text-sm vhcenter flex-nowrap`}
+                  >
+                    <RxDotFilled
+                      className={`${parseInt(modalData.text[titleItem.value]) === 1
+                          ? "text-emerald-600"
+                          : "text-rose-600"
+                        } text-base 2xl:text-lg`}
+                    />
+                    {parseInt(modalData.text[titleItem.value]) === 1
+                      ? "Active"
+                      : "Inactive"}
                   </div>
-                )
-            ) }
+                ) : (
+                  <h1>{modalData.text[titleItem.value]}</h1>
+                )}
+              </div>
+            ))}
           </div>
         </ModalPop>
       )}
+
       {contextHolder}
     </div>
   );

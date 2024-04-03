@@ -388,6 +388,54 @@ function AllJobs() {
     getJobstat()
     console.log("value",jobstatic)
   },[companyId])
+
+
+  const Drawerheader = [
+    {
+      
+      Draft: [
+        {
+          id: 1,
+          title: "NAME",
+          value: "jobTitle",
+        },
+        {
+          id: 2,
+          title: "Created By",
+          value: "createdBy",
+        },
+        {
+          id: 3,
+          title: "Experience",
+          value: "experience",
+        },
+
+        {
+          id: 4,
+          title: "Job Created By",
+          value: "jobCreatedBy",
+        },
+        {
+          id: 5,
+
+          title: "JobTitle",
+          value: "jobTitle",
+          
+        },
+        {
+          id: 6,
+          title: "JobType",
+          value: "jobType",
+        },
+        {
+          id: 7,
+          title: "Requirement Type",
+          value: "requirementType",
+        },
+        
+      ],
+    },
+  ];
   return (
     <div className="flex flex-col gap-[25px]">
       <div className="flex justify-between">
@@ -446,6 +494,7 @@ function AllJobs() {
         path="JobDetails"
         tabs={tabs}
         header={header}
+        drawerH={Drawerheader}
         data={
           Object.keys(actionData[0]).includes(navigationPath)
             ? actionData[0]?.[navigationPath].response

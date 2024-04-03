@@ -39,7 +39,7 @@ import FileUpload from '../common/FileUpload';
 
 export default function Createcandidatelist({ open = "", close = () => { }, fileUpdateId, refresh, ConfigurationAction, updateId = null, }) {
   const [show, setShow] = useState(open);
-  const [activeBtnValue, setActiveBtnValue] = useState("Personel");//Review
+  const [activeBtnValue, setActiveBtnValue] = useState("Questions");//Review//Questions//Work
   const [nextStep, setNextStep] = useState(0);
   const [applicableData, setApplicableData] = useState([]);
   const [isUpdate, setIsUpdate] = useState();
@@ -265,13 +265,13 @@ export default function Createcandidatelist({ open = "", close = () => { }, file
     
     onSubmit: async (values, { setSubmitting }) => {
       try {
-        const result = await saveRecruitmentResumesExperienceDetailBatch(
+        const response = await saveRecruitmentResumesExperienceDetailBatch(
           workexp.map((each) => {
             const fromDate = values[each.field[4].inputFeild][0]; // Extracting start date from range picker
             const toDate = values[each.field[4].inputFeild][1]; // Extracting end date from range picker
     
             return {
-              resumeId: resumeId,
+              resumeId: 421,
               jobTitle: values[each.field[0].inputFeild],
               employmentType: values[each.field[1].inputFeild],
               companyName: values[each.field[2].inputFeild],
@@ -282,38 +282,36 @@ export default function Createcandidatelist({ open = "", close = () => { }, file
             };
           })
         );
-
-
-        // File upload
-
-        
+         if(response.status===200){
+          if (values.file) {
+            formData.append('file', values.file);
+        }
           console.log("inside file upload api");
           const formData = new FormData();
           formData.append('action', 'resumeFileUpload');
-          formData.append('resumeId', resumeId);
-          formData.append('file', values.file);
+          formData.append('resumeId', 421);
+        
           formData.append('coverLetter', values.coverLetter);
 
-          const response = await fileAction(formData);
-          console.log(response, "fileUploadResult")
-          if (response.status === 200) {
-            setNextStep(nextStep + 1);
-            setPresentage(1);
-            openNotification("success", "Success...", result.message);
-          } else {
-            openNotification("error", "Failed..", response.message);
-          }
-        
-        if (result.status === 200) {
-          setNextStep(nextStep + 1);
-          setPresentage(1);
+          const FileUpload = await fileAction(formData);
+          console.log(FileUpload, "fileUploadResult")
+         
+         }else{
+          console.log("moonji")
+         }
+
+        // File upload
+
+        // if (result.status === 200) {
+        //   setNextStep(nextStep + 1);
+        //   setPresentage(1);
           
 
-        } else if (result.status === 500) {
-          openNotification("error", "Failed..", result.message);
-        }
-        console.log(result);
-        console.log(result.errors);
+        // } else if (result.status === 500) {
+        //   openNotification("error", "Failed..", result.message);
+        // }
+        // console.log(result);
+        // console.log(result.errors);
       } catch (error) {
         openNotification("error", "Failed..", error.message);
       } 

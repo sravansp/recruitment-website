@@ -297,6 +297,167 @@ const Template = ({
      
 
    ]
+   const DraweHeader =[
+    {
+      Job_Templates : [ 
+          {
+            id:1,
+            title:"Name",
+            value:"jobTitle",
+         },
+         {
+            id:2,
+            title:"Location",
+            value:"location",
+         },
+         {
+            id:3,
+            title:"JobType",
+            value:"jobType",
+            
+         },
+         {
+            id:4,
+            title:"Modified By",
+            value:"modifiedBy",
+            
+         },
+        ],
+        Job_Description : [ 
+          {
+            id:1,
+            title:"Name",
+            value:"workFlowName",
+         },
+         {
+            id:2,
+            title:"Modified By",
+            value:"modifiedBy",
+         },
+         {
+          id:3,
+          title:"Work Flow Id",
+          value:"workFlowId",
+          
+       },
+         
+        ],
+        Workflow : [ 
+          {
+            id:1,
+            title:"Name",
+            value:"workFlowName",
+         },
+         {
+            id:2,
+            title:"Description",
+            value:"description",
+         },
+         {
+          id:3,
+          title:"Status",
+          value:"",
+          actionToggle: true,
+       },
+         {
+            id:4,
+            title:"Status",
+            value:"Status",
+            action:true,
+         },
+        ],
+        Email : [ 
+          {
+            id:1,
+            title:"Name",
+            value:"title",
+         },
+         {
+            id:2,
+            title:"Description",
+            value:"value",
+         },
+         {
+          id:3,
+          title:"Status",
+          value:"",
+          actionToggle: true,
+       },
+         {
+            id:4,
+            title:"Status",
+            value:"Status",
+            action:true,
+         },
+        ],
+        Evaluation : [ 
+          {
+            id:1,
+            title:"Name",
+            value:"evaluationTemplateName",
+         },
+         {
+            id:2,
+            title:"Modified By",
+            value:"modifiedBy",
+         },
+        
+        
+        ],
+        Questionaire : [ 
+          {
+            id:1,
+            title:"Name",
+            value:"questionnaireTemplateName",
+         },
+         {
+            id:2,
+            title:"Description",
+            value:"description",
+         },
+         {
+            id:3,
+            title:"Status",
+            value:"Status",
+            actionToggle:true,
+         },
+         {
+          id:4,
+          title:"",
+          value:"actions",
+          action:true,
+       },
+        ],
+        Letter : [ 
+          {
+            id:1,
+            title:"Name",
+            value:"title",
+         },
+         {
+            id:2,
+            title:"Description",
+            value:"value",
+         },
+         {
+            id:3,
+            title:"Status",
+            value:"",
+            actionToggle: true,
+         },
+         {
+          id:4,
+          title:"",
+          value:"actions",
+          action:true,
+       },
+        ]
+        
+       
+
+    } 
+   
+   ]
 
    const [JobList,steJobList]= useState([])
    const [JobDescriptionList,setJobDescriptionList]=useState([])
@@ -593,6 +754,7 @@ const Template = ({
         
               <Tabs 
               header={Header}
+              drawerH={DraweHeader}
               // path="employee"
               tabs={tabs}
               All={true}
