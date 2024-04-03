@@ -49,10 +49,10 @@ const Questionaries = () => {
                 className="flex items-center justify-end gap-2.5 p-1.5 mt-[18.88px] rounded-lg"
                 // style={{ backgroundColor: `${primaryColor}10` }}
               >
-                <ButtonClick
+                {/* <ButtonClick
                   buttonName="Choose Questionair"
                   BtnType="primary"
-                />
+                /> */}
               </div>
             </div>
 

@@ -119,11 +119,11 @@ const CandidatesList = () => {
             <span className="!text-primary para">View career page</span>{" "}
             <PiArrowSquareOut size={15} className="dark:text-white" />
           </Link>
-          <ButtonClick buttonName={"Add Candidates"}
+          {/* <ButtonClick buttonName={"Add Candidates"}
            handleSubmit={() => {
             setShow(true);
             console.log(true);
-          }} BtnType='add' />
+          }} BtnType='add' /> */}
         </div>
       </div>
       <JobListCopy data={jobstatic}/>

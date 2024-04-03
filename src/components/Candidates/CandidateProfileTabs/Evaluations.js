@@ -64,7 +64,7 @@ const Evaluations = () => {
             <div className="flex flex-col   gap-6 font-['SF Pro'] font-normal text-sm leading-5 text-black ">
               <RadioButton
                 title="Does the candidate have the appropriate educational qualifications or training for this position?"
-                // value={}
+                // value={}n
                 // change={}
                 options={[
                   { value: "yes", label: "Yes" },

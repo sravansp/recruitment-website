@@ -779,7 +779,7 @@ export const saveRecruitmentJobResumesEvent = async (e) => {
   console.log("API Request Data:", { action, method, kwargs })
   return await apiRequest(action, method, kwargs);
 };
-const API = {
+const API ={
   UPDATE_Job_Templates: "toggleRecruitmentJobTemplateStatus",
   UPDATE_Job_Description: "",
   UPDATE_Workflow: "toggleRecruitmentWorkFlowStatus",
