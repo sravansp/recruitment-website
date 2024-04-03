@@ -790,14 +790,15 @@ export const getRecruitmentJobResumesEventById = async (id) => {
   return await apiRequest(action, method, kwargs);
 };
 
-export const getAllRecruitmentJobResumesEvents = async () => {
+export const getAllRecruitmentJobResumesEvents = async (data) => {
   const action = "getAllRecruitmentJobResumesEvents";
 
   const method = "POST";
 
-  const kwargs = {};
-
+  const kwargs = data;
+  console.log("API Request Data:", { action, method, kwargs })
   return await apiRequest(action, method, kwargs);
+  
 };
 
 export const saveRecruitmentJobResumesNote = async (data) => {
@@ -990,6 +991,96 @@ export const updateRecruitmentJobResumesNote = async (data) => {
 };
 export const getRecruitmentUserById = async (data) => {
   const action = "getRecruitmentUserById";
+
+  const method = "POST";
+
+  const kwargs = data;
+  console.log("API Request Data:", { action, method, kwargs })
+
+  return await apiRequest(action, method, kwargs);
+};
+export const getDashboardStaticDatas = async (data) => {
+  const action = "getDashboardStaticDatas";
+
+  const method = "POST";
+
+  const kwargs = data;
+  console.log("API Request Data:", { action, method, kwargs })
+
+  return await apiRequest(action, method, kwargs);
+};
+export const getDashboardApplicationFrequencyRate = async (data) => {
+  const action = "getDashboardApplicationFrequencyRate";
+
+  const method = "POST";
+
+  const kwargs = data;
+  console.log("API Request Data:", { action, method, kwargs })
+
+  return await apiRequest(action, method, kwargs);
+};
+export const getDashboardUpcommingInterviewSchedules = async (data) => {
+  const action = "getDashboardUpcommingInterviewSchedules";
+
+  const method = "POST";
+
+  const kwargs = data;
+  console.log("API Request Data:", { action, method, kwargs })
+
+  return await apiRequest(action, method, kwargs);
+};
+export const getDashboardLiveJobs = async (data) => {
+  const action = "getDashboardLiveJobs";
+
+  const method = "POST";
+
+  const kwargs = data;
+  console.log("API Request Data:", { action, method, kwargs })
+
+  return await apiRequest(action, method, kwargs);
+};
+export const getDashboardCandidateSource = async (data) => {
+  const action = "getDashboardCandidateSource";
+
+  const method = "POST";
+
+  const kwargs = data;
+  console.log("API Request Data:", { action, method, kwargs })
+
+  return await apiRequest(action, method, kwargs);
+};
+export const getDashboardAgeDistribution = async (data) => {
+  const action = "getDashboardAgeDistribution";
+
+  const method = "POST";
+
+  const kwargs = data;
+  console.log("API Request Data:", { action, method, kwargs })
+
+  return await apiRequest(action, method, kwargs);
+};
+export const getDashboardNewApplicants = async (data) => {
+  const action = "getDashboardNewApplicants";
+
+  const method = "POST";
+
+  const kwargs = data;
+  console.log("API Request Data:", { action, method, kwargs })
+
+  return await apiRequest(action, method, kwargs);
+};
+export const getDashboardAgeOfJobs = async (data) => {
+  const action = "getDashboardAgeOfJobs";
+
+  const method = "POST";
+
+  const kwargs = data;
+  console.log("API Request Data:", { action, method, kwargs })
+
+  return await apiRequest(action, method, kwargs);
+};
+export const updateRecruitmentUserRoleMapping = async (data) => {
+  const action = "updateRecruitmentUserRoleMapping";
 
   const method = "POST";
 

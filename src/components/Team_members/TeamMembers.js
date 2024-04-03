@@ -145,6 +145,7 @@ const TeamMembers = ({
           // country={countryList}
           close={(e) => {
             setShowPop(e);
+            setUpdateId(null)
           }}
           updateId={updateId}
           // refresh={() => {

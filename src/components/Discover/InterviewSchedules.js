@@ -1,6 +1,7 @@
-import React, { useState, useMemo } from "react";
+import React, { useState, useMemo, useEffect } from "react";
 import DashboardAccordian from "./DashboardAccordian";
 import { useSelector } from "react-redux";
+import { getDashboardUpcommingInterviewSchedules } from "../Api1";
 
 // const getRandomColor = () => {
 //   const letters = "0123456789ABCDEF";
@@ -62,43 +63,79 @@ export default function InterviewSchedules() {
     () => Array.from({ length: 3 }, getRandomColorWithOpacity),
     []
   );
-
+  const[accordianData,setaccordianData]= useState([])
+  const [companyId, setCompanyId] = useState(localStorage.getItem("companyId"));
+  useEffect(() => {
+    setCompanyId(localStorage.getItem("companyId"));
+    
+  }, []);
+  const getInterviewShedules = async()=>{
+    try{
+     const response = await getDashboardUpcommingInterviewSchedules({companyId:companyId})
+    console.log(response)
+    const convertedEvents = response.result.map(event => ({
+      title: event.eventName,
+      date: event.eventDetails.eventDate,
+      time: `${event.eventDetails.eventTime} - ${calculateEndTime(event.eventDetails.eventTime, event.eventDetails.duration)}`,
+      meetingType: event.eventDetails.eventType === "offline" ? "Offline" : "Google Meet",
+      assignees: event.attendees.map(attendee => `https://images.unsplash.com/photo-1580489944761-15a19d654956?ixlib=rb-4.0.3&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=580&q=80`),
+  }));
+  
+  // Function to calculate end time based on duration
+  function calculateEndTime(startTime, duration) {
+      const [hours, minutes] = startTime.split(":").map(Number);
+      const [hoursPart, minutesPart] = duration.match(/\d+/g).map(Number);
+      const totalMinutes = hours * 60 + minutes + hoursPart * 60 + minutesPart;
+      const endHours = Math.floor(totalMinutes / 60);
+      const endMinutes = totalMinutes % 60;
+      return `${String(endHours).padStart(2, "0")}:${String(endMinutes).padStart(2, "0")}`;
+  }
+  console.log(convertedEvents);
+  setaccordianData(convertedEvents)
+  
+    }catch(error){
+      console.log(error)
+    }
+  }
+  useEffect(()=>{
+    getInterviewShedules()
+  },[])
   // Create an array of objects with specific values for each DashboardAccordian
-  const accordianData = [
-    {
-      title: "Meeting with Sara",
-      date: "12 Feb ,2024",
-      time: "10:00 - 11:45 AM",
-      meetingType: "Google Meet",
-      assignees: [
-        "https://images.unsplash.com/photo-1580489944761-15a19d654956?ixlib=rb-4.0.3&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=580&q=80",
-        "https://images.unsplash.com/photo-1580489944761-15a19d654956?ixlib=rb-4.0.3&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=580&q=80",
-        "https://images.unsplash.com/photo-1580489944761-15a19d654956?ixlib=rb-4.0.3&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=580&q=80",
-      ],
-    },
-    {
-      title: "Meeting with Arjun",
-      date: "24 Sept ,2024",
-      time: "11:00 - 12:45 AM",
-      meetingType: "Google Meet",
-      assignees: [
-        "https://images.unsplash.com/photo-1580489944761-15a19d654956?ixlib=rb-4.0.3&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=580&q=80",
-        "https://images.unsplash.com/photo-1580489944761-15a19d654956?ixlib=rb-4.0.3&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=580&q=80",
-        "https://images.unsplash.com/photo-1580489944761-15a19d654956?ixlib=rb-4.0.3&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=580&q=80",
-        "https://images.unsplash.com/photo-1580489944761-15a19d654956?ixlib=rb-4.0.3&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=580&q=80",
-      ],
-    },
-    {
-      title: "Meeting with Noel",
-      date: "12 FEB ,2024",
-      time: "11:00 - 12:45 AM",
-      meetingType: "Google Meet",
-      assignees: [
-        "https://images.unsplash.com/photo-1580489944761-15a19d654956?ixlib=rb-4.0.3&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=580&q=80",
-        "https://images.unsplash.com/photo-1580489944761-15a19d654956?ixlib=rb-4.0.3&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=580&q=80",
-      ],
-    },
-  ];
+  // const accordianData = [
+  //   {
+  //     title: "Meeting with Sara",
+  //     date: "12 Feb ,2024",
+  //     time: "10:00 - 11:45 AM",
+  //     meetingType: "Google Meet",
+  //     assignees: [
+  //       "https://images.unsplash.com/photo-1580489944761-15a19d654956?ixlib=rb-4.0.3&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=580&q=80",
+  //       "https://images.unsplash.com/photo-1580489944761-15a19d654956?ixlib=rb-4.0.3&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=580&q=80",
+  //       "https://images.unsplash.com/photo-1580489944761-15a19d654956?ixlib=rb-4.0.3&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=580&q=80",
+  //     ],
+  //   },
+  //   {
+  //     title: "Meeting with Arjun",
+  //     date: "24 Sept ,2024",
+  //     time: "11:00 - 12:45 AM",
+  //     meetingType: "Google Meet",
+  //     assignees: [
+  //       "https://images.unsplash.com/photo-1580489944761-15a19d654956?ixlib=rb-4.0.3&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=580&q=80",
+  //       "https://images.unsplash.com/photo-1580489944761-15a19d654956?ixlib=rb-4.0.3&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=580&q=80",
+  //       "https://images.unsplash.com/photo-1580489944761-15a19d654956?ixlib=rb-4.0.3&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=580&q=80",
+  //       "https://images.unsplash.com/photo-1580489944761-15a19d654956?ixlib=rb-4.0.3&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=580&q=80",
+  //     ],
+  //   },
+  //   {
+  //     title: "Meeting with Noel",
+  //     date: "12 FEB ,2024",
+  //     time: "11:00 - 12:45 AM",
+  //     meetingType: "Google Meet",
+  //     assignees: [
+  //       "https://images.unsplash.com/photo-1580489944761-15a19d654956?ixlib=rb-4.0.3&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=580&q=80",
+  //       "https://images.unsplash.com/photo-1580489944761-15a19d654956?ixlib=rb-4.0.3&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=580&q=80",
+  //     ],
+  //   },
+  // ];
 
   // Create an array of DashboardAccordian components based on accordianData
   const accordians = accordianData.map((data, index) => (

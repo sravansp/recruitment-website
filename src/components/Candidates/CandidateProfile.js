@@ -125,6 +125,8 @@ const CandidateProfile = () => {
   const [currentStatus, setCurrentStatus] = useState(0);
   const[notes,setnotes]= useState("")
   
+  const location = useLocation();
+  
  console.log(resumeId)
  const tabData = [
   {
@@ -162,6 +164,10 @@ const handleEmailSelect = (email) => {
 };
   
 
+const navigateBack = () => {
+  // Navigate back to the previous page
+  window.history.back();
+};
 
 
 const tabs = [
@@ -419,7 +425,7 @@ const handleButtonClick = async (status) => {
     <div className="flex flex-col gap-6">
       {contextHolder}
       <div className="flex flex-col justify-between lg:flex-row lg:items-center">
-        <Link  className="backBtn vhcenter gap-2.5" to="/CandidateList">
+        <Link onClick={navigateBack} className="backBtn vhcenter gap-2.5" >
           <div className="bg-white border border-black rounded-full w-9 h-9 border-opacity-5 vhcenter">
            
             <PiArrowLeftBold className="text-xl text-primary" />

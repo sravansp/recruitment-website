@@ -97,7 +97,7 @@ const QuestionAire = ({
       )
     );
   };
-  const handleAddField = (index) => {
+  const handleAddField = (index,selectedvalue) => {
     setEvaluation((prevEvaluation) =>
       prevEvaluation.map((prevCondition, i) =>
         i === index
@@ -107,7 +107,7 @@ const QuestionAire = ({
               ...prevCondition.answerMetaData,
               {
                 id: prevCondition.answerMetaData.length + 1,
-                key: 'Drop-down', // You can set the default key or customize as needed
+                key: selectedvalue, // You can set the default key or customize as needed
                 value: '',
               },
             ],
@@ -450,6 +450,7 @@ const QuestionAire = ({
                           }
                           : prevCondition
                         ))
+                        handleAddField(e)
                       }}
                       value={condition.answerMetaData[0]?.key || "MultipleChoice"}
                       icondropDown={true}

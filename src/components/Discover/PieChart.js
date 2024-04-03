@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useEffect,useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import {
   PieChart,
@@ -9,6 +9,8 @@ import {
   ResponsiveContainer,
   Label,
 } from "recharts";
+import { getDashboardCandidateSource } from "../Api1";
+import { setDate } from "date-fns";
 
 const data = [
   { name: "LinkedIn", value: 30 },
@@ -20,14 +22,40 @@ const data = [
 
 const COLORS = ["#0e2535", "#9da4fe", "#7942c5", "#ecc4f9", "#cfd6e6"];
 
-const getTotalSources = () => {
-  let total = 0;
-  data.forEach((item) => (total += item.value));
-  return total;
-};
+
 
 const PieChartWithLegends = () => {
   const theme = useSelector((state) => state.layout.mode)
+  const[data,SetData]=useState([])
+  const [companyId, setCompanyId] = useState(localStorage.getItem("companyId"));
+
+  useEffect(() => {
+    setCompanyId(localStorage.getItem("companyId"));
+    
+  }, []);
+
+  const getCandidateSource= async ()=>{
+    try{
+      const response = await getDashboardCandidateSource({companyId:companyId})
+      console.log(response)
+      const formattedResult = Object.entries(response.result).map(([name, value]) => ({
+        name: name.toUpperCase(), // Convert month to uppercase
+        value: value  // Calculate the frequency (multiplying by 1.8 as an example)
+    }));
+    console.log(formattedResult)
+    SetData(formattedResult)
+    }catch(error){
+      console.log(error)
+    }
+  }
+  useEffect(()=>{
+    getCandidateSource()
+  },[])
+  const getTotalSources = () => {
+    let total = 0;
+    data.forEach((item) => (total += item.value));
+    return total;
+  };
   const style = {
     top: "48%",
     right: 0,

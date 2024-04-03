@@ -7,7 +7,7 @@ import TextArea from '../common/TextArea';
 import FlexCol from '../common/FlexCol';
 import { notification } from 'antd';
 import Dropdown from '../common/Dropdown';
-import {getRecruitmentUserById, addRecruitmentUserWithRoleMapping,getAllEmployee,getAllRecruitmentRoles } from '../Api1';
+import {updateRecruitmentUserRoleMapping,getRecruitmentUserById, addRecruitmentUserWithRoleMapping,getAllEmployee,getAllRecruitmentRoles } from '../Api1';
 import { Value } from 'devextreme-react/range-selector';
 import { Formik, useFormik } from 'formik';
 
@@ -28,6 +28,9 @@ const Addmembers = ({
         const[role,setRole]=useState([])
         const[EmployeeName,setEmployeeName] = useState("")
         const[EmployeeEmail,setEmployeeEmail] =useState("")
+        const[roleMapping,setRoleMapping] =useState("")
+        const[userId,setUserId] = useState("")
+        const[employeeId,setEemployeeId]=useState("")
         console.log(updateId);
         useEffect(() => {
           setCompanyId(localStorage.getItem("companyId"));
@@ -62,6 +65,39 @@ const Addmembers = ({
             // duration: null,
           });
         };
+       useEffect(()=>{
+        const loginDataString = localStorage.getItem('LoginData');
+
+let employeeId = null;
+
+if (loginDataString) {
+  const loginData = JSON.parse(loginDataString);
+  employeeId = loginData.userData.employeeId;
+  setEemployeeId(employeeId)
+} else {
+  console.error('Login data not found in local storage');
+}
+
+console.log(employeeId);
+       },[])
+        
+       
+       const getUserByid= async()=>{
+          try{
+           const response = await getRecruitmentUserById({id:updateId})
+          console.log(response)
+          formik.setFieldValue("employeeId", response.result[0].employeeId);
+          formik.setFieldValue("roleId", parseInt(response.result[0].roleId));         
+          setRoleMapping(response.result[0].userRoleMapId)  
+          setUserId(response.result[0].userId)
+        }catch(error){
+            console.log(error)
+          }
+          
+        }
+        useEffect(()=>{
+          getUserByid()
+        },[])
        const getTeamMembers = async ()=>{
         try {
           const response = await getAllEmployee({companyId:companyId})
@@ -90,7 +126,7 @@ const Addmembers = ({
             value:each.roleId
           }))
           )
-          
+         
         }catch(error){
           console.log(error)
         }
@@ -110,31 +146,58 @@ const formik = useFormik({
         },
         onSubmit : async(e)=>{
           try{
-           const response = await addRecruitmentUserWithRoleMapping({
-            userName: EmployeeName, 
-            userEmail: EmployeeEmail, 
-            employeeId: e.employeeId, 
-            userImage: null, 
-    
-            roleId:e.roleId,
-            createdBy: null      
+           if(!updateId){
+            const response = await addRecruitmentUserWithRoleMapping({
+              userName: EmployeeName, 
+              userEmail: EmployeeEmail, 
+              employeeId: e.employeeId, 
+              userImage: null, 
+      
+              roleId:e.roleId,
+              createdBy: null      
+  
+             })
+             console.log(response)
+             if (response.status === 200) {
+              openNotification(
+                "success",
+                "Successful",
+                response.message
+              );
+              formik.resetForm()
+              setTimeout(() => {
+                handleClose();
+              }, 2000)
+  
+            } else if (response.status === 500) {
+              openNotification("error", "input field is empty..", response.message);
+            }
+           }else{
+            const response = await updateRecruitmentUserRoleMapping({
+              id:roleMapping,
+              userId:userId,
+              roleId:e.roleId,
+              modifiedBy:employeeId
 
-           })
-           console.log(response)
-           if (response.status === 200) {
-            openNotification(
-              "success",
-              "Successful",
-              response.message
-            );
-            formik.resetForm()
-            setTimeout(() => {
-              handleClose();
-            }, 2000)
+            })
+            console.log(response)
+            if (response.status === 200) {
+              openNotification(
+                "success",
+                "Successful",
+                response.message
+              );
+              formik.resetForm()
+              setTimeout(() => {
+                handleClose();
+              }, 2000)
+  
+            } else if (response.status === 500) {
+              openNotification("error", "input field is empty..", response.message);
+            }
 
-          } else if (response.status === 500) {
-            openNotification("error", "input field is empty..", response.message);
-          }
+           }
+           
 
           }catch(error){
             console.log(error)
@@ -142,18 +205,8 @@ const formik = useFormik({
         }
       })
 
-      const getUserByid= async()=>{
-        try{
-         const response = await getRecruitmentUserById({id:updateId})
-        console.log(response)         
-        }catch(error){
-          console.log(error)
-        }
-        
-      }
-      useEffect(()=>{
-        getUserByid()
-      },[])
+     
+    
       
   return (
     <DrawerPop
@@ -176,15 +229,15 @@ const formik = useFormik({
     //   updateIdBasedLocation();
     }}
     header={[
-      !isUpdate ? t("Add Team Members") : t("Update Team Members"),
-      !isUpdate
+      !updateId ? t("Add Team Members") : t("Update Team Members"),
+      !updateId
         ? t("lorem ipusm")
-        : t("Update_Selected_Location"),
+        : t("Update_Team Members"),
     
     ]}
     footerBtn={[
       t("Cancel"),
-      !isUpdate ? t("Add-Teammebers") : t("Update-Teammebers"),
+      !updateId ? t("Add-Teammebers") : t("Update-Teammebers"),
     ]}
     
     
