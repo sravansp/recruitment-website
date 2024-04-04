@@ -1,8 +1,15 @@
-import React, { useState } from 'react'
+import React, { useEffect, useState } from 'react'
 import Breadcrumbs from '../common/BreadCrumbs';
-import { useTranslation } from 'react-i18next';
 import Accordion from '../common/Accordion';
 import ToggleBtn from '../common/ToggleBtn';
+import { useTranslation } from "react-i18next";
+import ButtonClick from "../common/Button";
+import { motion } from "framer-motion";
+import { useFormik } from "formik";
+import * as yup from "yup";
+import TabsNew from "../common/TabsNew";
+import TableAnt from "../common/TableAnt";
+import Createprvilege from './Createprvilege';
 
 export default function Privileges() {
     const { t } = useTranslation();
@@ -12,110 +19,292 @@ export default function Privileges() {
       { label: t("Role and Privileges"), url: "/" },
       // { label: navigationPath.charAt(0).toUpperCase() + navigationPath.slice(1) },
     ];
+   
+    const [updateId, setUpdateId] = useState("");
+    const [allSelect, setAllSelect] = useState(false);
+    const [assignBtnName, setAssignBtnName] = useState("employees");
+    const [activerole, setActiverole] = useState("Roles");
+    const [actibtn, setActivbtn] = useState();
+    const [requestAssets, setrequestAssets] = useState();
+    const [tabValue, setTabValue] = useState("RolesHistory");
+    const [companyId, setCompanyId] = useState(localStorage.getItem("companyId"));
+    const [show, setShow] = useState(false);
+    const [customRate, setCustomRate] = useState(1);
+    const [privileges, setPrivileges] = useState([]);
+    const [openPop, setOpenPop] = useState("");
+    const [userList, setUserList] = useState([]);
+  
+    const handleClose = () => {
+      setShow(false);
+      setOpenPop(""); // Clear the value in setOpenPop
+    };
+    const handleShow = () => {
+      setShow(true);
+      setOpenPop("createPolicy");
+    };
+  
+    const [navigationValue, setNavigationValue] = useState(t("User Privileges"));
+  
+   
+  
+    const tabs = [
+      {
+        id: 2,
+        title: t("Location"),
+        value: "location",
+      },
+      {
+        id: 3,
+        title: t("Departments"),
+        value: "departments",
+      },
+    ];
+  
+    const Formik3 = useFormik({
+      initialValues: {
+        overtimePolicyName: "",
+        // isTrackOverTime: false,
+        // isRequestOverTime: false,
+        maximumOverTimePerMonth: "",
+        hourlyRate: "",
+        // offType: "",
+        halfDay: "",
+        fullDay: "",
+      },
+  
+      enableReinitialize: true,
+      validateOnChange: false,
+      validationSchema: yup.object({
+        overtimePolicyName: yup.string().required(" "),
+      }),
+      onSubmit: async (e) => {},
+    });
+    const navigateBtn = [
+      { id: 1, value: "Roles", title: "Roles Management" },
+      { id: 2, value: "Users", title: "Attendance Access" },
+      { id: 3, value: "access", title: "Access Settings" },
+    ];
+    const header = [
+      {
+        Users: [
+          {
+            id: 1,
+            title: t("Roles"),
+            value: "shiftScheme",
+          },
+          {
+            id: 2,
+            title: t("Status"),
+            value: "description",
+          },
+          {
+            id: 3,
+            title: t("No Of Features"),
+            value: "description",
+          },
+          {
+            id: 4,
+            title: t("Action"),
+            value: "",
+            action: true,
+          },
+        ],
+      },
+    ];
+    const tabss = [
+      {
+        id: 1,
+        title: "Role List",
+        value: "RolesHistory",
+        //   content: <CardPersonal data={employeeInfo} />,
+      },
+      {
+        id: 2,
+        title: "Users List",
+        value: "UsersHistory",
+        // content: <CardPersonal data={employeeInfo} />,
+      },
+    ];
+    const Rolelistheader = [
+      {
+        RolesHistory: [
+          {
+            id: 1,
+            title: t("Roles"),
+            value: "roleName",
+            bold: true,
+          },
+          {
+            id: 2,
+            title: t("Employees"),
+            value: "employeeName",
+          },
+          {
+            id: 3,
+            title: t("Status"),
+            value: "isActive",
+            actionToggle: true,
+          },
+          {
+            id: 4,
+            title: t("Action"),
+            value: "",
+            action: true,
+            hideIcon: "delete",
+          },
+        ],
+      },
+    ];
+    const Userlistheader = [
+      {
+        UsersHistory: [
+          {
+            id: 1,
+            title: t("Employees"),
+            value: "firstName",
+          },
+          {
+            id: 2,
+            title: t("Roles"),
+            value: "roleName",
+          },
+          {
+            id: 3,
+            title: t("Status"),
+            value: "isActive",
+            actionToggle: true,
+          },
+          {
+            id: 4,
+            title: t("Action"),
+            value: "",
+            action: true,
+            hideIcon: "delete"
+          },
+        ],
+      },
+    ];
+    const [activeTab, setActiveTab] = useState(navigateBtn[0].id);
+    const array = [
+      { id: 3 },
+      { id: 4 },
+      { id: 5 },
+      { id: 6 },
+      { id: 7 },
+      { id: 8 },
+      { id: 9 },
+      { id: 10 },
+    ];
+  
+   
+  
+   
+  
+    // useEffect(() => {
+    //   getRoleList();
+    //   getUserRoleList();
+    // }, []);
 
 
-    const [notificationData, setNotificationData] = useState([
-        {
-          id: 1,
-          title: t("Role And Privileges"),
-          description: t("Email Notification description"),
-          contents: [
-            {
-              id: 1,
-              subTitle: t("Salary Slip"),
-              subTitleDescription: t("This will show Arabic in table fields when creating and editing items."),
-              value: "generalUpdates",
-              isActive: false,
-            },
-            {
-              id: 2,
-              subTitle: t("Salary Certificate"),
-              subTitleDescription: t("This will show Arabic in table fields when creating and editing items.n"),
-              value: "taskReminders",
-              isActive: false,
-            },
-            {
-              id: 3,
-              subTitle: t("Gratuity Approval"),
-              subTitleDescription: t("This will show Arabic in table fields when creating and editing items."),
-              value: "meetingInvitations",
-              isActive: false,
-            },
-            {
-              id: 4,
-              subTitle: t("Loan approvals"),
-              subTitleDescription: t("This will show Arabic in table fields when creating and editing items."),
-              value: "emailemployeeRequests",
-              isActive: false,
-            },
-           
-          ],
-        },
-        
-      ]);
   return (
     <div>
-    <div>
-        <Breadcrumbs items={breadcrumbItems} />
-        <p className="para">{t("Lorem ipsum dolart sit dummy text.")}</p>
-   </div>
-   <div className="relative flex flex-col gap-6">
-        {/*  Accordian item 1 */}
-        {notificationData.map((item) => (
-
-          <Accordion
-            title={item.title}
-            description={item.description}
-            initialExpanded={true}
-          > <div
-            key={item.id}
-
-          >
-              <h2>
-
-
-
-
-              </h2>
-
-              <div className="flex flex-col gap-8 overflow-hidden">
-                {item.contents.map((subitems) => (
-                  <div
-                    key={subitems.id}
-                    className="flex flex-row-reverse justify-between md:flex-row "
-                  >
-                    <div>
-                      <p class="acco-subhead">{subitems.subTitle}</p>
-                      <p class="para">{subitems.subTitleDescription}</p>
-                    </div>
-                    <div className="pr-3 form-select md:w-80">
-                      {/* <Switch
-                        defaultChecked
-                        className="md:float-right rtl:md:float-left"
-                        size={isSmallScreen ? "small" : ""}
-                      /> */}
-                      <ToggleBtn
-                        className="md:float-right rtl:md:float-left"
-                        value={subitems.isActive}
-                        change={
-                          (e) => {
-                            // handleToggleList(subitems.id, e);
-                            // formik.setFieldValue(subitems.value, e);
-                            // formik.handleSubmit();
-                          }
-                          // saved_theme(subitems.value, e);
-                          // setNotificationsToDB(subitems.subTitle, checked)
-                        }
-                      />
-                    </div>
-                  </div>
-                ))}
-              </div>
-
-            </div>
-          </Accordion>
-        ))}
+    <div className="flex flex-col gap-6">
+      <div className="flex justify-between">
+        <div>
+          <Breadcrumbs items={breadcrumbItems} />
+          <p className="para">{t("Main_Description")}</p>
+        </div>
+        <div className="gap-4 ">
+          <ButtonClick
+            buttonName={t("Create Role")}
+            handleSubmit={() => {
+              setShow(true);
+              console.log(true);
+            }}
+            BtnType="add"
+          ></ButtonClick>
+        </div>
       </div>
+
+      <TabsNew
+        tabs={navigateBtn}
+        tabClick={(e) => {
+          setActiverole(e);
+        }}
+      />
+
+      {activerole === "Roles" ? (
+        <>
+          <div>
+            {tabValue === "RolesHistory" ? (
+              <TableAnt
+                data={privileges}
+                header={
+                  tabValue === "RolesHistory" ? Rolelistheader : Userlistheader
+                }
+                actionID="roleId"
+                path={"RolesHistory"}
+                tab={tabss}
+                handleTabChange={(e) => {
+                  setTabValue(e);
+                  console.log(e);
+                }}
+                buttonClick={(e, company) => {
+                  setUpdateId(e);
+                }}
+                clickDrawer={(e) => {
+                  handleShow();
+                }}
+                // refresh={() => {
+                //   getRoleList();
+                // }}
+                // updateApi={API.TOGGLE_UPDATE}
+                // deleteApi={API.DELETE_ROLE_RECORD}
+              />
+            ) : (
+              <TableAnt
+                 data={userList}
+                header={tabValue==="UsersHistory"?Userlistheader:Userlistheader}
+                path={"UsersHistory"}
+                tab={tabss}
+                handleTabChange={(e) => {
+                  setTabValue(e);
+                  console.log(e);
+                }}
+              />
+            )}
+          </div>
+
+          <div>
+            {/* <Accordion
+                    title={t("Attendance Settings")}
+                >
+
+                </Accordion> */}
+          </div>
+        </>
+      ) : (
+        <TableAnt path="Users" header={header} navigationValue={navigateBtn} />
+      )}
+
+      {show && (
+        <motion.div initial="hidden" animate="visible">
+          <Createprvilege
+            open={show}
+            close={(e) => {
+              setShow(e);
+              setUpdateId(null);
+              handleClose();
+            }}
+            // refresh={() => {
+            //   getRoleList();
+            // }}
+            openPolicy={openPop}
+            updateId={updateId}
+          />
+        </motion.div>
+      )}
+    </div>
      
     </div>
   )

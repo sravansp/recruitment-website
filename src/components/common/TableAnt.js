@@ -35,6 +35,7 @@ import { setNavigationPath } from "../../Redux/action";
 import { setSelectedDataId } from "../../Redux/action";
 import { useNavigate } from 'react-router-dom';
 import ModalPop from "./ModalPop";
+import TabsNew from "./TabsNew";
 
 
 // Filter Dropdown
@@ -58,7 +59,9 @@ const gridListoptions = [
 const TableAnt = ({
   data = [],
   header = [],
-  drawerH=[],
+  tab,
+  drawerH = [],
+  inputType,
   actionToggle = false,
   actionID = "",
   updateApi = "",
@@ -67,6 +70,7 @@ const TableAnt = ({
   tabValue = "",
   buttonClick = () => { },
   clickDrawer = () => { },
+  handleTabChange = () => { },
   viewDetails = false,
   showButton = false,
   All = false,
@@ -88,6 +92,7 @@ const TableAnt = ({
   const [loading, setLoading] = useState(false);
   const [searchValue, setSearchValue] = useState("");
   const [searchFilter, setSearchFilter] = useState([...data]);
+  const [tabClick, setTabClick] = useState(path);
   // const [navigationPath, setNavigationPath] = useState("");
 
   const dispatch = useDispatch();
@@ -707,11 +712,54 @@ const TableAnt = ({
   return (
     <div className="flex flex-col gap-5">
       <div className="flex flex-col justify-between gap-3 xl:items-center xl:flex-row">
+        {!tab ? (
+          <div className="flex items-center justify-start gap-3">
+            <p className="text-lg font-semibold dark:text-white ">
+              {tabTitle
+                ? tabTitle?.charAt(0).toUpperCase() +
+                tabTitle.slice(1).split("_").join(" ")
+                : path?.charAt(0).toUpperCase() +
+                path.slice(1).split("_").join(" ")}
+            </p>
+            {/* <p className="text-lg font-semibold dark:text-white">
+              {jsonResult ||  path?.charAt(0).toUpperCase() + path.slice(1).split("_")}
+            </p> */}
+            {inputType ? (
+              <div className="">
+                <div className="flex items-center justify-start gap-2 ">
+                  {inputType?.map((each) => each.type)}
+                </div>
+              </div>
+            ) : (
+              <div
+                style={{ marginLeft: 8 }}
+                className={` bg-primaryalpha/10 dark:bg-primaryalpha/30 text-primary text-[10px] 2xl:text-xs rounded-full px-3 py-1 vhcenter`}
+              >
+                {hasSelected
+                  ? `${selectedRowKeys?.length} ${jsonResult ? jsonResult : path.split("_").join(" ")
+                  } Selected`
+                  : `All ${jsonResult ? jsonResult : path.split("_").join(" ")
+                  }`}
+                {console.log(jsonResult)}
+              </div>
+            )}
+          </div>
+        ) : (
+          <TabsNew
+            tabs={tab}
+            tabClick={(e) => {
+              console.log(e, "e");
+              setTabClick(e);
+              handleTabChange(e);
+            }}
+            gap={false}
+          />
+        )}
         <div className="flex items-center gap-3">
           <p className="text-lg font-semibold dark:text-white">
             {/* {tabTitle?.split("_") || path?.split("_")} */}
             {/* {jsonResult || path} */}
-            {jsonResult || path}
+            {/* {jsonResult || path} */}
             {/* (0) */}
           </p>
           <div
@@ -838,20 +886,7 @@ const TableAnt = ({
                     </Button>
                   </Dropdown>
                 </div>
-                {/* <Radio.Group
-            options={gridListoptions}
-            onChange={onChangeGridlist}
-            value={gridList}
-            optionType="button"
-            className="flex items-center py-1.5 h-full"
-            size={isSmallScreen ? "" : "large"}
-          />
-          <Button
-            className="flex items-center justify-center h-full py-1.5 font-medium bg-white dark:bg-black dark:text-white flex-nowrap"
-            size={isSmallScreen ? "default" : "large"}
-          >
-            <FiSettings className="text-base 2xl:text-lg" />
-          </Button> */}
+               
 
               </div>
 
@@ -925,14 +960,14 @@ const TableAnt = ({
                 {titleItem.value === "isActive" ? (
                   <div
                     className={`${parseInt(modalData.text[titleItem.value]) === 1
-                        ? " bg-emerald-100 text-emerald-600"
-                        : " bg-rose-100 text-rose-600"
+                      ? " bg-emerald-100 text-emerald-600"
+                      : " bg-rose-100 text-rose-600"
                       } rounded-full pr-2 py-[2px] w-fit font-medium text-[10px] 2xl:text-sm vhcenter flex-nowrap`}
                   >
                     <RxDotFilled
                       className={`${parseInt(modalData.text[titleItem.value]) === 1
-                          ? "text-emerald-600"
-                          : "text-rose-600"
+                        ? "text-emerald-600"
+                        : "text-rose-600"
                         } text-base 2xl:text-lg`}
                     />
                     {parseInt(modalData.text[titleItem.value]) === 1
