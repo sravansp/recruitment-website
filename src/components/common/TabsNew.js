@@ -31,7 +31,7 @@ const TabsNew = ({ tabs, onTabChange, initialTab }) => {
               <motion.div
                 layoutId="bubble"
                 className="absolute inset-0 z-10 rounded-md bg-accent"
-                // transition={{ type: "spring", duration: 0.6 }}
+                transition={{ type: "spring", duration: 0.6 }}
               ></motion.div>
             )}
             <span
@@ -39,7 +39,7 @@ const TabsNew = ({ tabs, onTabChange, initialTab }) => {
                 activeTab === tab.id
                   ? "relative inset-0 z-20 text-white rounded-md bg-accent p-2"
                   : "text-black dark:text-white group-hover:text-primary"
-              }vhcenter gap-1`}
+              }  vhcenter gap-1`}
             >
               {tab.icon && tab.icon} {tab.title}
             </span>
@@ -54,7 +54,7 @@ const TabsNew = ({ tabs, onTabChange, initialTab }) => {
               initial={{ opacity: 0 }}
               animate={{ opacity: 1 }}
               exit={{ opacity: 0 }}
-              // transition={{ duration: 0.5 }}
+              transition={{ duration: 0.5 }}
                 className={`tab-panel flex flex-col gap-4 2xl:gap-6 ${activeTab === tab.id ? "active" : ""}`}
               >
                 {tab.content}
