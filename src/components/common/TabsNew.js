@@ -31,15 +31,15 @@ const TabsNew = ({ tabs, onTabChange, initialTab }) => {
               <motion.div
                 layoutId="bubble"
                 className="absolute inset-0 z-10 rounded-md bg-accent"
-                transition={{ type: "spring", duration: 0.6 }}
+                // transition={{ type: "spring", duration: 0.6 }}
               ></motion.div>
             )}
             <span
               className={`${
                 activeTab === tab.id
-                  ? "relative z-20 text-white"
+                  ? "relative inset-0 z-20 text-white rounded-md bg-accent p-2"
                   : " text-black dark:text-white group-hover:text-primary"
-              } vhcenter gap-1`}
+              } `}
             >
               {tab.icon && tab.icon} {tab.title}
             </span>
