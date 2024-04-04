@@ -6,7 +6,7 @@ import { RiArrowDownSLine } from "react-icons/ri";
 import { Modal } from "antd";
 import { Link } from "react-router-dom";
 
-const ProfileDropdown = () => {
+const ProfileDropdown = ({Email="",Profile="",Name=""}) => {
   const [open, setOpen] = useState(false);
   const showModal = () => {
     setOpen(true);
@@ -32,11 +32,11 @@ const ProfileDropdown = () => {
         >
           <div className="flex items-center h-full  gap-2 2xl:p-1 px-1 py-0.5 text-black rounded-full justify-evenly bg-secondaryWhite dark:bg-secondaryDark dark:text-white ">
             <div className=" w-[24px] h-[24px] 2xl:w-[34px] 2xl:h-[34px] rounded-full overflow-hidden">
-              <img className="object-cover w-full" src={profile} alt="" />
+              <img className="object-cover w-full" src={Profile} alt="" />
             </div>
             <div className="flex-col justify-start hidden leading-none xl:flex">
-              <p className="text-xs font-medium 2xl:text-sm ">Khadija Ahmed</p>
-              <p className="text-[8px] 2xl:text-[10px]">khadija@loyaltri.com</p>
+              <p className="text-xs font-medium 2xl:text-sm ">{Name}</p>
+              <p className="text-[8px] 2xl:text-[10px]">{Email}</p>
             </div>
             <RiArrowDownSLine
               className="hidden text-xl ltr:pr-2 rtl:pl-2 xl:flex 2xl:text-2xl"
@@ -60,7 +60,7 @@ const ProfileDropdown = () => {
                   className="flex items-center mr-auto space-x-2"
                 >
                   <img
-                    src={profile}
+                    src={Profile}
                     alt="avatar  Khadija Ahmed"
                     className="w-6 h-6 rounded-full 2xl:w-8 2xl:h-8 shrink-0"
                   />
@@ -68,12 +68,12 @@ const ProfileDropdown = () => {
                     <div className="relative text-xs font-medium leading-tight text-gray-900 2xl:text-sm dark:text-white">
                       <span className="flex">
                         <span className="relative pr-8 truncate">
-                          Khadija Ahmed
+                          {Name}
                         </span>
                       </span>
                     </div>
                     <p className="text-[8px] 2xl:text-[10px] font-normal leading-tight text-gray-500 truncate !mt-0 dark:text-white">
-                      khadija@loyaltri.com
+                      {Email}
                     </p>
                   </div>
                 </div>

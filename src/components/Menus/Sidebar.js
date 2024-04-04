@@ -43,7 +43,7 @@ const Sidebar = () => {
 
   const [showSelectedMenu, setShowSelectedMenu] = useState(false);
   // let submenuTimeout;
-
+  const [menuClick, setMenuClick] = useState(false);
   const { theme } = useTheme();
 
   const location = useLocation();
@@ -80,12 +80,20 @@ const Sidebar = () => {
 
   const handleMenuClick = (menu) => {
     setActiveMenu(menu.id);
-    setSelectedMainMenu(menu.title);
+    // setSelectedMainMenu(menu.title);
     console.log(selectedMainMenu);
     localStorage.setItem("selectedMainMenu", menu.title);
   };
 
   const handleMenuHover = (menuId) => {
+    setHamburgerClicked((prevClicked) => true); // hover time menu move to fixed, like top icon
+    // const storedHamburgerClicked = JSON.parse(
+    //   localStorage.getItem("hamburgerClicked")
+    // );
+    // if (storedHamburgerClicked !== null) {
+    //   setHamburgerClicked(storedHamburgerClicked);
+    // }
+
     const hoveredMenu = navData[0].topmenu.find(
       (menuItem) => menuItem.id === menuId
     );
@@ -93,13 +101,15 @@ const Sidebar = () => {
     if (hoveredMenu) {
       if (!hoveredMenu.submenus || hoveredMenu.submenus.length === 0) {
         // Display the selected menu's submenus
-        const storedSelectedMenu = localStorage.getItem('selectedMainMenu');
+        const storedSelectedMenu = localStorage.getItem("selectedMainMenu");
         console.log("selected menu1", storedSelectedMenu);
 
-        const activeTopMenuData = navData[0]?.topmenu?.find((menuItem) => menuItem.title === storedSelectedMenu);
+        const activeTopMenuData = navData[0]?.topmenu?.find(
+          (menuItem) => menuItem.title === storedSelectedMenu
+        );
 
         if (activeTopMenuData) {
-          console.log("active", activeTopMenuData.id)
+          console.log("active", activeTopMenuData.id);
           setActiveMenu(activeTopMenuData.id);
         } else {
           // Handle the case when the stored menu is not found in top menu
@@ -121,17 +131,25 @@ const Sidebar = () => {
       } else {
         setActiveMenu(null);
       }
-
     }
   };
 
+
   const handleMenuMouseLeave = () => {
+    console.log("hhhhhhhhhhhhhhhhhhhhhhhhhhhhhhh");
+    console.log(menuClick);
+    if (!menuClick) {
+      console.log(menuClick);
+      handleHamburgerClick();
+    }
     // Update selectedMainMenu based on the value in local storage
-    const storedSelectedMenu = localStorage.getItem('selectedMainMenu');
+    const storedSelectedMenu = localStorage.getItem("selectedMainMenu");
     setSelectedMainMenu(storedSelectedMenu);
 
     // Find the active menu and set it
-    const activeTopMenuData = navData[0]?.topmenu?.find((menuItem) => menuItem.title === storedSelectedMenu);
+    const activeTopMenuData = navData[0]?.topmenu?.find(
+      (menuItem) => menuItem.title === storedSelectedMenu
+    );
 
     if (activeTopMenuData) {
       setActiveMenu(activeTopMenuData.id);
@@ -148,14 +166,19 @@ const Sidebar = () => {
   };
 
 
-  const handleHamburgerClick = () => {
-    setHamburgerClicked((prevClicked) => !prevClicked);
+  const handleHamburgerClick = (data) => {
+    console.log(data, "dsdsdsdsd");
+    if (data === false) {
+      setHamburgerClicked(false);
+    } else {
+      setHamburgerClicked((prevClicked) => !prevClicked);
+    }
     setShowSubmenu(false);
     const storedSelectedMenuId = localStorage.getItem("selectedMainMenuId");
     if (storedSelectedMenuId) {
-      setActiveMenu(storedSelectedMenuId)
+      setActiveMenu(storedSelectedMenuId);
     } else {
-      setActiveMenu(null)
+      setActiveMenu(null);
     }
     // Save the hamburger state to localStorage
     localStorage.setItem(
@@ -167,9 +190,9 @@ const Sidebar = () => {
     // document.body.classList.toggle('sidebar-open', !isHamburgerClicked);
   };
 
-  // useEffect(() => {
-  //   dispatch(hamburger(isHamburgerClicked));
-  // }, [isHamburgerClicked, dispatch]);
+  useEffect(() => {
+    dispatch(hamburger(isHamburgerClicked));
+  }, [isHamburgerClicked, dispatch]);
 
 
   useEffect(() => {
@@ -484,8 +507,19 @@ const Sidebar = () => {
                 key={menuItem.id}
                 className={`menu-link relative group ${activeSubMenuLink === menuItem.id ? "active" : ""
                   }`}
-                onClick={() => handleMenuClick(menuItem)}
-                onMouseEnter={() => handleMenuHover(menuItem.id, true)}
+                  onClick={() => {
+                    if (menuItem?.directLink) {
+                      handleHamburgerClick(false);
+                    }
+                    handleMenuClick(menuItem);
+                  }}
+                  onMouseEnter={() => {
+                    if (menuItem?.directLink) {
+                      handleHamburgerClick(false);
+                    } else {
+                      handleMenuHover(menuItem.id, true);
+                    }
+                  }}
                 style={{
                   opacity: menuItem.title === "" ? 0 : 1,
                   cursor: menuItem.title === "" ? "default" : "pointer",

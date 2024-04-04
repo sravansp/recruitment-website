@@ -3,7 +3,7 @@ import TabsNew from "../../common/TabsNew";
 import TextEditor from "../../common/TextEditor/TextEditor";
 import ButtonClick from "../../common/Button";
 import { IoMdAdd } from "react-icons/io";
-import {getRecruitmentJobResumesNoteById,updateRecruitmentJobResumesNote,getAllRecruitmentJobResumesNotes,saveRecruitmentJobResumesNote } from "../../Api1";
+import {getRecruitmentResumeById,getRecruitmentJobResumesNoteById,updateRecruitmentJobResumesNote,getAllRecruitmentJobResumesNotes,saveRecruitmentJobResumesNote } from "../../Api1";
 import {
   RiArrowDownLine,
   RiFileList3Line,
@@ -57,6 +57,7 @@ const CVResume = () => {
   const { state } = useLocation();
   const [selectedNoteId, setSelectedNoteId] = useState(null);
   const [isPinned, setIsPinned] = useState(0);
+  const[PdFViewer,setPdFViewer] = useState("")
   const handleEditClick = (jobResumeNoteId) => {
     setSelectedNoteId(jobResumeNoteId);
     getnotesbyId(jobResumeNoteId)
@@ -150,6 +151,25 @@ const CVResume = () => {
     }
 
   }
+
+  const getCandidatesById = async () => {
+    try {
+      const response = await getRecruitmentResumeById(resumeId);
+       
+     
+      setPdFViewer(response.result[0].resumeFile)
+
+
+      console.log(response.result)
+      console.log(PdFViewer)
+  
+    } catch (error) {
+      console.error('Error updating workflow ID:', error);
+    }
+  };
+  useEffect(()=>{
+    getCandidatesById()
+  },[])
   return (
     <div className="grid gap-6 lg:grid-cols-12">
       {/* LEFT COLUMN  */}
@@ -177,7 +197,7 @@ const CVResume = () => {
             />
           </div>
           <div className="divider-h" />
-          <PDFViewer pdfUrl={pdfFile} />
+          <PDFViewer pdfUrl={PdFViewer} />
         </div>
 
         <div className="flex flex-col gap-5 divide-y box-wrapper">

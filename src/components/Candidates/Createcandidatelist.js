@@ -39,7 +39,7 @@ import FileUpload from '../common/FileUpload';
 
 export default function Createcandidatelist({ open = "", close = () => { }, fileUpdateId, refresh, ConfigurationAction, updateId = null, }) {
   const [show, setShow] = useState(open);
-  const [activeBtnValue, setActiveBtnValue] = useState("Questions");//Review//Questions//Work
+  const [activeBtnValue, setActiveBtnValue] = useState("Personel");//Review//Questions//Work
   const [nextStep, setNextStep] = useState(0);
   const [applicableData, setApplicableData] = useState([]);
   const [isUpdate, setIsUpdate] = useState();
@@ -51,6 +51,7 @@ export default function Createcandidatelist({ open = "", close = () => { }, file
   const { t } = useTranslation();
   const [api, contextHolder] = notification.useNotification();
   const [file, setFile] = useState("");
+  const[filePdf,setFilepdf] =useState("")
 
   const [workexp, setWorkexp] = useState([
     {
@@ -283,21 +284,28 @@ export default function Createcandidatelist({ open = "", close = () => { }, file
           })
         );
          if(response.status===200){
-          if (values.file) {
-            formData.append('file', values.file);
-        }
-          console.log("inside file upload api");
+          if (resumeId) {
           const formData = new FormData();
+            
+          formData.append('file', filePdf);
+     
+          console.log("inside file upload api");
+        
           formData.append('action', 'resumeFileUpload');
-          formData.append('resumeId', 421);
+          formData.append('resumeId', resumeId);
         
           formData.append('coverLetter', values.coverLetter);
 
           const FileUpload = await fileAction(formData);
           console.log(FileUpload, "fileUploadResult")
-         
+          }
+          setNextStep(nextStep + 1);
+          setPresentage(1);
+          openNotification("success", "Success...", response.message);
+
          }else{
-          console.log("moonji")
+          console.log("file upload failed")
+          openNotification("error", "Failed..", response.message);
          }
 
         // File upload
@@ -386,16 +394,16 @@ export default function Createcandidatelist({ open = "", close = () => { }, file
       addressLine: "",
       postalCode: "",
       createdBy: "",
-      candidateName: ""
+      candidateName: "",
+      file: null // Assuming file is part of your form values
     },
-
+  
     enableReinitialize: true,
     validateOnChange: false,
     validationSchema: yup.object({
       firstName: yup.string().required("First Name is required"),
     }),
     onSubmit: async (values) => {
-
       try {
         const candidateName = `${values.namePrefix} ${values.firstName} ${values.lastName}`;
         const result = await saveRecruitmentResume({
@@ -412,46 +420,71 @@ export default function Createcandidatelist({ open = "", close = () => { }, file
           candidateSource: "source1",
           resumeCode: null,
           createdBy: localStorage.getItem('employeeId'),
-          jobId: localStorage.getItem('jobid'), // Assuming jobId is fixed for this form
+          jobId: null, // Assuming jobId is fixed for this form
           // createdBy: createdBy // Assuming createdBy is defined elsewhere
         });
-        if (file) {
-          console.log("inside file upload api");
-          const formData = new FormData();
-          formData.append('action', 'resumePhotoUpload');
-          formData.append('resumeId', resumeId);
-          formData.append('file', values.file);
-         
-
-          const response = await fileAction(formData);
-          console.log(response, "fileUploadResult")
-          if (response.status === 200) {
-            setNextStep(nextStep + 1);
-            setPresentage(1);
-            openNotification("success", "Success...", result.message);
-          } else {
-            openNotification("error", "Failed..", response.message);
-          }
-        }
-
+  
         if (result.status === 200) {
           setNextStep(nextStep + 1);
           setPresentage(1);
-         
           setResumeId(result.result.insertedId);
         } else if (result.status === 500) {
           openNotification("error", "Failed..", result.message);
         }
         console.log(result);
         console.log(result.errors);
+  
+        // Check if resumeId is available
+        // if (resumeId && values.file) {
+        //   console.log("inside file upload api");
+        //   const formData = new FormData();
+        //   formData.append('action', 'resumePhotoUpload');
+        //   formData.append('resumeId', resumeId);
+        //   formData.append('file', values.file);
+  
+        //   const response = await fileAction(formData);
+        //   console.log(response, "fileUploadResult")
+        //   if (response.status === 200) {
+        //     setNextStep(nextStep + 1);
+        //     setPresentage(1);
+        //     openNotification("success", "Success...", result.message);
+        //   } else {
+        //     openNotification("error", "Failed..", response.message);
+        //   }
+        // }
       } catch (error) {
         openNotification("error", "Failed..", error.message);
         console.log(error);
       }
     }
-
   });
-
+  useEffect(() => {
+    const uploadFile = async () => {
+      if (resumeId ) {
+        try {
+          console.log("inside file upload api");
+          const formData = new FormData();
+          formData.append('action', 'resumePhotoUpload');
+          formData.append('resumeId', resumeId);
+          formData.append('file', file);
+  
+          const response = await fileAction(formData);
+          console.log(response, "fileUploadResult");
+          if (response.status === 200) {
+           
+            openNotification("success", "Success...", response.message);
+          } else {
+            openNotification("error", "Failed..", response.message);
+          }
+        } catch (error) {
+          openNotification("error", "Failed..", error.message);
+          console.log(error);
+        }
+      }
+    };
+  
+    uploadFile();
+  }, [resumeId]);
   const CreateDirectorSteps = [
     {
       id: 1,
@@ -471,15 +504,15 @@ export default function Createcandidatelist({ open = "", close = () => { }, file
       title: "Work Experience",
       data: "Work",
     },
+    // {
+    //   id: 4,
+    //   value: 3,
+    //   title: "Questions",
+    //   data: "Questions",
+    // },
     {
       id: 4,
       value: 3,
-      title: "Questions",
-      data: "Questions",
-    },
-    {
-      id: 5,
-      value: 4,
       title: "Review",
       data: "Review",
     },
@@ -733,9 +766,11 @@ export default function Createcandidatelist({ open = "", close = () => { }, file
                       <p>Photo (Optional)</p>
                       <FileUpload change={(e) => {
                           if (e) {
-                            formik.setFieldValue("file", e);
+                            
                             setFile(e)
+                            
                           }
+                          console.log(e)
                         }} />
                     </div>
 
@@ -951,8 +986,8 @@ export default function Createcandidatelist({ open = "", close = () => { }, file
                           /> */}
                         <FileUpload change={(e) => {
                           if (e) {
-                            formik.setFieldValue("file", e);
-                            setFile(e)
+                            
+                            setFilepdf(e)
                           }
                         }} />
                       </div>
@@ -971,53 +1006,54 @@ export default function Createcandidatelist({ open = "", close = () => { }, file
                     </div>
                   </Accordion>
                 </FlexCol>
-              </>
-            ) : activeBtnValue === "Questions" ? (
-              <>
-                <FlexCol justify="center" align="center" className="w-5/6 m-auto  mt-10">
-                  <Accordion
-                    title={"Prerequisite"}
-                    className="Text_area "
-                    padding={true}
-                    toggleBtn={false}
-                    click={() => {
-                      //   setPresentage(1.4);
-                    }}
-                    initialExpanded={true}
-                  >
+              </>)
+            // ) : activeBtnValue === "Questions" ? (
+            //   <>
+            //     <FlexCol justify="center" align="center" className="w-5/6 m-auto  mt-10">
+            //       <Accordion
+            //         title={"Prerequisite"}
+            //         className="Text_area "
+            //         padding={true}
+            //         toggleBtn={false}
+            //         click={() => {
+            //           //   setPresentage(1.4);
+            //         }}
+            //         initialExpanded={true}
+            //       >
 
-                    <div className='flex items-end'>
-                      <div className="grid grid-cols-1 gap-4 w-4/5">
-                        <FormInput
+            //         <div className='flex items-end'>
+            //           <div className="grid grid-cols-1 gap-4 w-4/5">
+            //             <FormInput
 
-                          title={t("Are you legally eligible to work in the country?")}
-                          placeholder={t("Answer here..")}
+            //               title={t("Are you legally eligible to work in the country?")}
+            //               placeholder={t("Answer here..")}
 
 
-                        />
-                        <FormInput
-                          title={t("Highest level of education completed")}
-                          placeholder={t("Answer here..")}
+            //             />
+            //             <FormInput
+            //               title={t("Highest level of education completed")}
+            //               placeholder={t("Answer here..")}
 
-                        />
-                        <FormInput
-                          title={t("Highest level of education completed")}
-                          placeholder={t("Answer here..")}
+            //             />
+            //             <FormInput
+            //               title={t("Highest level of education completed")}
+            //               placeholder={t("Answer here..")}
 
-                        />
-                        <FormInput
-                          title={t("Highest level of education completed")}
-                          placeholder={t("Answer here..")}
+            //             />
+            //             <FormInput
+            //               title={t("Highest level of education completed")}
+            //               placeholder={t("Answer here..")}
 
-                        />
-                      </div>
+            //             />
+            //           </div>
 
-                    </div>
+            //         </div>
 
-                  </Accordion>
-                </FlexCol>
-              </>
-            ) : (activeBtnValue === "Review" && (
+            //       </Accordion>
+            //     </FlexCol>
+            //   </>
+            // ) 
+            : (activeBtnValue === "Review" && (
               <>
                 <FlexCol justify="center" align="center" className="w-5/6 m-auto  mt-10">
                   <Accordion

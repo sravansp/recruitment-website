@@ -1,4 +1,4 @@
-import React, { useRef, useState } from "react";
+import React, { useRef, useState,useEffect } from "react";
 import { useSelector } from "react-redux";
 import DarkModeSwitch from "./DarkModeSwitch";
 import { RiVoiceprintFill } from "react-icons/ri";
@@ -34,7 +34,25 @@ console.log(hamburger);
       searchInputRef.current.focus();
     }
   };
-  
+  const [userInfo, setUserInfo] = useState({});
+  const [fullName, setFullName] = useState('');
+  const [email, setEmail] = useState('');
+  const [profilePicture, setProfilePicture] = useState('');
+
+  useEffect(() => {
+    // Fetching user data from localStorage
+    const loginData = JSON.parse(localStorage.getItem('LoginData'));
+    
+    // Extracting required information
+    const { firstName, lastName, email: userEmail, profilePicture: userProfilePicture } = loginData.userData;
+    const combinedName = `${firstName} ${lastName}`;
+
+    // Storing information in state
+    setFullName(combinedName);
+    setEmail(userEmail);
+    setProfilePicture(userProfilePicture);
+    setUserInfo(loginData.userData); // If you need to store the entire user data
+  }, []);
   return (
     // <!-- component -->
     <nav
@@ -104,7 +122,11 @@ console.log(hamburger);
           <div className="relative flex items-center justify-end">
             <Notification />
 
-            <ProfileDropdown />
+            <ProfileDropdown
+            Name={fullName}
+            Email={email}
+            Profile={profilePicture}
+            />
           </div>
         </div>
       </div>

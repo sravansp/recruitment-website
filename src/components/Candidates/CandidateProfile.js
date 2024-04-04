@@ -7,8 +7,9 @@ import copy from "clipboard-copy";
 import { Menu, Space } from "antd";
 import { useTranslation } from "react-i18next";
 import {Formik, useFormik } from "formik";
-import {getAllRecruitmentJobResumesNotes,updateRecruitmentJobResumesMapping,getResumeJobDetails,getRecruitmentResumeById,getAllRecruitmentJobWorkFlowDetails,saveRecruitmentJobResumesStage } from "../Api1";
-// Icons
+import {getAllRecruitmentJobs,getRecruitmentJobById,updateRecruitmentJobResumesMapping,getResumeJobDetails,getRecruitmentResumeById,getAllRecruitmentJobWorkFlowDetails,saveRecruitmentJobResumesStage } from "../Api1";
+
+
 import {
   PiArrowLeftBold,
   PiBookmarkSimpleFill,
@@ -116,16 +117,21 @@ const CandidateProfile = () => {
   const [selectedItemLabel, setSelectedItemLabel] = useState(null);
   const[Candidate,setcandidate]=useState([])
   const[userdata,setuserdata]=useState([])
-  const[jobId,setJobId]=useState(null)
+  const[jobId,setJobId]=useState("")
   const[stageName,setstageName]=useState([])
   const[stageId,setstageId]=useState("")
   const { resumeId } = useParams();
-  const[resumejob,setresumejob]=useState([])
+  const[jobName,setJobName]=useState("")
   const[jobResumeMapping,setjobResumeMapping]=useState("")
   const [currentStatus, setCurrentStatus] = useState(0);
-  const[notes,setnotes]= useState("")
+  const[allJob,setAllJob]= useState([])
+  const [companyId, setCompanyId] = useState(localStorage.getItem("companyId"));
   
   const location = useLocation();
+  useEffect(() => {
+    setCompanyId(localStorage.getItem("companyId"));
+    
+  }, []);
   
  console.log(resumeId)
  const tabData = [
@@ -277,10 +283,14 @@ const tabs = [
   const handleMenuClick = (e) => {
     setSelectedItem(e.key);
     const selectedItemLabel = stageName.find((item) => item.key === e.key).label;
-    setSelectedItemLabel(selectedItemLabel);
+   
     setstageId(e.key);
   };
-  
+  const handleMenuClick1 = (e)=>{
+    const selectedJobLabel  = allJob.find((item)=>item.key === e.key).label;
+    setSelectedItemLabel(selectedItemLabel);
+    setJobName(selectedJobLabel)
+  }
 
   const handleCopyClick = (value) => {
     copy(value);
@@ -308,10 +318,11 @@ const getCandidatesById = async () => {
     console.log(response)
     const updatedCandidates = response.result.map(candidate => ({
       ...candidate,
-      stageName: resumejob
-    }));
      
+    }));
+     console.log(updatedCandidates)
     setcandidate(updatedCandidates);
+
     
     // setuserdata(response.result.map((items)=>({
     //  personal:[ 
@@ -367,7 +378,7 @@ useEffect(() => {
   console.log(id)
   console.log(userdata)
   console.log(Candidate)
-  console.log(resumejob)
+  
   console.log(currentStatus)
  
   
@@ -416,10 +427,54 @@ const handleButtonClick = async (status) => {
   }
 };
 
+const getJobName = async ()=>{
+  try{
+   if(jobId){
 
+   
+    const response = await getRecruitmentJobById({id:jobId})
+    console.log(response)
+    setJobName(response.result[0].jobTitle)  
+   }
+  }catch(error)
+  {
+    console.log(error)
+  }
+}
+useEffect(()=>{
+  getJobName()
+},[jobId])
 
+const getAlljobs = async ()=>{
+  try{
+    const response = await getAllRecruitmentJobs({companyId:companyId})
+    console.log(response)
+    const jobs = response.result.map(jobs => ({
+      label: jobs.jobTitle,
+      key: jobs.jobId
+    }))
+    console.log(jobs)
+    setAllJob (
+      jobs
+    )
+    
 
+  }catch(error){
+   console.log(error)
+  }
+}
 
+ useEffect(()=>{
+  getAlljobs()
+ },[])
+
+ const jobs = (
+  <Menu onClick={handleMenuClick1}>
+    {allJob.map((item) => (
+      <Menu.Item key={item.key}>{item.label}</Menu.Item>
+    ))}
+  </Menu>
+);
   return (
     
     <div className="flex flex-col gap-6">
@@ -472,7 +527,7 @@ const handleButtonClick = async (status) => {
           <div className="flex items-center justify-start gap-5">
             <img
               className="w-[60px] h-[60px] rounded-full shadow border-2 border-white"
-              src="https://via.placeholder.com/60x60"
+              src={items.candidatePhoto}
             />
             <div className="inline-flex flex-col items-start justify-start gap-1">
               <div className="gap-3 vhcenter">
@@ -497,8 +552,36 @@ const handleButtonClick = async (status) => {
               </div>
             </div>
           </div>
+          
+            
 
+          
           <div className="flex gap-3">
+          <div className="flex flex-col gap-3">
+          
+          
+          {console.log("jobId1:", jobs)}
+          {jobId === "null" ? (
+            
+            <Dropdown overlay={jobs} trigger={["click"]}>
+                      <a className="pblack" onClick={(e) => e.preventDefault()}>
+                        <Space>
+                          Choose Job
+                          <DownOutlined />
+                        </Space>
+                      </a>
+                    </Dropdown>
+         
+          
+          ):(null)}
+        
+    
+
+
+          <div className="bg-[#FFE8E8] rounded-full px-4 py-1">
+              {jobName}
+              </div>
+            </div>
             <div className="flex flex-col gap-3">
               <Dropdown overlay={menu} trigger={["click"]}>
                 <a className="pblack" onClick={(e) => e.preventDefault()}>
@@ -512,6 +595,7 @@ const handleButtonClick = async (status) => {
               {selectedItemLabel}
               </div>
             </div>
+
             
             <Divider type="vertical" className="hidden h-auto lg:block" />
             <div className="flex flex-col gap-3">
