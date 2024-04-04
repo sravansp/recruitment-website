@@ -17,8 +17,8 @@ export default function Privileges() {
     const [notificationData, setNotificationData] = useState([
         {
           id: 1,
-          title: t("Email_Notification"),
-          description: t("Email_Notification_description"),
+          title: t("Role And Privileges"),
+          description: t("Email Notification description"),
           contents: [
             {
               id: 1,
