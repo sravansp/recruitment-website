@@ -2,9 +2,9 @@ import React, { useEffect, useState } from "react";
 import TabsNew from "../../common/TabsNew";
 import TextEditor from "../../common/TextEditor/TextEditor";
 import ButtonClick from "../../common/Button";
-import { useParams,useLocation } from "react-router-dom";
-import {getRecruitmentJobResumesNoteById,updateRecruitmentJobResumesNote,saveRecruitmentJobResumesNote,getAllRecruitmentJobResumesNotes,getAllRecruitmentJobResumeActivities} from "../../Api1" 
-import {Formik, useFormik } from "formik";
+import { useParams, useLocation } from "react-router-dom";
+import { getRecruitmentJobResumesNoteById, updateRecruitmentJobResumesNote, saveRecruitmentJobResumesNote, getAllRecruitmentJobResumesNotes, getAllRecruitmentJobResumeActivities } from "../../Api1"
+import { Formik, useFormik } from "formik";
 import {
   RiArticleLine,
   RiCalendarLine,
@@ -13,6 +13,7 @@ import {
 } from "react-icons/ri";
 import { BsFileEarmarkRichtext } from "react-icons/bs";
 import { FaRegEdit } from "react-icons/fa";
+import { PiPushPinSlashBold } from "react-icons/pi";
 
 // const candidateStatus = [
 //   {
@@ -81,8 +82,8 @@ const ActivityFeed = () => {
   const [content, setContent] = useState("");
   const primaryColor = localStorage.getItem("mainColor");
   const { resumeId } = useParams();
-  const[candidateStatus,setcandidateStatus]=useState([])
-  const[jobId,setJobId] = useState(null)
+  const [candidateStatus, setcandidateStatus] = useState([])
+  const [jobId, setJobId] = useState(null)
   const { state } = useLocation();
   const [selectedNoteId, setSelectedNoteId] = useState(null);
   const [isPinned, setIsPinned] = useState(0);
@@ -93,30 +94,30 @@ const ActivityFeed = () => {
   };
   useEffect(() => {
     if (state && state.jobID) {
-        setJobId(state.jobID);
+      setJobId(state.jobID);
     } else {
-        const storedJobId = localStorage.getItem('jobid');
-        if (storedJobId) {
-            setJobId(storedJobId);
-        }
+      const storedJobId = localStorage.getItem('jobid');
+      if (storedJobId) {
+        setJobId(storedJobId);
+      }
     }
-}, [state]);
-  const getActivities = async()=>{
-    try{
-    const response = await getAllRecruitmentJobResumeActivities(resumeId)
+  }, [state]);
+  const getActivities = async () => {
+    try {
+      const response = await getAllRecruitmentJobResumeActivities(resumeId)
 
-    console.log(response)
-    setcandidateStatus(response.result)
+      console.log(response)
+      setcandidateStatus(response.result)
 
 
-    }catch(error){
+    } catch (error) {
 
     }
 
   }
-  useEffect(()=>{
+  useEffect(() => {
     getActivities()
-  },[])
+  }, [])
   const handleEditorChange = (content) => {
     setContent(content);
   };
@@ -129,66 +130,66 @@ const ActivityFeed = () => {
     }
   };
 
-  
- const[notes,setnotes]= useState("")
+
+  const [notes, setnotes] = useState("")
 
 
- const formik = useFormik ({
-  initialValues :{
-    jobId:"",
-      resumeId:"",
-      notes:"",
+  const formik = useFormik({
+    initialValues: {
+      jobId: "",
+      resumeId: "",
+      notes: "",
       createdBy: ""
-  },
-  onSubmit: async (e)=>{
-    try {
-      if(!selectedNoteId){
-      const response = await saveRecruitmentJobResumesNote({
-       jobId:jobId,
-       resumeId:resumeId,
-       notes:e.notes,
-       createdBy:null,
-      })
-      console.log(response)
-      getnotes()
-    }else{
-      const response= await updateRecruitmentJobResumesNote({
-        id:selectedNoteId,
-        jobId:jobId,
-        resumeId:resumeId,
-        notes:e.notes,
-        isPinned:isPinned,
-        modifiedBy:null
-      })
-      console.log(response)
-      getnotes()
+    },
+    onSubmit: async (e) => {
+      try {
+        if (!selectedNoteId) {
+          const response = await saveRecruitmentJobResumesNote({
+            jobId: jobId,
+            resumeId: resumeId,
+            notes: e.notes,
+            createdBy: null,
+          })
+          console.log(response)
+          getnotes()
+        } else {
+          const response = await updateRecruitmentJobResumesNote({
+            id: selectedNoteId,
+            jobId: jobId,
+            resumeId: resumeId,
+            notes: e.notes,
+            isPinned: isPinned,
+            modifiedBy: null
+          })
+          console.log(response)
+          getnotes()
+        }
+      } catch (error) {
+        console.log(error)
+      }
     }
-    }catch(error){
+  })
+  const getnotes = async () => {
+    try {
+      const response = await getAllRecruitmentJobResumesNotes({ resumeId: resumeId })
+      console.log(response)
+      setnotes(response.result)
+
+    } catch (error) {
       console.log(error)
     }
   }
-})
-  const getnotes = async()=>{
-     try{
-      const response = await getAllRecruitmentJobResumesNotes({resumeId:resumeId})
-      console.log(response)
-      setnotes(response.result)
-    
-     }catch(error){
-       console.log(error)
-     }
-   }
-   useEffect(()=>{
-     getnotes()
-     console.log(notes)
-     
-   },[])
-   const getnotesbyId = async(jobResumeNoteId)=>{
-    try{
-    const response = await getRecruitmentJobResumesNoteById({id:jobResumeNoteId})
-    console.log(response);
-    formik.setFieldValue('notes',response.result[0].notes)
-    }catch(error){
+  useEffect(() => {
+    getnotes()
+    console.log(notes)
+
+  }, [])
+  const getnotesbyId = async (jobResumeNoteId) => {
+    try {
+      const response = await getRecruitmentJobResumesNoteById({ id: jobResumeNoteId })
+      console.log(response);
+      formik.setFieldValue('notes', response.result[0].notes)
+    } catch (error) {
       console.log(error)
     }
 
@@ -206,9 +207,8 @@ const ActivityFeed = () => {
               {candidateStatus.map((status, i) => (
                 <div className="relative flex pb-6" key={i}>
                   <div
-                    className={`absolute inset-0  items-center justify-center h-full w-9 ${
-                      i === candidateStatus.length - 1 ? `hidden` : `flex`
-                    }`}
+                    className={`absolute inset-0  items-center justify-center h-full w-9 ${i === candidateStatus.length - 1 ? `hidden` : `flex`
+                      }`}
                   >
                     <div className="h-full w-px bg-[#F1F5F9] dark:bg-secondaryDark pointer-events-none"></div>
                   </div>
@@ -223,7 +223,7 @@ const ActivityFeed = () => {
                   </div>
                   <div className="flex items-center justify-between w-full">
                     <p className="pblack flex-grow pl-4 !font-normal">
-                    <span className="font-semibold" dangerouslySetInnerHTML={{ __html: status.description }} />
+                      <span className="font-semibold" dangerouslySetInnerHTML={{ __html: status.description }} />
                       {status.scheduled === 1 ? (
                         <>
                           {/* <span className="!font-semibold">
@@ -276,7 +276,7 @@ const ActivityFeed = () => {
               ))}
             </div>
 
-            
+
           </div>
         </div>
       </div>
@@ -284,11 +284,18 @@ const ActivityFeed = () => {
       {/* RIGHT COLUMN  */}
       <div className="lg:col-span-4">
         <div className="rounded-lg bg-white dark:bg-secondaryDark p-1.5 ">
-          <TabsNew tabs={tabData} onTabChange={onTabChange} initialTab={1} />
+          <div className="flex justify-between items-center">
+            <TabsNew tabs={tabData} onTabChange={onTabChange} initialTab={9} />
+            <div className="flex text-xs gap-1 font-bold text-primary translate-y-[-8px]">
+              <PiPushPinSlashBold />
+              Unpin
+            </div>
+          </div>
           <TextEditor
             initialValue={formik.values.notes}
-            onChange={(e)=>{
-              formik.setFieldValue('notes',e)
+            placeholder={"Type here....."}
+            onChange={(e) => {
+              formik.setFieldValue('notes', e)
             }}
             minheight="250px"
           />
@@ -301,26 +308,26 @@ const ActivityFeed = () => {
           </div>
         </div>
         <div className="rounded-lg bg-white dark:bg-secondaryDark p-1.5 ">
-        {notes && notes.map((note, index) => (
-  <div className="relative flex pb-6" key={index}>
-    <div className="flex items-center justify-between w-full">
-      <p className="pblack flex-grow pl-4 !font-normal">
-        <strong>{note.notes}</strong>
-      </p>
-      <div className="flex items-center gap-6"> {/* Added gap between createdOn and icons */}
-        <p className="para !font-normal">{note.createdOn}</p>
-        <div className="flex items-center gap-3">
-        {/* <TiPin
+          {notes && notes.map((note, index) => (
+            <div className="relative flex pb-6" key={index}>
+              <div className="flex items-center justify-between w-full">
+                <p className="pblack flex-grow pl-4 !font-normal">
+                  <strong>{note.notes}</strong>
+                </p>
+                <div className="flex items-center gap-6"> {/* Added gap between createdOn and icons */}
+                  <p className="para !font-normal">{note.createdOn}</p>
+                  <div className="flex items-center gap-3">
+                    {/* <TiPin
                   onClick={() => handlePinClick(note.jobResumeNoteId)}
                   style={{ color: selectedNoteId === note.jobResumeNoteId && isPinned === 1 ? 'blue' : 'gray' }}
                 />  */}
-          <FaRegEdit onClick={() => handleEditClick(note.jobResumeNoteId)} />
+                    <FaRegEdit onClick={() => handleEditClick(note.jobResumeNoteId)} />
+                  </div>
+                </div>
+              </div>
+            </div>
+          ))}
         </div>
-      </div>
-    </div>
-  </div>
-))}
-</div>
       </div>
     </div>
   );

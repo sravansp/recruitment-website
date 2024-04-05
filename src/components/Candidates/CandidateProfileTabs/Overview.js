@@ -470,7 +470,7 @@ const Overview = ({ onEmailSelect }) => {
       <div className="lg:col-span-4">
         <div className="rounded-lg bg-white dark:bg-secondaryDark p-1.5 ">
           <div className="flex justify-between items-center">
-            <TabsNew tabs={tabData} onTabChange={onTabChange} initialTab={1} />
+            <TabsNew tabs={tabData} onTabChange={onTabChange} initialTab={9} />
             <div className="flex text-xs gap-1 font-bold text-primary translate-y-[-8px]">
               <PiPushPinSlashBold />
               Unpin
