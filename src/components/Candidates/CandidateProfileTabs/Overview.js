@@ -1,10 +1,10 @@
 import Accordion from "../../common/Accordion";
-import React, { useState,useEffect } from "react";
+import React, { useState, useEffect } from "react";
 import TabsNew from "../../common/TabsNew";
-import {updateRecruitmentJobResumesNote,getRecruitmentJobResumesNoteById,saveRecruitmentJobResumesNote,getAllRecruitmentResumeEducationalDetails,getAllRecruitmentResumesExperienceDetails, getRecruitmentResumeById,getAllRecruitmentJobResumesNotes } from "../../Api1";
+import { updateRecruitmentJobResumesNote, getRecruitmentJobResumesNoteById, saveRecruitmentJobResumesNote, getAllRecruitmentResumeEducationalDetails, getAllRecruitmentResumesExperienceDetails, getRecruitmentResumeById, getAllRecruitmentJobResumesNotes } from "../../Api1";
 import { useDispatch, useSelector } from 'react-redux';
-import {Formik, useFormik } from "formik";
-import { Link,useParams,useLocation } from "react-router-dom";
+import { Formik, useFormik } from "formik";
+import { Link, useParams, useLocation } from "react-router-dom";
 import { TiPin } from "react-icons/ti";
 import { MdDeleteSweep } from "react-icons/md";
 // ICONS
@@ -19,6 +19,7 @@ import {
   RiSmartphoneLine,
   RiStickyNoteLine,
 } from "react-icons/ri";
+import { PiPushPinSlash, PiPushPinSlashBold } from "react-icons/pi";
 import { IoMdAdd } from "react-icons/io";
 import { Notes } from "@mui/icons-material";
 import { BsFileEarmarkRichtext } from "react-icons/bs";
@@ -78,21 +79,21 @@ import { FaRegEdit } from "react-icons/fa";
 const Overview = ({ onEmailSelect }) => {
   const [content, setContent] = useState("");
   const primaryColor = localStorage.getItem("mainColor");
-  const[candidate,setcandidate] =useState([])
-  const[userdata,setuserdata]=useState([])
+  const [candidate, setcandidate] = useState([])
+  const [userdata, setuserdata] = useState([])
   const selectedDataId = useSelector((state) => state.dataId.selectedDataId);
   const { resumeId } = useParams();
-  const[PdFViewer,setPdFViewer] = useState("")
+  const [PdFViewer, setPdFViewer] = useState("")
   const { state } = useLocation();
-  const[jobId,setJobId] = useState(null)
+  const [jobId, setJobId] = useState(null)
   const id = resumeId
-  const [candidateEmail, setCandidateEmail] = useState(""); 
+  const [candidateEmail, setCandidateEmail] = useState("");
   const [selectedNoteId, setSelectedNoteId] = useState(null);
   const [isPinned, setIsPinned] = useState(0);
   const handlePinClick = (jobResumeNoteId) => {
     setSelectedNoteId(jobResumeNoteId);
     setIsPinned(isPinned === 1 ? 0 : 1);
-     // Toggle the pin state between 0 and 1
+    // Toggle the pin state between 0 and 1
     // You can perform any additional actions here, such as saving the pin state to a database.
   };
   const handleEditClick = (jobResumeNoteId) => {
@@ -102,84 +103,85 @@ const Overview = ({ onEmailSelect }) => {
   }; // State to store candidate email
   useEffect(() => {
     if (state && state.jobID) {
-        setJobId(state.jobID);
+      setJobId(state.jobID);
     } else {
-        const storedJobId = localStorage.getItem('jobid');
-        if (storedJobId) {
-            setJobId(storedJobId);
-        }
+      const storedJobId = localStorage.getItem('jobid');
+      if (storedJobId) {
+        setJobId(storedJobId);
+      }
     }
-}, [state]);
+  }, [state]);
   const handleViewResume = () => {
     window.open(PdFViewer, "_blank"); // Open PDF URL in a new tab
   };
   const getCandidatesById = async () => {
     try {
       const response = await getRecruitmentResumeById(id);
-       
+
       setcandidate(response.result)
       setCandidateEmail(response.result[0].candidateEmail)
-      setuserdata(response.result.map((items)=>({
-       personal:[ 
-        {id:1,
-          label:"Email Address",
-          value:items.candidateEmail,
-          icon: <RiMailSendLine />,
-        },
-        {
-          id:2,
-          label:"Phone number",
-          value:items.candidateContact,
-          icon: <RiSmartphoneLine />,
-        },
-        {
-          id: 3,
-          label: "Date of Birth",
-          value: "03 September 2000",
-          icon: <RiCake2Line />,
-        },
-        {
-          id: 4,
-          label: "Salary Expectation",
-          value: "AED 25000",
-          icon: <RiMoneyDollarBoxLine />,
-        },
-      ],
-      other:[
-        {
-          id: 5,
-          label: "Location",
-          value: items.candidateLocation,
-          icon: <RiMapPin2Line />,
-        },
-        {
-          id: 6,
-          label: "Work Type",
-          value: "Work Type",
-          icon: <RiMouseLine />,
-        },
-      ]
+      setuserdata(response.result.map((items) => ({
+        personal: [
+          {
+            id: 1,
+            label: "Email Address",
+            value: items.candidateEmail,
+            icon: <RiMailSendLine />,
+          },
+          {
+            id: 2,
+            label: "Phone number",
+            value: items.candidateContact,
+            icon: <RiSmartphoneLine />,
+          },
+          {
+            id: 3,
+            label: "Date of Birth",
+            value: "03 September 2000",
+            icon: <RiCake2Line />,
+          },
+          {
+            id: 4,
+            label: "Salary Expectation",
+            value: "AED 25000",
+            icon: <RiMoneyDollarBoxLine />,
+          },
+        ],
+        other: [
+          {
+            id: 5,
+            label: "Location",
+            value: items.candidateLocation,
+            icon: <RiMapPin2Line />,
+          },
+          {
+            id: 6,
+            label: "Work Type",
+            value: "Work Type",
+            icon: <RiMouseLine />,
+          },
+        ]
       })))
       setPdFViewer(response.result[0].resumeFile)
 
 
       console.log(response.result)
       console.log(PdFViewer)
-  
+
     } catch (error) {
       console.error('Error updating workflow ID:', error);
     }
   };
-  
+
   useEffect(() => {
-   
+
     getCandidatesById()
     console.log(id)
     console.log(userdata)
-   
-    
-  
-  
+
+
+
+
   }, []);
 
   useEffect(() => {
@@ -187,50 +189,49 @@ const Overview = ({ onEmailSelect }) => {
       onEmailSelect(candidateEmail); // Trigger the callback when the email is available
     }
   }, [candidateEmail, onEmailSelect]);
-  const[workExperiences,setexperience] =useState([])
+  const [workExperiences, setexperience] = useState([])
 
-  const getEmployeExperiance = async()=>{
-    try{
+  const getEmployeExperiance = async () => {
+    try {
       const response = await getAllRecruitmentResumesExperienceDetails(id);
       console.log(response)
-      setexperience(response.result.map((items)=>({
-        companyName:items.companyName,
-        Shift:items.employmentType,
-        role:items.jobTitle,
-        startDate:items.fromDate,
-        endDate:items.toDate,
-        experienceDuration:items.location
+      setexperience(response.result.map((items) => ({
+        companyName: items.companyName,
+        Shift: items.employmentType,
+        role: items.jobTitle,
+        startDate: items.fromDate,
+        endDate: items.toDate,
+        experienceDuration: items.location
       })))
-    }catch(error){
-     console.log(error)
+    } catch (error) {
+      console.log(error)
     }
   }
-  const[educationExperiences,seteducationExperiences] = useState([])
-  const getEducationList = async ()=>{
-   try
-      {
-       const response = await getAllRecruitmentResumeEducationalDetails(id)
+  const [educationExperiences, seteducationExperiences] = useState([])
+  const getEducationList = async () => {
+    try {
+      const response = await getAllRecruitmentResumeEducationalDetails(id)
       console.log(response)
-      seteducationExperiences(response.result.map((item)=>({
-        institution:item.institute,
-        degree:item.courseType,
-        fieldOfStudy:item.courseName,
-        location:item.location,
-        graduationYear:item.yearOfStudy,
+      seteducationExperiences(response.result.map((item) => ({
+        institution: item.institute,
+        degree: item.courseType,
+        fieldOfStudy: item.courseName,
+        location: item.location,
+        graduationYear: item.yearOfStudy,
       })))
-      }catch(error){
-        console.log(error)
-      }
+    } catch (error) {
+      console.log(error)
+    }
 
   }
 
 
 
-  useEffect(()=>{
+  useEffect(() => {
     getEmployeExperiance()
     getEducationList()
-  },[])
- 
+  }, [])
+
   const handleEditorChange = (content) => {
     setContent(content);
   };
@@ -258,80 +259,80 @@ const Overview = ({ onEmailSelect }) => {
       icon: <BsFileEarmarkRichtext className="text-base" />,
     },
   ];
-  const[notes,setnotes]= useState("")
+  const [notes, setnotes] = useState("")
 
 
-const formik = useFormik ({
-    initialValues :{
-      jobId:"",
-        resumeId:"",
-        notes:"",
-        createdBy: ""
+  const formik = useFormik({
+    initialValues: {
+      jobId: "",
+      resumeId: "",
+      notes: "",
+      createdBy: ""
     },
-    onSubmit: async (e)=>{
+    onSubmit: async (e) => {
       try {
-        if(!selectedNoteId){
-        const response = await saveRecruitmentJobResumesNote({
-         jobId:jobId,
-         resumeId:resumeId,
-         notes:e.notes,
-         createdBy:null,
-        })
-        console.log(response)
-        getnotes()
-      }else{
-        const response= await updateRecruitmentJobResumesNote({
-          id:selectedNoteId,
-          jobId:jobId,
-          resumeId:resumeId,
-          notes:e.notes,
-          isPinned:isPinned,
-          modifiedBy:null
-        })
-        console.log(response)
-        getnotes()
-      }
-      }catch(error){
+        if (!selectedNoteId) {
+          const response = await saveRecruitmentJobResumesNote({
+            jobId: jobId,
+            resumeId: resumeId,
+            notes: e.notes,
+            createdBy: null,
+          })
+          console.log(response)
+          getnotes()
+        } else {
+          const response = await updateRecruitmentJobResumesNote({
+            id: selectedNoteId,
+            jobId: jobId,
+            resumeId: resumeId,
+            notes: e.notes,
+            isPinned: isPinned,
+            modifiedBy: null
+          })
+          console.log(response)
+          getnotes()
+        }
+      } catch (error) {
         console.log(error)
       }
     }
   })
- const getnotes = async()=>{
-    try{
-     const response = await getAllRecruitmentJobResumesNotes({resumeId:resumeId})
-     console.log(response)
-     setnotes(response.result)
-    
-    }catch(error){
+  const getnotes = async () => {
+    try {
+      const response = await getAllRecruitmentJobResumesNotes({ resumeId: resumeId })
+      console.log(response)
+      setnotes(response.result)
+
+    } catch (error) {
       console.log(error)
     }
   }
-  useEffect(()=>{
+  useEffect(() => {
     getnotes()
     console.log(notes)
-    
-  },[resumeId])
 
-  const getnotesbyId = async(jobResumeNoteId)=>{
-    try{
-    const response = await getRecruitmentJobResumesNoteById({id:jobResumeNoteId})
-    console.log(response);
-    formik.setFieldValue('notes',response.result[0].notes)
-    }catch(error){
+  }, [resumeId])
+
+  const getnotesbyId = async (jobResumeNoteId) => {
+    try {
+      const response = await getRecruitmentJobResumesNoteById({ id: jobResumeNoteId })
+      console.log(response);
+      formik.setFieldValue('notes', response.result[0].notes)
+    } catch (error) {
       console.log(error)
     }
 
   }
-  
+
 
 
   return (
-  
+
     <div className="grid gap-6 lg:grid-cols-12">
       {/* LEFT COLOUMN  */}
-      
+
       <div className="flex flex-col gap-6 lg:col-span-8">
-        
+
 
         <Accordion
           title="All Personal Informations"
@@ -339,7 +340,7 @@ const formik = useFormik ({
           className={""}
           initialExpanded={true}
         >
-          
+
           <div>
             {userdata.map((user) => (
               <UserInfoComponent
@@ -381,11 +382,11 @@ const formik = useFormik ({
                 BtnType="primary"
                 icon={<RiArrowDownLine />}
                 handleSubmit={handleViewResume}
-                
+
               />
             </div>
             <div className="divider-h" />
-            
+
           </div>
         </div>
         {/* WORK EXPERIENCE  */}
@@ -468,11 +469,18 @@ const formik = useFormik ({
       {/* RIGHT COLUMN  */}
       <div className="lg:col-span-4">
         <div className="rounded-lg bg-white dark:bg-secondaryDark p-1.5 ">
-          <TabsNew tabs={tabData} onTabChange={onTabChange} initialTab={1}  />
+          <div className="flex justify-between items-center">
+            <TabsNew tabs={tabData} onTabChange={onTabChange} initialTab={1} />
+            <div className="flex text-xs gap-1 font-bold text-primary translate-y-[-8px]">
+              <PiPushPinSlashBold />
+              Unpin
+            </div>
+          </div>
           <TextEditor
             initialValue={formik.values.notes}
-            onChange={(e)=>{
-              formik.setFieldValue('notes',e)
+            placeholder={"Type here....."}
+            onChange={(e) => {
+              formik.setFieldValue('notes', e)
             }}
             minheight="250px"
           />
@@ -485,32 +493,32 @@ const formik = useFormik ({
           </div>
         </div>
         <div className="rounded-lg bg-white dark:bg-secondaryDark p-1.5 ">
-        {notes && notes.map((note, index) => (
-  <div className="relative flex pb-6" key={index}>
-    <div className="flex items-center justify-between w-full">
-      <p className="pblack flex-grow pl-4 !font-normal">
-        <strong>{note.notes}</strong>
-      </p>
-      <div className="flex items-center gap-6"> {/* Added gap between createdOn and icons */}
-        <p className="para !font-normal">{note.createdOn}</p>
-        <div className="flex items-center gap-3">
-        {/* <TiPin
+          {notes && notes.map((note, index) => (
+            <div className="relative flex pb-6" key={index}>
+              <div className="flex items-center justify-between w-full">
+                <p className="pblack flex-grow pl-4 !font-normal">
+                  <strong>{note.notes}</strong>
+                </p>
+                <div className="flex items-center gap-6"> {/* Added gap between createdOn and icons */}
+                  <p className="para !font-normal">{note.createdOn}</p>
+                  <div className="flex items-center gap-3">
+                    {/* <TiPin
                   onClick={() => handlePinClick(note.jobResumeNoteId)}
                   style={{ color: selectedNoteId === note.jobResumeNoteId && isPinned === 1 ? 'blue' : 'gray' }}
                 />  */}
-          <FaRegEdit onClick={() => handleEditClick(note.jobResumeNoteId)} />
+                    <FaRegEdit onClick={() => handleEditClick(note.jobResumeNoteId)} />
+                  </div>
+                </div>
+              </div>
+            </div>
+          ))}
         </div>
-      </div>
-    </div>
-  </div>
-))}
-</div>
-                {/* {notes.map((note) => (
+        {/* {notes.map((note) => (
     <div key={note.jobResumeNoteId} className="mb-4">
       <p className="font-bold">{note.notes}</p>
       <p className="font-bold">Created On: {note.createdOn}</p>
     </div> */}
-  
+
 
       </div>
     </div>
@@ -518,8 +526,8 @@ const formik = useFormik ({
 };
 
 // Accordiyan Body Contents
-const UserInfoComponent = ({ personalInfo}) => {
-  
+const UserInfoComponent = ({ personalInfo }) => {
+
   return (
     <div className="grid md:grid-cols-2 gap-7">
       {personalInfo.map((info) => (
@@ -546,7 +554,7 @@ const UserOtherComponent = ({ otherInfo }) => {
   return (
     <div className="grid gap-7">
       {otherInfo.map((info) => (
-        <div   className="flex items-center gap-2.5">
+        <div className="flex items-center gap-2.5">
           <div className="w-8 h-8 iconI vhcenter bg-[#F5F5F5] dark:bg-secondaryDark text-base rounded-lg ">
             <div className="text-black opacity-50 ">{info.icon}</div>
           </div>
