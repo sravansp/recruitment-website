@@ -603,7 +603,7 @@ export const getRecruitmentEvaluationTemplateById = async (id) => {
   const method = "POST";
 
   const kwargs = id;
-  console.log(id)
+  console.log("API Request Data:", { action, method, kwargs });
   return await apiRequest(action, method, kwargs);
 };
 export const updateEvaluationTemplateWithDetails = async (e) => {
@@ -1081,6 +1081,16 @@ export const getDashboardAgeOfJobs = async (data) => {
 };
 export const updateRecruitmentUserRoleMapping = async (data) => {
   const action = "updateRecruitmentUserRoleMapping";
+
+  const method = "POST";
+
+  const kwargs = data;
+  console.log("API Request Data:", { action, method, kwargs })
+
+  return await apiRequest(action, method, kwargs);
+};
+export const addJobToResume = async (data) => {
+  const action = "addJobToResume";
 
   const method = "POST";
 

@@ -7,7 +7,7 @@ import copy from "clipboard-copy";
 import { Menu, Space } from "antd";
 import { useTranslation } from "react-i18next";
 import {Formik, useFormik } from "formik";
-import {getAllRecruitmentJobs,getRecruitmentJobById,updateRecruitmentJobResumesMapping,getResumeJobDetails,getRecruitmentResumeById,getAllRecruitmentJobWorkFlowDetails,saveRecruitmentJobResumesStage } from "../Api1";
+import {addJobToResume,getAllRecruitmentJobs,getRecruitmentJobById,updateRecruitmentJobResumesMapping,getResumeJobDetails,getRecruitmentResumeById,getAllRecruitmentJobWorkFlowDetails,saveRecruitmentJobResumesStage } from "../Api1";
 
 
 import {
@@ -15,7 +15,7 @@ import {
   PiBookmarkSimpleFill,
   PiDotsThreeOutlineFill,
 } from "react-icons/pi";
-import { FcCheckmark, FcHighPriority, FcShare } from "react-icons/fc";
+import { FcCheckmark, FcHighPriority, FcProcess, FcShare } from "react-icons/fc";
 import { MdContentCopy, MdPhone } from "react-icons/md";
 import { DownOutlined } from "@ant-design/icons";
 import {
@@ -126,8 +126,27 @@ const CandidateProfile = () => {
   const [currentStatus, setCurrentStatus] = useState(0);
   const[allJob,setAllJob]= useState([])
   const [companyId, setCompanyId] = useState(localStorage.getItem("companyId"));
-  
+  const[getstatus,setgetstatus]=useState("")
   const location = useLocation();
+  const [userid, setuserid] = useState("");
+
+  useEffect(() => {
+    // Retrieve the login data JSON string from local storage
+    const loginDataString = localStorage.getItem('LoginData');
+
+    if (loginDataString) {
+      // Parse the JSON string to get the LoginData object
+      const loginData = JSON.parse(loginDataString);
+
+      // Extract the username from the userData object
+      setuserid(loginData && loginData.userData && loginData.userData.employeeId);
+
+      // Now, 'username' variable contains the username
+      
+    } else {
+      console.error('Login data not found in local storage.');
+    }
+  }, []);
   useEffect(() => {
     setCompanyId(localStorage.getItem("companyId"));
     
@@ -259,6 +278,7 @@ const tabs = [
   useEffect(()=>{
     getstagename()
     getResumeJob()
+    console.log(getstatus)
   },[jobId])
   
   const updatestage = async()=>{
@@ -283,14 +303,35 @@ const tabs = [
   const handleMenuClick = (e) => {
     setSelectedItem(e.key);
     const selectedItemLabel = stageName.find((item) => item.key === e.key).label;
-   
+    setSelectedItemLabel(selectedItemLabel);
     setstageId(e.key);
   };
-  const handleMenuClick1 = (e)=>{
-    const selectedJobLabel  = allJob.find((item)=>item.key === e.key).label;
-    setSelectedItemLabel(selectedItemLabel);
-    setJobName(selectedJobLabel)
-  }
+  const handleMenuClick1 = async (e) => {
+    try {
+      console.log("Menu item clicked:", e);
+      
+      // Extract selected job label based on the key
+      const selectedJobLabel = allJob.find((item) => item.key === e.key).label;
+      
+
+      setJobName(selectedJobLabel);
+      setJobId(e.key);
+      localStorage.setItem('jobid', e.key);
+      console.log("Attempting to call API...");
+  
+      const response = await addJobToResume({
+        jobId: e.key,
+        resumeId: resumeId,
+        createdBy: userid
+      });
+      
+      console.log("API response:", response);
+    } catch (error) {
+      console.log("Error calling API:", error);
+    }
+  };
+
+
 
   const handleCopyClick = (value) => {
     copy(value);
@@ -399,15 +440,25 @@ const getResumeJob =async ()=>{
    
    setSelectedItemLabel(response.result.stageName)
    setjobResumeMapping(response.result.jobResumeMappingId)
-   setCurrentStatus(response.result.currentStatus)
+   setgetstatus(response.result.currentStatus)
 
   }catch(error){
     console.log(error)
 
   }
 }
-
+useEffect(()=>{
+  
+  getResumeJob()
+  
+},[])
+useEffect(()=>{
+  
+  
+  console.log(getstatus)
+},[getstatus])
 const handleButtonClick = async (status) => {
+  getResumeJob()
   try {
     const response = await updateRecruitmentJobResumesMapping({
       id: jobResumeMapping,
@@ -421,6 +472,7 @@ const handleButtonClick = async (status) => {
         content: `${response.message} `,
       });
     }
+    
     // Handle response if needed
   } catch (error) {
     console.log(error);
@@ -490,18 +542,29 @@ const getAlljobs = async ()=>{
          
         </Link>
         <div className="gap-2 vhcenter">
-        <ButtonClick
-  buttonName="Disqualify"
-  icon={<FcHighPriority />}
-  handleSubmit={() => handleButtonClick(2)}
-  backgroundColor={currentStatus === 2 ? 'red' : 'inherit'}
-/>
-<ButtonClick
-  buttonName="Hire"
-  icon={<FcCheckmark />}
-  handleSubmit={() => handleButtonClick(1)}
-  backgroundColor={currentStatus === 1 ? 'green' : 'inherit'}
-/>
+          {console.log(getstatus)}
+        {getstatus !== null && ( // Check if getstatus is not null
+  <>
+    <ButtonClick
+      buttonName="UnderProcess"
+      icon={<FcProcess />}
+      handleSubmit={() => handleButtonClick(0)}
+      backgroundColor={getstatus === "0" ? 'yellow' : 'inherit'}
+    />
+    <ButtonClick
+      buttonName="Disqualify"
+      icon={<FcHighPriority />}
+      handleSubmit={() => handleButtonClick(2)}
+      backgroundColor={getstatus === "2" ? 'red' : 'inherit'}
+    />
+    <ButtonClick
+      buttonName="Hire"
+      icon={<FcCheckmark />}
+      handleSubmit={() => handleButtonClick(1)}
+      backgroundColor={getstatus === "1" ? 'green' : 'inherit'}
+    />
+  </>
+)}
           <ButtonClick buttonName="Share" icon={<FcShare />} />
           <Dropdown
             menu={{
@@ -559,7 +622,7 @@ const getAlljobs = async ()=>{
           <div className="flex gap-3">
           <div className="flex flex-col gap-3">
           
-          
+          {console.log("jobId1:", jobId)}
           {console.log("jobId1:", jobs)}
           {jobId === "null" ? (
             

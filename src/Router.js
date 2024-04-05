@@ -23,6 +23,7 @@ import SystemSettings from "./components/Settings/SystemSettings";
 
 import CandidateProfile from "./components/Candidates/CandidateProfile";
 import Discover from "./components/Discover/Discover";
+import Privileges from "./components/Settings/Privileges";
 
 
 
@@ -80,6 +81,7 @@ export default function Router() {
                 <Route path="/members" element={<TeamMembers/>}></Route>
                 <Route path="/Integrations" element={<Intergration/>}></Route>
                 <Route path="/Templates" element={<Template/>}></Route>
+                <Route path="/Privilege" element={<Privileges/>}></Route>
                 
                  <Route path="/Systemsettings" element={<SystemSettings/>}></Route>
                 

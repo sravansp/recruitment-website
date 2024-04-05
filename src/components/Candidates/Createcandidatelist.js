@@ -272,7 +272,7 @@ export default function Createcandidatelist({ open = "", close = () => { }, file
             const toDate = values[each.field[4].inputFeild][1]; // Extracting end date from range picker
     
             return {
-              resumeId: 421,
+              resumeId: resumeId,
               jobTitle: values[each.field[0].inputFeild],
               employmentType: values[each.field[1].inputFeild],
               companyName: values[each.field[2].inputFeild],
@@ -395,6 +395,7 @@ export default function Createcandidatelist({ open = "", close = () => { }, file
       postalCode: "",
       createdBy: "",
       candidateName: "",
+      dob:"",
       file: null // Assuming file is part of your form values
     },
   

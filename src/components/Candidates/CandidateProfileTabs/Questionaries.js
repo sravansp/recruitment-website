@@ -133,18 +133,26 @@ const Questionaries = () => {
     const[questionnaireData,setquestionnaireData]=useState([])
 
     const getJodbyId = async ()=>{
-     const response =   await getRecruitmentJobById({id:localStorage.getItem('jobid')})
+     
+      const response =   await getRecruitmentJobById({id:jobId})
      setquestionareId(response.result[0].questionnaireTemplateId)
      
      console.log(response)
+    
      
     }
     useEffect(()=>{
-      getJodbyId()
-    },[])
+       if(jobId !== "null"){
+        getJodbyId()
+       }
+
+      
+      
+    },[jobId])
 
     const getQuestionare = async ()=>{
       try{
+        
         const response = await getRecruitmentQuestionnaireTemplateById({
           
           id:parseInt(questionareId)
@@ -152,13 +160,17 @@ const Questionaries = () => {
         })
         setquestionnaireData(response.result)
          console.log(response)
+      
       }catch(error){
        console.log(error)
       }
   
       }
       useEffect(()=>{
-        getQuestionare()
+        if(questionareId){
+          getQuestionare()
+        }
+       
       },[questionareId])
 
 
