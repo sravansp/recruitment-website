@@ -22,7 +22,7 @@ import {getAllRecruitmentQuestionnaireTemplates,getAllRecruitmentEvaluationTempl
 import { Formik, useFormik } from 'formik';
 import { CgAdd } from "react-icons/cg";
 import { Form } from '../data';
-import { MdContentCopy, MdOutlineFileCopy } from "react-icons/md";
+import { MdContentCopy, MdOutlineFileCopy, MdOutlineShortText } from "react-icons/md";
 import { MdDelete } from "react-icons/md";
 import ToggleBtn from '../common/ToggleBtn';
 import { index } from 'd3';
@@ -1326,9 +1326,10 @@ const handleAddField = (index) => {
                     <>
                    
                         <FlexCol>
+                          <div className='rounded-md borderb'>
                         <Accordion
                                     title={"Job Details"}
-                                    className="Text_area"
+                                    className="Text_area "
                                     padding={true}
                                     toggleBtn={false}
                                     click={() => {
@@ -1443,8 +1444,9 @@ const handleAddField = (index) => {
                                     </div>
                                     
                                 </Accordion>
+                                </div>
                                 
-                                
+                                <div className='rounded-md borderb'>
                                         <Accordion
                                             title={"Location "}
                                             className="Text_area"
@@ -1467,7 +1469,7 @@ const handleAddField = (index) => {
                             }}
                           >
                             <div className="flex justify-between items-start">
-                              <div className=" flex flex-col gap-2">
+                              <div className=" flex  gap-2">
                                 {/* <GiReceiveMoney
                                 className={`${
                                   customRate === each.id && "text-primary"
@@ -1484,12 +1486,14 @@ const handleAddField = (index) => {
                                   alt=""
                                   className=" w-6 h-6"
                                 /> */}
+                                <div>
                                 <h3 className=" text-sm font-semibold">
                                   {each.title}
                                 </h3>
                                 <p className=" text-xs font-medium text-[#667085] ">
                                   {each.description}
                                 </p>
+                                </div>
                               </div>
                               <div
                                 className={`${customRate === each.id && "border-primary"
@@ -1532,7 +1536,8 @@ const handleAddField = (index) => {
                                                     />
                                             </div>
                                         </Accordion>
-                                        <div>
+                                        </div>
+                                        <div className='rounded-md borderb'>
                                             <Accordion
                                              title={"Employment Details"}
                                              className="Text_area"
@@ -1648,8 +1653,9 @@ const handleAddField = (index) => {
                                                       />
                                             </div>
                                             </Accordion>
-                                        </div>
+                                            </div>
                                         
+                                            <div className='rounded-md borderb'>
                                         <Accordion
                                                title={"Job Description"}
                                                className="Text_area"
@@ -1676,7 +1682,7 @@ impactful, accurate, and personalized to your company</p>
           <DownOutlined />
         </Space>
       </Button>
-      <Button type="primary" icon={<img src={image} alt="image" style={{ height: '20px', width: '20px' }} />} >
+      <Button type="primary" icon={<img src={image} alt="image" style={{ height: '15px', width: '15px',alignItems:"center" }} />} >
       Generate with AI
       
           </Button>
@@ -1721,13 +1727,15 @@ impactful, accurate, and personalized to your company</p>
                                              </Card>
 
                                         </Accordion>
-                                  
+                                     </div>
                                     </FlexCol>
                                     </>
+                                    
                   
                 ) : activeBtnValue === "ApplicationForm" ? (
                   <>
                   <FlexCol>
+                  <div className='rounded-md borderb'>
                   <Accordion
                       title={"ApplicationForm "}
                       className="Text_area"
@@ -1849,8 +1857,8 @@ impactful, accurate, and personalized to your company</p>
 
 
                     </Accordion>
-                    
-                    
+                    </div>
+                    <div className='rounded-md borderb'>
                     <Accordion
                     title={"Profile "}
                     className="Text_area"
@@ -1954,6 +1962,8 @@ impactful, accurate, and personalized to your company</p>
 
                       
                       </Accordion>
+                      </div>
+                      <div className='rounded-md borderb'>
                       
                       <Accordion
                           title={"Custom Fields "}
@@ -2005,6 +2015,7 @@ impactful, accurate, and personalized to your company</p>
               );
             }}
             value={condition.answer_type || "ShortAnswer"}
+            icon={<MdOutlineShortText />}
             icondropDown={true}
           />
         </div>
@@ -2073,10 +2084,12 @@ impactful, accurate, and personalized to your company</p>
 ))}
                        <AddMore name="Add Custom Field " className="!text-black" change={(e) => { handleAddCondition(); } } />
                       </Accordion>
+                      </div>
                      
                       </FlexCol></>
                 ) : activeBtnValue === "Workflow" ? (
                   <FlexCol>
+                     <div className='rounded-md borderb'>
                   <Accordion
                     title={"Workflow"}
                     className="Text_area"
@@ -2104,7 +2117,7 @@ impactful, accurate, and personalized to your company</p>
             setPresentage(2.4);
           }}>
       {Stages.map(each => (
-        <Card key={each.workFlowId}>
+        <Card key={each.workFlowId} className='mt-6'>
           <JobCard options={each.stages} />
           <div style={{ position: 'absolute', top: 0, right: 0, padding: '8px' }}>
             <Radio value={each.workFlowId||selectedWorkFlowId}></Radio>
@@ -2113,6 +2126,7 @@ impactful, accurate, and personalized to your company</p>
       ))}
     </Radio.Group>
                   </Accordion>
+                  </div>
                   </FlexCol>
                 ) : activeBtnValue === "TeamMembers" ? (
                   <FlexCol>
@@ -2281,7 +2295,7 @@ impactful, accurate, and personalized to your company</p>
       {data.map((item, index) => (
         <div
           key={index}
-          className={`bg-white dark:bg-black rounded-lg border-[1px] p-4 w-[330px] ${
+          className={`bg-white dark:bg-black rounded-lg border-[1px] p-2 w-[291px] h-[68px] ${
             selectedDivs.includes(index)
               ? "border-[#6A4BFC]"
               : "border-[#DADADA]"
@@ -2290,11 +2304,11 @@ impactful, accurate, and personalized to your company</p>
           
           style={{ position: "relative" }} // Added to set position for absolute checkbox
         >
-          <div className="items-center flex flex-col lg:flex-row">
+          <div className="items-center flex  lg:flex-row">
             <img
               src={item.image}
               alt="Logo"
-              className="w-[58px] h-[58px] object-cover rounded-md borderb lg:border-b-0"
+              className="w-[51px] h-[49px] object-cover rounded-md borderb lg:border-b-0"
             />
             <div className="ml-2">
               <h3 className="h6">{item.title}</h3>

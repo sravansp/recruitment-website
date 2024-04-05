@@ -85,7 +85,7 @@ function JobCard({
                   x="30"
                   y="25"
                   fill="black"
-                  className="font-semibold text-sm"
+                  className="font-semibold text-sm text-wrap"
                 >
                   {each.title}
                 </text>
@@ -118,7 +118,7 @@ function JobCard({
                 >
                   <path
                     d="M0.521973 0.0571289H240.632L252.344 36.8679L240.632 73.6787H0.521973L12.2337 36.8679L0.521973 0.0571289Z"
-                    fill="#FCFCFC"
+                    fill="C3C3C3"
                   />
                   <path
                     d="M240.266 73.1787H1.20575L12.7102 37.0195L12.7584 36.8679L12.7102 36.7163L1.20575 0.557129H240.266L251.819 36.8679L240.266 73.1787Z"
@@ -129,15 +129,15 @@ function JobCard({
                     x="30"
                     y="25"
                     fill="black"
-                    className="font-semibold text-sm"
+                    className="font-semibold text-sm "
                   >
                     {/* {each.label} */}{each.title}
                   </text>
-                  <foreignObject x="30" y="40" width="34" height="26">
+                  {/* <foreignObject x="30" y="40" width="34" height="26">
                     <p className="flex items-center justify-center rounded-md bg-violet-100 font-semibold text-sm px-1 py-1">
-                      {/* {each.nummber} */}
+                      {each.nummber}
                     </p>
-                  </foreignObject>
+                  </foreignObject> */}
                   <foreignObject x="75" y="43" width="34" height="26" style={{ color: "gray" }} size={18}>
                     {/* {each.icons1} */}
                   </foreignObject>
