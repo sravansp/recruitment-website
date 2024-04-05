@@ -59,6 +59,28 @@ export const deleteRecruitmentJobById = async (id) => {
 
   return await apiRequest(action, method, kwargs);
 };
+export const deleteRecruitmentQuestionnaireTemplateById = async (id) => {
+  try {
+    const action = "deleteRecruitmentQuestionnaireTemplateById";
+    const method = "DELETE"; // Changed method to DELETE
+    const kwargs = { id };
+    
+    const response = await apiRequest(action, method, kwargs);
+    
+    // Check response status and handle accordingly
+    if (response.status === 200) {
+      // Success, return some indication
+      return { success: true };
+    } else {
+      // Handle error response
+      return { success: false, error: response.statusText };
+    }
+  } catch (error) {
+    // Handle any caught errors
+    console.error("Error deleting template:", error);
+    return { success: false, error: "An error occurred while deleting the template." };
+  }
+};
 
 export const getAllRecruitmentResumes = async () => {
   const action = "getAllRecruitmentResumes";

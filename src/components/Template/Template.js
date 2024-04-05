@@ -4,7 +4,7 @@ import Breadcrumbs from '../common/BreadCrumbs';
 import { useTranslation } from 'react-i18next';
 import API, { action } from "../Api1";
 import ButtonClick from '../common/Button';
-import { getAllRecruitmentJobTemplates,getAllRecruitmentWorkFlows,getAllRecruitmentEmailTemplates,getAllRecruitmentQuestionnaireTemplates,getAllRecruitmentEvaluationTemplates,getAllRecruitmentLetterTemplates } from '../Api1';
+import { getAllRecruitmentJobTemplates,getAllRecruitmentWorkFlows,getAllRecruitmentEmailTemplates,getAllRecruitmentQuestionnaireTemplates,getAllRecruitmentEvaluationTemplates,getAllRecruitmentLetterTemplates,deleteRecruitmentQuestionnaireTemplateById } from '../Api1';
 // import AddTemplate from './Addtemplate';
 import Tabs from '../common/Tabs';
 import Departments from '../Company/Add _departments';
@@ -81,8 +81,8 @@ const Template = ({
          },
          {
             id:6,
-            title:"Questionaire",
-            value:"Questionaire",
+            title:"Questionnaire",
+            value:"Questionnaire",
             tabheading:"Questionnaire Templates"
          },
          {
@@ -101,7 +101,7 @@ const Template = ({
         Workflow: { id: 3, api: API.UPDATE_Workflow },
         Email: { id: 4, api: API.UPDATE_Email },
         Evaluation: { id: 5, api: API.UPDATE_EvaluationS },
-        Questionaire: { id: 5, api: API.UPDATE_Questionaire },
+        Questionnaire: { id: 5, api: API.UPDATE_Questionaire },
         Letter: { id: 5, api: API.UPDATE_Letter},
       },
     ];
@@ -112,7 +112,7 @@ const Template = ({
         Workflow: { id: 3, api: API.DELETE_Workflow },
         Email: { id: 4, api: API.DELETE_Email },
         Evaluation: { id: 5, api: API.DELETE_Evaluation},
-        Questionaire: { id: 5, api: API.DELETE_Questionaire },
+        Questionnaire: { id: 5, api: API.DELETE_Questionaire },
         Letter: { id: 5, api: API.DELETE_Letter },
         
       },
@@ -239,7 +239,7 @@ const Template = ({
           action:true,
        },
         ],
-        Questionaire : [ 
+        Questionnaire : [ 
           {
             id:1,
             title:"Name",
@@ -404,7 +404,7 @@ const Template = ({
         
         
         ],
-        Questionaire : [ 
+        Questionnaire : [ 
           {
             id:1,
             title:"Name",
@@ -645,7 +645,7 @@ const Template = ({
             
             console.log(newData)
             break;
-            case "Questionaire":
+            case "Questionnaire":
               // getDepartmentList();
               getallquestionaire();
               
@@ -675,7 +675,7 @@ const Template = ({
         Workflow: {id:3,data:WorkflowList},
         Email:{id:4,data:emailSubject},
         Evaluation:{id:5,data:EvaluationLIst},
-        Questionaire:{id:6,data:QuestionaireLIst},
+        Questionnaire:{id:6,data:QuestionaireLIst},
         Letter:{id:7,data:LetterLIst}
     
     },
@@ -687,7 +687,7 @@ const Template = ({
       Workflow: {id:"workFlowId"},
       Email:{id:"emailTemplateId"},
       Evaluation:{id:"evaluationTemplateId"},
-      Questionaire:{id:"questionnaireTemplateId"},
+      Questionnaire:{id:"questionnaireTemplateId"},
       Letter:{id:"letterTemplateId"}
     }
     
@@ -746,6 +746,7 @@ const Template = ({
               header={Header}
               drawerH={DraweHeader}
               // path="employee"
+             
               tabs={tabs}
               All={true}
               clickDrawer={(e) => {
@@ -795,7 +796,7 @@ const Template = ({
                   }
                 }}
               
-              
+                deleteApi={deleteRecruitmentQuestionnaireTemplateById}
               />
           </div>
           { show && (
@@ -876,7 +877,7 @@ const Template = ({
           }}
         />
       )}
-       {navigationPath === "Questionaire" && show && (
+       {navigationPath === "Questionnaire" && show && (
         <QuestionAire
           open={show}
           close={(e) => {

@@ -18,7 +18,8 @@ import { Formik, useFormik } from 'formik'
 import AddMore from '../common/AddMore'
 
 
-const QuestionAire = ({
+const 
+QuestionAire = ({
   open = "",
   close = () => { },
   inputshow = false,

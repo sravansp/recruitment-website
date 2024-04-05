@@ -407,6 +407,7 @@ const TableAnt = ({
                       <FaPencil className="text-xs 2xl:text-sm" />
                     </button>
                   </Tooltip>
+                  {each.hideIcon !== "delete" && (
                   <Popconfirm
                     placement="top"
                     title={"Confirm To Delete"}
@@ -433,6 +434,7 @@ const TableAnt = ({
                       </button>
                     </Tooltip>
                   </Popconfirm>
+                   )}
                 </div>
 
               ) : (
