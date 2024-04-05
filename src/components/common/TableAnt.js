@@ -12,6 +12,7 @@ import {
   Popconfirm,
   Flex,
   Popover,
+  Tooltip,
 } from "antd";
 import { RxDotFilled } from "react-icons/rx";
 import { CiSearch } from "react-icons/ci";
@@ -91,7 +92,13 @@ const TableAnt = ({
   const [selectedRowKeys, setSelectedRowKeys] = useState([]);
   const [loading, setLoading] = useState(false);
   const [searchValue, setSearchValue] = useState("");
-  const [searchFilter, setSearchFilter] = useState([...data]);
+  // const [searchFilter, setSearchFilter] = useState([...data]);
+  const [searchFilter, setSearchFilter] = useState(
+    data.map((each) => ({
+      key: each[actionID],
+      ...each,
+    }))
+  );
   const [tabClick, setTabClick] = useState(path);
   // const [navigationPath, setNavigationPath] = useState("");
 
@@ -366,35 +373,40 @@ const TableAnt = ({
                   <p className="!font-normal para" >{text[each.value]}</p>
                 </div>
               ) : each.actionToggle ? (
+                <Tooltip
+                  title={parseInt(text.isActive) ? "Active" : "Inactive"}
+                >
 
-                <Switch
-                  checked={parseInt(text.isActive)}
-                  onChange={(checked) => {
-                    handleToggleList(text?.[actionID], checked);
-                    // buttonClick(each.companyId);
-                    // activeOrNot(checked);
-                    //console.log(checked);
-                    //console.log(text?.[actionID]);
-                    updateCompany(text?.[actionID], checked);
-                  }}
-                  className=" bg-[#c2c0c0aa]"
-                  size={isSmallScreen ? "small" : "default"}
-                />
-
+                  <Switch
+                    checked={parseInt(text.isActive)}
+                    onChange={(checked) => {
+                      handleToggleList(text?.[actionID], checked);
+                      // buttonClick(each.companyId);
+                      // activeOrNot(checked);
+                      //console.log(checked);
+                      //console.log(text?.[actionID]);
+                      updateCompany(text?.[actionID], checked);
+                    }}
+                    className=" bg-[#c2c0c0aa]"
+                    size={isSmallScreen ? "small" : "default"}
+                  />
+                </Tooltip>
               ) : each.action ? (
                 <div className="flex items-center justify-start gap-4">
-                  <button
-                    className={`w-8 h-8 2xl:w-10 2xl:h-10 rounded-full vhcenter bg-[${primaryColor}] bg-opacity-10 hover:bg-opacity-100 text-accent hover:text-white transition-all duration-300`}
-                    onClick={() => {
-                      buttonClick(text[actionID], "edit"); //"8"
-                      clickDrawer(true);
+                  <Tooltip title="Edit" color={primaryColor}>
+                    <button
+                      className={`w-8 h-8 2xl:w-10 2xl:h-10 rounded-full vhcenter hover:bg-primaryalpha/20 dark:hover:bg-primaryalpha/30 text-accent transition-all duration-300`}
+                      onClick={() => {
+                        buttonClick(text[actionID], "edit"); //"8"
+                        clickDrawer(true);
 
-                      // console.log(actionID);
-                      // console.log(text[actionID], "ddddddddsfsd");
-                    }}
-                  >
-                    <FaPencil className="text-xs 2xl:text-sm" />
-                  </button>
+                        // console.log(actionID);
+                        // console.log(text[actionID], "ddddddddsfsd");
+                      }}
+                    >
+                      <FaPencil className="text-xs 2xl:text-sm" />
+                    </button>
+                  </Tooltip>
                   <Popconfirm
                     placement="top"
                     title={"Confirm To Delete"}
@@ -408,16 +420,18 @@ const TableAnt = ({
                     // className="activeBtn"
                     style={{}}
                   >
-                    <button
-                      className={`w-8 h-8 2xl:w-10 2xl:h-10 rounded-full vhcenter bg-[${primaryColor}] bg-opacity-10 hover:bg-opacity-100 text-accent hover:text-white transition-all duration-300`}
-                    // onClick={() => {
-                    //   // deleteRecord(text[actionID]);
-                    //   // clickDrawer(true);
-                    //   // console.log(text[actionID]);
-                    // }}
-                    >
-                      <RiDeleteBin5Line className="text-xs 2xl:text-sm" />
-                    </button>
+                    <Tooltip title="Delete" placement="bottom" color="red">
+                      <button
+                        className={`w-8 h-8 2xl:w-10 2xl:h-10 rounded-full vhcenter hover:bg-primaryalpha/20 dark:hover:bg-primaryalpha/30 text-accent transition-all duration-300`}
+                      // onClick={() => {
+                      //   // deleteRecord(text[actionID]);
+                      //   // clickDrawer(true);
+                      //   // console.log(text[actionID]);
+                      // }}
+                      >
+                        <RiDeleteBin5Line className="text-xs 2xl:text-sm" />
+                      </button>
+                    </Tooltip>
                   </Popconfirm>
                 </div>
 
@@ -792,10 +806,17 @@ const TableAnt = ({
                     icon={<CiSearch className=" dark:text-white" />}
                     className="mt-0 w-ful md:w-auto"
                     error=""
+                    // change={(value) => {
+                    //   setSearchValue(value);
+                    // }}
+                    // onSearch={(value) => {
+                    //   setSearchFilter(value);
+                    // }}
                     change={(value) => {
                       setSearchValue(value);
                     }}
                     onSearch={(value) => {
+                      // console.log(value);
                       setSearchFilter(value);
                     }}
                   />
@@ -832,7 +853,7 @@ const TableAnt = ({
                   <SearchBox
                     // title="Search"
                     data={data}
-                    placeholder={t("Search_placeholder")}
+                    placeholder={t("Search")}
                     value={searchValue}
                     icon={<CiSearch className=" dark:text-white" />}
                     className="mt-0 w-ful md:w-auto"
@@ -846,36 +867,39 @@ const TableAnt = ({
                     }}
                   />)}
 
-                <div>
-                  {/* <Dropdown
-              menu={{
-                items,
-              }}
-              placement="bottomRight"
-            >
-              <Button>bottomRight</Button>
-            </Dropdown> */}
-                  <Dropdown
-                    // menu={columnMenuItems.map((item, index) => ({
-                    //   ...item,
-                    //   key: index,
-                    // }))}
+               {/* <div>
+                       <Dropdown
+                   menu={{
+                     items,
+                   }}
+                   placement="bottomRight"
+                 >
+                   <Button>bottomRight</Button>
+                 </Dropdown>
+
+
+
+                <Dropdown
+                       menu={columnMenuItems.map((item, index) => ({
+                         ...item,
+                         key: index,
+                       }))}
                     menu={{ items }}
                     placement="bottomRight"
-                  // trigger={["click"]}
-                  // open={dropdownVisible}
-                  // onOpenChange={(visible) => {
-                  //   console.log(visible);
-                  //   setDropdownVisible(visible);
-                  // }}
+                        trigger={["click"]}
+                        open={dropdownVisible}
+                        onOpenChange={(visible) => {
+                          console.log(visible);
+                          setDropdownVisible(visible);
+                        }}
                   >
-                    {/* <Button>Filters</Button> */}
-                    <Button
+                        <Button>Filters</Button>
+                 <Button
                       className="flex items-center dark:bg-black dark:text-white justify-center h-full font-medium flex-nowrap bg-[#FAFAFA]"
                       onClick={(e) => {
-                        // console.log(e);
-                        // e.stopPropagation(); // Prevent dropdown from closing
-                        // setDropdownVisible(!dropdownVisible);
+                        console.log(e);
+                        e.stopPropagation(); // Prevent dropdown from closing
+                        setDropdownVisible(!dropdownVisible);
                       }}
                       size={isSmallScreen ? "default" : "large"}
                     >
@@ -885,8 +909,8 @@ const TableAnt = ({
                       </span>
                     </Button>
                   </Dropdown>
-                </div>
-               
+                </div> */}
+
 
               </div>
 
