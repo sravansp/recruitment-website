@@ -395,6 +395,7 @@ export default function Createcandidatelist({ open = "", close = () => { }, file
       postalCode: "",
       createdBy: "",
       candidateName: "",
+      dob:"",
       file: null // Assuming file is part of your form values
     },
   
