@@ -23,11 +23,11 @@ export default function SearchBox({
   const searchFun = (filterValue) => {
     console.log(filterValue, "filterValue");
     console.log(data, "data");
-    const inputData = filterValue?.toLowerCase();
+    const inputData = filterValue?.toString()?.toLowerCase();
     const searchData = data?.filter((each) => {
       // const keyValue = Object.values(each);
       const filteredValues = Object.values(each).filter((key) =>
-        key?.toLowerCase().includes(inputData)
+        key?.toString()?.toLowerCase().includes(inputData)
       );
       return filteredValues.length;
     });
