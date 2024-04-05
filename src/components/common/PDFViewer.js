@@ -22,12 +22,12 @@ function PDFViewer({ pdfUrl }) {
   const goToNextPage = () => {
     setPageNumber((prevPageNumber) => Math.min(prevPageNumber + 1, numPages));
   };
-  
+
 
   return (
     <div className="relative flex-col vhcenter group bg-[#F5F5F5] dark:bg-lightdark  rounded-md h-full">
-    <div className="h-96 w-full">
-     <iframe src={pdfUrl} className="w-full h-full"></iframe></div> 
+      <div className="h-96 w-full">
+        <iframe src={pdfUrl} className="w-full h-full"></iframe></div>
       <div className="page-controls flex items-center absolute bottom-[5%] left-1/2 bg-white opacity-0 group-hover:opacity-100 transform -translate-x-1/2 transition-opacity rounded z-[2]">
         <button className="relative vhcenter" onClick={goToPreviousPage} disabled={pageNumber <= 1}>
           <RiArrowLeftLine />
@@ -36,7 +36,7 @@ function PDFViewer({ pdfUrl }) {
           {pageNumber} of {numPages}
         </span>
         <button className="relative vhcenter" onClick={goToNextPage} disabled={pageNumber >= numPages}>
-        <RiArrowRightLine />
+          <RiArrowRightLine />
         </button>
       </div>
     </div>
