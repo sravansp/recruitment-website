@@ -38,8 +38,8 @@ const TabsNew = ({ tabs, onTabChange, initialTab }) => {
               className={`${
                 activeTab === tab.id
                   ? "relative inset-0 z-20 text-white rounded-md bg-accent p-2"
-                  : " text-black dark:text-white group-hover:text-primary"
-              } `}
+                  : "text-black dark:text-white group-hover:text-primary"
+              }  vhcenter gap-1`}
             >
               {tab.icon && tab.icon} {tab.title}
             </span>
