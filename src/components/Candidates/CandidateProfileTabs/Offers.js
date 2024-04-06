@@ -18,7 +18,7 @@ import { FcCheckmark } from "react-icons/fc";
 import { ImAttachment } from "react-icons/im";
 import { Link, useParams, useLocation } from "react-router-dom";
 import { Formik, useFormik } from "formik";
-import { Button, Card, Dropdown, Space, notification } from "antd";
+import { Button, Card, Dropdown, Menu, Space, notification } from "antd";
 import { FaRegEdit } from "react-icons/fa";
 import { PiChecks, PiPushPinSlashBold } from "react-icons/pi";
 import { FiAlertOctagon } from "react-icons/fi";
@@ -249,6 +249,34 @@ const Offers = () => {
   };
 
 
+  const options = [
+    {
+      id: 1,
+      label: 'opt 1',
+      value: '',
+    },
+    {
+      id: 2,
+      label: 'opt2',
+      value: '',
+    },
+    {
+      id: 3,
+      label: 'opt3',
+      value: '',
+    },
+  ];
+
+  const menu = (
+    <Menu>
+      {options.map(option => (
+        <Menu.Item key={option.id}>
+          {option.label}
+        </Menu.Item>
+      ))}
+    </Menu>
+  );
+
   return (
     <div className="grid gap-6 lg:grid-cols-12">
       {/* LEFT COLUMN  */}
@@ -263,7 +291,7 @@ const Offers = () => {
               >
                 <ButtonClick buttonName="Reject" icon={<FiAlertOctagon size={16} className="text-white bg-red-700 rounded-full" />} />
                 <ButtonClick buttonName="Accept" icon={<PiChecks size={16} className="text-green " />} />
-                <Dropdown trigger={['click']} placement="bottomCenter">
+                <Dropdown overlay={menu} trigger={['click']} placement="bottomCenter">
                   <Button className="flex items-center gap-2 ml-auto">
                     <div className="text-primary text-xs font-bold">Choose Template</div>
                     <IoIosArrowDown className="text-primary transition-all bg-transparent border-none outline-none 2xl:text-2xl" />
