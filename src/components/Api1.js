@@ -59,28 +59,24 @@ export const deleteRecruitmentJobById = async (id) => {
 
   return await apiRequest(action, method, kwargs);
 };
-export const deleteRecruitmentQuestionnaireTemplateById = async (id) => {
-  try {
-    const action = "deleteRecruitmentQuestionnaireTemplateById";
-    const method = "DELETE"; // Changed method to DELETE
-    const kwargs = { id };
+// export const deleteRecruitmentQuestionnaireTemplateById = async (id) => {
+//   try {
+//     const actionUrl = "deleteRecruitmentQuestionnaireTemplateById";
+//     const method = "DELETE";
+//     const kwargs = { id };
     
-    const response = await apiRequest(action, method, kwargs);
+//     const response = await action(actionUrl, kwargs); // Call action directly
     
-    // Check response status and handle accordingly
-    if (response.status === 200) {
-      // Success, return some indication
-      return { success: true };
-    } else {
-      // Handle error response
-      return { success: false, error: response.statusText };
-    }
-  } catch (error) {
-    // Handle any caught errors
-    console.error("Error deleting template:", error);
-    return { success: false, error: "An error occurred while deleting the template." };
-  }
-};
+//     if (response.status === 200) {
+//       return { success: true };
+//     } else {
+//       return { success: false, error: response.statusText };
+//     }
+//   } catch (error) {
+//     console.error("Error deleting template:", error);
+//     return { success: false, error: "An error occurred while deleting the template." };
+//   }
+// };
 
 export const getAllRecruitmentResumes = async () => {
   const action = "getAllRecruitmentResumes";
@@ -812,12 +808,12 @@ const API ={
 
   //delete API
   DELETE_Job_Templates: "deleteRecruitmentJobTemplateById",
-  DELETE_Job_Description: "",
-  DELETE_Workflow: "",
-  DELETE_Email: "",
-  DELETE_Evaluation: "",
-  DELETE_Questionaire: "",
-  DELETE_Letter: "",
+  DELETE_Job_Description: "deleteRecruitmentJobDescriptionTemplateById",
+  DELETE_Workflow: "deleteRecruitmentWorkFlowById",
+  DELETE_Email: "deleteRecruitmentEmailTemplateById",
+  DELETE_Evaluation: "deleteRecruitmentEvaluationTemplateById",
+  DELETE_Questionaire: "deleteRecruitmentQuestionnaireTemplateById",
+  DELETE_Letter: "deleteRecruitmentJobResumesOfferLetterById",
 
 
 
@@ -850,6 +846,9 @@ const action = async (actionUrl, params = {}, url = apiUrl, headers) => {
 };
 
 export { action };
+
+
+
 
 
 // file handling url

@@ -235,16 +235,34 @@ const TableAnt = ({
 
   // Delete Api Integration
 
-  const deleteRecord = async (e) => {
-    // console.log(e);
-    const result = await action(deleteApi, { id: e });
-    // console.log(result);
+  // const deleteRecord = async (e) => {
+  //   console.log(e);
+  //   const result = await action(deleteApi, { id: e });
+  //   console.log(result);
+  //   if (result.status === 200) {
+  //     // window.location.reload();
+  //     openNotification("success", "Success", result?.message);
+  //     refresh(true);
+  //   }
+  // };
+
+
+// Function to delete a record
+
+const deleteRecord = async (id) => {
+  try {
+    const result = await action(deleteApi, { id: id }); // Ensure 'id' is passed correctly
     if (result.status === 200) {
-      // window.location.reload();
+      // Handle success response
       openNotification("success", "Success", result?.message);
-      refresh(true);
+      // refresh(true);
     }
-  };
+  } catch (error) {
+    // Handle error
+    console.error("Error deleting record:", error);
+    openNotification("error", "Error", "An error occurred while deleting the record.");
+  }
+};
 
 
 
