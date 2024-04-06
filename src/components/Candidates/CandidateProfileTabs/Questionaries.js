@@ -212,14 +212,14 @@ const Questionaries = () => {
         <div className="flex flex-col gap-4 box-wrapper border-2">
           <div className="flex flex-col gap-4 divide-y">
             <div className="flex items-center justify-between">
-              <h6 className="h6">Questionair</h6>
+              <h6 className="h6">Questionaire</h6>
               <div
                 className="flex items-center justify-end gap-2.5 p-1.5 mt-[18.88px] rounded-lg"
               // style={{ backgroundColor: `${primaryColor}10` }}
               >
                 <Dropdown overlay={menu} trigger={['click']} placement="bottomCenter">
                   <Button className="flex items-center gap-2 ml-auto">
-                    <div className="text-primary text-xs font-bold">Choose Questionair</div>
+                    <div className="text-primary text-xs font-bold">Choose Questionaire</div>
                     <IoIosArrowDown className="text-primary transition-all bg-transparent border-none outline-none 2xl:text-2xl" />
                   </Button>
                 </Dropdown>
