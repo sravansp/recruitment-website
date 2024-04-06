@@ -236,7 +236,7 @@ const CreateEventSection = ({ onCreateEventClick }) => {
     <div className="h-full gap-4 vhcenter box-wrapper borderb">
       <div className="flex flex-col items-center gap-4">
         <div className=" size-11 bg-[#F9FAFB] dark:bg-secondaryDark rounded-full vhcenter">
-          <RiImage2Fill className="text-black text-opacity-50 dark:text-white" />
+          <RiImage2Fill size={60} className="text-black text-opacity-50 dark:text-white" />
         </div>
         <h6 className="h6"> You don't have any events now</h6>
         <p className="para">
@@ -367,12 +367,12 @@ const FormSection = ({ onCancel }) => {
       // stack: 2,
       style: {
         background: `${type === "success"
-            ? `linear-gradient(180deg, rgba(204, 255, 233, 0.8) 0%, rgba(235, 252, 248, 0.8) 51.08%, rgba(246, 251, 253, 0.8) 100%)`
-            : "linear-gradient(180deg, rgba(255, 236, 236, 0.80) 0%, rgba(253, 246, 248, 0.80) 51.13%, rgba(251, 251, 254, 0.80) 100%)"
+          ? `linear-gradient(180deg, rgba(204, 255, 233, 0.8) 0%, rgba(235, 252, 248, 0.8) 51.08%, rgba(246, 251, 253, 0.8) 100%)`
+          : "linear-gradient(180deg, rgba(255, 236, 236, 0.80) 0%, rgba(253, 246, 248, 0.80) 51.13%, rgba(251, 251, 254, 0.80) 100%)"
           }`,
         boxShadow: `${type === "success"
-            ? "0px 4.868px 11.358px rgba(62, 255, 93, 0.2)"
-            : "0px 22px 60px rgba(134, 92, 144, 0.20)"
+          ? "0px 4.868px 11.358px rgba(62, 255, 93, 0.2)"
+          : "0px 22px 60px rgba(134, 92, 144, 0.20)"
           }`,
       },
       // duration: null,
@@ -489,73 +489,74 @@ const FormSection = ({ onCancel }) => {
   return (
     <div className="flex flex-col h-full gap-8 box-wrapper borderb">
       <h6 className="h6">Schedule Event</h6>
-      <div className="flex flex-col gap-4">
-        <FormInput title="Event Name" placeholder="Enter Event Name"
-          value={formik.values.eventName}
-          change={(e) => {
-            formik.setFieldValue('eventName', e)
-            console.log(e)
-          }}
-        />
-        <div className="grid gap-4 md:grid-cols-3">
-          <DateSelect title="Date" className="w-full"
-            value={formik.values.eventDate}
-            change={(e) => {
-              formik.setFieldValue("eventDate", e)
-            }}
-
-          />
-          <TimeSelect title="Time"
-            value={formik.values.eventTime}
-            change={(e) => {
-              formik.setFieldValue("eventTime", e)
-            }}
-          />
-          <Dropdown
-            title="Duration"
-            options={duration}
-            change={(e) => {
-              formik.setFieldValue("duration", e)
-            }}
-            value={formik.values.duration}
-          />
-        </div>
-        <div className="grid gap-4 md:grid-cols-3">
-          <Dropdown
-            change={(e) => {
-              formik.setFieldValue("eventType", e)
-            }}
-            value={formik.values.eventType}
-            title="Event type"
-            options={eventType}
-            className="md:col-span-1"
-          />
-          {EventDropValue !== "offline" && (
-            <div className="md:col-span-2">
-              <FormInput
-                title="URL Link"
-                placeholder="Enter URL Link"
-                websiteLink={true}
-                value={formik.values.eventUrl}
-                change={(e) => {
-                  formik.setFieldValue("eventUrl", e)
-                }}
-              />
-            </div>
-          )}
-        </div>
-        <p className="para">
-          This event will take place on the May 15, 2023 from 02:00 PM until
-          5:45 PM
-        </p>
+      <div className="w-4/5">
         <div className="flex flex-col gap-4">
-          <div className="grid grid-cols-3 gap-4">
-            <div className="col-span-2">
-              <MultiSelect title="Attendees" className="" options={employee} value={selectedvalue} change={(e) => { handleAddUser(e) }} />
-            </div>
+          <FormInput title="Event Name" placeholder="Enter Event Name"
+            value={formik.values.eventName}
+            change={(e) => {
+              formik.setFieldValue('eventName', e)
+              console.log(e)
+            }}
+          />
+          <div className="grid gap-4 md:grid-cols-3">
+            <DateSelect title="Date" className="w-full"
+              value={formik.values.eventDate}
+              change={(e) => {
+                formik.setFieldValue("eventDate", e)
+              }}
 
+            />
+            <TimeSelect title="Time"
+              value={formik.values.eventTime}
+              change={(e) => {
+                formik.setFieldValue("eventTime", e)
+              }}
+            />
+            <Dropdown
+              title="Duration"
+              options={duration}
+              change={(e) => {
+                formik.setFieldValue("duration", e)
+              }}
+              value={formik.values.duration}
+            />
           </div>
-          {/* <div className="flex items-center gap-3 selectedAtendies">
+          <div className="grid gap-4 md:grid-cols-3">
+            <Dropdown
+              change={(e) => {
+                formik.setFieldValue("eventType", e)
+              }}
+              value={formik.values.eventType}
+              title="Event type"
+              options={eventType}
+              className="md:col-span-1"
+            />
+            {EventDropValue !== "offline" && (
+              <div className="md:col-span-2">
+                <FormInput
+                  title="URL Link"
+                  placeholder="Enter URL Link"
+                  websiteLink={true}
+                  value={formik.values.eventUrl}
+                  change={(e) => {
+                    formik.setFieldValue("eventUrl", e)
+                  }}
+                />
+              </div>
+            )}
+          </div>
+          <p className="para">
+            This event will take place on the May 15, 2023 from 02:00 PM until
+            5:45 PM
+          </p>
+          <div className="flex flex-col gap-4">
+            <div className="grid grid-cols-3 gap-4">
+              <div className="col-span-2">
+                <MultiSelect title="Attendees" className="" options={employee} value={selectedvalue} change={(e) => { handleAddUser(e) }} />
+              </div>
+
+            </div>
+            {/* <div className="flex items-center gap-3 selectedAtendies">
             
             <div className="relative">
               <img
@@ -598,11 +599,12 @@ const FormSection = ({ onCancel }) => {
               </div>
             </div>
           </div> */}
-        </div>
+          </div>
 
-        <TextArea title="Note" placeholder="Add note..." value={formik.values.notes}
-          change={(e) => { formik.setFieldValue("notes", e) }}
-        />
+          <TextArea title="Note" placeholder="Add note..." value={formik.values.notes}
+            change={(e) => { formik.setFieldValue("notes", e) }}
+          />
+        </div>
       </div>
 
       <div
