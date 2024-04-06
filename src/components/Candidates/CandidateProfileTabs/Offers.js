@@ -18,10 +18,11 @@ import { FcCheckmark } from "react-icons/fc";
 import { ImAttachment } from "react-icons/im";
 import { Link, useParams, useLocation } from "react-router-dom";
 import { Formik, useFormik } from "formik";
-import Dropdown from "../../common/Dropdown";
-import { Button, Card, Space, notification } from "antd";
+import { Button, Card, Dropdown, Space, notification } from "antd";
 import { FaRegEdit } from "react-icons/fa";
-import { PiPushPinSlashBold } from "react-icons/pi";
+import { PiChecks, PiPushPinSlashBold } from "react-icons/pi";
+import { FiAlertOctagon } from "react-icons/fi";
+import { IoIosArrowDown } from "react-icons/io";
 
 
 const Offers = () => {
@@ -64,12 +65,12 @@ const Offers = () => {
       // stack: 2,
       style: {
         background: `${type === "success"
-            ? `linear-gradient(180deg, rgba(204, 255, 233, 0.8) 0%, rgba(235, 252, 248, 0.8) 51.08%, rgba(246, 251, 253, 0.8) 100%)`
-            : "linear-gradient(180deg, rgba(255, 236, 236, 0.80) 0%, rgba(253, 246, 248, 0.80) 51.13%, rgba(251, 251, 254, 0.80) 100%)"
+          ? `linear-gradient(180deg, rgba(204, 255, 233, 0.8) 0%, rgba(235, 252, 248, 0.8) 51.08%, rgba(246, 251, 253, 0.8) 100%)`
+          : "linear-gradient(180deg, rgba(255, 236, 236, 0.80) 0%, rgba(253, 246, 248, 0.80) 51.13%, rgba(251, 251, 254, 0.80) 100%)"
           }`,
         boxShadow: `${type === "success"
-            ? "0px 4.868px 11.358px rgba(62, 255, 93, 0.2)"
-            : "0px 22px 60px rgba(134, 92, 144, 0.20)"
+          ? "0px 4.868px 11.358px rgba(62, 255, 93, 0.2)"
+          : "0px 22px 60px rgba(134, 92, 144, 0.20)"
           }`,
       },
       // duration: null,
@@ -252,7 +253,7 @@ const Offers = () => {
     <div className="grid gap-6 lg:grid-cols-12">
       {/* LEFT COLUMN  */}
       <div className="flex flex-col gap-6 lg:col-span-8">
-        <div className="flex flex-col gap-4 box-wrapper">
+        <div className="flex flex-col gap-4 box-wrapper border-2">
           <div className="flex flex-col gap-4 divide-y">
             <div className="flex items-center justify-between">
               <h6 className="h6">Offer Letter</h6>
@@ -260,18 +261,14 @@ const Offers = () => {
                 className="flex items-center justify-end gap-2.5 p-1.5  rounded-lg"
               // style={{ backgroundColor: `${primaryColor}10` }}
               >
-                <ButtonClick buttonName="Reject" />
-                <ButtonClick buttonName="Accept" icon={<FcCheckmark />} />
-                <Dropdown
-                  placeholder={"Choose template"}
-                  options={LetterTemplate}
-                  change={(e) => {
-
-                    setLetterTemplateId(e)
-                  }}
-                  value={LetterTemplateId}
-
-                />
+                <ButtonClick buttonName="Reject" icon={<FiAlertOctagon size={16} className="text-white bg-red-700 rounded-full" />} />
+                <ButtonClick buttonName="Accept" icon={<PiChecks size={16} className="text-green " />} />
+                <Dropdown trigger={['click']} placement="bottomCenter">
+                  <Button className="flex items-center gap-2 ml-auto">
+                    <div className="text-primary text-xs font-bold">Choose Template</div>
+                    <IoIosArrowDown className="text-primary transition-all bg-transparent border-none outline-none 2xl:text-2xl" />
+                  </Button>
+                </Dropdown>
               </div>
             </div>
 
