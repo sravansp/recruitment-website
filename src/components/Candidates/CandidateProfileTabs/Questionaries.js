@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from "react";
 import TextEditor from "../../common/TextEditor/TextEditor";
+import { Button, Dropdown, Menu } from "antd";
 import ButtonClick from "../../common/Button";
 import TabsNew from "../../common/TabsNew";
 import { Editor } from "draft-js";
@@ -10,6 +11,7 @@ import { Link, useParams, useLocation } from "react-router-dom";
 import { updateRecruitmentJobResumesNote, getRecruitmentJobResumesNoteById, getRecruitmentQuestionnaireTemplateById, getRecruitmentJobById, getAllRecruitmentJobResumesNotes, saveRecruitmentJobResumesNote } from "../../Api1";
 import { FaRegEdit } from "react-icons/fa";
 import { PiPushPinSlashBold } from "react-icons/pi";
+import { IoIosArrowDown } from "react-icons/io";
 
 
 const Questionaries = () => {
@@ -175,11 +177,39 @@ const Questionaries = () => {
   }, [questionareId])
 
 
+  const options = [
+    {
+      id: 1,
+      label: 'opt 1',
+      value: '',
+    },
+    {
+      id: 2,
+      label: 'opt2',
+      value: '',
+    },
+    {
+      id: 3,
+      label: 'opt3',
+      value: '',
+    },
+  ];
+
+  const menu = (
+    <Menu>
+      {options.map(option => (
+        <Menu.Item key={option.id}>
+          {option.label}
+        </Menu.Item>
+      ))}
+    </Menu>
+  );
+
   return (
     <div className="grid gap-6 lg:grid-cols-12">
       {/* LEFT COLUMN  */}
       <div className="flex flex-col gap-6 lg:col-span-8">
-        <div className="flex flex-col gap-4 box-wrapper">
+        <div className="flex flex-col gap-4 box-wrapper border-2">
           <div className="flex flex-col gap-4 divide-y">
             <div className="flex items-center justify-between">
               <h6 className="h6">Questionair</h6>
@@ -187,14 +217,16 @@ const Questionaries = () => {
                 className="flex items-center justify-end gap-2.5 p-1.5 mt-[18.88px] rounded-lg"
               // style={{ backgroundColor: `${primaryColor}10` }}
               >
-                {/* <ButtonClick
-                  buttonName="Choose Questionair"
-                  BtnType="primary"
-                /> */}
+                <Dropdown overlay={menu} trigger={['click']} placement="bottomCenter">
+                  <Button className="flex items-center gap-2 ml-auto">
+                    <div className="text-primary text-xs font-bold">Choose Questionair</div>
+                    <IoIosArrowDown className="text-primary transition-all bg-transparent border-none outline-none 2xl:text-2xl" />
+                  </Button>
+                </Dropdown>
               </div>
             </div>
 
-            <div className=" ">
+            <div className="pt-2">
               {questionnaireData && questionnaireData.length > 0 ? (
                 questionnaireData.map((questionnaire, index) => (
                   <div key={index} className="mt-5">
@@ -206,7 +238,7 @@ const Questionaries = () => {
                         <p className="text-gray-700 dark:text-white font-Inter font-weight:500">
                           <strong>{`Q${question.questionnaireTemplateDetailsId}. ${question.question}`}</strong>
                         </p>
-                        <p className="text-gray-700 dark:text-white font-Inter font-weight:500">
+                        <p className="text-gray-700 dark:text-white font-Inter font-weight:500 pt-1">
                           <strong>Ans.</strong> {question.answerMetaData[0]?.value || ''}
                         </p>
                       </div>
@@ -217,7 +249,7 @@ const Questionaries = () => {
                 <div className="h-full gap-4 vhcenter box-wrapper borderb">
                   <div className="flex flex-col items-center gap-4">
                     <div className="size-11 bg-[#F9FAFB] dark:bg-secondaryDark rounded-full vhcenter">
-                      <RiImage2Fill className="text-black text-opacity-50 dark:text-white" />
+                      <RiImage2Fill size={60} className="text-black text-opacity-50 dark:text-white" />
                     </div>
                     <h6 className="h6">No questionnaire data available</h6>
                     <p className="para">
