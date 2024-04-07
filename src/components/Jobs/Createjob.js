@@ -58,6 +58,7 @@ const Createjob = ( {open = "", close = () => { },inputshow= false,isUpdate={},u
   const[show,setShow] =useState(open);
   const { t } = useTranslation();
   const [errors, setErrors] = useState([]);
+  const [content, setContent] = useState("");
   // const [isUpdate, setIsUpdate] = useState();
   const [activeBtn, setActiveBtn] = useState(0);
   const [presentage, setPresentage] = useState(0);
@@ -95,7 +96,9 @@ const Createjob = ( {open = "", close = () => { },inputshow= false,isUpdate={},u
     }
   }, []); // Empty dependency array ensures the useEffect runs only once
   const [isChecked, setIsChecked] = useState(false);
-
+  const handleEditorChange = (content) => {
+    setContent(content);
+  };
   console.log('Username:', userid);
   const [api, contextHolder] = notification.useNotification();
   const openNotification = (type, message, description) => {
@@ -192,7 +195,8 @@ const getDraftjobs = async () => {
       formik1.setFieldValue("isActive", firstJob.isActive);
       formik1.setFieldValue("isSalaryPublic", firstJob.isSalaryPublic);
       formik1.setFieldValue("jobCode", firstJob.jobCode);
-      formik1.setFieldValue("jobDescription", firstJob.jobDescription);
+      // formik1.setFieldValue("jobDescription", firstJob.jobDescription);
+      setContent(firstJob.jobDescription)
       formik1.setFieldValue("jobType", firstJob.jobType);
       formik1.setFieldValue("location", firstJob.location);
       formik1.setFieldValue("requirementType", firstJob.requirementType);
@@ -322,7 +326,7 @@ const formik1 = useFormik({
             salaryRangeTo: e.salaryRangeTo,
             salaryCurrency: e.salaryCurrency,
             isSalaryPublic: e.isSalaryPublic,
-            jobDescription: e.jobDescription,
+            jobDescription: content,
             workFlowId: null,
             jobPublishType: null,
             jobPublishDetails: null,
@@ -372,7 +376,7 @@ const formik1 = useFormik({
             salaryRangeTo: e.salaryRangeTo,
             salaryCurrency: e.salaryCurrency,
             isSalaryPublic: e.isSalaryPublic,
-            jobDescription: e.jobDescription,
+            jobDescription: content,
             workFlowId: null,
             noOfVaccancies: e.noOfVaccancies,
             modifiedBy: userid,
@@ -1681,12 +1685,10 @@ impactful, accurate, and personalized to your company</p>
       
           </Button>
                                         </div>
-                                        <Card>
+                                        {/* <div className="pt-4">
                                             <TextEditor
-                                             title={t("Description")}
-                                             placeholder={t("Enter the Job description here; include key reas of responsibility an what the candidate mi ht do on a typical day.")}
-                                             required={true}
-                                             hideBorder={true} 
+                                             
+                                            
                                              
                                              initialValue={formik1.values.jobDescription}
                                             //  change={(e)=>{
@@ -1694,6 +1696,14 @@ impactful, accurate, and personalized to your company</p>
                                             //  }}
                                             onChange={(editorState)=>{ formik1.setFieldValue('jobDescription',editorState)}}
                                              />
+                                             </div> */}
+                                               <div className="pt-4">
+              <TextEditor
+  initialValue={content}
+  onChange={handleEditorChange}
+  minheight="250px"
+/>
+              </div>
                                                   {/* <TextArea
                                              title={t("Requirement")}
                                              placeholder={t("Enter the job requirements here; from soft skills to the specific qualifications needed to perform the role.")}
@@ -1718,7 +1728,7 @@ impactful, accurate, and personalized to your company</p>
                                             //  value={formik.values.description || selectedAccordionItem?.description || fetchedData.description}
                                             //  error={formik.errors.description}
                                              /> */}
-                                             </Card>
+                                           
 
                                         </Accordion>
                                   
