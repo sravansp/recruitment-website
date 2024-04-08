@@ -25,7 +25,7 @@ export default function Dropdown({
   rightIcon = false,
   PopoverContent = {},
   icondropDown = false,
-  icon = false,
+  icon ,
   image = false,
 }) {
   console.log(options,"hi");
@@ -57,6 +57,7 @@ export default function Dropdown({
         <Select
           showSearch
           placeholder={placeholder}
+          icon={icon}
           optionFilterProp="children"
           onChange={change}
           onSearch={onSearch}
