@@ -264,7 +264,7 @@ export default function Privileges() {
             ) : (
               <TableAnt
                  data={userList}
-                header={tabValue==="UsersHistory"?Userlistheader:Userlistheader}
+                header={tabValue === "UsersHistory" ? Userlistheader : Userlistheader}
                 path={"UsersHistory"}
                 tab={tabss}
                 handleTabChange={(e) => {

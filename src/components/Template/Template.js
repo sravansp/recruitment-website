@@ -2,9 +2,9 @@ import React,{useState,useEffect} from 'react'
 import TableAnt from '../common/TableAnt'
 import Breadcrumbs from '../common/BreadCrumbs';
 import { useTranslation } from 'react-i18next';
-import API, { action } from "../Api1";
+import API, { action, getJobStatics } from "../Api1";
 import ButtonClick from '../common/Button';
-import {getAllRecruitmentJobDescriptionTemplates, getAllRecruitmentJobTemplates,getAllRecruitmentWorkFlows,getAllRecruitmentEmailTemplates,getAllRecruitmentQuestionnaireTemplates,getAllRecruitmentEvaluationTemplates,getAllRecruitmentLetterTemplates } from '../Api1';
+import {getAllRecruitmentJobDescriptionTemplates, getAllRecruitmentJobTemplates,getAllRecruitmentWorkFlows,getAllRecruitmentEmailTemplates,getAllRecruitmentQuestionnaireTemplates,getAllRecruitmentEvaluationTemplates,getAllRecruitmentLetterTemplates, } from '../Api1';
 // import AddTemplate from './Addtemplate';
 import Tabs from '../common/Tabs';
 import Departments from '../Company/Add _departments';
@@ -20,6 +20,7 @@ import AddLetter from './AddLetter';
 import Workflowstage from './Workflowstage';
 import CreatejobTemp from './createJobtemp';
 import { FaBullseye } from 'react-icons/fa';
+import { evaluation } from '../data';
 
 const Template = ({
     open = "",
@@ -81,8 +82,8 @@ const Template = ({
          },
          {
             id:6,
-            title:"Questionaire",
-            value:"Questionaire",
+            title:"Questionnaire",
+            value:"Questionnaire",
             tabheading:"Questionnaire Templates"
          },
          {
@@ -101,7 +102,7 @@ const Template = ({
         Workflow: { id: 3, api: API.UPDATE_Workflow },
         Email: { id: 4, api: API.UPDATE_Email },
         Evaluation: { id: 5, api: API.UPDATE_EvaluationS },
-        Questionaire: { id: 5, api: API.UPDATE_Questionaire },
+        Questionnaire: { id: 5, api: API.UPDATE_Questionaire },
         Letter: { id: 5, api: API.UPDATE_Letter},
       },
     ];
@@ -112,7 +113,7 @@ const Template = ({
         Workflow: { id: 3, api: API.DELETE_Workflow },
         Email: { id: 4, api: API.DELETE_Email },
         Evaluation: { id: 5, api: API.DELETE_Evaluation},
-        Questionaire: { id: 5, api: API.DELETE_Questionaire },
+        Questionnaire: { id: 5, api: API.DELETE_Questionaire },
         Letter: { id: 5, api: API.DELETE_Letter },
         
       },
@@ -239,7 +240,7 @@ const Template = ({
           action:true,
        },
         ],
-        Questionaire : [ 
+        Questionnaire : [ 
           {
             id:1,
             title:"Name",
@@ -404,7 +405,7 @@ const Template = ({
         
         
         ],
-        Questionaire : [ 
+        Questionnaire : [ 
           {
             id:1,
             title:"Name",
@@ -655,7 +656,7 @@ const Template = ({
             
             console.log(newData)
             break;
-            case "Questionaire":
+            case "Questionnaire":
               // getDepartmentList();
               getallquestionaire();
               
@@ -685,7 +686,7 @@ const Template = ({
         Workflow: {id:3,data:WorkflowList},
         Email:{id:4,data:emailSubject},
         Evaluation:{id:5,data:EvaluationLIst},
-        Questionaire:{id:6,data:QuestionaireLIst},
+        Questionnaire:{id:6,data:QuestionaireLIst},
         Letter:{id:7,data:LetterLIst}
     
     },
@@ -697,7 +698,7 @@ const Template = ({
       Workflow: {id:"workFlowId"},
       Email:{id:"emailTemplateId"},
       Evaluation:{id:"evaluationTemplateId"},
-      Questionaire:{id:"questionnaireTemplateId"},
+      Questionnaire:{id:"questionnaireTemplateId"},
       Letter:{id:"letterTemplateId"}
     }
     
@@ -709,6 +710,17 @@ const Template = ({
   //   setNavigationPath("JobDetails");
   //   // You can also set other necessary state or perform additional actions
   // };
+  // const deleteAp = [
+  //   {
+  //     Job_Templates: { id: 1, api: API.DELETE_Job_Templates },
+  //     Job_Description: { id: 2, api: API.DELETE_Job_Description },
+  //     Workflow: { id: 3, api: API.DELETE_Workflow },
+  //     Email: { id: 4, api: API.DELETE_Email },
+  //     Evaluation: { id: 5, api: API.DELETE_Evaluation },
+  //     Questionnaire: { id: 6, api: API.DELETE_Questionaire },
+  //     Letter: { id: 7, api: API.DELETE_Letter }
+  //   },
+  // ];
   
     return (
    <div className='flex flex-col gap-6'>
@@ -756,6 +768,7 @@ const Template = ({
               header={Header}
               drawerH={DraweHeader}
               // path="employee"
+             
               tabs={tabs}
               All={true}
               clickDrawer={(e) => {
@@ -782,6 +795,11 @@ const Template = ({
                     ? updateApi[0]?.[navigationPath].api
                     : null
                 }
+                deleteApi={
+                  Object.keys(deleteApi[0]).includes(navigationPath)
+                    ? deleteApi[0]?.[navigationPath].api
+                    : null
+                }
                 buttonClick={(e) => {
                   // console.log(company, "company", e);
                   if (e === true) {
@@ -805,7 +823,31 @@ const Template = ({
                   }
                 }}
               
-              
+                refresh={() => {
+                  switch (navigationPath) {
+                    default:
+                      JobList();
+                      break;
+                    case "Job_Description":
+                      JobDescriptionList();
+                      break;
+                    case "Workflow":
+                      WorkflowList();
+                      break;
+                    case "Email":
+                      EmailList();
+                      break;
+                    case "Evaluation":
+                      evaluation();
+                      break;
+                    case "Questionnaire":
+                        QuestionaireLIst();
+                      break;
+                    case "Letter":
+                           LetterLIst();
+                      break;
+                  }   
+                }}
               />
           </div>
           { show && (
@@ -886,7 +928,7 @@ const Template = ({
           }}
         />
       )}
-       {navigationPath === "Questionaire" && show && (
+       {navigationPath === "Questionnaire" && show && (
         <QuestionAire
           open={show}
           close={(e) => {

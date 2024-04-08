@@ -60,6 +60,24 @@ export const deleteRecruitmentJobById = async (id) => {
 
   return await apiRequest(action, method, kwargs);
 };
+// export const deleteRecruitmentQuestionnaireTemplateById = async (id) => {
+//   try {
+//     const actionUrl = "deleteRecruitmentQuestionnaireTemplateById";
+//     const method = "DELETE";
+//     const kwargs = { id };
+    
+//     const response = await action(actionUrl, kwargs); // Call action directly
+    
+//     if (response.status === 200) {
+//       return { success: true };
+//     } else {
+//       return { success: false, error: response.statusText };
+//     }
+//   } catch (error) {
+//     console.error("Error deleting template:", error);
+//     return { success: false, error: "An error occurred while deleting the template." };
+//   }
+// };
 
 export const getAllRecruitmentResumes = async () => {
   const action = "getAllRecruitmentResumes";
@@ -1111,12 +1129,12 @@ const API = {
 
   //delete API
   DELETE_Job_Templates: "deleteRecruitmentJobTemplateById",
-  DELETE_Job_Description: "",
-  DELETE_Workflow: "",
-  DELETE_Email: "",
-  DELETE_Evaluation: "",
-  DELETE_Questionaire: "",
-  DELETE_Letter: "",
+  DELETE_Job_Description: "deleteRecruitmentJobDescriptionTemplateById",
+  DELETE_Workflow: "deleteRecruitmentWorkFlowById",
+  DELETE_Email: "deleteRecruitmentEmailTemplateById",
+  DELETE_Evaluation: "deleteRecruitmentEvaluationTemplateById",
+  DELETE_Questionaire: "deleteRecruitmentQuestionnaireTemplateById",
+  DELETE_Letter: "deleteRecruitmentJobResumesOfferLetterById",
 
 
 
@@ -1151,8 +1169,12 @@ const action = async (actionUrl, params = {}, url = apiUrl, headers) => {
 export { action };
 
 
+
+
+
 // file handling url
-const urlFileHandler = "https://alpha-jobs-api.loyaltri.com/api/fileHandler";
+// const urlFileHandler = "https://alpha-jobs-api.loyaltri.com/api/fileHandler";
+const urlFileHandler = "https://demo-jobs-api.loyaltri.com/api/fileHandler";
 const fileAction = async (formData) => {
   try {
     const result = await axios.post(urlFileHandler, formData, {
