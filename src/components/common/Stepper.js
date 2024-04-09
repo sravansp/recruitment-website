@@ -88,7 +88,7 @@ export default function Stepper({
   // const stepsDisplay =
 
   return (
-    <div className="relative mx-4 py-1.5 flex justify-between items-center bg-white dark:bg-lightdark">
+    <div className="relative mx-4 py-1.5 flex justify-between items-center  dark:bg-lightdark">
       {stepperSteps.map((step, index) => (
         <div
           key={index}
@@ -118,7 +118,7 @@ export default function Stepper({
                   }}
                   className={`text-xs 2xl:text-base font-medium rounded-full transition duration-500 ease-in-out h-5 w-5 2xl:h-8 2xl:w-8 vhcenter shadow-stepShadow
              ${
-               step.selected ? "bg-accent text-white border-accent" : "bg-white"
+               step.selected ? "bg-accent text-white  border-accent" : "bg-white"
              }
             `}
                 >
@@ -134,7 +134,7 @@ export default function Stepper({
             </div>
             <div
               className={`absolute top-0  text-center mt-11 2xl:mt-14 w-40 text-xs 2xl:text-base font-medium ${
-                step.selected ? "text-black" : "text-black opacity-50"
+                step.selected ? "text-black dark:text-white" : "text-black dark:text-white opacity-50"
               }`}
             >
               {step.description}

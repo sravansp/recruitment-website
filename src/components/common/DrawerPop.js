@@ -139,6 +139,7 @@ export default function DrawerPop({
       //     borderRadius: 12,
       //   }}
       className={` ${className !== "widthFull" && "md:rounded-l-lg"} `}
+    
     >
       {children}
     </Drawer>

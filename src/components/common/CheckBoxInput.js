@@ -17,7 +17,7 @@ export default function CheckBoxInput({
   return (
     <div className={`flex flex-col ${title ? "gap-2" : "gap-0 items-center"} `}>
       <div className="flex">
-        <p className="text-xs font-medium 2xl:text-sm dark:text-white">
+        <p className="text-xs font-medium 2xl:text-sm dark:text-white ">
           {/* {title} */}
         </p>
         {required && <HiMiniStar className="text-[10px] text-rose-600" />}
@@ -35,10 +35,10 @@ export default function CheckBoxInput({
           }}
         />
         {title && (
-          <p className="text-xs font-medium 2xl:text-sm">{title}</p>
+          <p className="text-xs font-medium 2xl:text-sm dark:text-white">{title}</p>
         )}
         {description && (
-          <p className=" text-sx font-normal">{description}</p>
+          <p className=" text-sx font-normal dark:text-white">{description}</p>
         )}
       </div>
     </div>
