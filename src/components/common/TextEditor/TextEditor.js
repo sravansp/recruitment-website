@@ -16,12 +16,8 @@ const TextEditor = ({
 }) => {
   const [editorState, setEditorState] = useState(() => {
     if (initialValue) {
-      const blocksFromHTML = convertFromHTML(initialValue);
-      const state = ContentState.createFromBlockArray(
-        blocksFromHTML.contentBlocks,
-        blocksFromHTML.entityMap
-      );
-      return EditorState.createWithContent(state);
+      const contentState = ContentState.createFromText(initialValue);
+      return EditorState.createWithContent(contentState);
     } else {
       return EditorState.createEmpty();
     }
@@ -43,7 +39,7 @@ const TextEditor = ({
         .map((block) => block.text)
         .join('\n');
         const htmlContent = stateToHTML(contentState);
-      onChange(htmlContent);
+      onChange(plainText);
       console.log(plainText)
        // Ensure onChange is called with plainText, which is a string
     }
