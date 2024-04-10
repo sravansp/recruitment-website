@@ -26,16 +26,14 @@ const TextEditor = ({
       return EditorState.createEmpty();
     }
   });
-
-  // useEffect(() => {
-  //   // Check if initialValue exists and if it's different from the current editor content
-  //   if (initialValue && initialValue !== editorState.getCurrentContent().getPlainText()) {
-  //     const contentState = ContentState.createFromText(initialValue);
-  //     const newEditorState = EditorState.createWithContent(contentState);
-  //     setEditorState(newEditorState);
-  //   }
-  // }, [initialValue, editorState]);
-
+    useEffect(() => {
+    // Check if initialValue exists and if it's different from the current editor content
+    if (initialValue && initialValue !== editorState.getCurrentContent().getPlainText()) {
+      const contentState = ContentState.createFromText(initialValue);
+      const newEditorState = EditorState.createWithContent(contentState);
+      setEditorState(newEditorState);
+    }
+  }, [initialValue, editorState]);
   const handleEditorChange = (state) => {
     setEditorState(state);
     if (onChange) {

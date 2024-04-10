@@ -623,7 +623,7 @@ const CardItem = ({ data, index, color,jobId }) => {
     
     
     // Navigate to candidateprofile page with data.id
-    navigate(`/candidateprofile/${data.id}`);
+    navigate(`/Candidate_Profile/${data.id}`);
     
     // navigate(`/candidateprofile/${data.id}`);
     
