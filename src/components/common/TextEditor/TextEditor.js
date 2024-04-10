@@ -1,9 +1,9 @@
-// TextEditor.js
 import React, { useState, useEffect } from 'react';
-import { EditorState, convertToRaw, ContentState } from 'draft-js';
+import { EditorState, convertToRaw, ContentState, convertFromHTML } from 'draft-js';
 import { Editor } from 'react-draft-wysiwyg';
 import { FaAsterisk } from "react-icons/fa";
 import 'react-draft-wysiwyg/dist/react-draft-wysiwyg.css';
+import {stateToHTML} from 'draft-js-export-html';
 
 const TextEditor = ({
   title = "",
@@ -16,36 +16,25 @@ const TextEditor = ({
 }) => {
   const [editorState, setEditorState] = useState(() => {
     if (initialValue) {
-      const contentState = ContentState.createFromText(initialValue);
-      return EditorState.createWithContent(contentState);
+      const blocksFromHTML = convertFromHTML(initialValue);
+      const state = ContentState.createFromBlockArray(
+        blocksFromHTML.contentBlocks,
+        blocksFromHTML.entityMap
+      );
+      return EditorState.createWithContent(state);
     } else {
       return EditorState.createEmpty();
     }
   });
+
   // useEffect(() => {
-  //   if (!editorState.getCurrentContent().hasText() && initialValue) {
+  //   // Check if initialValue exists and if it's different from the current editor content
+  //   if (initialValue && initialValue !== editorState.getCurrentContent().getPlainText()) {
   //     const contentState = ContentState.createFromText(initialValue);
   //     const newEditorState = EditorState.createWithContent(contentState);
   //     setEditorState(newEditorState);
   //   }
-  // }, [initialValue]);
-  useEffect(() => {
-    // Check if initialValue exists and if it's different from the current editor content
-    if (initialValue && initialValue !== editorState.getCurrentContent().getPlainText()) {
-      const contentState = ContentState.createFromText(initialValue);
-      const newEditorState = EditorState.createWithContent(contentState);
-      setEditorState(newEditorState);
-    }
-  }, [initialValue, editorState]);
-  
-  // useEffect(() => {
-  //   if (initialValue) {
-  //     const contentState = ContentState.createFromText(initialValue);
-  //     const newEditorState = EditorState.createWithContent(contentState);
-  //     setEditorState(newEditorState);
-  //   }
-  // }, [initialValue]);
-  
+  // }, [initialValue, editorState]);
 
   const handleEditorChange = (state) => {
     setEditorState(state);
@@ -55,7 +44,10 @@ const TextEditor = ({
       const plainText = rawContentState.blocks
         .map((block) => block.text)
         .join('\n');
-      onChange(plainText); // Ensure onChange is called with plainText, which is a string
+        const htmlContent = stateToHTML(contentState);
+      onChange(htmlContent);
+      console.log(plainText)
+       // Ensure onChange is called with plainText, which is a string
     }
   };
   

@@ -27,6 +27,7 @@ export default function Dropdown({
   icondropDown = false,
   icon ,
   image = false,
+  dropdownWidth = ""
 }) {
   console.log(options,"hi");
   const isSmallScreen = useMediaQuery({ maxWidth: 1439 });
@@ -38,12 +39,12 @@ export default function Dropdown({
     <div className={`${className} flex flex-col gap-2`}>
       {title && (
         <div className="flex flex-col gap-0.5">
-          <div className="flex dark:text-white">
+          <div className="flex dark:text-white gap-3">
             <label htmlFor="" className="text-xs font-medium 2xl:text-sm ">
               {title}
             </label>
 
-            {required && <FaAsterisk className="text-[10px] text-rose-600" />}
+            {required && <FaAsterisk className="text-[7px] text-rose-600" />}
           </div>
           {descriptionTop && (
             <p className="text-xs font-medium opacity-50 dark:text-white">
@@ -71,6 +72,7 @@ export default function Dropdown({
           className={` rounded-lg capitalize `} //${title && "mt-[6px]"}
           style={{
             ...styles,
+            width: dropdownWidth,
             borderRadius: "8px",
             boxShadow: error
               ? "0px 0px 0px 4px #FEE4E2, 0px 1px 2px 0px rgba(16, 24, 40, 0.05)"

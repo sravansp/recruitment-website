@@ -10,7 +10,7 @@ import TextEditor from '../common/TextEditor/TextEditor'
 import {updateRecruitmentJobDescriptionTemplate, saveRecruitmentJobDescriptionTemplate,getRecruitmentJobDescriptionTemplateById } from '../Api1'
 import FormInput from '../common/FormInput'
 
-const TemplateDec = ({open = "", close = () => { },inputshow= false,isUpdate={},updateId}) => {
+const TemplateDec = ({open = "", close = () => { },inputshow= false,isUpdate={},updateId,refresh}) => {
     
   const [companyId, setCompanyId] = useState(localStorage.getItem("companyId"));
   const [templateName, setTemplateName] = useState("");  
@@ -44,6 +44,34 @@ const TemplateDec = ({open = "", close = () => { },inputshow= false,isUpdate={},
           // duration: null,
         });
       };
+      const handleGenerateWithAI = async () => {
+        try {
+          const requestBody = {
+            val: content,
+            radioval: '1',
+            summarise: null
+          };
+    
+          const response = await fetch('https://chat.bmark.in/ai/api.php', {
+            method: 'POST',
+            headers: {
+              'Content-Type': 'application/json'
+            },
+            body: JSON.stringify(requestBody)
+          });
+    
+          if (response.ok) {
+            const data = await response.json();
+            // Handle the response data as needed
+            console.log(data);
+            setContent(data.receivedData)
+          } else {
+            console.error('Failed to fetch data');
+          }
+        } catch (error) {
+          console.error('Error:', error);
+        }
+      };
 
       const handlesubmit =async ()=>{
       try{
@@ -65,6 +93,7 @@ const TemplateDec = ({open = "", close = () => { },inputshow= false,isUpdate={},
           );
           setTimeout(() => {
             handleClose();
+            refresh()
           }, 2000);
         
         }else if (response.status === 500) {
@@ -90,6 +119,7 @@ const TemplateDec = ({open = "", close = () => { },inputshow= false,isUpdate={},
           );
           setTimeout(() => {
             handleClose();
+            refresh()
           }, 2000);
         
         }else if (response.status === 500) {
@@ -151,7 +181,7 @@ const TemplateDec = ({open = "", close = () => { },inputshow= false,isUpdate={},
     }}
    
     header={[
-       !isUpdate
+       !updateId
          ? t("Create a Job Description Template")
          : t("Update Job Description Template"),
        t("Lorem ipsum dummy text doret solo."),
@@ -226,7 +256,7 @@ impactful, accurate, and personalized to your company</p>
           <DownOutlined />
         </Space>
       </Button> */}
-      <Button type="primary" icon={<img src={image} alt="image" style={{ height: '20px', width: '20px',justifyContent:"center" }} />} >
+      <Button onClick={handleGenerateWithAI} type="primary" icon={<img src={image} alt="image" style={{ height: '20px', width: '20px',justifyContent:"center" }} />} >
       <span >Generate with AI</span>
       
           </Button>

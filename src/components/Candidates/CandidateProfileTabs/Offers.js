@@ -1,9 +1,10 @@
 import React, { useState,useEffect } from "react";
 import ButtonClick from "../../common/Button";
 import TextEditor from "../../common/TextEditor/TextEditor";
+
 import TabsNew from "../../common/TabsNew";
-import {getRecruitmentJobResumesNoteById,updateRecruitmentJobResumesNote,getRecruitmentLetterTemplateById,saveRecruitmentJobResumesOfferLetter,getAllRecruitmentLetterTemplates,getAllRecruitmentJobResumesNotes,saveRecruitmentJobResumesNote } from "../../Api1";
-import { EditorState, convertToRaw, convertFromRaw, ContentState } from 'draft-js';
+import {getAllRecruitmentJobResumesOfferLetters,getRecruitmentJobResumesNoteById,updateRecruitmentJobResumesNote,getRecruitmentLetterTemplateById,saveRecruitmentJobResumesOfferLetter,getAllRecruitmentLetterTemplates,getAllRecruitmentJobResumesNotes,saveRecruitmentJobResumesNote } from "../../Api1";
+import { EditorState, convertToRaw, convertFromRaw, ContentState,convertToHTML } from 'draft-js';
 import { format } from 'date-fns';
 import {
   RiAttachment2,
@@ -21,7 +22,8 @@ import {Formik, useFormik } from "formik";
 import Dropdown from "../../common/Dropdown";
 import { Button, Card, Space, notification } from "antd";
 import { FaRegEdit } from "react-icons/fa";
-
+import { CommonAxisSettingsConstantLineStyle } from "devextreme-react/chart";
+import Pdf from "../../../assets/images/uploader/pdf.png"
 
 const Offers = () => {
   const [content, setContent] = useState("");
@@ -35,6 +37,7 @@ const Offers = () => {
   const[Letterdata,setLetterdata] = useState([])
   const [selectedNoteId, setSelectedNoteId] = useState(null);
   const [isPinned, setIsPinned] = useState(0);
+  const [offerLetters,setOfferLetters] = useState([])
 
   const handleEditClick = (jobResumeNoteId) => {
     setSelectedNoteId(jobResumeNoteId);
@@ -53,6 +56,9 @@ const Offers = () => {
     }
 }, [state]);
 
+const handleViewResume= (PdFViewer)=>{
+  window.open(PdFViewer, '_blank');
+}
 
 const [api, contextHolder] = notification.useNotification();
 const openNotification = (type, message, description) => {
@@ -113,6 +119,9 @@ const openNotification = (type, message, description) => {
       icon: <BsFileEarmarkRichtext className="text-base" />,
     },
   ];
+  const handleEditorChange = (editorState) => {
+    setContent(editorState);
+  };
 
   
  const[notes,setnotes]= useState("")
@@ -243,11 +252,24 @@ const getnotesbyId = async(jobResumeNoteId)=>{
       getletteTemplateByid(LetterTemplateId);
     }
   }, [LetterTemplateId]);
-  
-   const handleEditorChange = (content) => {
-    setContent(content);
-  };
-  
+
+  const getOfferLetters = async()=>{
+    try{
+      const response = await getAllRecruitmentJobResumesOfferLetters({
+        jobId:jobId,
+        resumeId:resumeId
+
+      })
+      console.log(response)
+      setOfferLetters(response.result)
+    }catch(error){
+      console.log(error)
+    }
+  }
+  useEffect(()=>{
+    getOfferLetters()
+  },[jobId])
+
 
   return (
     <div className="grid gap-6 lg:grid-cols-12">
@@ -280,7 +302,7 @@ const getnotesbyId = async(jobResumeNoteId)=>{
               <div className="pt-4">
               <TextEditor
   initialValue={content}
-  onChange={handleEditorChange}
+  onChange={(editorState)=>{handleEditorChange(editorState)}}
   minheight="250px"
 />
               </div>
@@ -320,6 +342,27 @@ const getnotesbyId = async(jobResumeNoteId)=>{
             </div>
           </div>
         </div>
+        <div className="rounded-lg bg-white dark:bg-secondaryDark p-1.5 ">
+        {offerLetters && offerLetters.map((Letter, index) => (
+  <div className="relative flex pb-6" key={index}>
+    <div className="flex items-center justify-between w-full">
+      <p className="pblack flex-grow pl-4 !font-normal">
+      <img src={Pdf} alt="PDF" />
+      </p>
+      <div className="flex items-center gap-6"> {/* Added gap between createdOn and icons */}
+        <p className="para !font-normal">{Letter.createdOn}</p>
+        <div className="flex items-center gap-3">
+        {/* <TiPin
+                  onClick={() => handlePinClick(note.jobResumeNoteId)}
+                  style={{ color: selectedNoteId === note.jobResumeNoteId && isPinned === 1 ? 'blue' : 'gray' }}
+                />  */}
+          <Button onClick={() => handleViewResume(Letter.offerLetterPdf)}  > View Offer Letter</Button>
+        </div>
+      </div>
+    </div>
+  </div>
+))}
+</div>
       </div>
 
       <div className="lg:col-span-4">

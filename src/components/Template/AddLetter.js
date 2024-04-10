@@ -16,7 +16,8 @@ const AddLetter = ({
   close = () => {},
   inputshow = false,
   isUpdate = {},
-  updateId
+  updateId,
+  refresh
 }) => {
   const [companyId, setCompanyId] = useState(localStorage.getItem("companyId"));
   const [templateName, setTemplateName] = useState("");
@@ -79,7 +80,8 @@ const AddLetter = ({
         );
         setTimeout(() => {
           handleClose();
-        }, 2000);
+          refresh()
+        }, 1500);
       
       }else if (response.status === 500) {
         openNotification("error", "input field is empty..", response.message);
@@ -107,7 +109,8 @@ const AddLetter = ({
         );
         setTimeout(() => {
           handleClose();
-        }, 2000);
+          refresh()
+        }, 1500);
       } else {
         openNotification("error", "input field is empty..", response.message);
       }

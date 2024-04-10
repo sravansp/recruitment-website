@@ -24,7 +24,8 @@ QuestionAire = ({
   close = () => { },
   inputshow = false,
   isUpdate = {},
-  updateId
+  updateId,
+  refresh
 }) => {
   const [companyId, setCompanyId] = useState(localStorage.getItem("companyId"));
   const [insertedId, setinsertedId] = useState("")
@@ -206,7 +207,8 @@ QuestionAire = ({
             setSuccessNotificationVisible(true);
             setTimeout(() => {
               handleClose();
-            }, 2000);
+              refresh()
+            }, 1500);
           } else if (response.status == 500) {
             openNotification("error", "Error", response.message);
 
@@ -249,7 +251,9 @@ QuestionAire = ({
               setSuccessNotificationVisible(true);
               setTimeout(() => {
                 handleClose();
-              }, 2000);
+                refresh()
+
+              }, 1500);
             } else if (response2.status === 500) {
               openNotification("error", "error", response2.message);
             }
@@ -347,8 +351,8 @@ QuestionAire = ({
 
         header={[
           !updateId
-            ? t("Create Questionaire Template")
-            : t("update Questionaire Template"),
+            ? t("Create Questionnaire  Template")
+            : t("update Questionnaire  Template"),
           t("Lorem ipsum dummy text doret solo."),
         ]}
 
@@ -386,7 +390,7 @@ QuestionAire = ({
 
       > <div className="relative max-w-[1070px]  w-full mx-auto">
           <Accordion
-            title={"New Questionaire Templates"}
+            title={"New Questionnaire  Templates"}
             className="Text_area"
             padding={true}
 
@@ -437,6 +441,7 @@ QuestionAire = ({
                   <div className="flex-shrink-0"> {/* Add this container for the dropdown and icons */}
                     <Dropdown
                       options={Form}
+                      dropdownWidth='200px'
                       change={(e) => {
                         setEvaluation((prevEvaluation) => prevEvaluation.map((prevCondition, i) => i === index
                           ? {

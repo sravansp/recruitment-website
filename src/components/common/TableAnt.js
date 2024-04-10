@@ -77,7 +77,7 @@ const TableAnt = ({
   All = false,
   showsearch = false,
   viewOutside = false,
-  refresh = () => { },
+  refresh = () => {},
   recordId = "",
   jobId = ""
 
@@ -250,18 +250,14 @@ const TableAnt = ({
 // Function to delete a record
 
 const deleteRecord = async (id) => {
-  try {
+
     const result = await action(deleteApi, { id: id }); // Ensure 'id' is passed correctly
     if (result.status === 200) {
       // Handle success response
       openNotification("success", "Success", result?.message);
-      // refresh(true);
+      refresh(true);
     }
-  } catch (error) {
-    // Handle error
-    console.error("Error deleting record:", error);
-    openNotification("error", "Error", "An error occurred while deleting the record.");
-  }
+
 };
 
 

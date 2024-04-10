@@ -39,7 +39,7 @@ const Template = ({
     const [openPop, setOpenPop] = useState("");
 
     const [emailSubject,setEmailSubject] = useState("")
-      const [navigationPath, setNavigationPath] = useState("Job_Templates");
+      const [navigationPath, setNavigationPath] = useState("Job");
       const breadcrumbItems = [
         //{ label: t("Templates"), url: "/" },
         // { label: navigationPath.charAt(0).toUpperCase() + navigationPath.slice(1) },
@@ -53,7 +53,7 @@ const Template = ({
          {
             id:1,
             title:"Job Templates",
-            value:"Job_Templates",
+            value:"Job",
             tabheading:"Job Template List"
          },
          {
@@ -97,7 +97,7 @@ const Template = ({
      //update
      const updateApi = [
       {
-        Job_Templates: { id: 1, api: API.UPDATE_Job_Templates },
+        Job: { id: 1, api: API.UPDATE_Job_Templates },
         Job_Description: { id: 2, api: API.UPDATE_Job_Description },
         Workflow: { id: 3, api: API.UPDATE_Workflow },
         Email: { id: 4, api: API.UPDATE_Email },
@@ -108,7 +108,7 @@ const Template = ({
     ];
     const deleteApi = [
       {
-        Job_Templates: { id: 1, api: API.DELETE_Job_Templates },
+        Job: { id: 1, api: API.DELETE_Job_Templates },
         Job_Description: { id: 2, api: API.DELETE_Job_Description },
         Workflow: { id: 3, api: API.DELETE_Workflow },
         Email: { id: 4, api: API.DELETE_Email },
@@ -120,7 +120,7 @@ const Template = ({
     ];
       const Header =[
     {
-      Job_Templates : [ 
+      Job : [ 
           {
             id:1,
             title:"Name",
@@ -300,7 +300,7 @@ const Template = ({
    ]
    const DraweHeader =[
     {
-      Job_Templates : [ 
+      Job : [ 
           {
             id:1,
             title:"Name",
@@ -630,7 +630,7 @@ const Template = ({
     let newData = [];
   
     switch (navigationPath) {
-      case "Job_Templates":
+      case "Job":
         // getLocationList();
         gettemaplate();
         
@@ -681,7 +681,7 @@ const Template = ({
   const actionData = [
     {
     
-      Job_Templates: { id: 1, data:TemplateList },
+      Job: { id: 1, data:TemplateList },
       Job_Description: { id: 2, data:JobDescriptionList },
         Workflow: {id:3,data:WorkflowList},
         Email:{id:4,data:emailSubject},
@@ -693,7 +693,7 @@ const Template = ({
   ];
   const actionId= [
     {
-      Job_Templates:{id:"jobTemplateId"},
+      Job:{id:"jobTemplateId"},
       Job_Description:{id:"descriptionTemplateId"},
       Workflow: {id:"workFlowId"},
       Email:{id:"emailTemplateId"},
@@ -757,7 +757,7 @@ const Template = ({
             }
             // updateFun=""
             // updateBtn={true} // Set to true if it's an update button
-            buttonName={`Create ${navigationPath.replace(/_/g, ' ')}`}// Set the button name
+            buttonName={`Create ${navigationPath.replace(/_/g, ' ')} Template`}// Set the button name
             className="your-custom-styles" // Add any additional class names for styling
             BtnType="Add" // Specify the button type (Add or Update)
           />
@@ -826,25 +826,25 @@ const Template = ({
                 refresh={() => {
                   switch (navigationPath) {
                     default:
-                      JobList();
+                      gettemaplate();
                       break;
                     case "Job_Description":
-                      JobDescriptionList();
+                      getAllJobdescription();
                       break;
                     case "Workflow":
-                      WorkflowList();
+                      getWorkflows();
                       break;
                     case "Email":
-                      EmailList();
+                      getEmailLsit();
                       break;
                     case "Evaluation":
-                      evaluation();
+                      getallevaluation();
                       break;
                     case "Questionnaire":
-                        QuestionaireLIst();
+                      getallquestionaire();
                       break;
                     case "Letter":
-                           LetterLIst();
+                      getallLetter();
                       break;
                   }   
                 }}
@@ -880,7 +880,8 @@ const Template = ({
           updateId={updateId}
         //   companyDataId={companyId}
           refresh={() => {
-            // getLocationList();
+            
+            getAllJobdescription()
           }}
           // jobDescription={true}
         />
@@ -895,7 +896,7 @@ const Template = ({
           updateId={updateId}
         //   companyDataId={companyId}
           refresh={() => {
-            
+            getWorkflows();
           }}
         />
       )}
@@ -909,7 +910,7 @@ const Template = ({
           updateId={updateId}
         //   companyDataId={companyId}
           refresh={() => {
-            // getLocationList();
+            getEmailLsit();
           }}
         />
       )}
@@ -924,7 +925,7 @@ const Template = ({
         //   companyDataId={companyId}
         isUpdate={update}
           refresh={() => {
-            // getLocationList();
+            getallevaluation();
           }}
         />
       )}
@@ -940,7 +941,7 @@ const Template = ({
           updateId={updateId}
         //   companyDataId={companyId}
           refresh={() => {
-            // getLocationList();
+            getallquestionaire()
           }}
         />
       )}
@@ -955,7 +956,7 @@ const Template = ({
           updateId={updateId}
         //   companyDataId={companyId}
           refresh={() => {
-            // getLocationList();
+            getallLetter()
           }}
         />
       )}

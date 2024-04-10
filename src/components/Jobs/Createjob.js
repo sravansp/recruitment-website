@@ -78,6 +78,36 @@ const Createjob = ( {open = "", close = () => { },inputshow= false,isUpdate={},u
   const[selectedUserIds,setSelectedUserIds] =useState([]) 
   console.log(updateId)
 
+
+  const handleGenerateWithAI = async () => {
+    try {
+      const requestBody = {
+        val: content,
+        radioval: '1',
+        summarise: null
+      };
+
+      const response = await fetch('https://chat.bmark.in/ai/api.php', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json'
+        },
+        body: JSON.stringify(requestBody)
+      });
+
+      if (response.ok) {
+        const data = await response.json();
+        // Handle the response data as needed
+        console.log(data);
+        setContent(data.receivedData)
+      } else {
+        console.error('Failed to fetch data');
+      }
+    } catch (error) {
+      console.error('Error:', error);
+    }
+  };
+
   useEffect(() => {
     // Retrieve the login data JSON string from local storage
     const loginDataString = localStorage.getItem('LoginData');
@@ -190,7 +220,7 @@ const getDraftjobs = async () => {
 
       formik1.setFieldValue("companyId", firstJob.companyId);
       formik1.setFieldValue("jobTitle", firstJob.jobTitle);
-      formik1.setFieldValue("departmentId", firstJob.departmentId);
+      formik1.setFieldValue("departmentId", parseInt(firstJob.departmentId));
       formik1.setFieldValue("education", firstJob.education);
       formik1.setFieldValue("isActive", firstJob.isActive);
       formik1.setFieldValue("isSalaryPublic", firstJob.isSalaryPublic);
@@ -1158,12 +1188,12 @@ const handleAddField = (index) => {
   
         formik1.setFieldValue("companyId", firstJob.companyId);
         formik1.setFieldValue("jobTitle", firstJob.jobTitle);
-        formik1.setFieldValue("departmentId", firstJob.departmentId);
-        formik1.setFieldValue("education", firstJob.education);
+        formik1.setFieldValue("departmentId", parseInt(response.result[0].departmentId));
+        formik1.setFieldValue("education", parseInt(response.result[0].education));
         formik1.setFieldValue("isActive", firstJob.isActive);
         formik1.setFieldValue("isSalaryPublic", firstJob.isSalaryPublic);
         formik1.setFieldValue("jobCode", firstJob.jobCode);
-        formik1.setFieldValue("jobDescription", firstJob.jobDescription);
+        setContent(firstJob.jobDescription)
         formik1.setFieldValue("jobType", firstJob.jobType);
         formik1.setFieldValue("location", firstJob.location);
         formik1.setFieldValue("requirementType", firstJob.requirementType);
@@ -1471,6 +1501,7 @@ const handleAddField = (index) => {
                               setCustomRate(each.id);
                               formik1.setFieldValue("workLocationType", each.value);
                             }}
+                            
                           >
                             <div className="flex justify-between items-start">
                               <div className=" flex  gap-2">
@@ -1523,6 +1554,7 @@ const handleAddField = (index) => {
                                                     }}
                                                     value={formik1.values.location }
                                                     error={formik1.errors.location}
+                                                    required={true}
                                                     />
                                                     
                                                     <Dropdown
@@ -1563,6 +1595,8 @@ const handleAddField = (index) => {
                                                     }}
                                                     value={formik1.values.jobType}
                                                     error={formik1.errors.jobType}
+                                                    required={true}
+
                                                     />
                                                <Dropdown
                                                     title={'Experience'}
@@ -1597,6 +1631,7 @@ const handleAddField = (index) => {
                                                     }}
                                                     value={formik1.values.searchKeywords}
                                                     error={formik1.errors.searchKeywords}
+                                                    required={true}
                                                     />
                                                 <FormInput
                                                     title={'Number of Opennings'}
@@ -1607,6 +1642,7 @@ const handleAddField = (index) => {
                                                     value={formik1.values.noOfVaccancies}
                                                     error={formik1.errors.noOfVaccancies}
                                                     type={"number"}
+                                                    required={true}
                                                     />
 
                                             </div>
@@ -1621,6 +1657,7 @@ const handleAddField = (index) => {
                                                     }
                                                    type={"number"}
                                                     error={formik1.errors.salaryRangeFrom}
+                                                    required={true}
                                                     />
                                                     
                                                       
@@ -1633,6 +1670,7 @@ const handleAddField = (index) => {
                                                     value={formik1.values.salaryRangeTo
                                                     }
                                                     error={formik1.errors.salaryRangeTo}
+                                                    required={true}
                                                     type={"number"}
                                                     />
                                                     <Dropdown
@@ -1686,7 +1724,7 @@ impactful, accurate, and personalized to your company</p>
           <DownOutlined />
         </Space>
       </Button>
-      <Button type="primary" icon={<img src={image} alt="image" style={{ height: '15px', width: '15px',alignItems:"center" }} />} >
+      <Button onClick={handleGenerateWithAI} type="primary" icon={<img src={image} alt="image" style={{ height: '15px', width: '15px',alignItems:"center" }} />} >
       Generate with AI
       
           </Button>
@@ -2007,6 +2045,7 @@ impactful, accurate, and personalized to your company</p>
         <div className="flex-shrink-0">
           <Dropdown
             options={Form}
+            dropdownWidth='200px'
             change={(e) => {
               setEvaluation((prevEvaluation) => prevEvaluation.map((prevCondition, i) => i === index
                 ? {

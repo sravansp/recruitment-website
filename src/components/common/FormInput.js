@@ -34,11 +34,11 @@ export default function FormInput({
   console.log(value)
   return (
     <div className={`flex flex-col ${title ? "gap-2" : "gap-0 items-center "} `}>
-      <div className="flex">
+      <div className="flex gap-3">
         <p className={`text-xs font-medium 2xl:text-sm dark:text-white ${className}`}>
           {title}
         </p>
-        {required && <FaAsterisk className="text-[10px] text-rose-600" />}
+        {required && <FaAsterisk className="text-[7px] text-rose-600" />}
       </div>
     
       {websiteLink ? (

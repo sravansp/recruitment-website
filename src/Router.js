@@ -24,7 +24,7 @@ import SystemSettings from "./components/Settings/SystemSettings";
 import CandidateProfile from "./components/Candidates/CandidateProfile";
 import Discover from "./components/Discover/Discover";
 import Privileges from "./components/Settings/Privileges";
-
+import Reports from "./components/Reports/Reports";
 
 
 
@@ -68,11 +68,12 @@ export default function Router() {
               <Routes>
               <Route path="/" element={<Discover />} />
                 {/* Company submenus */}
+                <Route path="/Reports" element={<Reports />} />
                 <Route path="/JobsList" element={<JobsList />} />
                 <Route path="/Appearance" element={<Appearance />} />
                 <Route path="/JobDetails/:jobId" element={<JobDetails />} />
                 <Route path="/CandidateList" element={<CandidatesList />} />
-                <Route path="CandidateProfile/:resumeId" element={<CandidateProfile/>} />
+                <Route path="Candidate_Profile/:resumeId" element={<CandidateProfile/>} />
                 <Route path="/AllJobs" element={<AllJobs/>} />
                 <Route path="/jobcard" element={<JobCard/>}></Route>
                 <Route path="/jobtabs" element={<JobTabs/>}></Route>
