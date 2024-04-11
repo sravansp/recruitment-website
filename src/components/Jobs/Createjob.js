@@ -1247,7 +1247,7 @@ const Createjob = ({
         }}
         header={[
           !updateId ? t("Create a Job") : t("Update Job "),
-          t("Lorem ipsum dummy text doret solo."),
+          !updateId ? t("Create New Job") : t("Update Selected Job "),
         ]}
         headerRight={
           <div className="flex items-center gap-10">
