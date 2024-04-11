@@ -33,7 +33,7 @@ import {
   JobType,
   experiencelevel,
   eductaion,
-  saleryCurrency,
+  salaryCurrency,
 } from "../data";
 import {
   getAllRecruitmentQuestionnaireTemplates,
@@ -1612,9 +1612,9 @@ const Createjob = ({
                                                     type={"number"}
                                                     />
                                                     <Dropdown
-                                                    title={'Salery Currency'}
-                                                    placeholder={'salery'} 
-                                                    options={saleryCurrency}
+                                                    title={'Salary Currency'}
+                                                    placeholder={'salary'} 
+                                                    options={salaryCurrency}
                                                     value={formik1.values.salaryCurrency}
                                                     error={formik1.errors.salaryCurrency}
                                                     change={(e)=>{
