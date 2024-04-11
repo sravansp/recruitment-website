@@ -9,7 +9,7 @@ import { FiEye, FiEyeOff } from "react-icons/fi";
 import googleLogo from "../../assets/images/Social/Google.png";
 import appleLogo from "../../assets/images/Social/apple-fill.png";
 import metaLogo from "../../assets/images/Social/meta-fill.png";
-import { Button, Checkbox, Modal } from "antd";
+import { Button, Checkbox, Modal, notification } from "antd";
 
 import { Link, useNavigate } from "react-router-dom";
 import { useFormik } from "formik";
@@ -32,6 +32,30 @@ export default function Login() {
     setVisible(false);
   };
   const navigate = useNavigate();
+
+
+  const [api, contextHolder] = notification.useNotification();
+  const openNotification = (type, message, description, callback) => {
+    api[type]({
+      message: message,
+      description: description,
+      placement: "top",
+      onClose: callback,
+
+      // stack: 2,
+      style: {
+        background: `${type === "success"
+          ? `linear-gradient(180deg, rgba(204, 255, 233, 0.8) 0%, rgba(235, 252, 248, 0.8) 51.08%, rgba(246, 251, 253, 0.8) 100%)`
+          : "linear-gradient(180deg, rgba(255, 236, 236, 0.80) 0%, rgba(253, 246, 248, 0.80) 51.13%, rgba(251, 251, 254, 0.80) 100%)"
+          }`,
+        boxShadow: `${type === "success"
+          ? "0px 4.868px 11.358px rgba(62, 255, 93, 0.2)"
+          : "0px 22px 60px rgba(134, 92, 144, 0.20)"
+          }`,
+      },
+      // duration: null,
+    });
+  };
 
   const formik = useFormik({
     initialValues: {
@@ -64,6 +88,9 @@ export default function Login() {
 
         // localStorage.setItem("organisationId", JSON.stringify(2));
         console.log(result.status);
+        if (result.data.status === false) {
+          openNotification("error", "Failure", result.data.message);
+        }
         if (result.data.status === true) {
           localStorage.setItem("LoginData", JSON.stringify(result.data));
           window.location.reload();
@@ -128,6 +155,7 @@ export default function Login() {
 
   return (
     <div className="flex w-full h-screen">
+      {contextHolder}
       <div className="w-full lg:w-1/2">
         <div className="flex flex-col justify-between sm:w-2/3 lg:w-full mx-auto h-full p-10 py-4 md:px-20 2xl:py-20">
           {/* LOGO  */}
@@ -177,7 +205,13 @@ export default function Login() {
 
               <div className="flex flex-col !gap-5">
                 {/* Email Input Box */}
-                <div className="input-section">
+                <div className="input-section"
+                  onKeyDown={(event) => {
+                    if (event.key === "Enter") {
+                      formik.handleSubmit();
+                    }
+                  }}
+                >
                   <div className="relative flex items-center w-full !border !border-black !border-opacity-20 rounded-lg transition-all duration-300 focus-within:!border-primary hover:!border-primary focus-within:shadow-ShadowInput">
                     <div className="flex items-center !px-4">
                       <LuMail size={20} />
@@ -230,7 +264,13 @@ export default function Login() {
                 </div>
 
                 {/* Password Input Box */}
-                <div className="relative input-section">
+                <div className="relative input-section"
+                  onKeyDown={(event) => {
+                    if (event.key === "Enter") {
+                      formik.handleSubmit();
+                    }
+                  }}
+                >
                   <div className="flex items-center w-full !border !border-black !border-opacity-20 rounded-lg transition-all duration-300 focus-within:!border-primary hover:!border-primary focus-within:shadow-ShadowInput">
                     <div className="flex items-center !px-4">
                       <LuLock size={20} />
