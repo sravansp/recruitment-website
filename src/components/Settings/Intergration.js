@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-import { BiEditAlt } from "react-icons/bi";
+import { RiEdit2Line } from "react-icons/ri";
 import ButtonClick from "../common/Button";
 import Heading from "../common/Heading";
 import indeed from "../../assets/images/indeed.png";
@@ -101,7 +101,7 @@ function Intergration() {
                 <div className="mt-4">
                   <ButtonClick
                     BtnType="text"
-                    icon={<BiEditAlt />}
+                    icon={<RiEdit2Line />}
                     buttonName="Edit"
                     className={"bg-[#e8e4e4]"}
                   />
