@@ -8,10 +8,11 @@ import { BsFileEarmarkRichtext } from "react-icons/bs";
 import { RiHome6Line, RiImage2Fill, RiStickyNoteLine } from "react-icons/ri";
 import { Formik, useFormik } from "formik";
 import { Link, useParams, useLocation } from "react-router-dom";
-import { updateRecruitmentJobResumesNote, getRecruitmentJobResumesNoteById, getRecruitmentQuestionnaireTemplateById, getRecruitmentJobById, getAllRecruitmentJobResumesNotes, saveRecruitmentJobResumesNote } from "../../Api1";
+import {getAllRecruitmentQuestionnaireTemplates, updateRecruitmentJobResumesNote, getRecruitmentJobResumesNoteById, getRecruitmentQuestionnaireTemplateById, getRecruitmentJobById, getAllRecruitmentJobResumesNotes, saveRecruitmentJobResumesNote } from "../../Api1";
 import { FaRegEdit } from "react-icons/fa";
 import { PiPushPinSlashBold } from "react-icons/pi";
 import { IoIosArrowDown } from "react-icons/io";
+
 
 
 const Questionaries = () => {
@@ -152,6 +153,21 @@ const Questionaries = () => {
 
 
   }, [jobId])
+  const [Allqestionare,setAllqestionare] =useState([])
+  const getAllQesutionare = async () =>{
+    try{
+      const response = await getAllRecruitmentQuestionnaireTemplates()
+      setAllqestionare(response.result.map((each)=>({
+        label : each.questionnaireTemplateName,
+        values:each.questionnaireTemplateId
+      }))) 
+    }catch(error){
+
+    }
+  }
+  useEffect(()=>{
+    getAllQesutionare()
+  },[])
 
   const getQuestionare = async () => {
     try {
@@ -197,8 +213,8 @@ const Questionaries = () => {
 
   const menu = (
     <Menu>
-      {options.map(option => (
-        <Menu.Item key={option.id}>
+      {Allqestionare.map(option => (
+        <Menu.Item key={option.values} onClick={({ key }) => setquestionareId(key)}>
           {option.label}
         </Menu.Item>
       ))}

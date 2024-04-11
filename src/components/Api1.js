@@ -740,7 +740,7 @@ export const getRecruitmentLetterTemplateById = async (id) => {
   const method = "POST";
 
   const kwargs = id;
-
+  console.log("API Request Data:", { action, method, kwargs });
   return await apiRequest(action, method, kwargs);
 };
 export const getAllRecruitmentJobResumeActivities = async (resumeId) => {
