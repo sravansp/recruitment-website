@@ -214,7 +214,7 @@ const tabs = [
       id: 3,
       title: t("CV/Resume"),
       value: "cvresume",
-      content: <CVResume />,
+      content: <CVResume showTextEditor={true} />,
       icon: <RiFileList3Line className="text-base" />,
     },
     {

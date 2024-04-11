@@ -212,7 +212,7 @@ const Questionaries = () => {
         <div className="flex flex-col gap-4 box-wrapper border-2">
           <div className="flex flex-col gap-4 divide-y">
             <div className="flex items-center justify-between">
-              <h6 className="h6">Questionaire</h6>
+              <h6 className="h6">Questionnaire </h6>
               <div
                 className="flex items-center justify-end gap-2.5 p-1.5 mt-[18.88px] rounded-lg"
               // style={{ backgroundColor: `${primaryColor}10` }}

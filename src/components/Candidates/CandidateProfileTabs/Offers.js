@@ -1,9 +1,10 @@
 import React, { useState, useEffect } from "react";
 import ButtonClick from "../../common/Button";
 import TextEditor from "../../common/TextEditor/TextEditor";
+
 import TabsNew from "../../common/TabsNew";
-import { getRecruitmentJobResumesNoteById, updateRecruitmentJobResumesNote, getRecruitmentLetterTemplateById, saveRecruitmentJobResumesOfferLetter, getAllRecruitmentLetterTemplates, getAllRecruitmentJobResumesNotes, saveRecruitmentJobResumesNote } from "../../Api1";
-import { EditorState, convertToRaw, convertFromRaw, ContentState } from 'draft-js';
+import {getAllRecruitmentJobResumesOfferLetters,getRecruitmentJobResumesNoteById,updateRecruitmentJobResumesNote,getRecruitmentLetterTemplateById,saveRecruitmentJobResumesOfferLetter,getAllRecruitmentLetterTemplates,getAllRecruitmentJobResumesNotes,saveRecruitmentJobResumesNote } from "../../Api1";
+import { EditorState, convertToRaw, convertFromRaw, ContentState,convertToHTML } from 'draft-js';
 import { format } from 'date-fns';
 import {
   RiAttachment2,
@@ -20,10 +21,8 @@ import { Link, useParams, useLocation } from "react-router-dom";
 import { Formik, useFormik } from "formik";
 import { Button, Card, Dropdown, Menu, Space, notification } from "antd";
 import { FaRegEdit } from "react-icons/fa";
-import { PiChecks, PiPushPinSlashBold } from "react-icons/pi";
-import { FiAlertOctagon } from "react-icons/fi";
-import { IoIosArrowDown } from "react-icons/io";
-
+import { CommonAxisSettingsConstantLineStyle } from "devextreme-react/chart";
+import Pdf from "../../../assets/images/uploader/pdf.png"
 
 const Offers = () => {
   const [content, setContent] = useState("");
@@ -37,6 +36,7 @@ const Offers = () => {
   const [Letterdata, setLetterdata] = useState([])
   const [selectedNoteId, setSelectedNoteId] = useState(null);
   const [isPinned, setIsPinned] = useState(0);
+  const [offerLetters,setOfferLetters] = useState([])
 
   const handleEditClick = (jobResumeNoteId) => {
     setSelectedNoteId(jobResumeNoteId);
@@ -53,18 +53,22 @@ const Offers = () => {
         setJobId(storedJobId);
       }
     }
-  }, [state]);
+}, [state]);
 
+const handleViewResume= (PdFViewer)=>{
+  window.open(PdFViewer, '_blank');
+}
 
-  const [api, contextHolder] = notification.useNotification();
-  const openNotification = (type, message, description) => {
-    api[type]({
-      message: message,
-      description: description,
-      placement: "top",
-      // stack: 2,
-      style: {
-        background: `${type === "success"
+const [api, contextHolder] = notification.useNotification();
+const openNotification = (type, message, description) => {
+  api[type]({
+    message: message,
+    description: description,
+    placement: "top",
+    // stack: 2,
+    style: {
+      background: `${
+        type === "success"
           ? `linear-gradient(180deg, rgba(204, 255, 233, 0.8) 0%, rgba(235, 252, 248, 0.8) 51.08%, rgba(246, 251, 253, 0.8) 100%)`
           : "linear-gradient(180deg, rgba(255, 236, 236, 0.80) 0%, rgba(253, 246, 248, 0.80) 51.13%, rgba(251, 251, 254, 0.80) 100%)"
           }`,
@@ -113,6 +117,9 @@ const Offers = () => {
       icon: <BsFileEarmarkRichtext className="text-base" />,
     },
   ];
+  const handleEditorChange = (editorState) => {
+    setContent(editorState);
+  };
 
 
   const [notes, setnotes] = useState("")
@@ -244,38 +251,23 @@ const Offers = () => {
     }
   }, [LetterTemplateId]);
 
-  const handleEditorChange = (content) => {
-    setContent(content);
-  };
+  const getOfferLetters = async()=>{
+    try{
+      const response = await getAllRecruitmentJobResumesOfferLetters({
+        jobId:jobId,
+        resumeId:resumeId
 
+      })
+      console.log(response)
+      setOfferLetters(response.result)
+    }catch(error){
+      console.log(error)
+    }
+  }
+  useEffect(()=>{
+    getOfferLetters()
+  },[jobId])
 
-  const options = [
-    {
-      id: 1,
-      label: 'opt 1',
-      value: '',
-    },
-    {
-      id: 2,
-      label: 'opt2',
-      value: '',
-    },
-    {
-      id: 3,
-      label: 'opt3',
-      value: '',
-    },
-  ];
-
-  const menu = (
-    <Menu>
-      {options.map(option => (
-        <Menu.Item key={option.id}>
-          {option.label}
-        </Menu.Item>
-      ))}
-    </Menu>
-  );
 
   return (
     <div className="grid gap-6 lg:grid-cols-12">
@@ -302,11 +294,11 @@ const Offers = () => {
 
             <div>
               <div className="pt-4">
-                <TextEditor
-                  initialValue={content}
-                  onChange={handleEditorChange}
-                  minheight="250px"
-                />
+              <TextEditor
+  initialValue={content}
+  onChange={(editorState)=>{handleEditorChange(editorState)}}
+  minheight="250px"
+/>
               </div>
               <div
                 className="flex justify-between items-center gap-2.5 p-1.5  rounded-lg "
@@ -344,6 +336,27 @@ const Offers = () => {
             </div>
           </div>
         </div>
+        <div className="rounded-lg bg-white dark:bg-secondaryDark p-1.5 ">
+        {offerLetters && offerLetters.map((Letter, index) => (
+  <div className="relative flex pb-6" key={index}>
+    <div className="flex items-center justify-between w-full">
+      <p className="pblack flex-grow pl-4 !font-normal">
+      <img src={Pdf} alt="PDF" />
+      </p>
+      <div className="flex items-center gap-6"> {/* Added gap between createdOn and icons */}
+        <p className="para !font-normal">{Letter.createdOn}</p>
+        <div className="flex items-center gap-3">
+        {/* <TiPin
+                  onClick={() => handlePinClick(note.jobResumeNoteId)}
+                  style={{ color: selectedNoteId === note.jobResumeNoteId && isPinned === 1 ? 'blue' : 'gray' }}
+                />  */}
+          <Button onClick={() => handleViewResume(Letter.offerLetterPdf)}  > View Offer Letter</Button>
+        </div>
+      </div>
+    </div>
+  </div>
+))}
+</div>
       </div>
 
       <div className="lg:col-span-4">

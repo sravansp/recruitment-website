@@ -204,6 +204,7 @@ const JobDetails = () => {
     </div>
   </div>
   <div className="flex items-center gap-4 ">
+    
     <SearchBox
       className="text-[#667085]"
       placeholder="Search candidate"

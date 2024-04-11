@@ -32,14 +32,15 @@ import { GrEdit } from "react-icons/gr";
 import Header from '../Header/Header';
 import CVResume from './CandidateProfileTabs/CVResume';
 import API, { action, fileAction } from '../Api1';
-import { saveRecruitmentResume, saveRecruitmentResumeEducationalDetailBatch, saveRecruitmentResumesExperienceDetailBatch, resumeFileUpload } from '../Api1'
+import {getAllRecruitmentResumesExperienceDetails,getAllRecruitmentResumeEducationalDetails,getRecruitmentResumeById, saveRecruitmentResume, saveRecruitmentResumeEducationalDetailBatch, saveRecruitmentResumesExperienceDetailBatch, resumeFileUpload } from '../Api1'
 import RangeDatePicker from '../common/RangeDatePicker';
 import DateSelect from '../common/DateSelect';
 import FileUpload from '../common/FileUpload';
+import { useNavigate } from 'react-router-dom';
 
 export default function Createcandidatelist({ open = "", close = () => { }, fileUpdateId, refresh, ConfigurationAction, updateId = null, }) {
   const [show, setShow] = useState(open);
-  const [activeBtnValue, setActiveBtnValue] = useState("Personel");//Review//Questions//Work
+  const [activeBtnValue, setActiveBtnValue] = useState("Review");//Review//Questions//Work//Personel
   const [nextStep, setNextStep] = useState(0);
   const [applicableData, setApplicableData] = useState([]);
   const [isUpdate, setIsUpdate] = useState();
@@ -52,7 +53,11 @@ export default function Createcandidatelist({ open = "", close = () => { }, file
   const [api, contextHolder] = notification.useNotification();
   const [file, setFile] = useState("");
   const[filePdf,setFilepdf] =useState("")
-
+  const[Candidate,setcandidate]=useState([])
+  const[Image,setImage]=useState("")
+  const[candiateName,setcandidateName]=useState("")
+  const[educationExperiences,seteducationExperiences] = useState([])
+  const navigate = useNavigate();
   const [workexp, setWorkexp] = useState([
     {
       id: 1,
@@ -228,7 +233,9 @@ export default function Createcandidatelist({ open = "", close = () => { }, file
       }
     ]);
   };
-
+  const handleEditDetails = (section) => {
+    setActiveBtnValue(section);
+  };
 
   const personalInfo = education.reduce((ac, each) => {
     each.field.reduce((acc, value) => {
@@ -549,8 +556,71 @@ export default function Createcandidatelist({ open = "", close = () => { }, file
 
   console.log(resumeId, "resumeid");
 
+  const getCandidatesById = async () => {
+    try {
+      const response = await getRecruitmentResumeById(43);
+      console.log(response);
+  
+      const personelDetails = [
+        
+        { id: 1, Image: Frame1, title: "Email Address", text: response.result[0].candidateEmail},
+        { id: 2, Image: Frame3, title: "Phone number", text: response.result[0].candidateContact },
+        { id: 3, Image: Frame2, title: "DOB", text: response.result[0].dob || "Not Available" },
+        { id: 4, Image: Frame4, title: "Location", text: `${response.result[0].addressLine}, ${response.result[0].cityOrTown}, ${response.result[0].postalCode}` }
+      ];
+      console.log(personelDetails)
+      setcandidate(personelDetails);
+      setImage(response.result[0].candidatePhoto)
+      setcandidateName(response.result[0].candidateName)
+  
+      console.log(personelDetails);
+    } catch (error) {
+      console.error('Error updating workflow ID:', error);
+    }
+  };
+  
+  useEffect(() => {
+   
+    getCandidatesById()
+  }, []);
 
+  const getEducationDetails = async()=>{
+    try{
+      const response = await getAllRecruitmentResumeEducationalDetails(43)
+      console.log(response)
+      seteducationExperiences(response.result.map((item)=>({
+        institution:item.institute,
+        degree:item.courseType,
+        fieldOfStudy:item.courseName,
+        location:item.location,
+        graduationYear:item.yearOfStudy,
+      })))
+    }catch(error){
+      console.log(error)
+    }
+  }
+  const[workExperiences,setexperience] =useState([])
+  const getEmployeExperiance = async()=>{
+    try{
+      const response = await getAllRecruitmentResumesExperienceDetails(43);
+      console.log(response)
+      setexperience(response.result.map((items)=>({
+        companyName:items.companyName,
+        Shift:items.employmentType,
+        role:items.jobTitle,
+        startDate:items.fromDate,
+        endDate:items.toDate,
+        experienceDuration:items.location
+      })))
+    }catch(error){
+     console.log(error)
+    }
+  }
 
+  useEffect(()=>{
+    getEducationDetails()
+    getEmployeExperiance()
+  },[])
   return (
     <div>
       {show && (
@@ -1074,15 +1144,16 @@ export default function Createcandidatelist({ open = "", close = () => { }, file
                           <ButtonClick
                             buttonName='Edit Details'
                             icon={<GrEdit />}
+                            handleSubmit={() => handleEditDetails("Personel")}
                           />
                         </div>
 
                         <div className='flex gap-2 items-center'>
-                          <img src={profile} className='rounded-full' />
-                          <h3 className='text-sm font-semibold text-black lg:text-xs 2xl:text-base dark:text-white'>Grace Bennett Anderson</h3>
+                          <img src={Image} className='rounded-full' />
+                          <h3 className='text-sm font-semibold text-black lg:text-xs 2xl:text-base dark:text-white'>{candiateName}</h3>
                         </div>
                         <div className="grid grid-cols-2 gap-4 w-4/5">
-                          {PersonelDetail.map((item) => (
+                          {Candidate.map((item) => (
                             <div className='flex gap-2'>
                               <img src={item.Image} className='rounded-lg h-11 w-11' />
                               <div>
@@ -1090,52 +1161,107 @@ export default function Createcandidatelist({ open = "", close = () => { }, file
                                 <h3 className='text-sm font-semibold text-black 2xl:text-base dark:text-white'>{item.text}</h3>
                               </div>
                             </div>
-                          ))}
+                         ))}
                         </div>
+                        
                       </div>
 
-                      <div className='flex flex-col gap-4 '>
-                        <h1 className='mt-10 text-base font-semibold text-black 2xl:text-2xl dark:text-white'>Education</h1>
-                        {educationdetail.map((each) => (
-                          <div className='flex flex-col gap-2 divide-y '>
-                            <div className='flex gap-3 '>
-                              <img src={LOGO} className='rounded-full h-12 w-12' />
-                              <div>
-                                <h2 className='text-sm font-semibold text-black lg:text-xs 2xl:text-base dark:text-white'>{each.name}</h2>
-                                <h3>{each.text}</h3>
-                                <p className='text-sm font-normal text-gray-500 2xl:text-base dark:text-white'>{each.dateplace}</p>
-                              </div>
-                            </div>
-                          </div>
-                        ))}
-                      </div>
+                      <div className="flex flex-col gap-4 box-wrapper">
+                      <div className='flex justify-between'>
+                          <h1 className='text-sm font-semibold text-black lg:text-xs 2xl:text-base dark:text-white'>Educational Details</h1>
+                          <ButtonClick
+                            buttonName='Edit Details'
+                            icon={<GrEdit />}
+                            handleSubmit={() => handleEditDetails("Educational")}
+                          />
+                        </div>
+          <div className="flex flex-col divide-y">
+            {educationExperiences.map((edu, index) => (
+              <div
+                key={index}
+                className="flex justify-start gap-5 py-3 2xl:py-6"
+              >
+                <img
+                  className="2xl:w-[60px] 2xl:h-[60px] w-11 h-11 rounded-full shadow"
+                  src="https://via.placeholder.com/60x60"
+                />
+                <div className="inline-flex flex-col items-start justify-start gap-1">
+                  <div className="gap-2 vhcenter">
+                    <h6 className="h6">{edu.institution}</h6>
+                    {/* <p className="para p-1.5 rounded-md bg-secondaryWhite !leading-none">
+                    {work.Shift}
+                  </p> */}
+                    
+                  </div>
+
+                  <div className="flex flex-col gap-4">
+                    <p className="h6 !font-medium">{edu.degree}</p>
+                    <div className="flex gap-3">
+                      <p className="para !font-normal text-opacity-70">
+                        {edu.graduationYear}
+                      </p>
+
+                      <p className="para !font-normal text-opacity-70">
+                        {edu.location}
+                      </p>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            ))}
+          </div>
+        </div>
 
 
-                      <div className='flex flex-col gap-4 '>
-                        <h1 className='mt-10 text-base font-semibold text-black 2xl:text-2xl dark:text-white'>All Experiences</h1>
-                        {companydetail.map((each) => (
-                          <div className='flex flex-col gap-2 divide-y '>
-                            <div className='flex gap-3 '>
-                              <img src={LOGO} className='rounded-full h-12 w-12' />
-                              <div>
-                                <span className='flex gap-2 items-center'>
-                                  <h2 className='text-sm font-semibold text-black lg:text-xs 2xl:text-base dark:text-white'>{each.name}</h2>
-                                  <h3 className='bg-slate-200 rounded-md'>{each.status}</h3>
-                                </span>
-                                <span className='flex gap-2 items-center'>
-                                  <p className='text-sm font-normal text-gray-500 2xl:text-base dark:text-white'>{each.domain}</p>
-                                  <p className='text-sm font-normal text-gray-500 2xl:text-base dark:text-white'>{each.time}</p>
-                                </span>
-                              </div>
-                            </div>
-                          </div>
-                        ))}
-                      </div>
+        <div className="flex flex-col gap-4 box-wrapper">
+        <div className='flex justify-between'>
+                          <h1 className='text-sm font-semibold text-black lg:text-xs 2xl:text-base dark:text-white'>Work Experience</h1>
+                          <ButtonClick
+                            buttonName='Edit Details'
+                            icon={<GrEdit />}
+                            handleSubmit={() => handleEditDetails("Work")}
+                          />
+                        </div>
+          <div className="flex flex-col divide-y">
+            {workExperiences.map((work, index) => (
+              <div
+                key={index}
+                className="flex items-center justify-start gap-5 py-3 2xl:py-6"
+              >
+                <img
+                  className="2xl:w-[60px] 2xl:h-[60px] w-11 h-11 rounded-full shadow"
+                  src="https://via.placeholder.com/60x60"
+                />
+                <div className="inline-flex flex-col items-start justify-start gap-1">
+                  <div className="gap-2 vhcenter">
+                    <h6 className="h6">{work.companyName}</h6>
+                    <p className="para p-1.5 rounded-md bg-secondaryWhite dark:bg-secondaryDark !leading-none">
+                      {work.Shift}
+                    </p>
+                  </div>
+
+                  <div className="inline-flex items-center justify-start gap-4">
+                    <p className="!text-opacity-50 h6">{work.role}</p>
+                    <p className="para !font-normal text-opacity-70">
+                      {work.experienceDuration}
+                    </p>
+
+                    <p className="para !font-normal text-opacity-70">
+                      {work.startDate}, {work.endDate}
+                    </p>
+                  </div>
+                </div>
+              </div>
+            ))}
+          </div>
+        </div>
 
                       <div className='flex flex-col gap-3'>
 
                         <div>
-                          <CVResume />
+                          <CVResume 
+                          showTextEditor={false}
+                          />
                         </div>
 
                       </div>

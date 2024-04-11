@@ -77,7 +77,7 @@ const TableAnt = ({
   All = false,
   showsearch = false,
   viewOutside = false,
-  refresh = () => { },
+  refresh = () => {},
   recordId = "",
   jobId = ""
 
@@ -235,16 +235,30 @@ const TableAnt = ({
 
   // Delete Api Integration
 
-  const deleteRecord = async (e) => {
-    // console.log(e);
-    const result = await action(deleteApi, { id: e });
-    // console.log(result);
+  // const deleteRecord = async (e) => {
+  //   console.log(e);
+  //   const result = await action(deleteApi, { id: e });
+  //   console.log(result);
+  //   if (result.status === 200) {
+  //     // window.location.reload();
+  //     openNotification("success", "Success", result?.message);
+  //     refresh(true);
+  //   }
+  // };
+
+
+// Function to delete a record
+
+const deleteRecord = async (id) => {
+
+    const result = await action(deleteApi, { id: id }); // Ensure 'id' is passed correctly
     if (result.status === 200) {
-      // window.location.reload();
+      // Handle success response
       openNotification("success", "Success", result?.message);
       refresh(true);
     }
-  };
+
+};
 
 
 
@@ -327,31 +341,33 @@ const TableAnt = ({
               ): each.value === "currentStatus" ? (
                 <div
                   key={text}
-                  className={`${parseInt(record) === 0
-                      ? " bg-yellow-100 text-yellow-600"
+                  className={`${
+                    parseInt(record) === 0 || record === null
+                      ? "bg-yellow-100 text-yellow-600"
                       : parseInt(record) === 1
-                        ? " bg-emerald-100 text-emerald-600"
-                        : " bg-rose-100 text-rose-600"
-                    } rounded-full pr-2 py-[2px] w-fit font-medium text-[10px] 2xl:text-sm vhcenter flex-nowrap`}
+                      ? "bg-emerald-100 text-emerald-600"
+                      : "bg-rose-100 text-rose-600"
+                  } rounded-full pr-2 py-[2px] w-fit font-medium text-[10px] 2xl:text-sm vhcenter flex-nowrap`}
                   onClick={() => {
                     !viewOutside &&
-                    handleModalOpen(text, header[0]?.[tabValue || path]);
+                      handleModalOpen(text, header[0]?.[tabValue || path]);
                     console.log(tabValue, path, "kiok");
                   }}
                 >
                   <RxDotFilled
-                    className={`${parseInt(record) === 0
+                    className={`${
+                      parseInt(record) === 0
                         ? "text-yellow-600"
                         : parseInt(record) === 1
-                          ? "text-emerald-600"
-                          : "text-rose-600"
-                      } text-base 2xl:text-lg`}
+                        ? "text-emerald-600"
+                        : "text-rose-600"
+                    } text-base 2xl:text-lg`}
                   />
-                  {parseInt(record) === 0
+                  {parseInt(record) === 0 || record === null
                     ? "Under Process"
                     : parseInt(record) === 1
-                      ? "Hired"
-                      : "Disqualified"}
+                    ? "Hired"
+                    : "Disqualified"}
                 </div>
               )  : each.flexColumn === true ? (
                 <div className="flex items-center gap-4"
@@ -436,6 +452,7 @@ const TableAnt = ({
                       <FaPencil className="text-xs 2xl:text-sm" />
                     </button>
                   </Tooltip>
+                  {each.hideIcon !== "delete" && (
                   <Popconfirm
                     placement="top"
                     title={"Confirm To Delete"}
@@ -462,6 +479,7 @@ const TableAnt = ({
                       </button>
                     </Tooltip>
                   </Popconfirm>
+                   )}
                 </div>
 
               ) : (
