@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-import { BiEditAlt } from "react-icons/bi";
+import { RiEdit2Line } from "react-icons/ri";
 import ButtonClick from "../common/Button";
 import Heading from "../common/Heading";
 import indeed from "../../assets/images/indeed.png";
@@ -21,7 +21,7 @@ function Intergration() {
   ];
   const [selectedDivs, setSelectedDivs] = useState([]);
   const { t } = useTranslation();
- 
+
 
   const breadcrumbItems = [
 
@@ -29,7 +29,7 @@ function Intergration() {
     { label: t("Settings"), url: "" },
     { label: t("Other"), url: "" },
     { label: t("Intergration"), url: "" },
-    
+
   ];
 
   const handleCheckboxChange = (index) => {
@@ -41,19 +41,18 @@ function Intergration() {
   };
   return (
     <div className="flex flex-col gap-[25px]">
-    <div className="flex justify-between">
-      <div>
-        <Breadcrumbs items={breadcrumbItems} />
-        <p className="para">{t("Lorem ipsum dolart sit dummy text.")}</p>
-      </div>
-      <ButtonClick
-            
-           
-            buttonName={`Add Intergration `}// Set the button name
-            className="your-custom-styles" // Add any additional class names for styling
-            BtnType="Add" // Specify the button type (Add or Update)
+      <div className="flex justify-between">
+        <div>
+          <Breadcrumbs items={breadcrumbItems}
+            description={"Coordinates the planning, execution, and completion of projects..."}
           />
-          </div>
+        </div>
+        <ButtonClick
+          buttonName={`Add Intergration `}// Set the button name
+          className="your-custom-styles" // Add any additional class names for styling
+          BtnType="Add" // Specify the button type (Add or Update)
+        />
+      </div>
 
       {/* <div className="flex justify-between">
         <Heading title="Intergration" description="Lorem ipsum " />
@@ -70,8 +69,8 @@ function Intergration() {
               <div
                 key={index}
                 className={`bg-white dark:bg-black rounded-lg border-[1px] p-4 max-w-[300px] ${selectedDivs.includes(index)
-                    ? "border-[#6A4BFC]"
-                    : "border-[#DADADA]"
+                  ? "border-[#6A4BFC]"
+                  : "border-[#DADADA]"
                   }`}
               >
                 <div className="items-center flex flex-col lg:flex-row">
@@ -102,7 +101,7 @@ function Intergration() {
                 <div className="mt-4">
                   <ButtonClick
                     BtnType="text"
-                    icon={<BiEditAlt />}
+                    icon={<RiEdit2Line />}
                     buttonName="Edit"
                     className={"bg-[#e8e4e4]"}
                   />

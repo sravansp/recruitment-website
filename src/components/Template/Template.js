@@ -211,8 +211,8 @@ const Template = ({
        },
          {
             id:4,
-            title:"Status",
-            value:"Status",
+            title:"Action",
+            value:"Action",
             action:true,
          },
         ],
@@ -259,7 +259,7 @@ const Template = ({
          },
          {
           id:4,
-          title:"",
+          title:"Action",
           value:"actions",
           action:true,
        },
@@ -283,7 +283,7 @@ const Template = ({
          },
          {
           id:4,
-          title:"",
+          title:"Action",
           value:"actions",
           action:true,
        },
@@ -726,8 +726,7 @@ const Template = ({
    <div className='flex flex-col gap-6'>
     <div className="flex flex-col justify-between gap-6 lg:items-center lg:flex-row">
           <div>
-              <Breadcrumbs items={breadcrumbItems} />
-              <p className="para">{t("Lorem ipsum dolart sit dummy text.")}</p>
+              <Breadcrumbs items={breadcrumbItems} description={"Coordinates the planning, execution, and completion of projects..."}/>
           </div>
           {/* <div className="flex flex-col gap-6 sm:flex-row">
               

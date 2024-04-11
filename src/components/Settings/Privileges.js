@@ -212,7 +212,6 @@ export default function Privileges() {
       <div className="flex justify-between">
         <div>
           <Breadcrumbs items={breadcrumbItems} />
-          <p className="para">{t("Main_Description")}</p>
         </div>
         <div className="gap-4 ">
           <ButtonClick

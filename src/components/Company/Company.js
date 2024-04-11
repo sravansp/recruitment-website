@@ -210,7 +210,6 @@ const Company = () => {
       <div className='flex flex-col gap-6'>
                 <div>
               <Breadcrumbs items={breadcrumbItems} />
-              <p className="para">{t("Lorem ipsum dolart sit dummy text.")}</p>
           </div>
         <Tabs
        tabs={tabs}

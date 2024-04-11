@@ -118,7 +118,7 @@ function AllJobs() {
         {
           id: 5,
 
-          title: "Status",
+          title: "STATUS",
           value: "isActive",
           actionToggle: true,
         },

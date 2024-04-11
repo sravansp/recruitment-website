@@ -18,10 +18,27 @@ function App() {
   const dispatch = useDispatch();
   const colorPrimary = useSelector((state) => state.layout.themeColor);
   const mode = useSelector((state) => state.layout.mode)
-  
+
   useEffect(() => {
     dispatch(themeColor(colorPrimary));
   }, [colorPrimary, dispatch]);
+
+  useEffect(() => {
+    const handleRefresh = () => {
+      sessionStorage.setItem("isRefreshing", "true");
+    };
+    window.addEventListener("unload", handleRefresh);
+
+    return () => {
+      window.removeEventListener("unload", handleRefresh);
+    };
+  }, []);
+  let isRefresh = sessionStorage.getItem("isRefreshing");
+  let rememberMe = localStorage.getItem('rememberMe');
+
+  if (isRefresh != "true" && rememberMe !== 'true') {
+    localStorage.clear();
+  }
 
   // Only use For temp
 
@@ -50,7 +67,7 @@ function App() {
         }}
       >
         <Router />
-        
+
       </ConfigProvider>
     </ThemeProvider>
   );

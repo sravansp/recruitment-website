@@ -9,8 +9,10 @@ import { Link } from "react-router-dom";
 //   { label: "Company" }
 // ];
 
-const Breadcrumbs = ({ items, description }) => {
-  useEffect(() => {}, []);
+const Breadcrumbs = ({ items,
+  description = "Coordinates the planning, execution, and completion of projects..."
+}) => {
+  useEffect(() => { }, []);
 
   return (
     <nav className="text-[10px] 2xl:text-sm font-medium">
