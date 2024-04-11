@@ -232,21 +232,7 @@ const CreatejobTemp = ({
       },
       createdBy: "",
     },
-    //  enableReinitialize: true,
-    //   validateOnChange: false,
-    //   validationSchema: yup.object().shape({
-    //     companyId: yup.string().required("First Name is Required"),
-    //     jobTitle: yup.string().required("Last Name is Required"),
-    //     departmentId: yup.string().required("Email is Required"),
-    //     jobCode: yup.string().min(10).max(10).required("Mobile is Required"),
-    //     experience: yup.string().required("Gender is Required"),
-    //     education: yup.string().required("Date of Birth Group is Required"),
-    //     searchKeywords: yup.string().required("Gender is Required"),
-
-    //     salaryRangeFrom: yup.string().required("Gender is Required"),
-    //     salaryCurrency: yup.string().required("Date of Birth Group is Required"),
-
-    //   }),
+    
     onSubmit: async (e) => {
       try {
         const updatedCustomFields = evaluation.map((condition) => ({

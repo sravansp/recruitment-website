@@ -1,5 +1,6 @@
+// TextEditor.js
 import React, { useState, useEffect } from 'react';
-import { EditorState, convertToRaw, ContentState, convertFromHTML } from 'draft-js';
+import { EditorState, convertToRaw, ContentState } from 'draft-js';
 import { Editor } from 'react-draft-wysiwyg';
 import { FaAsterisk } from "react-icons/fa";
 import 'react-draft-wysiwyg/dist/react-draft-wysiwyg.css';
@@ -22,14 +23,14 @@ const TextEditor = ({
       return EditorState.createEmpty();
     }
   });
-    useEffect(() => {
-    // Check if initialValue exists and if it's different from the current editor content
-    if (initialValue && initialValue !== editorState.getCurrentContent().getPlainText()) {
+  useEffect(() => {
+    if (!editorState.getCurrentContent().hasText() && initialValue) {
       const contentState = ContentState.createFromText(initialValue);
       const newEditorState = EditorState.createWithContent(contentState);
       setEditorState(newEditorState);
     }
-  }, [initialValue, editorState]);
+  }, [initialValue]);
+
   const handleEditorChange = (state) => {
     setEditorState(state);
     if (onChange) {
@@ -39,7 +40,7 @@ const TextEditor = ({
         .map((block) => block.text)
         .join('\n');
         const htmlContent = stateToHTML(contentState);
-      onChange(plainText);
+      onChange(htmlContent);
       console.log(plainText)
        // Ensure onChange is called with plainText, which is a string
     }

@@ -208,29 +208,29 @@ const Createjob = ({
   useEffect(() => {
     setupdateId(updateId);
   }, []);
-  // const validationSchema1 = Yup.object().shape({
-  //   companyId: Yup.string().required('Company ID is required'),
-  //   jobTitle: Yup.string().required('Job Title is required'),
-  //   departmentId: Yup.string().required('Department ID is required'),
-  //   jobCode: Yup.string().required('Job Code is required'),
-  //   workLocationType: Yup.string().required('Work Location Type is required'),
-
-  //   location: Yup.string().required('Location is required'),
-  //   requirementType: Yup.string().required('Requirement Type is required'),
-  //   jobType: Yup.string().required('Job Type is required'),
-  //   experience: Yup.string().required('Experience is required'),
-  //   education: Yup.string().required('Education is required'),
-  //   searchKeywords: Yup.string().required('Search Keywords is required'),
-  //   salaryRangeFrom: Yup.number()
-  //   .typeError('Salary Range From must be a number')
-  //   .required('Salary Range From is required'),
-  // salaryRangeTo: Yup.number()
-  //   .typeError('Salary Range To must be a number')
-  //   .required('Salary Range To is required'),
-  //   salaryCurrency: Yup.string().required('Salary Currency is required'),
-  //   isSalaryPublic: Yup.boolean().required('Is Salary Public is required'),
-  //   jobDescription: Yup.string().required('Job Description is required'),
-  // });
+  const validationSchema1 = Yup.object().shape({
+    companyId: Yup.string().required('Company is required'),
+    jobTitle: Yup.string().required('Job Title is required'),
+    departmentId: Yup.string().required('Department ID is required'),
+    jobCode: Yup.string().required('Job Code is required'),
+    workLocationType: Yup.string().required('Work Location Type is required'),
+    
+    location: Yup.string().required('Location is required'),
+    requirementType: Yup.string().required('Requirement Type is required'),
+    jobType: Yup.string().required('Job Type is required'),
+    experience: Yup.string().required('Experience is required'),
+    education: Yup.string().required('Education is required'),
+    searchKeywords: Yup.string().required('Search Keywords is required'),
+    salaryRangeFrom: Yup.number()
+    .typeError('Salary Range From must be a number')
+    .required('Salary Range From is required'),
+    salaryRangeTo: Yup.number()
+    .typeError('Salary Range To must be a number')
+    .required('Salary Range To is required'),
+    salaryCurrency: Yup.string().required('Salary Currency is required'),
+    isSalaryPublic: Yup.boolean().required('Is Salary Public is required'),
+    jobDescription: Yup.string().required('Job Description is required'),
+  });
 
   //job applying
 
@@ -249,7 +249,7 @@ const Createjob = ({
 
       formik1.setFieldValue("companyId", firstJob.companyId);
       formik1.setFieldValue("jobTitle", firstJob.jobTitle);
-      formik1.setFieldValue("departmentId", parseInt(firstJob.departmentId));
+      formik1.setFieldValue("departmentId", firstJob.departmentId);
       formik1.setFieldValue("education", firstJob.education);
       formik1.setFieldValue("isActive", firstJob.isActive);
       formik1.setFieldValue("isSalaryPublic", firstJob.isSalaryPublic);
@@ -309,62 +309,41 @@ const Createjob = ({
       evaluationTemplateId: "",
       questionnaireTemplateId: "",
     },
-    //  enableReinitialize: true,
-    //   validateOnChange: false,
-    //   validationSchema: yup.object().shape({
-    //     firstName: yup.string().required("First Name is Required"),
-    //     lastName: yup.string().required("Last Name is Required"),
-    //     email: yup.string().required("Email is Required"),
-    //     mobile: yup.string().min(10).max(10).required("Mobile is Required"),
-    //     gender: yup.string().required("Gender is Required"),
-    //     dateOfBirth: yup.string().required("Date of Birth Group is Required"),
-    //   }),
-    // validationSchema:validationSchema1,
 
+    enableReinitialize: true,
+    validateOnChange: false,
+    validationSchema:Yup.object().shape({
+      companyId: Yup.string().required('Company is required'),
+      jobTitle: Yup.string().required('Job Title is required'),
+      departmentId: Yup.string().required('Department ID is required'),
+      jobCode: Yup.string().required('Job Code is required'),
+      workLocationType: Yup.string().required('Work Location Type is required'),
+      
+      location: Yup.string().required('Location is required'),
+      requirementType: Yup.string().required('Requirement Type is required'),
+      jobType: Yup.string().required('Job Type is required'),
+      experience: Yup.string().required('Experience is required'),
+      education: Yup.string().required('Education is required'),
+      searchKeywords: Yup.string().required('Search Keywords is required'),
+      salaryRangeFrom: Yup.number()
+      .typeError('Salary Range From must be a number')
+      .required('Salary Range From is required'),
+      salaryRangeTo: Yup.number()
+      .typeError('Salary Range To must be a number')
+      .required('Salary Range To is required'),
+      salaryCurrency: Yup.string().required('Salary Currency is required'),
+      isSalaryPublic: Yup.boolean().required('Is Salary Public is required'),
+      jobDescription: Yup.string().required('Job Description is required'),
+    }),
     onSubmit: async (e) => {
+      
       try {
         console.log(e);
         console.log(jobId);
 
         // Check if jobId or UpdateId is present
         if ((!jobId || jobId.length === 0) && !UpdateId) {
-          // const idToUpdate = jobId || UpdateId;
-          // const response = await updateRecruitmentJob({
-          //   id: idToUpdate,
-          //   companyId: companyId,
-          //   jobTitle: e.jobTitle,
-          //   departmentId: e.departmentId,
-          //   jobCode: e.jobCode,
-          //   workLocationType: e.workLocationType,
-          //   location: e.location,
-          //   requirementType: e.requirementType,
-          //   jobType: e.jobType,
-          //   experience: e.experience,
-          //   education: e.education,
-          //   searchKeywords: e.searchKeywords,
-          //   salaryRangeFrom: e.salaryRangeFrom,
-          //   salaryRangeTo: e.salaryRangeTo,
-          //   salaryCurrency: e.salaryCurrency,
-          //   isSalaryPublic: e.isSalaryPublic,
-          //   jobDescription: e.jobDescription,
-          //   workFlowId: null,
-          //   noOfVaccancies: e.noOfVaccancies,
-          //   modifiedBy: userid
-          // });
-
-          // console.log(response);
-
-          // if (response.status === 200) {
-          //   openNotification(
-          //     "success",
-          //     "Successful",
-          //     "success"
-          //   );
-          //   setPresentage(2);
-          //   setNextStep(nextStep + 1);
-
-          // } else if (response.status === 500) {
-          //   openNotification("error", "input field is empty..", "enter the field");
+         
           const response = await saveRecruitmentJob({
             companyId: companyId,
             jobTitle: e.jobTitle,
@@ -469,11 +448,7 @@ const Createjob = ({
   const [company, setCompany] = useState([]);
   const getDepartmentList = async (e) => {
     try {
-      if (!e) {
-        // Handle the case where no company is selected
-        console.log("No company selected");
-        return;
-      }
+     
 
       const result = await axios.post(API.HOST + API.GET_DEPARTMENT + "/" + e);
 
@@ -1637,8 +1612,8 @@ const Createjob = ({
                                                     type={"number"}
                                                     />
                                                     <Dropdown
-                                                    title={'Salary Currency'}
-                                                    placeholder={'Urgent'} 
+                                                    title={'Salery Currency'}
+                                                    placeholder={'salery'} 
                                                     options={saleryCurrency}
                                                     value={formik1.values.salaryCurrency}
                                                     error={formik1.errors.salaryCurrency}
@@ -2303,7 +2278,7 @@ impactful, accurate, and personalized to your company</p>
 /> */}
                   </Accordion>
                 </FlexCol>
-              ) : activeBtnValue === "Publish" ? (
+              ): activeBtnValue === "Publish" ? (
                 <Accordion
                   title={"Publish"}
                   className="Text_area"
