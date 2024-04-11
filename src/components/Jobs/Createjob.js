@@ -33,7 +33,7 @@ import {
   JobType,
   experiencelevel,
   eductaion,
-  salaryCurrency,
+  saleryCurrency,
   JobDesc,
 } from "../data";
 import {
@@ -1609,7 +1609,7 @@ const Createjob = ({
                           <Dropdown
                             title={'Salary Currency'}
                             placeholder={'salary'}
-                            options={salaryCurrency}
+                            options={saleryCurrency}
                             value={formik1.values.salaryCurrency}
                             error={formik1.errors.salaryCurrency}
                             change={(e) => {

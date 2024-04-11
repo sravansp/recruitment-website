@@ -1243,7 +1243,7 @@ const eductaion =[
     value:"SchoolLevel"
   },
 ]
-const salaryCurrency =[
+const saleryCurrency =[
   {
     id:1,
     label:"AED",
@@ -1361,7 +1361,7 @@ export {
   JobType,
   experiencelevel ,
   eductaion,
-  salaryCurrency,
+  saleryCurrency,
   JobDesc,
   Employees,
   evaluation
