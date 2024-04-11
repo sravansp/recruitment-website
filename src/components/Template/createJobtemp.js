@@ -232,7 +232,40 @@ const CreatejobTemp = ({
       },
       createdBy: "",
     },
-    
+    //  enableReinitialize: true,
+    //   validateOnChange: false,
+    //   validationSchema: yup.object().shape({
+    //     companyId: yup.string().required("First Name is Required"),
+    //     jobTitle: yup.string().required("Last Name is Required"),
+    //     departmentId: yup.string().required("Email is Required"),
+    //     jobCode: yup.string().min(10).max(10).required("Mobile is Required"),
+    //     experience: yup.string().required("Gender is Required"),
+    //     education: yup.string().required("Date of Birth Group is Required"),
+    //     searchKeywords: yup.string().required("Gender is Required"),
+
+    //     salaryRangeFrom: yup.string().required("Gender is Required"),
+    //     salaryCurrency: yup.string().required("Date of Birth Group is Required"),
+
+    //   }),
+    enableReinitialize: true,
+      validateOnChange: false,
+     validationSchema :yup.object().shape({
+      companyId: yup.string().required("Company is Required"),
+      jobTitle: yup.string().required("Job Title is Required"),
+      location: yup.string().required("Location is Required"),
+      requirementType: yup.string().required("Requirment is Required"),
+      jobType: yup.string().required("Requirment is Required"),
+      salaryRangeTo: yup.string().required("Requirment is Required"),
+      salaryRangeFrom: yup.string().required("Requirment is Required"),
+      salaryCurrency: yup.string().required("Requirment is Required"),
+      departmentId: yup.string().required("Department is Required"),
+      jobCode: yup.string().min(4, "Job Code must be 4 characters").max(10, "Job Code must be 10 characters").required("Job Code is Required"),
+      experience: yup.string().required("Experience is Required"),
+      education: yup.string().required("Education is Required"),
+      searchKeywords: yup.string().required("Search Keywords are Required"),
+      salaryRangeFrom: yup.string().required("Salary Range From is Required"),
+      salaryCurrency: yup.string().required("Salary Currency is Required"),
+    }),
     onSubmit: async (e) => {
       try {
         const updatedCustomFields = evaluation.map((condition) => ({
@@ -941,33 +974,36 @@ const CreatejobTemp = ({
                       <div className="grid grid-cols-3 gap-4">
                         <FormInput
                           title={t("Job Title")}
-                          placeholder={t("Example : Marketing Manager")}
+                          placeholder={t("Enter Job Title")}
                           required={true}
                           change={(e) => {
                             formik.setFieldValue("jobTitle", e);
                           }}
                           value={formik.values.jobTitle}
+                          error={formik.errors.jobTitle}
                         />
 
                         <Dropdown
                           title={t("Department")}
-                          placeholder={t("Select...")}
+                          placeholder={t("Choose Department")}
                           required={true}
                           options={departmentList}
                           value={formik.values.departmentId}
                           change={(e) => {
                             formik.setFieldValue("departmentId", e);
                           }}
+                          error={formik.errors.departmentId}
                         />
 
                         <FormInput
                           title={t(" Job Code")}
-                          placeholder={t(" Job Code")}
+                          placeholder={t("Enter Job Code")}
                           required={true}
                           change={(e) => {
                             formik.setFieldValue("jobCode", e);
                           }}
                           value={formik.values.jobCode}
+                          error={formik.errors.jobCode}
                         />
                       </div>
                     </Accordion>
@@ -1042,17 +1078,18 @@ const CreatejobTemp = ({
                       <div className="grid grid-cols-2 gap-4">
                         <FormInput
                           title={"Location"}
-                          placeholder={"Example : Dubai"}
+                          placeholder={"Enter Location"}
                           change={(e) => {
                             formik.setFieldValue("location", e);
                           }}
                           value={formik.values.location}
                           required={true}
+                          error={formik.errors.location}
                         />
 
                         <Dropdown
                           title={"Requirement"}
-                          placeholder={"Urgent"}
+                          placeholder={"Choose Requirement"}
                           options={Requirment}
                           value={formik.values.requirementType}
                           change={(e) => {
@@ -1060,6 +1097,7 @@ const CreatejobTemp = ({
                             console.log(e);
                           }}
                           required={true}
+                          error={formik.errors.requirementType}
                         />
                       </div>
                     </Accordion>
@@ -1077,7 +1115,7 @@ const CreatejobTemp = ({
                         <div className="grid grid-cols-3 gap-4">
                           <Dropdown
                             title={"Job Type"}
-                            placeholder={"Full-time"}
+                            placeholder={"Choose Job Type"}
                             options={JobType}
                             change={(e) => {
                               formik.setFieldValue("jobType", e);
@@ -1085,37 +1123,42 @@ const CreatejobTemp = ({
                             }}
                             required={true}
                             value={formik.values.jobType}
+                            error={formik.errors.jobType}
                           />
                           <Dropdown
                             title={"Experience"}
-                            placeholder={"Mid-Senior level"}
+                            placeholder={"Choose Experience"}
                             options={experiencelevel}
                             value={formik.values.experience}
                             change={(e) => {
                               formik.setFieldValue("experience", e);
                             }}
                             required={true}
+                            error={formik.errors.experience}
                           />
                           <Dropdown
                             title={"Education"}
-                            placeholder={"Bachelor’s Degree"}
+                            placeholder={"Choose Education"}
                             options={eductaion}
                             value={formik.values.education}
                             change={(e) => {
                               formik.setFieldValue("education", e);
                             }}
                             required={true}
+                            error={formik.errors.education}
                           />
                         </div>
                         <div className="grid grid-cols-3 gap-4">
                           <FormInput
                             title={"Keywords"}
-                            placeholder={"Example : Dubai"}
+                            placeholder={"Enter Keywords"}
                             change={(e) => {
                               formik.setFieldValue("searchKeywords", e);
                             }}
                             value={formik.values.searchKeywords}
                             required={true}
+                            error={formik.errors.searchKeywords}
+                            
                           />
                           {/* <Dropdown
                                                     title={'Requirement'}
@@ -1127,31 +1170,35 @@ const CreatejobTemp = ({
                         <div className="grid grid-cols-4 gap-4">
                           <FormInput
                             title={"Salary Range From"}
-                            placeholder={"Enter value"}
+                            placeholder={"Enter Salary Range From"}
                             change={(e) => {
                               formik.setFieldValue("salaryRangeFrom", e);
                             }}
                             value={formik.values.salaryRangeFrom}
                             required={true}
+                            error={formik.errors.salaryRangeFrom}
+                            
                           />
                           <FormInput
                             title={"Salary Range To"}
-                            placeholder={"Enter value"}
+                            placeholder={"Enter Salary Range To"}
                             change={(e) => {
                               formik.setFieldValue("salaryRangeTo", e);
                             }}
                             value={formik.values.salaryRangeTo}
                             required={true}
+                            error={formik.errors.salaryRangeTo}
                           />
                           <Dropdown
                             title={"Salary Currency"}
-                            placeholder={"Urgent"}
+                            placeholder={"Enter Salary Currency"}
                             options={saleryCurrency}
                             value={formik.values.salaryCurrency}
                             change={(e) => {
                               formik.setFieldValue("salaryCurrency", e);
                             }}
                             required={true}
+                            error={formik.errors.salaryCurrency}
                           />
                           <CheckBoxInput
                             change={(e) => {
@@ -1225,7 +1272,7 @@ const CreatejobTemp = ({
                         <TextEditor
                           title={t("Description")}
                           placeholder={t(
-                            "Enter the Job description here; include key reas of responsibility an what the candidate mi ht do on a typical day."
+                            "Enter Description "
                           )}
                           required={true}
                           hideBorder={true}

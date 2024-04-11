@@ -116,28 +116,28 @@ const Createjob = ({
     try {
       const requestBody = {
         val: content,
-        radioval: '1',
-        summarise: null
+        radioval: "1",
+        summarise: null,
       };
 
-      const response = await fetch('https://chat.bmark.in/ai/api.php', {
-        method: 'POST',
+      const response = await fetch("https://chat.bmark.in/ai/api.php", {
+        method: "POST",
         headers: {
-          'Content-Type': 'application/json'
+          "Content-Type": "application/json",
         },
-        body: JSON.stringify(requestBody)
+        body: JSON.stringify(requestBody),
       });
 
       if (response.ok) {
         const data = await response.json();
         // Handle the response data as needed
         console.log(data);
-        setContent(data.receivedData)
+        setContent(data.receivedData);
       } else {
-        console.error('Failed to fetch data');
+        console.error("Failed to fetch data");
       }
     } catch (error) {
-      console.error('Error:', error);
+      console.error("Error:", error);
     }
   };
 
@@ -1153,12 +1153,18 @@ const Createjob = ({
 
         formik1.setFieldValue("companyId", firstJob.companyId);
         formik1.setFieldValue("jobTitle", firstJob.jobTitle);
-        formik1.setFieldValue("departmentId", parseInt(response.result[0].departmentId));
-        formik1.setFieldValue("education", parseInt(response.result[0].education));
+        formik1.setFieldValue(
+          "departmentId",
+          parseInt(response.result[0].departmentId)
+        );
+        formik1.setFieldValue(
+          "education",
+          parseInt(response.result[0].education)
+        );
         formik1.setFieldValue("isActive", firstJob.isActive);
         formik1.setFieldValue("isSalaryPublic", firstJob.isSalaryPublic);
         formik1.setFieldValue("jobCode", firstJob.jobCode);
-        setContent(firstJob.jobDescription)
+        setContent(firstJob.jobDescription);
         formik1.setFieldValue("jobType", firstJob.jobType);
         formik1.setFieldValue("location", firstJob.location);
         formik1.setFieldValue("requirementType", firstJob.requirementType);
@@ -1232,14 +1238,8 @@ const Createjob = ({
           borderRadius: 0,
           borderTopLeftRadius: "0px !important",
           borderBottomLeftRadius: 0,
-          
-        
-         
-         
-          
         }}
-        wrapperBodyStyle={{backgroundColor:"#F8FAFC"}}
-        
+        wrapperBodyStyle={{ backgroundColor: "#F8FAFC" }}
         close={(e) => {
           setShow(e);
           //    setUpdateId(null);
@@ -1282,15 +1282,14 @@ const Createjob = ({
         saveAndContinue={true}
         stepsData={steps}
       >
-        <div  >
-        {/* <div className="inset-0 absolute bg-[#F8FAFC]"></div> */}
-          <FlexCol >
+        <div>
+          {/* <div className="inset-0 absolute bg-[#F8FAFC]"></div> */}
+          <FlexCol>
             <div className="flex flex-col gap-6 max-w-[1070px] w-full mx-auto bg-[#F8FAFC] ">
               {steps && (
                 <div className=" sticky -top-6 w-full z-50 px-5 bg-[#F8FAFC] dark:bg-[#1f1f1f] pb-10 ">
                   <Stepper
                     currentStepNumber={activeBtn}
-                    
                     presentage={presentage}
                     // direction="left"
                     // labelPlacement="vertical"
