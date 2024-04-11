@@ -133,18 +133,26 @@ const Questionaries = () => {
     const[questionnaireData,setquestionnaireData]=useState([])
 
     const getJodbyId = async ()=>{
-     const response =   await getRecruitmentJobById({id:localStorage.getItem('jobid')})
+     
+      const response =   await getRecruitmentJobById({id:jobId})
      setquestionareId(response.result[0].questionnaireTemplateId)
      
      console.log(response)
+    
      
     }
     useEffect(()=>{
-      getJodbyId()
-    },[])
+       if(jobId !== "null"){
+        getJodbyId()
+       }
+
+      
+      
+    },[jobId])
 
     const getQuestionare = async ()=>{
       try{
+        
         const response = await getRecruitmentQuestionnaireTemplateById({
           
           id:parseInt(questionareId)
@@ -152,13 +160,17 @@ const Questionaries = () => {
         })
         setquestionnaireData(response.result)
          console.log(response)
+      
       }catch(error){
        console.log(error)
       }
   
       }
       useEffect(()=>{
-        getQuestionare()
+        if(questionareId){
+          getQuestionare()
+        }
+       
       },[questionareId])
 
 
@@ -169,7 +181,7 @@ const Questionaries = () => {
         <div className="flex flex-col gap-4 box-wrapper">
           <div className="flex flex-col gap-4 divide-y">
             <div className="flex items-center justify-between">
-              <h6 className="h6">Questionair</h6>
+              <h6 className="h6">Questionnaire </h6>
               <div
                 className="flex items-center justify-end gap-2.5 p-1.5 mt-[18.88px] rounded-lg"
                 // style={{ backgroundColor: `${primaryColor}10` }}

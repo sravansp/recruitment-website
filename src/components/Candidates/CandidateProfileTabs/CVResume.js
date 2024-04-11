@@ -49,7 +49,7 @@ const QA = [
     answer: "Remote",
   },
 ];
-const CVResume = () => {
+const CVResume = ({ showTextEditor}) => {
   const [content, setContent] = useState("");
   const primaryColor = localStorage.getItem("mainColor");
   const {resumeId} =useParams()
@@ -232,44 +232,46 @@ const CVResume = () => {
 
       {/* RIGHT COLUMN  */}
       <div className="lg:col-span-4">
-        <div className="rounded-lg bg-white dark:bg-secondaryDark p-1.5 ">
-          <TabsNew tabs={tabData} onTabChange={onTabChange} initialTab={1} />
-          <TextEditor
-            initialValue={formik.values.notes}
-            onChange={(e)=>{
-              formik.setFieldValue('notes',e)
-            }}
-            minheight="250px"
-          />
-          <div
-            className="flex items-center justify-end gap-2.5 p-1.5 mt-4 rounded-lg"
-            style={{ backgroundColor: `${primaryColor}10` }}
-          >
-            <ButtonClick buttonName="Cancel" />
-            <ButtonClick buttonName="Save" BtnType="primary" handleSubmit={formik.handleSubmit} />
-          </div>
-        </div>
-        <div className="rounded-lg bg-white dark:bg-secondaryDark p-1.5 ">
-        {notes && notes.map((note, index) => (
-  <div className="relative flex pb-6" key={index}>
-    <div className="flex items-center justify-between w-full">
-      <p className="pblack flex-grow pl-4 !font-normal">
-        <strong>{note.notes}</strong>
-      </p>
-      <div className="flex items-center gap-6"> {/* Added gap between createdOn and icons */}
-        <p className="para !font-normal">{note.createdOn}</p>
-        <div className="flex items-center gap-3">
-        {/* <TiPin
-                  onClick={() => handlePinClick(note.jobResumeNoteId)}
-                  style={{ color: selectedNoteId === note.jobResumeNoteId && isPinned === 1 ? 'blue' : 'gray' }}
-                />  */}
-          <FaRegEdit onClick={() => handleEditClick(note.jobResumeNoteId)} />
-        </div>
-      </div>
-    </div>
-  </div>
-))}
-</div>
+      {showTextEditor ? (
+        <><div className="rounded-lg bg-white dark:bg-secondaryDark p-1.5 ">
+            <TabsNew tabs={tabData} onTabChange={onTabChange} initialTab={1} />
+
+            <TextEditor
+              initialValue={formik.values.notes}
+              onChange={(e) => {
+                formik.setFieldValue('notes', e);
+              } }
+              minheight="250px" />
+
+            <div
+              className="flex items-center justify-end gap-2.5 p-1.5 mt-4 rounded-lg"
+              style={{ backgroundColor: `${primaryColor}10` }}
+            >
+              <ButtonClick buttonName="Cancel" />
+              <ButtonClick buttonName="Save" BtnType="primary" handleSubmit={formik.handleSubmit} />
+            </div>
+          </div><div className="rounded-lg bg-white dark:bg-secondaryDark p-1.5 ">
+              {notes && notes.map((note, index) => (
+                <div className="relative flex pb-6" key={index}>
+                  <div className="flex items-center justify-between w-full">
+                    <p className="pblack flex-grow pl-4 !font-normal">
+                      <strong>{note.notes}</strong>
+                    </p>
+                    <div className="flex items-center gap-6"> {/* Added gap between createdOn and icons */}
+                      <p className="para !font-normal">{note.createdOn}</p>
+                      <div className="flex items-center gap-3">
+                        {/* <TiPin
+                      onClick={() => handlePinClick(note.jobResumeNoteId)}
+                      style={{ color: selectedNoteId === note.jobResumeNoteId && isPinned === 1 ? 'blue' : 'gray' }}
+                    />  */}
+                        <FaRegEdit onClick={() => handleEditClick(note.jobResumeNoteId)} />
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              ))}
+            </div></>
+) : null}
       </div>
     </div>
   );

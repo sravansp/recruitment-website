@@ -78,7 +78,7 @@ const CreatejobTemp = ({
   inputshow = false,
   isUpdate = {},
   updateId,
-  refresh=()=>{}
+  refresh
 }) => {
   const [show, setShow] = useState(open);
   const { t } = useTranslation();
@@ -98,6 +98,7 @@ const CreatejobTemp = ({
   const [workFlows, setWorkFlows] = useState([]);
   const [selectedWorkFlowId, setSelectedWorkFlowId] = useState("");
   const [selectedDivs, setSelectedDivs] = useState([]);
+  const [content, setContent] = useState("");
   console.log(updateId);
   useEffect(() => {
     // Retrieve the login data JSON string from local storage
@@ -147,6 +148,37 @@ const CreatejobTemp = ({
     localStorage.getItem("organisationId")
   );
   // const [isGoogleFormVisible, setIsGoogleFormVisible] = useState(false);
+  const handleGenerateWithAI = async () => {
+    try {
+      const requestBody = {
+        val: content,
+        radioval: '1',
+        summarise: null
+      };
+
+      const response = await fetch('https://chat.bmark.in/ai/api.php', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json'
+        },
+        body: JSON.stringify(requestBody)
+      });
+
+      if (response.ok) {
+        const data = await response.json();
+        // Handle the response data as needed
+        console.log(data);
+        setContent(data.receivedData)
+      } else {
+        console.error('Failed to fetch data');
+      }
+    } catch (error) {
+      console.error('Error:', error);
+    }
+  };
+  const handleEditorChange = (content) => {
+    setContent(content);
+  };
   const [evaluation, setEvaluation] = useState([
     {
       id: 1,
@@ -242,7 +274,7 @@ const CreatejobTemp = ({
             salaryRangeTo: e.salaryRangeTo,
             salaryCurrency: e.salaryCurrency,
             isSalaryPublic: e.isSalaryPublic,
-            jobDescription: e.jobDescription,
+            jobDescription: content,
             workFlowId: selectedWorkFlowId,
             jobPublishType: null,
             jobPublishDetails: null,
@@ -273,7 +305,8 @@ const CreatejobTemp = ({
             setPresentage(2);
             setTimeout(() => {
               handleClose();
-            }, 2000);
+              refresh()
+            }, 1500);
           } else if (response.status === 500) {
             openNotification("error", response.message);
           }
@@ -296,7 +329,7 @@ const CreatejobTemp = ({
             salaryRangeTo: e.salaryRangeTo,
             salaryCurrency: e.salaryCurrency,
             isSalaryPublic: e.isSalaryPublic,
-            jobDescription: e.jobDescription,
+            jobDescription: content,
             workFlowId: selectedWorkFlowId,
             jobPublishType: null,
             jobPublishDetails: null,
@@ -329,7 +362,8 @@ const CreatejobTemp = ({
             setPresentage(2);
             setTimeout(() => {
               handleClose();
-            }, 2000);
+              refresh()
+            }, 1500);
           } else if (response.status === 500) {
             openNotification("error", response.message);
           }
@@ -364,7 +398,7 @@ const CreatejobTemp = ({
         formik.setFieldValue("isActive", firstJob.isActive);
         formik.setFieldValue("isSalaryPublic", firstJob.isSalaryPublic);
         formik.setFieldValue("jobCode", firstJob.jobCode);
-        formik.setFieldValue("jobDescription", firstJob.jobDescription);
+        setContent(firstJob.jobDescription)
         formik.setFieldValue("jobType", firstJob.jobType);
         formik.setFieldValue("location", firstJob.location);
         formik.setFieldValue("requirementType", firstJob.requirementType);
@@ -1188,11 +1222,13 @@ const CreatejobTemp = ({
                         </Button>
                         <Button
                           type="primary"
+                          onClick={handleGenerateWithAI}
                           icon={
                             <img
                               src={image}
                               alt="image"
                               style={{ height: "20px", width: "20px" }}
+                              
                             />
                           }
                         >
@@ -1207,13 +1243,11 @@ const CreatejobTemp = ({
                           )}
                           required={true}
                           hideBorder={true}
-                          initialValue={formik.values.jobDescription}
+                          initialValue={content}
                           //  change={(e)=>{
                           //    formik1.setFieldValue('jobDescription',e)
                           //  }}
-                          onChange={(e) => {
-                            formik.setFieldValue("jobDescription", e);
-                          }}
+                          onChange={handleEditorChange}
                         />
                         {/* <TextArea
                                              title={t("Requirement")}
@@ -1551,6 +1585,7 @@ icondropDown={true}
                                 <div className="flex-shrink-0">
                                   <Dropdown
                                     options={Form}
+                                    dropdownWidth="200px"
                                     change={(e) => {
                                       setEvaluation((prevEvaluation) =>
                                         prevEvaluation.map((prevCondition, i) =>

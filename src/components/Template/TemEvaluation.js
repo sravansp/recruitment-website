@@ -20,7 +20,7 @@ import AddMore from '../common/AddMore'
 import { CoPresentOutlined } from '@mui/icons-material'
 
 
-const TemEvaluation = ({open = "", close = () => { },inputshow= false,isUpdate={},updateId}) => {
+const TemEvaluation = ({open = "", close = () => { },inputshow= false,isUpdate={},updateId,refresh}) => {
     
   const [companyId, setCompanyId] = useState(localStorage.getItem("companyId"));
   const[insertedId,setinsertedId] =useState("")
@@ -205,7 +205,8 @@ const[show,setShow] =useState(open);
             setSuccessNotificationVisible(true);
             setTimeout(() => {
               handleClose();
-            }, 2000);
+              refresh()
+            }, 1500);
           } else if(response.status==500)
           {
             openNotification("error", "Error", response.message);
@@ -249,7 +250,8 @@ const[show,setShow] =useState(open);
             setSuccessNotificationVisible(true);
             setTimeout(() => {
               handleClose();
-            }, 2000);
+              refresh()
+            }, 1500);
           } else if (response2.status === 500) {
             openNotification("error", "error", response2.message);
           }
@@ -437,6 +439,7 @@ useEffect(() => {
     <div className="flex-shrink-0"> {/* Add this container for the dropdown and icons */}
       <Dropdown
         options={Form}
+        dropdownWidth='200px'
         change={(e) => {
           setEvaluation((prevEvaluation) => prevEvaluation.map((prevCondition, i) => i === index
             ? {

@@ -24,6 +24,7 @@
     "dayjs": "^1.11.10",
     "devextreme-react": "^23.1.6",
     "draft-js": "^0.11.7",
+    "draft-js-export-html": "^1.4.1",
     "faker": "^5.1.0",
     "formik": "^2.4.5",
     "framer-motion": "^10.16.5",

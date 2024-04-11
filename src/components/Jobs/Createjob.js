@@ -91,6 +91,7 @@ const Createjob = ({
   const [show, setShow] = useState(open);
   const { t } = useTranslation();
   const [errors, setErrors] = useState([]);
+  const [content, setContent] = useState("");
   // const [isUpdate, setIsUpdate] = useState();
   const [activeBtn, setActiveBtn] = useState(0);
   const [presentage, setPresentage] = useState(0);
@@ -109,6 +110,35 @@ const Createjob = ({
   const [selectedemployee, setselectedemployee] = useState([]);
   const [selectedUserIds, setSelectedUserIds] = useState([]);
   console.log(updateId);
+
+  const handleGenerateWithAI = async () => {
+    try {
+      const requestBody = {
+        val: content,
+        radioval: "1",
+        summarise: null,
+      };
+
+      const response = await fetch("https://chat.bmark.in/ai/api.php", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify(requestBody),
+      });
+
+      if (response.ok) {
+        const data = await response.json();
+        // Handle the response data as needed
+        console.log(data);
+        setContent(data.receivedData);
+      } else {
+        console.error("Failed to fetch data");
+      }
+    } catch (error) {
+      console.error("Error:", error);
+    }
+  };
 
   useEffect(() => {
     // Retrieve the login data JSON string from local storage
@@ -129,7 +159,9 @@ const Createjob = ({
     }
   }, []); // Empty dependency array ensures the useEffect runs only once
   const [isChecked, setIsChecked] = useState(false);
-
+  const handleEditorChange = (content) => {
+    setContent(content);
+  };
   console.log("Username:", userid);
   const [api, contextHolder] = notification.useNotification();
   const openNotification = (type, message, description) => {
@@ -216,12 +248,13 @@ const Createjob = ({
 
         formik1.setFieldValue("companyId", firstJob.companyId);
         formik1.setFieldValue("jobTitle", firstJob.jobTitle);
-        formik1.setFieldValue("departmentId", firstJob.departmentId);
+        formik1.setFieldValue("departmentId", parseInt(firstJob.departmentId));
         formik1.setFieldValue("education", firstJob.education);
         formik1.setFieldValue("isActive", firstJob.isActive);
         formik1.setFieldValue("isSalaryPublic", firstJob.isSalaryPublic);
         formik1.setFieldValue("jobCode", firstJob.jobCode);
-        formik1.setFieldValue("jobDescription", firstJob.jobDescription);
+        // formik1.setFieldValue("jobDescription", firstJob.jobDescription);
+        setContent(firstJob.jobDescription);
         formik1.setFieldValue("jobType", firstJob.jobType);
         formik1.setFieldValue("location", firstJob.location);
         formik1.setFieldValue("requirementType", firstJob.requirementType);
@@ -343,7 +376,7 @@ const Createjob = ({
             salaryRangeTo: e.salaryRangeTo,
             salaryCurrency: e.salaryCurrency,
             isSalaryPublic: e.isSalaryPublic,
-            jobDescription: e.jobDescription,
+            jobDescription: content,
             workFlowId: null,
             jobPublishType: null,
             jobPublishDetails: null,
@@ -391,7 +424,7 @@ const Createjob = ({
             salaryRangeTo: e.salaryRangeTo,
             salaryCurrency: e.salaryCurrency,
             isSalaryPublic: e.isSalaryPublic,
-            jobDescription: e.jobDescription,
+            jobDescription: content,
             workFlowId: null,
             noOfVaccancies: e.noOfVaccancies,
             modifiedBy: userid,
@@ -1140,12 +1173,18 @@ const Createjob = ({
 
         formik1.setFieldValue("companyId", firstJob.companyId);
         formik1.setFieldValue("jobTitle", firstJob.jobTitle);
-        formik1.setFieldValue("departmentId", firstJob.departmentId);
-        formik1.setFieldValue("education", firstJob.education);
+        formik1.setFieldValue(
+          "departmentId",
+          parseInt(response.result[0].departmentId)
+        );
+        formik1.setFieldValue(
+          "education",
+          parseInt(response.result[0].education)
+        );
         formik1.setFieldValue("isActive", firstJob.isActive);
         formik1.setFieldValue("isSalaryPublic", firstJob.isSalaryPublic);
         formik1.setFieldValue("jobCode", firstJob.jobCode);
-        formik1.setFieldValue("jobDescription", firstJob.jobDescription);
+        setContent(firstJob.jobDescription);
         formik1.setFieldValue("jobType", firstJob.jobType);
         formik1.setFieldValue("location", firstJob.location);
         formik1.setFieldValue("requirementType", firstJob.requirementType);
@@ -1219,14 +1258,8 @@ const Createjob = ({
           borderRadius: 0,
           borderTopLeftRadius: "0px !important",
           borderBottomLeftRadius: 0,
-          
-        
-         
-         
-          
         }}
-        wrapperBodyStyle={{backgroundColor:"#F8FAFC"}}
-        
+        wrapperBodyStyle={{ backgroundColor: "#F8FAFC" }}
         close={(e) => {
           setShow(e);
           //    setUpdateId(null);
@@ -1269,15 +1302,14 @@ const Createjob = ({
         saveAndContinue={true}
         stepsData={steps}
       >
-        <div  >
-        {/* <div className="inset-0 absolute bg-[#F8FAFC]"></div> */}
-          <FlexCol >
+        <div>
+          {/* <div className="inset-0 absolute bg-[#F8FAFC]"></div> */}
+          <FlexCol>
             <div className="flex flex-col gap-6 max-w-[1070px] w-full mx-auto bg-[#F8FAFC] ">
               {steps && (
                 <div className=" sticky -top-6 w-full z-50 px-5 bg-[#F8FAFC] dark:bg-[#1f1f1f] pb-10 ">
                   <Stepper
                     currentStepNumber={activeBtn}
-                    
                     presentage={presentage}
                     // direction="left"
                     // labelPlacement="vertical"
@@ -1480,6 +1512,7 @@ const Createjob = ({
                             }}
                             value={formik1.values.location}
                             error={formik1.errors.location}
+                            required={true}
                           />
 
                           <Dropdown
@@ -1519,6 +1552,7 @@ const Createjob = ({
                             }}
                             value={formik1.values.jobType}
                             error={formik1.errors.jobType}
+                            required={true}
                           />
                           <Dropdown
                             title={"Experience"}
@@ -1552,6 +1586,7 @@ const Createjob = ({
                             }}
                             value={formik1.values.searchKeywords}
                             error={formik1.errors.searchKeywords}
+                            required={true}
                           />
                           <FormInput
                             title={"Number of Opennings"}
@@ -1562,6 +1597,7 @@ const Createjob = ({
                             value={formik1.values.noOfVaccancies}
                             error={formik1.errors.noOfVaccancies}
                             type={"number"}
+                            required={true}
                           />
                         </div>
                         <div className="grid grid-cols-4 gap-4">
@@ -1574,6 +1610,7 @@ const Createjob = ({
                             value={formik1.values.salaryRangeFrom}
                             type={"number"}
                             error={formik1.errors.salaryRangeFrom}
+                            required={true}
                           />
 
                           <FormInput
@@ -1584,8 +1621,11 @@ const Createjob = ({
                             }}
                             value={formik1.values.salaryRangeTo}
                             error={formik1.errors.salaryRangeTo}
+                            required={true}
                             type={"number"}
                           />
+                        </div>
+                        <div className="grid grid-cols-3 gap-4">
                           <Dropdown
                             title={"Salary Currency"}
                             placeholder={"Urgent"}
@@ -1597,8 +1637,6 @@ const Createjob = ({
                             }}
                             required={true}
                           />
-                          </div>
-                          <div className="grid grid-cols-4 gap-4">
                           <CheckBoxInput
                             change={(e) => {
                               formik1.setFieldValue("isSalaryPublic", e);
@@ -1647,52 +1685,51 @@ const Createjob = ({
                             gap: "16px",
                           }}
                         >
-                          <ButtonClick
-                           buttonName="Choose Job Description"
-                           icon={ <DownOutlined />}>
+                          <Button>
                             <Space>
                               Choose Job Description
-                             <DownOutlined />
+                              <DownOutlined />
                             </Space>
-                          </ButtonClick>
+                          </Button>
+
                           <ButtonClick
-                            BtnType="primary"
                             buttonName=" Generate with AI"
+                            BtnType="primary"
+                            className="w-full md:w-auto"
                             icon={
                               <img
                                 src={image}
                                 alt="image"
                                 style={{
-                                  height: "25px",
-                                  width: "25px",
+                                  height: "15px",
+                                  width: "15px",
                                   alignItems: "center",
                                 }}
-                              />
+                              ></img>
                             }
-                          >
-                            Generate with AI
-                          </ButtonClick>
-                        </div>
-                        <Card>
-                          <TextEditor
-                            title={t("Description")}
-                            placeholder={t(
-                              "Enter the Job description here; include key reas of responsibility an what the candidate mi ht do on a typical day."
-                            )}
-                            required={true}
-                            hideBorder={true}
-                            initialValue={formik1.values.jobDescription}
-                            //  change={(e)=>{
-                            //    formik1.setFieldValue('jobDescription',e)
-                            //  }}
-                            onChange={(editorState) => {
-                              formik1.setFieldValue(
-                                "jobDescription",
-                                editorState
-                              );
-                            }}
+                            handleSubmit={handleGenerateWithAI}
                           />
-                          {/* <TextArea
+                        </div>
+                        {/* <div className="pt-4">
+                                            <TextEditor
+                                             
+                                            
+                                             
+                                             initialValue={formik1.values.jobDescription}
+                                            //  change={(e)=>{
+                                            //    formik1.setFieldValue('jobDescription',e)
+                                            //  }}
+                                            onChange={(editorState)=>{ formik1.setFieldValue('jobDescription',editorState)}}
+                                             />
+                                             </div> */}
+                        <div className="pt-4">
+                          <TextEditor
+                            initialValue={content}
+                            onChange={handleEditorChange}
+                            minheight="250px"
+                          />
+                        </div>
+                        {/* <TextArea
                                              title={t("Requirement")}
                                              placeholder={t("Enter the job requirements here; from soft skills to the specific qualifications needed to perform the role.")}
                                              required={true}
@@ -1716,7 +1753,6 @@ const Createjob = ({
                                             //  value={formik.values.description || selectedAccordionItem?.description || fetchedData.description}
                                             //  error={formik.errors.description}
                                              /> */}
-                        </Card>
                       </Accordion>
                     </div>
                   </FlexCol>
@@ -1983,6 +2019,7 @@ const Createjob = ({
                                 <div className="flex-shrink-0">
                                   <Dropdown
                                     options={Form}
+                                    dropdownWidth="200px"
                                     change={(e) => {
                                       setEvaluation((prevEvaluation) =>
                                         prevEvaluation.map((prevCondition, i) =>

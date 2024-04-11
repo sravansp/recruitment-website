@@ -12,6 +12,7 @@ import {
   Popconfirm,
   Flex,
   Popover,
+  Tooltip,
 } from "antd";
 import { RxDotFilled } from "react-icons/rx";
 import { CiSearch } from "react-icons/ci";
@@ -35,6 +36,7 @@ import { setNavigationPath } from "../../Redux/action";
 import { setSelectedDataId } from "../../Redux/action";
 import { useNavigate } from 'react-router-dom';
 import ModalPop from "./ModalPop";
+import TabsNew from "./TabsNew";
 
 
 // Filter Dropdown
@@ -58,7 +60,9 @@ const gridListoptions = [
 const TableAnt = ({
   data = [],
   header = [],
-  drawerH=[],
+  tab,
+  drawerH = [],
+  inputType,
   actionToggle = false,
   actionID = "",
   updateApi = "",
@@ -67,12 +71,13 @@ const TableAnt = ({
   tabValue = "",
   buttonClick = () => { },
   clickDrawer = () => { },
+  handleTabChange = () => { },
   viewDetails = false,
   showButton = false,
   All = false,
   showsearch = false,
   viewOutside = false,
-  refresh = () => { },
+  refresh = () => {},
   recordId = "",
   jobId = ""
 
@@ -87,7 +92,14 @@ const TableAnt = ({
   const [selectedRowKeys, setSelectedRowKeys] = useState([]);
   const [loading, setLoading] = useState(false);
   const [searchValue, setSearchValue] = useState("");
-  const [searchFilter, setSearchFilter] = useState([...data]);
+  // const [searchFilter, setSearchFilter] = useState([...data]);
+  const [searchFilter, setSearchFilter] = useState(
+    data.map((each) => ({
+      key: each[actionID],
+      ...each,
+    }))
+  );
+  const [tabClick, setTabClick] = useState(path);
   // const [navigationPath, setNavigationPath] = useState("");
 
   const dispatch = useDispatch();
@@ -223,16 +235,30 @@ const TableAnt = ({
 
   // Delete Api Integration
 
-  const deleteRecord = async (e) => {
-    // console.log(e);
-    const result = await action(deleteApi, { id: e });
-    // console.log(result);
+  // const deleteRecord = async (e) => {
+  //   console.log(e);
+  //   const result = await action(deleteApi, { id: e });
+  //   console.log(result);
+  //   if (result.status === 200) {
+  //     // window.location.reload();
+  //     openNotification("success", "Success", result?.message);
+  //     refresh(true);
+  //   }
+  // };
+
+
+// Function to delete a record
+
+const deleteRecord = async (id) => {
+
+    const result = await action(deleteApi, { id: id }); // Ensure 'id' is passed correctly
     if (result.status === 200) {
-      // window.location.reload();
+      // Handle success response
       openNotification("success", "Success", result?.message);
       refresh(true);
     }
-  };
+
+};
 
 
 
@@ -315,31 +341,33 @@ const TableAnt = ({
               ): each.value === "currentStatus" ? (
                 <div
                   key={text}
-                  className={`${parseInt(record) === 0
-                      ? " bg-yellow-100 text-yellow-600"
+                  className={`${
+                    parseInt(record) === 0 || record === null
+                      ? "bg-yellow-100 text-yellow-600"
                       : parseInt(record) === 1
-                        ? " bg-emerald-100 text-emerald-600"
-                        : " bg-rose-100 text-rose-600"
-                    } rounded-full pr-2 py-[2px] w-fit font-medium text-[10px] 2xl:text-sm vhcenter flex-nowrap`}
+                      ? "bg-emerald-100 text-emerald-600"
+                      : "bg-rose-100 text-rose-600"
+                  } rounded-full pr-2 py-[2px] w-fit font-medium text-[10px] 2xl:text-sm vhcenter flex-nowrap`}
                   onClick={() => {
                     !viewOutside &&
-                    handleModalOpen(text, header[0]?.[tabValue || path]);
+                      handleModalOpen(text, header[0]?.[tabValue || path]);
                     console.log(tabValue, path, "kiok");
                   }}
                 >
                   <RxDotFilled
-                    className={`${parseInt(record) === 0
+                    className={`${
+                      parseInt(record) === 0
                         ? "text-yellow-600"
                         : parseInt(record) === 1
-                          ? "text-emerald-600"
-                          : "text-rose-600"
-                      } text-base 2xl:text-lg`}
+                        ? "text-emerald-600"
+                        : "text-rose-600"
+                    } text-base 2xl:text-lg`}
                   />
-                  {parseInt(record) === 0
+                  {parseInt(record) === 0 || record === null
                     ? "Under Process"
                     : parseInt(record) === 1
-                      ? "Hired"
-                      : "Disqualified"}
+                    ? "Hired"
+                    : "Disqualified"}
                 </div>
               )  : each.flexColumn === true ? (
                 <div className="flex items-center gap-4"
@@ -390,35 +418,41 @@ const TableAnt = ({
                   <p className="!font-normal para" >{text[each.value]}</p>
                 </div>
               ) : each.actionToggle ? (
+                <Tooltip
+                  title={parseInt(text.isActive) ? "Active" : "Inactive"}
+                >
 
-                <Switch
-                  checked={parseInt(text.isActive)}
-                  onChange={(checked) => {
-                    handleToggleList(text?.[actionID], checked);
-                    // buttonClick(each.companyId);
-                    // activeOrNot(checked);
-                    //console.log(checked);
-                    //console.log(text?.[actionID]);
-                    updateCompany(text?.[actionID], checked);
-                  }}
-                  className=" bg-[#c2c0c0aa]"
-                  size={isSmallScreen ? "small" : "default"}
-                />
-
+                  <Switch
+                    checked={parseInt(text.isActive)}
+                    onChange={(checked) => {
+                      handleToggleList(text?.[actionID], checked);
+                      // buttonClick(each.companyId);
+                      // activeOrNot(checked);
+                      //console.log(checked);
+                      //console.log(text?.[actionID]);
+                      updateCompany(text?.[actionID], checked);
+                    }}
+                    className=" bg-[#c2c0c0aa]"
+                    size={isSmallScreen ? "small" : "default"}
+                  />
+                </Tooltip>
               ) : each.action ? (
                 <div className="flex items-center justify-start gap-4">
-                  <button
-                    className={`w-8 h-8 2xl:w-10 2xl:h-10 rounded-full vhcenter bg-[${primaryColor}] bg-opacity-10 hover:bg-opacity-100 text-accent hover:text-white transition-all duration-300`}
-                    onClick={() => {
-                      buttonClick(text[actionID], "edit"); //"8"
-                      clickDrawer(true);
+                  <Tooltip title="Edit" color={primaryColor}>
+                    <button
+                      className={`w-8 h-8 2xl:w-10 2xl:h-10 rounded-full vhcenter hover:bg-primaryalpha/20 dark:hover:bg-primaryalpha/30 text-accent transition-all duration-300`}
+                      onClick={() => {
+                        buttonClick(text[actionID], "edit"); //"8"
+                        clickDrawer(true);
 
-                      // console.log(actionID);
-                      // console.log(text[actionID], "ddddddddsfsd");
-                    }}
-                  >
-                    <FaPencil className="text-xs 2xl:text-sm" />
-                  </button>
+                        // console.log(actionID);
+                        // console.log(text[actionID], "ddddddddsfsd");
+                      }}
+                    >
+                      <FaPencil className="text-xs 2xl:text-sm" />
+                    </button>
+                  </Tooltip>
+                  {each.hideIcon !== "delete" && (
                   <Popconfirm
                     placement="top"
                     title={"Confirm To Delete"}
@@ -432,17 +466,20 @@ const TableAnt = ({
                     // className="activeBtn"
                     style={{}}
                   >
-                    <button
-                      className={`w-8 h-8 2xl:w-10 2xl:h-10 rounded-full vhcenter bg-[${primaryColor}] bg-opacity-10 hover:bg-opacity-100 text-accent hover:text-white transition-all duration-300`}
-                    // onClick={() => {
-                    //   // deleteRecord(text[actionID]);
-                    //   // clickDrawer(true);
-                    //   // console.log(text[actionID]);
-                    // }}
-                    >
-                      <RiDeleteBin5Line className="text-xs 2xl:text-sm" />
-                    </button>
+                    <Tooltip title="Delete" placement="bottom" color="red">
+                      <button
+                        className={`w-8 h-8 2xl:w-10 2xl:h-10 rounded-full vhcenter hover:bg-primaryalpha/20 dark:hover:bg-primaryalpha/30 text-accent transition-all duration-300`}
+                      // onClick={() => {
+                      //   // deleteRecord(text[actionID]);
+                      //   // clickDrawer(true);
+                      //   // console.log(text[actionID]);
+                      // }}
+                      >
+                        <RiDeleteBin5Line className="text-xs 2xl:text-sm" />
+                      </button>
+                    </Tooltip>
                   </Popconfirm>
+                   )}
                 </div>
 
               ) : (
@@ -736,11 +773,54 @@ const TableAnt = ({
   return (
     <div className="flex flex-col gap-5">
       <div className="flex flex-col justify-between gap-3 xl:items-center xl:flex-row">
+        {!tab ? (
+          <div className="flex items-center justify-start gap-3">
+            <p className="text-lg font-semibold dark:text-white ">
+              {tabTitle
+                ? tabTitle?.charAt(0).toUpperCase() +
+                tabTitle.slice(1).split("_").join(" ")
+                : path?.charAt(0).toUpperCase() +
+                path.slice(1).split("_").join(" ")}
+            </p>
+            {/* <p className="text-lg font-semibold dark:text-white">
+              {jsonResult ||  path?.charAt(0).toUpperCase() + path.slice(1).split("_")}
+            </p> */}
+            {inputType ? (
+              <div className="">
+                <div className="flex items-center justify-start gap-2 ">
+                  {inputType?.map((each) => each.type)}
+                </div>
+              </div>
+            ) : (
+              <div
+                style={{ marginLeft: 8 }}
+                className={` bg-primaryalpha/10 dark:bg-primaryalpha/30 text-primary text-[10px] 2xl:text-xs rounded-full px-3 py-1 vhcenter`}
+              >
+                {hasSelected
+                  ? `${selectedRowKeys?.length} ${jsonResult ? jsonResult : path.split("_").join(" ")
+                  } Selected`
+                  : `All ${jsonResult ? jsonResult : path.split("_").join(" ")
+                  }`}
+                {console.log(jsonResult)}
+              </div>
+            )}
+          </div>
+        ) : (
+          <TabsNew
+            tabs={tab}
+            tabClick={(e) => {
+              console.log(e, "e");
+              setTabClick(e);
+              handleTabChange(e);
+            }}
+            gap={false}
+          />
+        )}
         <div className="flex items-center gap-3">
           <p className="text-lg font-semibold dark:text-white">
             {/* {tabTitle?.split("_") || path?.split("_")} */}
             {/* {jsonResult || path} */}
-            {jsonResult || path}
+            {/* {jsonResult || path} */}
             {/* (0) */}
           </p>
           <div
@@ -773,10 +853,17 @@ const TableAnt = ({
                     icon={<CiSearch className=" dark:text-white" />}
                     className="mt-0 w-ful md:w-auto"
                     error=""
+                    // change={(value) => {
+                    //   setSearchValue(value);
+                    // }}
+                    // onSearch={(value) => {
+                    //   setSearchFilter(value);
+                    // }}
                     change={(value) => {
                       setSearchValue(value);
                     }}
                     onSearch={(value) => {
+                      // console.log(value);
                       setSearchFilter(value);
                     }}
                   />
@@ -813,7 +900,7 @@ const TableAnt = ({
                   <SearchBox
                     // title="Search"
                     data={data}
-                    placeholder={t("Search_placeholder")}
+                    placeholder={t("Search")}
                     value={searchValue}
                     icon={<CiSearch className=" dark:text-white" />}
                     className="mt-0 w-ful md:w-auto"
@@ -827,36 +914,39 @@ const TableAnt = ({
                     }}
                   />)}
 
-                <div>
-                  {/* <Dropdown
-              menu={{
-                items,
-              }}
-              placement="bottomRight"
-            >
-              <Button>bottomRight</Button>
-            </Dropdown> */}
-                  <Dropdown
-                    // menu={columnMenuItems.map((item, index) => ({
-                    //   ...item,
-                    //   key: index,
-                    // }))}
+               {/* <div>
+                       <Dropdown
+                   menu={{
+                     items,
+                   }}
+                   placement="bottomRight"
+                 >
+                   <Button>bottomRight</Button>
+                 </Dropdown>
+
+
+
+                <Dropdown
+                       menu={columnMenuItems.map((item, index) => ({
+                         ...item,
+                         key: index,
+                       }))}
                     menu={{ items }}
                     placement="bottomRight"
-                  // trigger={["click"]}
-                  // open={dropdownVisible}
-                  // onOpenChange={(visible) => {
-                  //   console.log(visible);
-                  //   setDropdownVisible(visible);
-                  // }}
+                        trigger={["click"]}
+                        open={dropdownVisible}
+                        onOpenChange={(visible) => {
+                          console.log(visible);
+                          setDropdownVisible(visible);
+                        }}
                   >
-                    {/* <Button>Filters</Button> */}
-                    <Button
+                        <Button>Filters</Button>
+                 <Button
                       className="flex items-center dark:bg-black dark:text-white justify-center h-full font-medium flex-nowrap bg-[#FAFAFA]"
                       onClick={(e) => {
-                        // console.log(e);
-                        // e.stopPropagation(); // Prevent dropdown from closing
-                        // setDropdownVisible(!dropdownVisible);
+                        console.log(e);
+                        e.stopPropagation(); // Prevent dropdown from closing
+                        setDropdownVisible(!dropdownVisible);
                       }}
                       size={isSmallScreen ? "default" : "large"}
                     >
@@ -866,21 +956,8 @@ const TableAnt = ({
                       </span>
                     </Button>
                   </Dropdown>
-                </div>
-                {/* <Radio.Group
-            options={gridListoptions}
-            onChange={onChangeGridlist}
-            value={gridList}
-            optionType="button"
-            className="flex items-center py-1.5 h-full"
-            size={isSmallScreen ? "" : "large"}
-          />
-          <Button
-            className="flex items-center justify-center h-full py-1.5 font-medium bg-white dark:bg-black dark:text-white flex-nowrap"
-            size={isSmallScreen ? "default" : "large"}
-          >
-            <FiSettings className="text-base 2xl:text-lg" />
-          </Button> */}
+                </div> */}
+
 
               </div>
 
@@ -954,14 +1031,14 @@ const TableAnt = ({
                 {titleItem.value === "isActive" ? (
                   <div
                     className={`${parseInt(modalData.text[titleItem.value]) === 1
-                        ? " bg-emerald-100 text-emerald-600"
-                        : " bg-rose-100 text-rose-600"
+                      ? " bg-emerald-100 text-emerald-600"
+                      : " bg-rose-100 text-rose-600"
                       } rounded-full pr-2 py-[2px] w-fit font-medium text-[10px] 2xl:text-sm vhcenter flex-nowrap`}
                   >
                     <RxDotFilled
                       className={`${parseInt(modalData.text[titleItem.value]) === 1
-                          ? "text-emerald-600"
-                          : "text-rose-600"
+                        ? "text-emerald-600"
+                        : "text-rose-600"
                         } text-base 2xl:text-lg`}
                     />
                     {parseInt(modalData.text[titleItem.value]) === 1

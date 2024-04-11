@@ -19,6 +19,7 @@
     inputshow = false,
     isUpdate = {},
     updateId,
+    refresh,
   }) => {
     const [companyId, setCompanyId] = useState(localStorage.getItem("companyId"));
     const [templateName, setTemplateName] = useState("");
@@ -83,7 +84,8 @@
             );
             setTimeout(() => {
               handleClose();
-            }, 2000);
+              refresh()
+            }, 1500);
           
           }else if (response.status === 500) {
             openNotification("error", "input field is empty..", response.message);
@@ -113,7 +115,8 @@
           );
           setTimeout(() => {
             handleClose();
-          }, 2000);
+            refresh()
+          }, 1500);
         
         }else if (response.status === 500) {
           openNotification("error", "input field is empty..", response.message);

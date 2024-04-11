@@ -20,33 +20,33 @@ const CandidatesList = () => {
   const[jobId,setJobId]=useState(null)
   const header = [
     {
-      CandidateProfile: [
+      Candidate_Profile: [
         {
           id: 1,
-          title: "NAME",
+          title: "Name",
           value: "candidateName",
         },
         {
           id: 2,
-          title: "CONTACT",
+          title: "Contact",
           value: "candidateContact",
         },
         {
           id: 3,
-          title: "JOB",
+          title: "Job",
           value: "jobTitle",
         },
 
         {
           id: 4,
-          title: "STAGE",
+          title: "Stage",
           value: "stageName",
          
         },
         {
           id: 5,
 
-          title: "SOURCE",
+          title: "Source",
           value: "candidateSource",
          
         },
@@ -59,7 +59,7 @@ const CandidatesList = () => {
         },
         {
           id: 7,
-          title: "APPLIED DATE",
+          title: "Applied Date",
           value: "createdOn",
         },
         
@@ -114,6 +114,9 @@ const CandidatesList = () => {
     getJobstat()
     console.log("value",jobstatic)
   },[companyId])
+  const handleNavigate = () => {
+    window.open('https://careerui.vercel.app/', '_blank');
+  };
   return (
     <div className="flex flex-col gap-[25px]">
       <div className='flex justify-between'>
@@ -122,7 +125,7 @@ const CandidatesList = () => {
           description=" Lorem ipsum Lorem ipsum Lorem ipsum. "/>
            <div className="flex gap-4">
           {" "}
-          <Link className="flex gap-2 mt-2">
+          <Link onClick={handleNavigate} className="flex gap-2 mt-2">
             <span className="!text-primary para">View career page</span>{" "}
             <PiArrowSquareOut size={15} className="dark:text-white" />
           </Link>
@@ -136,7 +139,7 @@ const CandidatesList = () => {
       <JobListCopy data={jobstatic}/>
       <div className=''>
         {/* <TableCopy data={jobList} header={header} path='CandidateProfile'/> */}
-        <TableAnt data={jobList} header={header} path='CandidateProfile' actionID="resumeId" jobId="jobId"/>
+        <TableAnt data={jobList} header={header} path='Candidate_Profile' actionID="resumeId" jobId="jobId"/>
       </div>
       {show && (
          <motion.div initial="hidden" animate="visible" >

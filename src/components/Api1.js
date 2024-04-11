@@ -2,6 +2,7 @@ import axios from "axios";
 
 // const apiUrl = 'http://192.168.29.185/loyaltri-recruitment-server/api/v1';
 const apiUrl = 'https://alpha-jobs-api.loyaltri.com/api/v1';
+// const apiUrl = 'https://demo-jobs-api.loyaltri.com/api/v1'
 
 
 const apiRequest = async (action, method, kwargs) => {
@@ -59,6 +60,24 @@ export const deleteRecruitmentJobById = async (id) => {
 
   return await apiRequest(action, method, kwargs);
 };
+// export const deleteRecruitmentQuestionnaireTemplateById = async (id) => {
+//   try {
+//     const actionUrl = "deleteRecruitmentQuestionnaireTemplateById";
+//     const method = "DELETE";
+//     const kwargs = { id };
+    
+//     const response = await action(actionUrl, kwargs); // Call action directly
+    
+//     if (response.status === 200) {
+//       return { success: true };
+//     } else {
+//       return { success: false, error: response.statusText };
+//     }
+//   } catch (error) {
+//     console.error("Error deleting template:", error);
+//     return { success: false, error: "An error occurred while deleting the template." };
+//   }
+// };
 
 export const getAllRecruitmentResumes = async () => {
   const action = "getAllRecruitmentResumes";
@@ -603,7 +622,7 @@ export const getRecruitmentEvaluationTemplateById = async (id) => {
   const method = "POST";
 
   const kwargs = id;
-  console.log(id)
+  console.log("API Request Data:", { action, method, kwargs });
   return await apiRequest(action, method, kwargs);
 };
 export const updateEvaluationTemplateWithDetails = async (e) => {
@@ -1089,6 +1108,26 @@ export const updateRecruitmentUserRoleMapping = async (data) => {
 
   return await apiRequest(action, method, kwargs);
 };
+export const addJobToResume = async (data) => {
+  const action = "addJobToResume";
+
+  const method = "POST";
+
+  const kwargs = data;
+  console.log("API Request Data:", { action, method, kwargs })
+
+  return await apiRequest(action, method, kwargs);
+};
+export const getAllRecruitmentJobResumesOfferLetters = async (data) => {
+  const action = "getAllRecruitmentJobResumesOfferLetters";
+
+  const method = "POST";
+
+  const kwargs = data;
+  console.log("API Request Data:", { action, method, kwargs })
+
+  return await apiRequest(action, method, kwargs);
+};
 const API = {
   UPDATE_Job_Templates: "toggleRecruitmentJobTemplateStatus",
   UPDATE_Job_Description: "toggleRecruitmentJobDescriptionTemplateStatus",
@@ -1100,12 +1139,12 @@ const API = {
 
   //delete API
   DELETE_Job_Templates: "deleteRecruitmentJobTemplateById",
-  DELETE_Job_Description: "",
-  DELETE_Workflow: "",
-  DELETE_Email: "",
-  DELETE_Evaluation: "",
-  DELETE_Questionaire: "",
-  DELETE_Letter: "",
+  DELETE_Job_Description: "deleteRecruitmentJobDescriptionTemplateById",
+  DELETE_Workflow: "deleteRecruitmentWorkFlowById",
+  DELETE_Email: "deleteRecruitmentEmailTemplateById",
+  DELETE_Evaluation: "deleteRecruitmentEvaluationTemplateById",
+  DELETE_Questionaire: "deleteRecruitmentQuestionnaireTemplateById",
+  DELETE_Letter: "deleteRecruitmentLetterTemplateById",
 
 
 
@@ -1140,8 +1179,12 @@ const action = async (actionUrl, params = {}, url = apiUrl, headers) => {
 export { action };
 
 
+
+
+
 // file handling url
 const urlFileHandler = "https://alpha-jobs-api.loyaltri.com/api/fileHandler";
+// const urlFileHandler = "https://demo-jobs-api.loyaltri.com/api/fileHandler";
 const fileAction = async (formData) => {
   try {
     const result = await axios.post(urlFileHandler, formData, {

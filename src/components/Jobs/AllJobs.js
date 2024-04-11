@@ -11,7 +11,7 @@ import CustomTable from "../common/Table";
 import App1 from "../common/Table";
 import TableAnt1 from "../common/Table";
 import Heading from "../common/Heading";
-import { Link } from "react-router-dom";
+import { Link, Navigate } from "react-router-dom";
 import { PiArrowSquareOut } from "react-icons/pi";
 import ButtonClick from "../common/Button";
 import Tabs from "../common/Tabs";
@@ -436,6 +436,10 @@ function AllJobs() {
       ],
     },
   ];
+  const handleNavigate = () => {
+    window.open('https://careerui.vercel.app/', '_blank');
+  };
+
   return (
     <div className="flex flex-col gap-[25px]">
       <div className="flex justify-between">
@@ -445,7 +449,7 @@ function AllJobs() {
         />
         <div className="flex gap-4">
           {" "}
-          <Link className="flex gap-2 mt-2">
+          <Link onClick={handleNavigate} className="flex gap-2 mt-2">
             <span className="!text-primary para">View career page</span>{" "}
             <PiArrowSquareOut size={15} className="dark:text-white" />
           </Link>

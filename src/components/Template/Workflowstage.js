@@ -181,7 +181,7 @@ const formik = useFormik({
           setTimeout(() => {
             handleClose();
             refresh();
-          }, 2000);
+          }, 1500);
         } else if (response.status === 500) {
           openNotification("error", "error", response.message);
         }
@@ -217,7 +217,7 @@ const formik = useFormik({
           setTimeout(() => {
             handleClose();
             refresh();
-          }, 2000);
+          }, 1500);
         } else if (response2.status === 500) {
           openNotification("error", "error", response2.message);
         }

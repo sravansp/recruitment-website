@@ -341,6 +341,7 @@ const Sidebar = () => {
                 }`}
             />
           ),
+          link:"/Reports",
         },
        
 
@@ -385,7 +386,7 @@ const Sidebar = () => {
                   icon: (
                     <GoKey  className="!text-base 2xl:!text-2xl" />
                   ),
-                  link: "/Privileges",
+                  link: "/Privilege",
                 },
                 
                

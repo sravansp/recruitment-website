@@ -216,7 +216,7 @@ const handleRadioChange = (e, index) => {
  const[evalutaionId,setEvaluationId] = useState("")
 
  const getEvtempId = async ()=>{
-  const response =   await getRecruitmentJobById({id:localStorage.getItem('jobid')})
+  const response =   await getRecruitmentJobById({id:jobId})
   setEvaluationId(response.result[0].evaluationTemplateId)
   
   console.log(response)
@@ -237,8 +237,11 @@ const handleRadioChange = (e, index) => {
     setSelectedCheckboxes(newSelectedCheckboxes);
   };
  useEffect(()=>{
+  if(jobId !== "null"){
   getEvtempId()
- },[evalutaionId])
+  }
+
+ },[jobId])
   const [notes, setnotes] = useState("");
   const formik = useFormik ({
     initialValues :{
@@ -305,6 +308,7 @@ const handleRadioChange = (e, index) => {
  
   const getevaluation = async ()=>{
     try {
+      
       const response = await  getRecruitmentEvaluationTemplateById({id:parseInt(evalutaionId)})
       console.log(response)
       const evaluationData = response.result.flatMap(item => {
@@ -318,14 +322,18 @@ const handleRadioChange = (e, index) => {
         }));
       });
       setevaluationList(evaluationData)
-     
+      
     }catch(error){
       console.log(error)
     }
   }
   useEffect(()=>{
+   if(evalutaionId){
     getevaluation();
     console.log(evaluationList)
+
+   }
+   
    
   },[evalutaionId])
 useEffect(() => {
