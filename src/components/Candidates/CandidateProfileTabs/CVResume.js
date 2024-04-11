@@ -1,9 +1,9 @@
-import React, { useState,useEffect } from "react";
+import React, { useState, useEffect } from "react";
 import TabsNew from "../../common/TabsNew";
 import TextEditor from "../../common/TextEditor/TextEditor";
 import ButtonClick from "../../common/Button";
 import { IoMdAdd } from "react-icons/io";
-import {getRecruitmentResumeById,getRecruitmentJobResumesNoteById,updateRecruitmentJobResumesNote,getAllRecruitmentJobResumesNotes,saveRecruitmentJobResumesNote } from "../../Api1";
+import { getRecruitmentResumeById, getRecruitmentJobResumesNoteById, updateRecruitmentJobResumesNote, getAllRecruitmentJobResumesNotes, saveRecruitmentJobResumesNote } from "../../Api1";
 import {
   RiArrowDownLine,
   RiFileList3Line,
@@ -12,9 +12,10 @@ import {
 import PDFViewer from "../../common/PDFViewer";
 import { BsFileEarmarkRichtext } from "react-icons/bs";
 import pdfFile from "../../../assets/documents/sample.pdf";
-import {Formik, useFormik } from "formik";
-import { Link,useParams,useLocation } from "react-router-dom";
+import { Formik, useFormik } from "formik";
+import { Link, useParams, useLocation } from "react-router-dom";
 import { FaRegEdit } from "react-icons/fa";
+import { PiPushPinSlashBold } from "react-icons/pi";
 
 const tabData = [
   {
@@ -52,12 +53,12 @@ const QA = [
 const CVResume = ({ showTextEditor}) => {
   const [content, setContent] = useState("");
   const primaryColor = localStorage.getItem("mainColor");
-  const {resumeId} =useParams()
-  const[jobId,setJobId] = useState(null)
+  const { resumeId } = useParams()
+  const [jobId, setJobId] = useState(null)
   const { state } = useLocation();
   const [selectedNoteId, setSelectedNoteId] = useState(null);
   const [isPinned, setIsPinned] = useState(0);
-  const[PdFViewer,setPdFViewer] = useState("")
+  const [PdFViewer, setPdFViewer] = useState("")
   const handleEditClick = (jobResumeNoteId) => {
     setSelectedNoteId(jobResumeNoteId);
     getnotesbyId(jobResumeNoteId)
@@ -65,18 +66,18 @@ const CVResume = ({ showTextEditor}) => {
   }; //
   useEffect(() => {
     if (state && state.jobID) {
-        setJobId(state.jobID);
+      setJobId(state.jobID);
     } else {
-        const storedJobId = localStorage.getItem('jobid');
-        if (storedJobId) {
-            setJobId(storedJobId);
-        }
+      const storedJobId = localStorage.getItem('jobid');
+      if (storedJobId) {
+        setJobId(storedJobId);
+      }
     }
-}, [state]);
+  }, [state]);
   const handleEditorChange = (content) => {
     setContent(content);
   };
-  
+
   const onTabChange = (tabId) => {
     // Do something when the tab changes if needed
     console.log(`Tab changed to ${tabId}`);
@@ -85,68 +86,68 @@ const CVResume = ({ showTextEditor}) => {
     }
   };
 
-  
- const[notes,setnotes]= useState("")
+
+  const [notes, setnotes] = useState("")
 
 
 
-   const formik = useFormik ({
-    initialValues :{
-      jobId:"",
-        resumeId:"",
-        notes:"",
-        createdBy: ""
+  const formik = useFormik({
+    initialValues: {
+      jobId: "",
+      resumeId: "",
+      notes: "",
+      createdBy: ""
     },
-    onSubmit: async (e)=>{
+    onSubmit: async (e) => {
       try {
-        if(!selectedNoteId){
-        const response = await saveRecruitmentJobResumesNote({
-         jobId:jobId,
-         resumeId:resumeId,
-         notes:e.notes,
-         createdBy:null,
-        })
-        console.log(response)
-        getnotes()
-      }else{
-        const response= await updateRecruitmentJobResumesNote({
-          id:selectedNoteId,
-          jobId:jobId,
-          resumeId:resumeId,
-          notes:e.notes,
-          isPinned:isPinned,
-          modifiedBy:null
-        })
-        console.log(response)
-        getnotes()
-      }
-      }catch(error){
+        if (!selectedNoteId) {
+          const response = await saveRecruitmentJobResumesNote({
+            jobId: jobId,
+            resumeId: resumeId,
+            notes: e.notes,
+            createdBy: null,
+          })
+          console.log(response)
+          getnotes()
+        } else {
+          const response = await updateRecruitmentJobResumesNote({
+            id: selectedNoteId,
+            jobId: jobId,
+            resumeId: resumeId,
+            notes: e.notes,
+            isPinned: isPinned,
+            modifiedBy: null
+          })
+          console.log(response)
+          getnotes()
+        }
+      } catch (error) {
         console.log(error)
       }
     }
   })
- const getnotes = async()=>{
-    try{
-     const response = await getAllRecruitmentJobResumesNotes({resumeId:resumeId})
-     console.log(response)
-     setnotes(response.result)
-    
-    }catch(error){
+  const getnotes = async () => {
+    try {
+      const response = await getAllRecruitmentJobResumesNotes({ resumeId: resumeId })
+      console.log(response)
+      setnotes(response.result)
+
+    } catch (error) {
       console.log(error)
     }
   }
-  useEffect(()=>{
+  useEffect(() => {
     getnotes()
     console.log(notes)
-    
-  },[resumeId])
 
-  const getnotesbyId = async(jobResumeNoteId)=>{
-    try{
-    const response = await getRecruitmentJobResumesNoteById({id:jobResumeNoteId})
-    console.log(response);
-    formik.setFieldValue('notes',response.result[0].notes)
-    }catch(error){
+  }, [resumeId])
+
+  const getnotesbyId = async (jobResumeNoteId) => {
+    try {
+      const response = await getRecruitmentJobResumesNoteById({ id: jobResumeNoteId })
+      console.log(response);
+      formik.setFieldValue('notes', response.result[0].notes)
+    } catch (error) {
       console.log(error)
     }
 
@@ -155,21 +156,21 @@ const CVResume = ({ showTextEditor}) => {
   const getCandidatesById = async () => {
     try {
       const response = await getRecruitmentResumeById(resumeId);
-       
-     
+
+
       setPdFViewer(response.result[0].resumeFile)
 
 
       console.log(response.result)
       console.log(PdFViewer)
-  
+
     } catch (error) {
       console.error('Error updating workflow ID:', error);
     }
   };
-  useEffect(()=>{
+  useEffect(() => {
     getCandidatesById()
-  },[])
+  }, [])
   return (
     <div className="grid gap-6 lg:grid-cols-12">
       {/* LEFT COLUMN  */}
