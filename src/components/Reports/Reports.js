@@ -115,7 +115,7 @@ export default function Reports() {
           {t("Reports")}
         </div>
         <div className="para">
-          {t("some descripion here with some lorem ipsum")}
+          {t("Coordinates the planning, execution, and completion of projects...")}
         </div>
       </div>
 

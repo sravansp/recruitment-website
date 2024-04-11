@@ -47,7 +47,6 @@ const Appearance = () => {
     <div className="flex flex-col gap-6">
       <div>
         <Breadcrumbs items={breadcrumbItems} />
-        <p className="para">{t("Lorem ipsum dolart sit dummy text.")}</p>
       </div>
       {/* <div>
         <h1 className="h1">{t("Appearance")}</h1>

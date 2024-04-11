@@ -83,7 +83,6 @@ const TeamMembers = ({
       <div className="flex flex-col justify-between gap-8 lg:items-center lg:flex-row">
         <div>
           <Breadcrumbs items={breadcrumbItems} />
-          <p className="para">{t("Lorem ipsum dolart sit dummy text.")}</p>
         </div>
         <div className="flex flex-col gap-6 sm:flex-row">
           <ButtonClick

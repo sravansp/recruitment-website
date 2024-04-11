@@ -45,7 +45,6 @@ function SystemSettings() {
        
       <div>
         <Breadcrumbs items={breadcrumbItems} />
-        <p className="para">{t("Lorem ipsum dolart sit dummy text.")}</p>
       </div>
      
       {/* <div className="flex justify-between">
