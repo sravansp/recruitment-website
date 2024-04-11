@@ -1,7 +1,6 @@
 import { Input } from "antd";
 import React, { useRef, useState } from "react";
 import { FiAlertCircle } from "react-icons/fi";
-import { HiMiniStar } from "react-icons/hi2";
 import { FaAsterisk } from "react-icons/fa";
 import { useMediaQuery } from "react-responsive";
 
@@ -21,6 +20,7 @@ export default function FormInput({
   required = false,
   answerMetaDataIndex,
   showValueParagraph = false,
+  maxLength=30,
 }) {
   const isSmallScreen = useMediaQuery({ maxWidth: 1439 });
   const [show, setShow] = useState(false);
@@ -34,13 +34,11 @@ export default function FormInput({
 
   const handleChange = (e) => {
     let inputValue = e.target.value;
-    const inputLetterCount = inputValue.length;
-    if (inputLetterCount > 40) {
-      inputValue = inputValue.substring(0, 40);
+    if (inputValue.length > maxLength) {
+      inputValue = inputValue.slice(0, maxLength);
     }
     change(inputValue);
   };
-
   console.log(value)
   return (
     <div className={`flex flex-col ${title ? "gap-2" : "gap-0 items-center "} `}>
