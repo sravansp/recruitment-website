@@ -259,7 +259,7 @@ const Template = ({
          },
          {
           id:4,
-          title:"",
+          title:"Action",
           value:"actions",
           action:true,
        },
@@ -283,7 +283,7 @@ const Template = ({
          },
          {
           id:4,
-          title:"",
+          title:"Action",
           value:"actions",
           action:true,
        },
