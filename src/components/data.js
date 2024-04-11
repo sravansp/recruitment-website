@@ -1258,6 +1258,22 @@ const salaryCurrency =[
   }
 ]
 
+
+const JobDesc =[
+  {
+    id:1,
+    label:"IT Admin",
+    value:"it_admin",
+
+  },
+  {
+    id:2,
+    label:"Teacher",
+    value:"teacher",
+    
+  }
+]
+
 const Employees =[
   {
     id:1,
@@ -1346,6 +1362,7 @@ export {
   experiencelevel ,
   eductaion,
   salaryCurrency,
+  JobDesc,
   Employees,
   evaluation
 };
