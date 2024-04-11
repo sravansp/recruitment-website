@@ -14,7 +14,7 @@ export default function FormInput({
   className = "",
   phoneNumber,
   websiteLink,
-  change = () => {},
+  change = () => { },
   error = "",
   width = "full",
   description,
@@ -31,6 +31,16 @@ export default function FormInput({
       setShow(false);
     }
   };
+
+  const handleChange = (e) => {
+    let inputValue = e.target.value;
+    const inputLetterCount = inputValue.length;
+    if (inputLetterCount > 40) {
+      inputValue = inputValue.substring(0, 40);
+    }
+    change(inputValue);
+  };
+
   console.log(value)
   return (
     <div className={`flex flex-col ${title ? "gap-2" : "gap-0 items-center "} `}>
@@ -40,7 +50,7 @@ export default function FormInput({
         </p>
         {required && <FaAsterisk className="text-[7px] text-rose-600" />}
       </div>
-    
+
       {websiteLink ? (
         <span className="relative w-full">
           <Input
@@ -50,9 +60,8 @@ export default function FormInput({
             value={value}
             onChange={(e) => change(e.target.value)}
             onKeyDown={handleKeyPress}
-            className={`rounded-lg w-full pl-0 text-sm relative ${className}  ${
-              error ? "border-rose-400" : ""
-            }`}
+            className={`rounded-lg w-full pl-0 text-sm relative ${className}  ${error ? "border-rose-400" : ""
+              }`}
             status={error ? "error" : ""}
             size={isSmallScreen ? "default" : "large"}
             style={
@@ -78,7 +87,7 @@ export default function FormInput({
             type={type}
             placeholder={placeholder}
             value={value}
-            onChange={(e) => change(e.target.value)}
+            onChange={handleChange}
             onKeyDown={handleKeyPress}
             className={`w-full relative ${className} 
             } ${error ? "border-rose-400" : ""}`}
@@ -107,9 +116,9 @@ export default function FormInput({
           {description}
         </p>
       )}
-         {showValueParagraph && (
-       <p  className="text-sm">{value}</p>
-        
+      {showValueParagraph && (
+        <p className="text-sm">{value}</p>
+
       )}
     </div>
   );
