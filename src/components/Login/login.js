@@ -9,7 +9,7 @@ import { FiEye, FiEyeOff } from "react-icons/fi";
 import googleLogo from "../../assets/images/Social/Google.png";
 import appleLogo from "../../assets/images/Social/apple-fill.png";
 import metaLogo from "../../assets/images/Social/meta-fill.png";
-import { Button, Checkbox } from "antd";
+import { Button, Checkbox, Modal } from "antd";
 
 import { Link, useNavigate } from "react-router-dom";
 import { useFormik } from "formik";
@@ -18,11 +18,19 @@ import axios from "axios";
 import API from "../Api";
 import logindash from "../../assets/images/logindash.png";
 import ImageScroll from "../common/ImageScroll";
+import FormInput from "../common/FormInput";
 
 export default function Login() {
   const [showPassword, setShowPassword] = useState(false);
   // const [loginData, setLoginData] = useState();
-
+  const [visible, setVisible] = useState(false);
+  const handleForgotPasswordClick = () => {
+    setVisible(true);
+  };
+  const handleCancel = () => {
+    formik2.resetForm();
+    setVisible(false);
+  };
   const navigate = useNavigate();
 
   const formik = useFormik({
@@ -69,9 +77,55 @@ export default function Login() {
     },
   });
 
+  const formik2 = useFormik({
+    initialValues: {
+      email: "",
+    },
+    enableReinitialize: true,
+    validateOnChange: false,
+    validationSchema: yup.object().shape({
+      email: yup.string().required("Email is required"),
+    }),
+    onSubmit: async (e) => {
+      // try {
+      //   const result = await action(API.FORGOT_PASSWORD, {
+      //     emailId: e.email,
+      //   });
+      //   console.log(result, "result for forgot pass");
+      //   console.log(result.result, "result.result for forgot pass");
+      //   if (result.result.status === false) {
+      //     openNotification(
+      //       "error",
+      //       "Something went wrong",
+      //       result.result.message
+      //     );
+      //   }
+      //   if (result.result.status === true) {
+      //     openNotification("success", "Successful", result.result.message);
+      //   }
+      //   // console.log(e.email, "this is entered email")
+      //   formik2.resetForm();
+      //   setVisible(false);
+      // } catch (error) {
+      //   console.log(error, "error on forgot password");
+      // }
+    },
+  });
+
+  const [rememberMe, setRememberMe] = useState(false);
+  useEffect(() => {
+    // Check local storage for rememberMe value when component mounts
+    const rememberMeValue = localStorage.getItem("rememberMe");
+    if (rememberMeValue) {
+      setRememberMe(JSON.parse(rememberMeValue));
+    }
+  }, []);
   const onChange = (e) => {
-    // console.log(`checked = ${e.target.checked}`);
+    const isChecked = e.target.checked;
+    setRememberMe(isChecked);
+    localStorage.setItem("rememberMe", isChecked);
   };
+
   return (
     <div className="flex w-full h-screen">
       <div className="w-full lg:w-1/2">
@@ -139,7 +193,7 @@ export default function Login() {
                       onBlur={formik.handleBlur}
                     />
 
-                    <div className="px-3">
+                    {/* <div className="px-3">
                       {formik.touched.username &&
                       formik.values.username.length > 0 ? (
                         <div
@@ -156,15 +210,14 @@ export default function Login() {
                           )}
                         </div>
                       ) : null}
-                    </div>
+                    </div> */}
 
                     <label
                       htmlFor="floating_filled_email"
-                      className={`-z-10 absolute transition-all leading-[1] duration-300 ${
-                        formik.values.username.length === 0
-                          ? "left-12 text-gray-400 peer-focus-within:left-12 peer-focus-within:-translate-y-4 peer-focus-within:text-gray-700 peer-focus-within:text-[10px] peer-focus-within:text-bold"
-                          : "left-12 -translate-y-4 text-gray-700 text-[10px] text-bold"
-                      }`}
+                      className={`-z-10 absolute transition-all leading-[1] duration-300 ${formik.values.username.length === 0
+                        ? "left-12 text-gray-400 peer-focus-within:left-12 peer-focus-within:-translate-y-4 peer-focus-within:text-gray-700 peer-focus-within:text-[10px] peer-focus-within:text-bold"
+                        : "left-12 -translate-y-4 text-gray-700 text-[10px] text-bold"
+                        }`}
                     >
                       Email Address
                     </label>
@@ -195,11 +248,10 @@ export default function Login() {
 
                     <label
                       htmlFor="floating_filled_password"
-                      className={`-z-10 absolute transition-all leading-[1] duration-300 ${
-                        formik.values.password.length === 0
-                          ? "left-12 text-gray-400 peer-focus-within:left-12 peer-focus-within:-translate-y-4 peer-focus-within:text-gray-700 peer-focus-within:text-[10px] peer-focus-within:text-bold"
-                          : "left-12 -translate-y-4 text-gray-700 text-[10px] text-bold"
-                      }`}
+                      className={`-z-10 absolute transition-all leading-[1] duration-300 ${formik.values.password.length === 0
+                        ? "left-12 text-gray-400 peer-focus-within:left-12 peer-focus-within:-translate-y-4 peer-focus-within:text-gray-700 peer-focus-within:text-[10px] peer-focus-within:text-bold"
+                        : "left-12 -translate-y-4 text-gray-700 text-[10px] text-bold"
+                        }`}
                     >
                       Password
                     </label>
@@ -224,10 +276,52 @@ export default function Login() {
                 </div>
 
                 <div className="flex items-center justify-between">
-                  <Checkbox onChange={onChange}>Remember Me</Checkbox>
-                  <Link to={""} className="text-sm text-black underline">
+                  <Checkbox onChange={onChange} checked={rememberMe}>
+                    Remember Me
+                  </Checkbox>
+                  <div
+                    className="text-sm text-black underline"
+                    onClick={handleForgotPasswordClick}
+                  >
                     Forgot password?
-                  </Link>
+                  </div>
+                  <Modal
+                    title="Forgot Password"
+                    visible={visible}
+                    centered
+                    onCancel={handleCancel}
+                    footer={[
+                      <Button key="cancel" onClick={handleCancel}>
+                        Cancel
+                      </Button>,
+                      <Button
+                        key="submit"
+                        type="primary"
+                        onClick={formik2.handleSubmit}
+                      >
+                        Submit
+                      </Button>,
+                    ]}
+                  >
+                    <div
+                      onKeyDown={(event) => {
+                        if (event.key === "Enter") {
+                          formik2.handleSubmit();
+                        }
+                      }}
+                    >
+                      <FormInput
+                        title={"Email"}
+                        placeholder={"Email"}
+                        change={(e) => {
+                          formik2.setFieldValue("email", e);
+                        }}
+                        value={formik2.values.email}
+                        error={formik2.errors.email}
+                        required={true}
+                      />
+                    </div>
+                  </Modal>
                 </div>
 
                 {/* BUTTON  */}
@@ -247,7 +341,7 @@ export default function Login() {
           {/* FOOTER TITLE  */}
           <div>
             <p className="text-sm text-center 2xl:text-base opacity-30">
-              Loyaltri 
+              Loyaltri
             </p>
           </div>
         </div>
@@ -275,7 +369,7 @@ export default function Login() {
 
           <div className="w-full mx-auto h-[10%]">
             <div className="text-center">
-              
+
             </div>
           </div>
         </div>
