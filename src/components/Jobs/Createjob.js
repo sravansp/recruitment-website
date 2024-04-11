@@ -1387,7 +1387,7 @@ const Createjob = ({
                         </div>
                         <div className="grid grid-cols-3 gap-4">
                           <Dropdown
-                            title={t("Choose Evaluation template")}
+                            title={t("Choose Evaluation Template")}
                             placeholder={t("Select...")}
                             options={evalutaionTem}
                             value={formik1.values.evaluationTemplateId}
@@ -1397,7 +1397,7 @@ const Createjob = ({
                             }}
                           />
                           <Dropdown
-                            title={t("choose Questionare Template")}
+                            title={t("Choose Questionnaire Template")}
                             placeholder={t("Select...")}
                             options={questionareTem}
                             value={formik1.values.questionnaireTemplateId}
