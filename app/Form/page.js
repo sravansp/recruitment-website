@@ -1,6 +1,6 @@
 "use client";
 import Image from "next/image";
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useRef, useState } from "react";
 import EducationalDetails from "./Form-items/EducationalDetails";
 import PersonalDetails from "./Form-items/PersonalDetails";
 import Questions from "./Form-items/Questions";
@@ -17,7 +17,10 @@ import {
   getAllRecruitmentJobResumesCustomFields,
   getAllRecruitmentResumeEducationalDetails,
   getAllRecruitmentResumesExperienceDetails,
+  getRecruitmentJobById,
+  getRecruitmentQuestionnaireTemplateDetailsById,
   getRecruitmentResumeById,
+  imageupload,
   saveRecruitmentJobApplicationFormSetting,
   saveRecruitmentJobResumesCustomField,
   saveRecruitmentResume,
@@ -51,12 +54,16 @@ import candidate from "@/public/Frame 427319140.png";
 import uploader from "@/public/image 339.png";
 import pdfFile from "@/public/sample.pdf";
 import { useRouter } from "next/router";
-import { Button, DatePicker, AntdModal, Modal,notification } from "antd";
+import { Button, DatePicker, AntdModal, Modal, notification } from "antd";
 import DateSelect from "@/Components/ui/DateSelect";
 import Modal2 from "@/Components/ui/Modal";
 import { IoIosArrowBack } from "react-icons/io";
+import { fileAction } from "@/Components/Api1";
+import FileUpload from "@/Components/ui/FileUpload";
 
 function Web({ closeDrawer, selectedJobId, onClick }) {
+  const questidRef = useRef(null);
+
   const [currentStep, setCurrentStep] = useState(0);
   const [activeBtn, setActiveBtn] = useState(0);
   const [presentage, setPresentage] = useState(0);
@@ -72,8 +79,22 @@ function Web({ closeDrawer, selectedJobId, onClick }) {
   const [currentStage, setCurrentStage] = useState(1);
   const [candidateEmail, setCandidateEmail] = useState("");
   const [userdata, setuserdata] = useState([]);
-  const [eduinsertedid,seteduinsertedid]=useState()
+  const [eduinsertedid, seteduinsertedid] = useState();
+  const [selectedImage, setSelectedImage] = useState(null);
+  const [questid, setQestid] = useState(null);
+  const [questtemp, setQuesttemp] = useState([]);
+  const [filePdf, setfilepdf] = useState();
+  const [filePdfresume, setfilepdfresume] = useState();
 
+  const [questionAnswers, setQuestionAnswers] = useState([]);
+  const[coverLetter,setCoverletter]= useState("")
+  //
+  const [dropdownvalue, Setdopdownvalue] = useState(null);
+  const [textAreaValue, setTextAreavalue] = useState(null);
+  const [forminputvalue, setForminputValue] = useState(null);
+  const [jobResumeEvaluationId, setjobResumeEvaluationId] = useState([]);
+  const [fetchedAnswers, setfetchedAnswers] = useState([]);
+  const [quesData, setQuesData] = useState(null);
   // const [isModalOpen, setIsModalOpen] = useState(false);
   const [showModal, setShowModal] = useState(false);
   const [additionalExperienceCount, setAdditionalExperienceCount] = useState(1);
@@ -271,6 +292,7 @@ function Web({ closeDrawer, selectedJobId, onClick }) {
       // duration: null,
     });
   };
+
   useEffect(() => {
     if (closeDrawer) {
       setCurrentStep(0);
@@ -363,6 +385,46 @@ function Web({ closeDrawer, selectedJobId, onClick }) {
   //     });
   //   });
   // };
+
+  //   useEffect(() => {
+  //     const fetchdata = async () => {
+  //       try {
+  //         const response = await getRecruitmentJobById(jobid);
+  //         console.log(response, "qestid");
+  //         const questionnaireId = response.result[0].questionnaireTemplateId;
+  // console.log(questionnaireId,"iddd data in questionrie")
+  //         setQestid(questionnaireId);
+  //         console.log(questid, "idddddddddddddd");
+  //       } catch (error) {
+  //         console.error("error", error);
+  //       }
+  //     };
+  //     fetchdata();
+  //   }, [questid]);
+
+  const fetchdata = async () => {
+    try {
+      const response = await getRecruitmentJobById(jobid);
+      if (response && response.result && response.result.length > 0) {
+        const questionnaireId = response.result[0].questionnaireTemplateId;
+        console.log(questionnaireId, "iddd data in questionrie");
+        setQestid(questionnaireId);
+      } else {
+        console.error("No data found in response");
+      }
+    } catch (error) {
+      console.error("Error fetching data:", error);
+    }
+  };
+  
+  useEffect(() => {
+    fetchdata();
+  }, [questid]);
+  
+  useEffect(() => {
+    console.log("Updated questid:", questid);
+  }, [questid]);
+  
 
   const handleCloseModal = () => {
     setShowModal(false);
@@ -540,6 +602,10 @@ function Web({ closeDrawer, selectedJobId, onClick }) {
   //   },
   // });
 
+  const handleImageChange = (file) => {
+    setSelectedImage(file);
+  };
+
   const formik = useFormik({
     initialValues: {
       resumeCode: null,
@@ -573,62 +639,95 @@ function Web({ closeDrawer, selectedJobId, onClick }) {
       postalCode: Yup.string().required("Postal code is required"),
     }),
     onSubmit: async (values) => {
-
       try {
-        console.log(values,"gggg");
+        console.log(values, "gggg");
+       
+        
+
         // Make your API call here
         values.candidateName =
           `${values.namePrefix} ${values.firstName} ${values.lastName}`.trim();
         if (insertedid1) {
-          console.log(values,"gggg");
-          const update = await updateRecruitmentResume({id:insertedid1, ...values});
+          console.log(values, "gggg");
+          const update = await updateRecruitmentResume({
+            id: insertedid1,
+            ...values,
+          });
           console.log(update);
           if (update.status === 200) {
-            openNotification(
-              "success",
-              "Successful",
-              "success"
-            );
+            openNotification("success", "Successful", "success");
             setActiveBtn(activeBtn + 1);
 
             setCurrentStep(currentStep + 1);
             setPresentage(presentage + 1);
           } else if (response.status === 500) {
-            openNotification("error", "input field is empty..", "enter the field");
+            openNotification(
+              "error",
+              "input field is empty..",
+              "enter the field"
+            );
           }
         } else {
-          
           const response = await saveRecruitmentResume(values);
           console.log("API Response:", response);
           console.log(response.result.insertedId, "inserted id responsee");
+          Fileuplaod(response.result.insertedId)
 
           setinsertedId1(response.result.insertedId);
           console.log(insertedid1, "insertede i");
           if (response.status === 200) {
-            openNotification(
-              "success",
-              "Successful",
-              response.message
-            );
+            openNotification("success", "Successful", response.message);
             setActiveBtn(activeBtn + 1);
 
             setCurrentStep(currentStep + 1);
             setPresentage(presentage + 1);
           } else if (response.status === 500) {
-            openNotification("error", "input field is empty..", response.message);
+            openNotification(
+              "error",
+              "input field is empty..",
+              response.message
+            );
           }
         }
+        console.log(insertedid1)
+       
       } catch (error) {
         console.error("Error during form submission:", error);
-        openNotification("error", "input field is empty..", "input field is empty..");
+        openNotification(
+          "error",
+          "input field is empty..",
+          "input field is empty.."
+        );
       }
+    },
+  });
+  const Fileuplaod = async(e)=>{
+    console.log(e,"hhhhhhhhhhhhhh")
+    try{
+      if (e) {
+        console.log("hhhhhh")
+      const formData = new FormData();
+  
+      formData.append('file', filePdf);
+  
+      console.log("inside file upload api");
+  
+      formData.append('action', 'resumePhotoUpload');
+      formData.append('resumeId', e);
+  
+      
+  
+      const FileUpload = await fileAction(formData);
+      console.log(FileUpload, "fileUploadResult")
     }
-})
-        
+  }catch(error){
+    console.log(error)
+  }
+  
+ }
 
-          // You can handle the API response here
-         // For example, update UI, show success message, etc.
-
+  // You can handle the API response here
+  // For example, update UI, show success message, etc.
 
   // const validationSchema1 = Yup.object().shape({
 
@@ -668,7 +767,6 @@ function Web({ closeDrawer, selectedJobId, onClick }) {
     onSubmit: async (values, { setSubmitting }) => {
       console.log(values, "submiteddd valuess");
       try {
-        
         // const transformedData = Object.values(additionalEducationalDetails);
 
         // const response = await saveRecruitmentResumeEducationalDetailBatch(Object.entries(additionalEducationalDetails).map(([_, value]) => value));
@@ -680,27 +778,32 @@ function Web({ closeDrawer, selectedJobId, onClick }) {
           yearOfStudy: item.yearOfStudy,
           location: "jnvkjdn",
         }));
-        if (eduinsertedid) {
-          console.log(values,"gggg");
-          const update = await updateRecruitmentResumeEducationalDetail({id:eduinsertedid, ...values});
-          console.log(update);
-          setActiveBtn(activeBtn + 1);
+        // if (eduinsertedid) {
+        //   console.log(values,"gggg");
+        //   const update = await updateRecruitmentResumeEducationalDetail({id:eduinsertedid, ...values});
+        //   console.log(update);
+        //   setActiveBtn(activeBtn + 1);
 
-          setCurrentStep(currentStep + 1);
-          setPresentage(presentage + 1);
-        } else {
+        //   setCurrentStep(currentStep + 1);
+        //   setPresentage(presentage + 1);
+        // } else {
         const response = await saveRecruitmentResumeEducationalDetailBatch(
           formattedData
         );
         console.log("API Response:", response);
-        console.log(response.result,"result edu");
+        console.log(response.result, "result edu");
         seteduinsertedid(response.result.resumeEducationalDetailsId);
         console.log(eduinsertedid);
         // setinsertedId1(response.result.insertedId);
-        setActiveBtn(activeBtn + 1);
-        setCurrentStep(currentStep + 1);
-        setPresentage(presentage + 1);
-     } } catch (error) {
+        if (response.status === 200) {
+          openNotification("success", "Successful", response.message);
+          setActiveBtn(activeBtn + 1);
+          setCurrentStep(currentStep + 1);
+          setPresentage(presentage + 1);
+        } else if (response.status === 500) {
+          openNotification("error", "input field is empty..", response.message);
+        }
+      } catch (error) {
         console.error("API Error:", error);
       } finally {
         setSubmitting(false);
@@ -716,6 +819,7 @@ function Web({ closeDrawer, selectedJobId, onClick }) {
   //   fromDate: Yup.string().required("From Date is required"),
   //   toDate: Yup.string().required("To Date is required"),
   // });
+  
 
   const formik2 = useFormik({
     initialValues: {
@@ -759,10 +863,18 @@ function Web({ closeDrawer, selectedJobId, onClick }) {
         const response = await saveRecruitmentResumesExperienceDetailBatch(
           formattedData1
         );
+        Fileuplaodresume(insertedid1)
         console.log("work experience Details API Response:", response);
-        setActiveBtn(activeBtn + 1);
-        setCurrentStep(currentStep + 1);
-        setPresentage(presentage + 1);
+       
+        console.log(response.result.insertedId1)
+        if (response.status === 200) {
+          openNotification("success", "Successful", response.message);
+          setActiveBtn(activeBtn + 1);
+          setCurrentStep(currentStep + 1);
+          setPresentage(presentage + 1);
+        } else if (response.status === 500) {
+          openNotification("error", "input field is empty..", response.message);
+        }
       } catch (error) {
         console.error("Error saving work experience details:", error);
       } finally {
@@ -771,6 +883,30 @@ function Web({ closeDrawer, selectedJobId, onClick }) {
       }
     },
   });
+  const Fileuplaodresume = async(e)=>{
+    console.log(e,"hhhhhhhhhhhhhh")
+    try{
+      if (e) {
+        console.log("hhhhhh")
+      const formData = new FormData();
+  
+      formData.append('file', filePdfresume);
+  
+      console.log("inside file upload api");
+  
+      formData.append('action', 'resumeFileUpload');
+      formData.append('resumeId', e);
+  
+      
+  
+      const FileUploadresume = await fileAction(formData);
+      console.log(FileUploadresume, "fileUploadResult")
+    }
+  }catch(error){
+    console.log(error)
+  }
+  
+ }
 
   // const validationSchema3 = Yup.object().shape({
   //   customQuestion: Yup.string().required("This field is required"),
@@ -788,6 +924,21 @@ function Web({ closeDrawer, selectedJobId, onClick }) {
   //   setAdditionalEducationalDetailsCount((prevCount) => prevCount - 1);
   // };
 
+  const [selectedCheckboxes, setSelectedCheckboxes] = useState([]);
+
+  // Function to handle changes in the selected checkboxes
+  const handleCheckboxChange = (value) => {
+    const newSelectedCheckboxes = [...selectedCheckboxes];
+    const index = newSelectedCheckboxes.indexOf(value);
+    if (index === -1) {
+      newSelectedCheckboxes.push(value);
+    } else {
+      newSelectedCheckboxes.splice(index, 1);
+    }
+    setSelectedCheckboxes(newSelectedCheckboxes);
+  };
+
+
   const formik3 = useFormik({
     initialValues: {
       customQuestion: "",
@@ -797,17 +948,56 @@ function Web({ closeDrawer, selectedJobId, onClick }) {
     },
     enableReinitialize: true,
     validateOnChange: false,
-    validationSchema3: Yup.object().shape({
+    validationSchema: Yup.object().shape({
       customQuestion: Yup.string().required("This field is required"),
-      highestEducationLevel: Yup.string().required("This field is required"),
-      highestEducationLevel2: Yup.string().required("This field is required"),
-      highestEducationLevel3: Yup.string().required("This field is required"),
     }),
     onSubmit: async (values, { setSubmitting }) => {
       try {
-        // Append the inserted ID to the values before submitting
-        // values.resumeId = insertedid;
-        // Make API call to save educational details
+        const newAnswers = questid.flatMap((condition, conditionIndex) => {
+          const answers = {}; // Object to store answers for each evaluationTemplateDetailsId
+          condition.answerMetaData.forEach((metadata) => {
+            const detailsId = condition.questionTemplateDetailsId;
+            const answer = questionAnswers.find(
+              (a) => a.questionTemplateDetailsId === detailsId
+            );
+            let questioneir;
+            switch (metadata.key) {
+              case "Drop-down":
+                questioneir = dropdownvalue;
+                break;
+              case "Paragraph":
+                questioneir = textAreaValue;
+                break;
+              case "Checkboxes":
+                const selectedCheckboxValues = selectedCheckboxes.filter(
+                  (option) => metadata.value.split(",").includes(option.trim())
+                );
+                questioneir = selectedCheckboxValues.join(", ");
+                break;
+              case "ShortAnswer":
+                questioneir = forminputvalue;
+                break;
+              case "MultipleChoice":
+                questioneir = selectedValues[conditionIndex];
+                break;
+              default:
+                questioneir = "";
+            }
+            // Store the answer based on evaluationTemplateDetailsId
+            answers[detailsId] = {
+              jobId: selectedJobId,
+              resumeId: insertedid1,
+              customQuestion:"",
+             
+              createdBy: null,
+            };
+          });
+          // Convert the answers object to an array
+          return Object.values(answers);
+        });
+
+        console.log("New Answers:", newAnswers);
+       
         const response = await saveRecruitmentJobResumesCustomField(values);
         console.log("question Details API Response:", response);
         setActiveBtn(activeBtn + 1);
@@ -857,6 +1047,87 @@ function Web({ closeDrawer, selectedJobId, onClick }) {
   //   fetchapi();
   //   console.log(data, "dhcdghcvhd");
   // }, [currentStep]);
+
+  const getquestionnaire = async () => {
+    try {
+      console.log(questid, "iddd");
+      const idnew = questid;
+      console.log(idnew, "daataa of idd new");
+      const response = await getRecruitmentQuestionnaireTemplateDetailsById(
+        questid
+      );
+
+      const questionData = response.result.map((item) => ({
+        questionTemplateDetailsId: item.questionnaireTemplateDetailsId, // Assuming this is the correct ID
+        question: item.question,
+        answerMetaData: item.answerMetaData.map((metadata) => ({
+          key: metadata.key,
+          value: metadata.value,
+        })),
+      }));
+
+      setQuesttemp(questionData);
+      console.log(questionData);
+      console.log(response, "questionnaire");
+    } catch (error) {
+      console.error("error", error);
+    }
+  };
+
+  useEffect(() => {
+    getquestionnaire();
+  }, []);
+
+  useEffect(() => {
+    fetchedAnswers.forEach((answer) => {
+      const { questionTemplateDetailsId, questionAnswer } = answer;
+      const matchedCondition = questtemp.find(
+        (condition) =>
+          condition.questionTemplateDetailsId === questionTemplateDetailsId
+      );
+
+      if (matchedCondition) {
+        const metaData = matchedCondition.answerMetaData.find(
+          (meta) => meta.key
+        );
+
+        if (metaData) {
+          const { key } = metaData;
+          switch (key) {
+            case "Drop-down":
+              Setdopdownvalue(questionAnswer);
+              break;
+            case "Paragraph":
+              setTextAreavalue(questionAnswer);
+              break;
+            case "Checkboxes":
+              const selectedOptions = questionAnswer
+                .split(",")
+                .map((option) => option.trim());
+              setSelectedCheckboxes(selectedOptions);
+              break;
+            case "ShortAnswer":
+              setForminputValue(questionAnswer);
+              break;
+            case "MultipleChoice":
+              setSelectedValues((prevState) => {
+                const newState = [...prevState];
+                const index = questtemp.findIndex(
+                  (condition) =>
+                    condition.questionTemplateDetailsId ===
+                    questionTemplateDetailsId
+                );
+                newState[index] = questionAnswer;
+                return newState;
+              });
+              break;
+            default:
+              break;
+          }
+        }
+      }
+    });
+  }, [questtemp, questionAnswers]);
 
   useEffect(() => {
     const fetchapi = async () => {
@@ -931,7 +1202,8 @@ function Web({ closeDrawer, selectedJobId, onClick }) {
         if (currentStep === 4) {
           // Check if the current step is the review page
           const response = await getAllRecruitmentResumeEducationalDetails(
-            insertedid1
+            insertedid1   
+            
           );
           setEducationaldetails(
             response.result.map((item) => ({
@@ -959,6 +1231,7 @@ function Web({ closeDrawer, selectedJobId, onClick }) {
           // Check if the current step is the review page
           const response = await getAllRecruitmentResumesExperienceDetails(
             insertedid1
+            
           );
           setExperience(
             response.result.map((items) => ({
@@ -1062,7 +1335,8 @@ function Web({ closeDrawer, selectedJobId, onClick }) {
     switch (currentStage) {
       case 1:
         formik.handleSubmit();
-        setCurrentStage(currentStage + 1); // Move to next stage after successful submission
+        setCurrentStage(currentStage + 1);
+ // Move to next stage after successful submission
 
         break;
       case 2:
@@ -1085,7 +1359,8 @@ function Web({ closeDrawer, selectedJobId, onClick }) {
         break;
       case 5:
         closeDrawer();
-        window.location.reload();
+        setShowModal(true);
+        // window.location.reload();
 
         // case 5:
 
@@ -1112,7 +1387,6 @@ function Web({ closeDrawer, selectedJobId, onClick }) {
   };
 
   return (
-    
     <div className="flex flex-col gap-6 container-wrapper ">
       <FlexCol />
       <Header1 closeDrawer={closeDrawer} jobid={jobid} />
@@ -1145,19 +1419,19 @@ function Web({ closeDrawer, selectedJobId, onClick }) {
               <FlexCol />
               <div className="relative flex flex-col gap-12">
                 <div className="p-1 bg-white rounded-[10px] dark:bg-transparent dark:border dark:border-secondaryWhite border-opacity-20 dark:border-opacity-10">
-                  <h2>
-                    <button
-                      type="button"
+                  <h2
+                    /* <button
+                      type="button" */
                       className="flex items-center justify-between w-full px-6 py-4 font-semibold text-left rounded-md"
                       style={{ backgroundColor: `${primaryColor}10` }}
-                    >
+                    /* > */>
                       <div className="text-left rtl:text-right">
                         <h1 className="acco-h1">Personal Information </h1>
                         <p className="para">
                           lorem ipsum dummy text dolar sit.
                         </p>
                       </div>
-                    </button>
+                    {/* </button> */}
                   </h2>
                   {/* <form onSubmit={formik.handleSubmit}> */}
                   <form>
@@ -1237,16 +1511,16 @@ function Web({ closeDrawer, selectedJobId, onClick }) {
                           error={formik.errors.candidateContact}
                         />
                       </div>
-                      <div className="relative max-w-[1070px] sm:w-[492px] w-full borderb rounded-md h-24 bg-[#FAFAFA] dark:bg-black">
-                        <div className="flex min-w-0 pt-5 pl-5 gap-x-4">
+                      {/* <div className="relative max-w-[1070px] sm:w-[492px] w-full borderb rounded-md h-24 bg-[#FAFAFA] dark:bg-black"> */}
+                      {/* <div className="flex min-w-0 pt-5 pl-5 gap-x-4">
                           <Image
                             className="flex-none w-12 h-12 rounded-full bg-gray-50"
                             src={uploader}
                             alt=""
-                          />
-                          <div className="flex-auto min-w-0">
+                          /> */}
+                      {/* <div className="flex-auto min-w-0">
                             <label
-                              htmlFor="resumeUpload"
+                              htmlFor="profileImage"
                               className="cursor-pointer"
                             >
                               <p className="text-sm font-semibold leading-6 text-gray-900 dark:text-white">
@@ -1257,15 +1531,25 @@ function Web({ closeDrawer, selectedJobId, onClick }) {
                               </p>
                             </label>
                             <input
-                              id="resumeUpload"
+                              id="profileImage"
                               type="file"
                               className="hidden"
-                              // onChange={handleFileUpload}
-                              accept=".pdf,.docx"
+                              onChange={(e) =>
+                                handleImageChange(e.target.files[0])
+                              }
+                              accept="image/*"
                             />
-                          </div>
-                        </div>
-                      </div>
+                          </div> */}
+                      <FileUpload
+                        className={
+                          "relative max-w-[1070px] sm:w-[492px] w-full borderb rounded-md h-24 bg-[#FAFAFA] dark:bg-black"
+                        }
+                        change={(e)=>{
+                          setfilepdf(e)
+                        }}
+                      />
+                      {/* </div> */}
+                      {/* </div> */}
                       <div className="grid grid-cols-1 gap-4 sm:grid-cols-3">
                         <FormInput
                           title={"Location"}
@@ -1327,9 +1611,8 @@ function Web({ closeDrawer, selectedJobId, onClick }) {
               <FlexCol />
               <div className="relative flex flex-col gap-12">
                 <div className="p-1 bg-white rounded-[10px] dark:bg-transparent dark:border dark:border-secondaryWhite border-opacity-20 dark:border-opacity-10">
-                  <h2>
-                    <button
-                      type="button"
+                  <h2
+                   
                       className="flex items-center justify-between w-full px-6 py-4 font-semibold text-left rounded-md"
                       style={{ backgroundColor: `${primaryColor}10` }}
                     >
@@ -1339,7 +1622,7 @@ function Web({ closeDrawer, selectedJobId, onClick }) {
                           lorem ipsum dummy text dolar sit.
                         </p>
                       </div>
-                    </button>
+                    
                   </h2>
                   <div
                     id={`acco-text-item`}
@@ -1527,9 +1810,7 @@ function Web({ closeDrawer, selectedJobId, onClick }) {
               <FlexCol />
               <div className="relative flex flex-col gap-12">
                 <div className="p-1 bg-white rounded-[10px] dark:bg-transparent dark:border dark:border-secondaryWhite border-opacity-20 dark:border-opacity-10">
-                  <h2>
-                    <button
-                      type="button"
+                  <h2
                       className="flex items-center justify-between w-full px-6 py-4 font-semibold text-left rounded-md"
                       style={{ backgroundColor: `${primaryColor}10` }}
                     >
@@ -1539,7 +1820,7 @@ function Web({ closeDrawer, selectedJobId, onClick }) {
                           lorem ipsum dummy text dolar sit.
                         </p>
                       </div>
-                    </button>
+                    
                   </h2>
                   <div
                     id={`acco-text-item`}
@@ -1555,7 +1836,7 @@ function Web({ closeDrawer, selectedJobId, onClick }) {
                         <div className="grid grid-cols-1 gap-4 sm:grid-cols-3">
                           <FormInput
                             title={"Job Title"}
-                            placeholder={"Eg: Retail Sales Manager"}
+                            placeholder={"Enter Job Title"}
                             className="text-[#344054]"
                             name={`additionalExperiences[${index}].jobTitle`}
                             value={experience.jobTitle}
@@ -1576,7 +1857,7 @@ function Web({ closeDrawer, selectedJobId, onClick }) {
                           />
                           <Dropdown
                             title={"Employment Type"}
-                            placeholder="Eg: Fulltime"
+                            placeholder="Enter Employment Type"
                             options={[
                               { value: "Fulltime", label: "Full-time" },
                               { value: "Parttime", label: "Part-time" },
@@ -1603,7 +1884,7 @@ function Web({ closeDrawer, selectedJobId, onClick }) {
                         <div className="grid grid-cols-1 gap-4 sm:grid-cols-3 ">
                           <FormInput
                             title={"Company Name"}
-                            placeholder={"Eg: Microsoft"}
+                            placeholder={"Enter Company Name"}
                             className="text-[#344054]"
                             name={`additionalExperiences[${index}].companyName`}
                             value={experience.companyName}
@@ -1624,7 +1905,7 @@ function Web({ closeDrawer, selectedJobId, onClick }) {
                           />
                           <FormInput
                             title={"Location"}
-                            placeholder={"Eg: London, UK"}
+                            placeholder={"Enter Location"}
                             className="text-[#344054]"
                             name={`additionalExperiences[${index}].location`}
                             value={experience.location}
@@ -1647,7 +1928,7 @@ function Web({ closeDrawer, selectedJobId, onClick }) {
                         <div className="grid grid-cols-3 gap-4 sm:grid-cols-6">
                           <DateSelect
                             title={"From"}
-                            placeholder={"09/2023"}
+                            placeholder={"01/09/2023"}
                             className="text-[#344054]"
                             name={`additionalExperiences[${index}].fromDate`}
                             value={experience.fromDate}
@@ -1675,7 +1956,7 @@ function Web({ closeDrawer, selectedJobId, onClick }) {
                           />
                           <DateSelect
                             title={"To"}
-                            placeholder={"09/2024"}
+                            placeholder={"01/09/2024"}
                             selectpicker="dateandtime"
                             className="text-[#344054]"
                             name={`additionalExperiences[${index}].toDate`}
@@ -1725,9 +2006,7 @@ function Web({ closeDrawer, selectedJobId, onClick }) {
                 <FlexCol />
                 <div className="relative flex flex-col gap-12">
                   <div className="p-1 bg-white rounded-[10px] dark:bg-transparent dark:border dark:border-secondaryWhite border-opacity-20 dark:border-opacity-10">
-                    <h2>
-                      <button
-                        type="button"
+                    <h2
                         className="flex items-center justify-between w-full px-6 py-4 font-semibold text-left rounded-md"
                         style={{ backgroundColor: `${primaryColor}10` }}
                       >
@@ -1737,7 +2016,7 @@ function Web({ closeDrawer, selectedJobId, onClick }) {
                             lorem ipsum dummy text dolar sit.
                           </p>
                         </div>
-                      </button>
+                      
                     </h2>
                     <div
                       id={`acco-text-item`}
@@ -1745,7 +2024,7 @@ function Web({ closeDrawer, selectedJobId, onClick }) {
                       aria-labelledby={`acco-title-item`}
                       className="flex flex-col justify-between w-full gap-6 px-6 py-4"
                     >
-                      <div className="relative max-w-[1070px] sm:w-[492px] w-full borderb rounded-md h-24 bg-[#FAFAFA] dark:bg-black">
+                      {/* <div className="relative max-w-[1070px] sm:w-[492px] w-full borderb rounded-md h-24 bg-[#FAFAFA] dark:bg-black">
                         <div className="flex min-w-0 pt-5 pl-5 gap-x-4">
                           <Image
                             className="flex-none w-12 h-12 rounded-full bg-gray-50"
@@ -1761,7 +2040,15 @@ function Web({ closeDrawer, selectedJobId, onClick }) {
                             </p>
                           </div>
                         </div>
-                      </div>
+                      </div> */}
+                       <FileUpload
+                        className={
+                          "relative max-w-[1070px] sm:w-[492px] w-full borderb rounded-md h-24 bg-[#FAFAFA] dark:bg-black"
+                        }
+                        change={(e)=>{
+                          setfilepdfresume(e)
+                        }}
+                      />
                       <TextArea
                         title="Cover Letter"
                         placeholder="Type here"
@@ -1769,7 +2056,8 @@ function Web({ closeDrawer, selectedJobId, onClick }) {
                         name="coverLetter"
                         value={formik.values.coverLetter}
                         change={(e) => {
-                          formik.setFieldValue("coverLetter", e);
+                          setCoverletter(e)
+
                         }}
                         required={false}
                         error={formik.errors.coverLetter}
@@ -1787,19 +2075,18 @@ function Web({ closeDrawer, selectedJobId, onClick }) {
               <FlexCol />
               <div className="relative flex flex-col gap-12">
                 <div className="p-1 bg-white rounded-[10px] dark:bg-transparent dark:border dark:border-secondaryWhite border-opacity-20 dark:border-opacity-10">
-                  <h2>
-                    <button
-                      type="button"
+                  <h2
+                    
                       className="flex items-center justify-between w-full px-6 py-4 font-semibold text-left rounded-md"
                       style={{ backgroundColor: `${primaryColor}10` }}
                     >
                       <div className="text-left rtl:text-right">
-                        <h1 className="acco-h1">Prerequisite </h1>
+                        <h1 className="acco-h1">Questions </h1>
                         <p className="para">
                           lorem ipsum dummy text dolar sit.
                         </p>
                       </div>
-                    </button>
+                    
                   </h2>
                   <div
                     id={`acco-text-item`}
@@ -1807,64 +2094,107 @@ function Web({ closeDrawer, selectedJobId, onClick }) {
                     aria-labelledby={`acco-title-item`}
                     className="flex flex-col justify-between w-full gap-6 px-6 py-4"
                   >
-                    <div className="grid grid-cols-1 gap-4 sm:grid-cols-2 ">
-                      <FormInput
-                        title={
-                          "Are you legally eligible to work in the country?"
-                        }
-                        placeholder={"Answer here.."}
-                        className="text-[#344054]"
-                        name="customQuestion"
-                        value={formik3.values.customQuestion}
-                        change={(e) => {
-                          formik3.setFieldValue("customQuestion", e);
-                        }}
-                        required={false}
-                        error={formik3.errors.customQuestion}
-                      />
-                    </div>
-                    <div className="grid grid-cols-1 gap-4 sm:grid-cols-2">
-                      <FormInput
-                        title={"Highest level of education completed"}
-                        placeholder={"Answer here.."}
-                        className="text-[#344054]"
-                        name="highestEducationLevel"
-                        value={formik3.values.highestEducationLevel}
-                        change={(e) => {
-                          formik3.setFieldValue("highestEducationLevel", e);
-                        }}
-                        required={false}
-                        error={formik3.errors.highestEducationLevel}
-                      />
-                    </div>
-
-                    <div className="grid grid-cols-1 gap-4 sm:grid-cols-2">
-                      <FormInput
-                        title={"Highest level of education completed"}
-                        placeholder={"Answer here.."}
-                        className="text-[#344054]"
-                        name="highestEducationLevel2"
-                        value={formik3.values.highestEducationLevel2}
-                        change={(e) => {
-                          formik3.setFieldValue("highestEducationLevel2", e);
-                        }}
-                        required={false}
-                        error={formik3.errors.highestEducationLevel}
-                      />
-                    </div>
-                    <div className="grid grid-cols-1 gap-4 sm:grid-cols-2">
-                      <FormInput
-                        title={"Highest level of education completed"}
-                        placeholder={"Answer here.."}
-                        className="text-[#344054]"
-                        name="highestEducationLevel3"
-                        value={formik3.values.highestEducationLevel3}
-                        change={(e) => {
-                          formik3.setFieldValue("highestEducationLevel3", e);
-                        }}
-                        required={false}
-                        error={formik3.errors.highestEducationLevel}
-                      />
+                    <div>
+                      {questtemp.length > 0 ? (
+                        questtemp.map((condition, index) => (
+                          <div key={index}>
+                            <h4>{condition.question}</h4>
+                            {condition.answerMetaData.map((metadata, idx) => (
+                              <div key={idx}>
+                                {metadata.key === "Drop-down" && idx === 0 && (
+                                  <Dropdown
+                                    options={condition.answerMetaData
+                                      .filter(
+                                        (meta) => meta.key === "Drop-down"
+                                      )
+                                      .flatMap((meta) => meta.value.split(","))
+                                      .map((option) => ({
+                                        label: option.trim(),
+                                        value: option.trim(),
+                                      }))}
+                                    change={Setdopdownvalue}
+                                    value={dropdownvalue}
+                                  />
+                                )}
+                                {metadata.key === "Paragraph" && (
+                                  <TextArea
+                                    rows={4}
+                                    change={setTextAreavalue}
+                                    value={textAreaValue}
+                                  />
+                                )}
+                                {metadata.key === "Checkboxes" && (
+                                  <div>
+                                    {metadata.value
+                                      .split(",")
+                                      .map((option, optIdx) => (
+                                        <label key={optIdx}>
+                                          <Checkbox
+                                            value={option.trim()}
+                                            checked={selectedCheckboxes.includes(
+                                              option.trim()
+                                            )}
+                                            onChange={() =>
+                                              handleCheckboxChange(
+                                                option.trim()
+                                              )
+                                            }
+                                          />
+                                          {option.trim()}
+                                        </label>
+                                      ))}
+                                  </div>
+                                )}
+                                {metadata.key === "ShortAnswer" && (
+                                  <FormInput
+                                    change={setForminputValue}
+                                    value={forminputvalue}
+                                  />
+                                )}
+                                {metadata.key === "MultipleChoice" && (
+                                  <div>
+                                    <Radio.Group
+                                      onChange={(e) =>
+                                        handleRadioChange(e, index)
+                                      }
+                                      value={selectedValues[index]}
+                                    >
+                                      {metadata.value
+                                        .split(",")
+                                        .map((option, optIdx) => (
+                                          <Radio
+                                            key={optIdx}
+                                            value={option.trim()}
+                                          >
+                                            {option.trim()}
+                                          </Radio>
+                                        ))}
+                                    </Radio.Group>
+                                  </div>
+                                )}
+                              </div>
+                            ))}
+                          </div>
+                        ))
+                      ) : (
+                        <div className="grid grid-cols-1 gap-4 sm:grid-cols-2 ">
+                          <FormInput
+                            title={
+                              "Are you legally eligible to work in the country?"
+                            }
+                            placeholder={"Answer here.."}
+                            className="text-[#344054]"
+                            name="customQuestion"
+                            value={formik3.values.customQuestion}
+                            change={(e) => {
+                              formik3.setFieldValue("customQuestion", e);
+                            }}
+                            required={false}
+                            error={formik3.errors.customQuestion}
+                          />
+                          {/* Additional FormInput components can be added here */}
+                        </div>
+                      )}
                     </div>
                   </div>
                 </div>
@@ -1891,18 +2221,29 @@ function Web({ closeDrawer, selectedJobId, onClick }) {
                     icon={<AiTwotoneEdit />}
                   />
                 </div>
+                {data.map((item, index) => (
                 <div className="flex min-w-0 pt-3  gap-x-4">
                   <Image
-                    className="flex-none bg-cover rounded-full h-18 w-18 "
-                    src={candidate}
+                    className="flex-none bg-cover rounded-full h-18 w-18 object-cover"
+                    src={item.candidatePhoto}
+                    width={64}
+                    height={64}
                     alt=""
+                    style={{
+                      flex: 'none',
+                      borderRadius: '50%',
+                      height: '4.5rem',  // Corresponds to h-18
+                      width: '4.5rem',   // Corresponds to w-18
+                      objectFit: 'cover'
+                    }}
                   />
-                  {data.map((item, index) => (
+                 
                     <div className="flex-auto min-w-0 mt-3">
                       <p className="acco-h1"> {item.candidateName}</p>
                     </div>
-                  ))}
+                  
                 </div>
+                ))}
 
                 <div>
                   {userdata.map((user) => (
@@ -2050,9 +2391,13 @@ function Web({ closeDrawer, selectedJobId, onClick }) {
                       icon={<AiTwotoneEdit />}
                     />
                   </div>
+                 
                   <div className="divider-h" />
-                  <PDFViewer pdfUrl={pdfFile} />
+                  {data.map((item, index) => (
+                  <PDFViewer pdfUrl={item.resumeFile} />
+                ))}
                 </div>
+                 
                 <div className="divider-h mt-9" />
                 <div className="flex flex-col gap-8 mt-8">
                   <h2 className="h6">Prerequisite</h2>

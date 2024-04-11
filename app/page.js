@@ -12,7 +12,7 @@ import { useMediaQuery } from "react-responsive";
 import { useRouter } from "next/navigation";
 import Link from "next/link";
 import { jobs } from "@/Components/Data";
-import { getAllRecruitmentJobs, getRecruitmentJobById } from "@/Components/Api";
+import { getAllRecruitmentJobs, getCompanyById, getRecruitmentJobById } from "@/Components/Api";
 import { Drawer } from "antd";
 import Web from "./Form/page";
 import Navbar from "@/Components/Navbar";
@@ -25,11 +25,15 @@ const Home = () => {
   const [searchJobTitle, setSearchJobTitle] = useState("");
   const [searchJobLocation, setSearchJobLocation] = useState("");
   const [filteredJobs, setFilteredJobs] = useState([]);
+
   const jobDetailsAnimation = useAnimation();
   const isSmallScreen = useMediaQuery({ maxWidth: 767 });
   const [drawerVisible, setDrawerVisible] = useState(false);
   const [selectedJobIdForApply, setSelectedJobIdForApply] = useState(null);
   const [clearInput, setClearInput] = useState(false); // State to toggle clearing input
+  const [sortOrder, setSortOrder] = useState("dsc"); // "asc" or "desc"
+  const [company,setCompany]=useState([])
+  
 
   const router = useRouter();
   console.log(setSearchJobTitle);
@@ -79,32 +83,48 @@ const Home = () => {
     callapi();
   }, []);
 
-  const handleSearch = async () => {
-    console.log("Searching...");
-    try {
-      const response = await getAllRecruitmentJobs();
-      const allJobs = response.result;
-      console.log(allJobs, "data of jobs");
-      const filteredJobs = allJobs.filter(
-        (job) =>
-          job.jobTitle.toLowerCase().includes(searchJobTitle.toLowerCase()) &&
-          job.location.toLowerCase().includes(searchJobLocation.toLowerCase())
+  // const handleSearch = async () => {
+  //   console.log("Searching...");
+  //   try {
+  //     const response = await getAllRecruitmentJobs();
+  //     const allJobs = response.result;
+  //     console.log(allJobs, "data of jobs");
+  //     const filteredJobs = allJobs.filter(
+  //       (job) =>
+  //         job.jobTitle.toLowerCase().includes(searchJobTitle.toLowerCase()) &&
+  //         job.location.toLowerCase().includes(searchJobLocation.toLowerCase())
 
-        // JSON.parse(job.searchKeywords).some(keyword =>
-        //   keyword.toLowerCase().includes(searchJobTitle.toLowerCase())
-      );
-      console.log("Search title:", searchJobTitle);
-      console.log("Search location:", searchJobLocation);
-      console.log("Filtered jobs:", filteredJobs);
-      setFilteredJobs(filteredJobs); // Update the filtered jobs state
-      setSearchJobTitle(""); // Clear the searchJobTitle state
-      setSearchJobLocation(""); // Clear the searchJobLocation state
-      setClearInput(prevState => !prevState);
-    } catch (error) {
-      console.error(error);
-    }
+  //       // JSON.parse(job.searchKeywords).some(keyword =>
+  //       //   keyword.toLowerCase().includes(searchJobTitle.toLowerCase())
+  //     );
+  //     console.log("Search title:", searchJobTitle);
+  //     console.log("Search location:", searchJobLocation);
+  //     console.log("Filtered jobs:", filteredJobs);
+  //     setFilteredJobs(filteredJobs); // Update the filtered jobs state
+  //     setSearchJobTitle(""); // Clear the searchJobTitle state
+  //     setSearchJobLocation(""); // Clear the searchJobLocation state
+  //     setClearInput(prevState => !prevState);
+  //   } catch (error) {
+  //     console.error(error);
+  //   }
+  // };
+  const handleSearch = () => {
+    console.log("Searching...");
+    const newFilteredJobs = JobsList.filter(
+      (job) =>
+        job.jobTitle.toLowerCase().includes(searchJobTitle.toLowerCase()) &&
+        job.location.toLowerCase().includes(searchJobLocation.toLowerCase())
+    );
+    console.log("Search title:", searchJobTitle);
+    console.log("Search location:", searchJobLocation);
+    console.log("Filtered jobs:", newFilteredJobs);
+    setFilteredJobs(newFilteredJobs); // Update the filtered jobs state based on the new search
+    setSearchJobTitle(""); // Clear the searchJobTitle state
+    setSearchJobLocation(""); // Clear the searchJobLocation state
+    setClearInput(prevState => !prevState);
   };
-  console.log("Search title:", searchJobTitle);
+  
+  // console.log("Search title:", searchJobTitle);
   useEffect(() => {
     try {
       animateJobDetails();
@@ -132,6 +152,7 @@ const Home = () => {
   // Function to handle closing the drawer
   const closeDrawer = () => {
     setDrawerVisible(false);
+    window.location.reload();
   };
   const handleApply = (jobId) => {
     setSelectedJobIdForApply(jobId);
@@ -139,9 +160,90 @@ const Home = () => {
     openDrawer();
   };
 
+  // const handleSortChange = (key) => {
+  //   setSortOrder(key === "3" ? "asc" : "desc"); // Assuming "3" corresponds to "Oldest"
+  // };
+
+  // useEffect(() => {
+  //   let sortedJobs = [...filteredJobs];
+  //   if (sortOrder === "asc") {
+  //     sortedJobs.sort((a, b) => new Date(a.createdOn).getTime() - new Date(b.createdOn).getTime()); // Sorting by oldest
+  //   } else {
+  //     sortedJobs.sort((a, b) => new Date(b.createdOn).getTime() - new Date(a.createdOn).getTime()); // Sorting by newest
+  //   }
+
+  //   setFilteredJobs(sortedJobs);
+  // }, [sortOrder]);
+
+  const handleSortChange = (key) => {
+    let sortedJobs = [...filteredJobs];
+    switch (key) {
+      case "1":
+        // Handle Relevance sorting
+        break;
+      case "2":
+        sortedJobs.sort((a, b) => new Date(b.createdOn).getTime() - new Date(a.createdOn).getTime()); // Newest
+        break;
+      case "3":
+  
+        sortedJobs.sort((a, b) => new Date(a.createdOn).getTime() - new Date(b.createdOn).getTime()); // Oldest
+        break;
+        case "4":
+          const tenDaysAgo = new Date();
+          tenDaysAgo.setDate(tenDaysAgo.getDate() - 5);
+          const tenDaysAgoTimestamp = tenDaysAgo.getTime();
+          sortedJobs = sortedJobs.filter(
+            (job) => new Date(job.createdOn).getTime() >= tenDaysAgoTimestamp
+          );
+          break;
+        case "5":
+          const twentyDaysAgo = new Date();
+          twentyDaysAgo.setDate(twentyDaysAgo.getDate() - 20);
+          const twentyDaysAgoTimestamp = twentyDaysAgo.getTime();
+          sortedJobs = sortedJobs.filter(
+            (job) => new Date(job.createdOn).getTime() >= twentyDaysAgoTimestamp
+          );
+          break;
+      default:
+        break;
+    }
+    setFilteredJobs(sortedJobs);
+  };
+
+  // useEffect(() => {
+  //   const sortedJobs = [...filteredJobs].sort((a, b) => {
+  //     const dateA = new Date(a.createdOn).getTime();
+  //     const dateB = new Date(b.createdOn).getTime();
+
+  //     if (sortOrder === "asc") {
+  //       return dateA - dateB;
+  //     } else {
+  //       return dateB - dateA;
+  //     }
+  //   });
+
+  //   setFilteredJobs(sortedJobs);
+  // }, [sortOrder, filteredJobs]);
+
+useEffect(() => {
+  const fetchdata = async () => {
+    try {
+      const response = await getCompanyById(6);
+      console.log(response.result);
+      setCompany(response.result);
+    } catch (error) {
+      console.error(error, "error");
+    }
+  };
+
+  fetchdata();
+}, []);
+
+ 
+
   return (
     <>
-    <Navbar/>
+    <Navbar company={company}/>
     <main className="flex flex-col justify-center gap-6 pb-10 scroll-smooth">
       <div className="md:h-[288px] xl:h-[300px] h-full w-full bg-TopSection py-5">
         <div className="flex flex-col gap-3 px-5 pt-16 md:pt-24 container-wrapper">
@@ -194,12 +296,12 @@ const Home = () => {
       </div>
       <div className="grid items-center w-full grid-cols-12 container-wrapper">
         <div className="col-span-6 md:col-span-3">
-          <Filter />
+          <Filter  />
         </div>
         <div className="col-span-6 md:col-span-9">
           <div className="flex gap-1">
             <p className="para text-[#656565]"> Sort by</p>
-            <Sorting />
+            <Sorting onSortChange={handleSortChange} />
           </div>
         </div>
       </div>
@@ -232,7 +334,7 @@ const Home = () => {
           />
         </div>
       </motion.div>
-      <Drawer
+      {/* <Drawer
         placement="right"
         closable={false}
         onClose={closeDrawer}
@@ -241,7 +343,7 @@ const Home = () => {
         height="100%"
       >
         <Web closeDrawer={closeDrawer} selectedJobId={selectedJobIdForApply} selectedJob />
-      </Drawer>
+      </Drawer> */}
     </main>
     </>
   );

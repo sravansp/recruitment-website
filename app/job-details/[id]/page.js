@@ -7,8 +7,10 @@ import { useEffect, useState } from "react";
 import { getRecruitmentJobById } from "@/Components/Api";
 const JobDetailsPage = () => {
   const router = useRouter();
-  const [selectedJob, setSelectedJob] = useState("")
-    const {id}=useParams()
+  // const [selectedJob, setSelectedJob] = useState("")
+    // const {id}=useParams()
+
+    const params = useParams();
   // const { jobId } = router.query;
   // console.log(jobId);
   // console.log(params.id); // Correctly accessing the ID from URL parameters
@@ -34,21 +36,21 @@ const JobDetailsPage = () => {
 
   //   fetchJobDetails();
   // }, []);
-  const getjobById = async () => {
-    try {
-      const response = await getRecruitmentJobById(id);
-      console.log(response);
-      setSelectedJob(response?.result||[])
-      console.log(id);
-    } catch (error) {
-      console.log(error);
-    }
-  };
+//   const getjobById = async () => {
+//     try {
+//       const response = await getRecruitmentJobById(id);
+//       console.log(response);
+//       setSelectedJob(response?.result||[])
+//       console.log(id);
+//     } catch (error) {
+//       console.log(error);
+//     }
+//   };
 
-  useEffect(()=>{
-    getjobById()
-  },[])
-console.log(selectedJob);
+//   useEffect(()=>{
+//     getjobById()
+//   },[])
+// console.log(selectedJob);
   //
   // useEffect(() => {
   //   // Find the selected job based on the ID from the URL params
@@ -56,6 +58,13 @@ console.log(selectedJob);
   //   setSelectedJob(foundJob);
   //   console.log(foundJob,"fjhdvhvjf")
   // }, [params.id]);
+  const selectedJob = jobs.find((job) => job.id === parseInt(params.id));
+
+  if (!selectedJob) {
+    // Handle case where job ID is not found
+    return <div>Job not found</div>;
+  }
+
 
   return (
     <div className="flex flex-col gap-4 dark:bg-black">

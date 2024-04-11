@@ -14,13 +14,22 @@ const items = [
     key: "3",
     label: "Oldest",
   },
+  {
+    key: "4",
+    label: "10days Ago",
+  },
+  {
+    key: "3",
+    label: "20days Ago",
+  },
 ];
-const Sorting = () => (
+const Sorting = ({onSortChange}) => (
   <Dropdown
     menu={{
       items,
       selectable: true,
-      defaultSelectedKeys: ["3"],
+      defaultSelectedKeys: ["2"],
+      onClick: ({ key }) => onSortChange(key)
     }}
   >
     {/* <Typography.Link>

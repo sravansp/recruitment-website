@@ -133,21 +133,26 @@ const items = [
   },
 ];
 
-const CustomDropdown = () => {
+const CustomDropdown = ({ onCheckboxChange, allJobs }) => {
   const [checkedItems, setCheckedItems] = useState({});
-  const [accordionStates, setAccordionStates] = useState(true);
-  const [isDropdownOpen, setIsDropdownOpen] = useState(false); // Set to true initially
-  
+  const [accordionStates, setAccordionStates] = useState({
+    "Job Types": true,
+    "Degree": true,
+  });
+  const [isDropdownOpen, setIsDropdownOpen] = useState(false);
+
   const dropdownRef = useRef(null);
 
   const handleCheckboxChange = (accordionKey, checkboxValue) => {
-    setCheckedItems((prevCheckedItems) => ({
-      ...prevCheckedItems,
+    const updatedItems = {
+      ...checkedItems,
       [accordionKey]: {
-        ...(prevCheckedItems[accordionKey] || {}),
-        [checkboxValue]: !prevCheckedItems[accordionKey]?.[checkboxValue],
+        ...(checkedItems[accordionKey] || {}),
+        [checkboxValue]: !checkedItems[accordionKey]?.[checkboxValue],
       },
-    }));
+    };
+    setCheckedItems(updatedItems);
+    onCheckboxChange(updatedItems);
   };
 
   const toggleAccordion = (accordionKey) => {
@@ -165,33 +170,40 @@ const CustomDropdown = () => {
 
   const handleClickOutside = (e) => {
     if (dropdownRef.current && !dropdownRef.current.contains(e.target)) {
-      // Clicked outside the dropdown, close it
       setAccordionStates({});
     }
   };
 
   useEffect(() => {
-    // Attach click event listener on the document to handle clicks outside the dropdown
     document.addEventListener("click", handleClickOutside);
     return () => {
-      // Remove the event listener on component unmount
       document.removeEventListener("click", handleClickOutside);
     };
   }, []);
 
   const menu = (
     <Menu onClick={handleMenuClick} className="p-4 min-w-[250px]">
-      <Accordion items={items}/>
+      <Accordion
+        items={items}
+        accordionStates={accordionStates}
+        toggleAccordion={toggleAccordion}
+        onCheckboxChange={handleCheckboxChange}
+      />
     </Menu>
   );
 
   return (
-    <Dropdown overlay={menu} trigger={["click"]} ref={dropdownRef} visible={isDropdownOpen}>
+    <Dropdown
+      overlay={menu}
+      trigger={["click"]}
+      ref={dropdownRef}
+      visible={isDropdownOpen}
+    >
       <a
         className="ant-dropdown-link para text-[#656565] cursor-pointer"
         onClick={(e) => {
           e.preventDefault();
-          setIsDropdownOpen(!isDropdownOpen); // Toggle dropdown open state
+          setIsDropdownOpen(!isDropdownOpen);
         }}
       >
         Filter Jobs <DownOutlined />
@@ -200,10 +212,6 @@ const CustomDropdown = () => {
   );
 };
 
-// Wrap the entire CustomDropdown component with next/dynamic to disable server-side rendering
-const DynamicCustomDropdown = dynamic(() => Promise.resolve(CustomDropdown), {
-  ssr: false,
-});
+export default CustomDropdown;
 
-export default DynamicCustomDropdown;
 

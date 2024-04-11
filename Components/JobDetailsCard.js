@@ -1,12 +1,31 @@
 // JobDetailsCard.js
 "use client";
-import React from "react";
+import React, { useState } from "react";
 import { motion } from "framer-motion";
 import ButtonClick from "./Button";
 import TextReadMore from "./TextReadMore";
 import Link from "next/link";
+import { Drawer } from "antd";
+import Web from "@/app/Form/page";
 
-const JobDetailsCard = ({ selectedJob, jobDetailsAnimation,handleApply }) => {
+const JobDetailsCard = ({ selectedJob, jobDetailsAnimation }) => {
+  const [drawerVisible, setDrawerVisible] = useState(false);
+  const [selectedJobIdForApply, setSelectedJobIdForApply] = useState(null);
+
+  const openDrawer = () => {
+    setDrawerVisible(true);
+  };
+
+  // Function to handle closing the drawer
+  const closeDrawer = () => {
+    setDrawerVisible(false);
+    window.location.reload();
+  };
+  const handleApply = (jobId) => {
+    setSelectedJobIdForApply(jobId);
+    console.log(selectedJobIdForApply, "hjvgvh");
+    openDrawer();
+  };
   // const handleApply = () => {
    
   //   if (selectedJob) {
@@ -102,9 +121,20 @@ console.log(selectedJob);
               </div>
             {/* )} */}
           </div>
+          <Drawer
+        placement="right"
+        closable={false}
+        onClose={closeDrawer}
+        visible={drawerVisible}
+        width="100%" // Adjust the width as needed
+        height="100%"
+      >
+        <Web closeDrawer={closeDrawer} selectedJobId={selectedJobIdForApply} selectedJob />
+      </Drawer>
         </div>
       )}
     </motion.div>
+    
   );
 };
 
