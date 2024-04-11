@@ -23,6 +23,9 @@ import { Button, Card, Dropdown, Menu, Space, notification } from "antd";
 import { FaRegEdit } from "react-icons/fa";
 import { CommonAxisSettingsConstantLineStyle } from "devextreme-react/chart";
 import Pdf from "../../../assets/images/uploader/pdf.png"
+import { FiAlertOctagon } from "react-icons/fi";
+import { PiChecks, PiPushPinSlashBold } from "react-icons/pi";
+import { IoIosArrowDown } from "react-icons/io";
 
 const Offers = () => {
   const [content, setContent] = useState("");
@@ -269,6 +272,34 @@ const openNotification = (type, message, description) => {
   },[jobId])
 
 
+  const options = [
+    {
+      id: 1,
+      label: 'opt 1',
+      value: '',
+    },
+    {
+      id: 2,
+      label: 'opt2',
+      value: '',
+    },
+    {
+      id: 3,
+      label: 'opt3',
+      value: '',
+    },
+  ];
+
+  const menu = (
+    <Menu>
+      {options.map(option => (
+        <Menu.Item key={option.id}>
+          {option.label}
+        </Menu.Item>
+      ))}
+    </Menu>
+  );
+  
   return (
     <div className="grid gap-6 lg:grid-cols-12">
       {/* LEFT COLUMN  */}
