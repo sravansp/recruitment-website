@@ -211,8 +211,8 @@ const Template = ({
        },
          {
             id:4,
-            title:"Status",
-            value:"Status",
+            title:"Action",
+            value:"Action",
             action:true,
          },
         ],
