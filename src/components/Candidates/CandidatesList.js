@@ -122,7 +122,7 @@ const CandidatesList = () => {
       <div className='flex justify-between'>
         <Heading
           title="Candidates"
-          description=" Lorem ipsum Lorem ipsum Lorem ipsum. "/>
+          description="Coordinates the planning, execution, and completion of projects..."/>
            <div className="flex gap-4">
           {" "}
           <Link onClick={handleNavigate} className="flex gap-2 mt-2">
