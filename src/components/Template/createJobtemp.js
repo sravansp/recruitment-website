@@ -247,25 +247,25 @@ const CreatejobTemp = ({
     //     salaryCurrency: yup.string().required("Date of Birth Group is Required"),
 
     //   }),
-    enableReinitialize: true,
-      validateOnChange: false,
-     validationSchema :yup.object().shape({
-      companyId: yup.string().required("Company is Required"),
-      jobTitle: yup.string().required("Job Title is Required"),
-      location: yup.string().required("Location is Required"),
-      requirementType: yup.string().required("Requirment is Required"),
-      jobType: yup.string().required("Requirment is Required"),
-      salaryRangeTo: yup.string().required("Requirment is Required"),
-      salaryRangeFrom: yup.string().required("Requirment is Required"),
-      salaryCurrency: yup.string().required("Requirment is Required"),
-      departmentId: yup.string().required("Department is Required"),
-      jobCode: yup.string().min(4, "Job Code must be 4 characters").max(10, "Job Code must be 10 characters").required("Job Code is Required"),
-      experience: yup.string().required("Experience is Required"),
-      education: yup.string().required("Education is Required"),
-      searchKeywords: yup.string().required("Search Keywords are Required"),
-      salaryRangeFrom: yup.string().required("Salary Range From is Required"),
-      salaryCurrency: yup.string().required("Salary Currency is Required"),
-    }),
+    // enableReinitialize: true,
+    //   validateOnChange: true,
+    //  validationSchema :yup.object().shape({
+    //   // companyId: yup.string().required("Company is Required"),
+    //   jobTitle: yup.string().required("Job Title is Required"),
+    //   location: yup.string().required("Location is Required"),
+    //   requirementType: yup.string().required("Requirment is Required"),
+    //   jobType: yup.string().required("Requirment is Required"),
+    //   salaryRangeTo: yup.number().required("Requirment is Required"),
+    //   salaryRangeFrom: yup.number().required("Requirment is Required"),
+    //   salaryCurrency: yup.string().required("Requirment is Required"),
+    //   departmentId: yup.string().required("Department is Required"),
+    //   jobCode: yup.number().required("Job Code is Required"),
+    //   experience: yup.string().required("Experience is Required"),
+    //   education: yup.string().required("Education is Required"),
+    //   searchKeywords: yup.string().required("Search Keywords are Required"),
+    //   jobDescription: yup.string().required("Description is Required"),
+      
+    // }),
     onSubmit: async (e) => {
       try {
         const updatedCustomFields = evaluation.map((condition) => ({
@@ -937,6 +937,7 @@ const CreatejobTemp = ({
               {activeBtnValue === "Jobdetails" ? (
                 <>
                   <FlexCol>
+                  <div className="rounded-md borderb">
                     <Accordion
                       title={"Job Details"}
                       className="Text_area"
@@ -1007,7 +1008,8 @@ const CreatejobTemp = ({
                         />
                       </div>
                     </Accordion>
-
+                    </div>
+                    <div className="rounded-md borderb">
                     <Accordion
                       title={"Location "}
                       className="Text_area"
@@ -1101,7 +1103,10 @@ const CreatejobTemp = ({
                         />
                       </div>
                     </Accordion>
-                    <div>
+                    
+                    </div>
+                    <div className="rounded-md borderb">
+                    
                       <Accordion
                         title={"Employment Details"}
                         className="Text_area"
@@ -1214,7 +1219,7 @@ const CreatejobTemp = ({
                         </div>
                       </Accordion>
                     </div>
-
+                    <div className="rounded-md borderb">
                     <Accordion
                       title={"Job Description"}
                       className="Text_area"
@@ -1253,20 +1258,8 @@ const CreatejobTemp = ({
                             <DownOutlined />
                           </Space>
                         </Button>
-                        <Button
-                          type="primary"
-                          onClick={handleGenerateWithAI}
-                          icon={
-                            <img
-                              src={image}
-                              alt="image"
-                              style={{ height: "20px", width: "20px" }}
-                              
-                            />
-                          }
-                        >
-                          Generate with AI
-                        </Button>
+                       
+                        <ButtonClick handleSubmit={handleGenerateWithAI} BtnType="primary" icon={<img src={image} alt="image" style={{ height: '20px', width: '20px', alignItems: "center" }}  />} buttonName={"Generate with AI"}/>
                       </div>
                       <Card>
                         <TextEditor
@@ -1278,8 +1271,9 @@ const CreatejobTemp = ({
                           hideBorder={true}
                           initialValue={content}
                           //  change={(e)=>{
-                          //    formik1.setFieldValue('jobDescription',e)
+                          //    formik.setFieldValue('jobDescription',e)
                           //  }}
+                          error={formik.errors.jobDescription}
                           onChange={handleEditorChange}
                         />
                         {/* <TextArea
@@ -1308,11 +1302,13 @@ const CreatejobTemp = ({
                                              /> */}
                       </Card>
                     </Accordion>
+                    </div>
                   </FlexCol>
                 </>
               ) : activeBtnValue === "ApplicationForm" ? (
                 <>
                   <FlexCol>
+                  <div className="rounded-md borderb">
                     <Accordion
                       title={"ApplicationForm "}
                       className="Text_area"
@@ -1432,6 +1428,8 @@ const CreatejobTemp = ({
                         </Radiobuttonnew>
                       </div>
                     </Accordion>
+                    </div>
+                    <div className="rounded-md borderb">
 
                     <Accordion
                       title={"Profile "}
@@ -1536,7 +1534,8 @@ const CreatejobTemp = ({
                         </Radiobuttonnew>
                       </div>
                     </Accordion>
-
+                     </div>
+                     <div className="rounded-md borderb">
                     <Accordion
                       title={"Custom Fields "}
                       className="Text_area"
@@ -1665,13 +1664,13 @@ icondropDown={true}
                                     gap: "15px",
                                   }}
                                 >
-                                  <MdOutlineFileCopy
+                                  {/* <MdOutlineFileCopy
                                     style={{
                                       width: "18px",
                                       height: "18px",
                                       cursor: "pointer",
                                     }}
-                                  />
+                                  /> */}
                                   <MdDelete
                                     style={{
                                       width: "18px",
@@ -1788,6 +1787,7 @@ icondropDown={true}
                         }}
                       />
                     </Accordion>
+                    </div>
                   </FlexCol>
                 </>
               ) : activeBtnValue === "Workflow" ? (

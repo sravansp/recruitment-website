@@ -1657,10 +1657,10 @@ const Createjob = ({
                             options={JobDesc}
                           />
 
-                          <Button onClick={handleGenerateWithAI} type="primary" icon={<img src={image} alt="image" style={{ height: '15px', width: '15px', alignItems: "center" }} />} >
-                            Generate with AI
+                          <ButtonClick handleSubmit={handleGenerateWithAI} BtnType="primary" icon={<img src={image} alt="image" style={{ height: '20px', width: '20px', alignItems: "center" }}  />} buttonName={"Generate with AI"}/>
+                            
 
-                          </Button>
+                          
                         </div>
                         {/* <div className="pt-4">
                                             <TextEditor
