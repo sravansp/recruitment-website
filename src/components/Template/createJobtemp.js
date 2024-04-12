@@ -43,6 +43,8 @@ import {
   getAllRecruitmentJobTeamMembers,
   updateRecruitmentJobTemplate,
   getRecruitmentJobTemplateById,
+  getAllRecruitmentJobDescriptionTemplates,
+  getRecruitmentJobDescriptionTemplateById
 } from "../Api1";
 import { Formik, useFormik } from "formik";
 import { CgAdd } from "react-icons/cg";
@@ -99,6 +101,8 @@ const CreatejobTemp = ({
   const [selectedWorkFlowId, setSelectedWorkFlowId] = useState("");
   const [selectedDivs, setSelectedDivs] = useState([]);
   const [content, setContent] = useState("");
+  const [JobDescriptionList,setJobDescriptionList]=useState([])
+  const[decriptionId,setDecriptionId] =  useState("")
   console.log(updateId);
   useEffect(() => {
     // Retrieve the login data JSON string from local storage
@@ -117,6 +121,40 @@ const CreatejobTemp = ({
     }
   }, []); // Empty dependency array ensures the useEffect runs only once
   const [isChecked, setIsChecked] = useState(false);
+
+  const getAllJobdescription = async ()=>{
+    try{
+     const data = await getAllRecruitmentJobDescriptionTemplates()
+     console.log(data)
+    // 
+    setJobDescriptionList(data.result.map((each)=>({
+      label:each.descriptionTemplateName,
+      value:each.descriptionTemplateId
+    })))
+    }catch(error){
+      console.log(error)
+    }
+  }
+
+  const getDecriptionById= async()=>{
+    const id = decriptionId
+    try{
+    const response = await getRecruitmentJobDescriptionTemplateById({id:id})
+    console.log(response)
+    
+    setContent(response.result[0].descriptionTemplate );
+    
+    
+    }catch(error){
+    console.log(error)
+    }
+  }
+  useEffect(()=>{
+    getDecriptionById()
+  },[decriptionId])
+  useEffect(()=>{
+    getAllJobdescription()
+  },[])
 
   console.log("Username:", userid);
   const [api, contextHolder] = notification.useNotification();
@@ -247,25 +285,7 @@ const CreatejobTemp = ({
     //     salaryCurrency: yup.string().required("Date of Birth Group is Required"),
 
     //   }),
-    enableReinitialize: true,
-      validateOnChange: false,
-     validationSchema :yup.object().shape({
-      companyId: yup.string().required("Company is Required"),
-      jobTitle: yup.string().required("Job Title is Required"),
-      location: yup.string().required("Location is Required"),
-      requirementType: yup.string().required("Requirment is Required"),
-      jobType: yup.string().required("Requirment is Required"),
-      salaryRangeTo: yup.string().required("Requirment is Required"),
-      salaryRangeFrom: yup.string().required("Requirment is Required"),
-      salaryCurrency: yup.string().required("Requirment is Required"),
-      departmentId: yup.string().required("Department is Required"),
-      jobCode: yup.string().min(4, "Job Code must be 4 characters").max(10, "Job Code must be 10 characters").required("Job Code is Required"),
-      experience: yup.string().required("Experience is Required"),
-      education: yup.string().required("Education is Required"),
-      searchKeywords: yup.string().required("Search Keywords are Required"),
-      salaryRangeFrom: yup.string().required("Salary Range From is Required"),
-      salaryCurrency: yup.string().required("Salary Currency is Required"),
-    }),
+   
     onSubmit: async (e) => {
       try {
         const updatedCustomFields = evaluation.map((condition) => ({
@@ -327,7 +347,7 @@ const CreatejobTemp = ({
               refresh()
             }, 1500);
           } else if (response.status === 500) {
-            openNotification("error", response.message);
+            openNotification("error", response.message.replace(/<br\/>/g, '\n'));
           }
         } else {
           console.log(e);
@@ -412,7 +432,7 @@ const CreatejobTemp = ({
 
         formik.setFieldValue("companyId", firstJob.companyId);
         formik.setFieldValue("jobTitle", firstJob.jobTitle);
-        formik.setFieldValue("departmentId", firstJob.departmentId);
+        formik.setFieldValue("departmentId", parseInt(firstJob.departmentId));
         formik.setFieldValue("education", firstJob.education);
         formik.setFieldValue("isActive", firstJob.isActive);
         formik.setFieldValue("isSalaryPublic", firstJob.isSalaryPublic);
@@ -777,6 +797,35 @@ const CreatejobTemp = ({
         // Handle submission for Configuration
 
         console.log("valuegtgggggggggggg");
+        if (
+          !formik.values.jobTitle || !formik.values.departmentId || !formik.values.jobCode||
+          !formik.values.location ||
+          !formik.values.requirementType||
+          !formik.values.jobType||
+          !formik.values.experience||
+          !formik.values.education||
+          !formik.values.searchKeywords||
+          !formik.values.salaryRangeFrom||
+          !formik.values.salaryRangeTo||
+          !formik.values.salaryCurrency||
+          !formik.values.jobType
+          ) 
+          {
+          formik.setFieldError('jobTitle', !formik.values.jobTitle ? 'Job Title is required' : '');
+          formik.setFieldError('departmentId', !formik.values.departmentId ? 'Department is required' : '');
+          formik.setFieldError('jobCode', !formik.values.jobCode ? 'Job Code is required' : '');
+          formik.setFieldError('location', !formik.values.location ? 'Location is required' : '');
+          formik.setFieldError('requirementType', !formik.values.requirementType ? 'Requirment Type is required' : '');
+          formik.setFieldError('experience', !formik.values.experience ? 'Experience is required' : '');
+          formik.setFieldError('searchKeywords', !formik.values.searchKeywords ? 'Search Key Words is required' : '');
+          formik.setFieldError('salaryRangeFrom', !formik.values.salaryRangeFrom ? 'Salery Range From is required' : '');
+          formik.setFieldError('salaryRangeTo', !formik.values.salaryRangeTo ? 'Salary Range To is required' : '');
+          formik.setFieldError('salaryCurrency', !formik.values.salaryCurrency ? 'Salary Currency is required' : '');
+          formik.setFieldError('jobType', !formik.values.jobType ? 'JobType is required' : '');
+
+          return; // Exit early if any field is empty
+        }
+
         setNextStep(nextStep + 1);
 
         break;
@@ -1168,27 +1217,43 @@ const CreatejobTemp = ({
                                                     placeholder={'Urgent'} /> */}
                         </div>
                         <div className="grid grid-cols-4 gap-4">
-                          <FormInput
-                            title={"Salary Range From"}
-                            placeholder={"Enter Salary Range From"}
-                            change={(e) => {
-                              formik.setFieldValue("salaryRangeFrom", e);
-                            }}
-                            value={formik.values.salaryRangeFrom}
-                            required={true}
-                            error={formik.errors.salaryRangeFrom}
-                            
-                          />
-                          <FormInput
-                            title={"Salary Range To"}
-                            placeholder={"Enter Salary Range To"}
-                            change={(e) => {
-                              formik.setFieldValue("salaryRangeTo", e);
-                            }}
-                            value={formik.values.salaryRangeTo}
-                            required={true}
-                            error={formik.errors.salaryRangeTo}
-                          />
+                        <FormInput
+  title={'Salary Range From'}
+  placeholder={'Enter value'}
+  change={(e) => {
+    formik.setFieldValue('salaryRangeFrom', e);
+    // Validate Salary Range To when Salary Range From changes
+    console.log(e)
+   
+  }}
+  value={formik.values.salaryRangeFrom}
+  type={"number"}
+  error={formik.errors.salaryRangeFrom}
+  required={true}
+/>
+
+<FormInput
+  title={'Salary Range To'}
+  placeholder={'Enter value'}
+  change={(e) => {
+    formik.setFieldValue('salaryRangeTo', e);
+    // Validate Salary Range To
+    const salaryRangeTo = parseFloat(e); // Convert input to a number
+    const salaryRangeFrom = parseFloat(formik.values.salaryRangeFrom); // Convert Salary Range From to a number
+
+    if (salaryRangeTo <= salaryRangeFrom) {
+      formik.setFieldError('salaryRangeTo', 'Salary Range To cannot be less than or equal to Salary Range From');
+    } else {
+      // Clear the error message when the condition is met
+      formik.setFieldError('salaryRangeTo', '');
+      formik.setFieldValue('salaryRangeTo', e);
+    }
+  }}
+  value={formik.values.salaryRangeTo}
+  error={formik.errors.salaryRangeTo}
+  required={true}
+  type={"number"}
+/>   
                           <Dropdown
                             title={"Salary Currency"}
                             placeholder={"Enter Salary Currency"}
@@ -1247,26 +1312,15 @@ const CreatejobTemp = ({
                           gap: "16px",
                         }}
                       >
-                        <Button>
-                          <Space>
-                            Choose Job Description
-                            <DownOutlined />
-                          </Space>
-                        </Button>
-                        <Button
-                          type="primary"
-                          onClick={handleGenerateWithAI}
-                          icon={
-                            <img
-                              src={image}
-                              alt="image"
-                              style={{ height: "20px", width: "20px" }}
-                              
-                            />
-                          }
-                        >
-                          Generate with AI
-                        </Button>
+                        <Dropdown
+                            title={''}
+                            placeholder={'Choose Job Description'}
+                            options={JobDescriptionList}
+                            change={(e)=>{
+                              setDecriptionId(e)
+                            }}
+                          />
+                    <ButtonClick handleSubmit={handleGenerateWithAI} BtnType="primary" icon={<img src={image} alt="image" style={{ height: '20px', width: '20px', alignItems: "center" }}  />} buttonName={"Generate with AI"}/>
                       </div>
                       <Card>
                         <TextEditor
@@ -1816,7 +1870,7 @@ icondropDown={true}
                 */}
                     <Radio.Group
                       onChange={(e) => {setSelectedWorkFlowId(e.target.value)
-                        setPresentage(3.5)
+                        setPresentage(1.5)
                       }}
                     >
                       {Stages.map((each) => (

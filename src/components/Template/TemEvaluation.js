@@ -209,7 +209,7 @@ const[show,setShow] =useState(open);
             }, 1500);
           } else if(response.status==500)
           {
-            openNotification("error", "Error", response.message);
+            openNotification("error", "Error", response.message.replace(/<br\/>/g, '\n'));
            
           }
 

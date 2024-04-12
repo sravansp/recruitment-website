@@ -88,7 +88,7 @@
             }, 1500);
           
           }else if (response.status === 500) {
-            openNotification("error", "input field is empty..", response.message);
+            openNotification("error", "input field is empty..", response.message.replace(/<br\/>/g, '\n'));
           }
 
         } 

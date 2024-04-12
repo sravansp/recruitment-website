@@ -48,6 +48,8 @@ import {
   insertOrUpdateRecruitmentJobApplicationFormSettingWithJobId,
   getRecruitmentJobById,
   saveRecruitmentJobTeamMemberBatch,
+  getAllRecruitmentJobDescriptionTemplates,
+  getRecruitmentJobDescriptionTemplateById
 } from "../Api1";
 import { Formik, useFormik } from "formik";
 import { CgAdd } from "react-icons/cg";
@@ -81,6 +83,7 @@ import AddMore from "../common/AddMore";
 import TextEditor from "../common/TextEditor/TextEditor";
 import RadioButton from "../common/RadioButton";
 
+
 const Createjob = ({
   open = "",
   close = () => { },
@@ -94,6 +97,7 @@ const Createjob = ({
   const [errors, setErrors] = useState([]);
   const [content, setContent] = useState("");
   // const [isUpdate, setIsUpdate] = useState();
+  const[decriptionId,setDecriptionId] =  useState("")
   const [activeBtn, setActiveBtn] = useState(0);
   const [presentage, setPresentage] = useState(0);
   const [nextStep, setNextStep] = useState(0);
@@ -110,6 +114,7 @@ const Createjob = ({
   const [selectedDivs, setSelectedDivs] = useState([]);
   const [selectedemployee, setselectedemployee] = useState([])
   const [selectedUserIds, setSelectedUserIds] = useState([])
+  const [JobDescriptionList,setJobDescriptionList]=useState([])
   console.log(updateId)
 
 
@@ -141,7 +146,39 @@ const Createjob = ({
       console.error("Error:", error);
     }
   };
+  const getAllJobdescription = async ()=>{
+    try{
+     const data = await getAllRecruitmentJobDescriptionTemplates()
+     console.log(data)
+    // 
+    setJobDescriptionList(data.result.map((each)=>({
+      label:each.descriptionTemplateName,
+      value:each.descriptionTemplateId
+    })))
+    }catch(error){
+      console.log(error)
+    }
+  }
 
+  const getDecriptionById= async()=>{
+    const id = decriptionId
+    try{
+    const response = await getRecruitmentJobDescriptionTemplateById({id:id})
+    console.log(response)
+    
+    setContent(response.result[0].descriptionTemplate );
+    
+    
+    }catch(error){
+    console.log(error)
+    }
+  }
+  useEffect(()=>{
+    getDecriptionById()
+  },[decriptionId])
+  useEffect(()=>{
+    getAllJobdescription()
+  },[])
   useEffect(() => {
     // Retrieve the login data JSON string from local storage
     const loginDataString = localStorage.getItem("LoginData");
@@ -207,30 +244,7 @@ const Createjob = ({
   useEffect(() => {
     setupdateId(updateId);
   }, []);
-  const validationSchema1 = Yup.object().shape({
-    companyId: Yup.string().required('Company is required'),
-    jobTitle: Yup.string().required('Job Title is required'),
-    departmentId: Yup.string().required('Department ID is required'),
-    jobCode: Yup.string().required('Job Code is required'),
-    workLocationType: Yup.string().required('Work Location Type is required'),
-
-    location: Yup.string().required('Location is required'),
-    requirementType: Yup.string().required('Requirement Type is required'),
-    jobType: Yup.string().required('Job Type is required'),
-    experience: Yup.string().required('Experience is required'),
-    education: Yup.string().required('Education is required'),
-    searchKeywords: Yup.string().required('Search Keywords is required'),
-    salaryRangeFrom: Yup.number()
-      .typeError('Salary Range From must be a number')
-      .required('Salary Range From is required'),
-    salaryRangeTo: Yup.number()
-      .typeError('Salary Range To must be a number')
-      .required('Salary Range To is required'),
-    salaryCurrency: Yup.string().required('Salary Currency is required'),
-    isSalaryPublic: Yup.boolean().required('Is Salary Public is required'),
-    jobDescription: Yup.string().required('Job Description is required'),
-  });
-
+  
   //job applying
 
   const [DraftJobs, setDraftJobs] = useState([]);
@@ -331,8 +345,8 @@ const Createjob = ({
         .typeError('Salary Range To must be a number')
         .required('Salary Range To is required'),
       salaryCurrency: Yup.string().required('Salary Currency is required'),
-      isSalaryPublic: Yup.boolean().required('Is Salary Public is required'),
-      jobDescription: Yup.string().required('Job Description is required'),
+      
+      
     }),
     onSubmit: async (e) => {
 
@@ -384,7 +398,7 @@ const Createjob = ({
             openNotification(
               "error",
               "input field is empty..",
-              response.message
+              response.message.replace(/<br\/>/g, '\n')
             );
           }
           // }
@@ -524,7 +538,6 @@ const Createjob = ({
           return;
         }
         console.log(UpdateId);
-
         // if (jobId){
         const response =
           await insertOrUpdateRecruitmentJobApplicationFormSettingWithJobId({
@@ -650,7 +663,7 @@ const Createjob = ({
       )
     );
   };
-  const handleAddField = (index) => {
+  const handleAddField = (index,selectedvalue) => {
     setEvaluation((prevEvaluation) =>
       prevEvaluation.map((prevCondition, i) =>
         i === index
@@ -660,7 +673,7 @@ const Createjob = ({
               ...prevCondition.answerMetaData,
               {
                 id: prevCondition.answerMetaData.length + 1,
-                key: "Drop-down", // You can set the default key or customize as needed
+                key: selectedvalue, // You can set the default key or customize as needed
                 value: "",
               },
             ],
@@ -923,7 +936,7 @@ const Createjob = ({
         console.log("Response:", response);
         if (response.status === 200) {
           openNotification("success", "Successful", response.message);
-          setPresentage(3.4);
+          setPresentage(5);
           refresh();
           // Add a delay before closing the notification
           setTimeout(() => {
@@ -1579,33 +1592,43 @@ const Createjob = ({
 
                         </div>
                         <div className='grid grid-cols-4 gap-4'>
-                          <FormInput
-                            title={'Salary Range From'}
-                            placeholder={'Enter value'}
-                            change={(e) => {
-                              formik1.setFieldValue('salaryRangeFrom', e)
-                            }}
-                            value={formik1.values.salaryRangeFrom
-                            }
-                            type={"number"}
-                            error={formik1.errors.salaryRangeFrom}
-                            required={true}
-                          />
+                        <FormInput
+  title={'Salary Range From'}
+  placeholder={'Enter value'}
+  change={(e) => {
+    formik1.setFieldValue('salaryRangeFrom', e);
+    // Validate Salary Range To when Salary Range From changes
+    console.log(e)
+   
+  }}
+  value={formik1.values.salaryRangeFrom}
+  type={"number"}
+  error={formik1.errors.salaryRangeFrom}
+  required={true}
+/>
 
+<FormInput
+  title={'Salary Range To'}
+  placeholder={'Enter value'}
+  change={(e) => {
+    formik1.setFieldValue('salaryRangeTo', e);
+    // Validate Salary Range To
+    const salaryRangeTo = parseFloat(e); // Convert input to a number
+    const salaryRangeFrom = parseFloat(formik1.values.salaryRangeFrom); // Convert Salary Range From to a number
 
-                          <FormInput
-                            title={'Salary Range To'}
-                            placeholder={'Enter value'}
-                            change={(e) => {
-                              formik1.setFieldValue('salaryRangeTo', e)
-                            }}
-                            value={formik1.values.salaryRangeTo
-                            }
-                            error={formik1.errors.salaryRangeTo}
-                            required={true}
-                            type={"number"}
-                          />
-                          <Dropdown
+    if (salaryRangeTo <= salaryRangeFrom) {
+      formik1.setFieldError('salaryRangeTo', 'Salary Range To cannot be less than or equal to Salary Range From');
+    } else {
+      // Clear the error message when the condition is met
+      formik1.setFieldError('salaryRangeTo', '');
+      formik1.setFieldValue('salaryRangeTo', e);
+    }
+  }}
+  value={formik1.values.salaryRangeTo}
+  error={formik1.errors.salaryRangeTo}
+  required={true}
+  type={"number"}
+/>                       <Dropdown
                             title={'Salary Currency'}
                             placeholder={'salary'}
                             options={saleryCurrency}
@@ -1654,13 +1677,14 @@ const Createjob = ({
                           <Dropdown
                             title={''}
                             placeholder={'Choose Job Description'}
-                            options={JobDesc}
+                            options={JobDescriptionList}
+                            change={(e)=>{
+                              setDecriptionId(e)
+                            }}
                           />
 
-                          <Button onClick={handleGenerateWithAI} type="primary" icon={<img src={image} alt="image" style={{ height: '15px', width: '15px', alignItems: "center" }} />} >
-                            Generate with AI
-
-                          </Button>
+<ButtonClick handleSubmit={handleGenerateWithAI} BtnType="primary" 
+icon={<img src={image} alt="image" style={{ height: '20px', width: '20px', alignItems: "center" }}  />} buttonName={"Generate with AI"}/>
                         </div>
                         {/* <div className="pt-4">
                                             <TextEditor
@@ -1972,10 +1996,11 @@ const Createjob = ({
 
                               />
                               <div className="flex items-center gap-5">
-                                <div className="flex-shrink-0">
+                                
                                   <Dropdown
                                     options={Form}
                                     dropdownWidth='200px'
+                                    placeholder={'Choose Job Description'}
                                     change={(e) => {
                                       setEvaluation((prevEvaluation) => prevEvaluation.map((prevCondition, i) => i === index
                                         ? {
@@ -1992,12 +2017,13 @@ const Createjob = ({
                                         : prevCondition
                                       )
                                       );
+                                      handleAddField(e)
                                     }}
-                                    value={condition.answer_type || "ShortAnswer"}
+                                    value={condition.answer_type || ""}
                                     icon={<MdOutlineShortText />}
                                     icondropDown={true}
                                   />
-                                </div>
+                                
                                 <div style={{ display: 'flex', alignItems: 'center', gap: '15px' }}>
                                   <p>Mandatory</p>
                                   <ToggleBtn />
@@ -2281,7 +2307,7 @@ const Createjob = ({
                   padding={false}
                   toggleBtn={false}
                   click={() => {
-                    setPresentage(4.1);
+                    // setPresentage(4.1);
                   }}
                   initialExpanded={true}
                 >
@@ -2334,7 +2360,7 @@ const Createjob = ({
                               className="h-4 w-4 rounded border text-indigo-600 focus:ring-indigo-600 absolute top-4 right-4"
                               onChange={() => {
                                 handleCheckboxChange(index);
-                                setPresentage(4.8);
+                                setPresentage(3.5);
                               }}
                               style={{ borderColor: "red" }}
                             />

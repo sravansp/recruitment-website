@@ -183,7 +183,7 @@ const formik = useFormik({
             refresh();
           }, 1500);
         } else if (response.status === 500) {
-          openNotification("error", "error", response.message);
+          openNotification("error", "error", response.message.replace(/<br\/>/g, '\n'));
         }
 
 
@@ -219,7 +219,7 @@ const formik = useFormik({
             refresh();
           }, 1500);
         } else if (response2.status === 500) {
-          openNotification("error", "error", response2.message);
+          openNotification("error", "error", response2.message.replace(/<br\/>/g, '\n'));
         }
       }
     }

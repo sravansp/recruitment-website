@@ -9,6 +9,7 @@ import image from '../../assets/images/generate-ai-img.png'
 import TextEditor from '../common/TextEditor/TextEditor'
 import {updateRecruitmentJobDescriptionTemplate, saveRecruitmentJobDescriptionTemplate,getRecruitmentJobDescriptionTemplateById } from '../Api1'
 import FormInput from '../common/FormInput'
+import ButtonClick from '../common/Button'
 
 const TemplateDec = ({open = "", close = () => { },inputshow= false,isUpdate={},updateId,refresh}) => {
     
@@ -85,11 +86,11 @@ const TemplateDec = ({open = "", close = () => { },inputshow= false,isUpdate={},
         console.log(response)
         if (response.status === 200) {
         
-        
+         
           openNotification(
             "success",
             "Successful",
-            response.message
+            response.message.replace(/<br\/>/g, '\n')
           );
           setTimeout(() => {
             handleClose();
@@ -97,7 +98,7 @@ const TemplateDec = ({open = "", close = () => { },inputshow= false,isUpdate={},
           }, 2000);
         
         }else if (response.status === 500) {
-          openNotification("error", "input field is empty..", response.message);
+          openNotification("error", "input field is empty..",response.message.replace(/<br\/>/g, '\n'));
         }
       }else{
         const id= updateId
@@ -256,10 +257,8 @@ impactful, accurate, and personalized to your company</p>
           <DownOutlined />
         </Space>
       </Button> */}
-      <Button onClick={handleGenerateWithAI} type="primary" icon={<img src={image} alt="image" style={{ height: '20px', width: '20px',justifyContent:"center" }} />} >
-      <span >Generate with AI</span>
-      
-          </Button>
+     
+<ButtonClick handleSubmit={handleGenerateWithAI} BtnType="primary" icon={<img src={image} alt="image" style={{ height: '20px', width: '20px', alignItems: "center" }}  />} buttonName={"Generate with AI"}/>
                                         </div>
                                     
               <TextEditor
