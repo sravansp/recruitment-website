@@ -54,7 +54,7 @@ export const ThemeProvider = ({ children }) => {
     localStorage.setItem("theme", themeMode);
     localStorage.setItem("mainColor", primaryColor);
   };
-console.log(color);
+// console.log(color);
 
 
   return (
