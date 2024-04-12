@@ -349,145 +349,143 @@ const Workflowstage = ({ open = "", close = () => { }, inputshow = false, isUpda
 
       <div className="relative max-w-[1070px]  w-full mx-auto">
         <FlexCol />
-        <div className='border rounded-xl'>
-          <Accordion
-            title={"Workflow"}
-            className="Text_area"
-            description={"Manage work flow."}
-            padding={false}
-            toggleBtn={false}
-            click={() => {
-              setPresentage(1.4);
-            }}
-            initialExpanded={true}
+        <Accordion
+          title={"Workflow"}
+          className="Text_area"
+          description={"Manage work flow."}
+          padding={false}
+          toggleBtn={false}
+          click={() => {
+            setPresentage(1.4);
+          }}
+          initialExpanded={true}
+        >
+          <div
+            id={`acco-text-item`}
+            role="region"
+            aria-labelledby={`acco-title-item`}
+            className="flex flex-col gap-4  justify-between w-full px-6 py-4"
           >
-            <div
-              id={`acco-text-item`}
-              role="region"
-              aria-labelledby={`acco-title-item`}
-              className="flex flex-col gap-4  justify-between w-full px-6 py-4"
-            >
-              <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
-                <FormInput
-                  title={"Workflow Name"}
-                  placeholder={"Type here..."}
-                  className="!text-[#344054]"
-                  change={(e) => {
-                    formik.setFieldValue('workFlowName', e)
-                  }}
-                  value={formik.values.workFlowName}
-                />
+            <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
+              <FormInput
+                title={"Workflow Name"}
+                placeholder={"Type here..."}
+                className="!text-[#344054]"
+                change={(e) => {
+                  formik.setFieldValue('workFlowName', e)
+                }}
+                value={formik.values.workFlowName}
+              />
 
 
-              </div>
-              <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
-                <TextArea
-                  title={"Description"}
-                  placeholder={"Type here..."}
-                  className="!text-[#344054]"
-                  change={(e) => {
-                    formik.setFieldValue('description', e)
-                  }}
-                  value={formik.values.description}
+            </div>
+            <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
+              <TextArea
+                title={"Description"}
+                placeholder={"Type here..."}
+                className="!text-[#344054]"
+                change={(e) => {
+                  formik.setFieldValue('description', e)
+                }}
+                value={formik.values.description}
 
-                />
-              </div>
-              <div className="w-full sm:w-[545px] grid grid-cols-1 gap-4">
-                {console.log(stages)}
-                {stages.map((stage) => (
-                  <div key={stage.id} className="flex gap-5">
-                    <svg
+              />
+            </div>
+            <div className="w-full sm:w-[545px] grid grid-cols-1 gap-4">
+              {console.log(stages)}
+              {stages.map((stage) => (
+                <div key={stage.id} className="flex gap-5">
+                  <svg
+                    xmlns="http://www.w3.org/2000/svg"
+                    width="545"
+                    height="55"
+                    viewBox="0 0 545 55"
+                    fill="none"
+                    className="hover:fill-violet-100 w-full h-auto"
+                  >
+                    <path
                       xmlns="http://www.w3.org/2000/svg"
-                      width="545"
-                      height="55"
-                      viewBox="0 0 545 55"
-                      fill="none"
-                      className="hover:fill-violet-100 w-full h-auto"
-                    >
-                      <path
-                        xmlns="http://www.w3.org/2000/svg"
-                        d="M0 6C0 2.68629 2.68629 0 6 0H532.47L544.753 27.0908L532.47 54.1816H5.99998C2.68627 54.1816 0 51.4953 0 48.1816V6Z"
-                        fill="#FCFCFC"
-                      />
-                      <path
-                        xmlns="http://www.w3.org/2000/svg"
-                        d="M0.5 6C0.5 2.96244 2.96243 0.5 6 0.5H532.148L544.204 27.0908L532.148 53.6816H5.99998C2.96241 53.6816 0.5 51.2192 0.5 48.1816V6Z"
-                        stroke="black"
-                        stroke-opacity="0.1"
+                      d="M0 6C0 2.68629 2.68629 0 6 0H532.47L544.753 27.0908L532.47 54.1816H5.99998C2.68627 54.1816 0 51.4953 0 48.1816V6Z"
+                      fill="#FCFCFC"
+                    />
+                    <path
+                      xmlns="http://www.w3.org/2000/svg"
+                      d="M0.5 6C0.5 2.96244 2.96243 0.5 6 0.5H532.148L544.204 27.0908L532.148 53.6816H5.99998C2.96241 53.6816 0.5 51.2192 0.5 48.1816V6Z"
+                      stroke="black"
+                      stroke-opacity="0.1"
 
-                      />
-                      <foreignObject x="30" y="0" width="545" height="55">
-                        <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', width: '100%', height: '100%' }}>
-                          <span>{stage.stageName}</span>
-                          <MdOutlineLock className='mr-12' />
-                        </div>
-                      </foreignObject >
-                    </svg>
-                    <div className='flex  gap-5'>
-
-                      <div className='flex items-center gap-5'>
-                        <Tooltip placement="top" title={"Edit"}>
-                          <PiPencilSimpleLineThin onClick={() => handleEditStage(stage.stageName)} />
-                        </Tooltip>
-                        <Tooltip placement="top" title={"Delete"}>
-                          <MdDelete onClick={() => handleDeleteStage(stage.id)}
-                            className="cursor-pointer text-red-500" />
-                        </Tooltip>
+                    />
+                    <foreignObject x="30" y="0" width="545" height="55">
+                      <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', width: '100%', height: '100%' }}>
+                        <span>{stage.stageName}</span>
+                        <MdOutlineLock className='mr-12' />
                       </div>
+                    </foreignObject >
+                  </svg>
+                  <div className='flex  gap-5'>
+
+                    <div className='flex items-center gap-5'>
+                      <Tooltip placement="top" title={"Edit"}>
+                        <PiPencilSimpleLineThin onClick={() => handleEditStage(stage.stageName)} />
+                      </Tooltip>
+                      <Tooltip placement="top" title={"Delete"}>
+                        <MdDelete onClick={() => handleDeleteStage(stage.id)}
+                          className="cursor-pointer text-red-500" />
+                      </Tooltip>
                     </div>
                   </div>
-
-                ))}
-
-
-
-
-              </div>
-
-            </div>
-            <div className='pl-5 pb-4'>
-              <AddMore name="Add Stage" className="text-black" change={(e) => setIsModalVisible(true)} />
-            </div>
-            <Modal
-              // title="Vertically centered modal dialog"
-              wrapClassName="vertical-center-modal"
-              open={isModalVisible}
-              onCancel={handleModalClose}
-              footer={[
-                <Button key="back" onClick={handleModalClose}>
-                  Cancel
-                </Button>,
-                <Button key="submit" type="primary" onClick={handleAddStageClick}>
-                  OK
-                </Button>,
-              ]}
-            >
-              <div className='flex flex-col gap-5'>
-                <div className="flex flex-col items-center justify-center font-semibold font-['Inter'] leading-relaxed">
-                  <p>Add Stages</p>
-                  <img
-                    src={image}
-                    style={{ width: '50px', height: '50px', borderRadius: '50%', objectFit: 'cover' }}
-                    alt="Your Image"
-                  />
                 </div>
-                <FormInput
-                  title={"Stage Name"}
-                  placeholder={"Type here..."}
-                  value={selectedStageName}
-                  change={(e) => {
-                    setStageName(e)
-                    setSelectedStageName(e)
 
-                  }}
+              ))}
 
+
+
+
+            </div>
+
+          </div>
+          <div className='pl-5 pb-4'>
+            <AddMore name="Add Stage" className="text-black" change={(e) => setIsModalVisible(true)} />
+          </div>
+          <Modal
+            // title="Vertically centered modal dialog"
+            wrapClassName="vertical-center-modal"
+            open={isModalVisible}
+            onCancel={handleModalClose}
+            footer={[
+              <Button key="back" onClick={handleModalClose}>
+                Cancel
+              </Button>,
+              <Button key="submit" type="primary" onClick={handleAddStageClick}>
+                OK
+              </Button>,
+            ]}
+          >
+            <div className='flex flex-col gap-5'>
+              <div className="flex flex-col items-center justify-center font-semibold font-['Inter'] leading-relaxed">
+                <p>Add Stages</p>
+                <img
+                  src={image}
+                  style={{ width: '50px', height: '50px', borderRadius: '50%', objectFit: 'cover' }}
+                  alt="Your Image"
                 />
-                <AddMore name="Add stage rule" className="text-black" />
               </div>
+              <FormInput
+                title={"Stage Name"}
+                placeholder={"Type here..."}
+                value={selectedStageName}
+                change={(e) => {
+                  setStageName(e)
+                  setSelectedStageName(e)
 
-            </Modal>
-          </Accordion>
-        </div>
+                }}
+
+              />
+              <AddMore name="Add stage rule" className="text-black" />
+            </div>
+
+          </Modal>
+        </Accordion>
         {contextHolder}
       </div>
     </DrawerPop>
