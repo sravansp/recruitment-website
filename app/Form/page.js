@@ -88,6 +88,7 @@ function Web({ closeDrawer, selectedJobId, onClick }) {
 
   const [questionAnswers, setQuestionAnswers] = useState([]);
   const[coverLetter,setCoverletter]= useState("")
+  const [questionfield,setQuestionfield]=useState("")
   //
   const [dropdownvalue, Setdopdownvalue] = useState(null);
   const [textAreaValue, setTextAreavalue] = useState(null);
@@ -941,7 +942,7 @@ function Web({ closeDrawer, selectedJobId, onClick }) {
 
   const formik3 = useFormik({
     initialValues: {
-      customQuestion: "",
+      customQuestion:questionfield,
       jobId: selectedJobId,
       resumeId: insertedid1,
       // highestEducationLevel: "",
@@ -1332,35 +1333,39 @@ function Web({ closeDrawer, selectedJobId, onClick }) {
   };
 
   const handleSubmitAllForms = () => {
-    switch (currentStage) {
-      case 1:
+    switch (currentStep) {
+      case 0:
         formik.handleSubmit();
-        setCurrentStage(currentStage + 1);
+        // setCurrentStage(currentStage + 1);
  // Move to next stage after successful submission
 
         break;
-      case 2:
+      case 1:
         formik1.handleSubmit();
-        setCurrentStage(currentStage + 1); // Move to next stage after successful submission
+        // setCurrentStage(currentStage + 1);
+
+        break;
+      case 2:
+        formik2.handleSubmit();
+        // setCurrentStage(currentStage + 1); 
 
         break;
       case 3:
-        formik2.handleSubmit();
-        setCurrentStage(currentStage + 1); // Move to next stage after successful submission
-
+        // formik3.handleSubmit();
+        // setCurrentStage(currentStage + 1);
+        // formik.resetForm();
+        // formik1.resetForm();
+        // formik2.resetForm();
+        // formik3.resetForm();
         break;
       case 4:
-        formik3.handleSubmit();
-        setCurrentStage(currentStage + 1);
+        closeDrawer();
+        setShowModal(true);
+        // window.location.reload();
         formik.resetForm();
         formik1.resetForm();
         formik2.resetForm();
         formik3.resetForm();
-        break;
-      case 5:
-        closeDrawer();
-        setShowModal(true);
-        // window.location.reload();
 
         // case 5:
 
@@ -2186,8 +2191,11 @@ function Web({ closeDrawer, selectedJobId, onClick }) {
                             className="text-[#344054]"
                             name="customQuestion"
                             value={formik3.values.customQuestion}
-                            change={(e) => {
-                              formik3.setFieldValue("customQuestion", e);
+                            // change={(e) => {
+                            //   formik3.setFieldValue("customQuestion", e);
+                            // }}
+                            change={(e)=>{
+                              setQuestionfield(e)
                             }}
                             required={false}
                             error={formik3.errors.customQuestion}
@@ -2451,7 +2459,7 @@ function Web({ closeDrawer, selectedJobId, onClick }) {
             className={"dark:text-white"}
             handleSubmit={closeDrawer}
           />
-          <ButtonClick
+          <ButtonClick 
             buttonName="Save & Continue"
             BtnType="primary"
             handleSubmit={handleSubmitAllForms}
