@@ -497,7 +497,7 @@ export default function Createcandidatelist({ open = "", close = () => { }, file
     {
       id: 1,
       value: 0,
-      title: "Personel Details",
+      title: "Personal Details",
       data: "Personel",
     },
     {
@@ -970,7 +970,7 @@ export default function Createcandidatelist({ open = "", close = () => { }, file
                               key={each.id}
                               title={each.title}
 
-                              placeholder={t("Eg: Retail Sales Manager")}
+                              placeholder={t("Enter " + each.title)}
                               change={(e) => {
                                 formik3.setFieldValue(each.inputFeild, e);
                               }}
