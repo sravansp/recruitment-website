@@ -75,6 +75,11 @@ const Workflowstage = ({ open = "", close = () => { }, inputshow = false, isUpda
     console.log(stages)
   }, [stages])
   const handleAddStageClick = () => {
+
+    // Check if the stageName is empty
+    if (!stageName.trim()) {
+      return;
+    }
     if (editStageIndex !== null) {
       // If editStageIndex is not null, it means we're editing an existing stage
       // Update the corresponding stage name in the stages array
@@ -477,7 +482,6 @@ const Workflowstage = ({ open = "", close = () => { }, inputshow = false, isUpda
                 change={(e) => {
                   setStageName(e)
                   setSelectedStageName(e)
-
                 }}
 
               />
