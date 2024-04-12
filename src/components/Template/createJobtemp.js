@@ -100,7 +100,7 @@ const CreatejobTemp = ({
   const [selectedWorkFlowId, setSelectedWorkFlowId] = useState("");
   const [selectedDivs, setSelectedDivs] = useState([]);
   const [content, setContent] = useState("");
-  console.log(updateId);
+  // console.log(updateId);
   useEffect(() => {
     // Retrieve the login data JSON string from local storage
     const loginDataString = localStorage.getItem("LoginData");
@@ -119,7 +119,7 @@ const CreatejobTemp = ({
   }, []); // Empty dependency array ensures the useEffect runs only once
   const [isChecked, setIsChecked] = useState(false);
 
-  console.log("Username:", userid);
+  // console.log("Username:", userid);
   const [api, contextHolder] = notification.useNotification();
   const openNotification = (type, message, description) => {
     api[type]({
@@ -166,7 +166,7 @@ const CreatejobTemp = ({
       if (response.ok) {
         const data = await response.json();
         // Handle the response data as needed
-        console.log(data);
+        // console.log(data);
         setContent(data.receivedData)
       } else {
         console.error('Failed to fetch data');
@@ -190,7 +190,7 @@ const CreatejobTemp = ({
   const [dropdownOptions, setDropdownOptions] = useState([]);
   const [jobId, setJobId] = useState("");
 
-  console.log(evaluation);
+  // console.log(evaluation);
   //job applying
 
   const formik = useFormik({
@@ -280,7 +280,7 @@ const CreatejobTemp = ({
               customFields: updatedCustomFields,
             },
           });
-          console.log(response);
+          // console.log(response);
           if (response.status === 200) {
             openNotification(
               "success",
@@ -296,7 +296,7 @@ const CreatejobTemp = ({
             openNotification("error", response.message);
           }
         } else {
-          console.log(e);
+          // console.log(e);
 
           const response = await saveRecruitmentJobTemplate({
             companyId: companyId,
@@ -335,9 +335,9 @@ const CreatejobTemp = ({
               customFields: updatedCustomFields,
             },
           });
-          console.log(response);
+          // console.log(response);
 
-          console.log(jobId);
+          // console.log(jobId);
           if (response.status === 200) {
             openNotification(
               "success",
@@ -369,7 +369,7 @@ const CreatejobTemp = ({
   const getJobtemById = async () => {
     try {
       const response = await getRecruitmentJobTemplateById(updateId);
-      console.log(response);
+      // console.log(response);
 
       if (response.result.length > 0) {
         const firstJob = response.result[0];
@@ -393,17 +393,17 @@ const CreatejobTemp = ({
         formik.setFieldValue("searchKeywords", firstJob.searchKeywords);
         formik.setFieldValue("experience", firstJob.experience);
 
-        console.log(firstJob.companyId);
+        // console.log(firstJob.companyId);
       } else {
         console.error("No data found in the response.");
       }
     } catch (error) {
-      console.log(error);
+      // console.log(error);
     }
   };
   useEffect(() => {
     getJobtemById();
-    console.log(jobdata);
+    // console.log(jobdata);
   }, [updateId]);
   const [departmentList, setDepartmentList] = useState();
   const [company, setCompany] = useState([]);
@@ -420,8 +420,8 @@ const CreatejobTemp = ({
         }))
       );
 
-      console.log("Department List:", departmentList);
-      console.log("Is Update:", isUpdate);
+      // console.log("Department List:", departmentList);
+      // console.log("Is Update:", isUpdate);
     } catch (error) {
       console.error("Error fetching department list:", error);
     }
@@ -461,7 +461,7 @@ const CreatejobTemp = ({
     });
   };
   const handleDeleteField = (conditionIndex, fieldIndex) => {
-    console.log("Deleting field", conditionIndex, fieldIndex);
+    // console.log("Deleting field", conditionIndex, fieldIndex);
 
     setEvaluation((prevEvaluation) =>
       prevEvaluation.map((prevCondition, i) =>
@@ -589,13 +589,13 @@ const CreatejobTemp = ({
   const selectedCount = selectedDivs.length;
 
   useEffect(() => {
-    console.log(nextStep, activeBtn);
+    // console.log(nextStep, activeBtn);
     if (activeBtn < 3 && activeBtn !== nextStep) {
       /// && activeBtn !== nextStep
       setActiveBtn(1 + activeBtn);
       setNextStep(nextStep);
-      console.log(1 + activeBtn);
-      console.log(steps?.[activeBtn + 1].data, "data");
+      // console.log(1 + activeBtn);
+      // console.log(steps?.[activeBtn + 1].data, "data");
       setActiveBtnValue(steps?.[activeBtn + 1].data);
     }
   }, [nextStep]);
@@ -613,15 +613,15 @@ const CreatejobTemp = ({
       );
       // console.log(result.data);
     } catch (error) {
-      console.log(error);
+      // console.log(error);
     }
-    console.log("company", company);
+    // console.log("company", company);
   };
   useEffect(() => {
     // switch (assignBtnName) {
     //   default:
     getCompany();
-    console.log("value", company);
+    // console.log("value", company);
   }, []);
   const handleCompanyChange = (selectedOption) => {
     setSelectedCompany(selectedOption);
@@ -636,7 +636,7 @@ const CreatejobTemp = ({
   //     const response = await getAllRecruitmentWorkFlows();
 
   //     // Handle the response
-  //     console.log('Response:', response);
+      // console.log('Response:', response);
   //     const stageNamesByWorkflowId = {};
   //   response.result.forEach(workflow => {
   //     const { workFlowId, recruitmentWorkFlowStages } = workflow;
@@ -663,13 +663,13 @@ const CreatejobTemp = ({
 
   // }, []);
   // useEffect(() => {
-  //   console.log('Updated Workflow:', Stages);
+    // console.log('Updated Workflow:', Stages);
   // }, [Stages]);
 
   const fetchData = async () => {
     try {
       const response = await getAllRecruitmentWorkFlows();
-      console.log("Response:", response);
+      // console.log("Response:", response);
       const stagesByWorkflowId = response.result.map((item) => ({
         workFlowId: item.workFlowId,
         stages: item.recruitmentWorkFlowStages.map((stage) => ({
@@ -679,14 +679,14 @@ const CreatejobTemp = ({
       setStages(stagesByWorkflowId);
     } catch (error) {
       // Handle errors
-      console.error("Error:", error);
+      // console.log("Error:", error);
     }
   };
   useEffect(() => {
     fetchData();
   }, []);
   useEffect(() => {
-    console.log("Updated Workflow:", Stages);
+    // console.log("Updated Workflow:", Stages);
   }, [Stages]);
   // const workflowDetails = workflow.map((stageName, index) => ({
   //   stageName,
@@ -712,7 +712,7 @@ const CreatejobTemp = ({
   //   // Update the database with the selected workflow ID for the specific job
 
   //    try {
-  //     console.log(workFlowId)
+      // console.log(workFlowId)
   //     const response = await updateRecruitmentJob(
   //        jobId,
   //        workFlowId,
@@ -720,7 +720,7 @@ const CreatejobTemp = ({
 
   //     );
 
-  //     console.log(response);
+      // console.log(response);
   //     if (response.status === 200) {
 
   //       openNotification(
@@ -742,7 +742,7 @@ const CreatejobTemp = ({
       case "Jobdetails":
         // Handle submission for Configuration
 
-        console.log("valuegtgggggggggggg");
+        // console.log("valuegtgggggggggggg");
         setNextStep(nextStep + 1);
 
         break;
@@ -769,7 +769,7 @@ const CreatejobTemp = ({
         //     setNextStep(nextStep + 1);
         //   } else {
         //     // Handle the case where the radio is not selected, maybe show a message
-        //     console.log('Radio not selected');
+            // console.log('Radio not selected');
         //   }
         // } catch (error) {
         //   console.error('Error handling Workflow:', error);
@@ -807,14 +807,14 @@ const CreatejobTemp = ({
         }))
       );
 
-      console.log(response);
+      // console.log(response);
     } catch (error) {
       console.error("Error updating workflow ID:", error);
     }
   };
   useEffect(() => {
     AllRecruitmentJobTeamMembers();
-    console.log(employeeList);
+    // console.log(employeeList);
   }, []);
 
   return (
@@ -867,7 +867,7 @@ const CreatejobTemp = ({
             setActiveBtn(activeBtn - 1);
             setNextStep(nextStep - 1);
             setActiveBtnValue(steps?.[activeBtn - 1].data);
-            console.log(activeBtn - 1);
+            // console.log(activeBtn - 1);
           }
           setBtnName("");
         }}
@@ -1052,7 +1052,7 @@ const CreatejobTemp = ({
                           value={formik.values.requirementType}
                           change={(e) => {
                             formik.setFieldValue("requirementType", e);
-                            console.log(e);
+                            // console.log(e);
                           }}
                           required={true}
                         />
@@ -1076,7 +1076,7 @@ const CreatejobTemp = ({
                             options={JobType}
                             change={(e) => {
                               formik.setFieldValue("jobType", e);
-                              console.log(e);
+                              // console.log(e);
                             }}
                             required={true}
                             value={formik.values.jobType}
@@ -1151,7 +1151,7 @@ const CreatejobTemp = ({
                           <CheckBoxInput
                             change={(e) => {
                               formik.setFieldValue("isSalaryPublic", e);
-                              console.log(e);
+                              // console.log(e);
                             }}
                             value={formik.values.isSalaryPublic}
                             title={"View Public"}
@@ -1559,7 +1559,7 @@ icondropDown={true}
                                         : prevCondition
                                     )
                                   );
-                                  console.log(e);
+                                  // console.log(e);
                                 }}
                               />
                               <div className="flex items-center gap-5">
