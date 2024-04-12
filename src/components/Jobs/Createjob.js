@@ -238,6 +238,7 @@ const Createjob = ({
       is_required: 0,
     },
   ]);
+  const [errorMessages, setErrorMessages] = useState(Array(evaluation.length).fill(''));
   const [dropdownOptions, setDropdownOptions] = useState([]);
   const [jobId, setJobId] = useState(null);
   const [UpdateId, setupdateId] = useState(null);
@@ -246,6 +247,34 @@ const Createjob = ({
   }, []);
   
   //job applying
+
+  // const updateErrorMessages = () => {
+  //   const newErrorMessages = evaluation.map((condition) => {
+  //     let errorMessage = '';
+  
+  //     if (!condition.question) {
+  //       errorMessage = 'Please enter a question.';
+  //     } else if (!condition.answer_type) {
+  //       errorMessage = 'Please choose an answer type.';
+  //     } else if (
+  //       ["Drop-down", "MultipleChoice", "Checkboxes"].includes(condition.answer_type) &&
+  //       (condition.answerMetaData.some((field) => !field.value) ||
+  //         (!condition.answerMetaData[0]?.value && condition.answerMetaData[0]?.key !== "ShortAnswer"))
+  //     ) {
+  //       errorMessage = 'Please enter values for all options.';
+  //     }
+  
+  //     return errorMessage;
+  //   });
+  
+  //   // Update errorMessages state with new error messages
+  //   setErrorMessages(newErrorMessages);
+  // };
+  
+  // // Call the function to update error messages whenever evaluation changes
+  // useEffect(() => {
+  //   updateErrorMessages();
+  // }, [evaluation]);
 
   const [DraftJobs, setDraftJobs] = useState([]);
 
@@ -331,7 +360,7 @@ const Createjob = ({
       departmentId: Yup.string().required('Department ID is required'),
       jobCode: Yup.string().required('Job Code is required'),
       workLocationType: Yup.string().required('Work Location Type is required'),
-
+      
       location: Yup.string().required('Location is required'),
       requirementType: Yup.string().required('Requirement Type is required'),
       jobType: Yup.string().required('Job Type is required'),
@@ -345,7 +374,9 @@ const Createjob = ({
         .typeError('Salary Range To must be a number')
         .required('Salary Range To is required'),
       salaryCurrency: Yup.string().required('Salary Currency is required'),
-      
+      noOfVaccancies: Yup.number()
+      .typeError('Number Of Vaccancies must be a number')
+      .required('Number Of Vaccancies is required'),
       
     }),
     onSubmit: async (e) => {
@@ -516,27 +547,47 @@ const Createjob = ({
           is_required: condition.is_required,
           answer_meta_data: condition.answerMetaData,
         }));
-        const isAnyEmpty = evaluation.some((condition) => {
-          return (
-            !condition.question ||
-            !condition.answer_type ||
-            (["Drop-down", "MultipleChoice", "Checkboxes"].includes(
-              condition.answer_type
-            ) &&
-              (condition.answerMetaData.some((field) => !field.value) ||
-                (!condition.answerMetaData[0]?.value &&
-                  condition.answerMetaData[0]?.key !== "ShortAnswer")))
-          );
-        });
+        // const isAnyEmpty = evaluation.some((condition) => {
+        //   return (
+        //     !condition.question ||
+        //     !condition.answer_type ||
+        //     (["Drop-down", "MultipleChoice", "Checkboxes"].includes(
+        //       condition.answer_type
+        //     ) &&
+        //       (condition.answerMetaData.some((field) => !field.value) ||
+        //         (!condition.answerMetaData[0]?.value &&
+        //           condition.answerMetaData[0]?.key !== "ShortAnswer")))
+        //   );
+        // });
 
-        if (isAnyEmpty) {
-          openNotification(
-            "error",
-            "CustomFields",
-            "Please fill in all the required fields."
-          );
-          return;
-        }
+        // if (isAnyEmpty) {
+        //   openNotification(
+        //     "error",
+        //     "CustomFields",
+        //     "Please fill in all the required fields."
+        //   );
+        //   return;
+        // }
+        const newErrorMessages = evaluation.map((condition) => {
+          let errorMessage = '';
+      
+          if (!condition.question) {
+            errorMessage = 'Please enter a question.';
+          } else if (!condition.answer_type) {
+            errorMessage = 'Please choose an answer type.';
+          } else if (
+            ["Drop-down", "MultipleChoice", "Checkboxes"].includes(condition.answer_type) &&
+            (condition.answerMetaData.some((field) => !field.value) ||
+              (!condition.answerMetaData[0]?.value && condition.answerMetaData[0]?.key !== "ShortAnswer"))
+          ) {
+            errorMessage = 'Please enter values for all options.';
+          }
+      
+          return errorMessage;
+        });
+      
+        // Update errorMessages state with new error messages
+        setErrorMessages(newErrorMessages);
         console.log(UpdateId);
         // if (jobId){
         const response =
@@ -1194,7 +1245,15 @@ const Createjob = ({
           }));
         setEvaluation(formattedCustomFields);
         setSelectedWorkFlowId(firstJob.workFlowId);
-
+        formik.setFieldValue("headline", firstJob.jobApplicationFormData.headline)
+        formik.setFieldValue("phone", firstJob.jobApplicationFormData.phone)
+        formik.setFieldValue("address", firstJob.jobApplicationFormData.address)
+        formik.setFieldValue("country", firstJob.jobApplicationFormData.country)
+        formik.setFieldValue("education", firstJob.jobApplicationFormData.education)
+        formik.setFieldValue("experience", firstJob.jobApplicationFormData.experience)
+        formik.setFieldValue("summary",  firstJob.jobApplicationFormData.summary)
+        formik.setFieldValue("resume",  firstJob.jobApplicationFormData.resume)
+        formik.setFieldValue("coverLetter",  firstJob.jobApplicationFormData.coverLetter)
         console.log(firstJob.companyId);
       } else {
         console.error("No data found in the response.");
@@ -1799,6 +1858,7 @@ icon={<img src={image} alt="image" style={{ height: '20px', width: '20px', align
                             change={(e) => {
                               formik.setFieldValue("headline", e);
                             }}
+                            defaultValue={formik.values.headline}
                           >
                             <Radio.Button value={1}>Mandatory</Radio.Button>
                             <Radio.Button value={2}>Optional</Radio.Button>
@@ -1817,6 +1877,7 @@ icon={<img src={image} alt="image" style={{ height: '20px', width: '20px', align
                             change={(e) => {
                               formik.setFieldValue("phone", e);
                             }}
+                            defaultValue={formik.values.phone}
                           >
                             <Radio.Button value={1}>Mandatory</Radio.Button>
                             <Radio.Button value={2}>Optional</Radio.Button>
@@ -1835,6 +1896,7 @@ icon={<img src={image} alt="image" style={{ height: '20px', width: '20px', align
                             change={(e) => {
                               formik.setFieldValue("address", e);
                             }}
+                            defaultValue={formik.values.address}
                           >
                             <Radio.Button value={1}>Mandatory</Radio.Button>
                             <Radio.Button value={2}>Optional</Radio.Button>
@@ -1853,6 +1915,7 @@ icon={<img src={image} alt="image" style={{ height: '20px', width: '20px', align
                             change={(e) => {
                               formik.setFieldValue("country", e);
                             }}
+                            defaultValue={formik.values.country}
                           >
                             <Radio.Button value={1}>Mandatory</Radio.Button>
                             <Radio.Button value={2}>Optional</Radio.Button>
@@ -1885,6 +1948,7 @@ icon={<img src={image} alt="image" style={{ height: '20px', width: '20px', align
                             change={(e) => {
                               formik.setFieldValue("education", e);
                             }}
+                            defaultValue={formik.values.education}
                           >
                             <Radio.Button value={2}>Optional</Radio.Button>
                             <Radio.Button value={0}>Off</Radio.Button>
@@ -1904,6 +1968,7 @@ icon={<img src={image} alt="image" style={{ height: '20px', width: '20px', align
                             change={(e) => {
                               formik.setFieldValue("experience", e);
                             }}
+                            defaultValue={formik.values.experience}
                           >
                             <Radio.Button value={2}>Optional</Radio.Button>
                             <Radio.Button value={0}>Off</Radio.Button>
@@ -1921,6 +1986,7 @@ icon={<img src={image} alt="image" style={{ height: '20px', width: '20px', align
                             change={(e) => {
                               formik.setFieldValue("summary", e);
                             }}
+                            defaultValue={formik.values.summary}
                           >
                             <Radio.Button value={1}>Mandatory</Radio.Button>
                             <Radio.Button value={2}>Optional</Radio.Button>
@@ -1939,6 +2005,7 @@ icon={<img src={image} alt="image" style={{ height: '20px', width: '20px', align
                             change={(e) => {
                               formik.setFieldValue("resume", e);
                             }}
+                            defaultValue={formik.values.resume}
                           >
                             <Radio.Button value={1}>Mandatory</Radio.Button>
                             <Radio.Button value={2}>Optional</Radio.Button>
@@ -1958,6 +2025,7 @@ icon={<img src={image} alt="image" style={{ height: '20px', width: '20px', align
                             change={(e) => {
                               formik.setFieldValue("coverLetter", e);
                             }}
+                            defaultValue={formik.values.coverLetter}
                           >
                             <Radio.Button value={1}>Mandatory</Radio.Button>
                             <Radio.Button value={2}>Optional</Radio.Button>
@@ -1993,7 +2061,7 @@ icon={<img src={image} alt="image" style={{ height: '20px', width: '20px', align
                                   );
                                   console.log(e);
                                 }}
-
+                                  error={errorMessages}
                               />
                               <div className="flex items-center gap-5">
                                 
@@ -2022,6 +2090,7 @@ icon={<img src={image} alt="image" style={{ height: '20px', width: '20px', align
                                     value={condition.answer_type || ""}
                                     icon={<MdOutlineShortText />}
                                     icondropDown={true}
+                                    error={errorMessages}
                                   />
                                 
                                 <div style={{ display: 'flex', alignItems: 'center', gap: '15px' }}>
@@ -2061,6 +2130,7 @@ icon={<img src={image} alt="image" style={{ height: '20px', width: '20px', align
                                           : prevCondition
                                         )
                                         )}
+                                        error={errorMessages}
                                       />
                                       <div className="ml-2">
                                         <MdDelete

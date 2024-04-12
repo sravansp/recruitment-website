@@ -86,6 +86,8 @@ const CreatejobTemp = ({
   const { t } = useTranslation();
 
   // const [isUpdate, setIsUpdate] = useState();
+  const[Education,seteducation] =useState("")
+  const[Experience,setExperience] =useState("")
   const [activeBtn, setActiveBtn] = useState(0);
   const [presentage, setPresentage] = useState(0);
   const [nextStep, setNextStep] = useState(0);
@@ -103,6 +105,13 @@ const CreatejobTemp = ({
   const [content, setContent] = useState("");
   const [JobDescriptionList,setJobDescriptionList]=useState([])
   const[decriptionId,setDecriptionId] =  useState("")
+  const[Phone,setPhone] = useState("")
+  const[Headline,setHeadline] = useState("")
+  const[Address,setAddress] = useState("")
+  const[country,setCountry] = useState("")
+  const[summary,setSummary] = useState("")
+  const[resume,setResume] = useState("")
+  const[coverLetter,setCoverletter] = useState("")
   console.log(updateId);
   useEffect(() => {
     // Retrieve the login data JSON string from local storage
@@ -319,17 +328,17 @@ const CreatejobTemp = ({
             jobPublishDetails: null,
             createdBy: 45,
             jobApplicationFormData: {
-              name: e.name,
-              email: e.email,
-              headline: e.headline,
-              phone: e.phone,
-              address: e.address,
-              country: e.country,
-              education: e.education,
-              experience: e.experience,
-              summary: e.summary,
-              resume: e.resume,
-              coverLetter: e.coverLetter,
+              name: 1,
+              email: 1,
+              headline: Headline,
+              phone: Phone,
+              address: Address,
+              country: country,
+              education: Education,
+              experience: Experience,
+              summary:summary,
+              resume: resume,
+              coverLetter: coverLetter,
 
               customFields: updatedCustomFields,
             },
@@ -374,17 +383,17 @@ const CreatejobTemp = ({
             jobPublishDetails: null,
             createdBy: 45,
             jobApplicationFormData: {
-              name: e.name,
-              email: e.email,
-              headline: e.headline,
-              phone: e.phone,
-              address: e.address,
-              country: e.country,
-              education: e.education,
-              experience: e.experience,
-              summary: e.summary,
-              resume: e.resume,
-              coverLetter: e.coverLetter,
+              name: 1,
+              email: 1,
+              headline: Headline,
+              phone: Phone,
+              address: Address,
+              country: Experience,
+              education: Education,
+              experience: Experience,
+              summary: summary,
+              resume: resume,
+              coverLetter: coverLetter,
 
               customFields: updatedCustomFields,
             },
@@ -876,29 +885,7 @@ const CreatejobTemp = ({
 
   //Teammebers
 
-  const [employeeList, setemployeeList] = useState([]);
 
-  const AllRecruitmentJobTeamMembers = async () => {
-    // const jobId=1;
-    try {
-      const response = await getAllRecruitmentJobTeamMembers(jobId);
-      setemployeeList(
-        response.result.map((item) => ({
-          username: item.userName,
-          userId: item.userId,
-          userimage: item.userImage,
-        }))
-      );
-
-      console.log(response);
-    } catch (error) {
-      console.error("Error updating workflow ID:", error);
-    }
-  };
-  useEffect(() => {
-    AllRecruitmentJobTeamMembers();
-    console.log(employeeList);
-  }, []);
 
   return (
     <div>
@@ -986,6 +973,7 @@ const CreatejobTemp = ({
               {activeBtnValue === "Jobdetails" ? (
                 <>
                   <FlexCol>
+                  <div className="rounded-md borderb">
                     <Accordion
                       title={"Job Details"}
                       className="Text_area"
@@ -1056,7 +1044,8 @@ const CreatejobTemp = ({
                         />
                       </div>
                     </Accordion>
-
+                    </div>
+                    <div className="rounded-md borderb">
                     <Accordion
                       title={"Location "}
                       className="Text_area"
@@ -1150,7 +1139,10 @@ const CreatejobTemp = ({
                         />
                       </div>
                     </Accordion>
-                    <div>
+                    
+                    </div>
+                    <div className="rounded-md borderb">
+                    
                       <Accordion
                         title={"Employment Details"}
                         className="Text_area"
@@ -1279,7 +1271,7 @@ const CreatejobTemp = ({
                         </div>
                       </Accordion>
                     </div>
-
+                    <div className="rounded-md borderb">
                     <Accordion
                       title={"Job Description"}
                       className="Text_area"
@@ -1332,8 +1324,9 @@ const CreatejobTemp = ({
                           hideBorder={true}
                           initialValue={content}
                           //  change={(e)=>{
-                          //    formik1.setFieldValue('jobDescription',e)
+                          //    formik.setFieldValue('jobDescription',e)
                           //  }}
+                          error={formik.errors.jobDescription}
                           onChange={handleEditorChange}
                         />
                         {/* <TextArea
@@ -1362,11 +1355,13 @@ const CreatejobTemp = ({
                                              /> */}
                       </Card>
                     </Accordion>
+                    </div>
                   </FlexCol>
                 </>
               ) : activeBtnValue === "ApplicationForm" ? (
                 <>
                   <FlexCol>
+                  <div className="rounded-md borderb">
                     <Accordion
                       title={"ApplicationForm "}
                       className="Text_area"
@@ -1388,7 +1383,8 @@ const CreatejobTemp = ({
                           )}
                           title={""}
                           change={(e) => {
-                            formik.setFieldValue("name", e);
+                            // formik.setFieldValue("name", e);
+                            // setBtnName(e)
                           }}
                           defaultValue={1}
                         >
@@ -1407,7 +1403,8 @@ const CreatejobTemp = ({
                           )}
                           title={""}
                           change={(e) => {
-                            formik.setFieldValue("Email", e);
+                            // formik.setFieldValue("Email", e);
+                            // setEmail(e)
                           }}
                         >
                           <Radio.Button value={1}>Mandatory</Radio.Button>
@@ -1424,7 +1421,9 @@ const CreatejobTemp = ({
                           title={""}
                           change={(e) => {
                             formik.setFieldValue("headline", e);
+                            setHeadline(e)
                           }}
+                          defaultValue={Headline}
                         >
                           <Radio.Button value={1}>Mandatory</Radio.Button>
                           <Radio.Button value={2}>Optional</Radio.Button>
@@ -1442,7 +1441,9 @@ const CreatejobTemp = ({
                           title={""}
                           change={(e) => {
                             formik.setFieldValue("phone", e);
+                            setPhone(e)
                           }}
+                          defaultValue={Phone}
                         >
                           <Radio.Button value={1}>Mandatory</Radio.Button>
                           <Radio.Button value={2}>Optional</Radio.Button>
@@ -1460,7 +1461,9 @@ const CreatejobTemp = ({
                           title={""}
                           change={(e) => {
                             formik.setFieldValue("address", e);
+                            setAddress(e)
                           }}
+                          defaultValue={Address}
                         >
                           <Radio.Button value={1}>Mandatory</Radio.Button>
                           <Radio.Button value={2}>Optional</Radio.Button>
@@ -1478,7 +1481,9 @@ const CreatejobTemp = ({
                           title={""}
                           change={(e) => {
                             formik.setFieldValue("country", e);
+                            setCountry(e)
                           }}
+                          defaultValue={country}
                         >
                           <Radio.Button value={1}>Mandatory</Radio.Button>
                           <Radio.Button value={2}>Optional</Radio.Button>
@@ -1486,6 +1491,8 @@ const CreatejobTemp = ({
                         </Radiobuttonnew>
                       </div>
                     </Accordion>
+                    </div>
+                    <div className="rounded-md borderb">
 
                     <Accordion
                       title={"Profile "}
@@ -1508,8 +1515,9 @@ const CreatejobTemp = ({
                           )}
                           title={""}
                           change={(e) => {
-                            formik.setFieldValue("education", e);
+                           seteducation(e);
                           }}
+                          defaultValue={Education}
                         >
                           <Radio.Button value={2}>Optional</Radio.Button>
                           <Radio.Button value={0}>Off</Radio.Button>
@@ -1527,8 +1535,9 @@ const CreatejobTemp = ({
                           )}
                           title={""}
                           change={(e) => {
-                            formik.setFieldValue("experience", e);
+                            setExperience(e)
                           }}
+                          defaultValue={Experience}
                         >
                           <Radio.Button value={2}>Optional</Radio.Button>
                           <Radio.Button value={0}>Off</Radio.Button>
@@ -1545,7 +1554,9 @@ const CreatejobTemp = ({
                           title={""}
                           change={(e) => {
                             formik.setFieldValue("summary", e);
+                            setSummary(e)
                           }}
+                          defaultValue={summary}
                         >
                           <Radio.Button value={1}>Mandatory</Radio.Button>
                           <Radio.Button value={2}>Optional</Radio.Button>
@@ -1563,7 +1574,9 @@ const CreatejobTemp = ({
                           title={""}
                           change={(e) => {
                             formik.setFieldValue("resume", e);
+                            setResume(e)
                           }}
+                          defaultValue={resume}
                         >
                           <Radio.Button value={1}>Mandatory</Radio.Button>
                           <Radio.Button value={2}>Optional</Radio.Button>
@@ -1582,7 +1595,9 @@ const CreatejobTemp = ({
                           title={""}
                           change={(e) => {
                             formik.setFieldValue("coverLetter", e);
+                            setCoverletter(e)
                           }}
+                          defaultValue={coverLetter}
                         >
                           <Radio.Button value={1}>Mandatory</Radio.Button>
                           <Radio.Button value={2}>Optional</Radio.Button>
@@ -1590,7 +1605,8 @@ const CreatejobTemp = ({
                         </Radiobuttonnew>
                       </div>
                     </Accordion>
-
+                     </div>
+                     <div className="rounded-md borderb">
                     <Accordion
                       title={"Custom Fields "}
                       className="Text_area"
@@ -1719,13 +1735,13 @@ icondropDown={true}
                                     gap: "15px",
                                   }}
                                 >
-                                  <MdOutlineFileCopy
+                                  {/* <MdOutlineFileCopy
                                     style={{
                                       width: "18px",
                                       height: "18px",
                                       cursor: "pointer",
                                     }}
-                                  />
+                                  /> */}
                                   <MdDelete
                                     style={{
                                       width: "18px",
@@ -1842,6 +1858,7 @@ icondropDown={true}
                         }}
                       />
                     </Accordion>
+                    </div>
                   </FlexCol>
                 </>
               ) : activeBtnValue === "Workflow" ? (
