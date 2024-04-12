@@ -24,8 +24,8 @@ const TemEvaluation = ({ open = "", close = () => { }, inputshow = false, isUpda
 
   const [companyId, setCompanyId] = useState(localStorage.getItem("companyId"));
   const [insertedId, setinsertedId] = useState("")
-  console.log(companyId)
-  console.log(insertedId)
+  // console.log(companyId)
+  // console.log(insertedId)
   const [evaluationlist, setevaluationlist] = useState([])
   const [evaluationTemplateDetailsIds, setEvaluationTemplateDetailsIds] = useState([]);
   const [evaluation, setEvaluation] = useState([
@@ -44,7 +44,7 @@ const TemEvaluation = ({ open = "", close = () => { }, inputshow = false, isUpda
   //condition data
 
 
-  console.log(updateId)
+  // console.log(updateId)
   // const parsedAnswerMetaData = JSON.parse(evaluation[0].answerMetaData);
   // parsedAnswerMetaData[0].key = "updatedKey";
   // parsedAnswerMetaData[0].value = "updatedValue";
@@ -79,7 +79,7 @@ const TemEvaluation = ({ open = "", close = () => { }, inputshow = false, isUpda
     );
   };
   const handleDeleteField = (conditionIndex, fieldIndex) => {
-    console.log("Deleting field", conditionIndex, fieldIndex);
+    // console.log("Deleting field", conditionIndex, fieldIndex);
 
     setEvaluation((prevEvaluation) =>
       prevEvaluation.map((prevCondition, i) =>
@@ -137,12 +137,12 @@ const TemEvaluation = ({ open = "", close = () => { }, inputshow = false, isUpda
       // stack: 2,
       style: {
         background: `${type === "success"
-            ? `linear-gradient(180deg, rgba(204, 255, 233, 0.8) 0%, rgba(235, 252, 248, 0.8) 51.08%, rgba(246, 251, 253, 0.8) 100%)`
-            : "linear-gradient(180deg, rgba(255, 236, 236, 0.80) 0%, rgba(253, 246, 248, 0.80) 51.13%, rgba(251, 251, 254, 0.80) 100%)"
+          ? `linear-gradient(180deg, rgba(204, 255, 233, 0.8) 0%, rgba(235, 252, 248, 0.8) 51.08%, rgba(246, 251, 253, 0.8) 100%)`
+          : "linear-gradient(180deg, rgba(255, 236, 236, 0.80) 0%, rgba(253, 246, 248, 0.80) 51.13%, rgba(251, 251, 254, 0.80) 100%)"
           }`,
         boxShadow: `${type === "success"
-            ? "0px 4.868px 11.358px rgba(62, 255, 93, 0.2)"
-            : "0px 22px 60px rgba(134, 92, 144, 0.20)"
+          ? "0px 4.868px 11.358px rgba(62, 255, 93, 0.2)"
+          : "0px 22px 60px rgba(134, 92, 144, 0.20)"
           }`,
       },
       // duration: null,
@@ -164,12 +164,12 @@ const TemEvaluation = ({ open = "", close = () => { }, inputshow = false, isUpda
     },
     onSubmit: async (values, { setSubmitting }) => {
       try {
-        console.log({
-          companyId: companyId,
-          evaluationTemplateName: values.evaluationTemplateName,
-          description: values.description,
-          createdBy: null,
-        });
+        // console.log({
+        //   companyId: companyId,
+        //   evaluationTemplateName: values.evaluationTemplateName,
+        //   description: values.description,
+        //   createdBy: null,
+        // });
 
         // Make the first API call
         if (updateId) {
@@ -196,7 +196,7 @@ const TemEvaluation = ({ open = "", close = () => { }, inputshow = false, isUpda
 
 
           })
-          console.log(response)
+          // console.log(response)
           if (response.status == 200) {
             openNotification("success", "Successful", response.message);
             setSuccessNotificationVisible(true);
@@ -217,7 +217,7 @@ const TemEvaluation = ({ open = "", close = () => { }, inputshow = false, isUpda
             createdBy: null,
           });
 
-          console.log(response);
+          // console.log(response);
 
           if (response.status === 200) {
             // Update the state with the insertedId
@@ -237,9 +237,9 @@ const TemEvaluation = ({ open = "", close = () => { }, inputshow = false, isUpda
             const response2 = await saveRecruitmentEvaluationTemplateDetailBatch(formattedData);
 
             // Handle the response if needed
-            console.log('Response2:', response2);
-            console.log(formattedData);
-            console.log(insertedId);
+            // console.log('Response2:', response2);
+            // console.log(formattedData);
+            // console.log(insertedId);
 
             if (response2.status === 200) {
               openNotification("success", "Successful", response2.message);
@@ -280,7 +280,7 @@ const TemEvaluation = ({ open = "", close = () => { }, inputshow = false, isUpda
     const id = updateId;
     try {
       const response = await getRecruitmentEvaluationTemplateById({ id });
-      console.log(response);
+      // console.log("work flow by id", response);
       setevaluationlist(response.result)
       const evaluationData = response.result.flatMap(item => {
         return item.evaluationTemplateDetailData.map(detail => ({
@@ -301,7 +301,7 @@ const TemEvaluation = ({ open = "", close = () => { }, inputshow = false, isUpda
       const ids = response.result.map(item => item.evaluationTemplateDetailData.map(detail => detail.evaluationTemplateDetailsId)).flat();
       setEvaluationTemplateDetailsIds(ids);
       setEvaluation(evaluationData);
-      console.log(evaluationData)
+      // console.log(evaluationData)
       const firstEvaluation = response.result[0];
       formik.setFieldValue("evaluationTemplateName", firstEvaluation.evaluationTemplateName);
       formik.setFieldValue("description", firstEvaluation.description);
@@ -429,7 +429,7 @@ const TemEvaluation = ({ open = "", close = () => { }, inputshow = false, isUpda
                       ? { ...prevCondition, question: e }
                       : prevCondition
                     ))
-                    console.log(e)
+                    // console.log(e)
                   }} />
 
                 <div className="flex items-center gap-5">

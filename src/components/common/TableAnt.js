@@ -77,7 +77,7 @@ const TableAnt = ({
   All = false,
   showsearch = false,
   viewOutside = false,
-  refresh = () => {},
+  refresh = () => { },
   recordId = "",
   jobId = ""
 
@@ -215,8 +215,8 @@ const TableAnt = ({
         id: id, //Id
         // isActive: checked === true ? 1 : 0,
       });
-      console.log(id)
-      console.log(response);
+      // console.log(id)
+      // console.log(response);
 
       if (response.status === 200) {
         // handleClose();
@@ -247,9 +247,9 @@ const TableAnt = ({
   // };
 
 
-// Function to delete a record
+  // Function to delete a record
 
-const deleteRecord = async (id) => {
+  const deleteRecord = async (id) => {
 
     const result = await action(deleteApi, { id: id }); // Ensure 'id' is passed correctly
     if (result.status === 200) {
@@ -258,7 +258,7 @@ const deleteRecord = async (id) => {
       refresh(true);
     }
 
-};
+  };
 
 
 
@@ -286,10 +286,10 @@ const deleteRecord = async (id) => {
     setModalData({ text, title });
     setIsModalOpen(true);
   }
-  console.log(modalData, "hii");
-  console.log("modalData.title:", modalData.title);
-  console.log("tabTitle:", tabTitle);
-  console.log("path:", path);
+  // console.log(modalData, "hii");
+  // console.log("modalData.title:", modalData.title);
+  // console.log("tabTitle:", tabTitle);
+  // console.log("path:", path);
 
   // useEffect(()=>{
   //   const record
@@ -327,7 +327,7 @@ const deleteRecord = async (id) => {
                   onClick={() => {
                     !viewOutside &&
                       handleModalOpen(text, drawerH[0]?.[tabValue || path]);
-                    console.log(tabValue, path, "kiok");
+                    // console.log(tabValue, path, "kiok");
                   }}
                 >
                   <RxDotFilled
@@ -338,38 +338,36 @@ const deleteRecord = async (id) => {
                   />
                   {parseInt(record) === 1 ? "Active" : "Inactive"}
                 </div>
-              ): each.value === "currentStatus" ? (
+              ) : each.value === "currentStatus" ? (
                 <div
                   key={text}
-                  className={`${
-                    parseInt(record) === 0 || record === null
-                      ? "bg-yellow-100 text-yellow-600"
-                      : parseInt(record) === 1
+                  className={`${parseInt(record) === 0 || record === null
+                    ? "bg-yellow-100 text-yellow-600"
+                    : parseInt(record) === 1
                       ? "bg-emerald-100 text-emerald-600"
                       : "bg-rose-100 text-rose-600"
-                  } rounded-full pr-2 py-[2px] w-fit font-medium text-[10px] 2xl:text-sm vhcenter flex-nowrap`}
+                    } rounded-full pr-2 py-[2px] w-fit font-medium text-[10px] 2xl:text-sm vhcenter flex-nowrap`}
                   onClick={() => {
                     !viewOutside &&
                       handleModalOpen(text, header[0]?.[tabValue || path]);
-                    console.log(tabValue, path, "kiok");
+                    // console.log(tabValue, path, "kiok");
                   }}
                 >
                   <RxDotFilled
-                    className={`${
-                      parseInt(record) === 0
-                        ? "text-yellow-600"
-                        : parseInt(record) === 1
+                    className={`${parseInt(record) === 0
+                      ? "text-yellow-600"
+                      : parseInt(record) === 1
                         ? "text-emerald-600"
                         : "text-rose-600"
-                    } text-base 2xl:text-lg`}
+                      } text-base 2xl:text-lg`}
                   />
                   {parseInt(record) === 0 || record === null
                     ? "Under Process"
                     : parseInt(record) === 1
-                    ? "Hired"
-                    : "Disqualified"}
+                      ? "Hired"
+                      : "Disqualified"}
                 </div>
-              )  : each.flexColumn === true ? (
+              ) : each.flexColumn === true ? (
                 <div className="flex items-center gap-4"
                   onClick={() => {
                     !viewOutside &&
@@ -453,33 +451,33 @@ const deleteRecord = async (id) => {
                     </button>
                   </Tooltip>
                   {each.hideIcon !== "delete" && (
-                  <Popconfirm
-                    placement="top"
-                    title={"Confirm To Delete"}
-                    description={"Are you sure to delete this row?"}
-                    okText="Confirm"
-                    cancelText="No"
-                    onConfirm={() => {
-                      console.log("hh");
-                      deleteRecord(text[actionID]);
-                    }}
-                    // className="activeBtn"
-                    style={{}}
-                  >
-                    <Tooltip title="Delete" placement="bottom" color="red">
-                      <button
-                        className={`w-8 h-8 2xl:w-10 2xl:h-10 rounded-full vhcenter hover:bg-primaryalpha/20 dark:hover:bg-primaryalpha/30 text-accent transition-all duration-300`}
-                      // onClick={() => {
-                      //   // deleteRecord(text[actionID]);
-                      //   // clickDrawer(true);
-                      //   // console.log(text[actionID]);
-                      // }}
-                      >
-                        <RiDeleteBin5Line className="text-xs 2xl:text-sm" />
-                      </button>
-                    </Tooltip>
-                  </Popconfirm>
-                   )}
+                    <Popconfirm
+                      placement="top"
+                      title={"Confirm To Delete"}
+                      description={"Are you sure to delete this row?"}
+                      okText="Confirm"
+                      cancelText="No"
+                      onConfirm={() => {
+                        // console.log("hh");
+                        deleteRecord(text[actionID]);
+                      }}
+                      // className="activeBtn"
+                      style={{}}
+                    >
+                      <Tooltip title="Delete" placement="bottom" color="red">
+                        <button
+                          className={`w-8 h-8 2xl:w-10 2xl:h-10 rounded-full vhcenter hover:bg-primaryalpha/20 dark:hover:bg-primaryalpha/30 text-accent transition-all duration-300`}
+                        // onClick={() => {
+                        //   // deleteRecord(text[actionID]);
+                        //   // clickDrawer(true);
+                        //   // console.log(text[actionID]);
+                        // }}
+                        >
+                          <RiDeleteBin5Line className="text-xs 2xl:text-sm" />
+                        </button>
+                      </Tooltip>
+                    </Popconfirm>
+                  )}
                 </div>
 
               ) : (
@@ -516,7 +514,7 @@ const deleteRecord = async (id) => {
                       okText="Confirm"
                       cancelText="No"
                       onConfirm={() => {
-                        console.log("hh");
+                        // console.log("hh");
                         deleteRecord(text[actionID]);
                       }}
                       // className="activeBtn"
@@ -600,11 +598,11 @@ const deleteRecord = async (id) => {
   // rowSelection objects indicates the need for row selection
   const rowSelection = {
     onChange: (selectedRowKeys, selectedRows) => {
-      console.log(
-        `selectedRowKeys: ${selectedRowKeys}`,
-        "selectedRows: ",
-        selectedRows
-      );
+      // console.log(
+      //   `selectedRowKeys: ${selectedRowKeys}`,
+      //   "selectedRows: ",
+      //   selectedRows
+      // );
     },
     onSelect: (record, selected, selectedRows) => {
       //console.log(record, selected, selectedRows);
@@ -800,8 +798,8 @@ const deleteRecord = async (id) => {
                   ? `${selectedRowKeys?.length} ${jsonResult ? jsonResult : path.split("_").join(" ")
                   } Selected`
                   : `All ${jsonResult ? jsonResult : path.split("_").join(" ")
-                  }`}
-                {console.log(jsonResult)}
+                  }`
+                }
               </div>
             )}
           </div>
@@ -809,7 +807,7 @@ const deleteRecord = async (id) => {
           <TabsNew
             tabs={tab}
             tabClick={(e) => {
-              console.log(e, "e");
+              // console.log(e, "e");
               setTabClick(e);
               handleTabChange(e);
             }}
@@ -827,7 +825,7 @@ const deleteRecord = async (id) => {
             style={{ marginLeft: 8 }}
             className={`bg-[${primaryColor}] bg-opacity-10 text-primary text-[10px] 2xl:text-xs rounded-full px-3 py-1 vhcenter`}
           >
-            {console.log(...tabTitle.split("_"))}
+            {/* {console.log(...tabTitle.split("_"))} */}
             {All ? (
               <div>
                 {/* {hasSelected
@@ -878,7 +876,7 @@ const deleteRecord = async (id) => {
                   jsonResult ? jsonResult : path
                 } Selected`
               : `All ${jsonResult ? jsonResult : path}`} */}
-            {console.log(jsonResult)}
+            {/* {console.log(jsonResult)} */}
           </div>
         </div>
         <div className="flex flex-wrap items-center gap-3">
@@ -914,7 +912,7 @@ const deleteRecord = async (id) => {
                     }}
                   />)}
 
-               {/* <div>
+                {/* <div>
                        <Dropdown
                    menu={{
                      items,
@@ -969,7 +967,7 @@ const deleteRecord = async (id) => {
 
       </div>
       <div className="border rounded-lg border-[#E7E7E7] dark:border-secondary relative overflow-auto">
-        {console.log(data)}
+        {/* {console.log(data)} */}
         {data && (
           <Table
             //rowSelection={{ ...rowSelection }}
@@ -1021,7 +1019,7 @@ const deleteRecord = async (id) => {
             setIsModalOpen(e);
           }}
         >
-          {console.log(modalData, "this is modaldata")}
+          {/* {console.log(modalData, "this is modaldata")} */}
           <div className="flex flex-col gap-2 dark:text-white">
             {/* Render all title-value pairs */}
             {modalData.title.map((titleItem, index) => (
