@@ -1066,8 +1066,8 @@ export default function Createcandidatelist({ open = "", close = () => { }, file
                       </div>
                       <div>
                         <TextArea
-                          title='Cover Letter'
-                          placeholder='Type here'
+                          title={'Cover Letter'}
+                          placeholder={"Enter Cover Letter"}
                           change={(e) => {
                             Formik2.setFieldValue("coverLetter", e);
                           }}
