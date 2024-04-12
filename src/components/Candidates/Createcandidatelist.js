@@ -983,7 +983,7 @@ export default function Createcandidatelist({ open = "", close = () => { }, file
                               <Dropdown
                                 title={each.title}
                                 options={Jobtype}
-
+                                placeholder={t("Enter " + each.title)}
                                 change={(e) => {
                                   formik3.setFieldValue(each.inputFeild, e);
                                 }}
