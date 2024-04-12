@@ -13,8 +13,8 @@ export default function Stepper({
   const primaryColor = localStorage.getItem("mainColor");
   const stepsStateRef = useRef();
   useEffect(() => {
-    console.log(steps);
-    console.log(addMore);
+    // console.log(steps);
+    // console.log(addMore);
 
     // if (addMore === true) {
     //   steps.splice(1, 0, { data });
@@ -23,8 +23,8 @@ export default function Stepper({
   }, [steps]);
 
   useEffect(() => {
-    console.log(presentage);
-    console.log(steps);
+    // console.log(presentage);
+    // console.log(steps);
 
     const stepsState = steps.map((step, index) => ({
       description: step.title,
@@ -41,10 +41,10 @@ export default function Stepper({
     const newSteps = [...steps];
     let stepCounter = 0;
     // let stepNumber = nextNumber + 1;
-    console.log(stepCounter, newSteps.length, stepNumber);
+    // console.log(stepCounter, newSteps.length, stepNumber);
     while (stepCounter < newSteps.length) {
       if (stepCounter === stepNumber) {
-        console.log(stepNumber);
+        // console.log(stepNumber);
         newSteps[stepCounter] = {
           ...newSteps[stepCounter],
           highlighted: true,

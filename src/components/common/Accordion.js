@@ -25,8 +25,8 @@ export default function Accordion({
   // };
 
   useEffect(() => {
-    console.log(expanded[1]);
-    console.log(data)
+    // console.log(expanded[1]);
+    // console.log(data)
   }, [expanded]);
 
   return (
