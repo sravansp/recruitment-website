@@ -11,6 +11,7 @@ import {
   List,
   Radio,
   Space,
+  Tooltip,
   notification,
 } from "antd";
 import Accordion from "../common/Accordion";
@@ -74,7 +75,7 @@ import RadioButton from "../common/RadioButton";
 
 const CreatejobTemp = ({
   open = "",
-  close = () => {},
+  close = () => { },
   inputshow = false,
   isUpdate = {},
   updateId,
@@ -127,16 +128,14 @@ const CreatejobTemp = ({
       placement: "top",
       // stack: 2,
       style: {
-        background: `${
-          type === "success"
-            ? `linear-gradient(180deg, rgba(204, 255, 233, 0.8) 0%, rgba(235, 252, 248, 0.8) 51.08%, rgba(246, 251, 253, 0.8) 100%)`
-            : "linear-gradient(180deg, rgba(255, 236, 236, 0.80) 0%, rgba(253, 246, 248, 0.80) 51.13%, rgba(251, 251, 254, 0.80) 100%)"
-        }`,
-        boxShadow: `${
-          type === "success"
-            ? "0px 4.868px 11.358px rgba(62, 255, 93, 0.2)"
-            : "0px 22px 60px rgba(134, 92, 144, 0.20)"
-        }`,
+        background: `${type === "success"
+          ? `linear-gradient(180deg, rgba(204, 255, 233, 0.8) 0%, rgba(235, 252, 248, 0.8) 51.08%, rgba(246, 251, 253, 0.8) 100%)`
+          : "linear-gradient(180deg, rgba(255, 236, 236, 0.80) 0%, rgba(253, 246, 248, 0.80) 51.13%, rgba(251, 251, 254, 0.80) 100%)"
+          }`,
+        boxShadow: `${type === "success"
+          ? "0px 4.868px 11.358px rgba(62, 255, 93, 0.2)"
+          : "0px 22px 60px rgba(134, 92, 144, 0.20)"
+          }`,
       },
       // duration: null,
     });
@@ -232,7 +231,7 @@ const CreatejobTemp = ({
       },
       createdBy: "",
     },
-    
+
     onSubmit: async (e) => {
       try {
         const updatedCustomFields = evaluation.map((condition) => ({
@@ -468,11 +467,11 @@ const CreatejobTemp = ({
       prevEvaluation.map((prevCondition, i) =>
         i === conditionIndex
           ? {
-              ...prevCondition,
-              answerMetaData: (prevCondition.answerMetaData || []).filter(
-                (field, j) => j !== fieldIndex
-              ),
-            }
+            ...prevCondition,
+            answerMetaData: (prevCondition.answerMetaData || []).filter(
+              (field, j) => j !== fieldIndex
+            ),
+          }
           : prevCondition
       )
     );
@@ -482,16 +481,16 @@ const CreatejobTemp = ({
       prevEvaluation.map((prevCondition, i) =>
         i === index
           ? {
-              ...prevCondition,
-              answerMetaData: [
-                ...prevCondition.answerMetaData,
-                {
-                  id: prevCondition.answerMetaData.length + 1,
-                  key: "Drop-down", // You can set the default key or customize as needed
-                  value: "",
-                },
-              ],
-            }
+            ...prevCondition,
+            answerMetaData: [
+              ...prevCondition.answerMetaData,
+              {
+                id: prevCondition.answerMetaData.length + 1,
+                key: "Drop-down", // You can set the default key or customize as needed
+                value: "",
+              },
+            ],
+          }
           : prevCondition
       )
     );
@@ -888,13 +887,13 @@ const CreatejobTemp = ({
                     // direction="left"
                     // labelPlacement="vertical"
                     steps={steps}
-                    // className=" text-sm font-medium"
-                    // style={{
-                    //   fontSize: isSmallScreen ? "8px" : "10px",
-                    //   fontWeight: 600,
-                    // }}
-                    // // className="text-[10px]"
-                    // size={isSmallScreen ? "default" : "large"}
+                  // className=" text-sm font-medium"
+                  // style={{
+                  //   fontSize: isSmallScreen ? "8px" : "10px",
+                  //   fontWeight: 600,
+                  // }}
+                  // // className="text-[10px]"
+                  // size={isSmallScreen ? "default" : "large"}
                   />
                 </div>
               )}
@@ -919,7 +918,7 @@ const CreatejobTemp = ({
                           <Dropdown
                             title={t("Choose Template")}
                             placeholder={t("Select")}
-                            // required={true}
+                          // required={true}
                           />
 
                           <Dropdown
@@ -986,9 +985,8 @@ const CreatejobTemp = ({
                         {regularOvertime?.map((each, i) => (
                           <div
                             key={i}
-                            className={`col-span-4 p-4 border rounded-2xl cursor-pointer showDelay dark:bg-dark  ${
-                              customRate === each.id && "border-primary "
-                            } `}
+                            className={`col-span-4 p-4 border rounded-2xl cursor-pointer showDelay dark:bg-dark  ${customRate === each.id && "border-primary "
+                              } `}
                             onClick={() => {
                               setCustomRate(each.id);
                               formik.setFieldValue(
@@ -1005,9 +1003,8 @@ const CreatejobTemp = ({
                                 } `}
                               /> */}
                                 <div
-                                  className={`${
-                                    customRate === each.id && " text-primary  "
-                                  } p-2 border rounded-mdx w-fit bg-[#F8FAFC]`}
+                                  className={`${customRate === each.id && " text-primary  "
+                                    } p-2 border rounded-mdx w-fit bg-[#F8FAFC]`}
                                 >
                                   {each.image}
                                 </div>
@@ -1024,15 +1021,13 @@ const CreatejobTemp = ({
                                 </p>
                               </div>
                               <div
-                                className={`${
-                                  customRate === each.id && "border-primary"
-                                } border  rounded-full`}
+                                className={`${customRate === each.id && "border-primary"
+                                  } border  rounded-full`}
                               >
                                 <div
-                                  className={`font-semibold text-base w-4 h-4 border-2 border-white   rounded-full ${
-                                    customRate === each.id &&
+                                  className={`font-semibold text-base w-4 h-4 border-2 border-white   rounded-full ${customRate === each.id &&
                                     "text-primary bg-primary"
-                                  } `}
+                                    } `}
                                 ></div>
                               </div>
                             </div>
@@ -1214,7 +1209,7 @@ const CreatejobTemp = ({
                               src={image}
                               alt="image"
                               style={{ height: "20px", width: "20px" }}
-                              
+
                             />
                           }
                         >
@@ -1577,16 +1572,16 @@ icondropDown={true}
                                         prevEvaluation.map((prevCondition, i) =>
                                           i === index
                                             ? {
-                                                ...prevCondition,
-                                                answer_type: e,
-                                                answerMetaData: [
-                                                  {
-                                                    id: 1,
-                                                    key: e,
-                                                    value: "",
-                                                  },
-                                                ],
-                                              }
+                                              ...prevCondition,
+                                              answer_type: e,
+                                              answerMetaData: [
+                                                {
+                                                  id: 1,
+                                                  key: e,
+                                                  value: "",
+                                                },
+                                              ],
+                                            }
                                             : prevCondition
                                         )
                                       );
@@ -1618,21 +1613,26 @@ icondropDown={true}
                                     gap: "15px",
                                   }}
                                 >
-                                  <MdOutlineFileCopy
-                                    style={{
-                                      width: "18px",
-                                      height: "18px",
-                                      cursor: "pointer",
-                                    }}
-                                  />
-                                  <MdDelete
-                                    style={{
-                                      width: "18px",
-                                      height: "18px",
-                                      cursor: "pointer",
-                                    }}
-                                    onClick={() => handleDeleteCondition(index)}
-                                  />
+                                  <Tooltip placement="top" title={"Copy"}>
+                                    <MdOutlineFileCopy
+                                      style={{
+                                        width: "18px",
+                                        height: "18px",
+                                        cursor: "pointer",
+                                      }}
+                                    />
+                                  </Tooltip>
+                                  <Tooltip placement="top" title={"Delete"}>
+                                    <MdDelete
+                                      style={{
+                                        width: "18px",
+                                        height: "18px",
+                                        cursor: "pointer",
+                                        color: "red",
+                                      }}
+                                      onClick={() => handleDeleteCondition(index)}
+                                    />
+                                  </Tooltip>
                                 </div>
                               </div>
                             </div>
@@ -1650,53 +1650,53 @@ icondropDown={true}
                                         "MultipleChoice",
                                         "Checkboxes",
                                       ].includes(field.key) && (
-                                        <FormInput
-                                          title={`options ${fieldIndex + 1}`}
-                                          placeholder={"Enter value"}
-                                          value={field.value}
-                                          change={(e) =>
-                                            setEvaluation((prevEvaluation) =>
-                                              prevEvaluation.map(
-                                                (prevCondition, i) =>
-                                                  i === index
-                                                    ? {
+                                          <FormInput
+                                            title={`options ${fieldIndex + 1}`}
+                                            placeholder={"Enter value"}
+                                            value={field.value}
+                                            change={(e) =>
+                                              setEvaluation((prevEvaluation) =>
+                                                prevEvaluation.map(
+                                                  (prevCondition, i) =>
+                                                    i === index
+                                                      ? {
                                                         ...prevCondition,
                                                         answerMetaData:
                                                           prevCondition.answerMetaData.map(
                                                             (f, j) =>
                                                               j === fieldIndex
                                                                 ? {
-                                                                    ...f,
-                                                                    value:
-                                                                      String(e),
-                                                                  }
+                                                                  ...f,
+                                                                  value:
+                                                                    String(e),
+                                                                }
                                                                 : f
                                                           ),
                                                       }
-                                                    : prevCondition
+                                                      : prevCondition
+                                                )
                                               )
-                                            )
-                                          }
-                                        />
-                                      )}
+                                            }
+                                          />
+                                        )}
 
                                       {[
                                         "Drop-down",
                                         "MultipleChoice",
                                         "Checkboxes",
                                       ].includes(field.key) && (
-                                        <div className="ml-2">
-                                          <MdDelete
-                                            onClick={() =>
-                                              handleDeleteField(
-                                                index,
-                                                fieldIndex
-                                              )
-                                            }
-                                            className="cursor-pointer text-red-500"
-                                          />
-                                        </div>
-                                      )}
+                                          <div className="ml-2">
+                                            <MdDelete
+                                              onClick={() =>
+                                                handleDeleteField(
+                                                  index,
+                                                  fieldIndex
+                                                )
+                                              }
+                                              className="cursor-pointer text-red-500"
+                                            />
+                                          </div>
+                                        )}
                                     </div>
                                   )
                                 )}
@@ -1709,20 +1709,20 @@ icondropDown={true}
                                   ].includes(
                                     condition.answerMetaData[0]?.key
                                   ) && (
-                                    <CgAdd
-                                      onClick={() =>
-                                        handleAddField(
-                                          index,
-                                          condition.answerMetaData[0]?.key
-                                        )
-                                      }
-                                      style={{
-                                        width: "18px",
-                                        height: "18px",
-                                        cursor: "pointer",
-                                      }}
-                                    />
-                                  )}
+                                      <CgAdd
+                                        onClick={() =>
+                                          handleAddField(
+                                            index,
+                                            condition.answerMetaData[0]?.key
+                                          )
+                                        }
+                                        style={{
+                                          width: "18px",
+                                          height: "18px",
+                                          cursor: "pointer",
+                                        }}
+                                      />
+                                    )}
                                 </div>
                               </>
                             )}
@@ -1768,7 +1768,8 @@ icondropDown={true}
       ))}
                 */}
                     <Radio.Group
-                      onChange={(e) => {setSelectedWorkFlowId(e.target.value)
+                      onChange={(e) => {
+                        setSelectedWorkFlowId(e.target.value)
                         setPresentage(3.5)
                       }}
                     >
@@ -1793,11 +1794,11 @@ icondropDown={true}
               ) : null}
               {contextHolder}
             </div>
-            
+
           </FlexCol>
         </div>
       </DrawerPop>
-      
+
     </div>
   );
 };
