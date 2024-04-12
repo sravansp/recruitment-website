@@ -395,7 +395,7 @@ const CreatejobTemp = ({
 
         // console.log(firstJob.companyId);
       } else {
-        console.error("No data found in the response.");
+        // console.error("No data found in the response.");
       }
     } catch (error) {
       // console.log(error);

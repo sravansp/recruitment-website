@@ -307,7 +307,7 @@ const TemEvaluation = ({ open = "", close = () => { }, inputshow = false, isUpda
       formik.setFieldValue("description", firstEvaluation.description);
 
     } catch (error) {
-      console.error("Error fetching evaluation data:", error);
+      // console.error("Error fetching evaluation data:", error);
     }
   };
   useEffect(() => {
