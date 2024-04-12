@@ -351,7 +351,8 @@ useEffect(() => {
        !updateId
          ? t("Create Evaluation Template")
          : t("update Evaluation Template"),
-       t("Lorem ipsum dummy text doret solo."),
+         ? t("Create Evaluation Template")
+         : t("update Evaluation Template"),
      ]}
      
     //  headerRight={
