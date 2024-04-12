@@ -1017,7 +1017,7 @@ export default function Createcandidatelist({ open = "", close = () => { }, file
                         <div className='ml-auto '>
                           <Tooltip placement="top" title={"Delete"}>
                             {index !== 0 && (
-                              <RiDeleteBin6Line className='size-4 text-slate-500' onClick={() => handleDeleteWork(index)} />
+                              <RiDeleteBin6Line className='size-4 text-slate-500 hover:text-red-500' onClick={() => handleDeleteWork(index)} />
                             )}
                           </Tooltip>
                         </div>
