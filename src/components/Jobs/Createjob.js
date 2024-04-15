@@ -1316,6 +1316,7 @@ const Createjob = ({
           borderRadius: 0,
           borderTopLeftRadius: "0px !important",
           borderBottomLeftRadius: 0,
+          
         }}
         wrapperBodyStyle={{ backgroundColor: "#F8FAFC" }}
         close={(e) => {
@@ -1363,9 +1364,9 @@ const Createjob = ({
         <div>
           {/* <div className="inset-0 absolute bg-[#F8FAFC]"></div> */}
           <FlexCol>
-            <div className="flex flex-col gap-6 max-w-[1070px] w-full mx-auto bg-[#F8FAFC] ">
+            <div className="flex flex-col gap-6 max-w-[1070px] w-full mx-auto  ">
               {steps && (
-                <div className=" sticky -top-6 w-full z-50 px-5 bg-[#F8FAFC] dark:bg-[#1f1f1f] pb-10 ">
+                <div className=" sticky -top-6 w-full z-50 px-5  dark:bg-[#1f1f1f] pb-10 ">
                   <Stepper
                     currentStepNumber={activeBtn}
                     presentage={presentage}
@@ -2382,12 +2383,13 @@ icon={<img src={image} alt="image" style={{ height: '20px', width: '20px', align
                   title={"Publish"}
                   className="Text_area"
                   description={"lorem ipsum dummy text dolar sit."}
-                  padding={false}
+                  padding={true}
                   toggleBtn={false}
                   click={() => {
                     // setPresentage(4.1);
                   }}
                   initialExpanded={true}
+
                 >
                   <div className="flex justify-between">
                     <TabsNew tabs={tabs} />

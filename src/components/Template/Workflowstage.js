@@ -395,7 +395,7 @@ const Workflowstage = ({ open = "", close = () => { }, inputshow = false, isUpda
 
 
             </div>
-            {/* <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
+            <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
               <TextArea
                 title={"Description"}
                 placeholder={"Type here..."}
@@ -405,7 +405,7 @@ const Workflowstage = ({ open = "", close = () => { }, inputshow = false, isUpda
                 }}
                 value={formik.values.description}
               />
-            </div> */}
+            </div>
             <div className="w-full sm:w-[545px] grid grid-cols-1 gap-4">
               {console.log(stages)}
               {stages.map((stage) => (

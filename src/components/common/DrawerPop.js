@@ -55,6 +55,7 @@ export default function DrawerPop({
       // width="100%"
       styles={drawerStyles}
       contentWrapperStyle={contentWrapperStyle}
+   
       // destroyOnClose
       placement={layout === "ltr" ? "right" : "left"}
       title={

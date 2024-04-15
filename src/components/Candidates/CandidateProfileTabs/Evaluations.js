@@ -542,11 +542,7 @@ const Evaluations = () => {
                     </div>
                   ))}
                 </div>
-                  <div
-                    className="flex items-center justify-end gap-2.5 p-1.5 mt-[18.88px] rounded-lg"
-                  >
-                    <ButtonClick handleSubmit={handleSubmit} buttonName="save" BtnType="primary" />
-                  </div></>
+                </>
               ))
             ) : (
               <div className="h-full gap-4 vhcenter box-wrapper borderb">
@@ -567,7 +563,11 @@ const Evaluations = () => {
               </div>
             )}
 
-
+<div
+                    className="flex items-center justify-end gap-2.5 p-1.5 mt-[18.88px] rounded-lg"
+                  >
+                    <ButtonClick handleSubmit={handleSubmit} buttonName="save" BtnType="primary" />
+                  </div>
           </div>
         </div>
       </div>

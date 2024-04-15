@@ -51,6 +51,7 @@ import {
 
 // Components
 import TabsNew from "../common/TabsNew";
+import _ from 'lodash';
 import Overview from "./CandidateProfileTabs/Overview";
 import ActivityFeed from "./CandidateProfileTabs/ActivityFeed";
 import CVResume from "./CandidateProfileTabs/CVResume";
@@ -313,7 +314,7 @@ const CandidateProfile = () => {
     const selectedItemLabel = stageName.find(
       (item) => item.key === e.key
     ).label;
-    setSelectedItemLabel(selectedItemLabel);
+    setSelectedItemLabel(selectedItemLabel);  
     setstageId(e.key);
   };
   const handleMenuClick1 = async (e) => {
@@ -584,7 +585,10 @@ const CandidateProfile = () => {
                 </div>
                 <div className="inline-flex flex-col items-start justify-start gap-1">
                   <div className="gap-3 vhcenter">
-                    <h2 className="h2">{items.candidateName}</h2>
+                    <h2 className="h2">  {items.candidateName
+                  .split(' ')
+                  .map((name) => name.charAt(0).toUpperCase() + name.slice(1).toLowerCase())
+                  .join(' ')}</h2>
                     <PiBookmarkSimpleFill className=" text-[#12B76A] text-base" />
                   </div>
 
