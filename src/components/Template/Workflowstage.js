@@ -369,7 +369,6 @@ const Workflowstage = ({ open = "", close = () => { }, inputshow = false, isUpda
         <Accordion
           title={"Workflow"}
           className="Text_area"
-          description={"lorem ipsum dummy text dolar sit."}
           padding={false}
           toggleBtn={false}
           click={() => {
