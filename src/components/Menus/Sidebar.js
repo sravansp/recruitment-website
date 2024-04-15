@@ -537,8 +537,7 @@ const Sidebar = () => {
                     
                   </div>
                   <p className="text-[9px] 2xl:text-xs text-white">
-                    <Link to={menuItem.link}>{menuItem.title}</Link>
-                    
+                    {menuItem.title}
                   </p>
                 </Link>
               </li>
