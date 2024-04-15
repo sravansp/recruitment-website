@@ -17,6 +17,11 @@ import group from "../assets/images/onBoarding/Group.png";
 import bank from "../assets/images/onBoarding/bank.png";
 import educationCertificate from "../assets/images/onBoarding/Education Certificate.png";
 
+import OnSite from "../assets/images/OnSite.jpg"
+import Hybrid from "../assets/images/Hybrid1.jpg"
+import Remote from "../assets/images/Remote1.jpg"
+
+
 // Leave Template
 
 import TravelLocation from "../assets/images/leave/TravelLocation.svg";
@@ -80,29 +85,29 @@ const bloodGroup = [
     value: "O-",
   },
 ];
-const leavelimitPer =[
+const leavelimitPer = [
   {
-    id:1,
-    label:"Month",
-    value:"Month",
+    id: 1,
+    label: "Month",
+    value: "Month",
 
   },
   {
-    id:2,
-    label:"Quarterly",
-    value:"Quarterly",
+    id: 2,
+    label: "Quarterly",
+    value: "Quarterly",
 
   },
   {
-    id:3,
-    label:"Half Yearly",
-    value:"Half Yearly",
+    id: 3,
+    label: "Half Yearly",
+    value: "Half Yearly",
 
   },
   {
-    id:4,
-    label:"Annualy",
-    value:"Annualy",
+    id: 4,
+    label: "Annualy",
+    value: "Annualy",
 
   },
 ]
@@ -112,9 +117,7 @@ const regularOvertime = [
     title: "Onsite ",
     description:
       "Employees work from an office",
-    image: (
-      <BsFillBuildingsFill className=" active:text-primary focus:text-primary" />
-    ),
+    image: OnSite,
     value: "Onsite",
   },
   {
@@ -122,9 +125,7 @@ const regularOvertime = [
     title: "Hybrid",
     description:
       "Employees work from an office",
-    image: (
-      <BiSolidShoppingBags className=" active:text-primary focus:text-primary" />
-    ),
+    image: Hybrid,
     value: "Hybrid",
   },
   {
@@ -132,9 +133,7 @@ const regularOvertime = [
     title: "Remote",
     description:
       "Employees work from an office",
-    image: (
-      <FaLaptop  className=" active:text-primary focus:text-primary" />
-    ),
+    image: Remote,
     value: "Remote",
   },
 ];
@@ -902,41 +901,41 @@ const shiftSchemeAvigateBtn = [
   { id: 2, value: "RosterSchedule", label: "Roster Schedule" },
 ];
 
-const unusedLeaveRule =[
+const unusedLeaveRule = [
   {
-    id:1,
-    label:"Carry Forward",
-    value:"Carry Forward",
-    description:"Leaves will be added to next cycle",
+    id: 1,
+    label: "Carry Forward",
+    value: "Carry Forward",
+    description: "Leaves will be added to next cycle",
 
   },
   {
-    id:2,
-    label:"laps",
-    value:"laps",
-    description:"Leaves will be cancelled after the cycle ends",
+    id: 2,
+    label: "laps",
+    value: "laps",
+    description: "Leaves will be cancelled after the cycle ends",
 
   },
   {
-    id:3,
-    label:"Encash",
-    value:"Encash",
-    description:"Leaves can be encashed at the end of the cycle"
+    id: 3,
+    label: "Encash",
+    value: "Encash",
+    description: "Leaves can be encashed at the end of the cycle"
 
   },
 ]
 const PaymentType = [
   {
-    id:1,
-    label:"paid",
-    value:"paid",
+    id: 1,
+    label: "paid",
+    value: "paid",
   },
   {
-    id:2,
-    label:"unpaid",
-    value:"unpaid",
+    id: 2,
+    label: "unpaid",
+    value: "unpaid",
   },
-  
+
 ]
 const moreAssetsList = [
   {
@@ -1015,7 +1014,7 @@ const employeeDocumentHeader = [
         title: "Valid To",
         value: "validTo",
       },
- 
+
       {
         id: 9,
         title: "Status",
@@ -1047,7 +1046,7 @@ const employeeAssetsHeader = [
         title: "ValidUpto",
         value: "validUpto",
       },
- 
+
       {
         id: 9,
         title: "Status",
@@ -1064,71 +1063,71 @@ const Form = [
     id: 1,
     label: "Multiple Choice",
     value: "MultipleChoice",
-    icon:<FaRegDotCircle />
-    
+    icon: <FaRegDotCircle />
+
   },
   {
     id: 2,
     label: "Short Answer",
     value: "ShortAnswer",
-    icon:<MdOutlineShortText />
+    icon: <MdOutlineShortText />
   },
   {
     id: 3,
     label: "Paragraph",
     value: "Paragraph",
-    icon:<RiMenu2Line  />
+    icon: <RiMenu2Line />
   },
   {
     id: 4,
     label: "Checkboxes",
     value: "Checkboxes",
-    icon:<MdOutlineCheckBox />
+    icon: <MdOutlineCheckBox />
   },
   {
     id: 5,
     label: "Drop-down",
     value: "Drop-down",
-    icon:<IoIosArrowDropdown />
+    icon: <IoIosArrowDropdown />
   },
   // {
   //   id: 6,
   //   label: "Drop-down",
   //   value: "Drop-down",
   // },
-  
+
 ];
 const cardData = [
   {
     id: 1,
     label: "Sourced",
     value: "Sourced",
-    
-    
+
+
   },
   {
     id: 2,
     label: "Applied",
     value: "Applied",
-    
+
   },
   {
     id: 3,
     label: "Personal Interview",
     value: "PPersonal Interview",
-    icon:<RiMenu2Line  />
+    icon: <RiMenu2Line />
   },
   {
     id: 4,
     label: "Phone Screen",
     value: "Phone Screen",
-    icon:<MdOutlineCheckBox />
+    icon: <MdOutlineCheckBox />
   },
   {
     id: 5,
     label: "Hired",
     value: "Drop-down",
-    icon:<IoIosArrowDropdown />
+    icon: <IoIosArrowDropdown />
   },
   {
     id: 6,
@@ -1144,36 +1143,36 @@ const cardData = [
 
 const Requirment = [
   {
-    id:1,
-    label:"Urgent",
-    value:"Urgent"
+    id: 1,
+    label: "Urgent",
+    value: "Urgent"
   },
   {
-    id:2,
-    label:"Not urgent",
-    value:"Not Urgent"
+    id: 2,
+    label: "Not urgent",
+    value: "Not Urgent"
   },
   {
-    id:3,
-    label:"Mid level",
-    value:"Mid Level"
+    id: 3,
+    label: "Mid level",
+    value: "Mid Level"
   },
   // {
   //   id:4,
   //   label:"Mid Senior Level",
   //   value:"Mid Senior Level"
   // },
-] 
-const JobType =[
+]
+const JobType = [
   {
-    id:1,
-    label:"Full Time",
-    value:"Full Time"
+    id: 1,
+    label: "Full Time",
+    value: "Full Time"
   },
   {
-    id:2,
-    label:"Part Time",
-    value:"Part Time."
+    id: 2,
+    label: "Part Time",
+    value: "Part Time."
   },
   // {
   //   id:3,
@@ -1181,137 +1180,139 @@ const JobType =[
   //   value:"Mid level"
   // },
 ]
-const experiencelevel=[
+const experiencelevel = [
   {
-    id:1,
-    label:"Director Level",
-    value:"DirectorLevel"
+    id: 1,
+    label: "Director Level",
+    value: "DirectorLevel"
   },
   {
-    id:2,
-    label:"Manager Level",
-    value:"ManagerLevel"
+    id: 2,
+    label: "Manager Level",
+    value: "ManagerLevel"
   },
   {
-    id:3,
-    label:"Senior Level",
-    value:"SeniorLevel"
+    id: 3,
+    label: "Senior Level",
+    value: "SeniorLevel"
   },
   {
-    id:4,
-    label:"Mid Senior Level",
-    value:"MidSeniorLevel"
+    id: 4,
+    label: "Mid Senior Level",
+    value: "MidSeniorLevel"
   },
   {
-    id:5,
-    label:"Junior Level",
-    value:"JuniorLevel"
+    id: 5,
+    label: "Junior Level",
+    value: "JuniorLevel"
   },
   {
-    id:1,
-    label:"Fresher",
-    value:"Fresher"
+    id: 1,
+    label: "Fresher",
+    value: "Fresher"
   },
 
 ]
 
-const eductaion =[
-  
+const eductaion = [
+
   {
-    id:1,
-    label:"Above Post Graduate",
-    value:"AbovePostGraduate"
+    id: 1,
+    label: "Above Post Graduate",
+    value: "AbovePostGraduate"
   },
   {
-    id:2,
-    label:"Post Graduate",
-    value:"PostGraduate"
+    id: 2,
+    label: "Post Graduate",
+    value: "PostGraduate"
   },
   {
-    id:3,
-    label:"Graduate",
-    value:"Graduate"
+    id: 3,
+    label: "Graduate",
+    value: "Graduate"
   },
   {
-    id:4,
-    label:"Under Graduate",
-    value:"UnderGraduate"
+    id: 4,
+    label: "Under Graduate",
+    value: "UnderGraduate"
   },
   {
-    id:5,
-    label:"School Level",
-    value:"SchoolLevel"
+    id: 5,
+    label: "School Level",
+    value: "SchoolLevel"
   },
 ]
-const saleryCurrency =[
+const saleryCurrency = [
   {
-    id:1,
-    label:"AED",
-    value:"AED",
+    id: 1,
+    label: "AED",
+    value: "AED",
 
   },
   {
-    id:2,
-    label:"INR",
-    value:"INR",
-    
+    id: 2,
+    label: "INR",
+    value: "INR",
+
   }
 ]
 
 
-const JobDesc =[
+const JobDesc = [
   {
-    id:1,
-    label:"IT Admin",
-    value:"it_admin",
+    id: 1,
+    label: "IT Admin",
+    value: "it_admin",
 
   },
   {
-    id:2,
-    label:"Teacher",
-    value:"teacher",
-    
+    id: 2,
+    label: "Teacher",
+    value: "teacher",
+
   }
 ]
 
-const Employees =[
+const Employees = [
   {
-    id:1,
-   img:Avatar,
-    name:"ashik",
-   employeeid:"EMP ID: #234567",
-   email:"alexanderpaul@company.com",
-   designation:"Super Admin",
+    id: 1,
+    img: Avatar,
+    name: "ashik",
+    employeeid: "EMP ID: #234567",
+    email: "alexanderpaul@company.com",
+    designation: "Super Admin",
 
-   
+
   },
   {
-    id:2,
-    img:Avatar,
-    name:"aness",
-    employeeid:"EMP ID: #234568",
-    email:"alexanderpaul@company.com",
-    designation:"Super ",
+    id: 2,
+    img: Avatar,
+    name: "aness",
+    employeeid: "EMP ID: #234568",
+    email: "alexanderpaul@company.com",
+    designation: "Super ",
   }
 ]
 
 
-const evaluation =[
- 
-    {   id:1,
-        companyId: "",
-        evaluationTemplateId: "",
-        question: "",
-        answerMetaData:[
-          { id:1,
-            key:"",
-            value:"",
-          }
-        ],
-        description: "",
-        createdBy: "ashik"
-    },
-    
+const evaluation = [
+
+  {
+    id: 1,
+    companyId: "",
+    evaluationTemplateId: "",
+    question: "",
+    answerMetaData: [
+      {
+        id: 1,
+        key: "",
+        value: "",
+      }
+    ],
+    description: "",
+    createdBy: "ashik"
+  },
+
 ]
 
 
@@ -1359,7 +1360,7 @@ export {
   cardData,
   Requirment,
   JobType,
-  experiencelevel ,
+  experiencelevel,
   eductaion,
   saleryCurrency,
   JobDesc,

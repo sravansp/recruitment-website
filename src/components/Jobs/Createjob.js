@@ -97,7 +97,7 @@ const Createjob = ({
   const [errors, setErrors] = useState([]);
   const [content, setContent] = useState("");
   // const [isUpdate, setIsUpdate] = useState();
-  const[decriptionId,setDecriptionId] =  useState("")
+  const [decriptionId, setDecriptionId] = useState("")
   const [activeBtn, setActiveBtn] = useState(0);
   const [presentage, setPresentage] = useState(0);
   const [nextStep, setNextStep] = useState(0);
@@ -114,7 +114,7 @@ const Createjob = ({
   const [selectedDivs, setSelectedDivs] = useState([]);
   const [selectedemployee, setselectedemployee] = useState([])
   const [selectedUserIds, setSelectedUserIds] = useState([])
-  const [JobDescriptionList,setJobDescriptionList]=useState([])
+  const [JobDescriptionList, setJobDescriptionList] = useState([])
   console.log(updateId)
 
 
@@ -146,39 +146,39 @@ const Createjob = ({
       console.error("Error:", error);
     }
   };
-  const getAllJobdescription = async ()=>{
-    try{
-     const data = await getAllRecruitmentJobDescriptionTemplates()
-     console.log(data)
-    // 
-    setJobDescriptionList(data.result.map((each)=>({
-      label:each.descriptionTemplateName,
-      value:each.descriptionTemplateId
-    })))
-    }catch(error){
+  const getAllJobdescription = async () => {
+    try {
+      const data = await getAllRecruitmentJobDescriptionTemplates()
+      console.log(data)
+      // 
+      setJobDescriptionList(data.result.map((each) => ({
+        label: each.descriptionTemplateName,
+        value: each.descriptionTemplateId
+      })))
+    } catch (error) {
       console.log(error)
     }
   }
 
-  const getDecriptionById= async()=>{
+  const getDecriptionById = async () => {
     const id = decriptionId
-    try{
-    const response = await getRecruitmentJobDescriptionTemplateById({id:id})
-    console.log(response)
-    
-    setContent(response.result[0].descriptionTemplate );
-    
-    
-    }catch(error){
-    console.log(error)
+    try {
+      const response = await getRecruitmentJobDescriptionTemplateById({ id: id })
+      console.log(response)
+
+      setContent(response.result[0].descriptionTemplate);
+
+
+    } catch (error) {
+      console.log(error)
     }
   }
-  useEffect(()=>{
+  useEffect(() => {
     getDecriptionById()
-  },[decriptionId])
-  useEffect(()=>{
+  }, [decriptionId])
+  useEffect(() => {
     getAllJobdescription()
-  },[])
+  }, [])
   useEffect(() => {
     // Retrieve the login data JSON string from local storage
     const loginDataString = localStorage.getItem("LoginData");
@@ -245,13 +245,13 @@ const Createjob = ({
   useEffect(() => {
     setupdateId(updateId);
   }, []);
-  
+
   //job applying
 
   // const updateErrorMessages = () => {
   //   const newErrorMessages = evaluation.map((condition) => {
   //     let errorMessage = '';
-  
+
   //     if (!condition.question) {
   //       errorMessage = 'Please enter a question.';
   //     } else if (!condition.answer_type) {
@@ -263,14 +263,14 @@ const Createjob = ({
   //     ) {
   //       errorMessage = 'Please enter values for all options.';
   //     }
-  
+
   //     return errorMessage;
   //   });
-  
+
   //   // Update errorMessages state with new error messages
   //   setErrorMessages(newErrorMessages);
   // };
-  
+
   // // Call the function to update error messages whenever evaluation changes
   // useEffect(() => {
   //   updateErrorMessages();
@@ -360,7 +360,7 @@ const Createjob = ({
       departmentId: Yup.string().required('Department ID is required'),
       jobCode: Yup.string().required('Job Code is required'),
       workLocationType: Yup.string().required('Work Location Type is required'),
-      
+
       location: Yup.string().required('Location is required'),
       requirementType: Yup.string().required('Requirement Type is required'),
       jobType: Yup.string().required('Job Type is required'),
@@ -375,9 +375,9 @@ const Createjob = ({
         .required('Salary Range To is required'),
       salaryCurrency: Yup.string().required('Salary Currency is required'),
       noOfVaccancies: Yup.number()
-      .typeError('Number Of Vaccancies must be a number')
-      .required('Number Of Vaccancies is required'),
-      
+        .typeError('Number Of Vaccancies must be a number')
+        .required('Number Of Vaccancies is required'),
+
     }),
     onSubmit: async (e) => {
 
@@ -570,7 +570,7 @@ const Createjob = ({
         // }
         const newErrorMessages = evaluation.map((condition) => {
           let errorMessage = '';
-      
+
           if (!condition.question) {
             errorMessage = 'Please enter a question.';
           } else if (!condition.answer_type) {
@@ -582,10 +582,10 @@ const Createjob = ({
           ) {
             errorMessage = 'Please enter values for all options.';
           }
-      
+
           return errorMessage;
         });
-      
+
         // Update errorMessages state with new error messages
         setErrorMessages(newErrorMessages);
         console.log(UpdateId);
@@ -714,7 +714,7 @@ const Createjob = ({
       )
     );
   };
-  const handleAddField = (index,selectedvalue) => {
+  const handleAddField = (index, selectedvalue) => {
     setEvaluation((prevEvaluation) =>
       prevEvaluation.map((prevCondition, i) =>
         i === index
@@ -1251,9 +1251,9 @@ const Createjob = ({
         formik.setFieldValue("country", firstJob.jobApplicationFormData.country)
         formik.setFieldValue("education", firstJob.jobApplicationFormData.education)
         formik.setFieldValue("experience", firstJob.jobApplicationFormData.experience)
-        formik.setFieldValue("summary",  firstJob.jobApplicationFormData.summary)
-        formik.setFieldValue("resume",  firstJob.jobApplicationFormData.resume)
-        formik.setFieldValue("coverLetter",  firstJob.jobApplicationFormData.coverLetter)
+        formik.setFieldValue("summary", firstJob.jobApplicationFormData.summary)
+        formik.setFieldValue("resume", firstJob.jobApplicationFormData.resume)
+        formik.setFieldValue("coverLetter", firstJob.jobApplicationFormData.coverLetter)
         console.log(firstJob.companyId);
       } else {
         console.error("No data found in the response.");
@@ -1381,371 +1381,366 @@ const Createjob = ({
               {activeBtnValue === "Jobdetails" ? (
                 <>
                   <FlexCol>
-                    <div className="rounded-md borderb">
-                      <Accordion
-                        title={"Job Details"}
-                        className="Text_area "
-                        padding={true}
-                        toggleBtn={false}
-                        click={() => {
-                          //   setPresentage(1.4);
-                        }}
-                        initialExpanded={true}
-                      >
-                        {inputshow && (
-                          <div className="grid grid-cols-3 gap-6 ">
-                            <Dropdown
-                              title={t("Choose Template")}
-                              placeholder={t("Select")}
-                              options={jobtemplate}
-                              // Replace with the actual value/ID
-                              change={(e) => {
-                                handleValueChange(e);
-                              }}
-                              value={selectedJobId}
-                            // required={true}
-                            />
-
-                            <Dropdown
-                              title={t("Choose Company")}
-                              placeholder={t("Choose Company")}
-                              options={company}
-                              value={formik1.values.companyId}
-                              error={formik1.errors.companyId}
-                              required={true}
-                              change={(e) => {
-                                formik1.setFieldValue("companyId", e);
-                                getDepartmentList(e);
-                              }}
-                            />
-                          </div>
-                        )}
-                        <div className="grid grid-cols-3 gap-4">
-                          <FormInput
-                            title={t("Job Title")}
-                            placeholder={t("Example : Marketing Manager")}
-                            required={true}
+                    <Accordion
+                      title={"Job Details"}
+                      className="Text_area "
+                      padding={true}
+                      toggleBtn={false}
+                      click={() => {
+                        //   setPresentage(1.4);
+                      }}
+                      initialExpanded={true}
+                    >
+                      {inputshow && (
+                        <div className="grid grid-cols-3 gap-6 ">
+                          <Dropdown
+                            title={t("Choose Template")}
+                            placeholder={t("Select")}
+                            options={jobtemplate}
+                            // Replace with the actual value/ID
                             change={(e) => {
-                              formik1.setFieldValue("jobTitle", e);
+                              handleValueChange(e);
                             }}
-                            value={formik1.values.jobTitle}
-                            error={formik1.errors.jobTitle}
+                            value={selectedJobId}
+                          // required={true}
                           />
 
                           <Dropdown
-                            title={t("Department")}
-                            placeholder={t("Select...")}
-                            required={true}
-                            options={departmentList}
-                            value={formik1.values.departmentId}
-                            error={formik1.errors.departmentId}
-                            change={(e) => {
-                              formik1.setFieldValue("departmentId", e);
-                            }}
-                          />
-
-                          <FormInput
-                            title={t(" Job Code")}
-                            placeholder={t(" Job Code")}
+                            title={t("Choose Company")}
+                            placeholder={t("Choose Company")}
+                            options={company}
+                            value={formik1.values.companyId}
+                            error={formik1.errors.companyId}
                             required={true}
                             change={(e) => {
-                              formik1.setFieldValue("jobCode", e);
-                            }}
-                            value={formik1.values.jobCode}
-                            error={formik1.errors.jobCode}
-                          />
-                        </div>
-                        <div className="grid grid-cols-3 gap-4">
-                          <Dropdown
-                            title={t("Choose Evaluation Template")}
-                            placeholder={t("Select...")}
-                            options={evalutaionTem}
-                            value={formik1.values.evaluationTemplateId}
-                            error={formik1.errors.evaluationTemplateId}
-                            change={(e) => {
-                              formik1.setFieldValue("evaluationTemplateId", e);
-                            }}
-                          />
-                          <Dropdown
-                            title={t("Choose Questionnaire Template")}
-                            placeholder={t("Select...")}
-                            options={questionareTem}
-                            value={formik1.values.questionnaireTemplateId}
-                            error={formik1.errors.questionnaireTemplateId}
-                            change={(e) => {
-                              formik1.setFieldValue(
-                                "questionnaireTemplateId",
-                                e
-                              );
+                              formik1.setFieldValue("companyId", e);
+                              getDepartmentList(e);
                             }}
                           />
                         </div>
-                      </Accordion>
-                    </div>
+                      )}
+                      <div className="grid grid-cols-3 gap-4">
+                        <FormInput
+                          title={t("Job Title")}
+                          placeholder={t("Example : Marketing Manager")}
+                          required={true}
+                          change={(e) => {
+                            formik1.setFieldValue("jobTitle", e);
+                          }}
+                          value={formik1.values.jobTitle}
+                          error={formik1.errors.jobTitle}
+                        />
 
-                    <div className="rounded-md borderb">
-                      <Accordion
-                        title={"Location "}
-                        className="Text_area"
-                        padding={true}
-                        toggleBtn={false}
-                        // click={() => {
-                        //     setPresentage(1.4);
-                        // } }
-                        initialExpanded={true}
-                      >
-                        <div className="md:grid grid-cols-12 flex flex-col gap-6 dark:text-white">
-                          {regularOvertime?.map((each, i) => (
-                            <div
-                              key={i}
-                              className={`col-span-4 p-4 border rounded-2xl cursor-pointer showDelay dark:bg-dark  ${customRate === each.id && "border-primary "
-                                } `}
-                              onClick={() => {
-                                setCustomRate(each.id);
-                                formik1.setFieldValue("workLocationType", each.value);
-                              }}
+                        <Dropdown
+                          title={t("Department")}
+                          placeholder={t("Select...")}
+                          required={true}
+                          options={departmentList}
+                          value={formik1.values.departmentId}
+                          error={formik1.errors.departmentId}
+                          change={(e) => {
+                            formik1.setFieldValue("departmentId", e);
+                          }}
+                        />
 
-                            >
-                              <div className="flex justify-between items-start">
-                                <div className=" flex  gap-2">
-                                  {/* <GiReceiveMoney
+                        <FormInput
+                          title={t(" Job Code")}
+                          placeholder={t(" Job Code")}
+                          required={true}
+                          change={(e) => {
+                            formik1.setFieldValue("jobCode", e);
+                          }}
+                          value={formik1.values.jobCode}
+                          error={formik1.errors.jobCode}
+                        />
+                      </div>
+                      <div className="grid grid-cols-3 gap-4">
+                        <Dropdown
+                          title={t("Choose Evaluation Template")}
+                          placeholder={t("Select...")}
+                          options={evalutaionTem}
+                          value={formik1.values.evaluationTemplateId}
+                          error={formik1.errors.evaluationTemplateId}
+                          change={(e) => {
+                            formik1.setFieldValue("evaluationTemplateId", e);
+                          }}
+                        />
+                        <Dropdown
+                          title={t("Choose Questionnaire Template")}
+                          placeholder={t("Select...")}
+                          options={questionareTem}
+                          value={formik1.values.questionnaireTemplateId}
+                          error={formik1.errors.questionnaireTemplateId}
+                          change={(e) => {
+                            formik1.setFieldValue(
+                              "questionnaireTemplateId",
+                              e
+                            );
+                          }}
+                        />
+                      </div>
+                    </Accordion>
+
+                    <Accordion
+                      title={"Location "}
+                      className="Text_area"
+                      padding={true}
+                      toggleBtn={false}
+                      // click={() => {
+                      //     setPresentage(1.4);
+                      // } }
+                      initialExpanded={true}
+                    >
+                      <div className="md:grid grid-cols-12 flex flex-col gap-6 dark:text-white">
+                        {regularOvertime?.map((each, i) => (
+                          <div
+                            key={i}
+                            className={`col-span-4 p-4 border rounded-2xl cursor-pointer showDelay dark:bg-dark  ${customRate === each.id && "border-primary "
+                              } `}
+                            onClick={() => {
+                              setCustomRate(each.id);
+                              formik1.setFieldValue("workLocationType", each.value);
+                            }}
+
+                          >
+                            <div className="flex justify-between items-start">
+                              <div className=" flex  gap-2">
+                                {/* <GiReceiveMoney
                                 className={`${
                                   customRate === each.id && "text-primary"
                                 } `}
                               /> */}
-                                  <div
-                                    className={`${customRate === each.id &&
-                                      " text-primary  "
-                                      } p-2 border rounded-mdx w-fit bg-[#F8FAFC]`}
-                                  >
-                                    {each.image}
-                                  </div>
-                                  {/* <img
+                                <img
+                                  className={`${customRate === each.id &&
+                                    " text-primary  "
+                                    } p-2 border rounded-mdx w-fit bg-[#F8FAFC]`}
+                                  src={each.image}
+                                  alt=""
+                                >
+                                </img>
+                                {/* <img
                                   src={customRate === each.id ? cash : cashGray}
                                   alt=""
                                   className=" w-6 h-6"
                                 /> */}
-                                  <div>
-                                    <h3 className=" text-sm font-semibold">
-                                      {each.title}
-                                    </h3>
-                                    <p className=" text-xs font-medium text-[#667085] ">
-                                      {each.description}
-                                    </p>
-                                  </div>
-                                </div>
-                                <div
-                                  className={`${customRate === each.id && "border-primary"
-                                    } border  rounded-full`}
-                                >
-                                  <div
-                                    className={`font-semibold text-base w-4 h-4 border-2 border-white   rounded-full ${customRate === each.id &&
-                                      "text-primary bg-primary"
-                                      } `}
-                                  ></div>
+                                <div>
+                                  <h3 className=" text-sm font-semibold">
+                                    {each.title}
+                                  </h3>
+                                  <p className=" text-xs font-medium text-[#667085] ">
+                                    {each.description}
+                                  </p>
                                 </div>
                               </div>
+                              <div
+                                className={`${customRate === each.id && "border-primary"
+                                  } border  rounded-full`}
+                              >
+                                <div
+                                  className={`font-semibold text-base w-4 h-4 border-2 border-white   rounded-full ${customRate === each.id &&
+                                    "text-primary bg-primary"
+                                    } `}
+                                ></div>
+                              </div>
                             </div>
-                          ))}
-                        </div>
-                        <div className='grid grid-cols-2 gap-4'>
-                          <FormInput
-                            title={"Location"}
-                            placeholder={'Example : Dubai'}
-                            change={(e) => {
-                              formik1.setFieldValue('location', e)
-
-                            }}
-                            value={formik1.values.location}
-                            error={formik1.errors.location}
-                            required={true}
-                          />
-
-                          <Dropdown
-                            title={'Requirement'}
-                            placeholder={'Urgent'}
-                            options={Requirment}
-                            value={formik1.values.requirementType
-                            }
-                            error={formik1.errors.requirementType}
-                            change={(e) => {
-                              formik1.setFieldValue('requirementType', e)
-                              console.log(e)
-                            }}
-                            required={true}
-                          />
-                        </div>
-                      </Accordion>
-                    </div>
-                    <div className='rounded-md borderb'>
-                      <Accordion
-                        title={"Employment Details"}
-                        className="Text_area"
-                        padding={true}
-                        toggleBtn={false}
-                        click={() => {
-                          //    setPresentage(1.4);
-                        }}
-                        initialExpanded={true}
-                      >
-                        <div className='grid grid-cols-3 gap-4'>
-                          <Dropdown
-                            title={'Job Type'}
-                            placeholder={'Full-time'}
-                            options={JobType}
-                            change={(e) => {
-                              formik1.setFieldValue('jobType', e)
-                              console.log(e)
-                            }}
-                            value={formik1.values.jobType}
-                            error={formik1.errors.jobType}
-                            required={true}
-
-                          />
-                          <Dropdown
-                            title={'Experience'}
-                            placeholder={'Mid-Senior level'}
-                            options={experiencelevel}
-                            value={formik1.values.experience}
-                            error={formik1.errors.experience}
-                            change={(e) => {
-                              formik1.setFieldValue('experience', e)
-                            }}
-                            required={true}
-                          />
-                          <Dropdown
-                            title={'Education'}
-                            placeholder={'Bachelor’s Degree'}
-                            options={eductaion}
-                            value={formik1.values.education}
-                            error={formik1.errors.education}
-                            change={(e) => {
-                              formik1.setFieldValue('education', e)
-                            }}
-                            required={true}
-                          />
-
-                        </div>
-                        <div className='grid grid-cols-3 gap-4'>
-                          <FormInput
-                            title={'Keywords'}
-                            placeholder={'Example : Dubai'}
-                            change={(e) => {
-                              formik1.setFieldValue('searchKeywords', e)
-                            }}
-                            value={formik1.values.searchKeywords}
-                            error={formik1.errors.searchKeywords}
-                            required={true}
-                          />
-                          <FormInput
-                            title={'Number of Opennings'}
-                            placeholder={'Enter Value'}
-                            change={(e) => {
-                              formik1.setFieldValue('noOfVaccancies', e)
-                            }}
-                            value={formik1.values.noOfVaccancies}
-                            error={formik1.errors.noOfVaccancies}
-                            type={"number"}
-                            required={true}
-                          />
-
-                        </div>
-                        <div className='grid grid-cols-4 gap-4'>
-                        <FormInput
-  title={'Salary Range From'}
-  placeholder={'Enter value'}
-  change={(e) => {
-    formik1.setFieldValue('salaryRangeFrom', e);
-    // Validate Salary Range To when Salary Range From changes
-    console.log(e)
-   
-  }}
-  value={formik1.values.salaryRangeFrom}
-  type={"number"}
-  error={formik1.errors.salaryRangeFrom}
-  required={true}
-/>
-
-<FormInput
-  title={'Salary Range To'}
-  placeholder={'Enter value'}
-  change={(e) => {
-    formik1.setFieldValue('salaryRangeTo', e);
-    // Validate Salary Range To
-    const salaryRangeTo = parseFloat(e); // Convert input to a number
-    const salaryRangeFrom = parseFloat(formik1.values.salaryRangeFrom); // Convert Salary Range From to a number
-
-    if (salaryRangeTo <= salaryRangeFrom) {
-      formik1.setFieldError('salaryRangeTo', 'Salary Range To cannot be less than or equal to Salary Range From');
-    } else {
-      // Clear the error message when the condition is met
-      formik1.setFieldError('salaryRangeTo', '');
-      formik1.setFieldValue('salaryRangeTo', e);
-    }
-  }}
-  value={formik1.values.salaryRangeTo}
-  error={formik1.errors.salaryRangeTo}
-  required={true}
-  type={"number"}
-/>                       <Dropdown
-                            title={'Salary Currency'}
-                            placeholder={'salary'}
-                            options={saleryCurrency}
-                            value={formik1.values.salaryCurrency}
-                            error={formik1.errors.salaryCurrency}
-                            change={(e) => {
-                              formik1.setFieldValue('salaryCurrency', e)
-                            }}
-                            required={true}
-                          />
-                          <CheckBoxInput
-                            change={(e) => {
-                              formik1.setFieldValue('isSalaryPublic', e)
-                              console.log(e)
-                            }}
-                            value={formik1.values.isSalaryPublic}
-                            title={"View Public"}
-                            description={"Given Salary will be visible for public"}
-                          />
-                        </div>
-                      </Accordion>
-                    </div>
-
-                    <div className='rounded-md borderb'>
-                      <Accordion
-                        title={"Job Description"}
-                        className="Text_area"
-                        padding={true}
-                        toggleBtn={false}
-                        click={() => {
-                          //    setPresentage(1.4);
-                        }}
-                        initialExpanded={true}
-                      >
-                        <Card>
-                          <div>
-                            <img alt=''></img>
-                            <p>Generate personalized job descriptions based on pas account data.</p>
-                            <p>When you generate with Al, we look for similar jobs you've created in the past and use he data to create content that's
-                              impactful, accurate, and personalized to your company</p>
                           </div>
+                        ))}
+                      </div>
+                      <div className='grid grid-cols-2 gap-4'>
+                        <FormInput
+                          title={"Location"}
+                          placeholder={'Example : Dubai'}
+                          change={(e) => {
+                            formik1.setFieldValue('location', e)
 
-                        </Card>
-                        <div style={{ display: 'flex', justifyContent: 'flex-end', gap: '16px' }}>
+                          }}
+                          value={formik1.values.location}
+                          error={formik1.errors.location}
+                          required={true}
+                        />
 
-                          <Dropdown
-                            title={''}
-                            placeholder={'Choose Job Description'}
-                            options={JobDescriptionList}
-                            change={(e)=>{
-                              setDecriptionId(e)
-                            }}
-                          />
+                        <Dropdown
+                          title={'Requirement'}
+                          placeholder={'Urgent'}
+                          options={Requirment}
+                          value={formik1.values.requirementType
+                          }
+                          error={formik1.errors.requirementType}
+                          change={(e) => {
+                            formik1.setFieldValue('requirementType', e)
+                            console.log(e)
+                          }}
+                          required={true}
+                        />
+                      </div>
+                    </Accordion>
 
-<ButtonClick handleSubmit={handleGenerateWithAI} BtnType="primary" 
-icon={<img src={image} alt="image" style={{ height: '20px', width: '20px', alignItems: "center" }}  />} buttonName={"Generate with AI"}/>
+                    <Accordion
+                      title={"Employment Details"}
+                      className="Text_area"
+                      padding={true}
+                      toggleBtn={false}
+                      click={() => {
+                        //    setPresentage(1.4);
+                      }}
+                      initialExpanded={true}
+                    >
+                      <div className='grid grid-cols-3 gap-4'>
+                        <Dropdown
+                          title={'Job Type'}
+                          placeholder={'Full-time'}
+                          options={JobType}
+                          change={(e) => {
+                            formik1.setFieldValue('jobType', e)
+                            console.log(e)
+                          }}
+                          value={formik1.values.jobType}
+                          error={formik1.errors.jobType}
+                          required={true}
+
+                        />
+                        <Dropdown
+                          title={'Experience'}
+                          placeholder={'Mid-Senior level'}
+                          options={experiencelevel}
+                          value={formik1.values.experience}
+                          error={formik1.errors.experience}
+                          change={(e) => {
+                            formik1.setFieldValue('experience', e)
+                          }}
+                          required={true}
+                        />
+                        <Dropdown
+                          title={'Education'}
+                          placeholder={'Bachelor’s Degree'}
+                          options={eductaion}
+                          value={formik1.values.education}
+                          error={formik1.errors.education}
+                          change={(e) => {
+                            formik1.setFieldValue('education', e)
+                          }}
+                          required={true}
+                        />
+
+                      </div>
+                      <div className='grid grid-cols-3 gap-4'>
+                        <FormInput
+                          title={'Keywords'}
+                          placeholder={'Example : Dubai'}
+                          change={(e) => {
+                            formik1.setFieldValue('searchKeywords', e)
+                          }}
+                          value={formik1.values.searchKeywords}
+                          error={formik1.errors.searchKeywords}
+                          required={true}
+                        />
+                        <FormInput
+                          title={'Number of Opennings'}
+                          placeholder={'Enter Value'}
+                          change={(e) => {
+                            formik1.setFieldValue('noOfVaccancies', e)
+                          }}
+                          value={formik1.values.noOfVaccancies}
+                          error={formik1.errors.noOfVaccancies}
+                          type={"number"}
+                          required={true}
+                        />
+
+                      </div>
+                      <div className='grid grid-cols-4 gap-4'>
+                        <FormInput
+                          title={'Salary Range From'}
+                          placeholder={'Enter value'}
+                          change={(e) => {
+                            formik1.setFieldValue('salaryRangeFrom', e);
+                            // Validate Salary Range To when Salary Range From changes
+                            console.log(e)
+
+                          }}
+                          value={formik1.values.salaryRangeFrom}
+                          type={"number"}
+                          error={formik1.errors.salaryRangeFrom}
+                          required={true}
+                        />
+
+                        <FormInput
+                          title={'Salary Range To'}
+                          placeholder={'Enter value'}
+                          change={(e) => {
+                            formik1.setFieldValue('salaryRangeTo', e);
+                            // Validate Salary Range To
+                            const salaryRangeTo = parseFloat(e); // Convert input to a number
+                            const salaryRangeFrom = parseFloat(formik1.values.salaryRangeFrom); // Convert Salary Range From to a number
+
+                            if (salaryRangeTo <= salaryRangeFrom) {
+                              formik1.setFieldError('salaryRangeTo', 'Salary Range To cannot be less than or equal to Salary Range From');
+                            } else {
+                              // Clear the error message when the condition is met
+                              formik1.setFieldError('salaryRangeTo', '');
+                              formik1.setFieldValue('salaryRangeTo', e);
+                            }
+                          }}
+                          value={formik1.values.salaryRangeTo}
+                          error={formik1.errors.salaryRangeTo}
+                          required={true}
+                          type={"number"}
+                        />                       <Dropdown
+                          title={'Salary Currency'}
+                          placeholder={'salary'}
+                          options={saleryCurrency}
+                          value={formik1.values.salaryCurrency}
+                          error={formik1.errors.salaryCurrency}
+                          change={(e) => {
+                            formik1.setFieldValue('salaryCurrency', e)
+                          }}
+                          required={true}
+                        />
+                        <CheckBoxInput
+                          change={(e) => {
+                            formik1.setFieldValue('isSalaryPublic', e)
+                            console.log(e)
+                          }}
+                          value={formik1.values.isSalaryPublic}
+                          title={"View Public"}
+                          description={"Given Salary will be visible for public"}
+                        />
+                      </div>
+                    </Accordion>
+
+                    <Accordion
+                      title={"Job Description"}
+                      className="Text_area"
+                      padding={true}
+                      toggleBtn={false}
+                      click={() => {
+                        //    setPresentage(1.4);
+                      }}
+                      initialExpanded={true}
+                    >
+                      <Card>
+                        <div>
+                          <img alt=''></img>
+                          <p>Generate personalized job descriptions based on pas account data.</p>
+                          <p>When you generate with Al, we look for similar jobs you've created in the past and use he data to create content that's
+                            impactful, accurate, and personalized to your company</p>
                         </div>
-                        {/* <div className="pt-4">
+
+                      </Card>
+                      <div style={{ display: 'flex', justifyContent: 'flex-end', gap: '16px' }}>
+
+                        <Dropdown
+                          title={''}
+                          placeholder={'Choose Job Description'}
+                          options={JobDescriptionList}
+                          change={(e) => {
+                            setDecriptionId(e)
+                          }}
+                        />
+
+                        <ButtonClick handleSubmit={handleGenerateWithAI} BtnType="primary"
+                          icon={<img src={image} alt="image" style={{ height: '20px', width: '20px', alignItems: "center" }} />} buttonName={"Generate with AI"} />
+                      </div>
+                      {/* <div className="pt-4">
                                             <TextEditor
                                              
                                             
@@ -1757,14 +1752,14 @@ icon={<img src={image} alt="image" style={{ height: '20px', width: '20px', align
                                             onChange={(editorState)=>{ formik1.setFieldValue('jobDescription',editorState)}}
                                              />
                                              </div> */}
-                        <div className="pt-4">
-                          <TextEditor
-                            initialValue={content}
-                            onChange={handleEditorChange}
-                            minheight="250px"
-                          />
-                        </div>
-                        {/* <TextArea
+                      <div className="pt-4">
+                        <TextEditor
+                          initialValue={content}
+                          onChange={handleEditorChange}
+                          minheight="250px"
+                        />
+                      </div>
+                      {/* <TextArea
                                              title={t("Requirement")}
                                              placeholder={t("Enter the job requirements here; from soft skills to the specific qualifications needed to perform the role.")}
                                              required={true}
@@ -1790,11 +1785,9 @@ icon={<img src={image} alt="image" style={{ height: '20px', width: '20px', align
                                              /> */}
 
 
-                      </Accordion>
-                    </div>
+                    </Accordion>
                   </FlexCol>
                 </>
-
 
               ) : activeBtnValue === "ApplicationForm" ? (
                 <>
@@ -2061,38 +2054,38 @@ icon={<img src={image} alt="image" style={{ height: '20px', width: '20px', align
                                   );
                                   console.log(e);
                                 }}
-                                  error={errorMessages}
+                                error={errorMessages}
                               />
                               <div className="flex items-center gap-5">
-                                
-                                  <Dropdown
-                                    options={Form}
-                                    dropdownWidth='200px'
-                                    placeholder={'Choose Job Description'}
-                                    change={(e) => {
-                                      setEvaluation((prevEvaluation) => prevEvaluation.map((prevCondition, i) => i === index
-                                        ? {
-                                          ...prevCondition,
-                                          answer_type: e,
-                                          answerMetaData: [
-                                            {
-                                              id: 1,
-                                              key: e,
-                                              value: '',
-                                            },
-                                          ],
-                                        }
-                                        : prevCondition
-                                      )
-                                      );
-                                      handleAddField(e)
-                                    }}
-                                    value={condition.answer_type || ""}
-                                    icon={<MdOutlineShortText />}
-                                    icondropDown={true}
-                                    error={errorMessages}
-                                  />
-                                
+
+                                <Dropdown
+                                  options={Form}
+                                  dropdownWidth='200px'
+                                  placeholder={'Choose Job Description'}
+                                  change={(e) => {
+                                    setEvaluation((prevEvaluation) => prevEvaluation.map((prevCondition, i) => i === index
+                                      ? {
+                                        ...prevCondition,
+                                        answer_type: e,
+                                        answerMetaData: [
+                                          {
+                                            id: 1,
+                                            key: e,
+                                            value: '',
+                                          },
+                                        ],
+                                      }
+                                      : prevCondition
+                                    )
+                                    );
+                                    handleAddField(e)
+                                  }}
+                                  value={condition.answer_type || ""}
+                                  icon={<MdOutlineShortText />}
+                                  icondropDown={true}
+                                  error={errorMessages}
+                                />
+
                                 <div style={{ display: 'flex', alignItems: 'center', gap: '15px' }}>
                                   <p>Mandatory</p>
                                   <ToggleBtn />
