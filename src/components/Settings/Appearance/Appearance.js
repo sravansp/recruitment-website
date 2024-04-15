@@ -74,7 +74,7 @@ const Appearance = () => {
               showSearch
               className="text-white "
               style={{
-                width: "100%",
+                width: "80%",
               }}
               size={isSmallScreen ? "default" : "large"}
               placeholder="Search to Select"
@@ -88,6 +88,7 @@ const Appearance = () => {
                   .localeCompare((optionB?.label ?? "").toLowerCase())
               }
               options={recentAppOptions}
+              defaultValue={recentAppOptions[0].value}
             />
           </div>
         </div>
