@@ -150,7 +150,7 @@ const CustomAccordion = () => {
                       <Select
                         className="text-white"
                         style={{
-                          width: "100%",
+                          width: "80%",
                         }}
                         value={languageChange}
                         onChange={(value, option) => {
