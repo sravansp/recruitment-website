@@ -238,7 +238,7 @@ const Createjob = ({
       is_required: 0,
     },
   ]);
-  const [errorMessages, setErrorMessages] = useState(Array(evaluation.length).fill(''));
+  const [errorMessages, setErrorMessages] = useState("");  //useState("") //useState(Array(evaluation.length).fill(''))
   const [dropdownOptions, setDropdownOptions] = useState([]);
   const [jobId, setJobId] = useState(null);
   const [UpdateId, setupdateId] = useState(null);
@@ -588,6 +588,12 @@ const Createjob = ({
       
         // Update errorMessages state with new error messages
         setErrorMessages(newErrorMessages);
+        const hasErrors = newErrorMessages.some(errorMessage => errorMessage !== '');
+        if (hasErrors) {
+          // Don't proceed if there are errors
+          return;
+        }
+  
         console.log(UpdateId);
         // if (jobId){
         const response =
@@ -987,7 +993,7 @@ const Createjob = ({
         console.log("Response:", response);
         if (response.status === 200) {
           openNotification("success", "Successful", response.message);
-          setPresentage(5);
+         
           refresh();
           // Add a delay before closing the notification
           setTimeout(() => {
@@ -1680,7 +1686,7 @@ const Createjob = ({
     } else {
       // Clear the error message when the condition is met
       formik1.setFieldError('salaryRangeTo', '');
-      formik1.setFieldValue('salaryRangeTo', e);
+      
     }
   }}
   value={formik1.values.salaryRangeTo}
@@ -2061,7 +2067,7 @@ icon={<img src={image} alt="image" style={{ height: '20px', width: '20px', align
                                   );
                                   console.log(e);
                                 }}
-                                  error={errorMessages}
+                                error={errorMessages[index]|| ''}
                               />
                               <div className="flex items-center gap-5">
                                 
@@ -2090,7 +2096,8 @@ icon={<img src={image} alt="image" style={{ height: '20px', width: '20px', align
                                     value={condition.answer_type || ""}
                                     icon={<MdOutlineShortText />}
                                     icondropDown={true}
-                                    error={errorMessages}
+                                    error={errorMessages[index]|| ''}
+
                                   />
                                 
                                 <div style={{ display: 'flex', alignItems: 'center', gap: '15px' }}>
@@ -2130,7 +2137,7 @@ icon={<img src={image} alt="image" style={{ height: '20px', width: '20px', align
                                           : prevCondition
                                         )
                                         )}
-                                        error={errorMessages}
+                                        error={errorMessages[index]|| ''}
                                       />
                                       <div className="ml-2">
                                         <MdDelete
