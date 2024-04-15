@@ -48,6 +48,8 @@ import {
   insertOrUpdateRecruitmentJobApplicationFormSettingWithJobId,
   getRecruitmentJobById,
   saveRecruitmentJobTeamMemberBatch,
+  getAllRecruitmentJobDescriptionTemplates,
+  getRecruitmentJobDescriptionTemplateById
 } from "../Api1";
 import { Formik, useFormik } from "formik";
 import { CgAdd } from "react-icons/cg";
@@ -81,6 +83,7 @@ import AddMore from "../common/AddMore";
 import TextEditor from "../common/TextEditor/TextEditor";
 import RadioButton from "../common/RadioButton";
 
+
 const Createjob = ({
   open = "",
   close = () => { },
@@ -94,6 +97,7 @@ const Createjob = ({
   const [errors, setErrors] = useState([]);
   const [content, setContent] = useState("");
   // const [isUpdate, setIsUpdate] = useState();
+  const[decriptionId,setDecriptionId] =  useState("")
   const [activeBtn, setActiveBtn] = useState(0);
   const [presentage, setPresentage] = useState(0);
   const [nextStep, setNextStep] = useState(0);
@@ -110,6 +114,7 @@ const Createjob = ({
   const [selectedDivs, setSelectedDivs] = useState([]);
   const [selectedemployee, setselectedemployee] = useState([])
   const [selectedUserIds, setSelectedUserIds] = useState([])
+  const [JobDescriptionList,setJobDescriptionList]=useState([])
   console.log(updateId)
 
 
@@ -117,31 +122,63 @@ const Createjob = ({
     try {
       const requestBody = {
         val: content,
-        radioval: '1',
-        summarise: null
+        radioval: "1",
+        summarise: null,
       };
 
-      const response = await fetch('https://chat.bmark.in/ai/api.php', {
-        method: 'POST',
+      const response = await fetch("https://chat.bmark.in/ai/api.php", {
+        method: "POST",
         headers: {
-          'Content-Type': 'application/json'
+          "Content-Type": "application/json",
         },
-        body: JSON.stringify(requestBody)
+        body: JSON.stringify(requestBody),
       });
 
       if (response.ok) {
         const data = await response.json();
         // Handle the response data as needed
         console.log(data);
-        setContent(data.receivedData)
+        setContent(data.receivedData);
       } else {
-        console.error('Failed to fetch data');
+        console.error("Failed to fetch data");
       }
     } catch (error) {
-      console.error('Error:', error);
+      console.error("Error:", error);
     }
   };
+  const getAllJobdescription = async ()=>{
+    try{
+     const data = await getAllRecruitmentJobDescriptionTemplates()
+     console.log(data)
+    // 
+    setJobDescriptionList(data.result.map((each)=>({
+      label:each.descriptionTemplateName,
+      value:each.descriptionTemplateId
+    })))
+    }catch(error){
+      console.log(error)
+    }
+  }
 
+  const getDecriptionById= async()=>{
+    const id = decriptionId
+    try{
+    const response = await getRecruitmentJobDescriptionTemplateById({id:id})
+    console.log(response)
+    
+    setContent(response.result[0].descriptionTemplate );
+    
+    
+    }catch(error){
+    console.log(error)
+    }
+  }
+  useEffect(()=>{
+    getDecriptionById()
+  },[decriptionId])
+  useEffect(()=>{
+    getAllJobdescription()
+  },[])
   useEffect(() => {
     // Retrieve the login data JSON string from local storage
     const loginDataString = localStorage.getItem("LoginData");
@@ -201,37 +238,43 @@ const Createjob = ({
       is_required: 0,
     },
   ]);
+  const [errorMessages, setErrorMessages] = useState(Array(evaluation.length).fill(''));
   const [dropdownOptions, setDropdownOptions] = useState([]);
   const [jobId, setJobId] = useState(null);
   const [UpdateId, setupdateId] = useState(null);
   useEffect(() => {
     setupdateId(updateId);
   }, []);
-  const validationSchema1 = Yup.object().shape({
-    companyId: Yup.string().required('Company is required'),
-    jobTitle: Yup.string().required('Job Title is required'),
-    departmentId: Yup.string().required('Department ID is required'),
-    jobCode: Yup.string().required('Job Code is required'),
-    workLocationType: Yup.string().required('Work Location Type is required'),
-
-    location: Yup.string().required('Location is required'),
-    requirementType: Yup.string().required('Requirement Type is required'),
-    jobType: Yup.string().required('Job Type is required'),
-    experience: Yup.string().required('Experience is required'),
-    education: Yup.string().required('Education is required'),
-    searchKeywords: Yup.string().required('Search Keywords is required'),
-    salaryRangeFrom: Yup.number()
-      .typeError('Salary Range From must be a number')
-      .required('Salary Range From is required'),
-    salaryRangeTo: Yup.number()
-      .typeError('Salary Range To must be a number')
-      .required('Salary Range To is required'),
-    salaryCurrency: Yup.string().required('Salary Currency is required'),
-    isSalaryPublic: Yup.boolean().required('Is Salary Public is required'),
-    jobDescription: Yup.string().required('Job Description is required'),
-  });
-
+  
   //job applying
+
+  // const updateErrorMessages = () => {
+  //   const newErrorMessages = evaluation.map((condition) => {
+  //     let errorMessage = '';
+  
+  //     if (!condition.question) {
+  //       errorMessage = 'Please enter a question.';
+  //     } else if (!condition.answer_type) {
+  //       errorMessage = 'Please choose an answer type.';
+  //     } else if (
+  //       ["Drop-down", "MultipleChoice", "Checkboxes"].includes(condition.answer_type) &&
+  //       (condition.answerMetaData.some((field) => !field.value) ||
+  //         (!condition.answerMetaData[0]?.value && condition.answerMetaData[0]?.key !== "ShortAnswer"))
+  //     ) {
+  //       errorMessage = 'Please enter values for all options.';
+  //     }
+  
+  //     return errorMessage;
+  //   });
+  
+  //   // Update errorMessages state with new error messages
+  //   setErrorMessages(newErrorMessages);
+  // };
+  
+  // // Call the function to update error messages whenever evaluation changes
+  // useEffect(() => {
+  //   updateErrorMessages();
+  // }, [evaluation]);
 
   const [DraftJobs, setDraftJobs] = useState([]);
 
@@ -317,7 +360,7 @@ const Createjob = ({
       departmentId: Yup.string().required('Department ID is required'),
       jobCode: Yup.string().required('Job Code is required'),
       workLocationType: Yup.string().required('Work Location Type is required'),
-
+      
       location: Yup.string().required('Location is required'),
       requirementType: Yup.string().required('Requirement Type is required'),
       jobType: Yup.string().required('Job Type is required'),
@@ -331,8 +374,10 @@ const Createjob = ({
         .typeError('Salary Range To must be a number')
         .required('Salary Range To is required'),
       salaryCurrency: Yup.string().required('Salary Currency is required'),
-      isSalaryPublic: Yup.boolean().required('Is Salary Public is required'),
-      jobDescription: Yup.string().required('Job Description is required'),
+      noOfVaccancies: Yup.number()
+      .typeError('Number Of Vaccancies must be a number')
+      .required('Number Of Vaccancies is required'),
+      
     }),
     onSubmit: async (e) => {
 
@@ -384,7 +429,7 @@ const Createjob = ({
             openNotification(
               "error",
               "input field is empty..",
-              response.message
+              response.message.replace(/<br\/>/g, '\n')
             );
           }
           // }
@@ -502,29 +547,48 @@ const Createjob = ({
           is_required: condition.is_required,
           answer_meta_data: condition.answerMetaData,
         }));
-        const isAnyEmpty = evaluation.some((condition) => {
-          return (
-            !condition.question ||
-            !condition.answer_type ||
-            (["Drop-down", "MultipleChoice", "Checkboxes"].includes(
-              condition.answer_type
-            ) &&
-              (condition.answerMetaData.some((field) => !field.value) ||
-                (!condition.answerMetaData[0]?.value &&
-                  condition.answerMetaData[0]?.key !== "ShortAnswer")))
-          );
+        // const isAnyEmpty = evaluation.some((condition) => {
+        //   return (
+        //     !condition.question ||
+        //     !condition.answer_type ||
+        //     (["Drop-down", "MultipleChoice", "Checkboxes"].includes(
+        //       condition.answer_type
+        //     ) &&
+        //       (condition.answerMetaData.some((field) => !field.value) ||
+        //         (!condition.answerMetaData[0]?.value &&
+        //           condition.answerMetaData[0]?.key !== "ShortAnswer")))
+        //   );
+        // });
+
+        // if (isAnyEmpty) {
+        //   openNotification(
+        //     "error",
+        //     "CustomFields",
+        //     "Please fill in all the required fields."
+        //   );
+        //   return;
+        // }
+        const newErrorMessages = evaluation.map((condition) => {
+          let errorMessage = '';
+      
+          if (!condition.question) {
+            errorMessage = 'Please enter a question.';
+          } else if (!condition.answer_type) {
+            errorMessage = 'Please choose an answer type.';
+          } else if (
+            ["Drop-down", "MultipleChoice", "Checkboxes"].includes(condition.answer_type) &&
+            (condition.answerMetaData.some((field) => !field.value) ||
+              (!condition.answerMetaData[0]?.value && condition.answerMetaData[0]?.key !== "ShortAnswer"))
+          ) {
+            errorMessage = 'Please enter values for all options.';
+          }
+      
+          return errorMessage;
         });
-
-        if (isAnyEmpty) {
-          openNotification(
-            "error",
-            "CustomFields",
-            "Please fill in all the required fields."
-          );
-          return;
-        }
+      
+        // Update errorMessages state with new error messages
+        setErrorMessages(newErrorMessages);
         console.log(UpdateId);
-
         // if (jobId){
         const response =
           await insertOrUpdateRecruitmentJobApplicationFormSettingWithJobId({
@@ -650,7 +714,7 @@ const Createjob = ({
       )
     );
   };
-  const handleAddField = (index) => {
+  const handleAddField = (index,selectedvalue) => {
     setEvaluation((prevEvaluation) =>
       prevEvaluation.map((prevCondition, i) =>
         i === index
@@ -660,7 +724,7 @@ const Createjob = ({
               ...prevCondition.answerMetaData,
               {
                 id: prevCondition.answerMetaData.length + 1,
-                key: "Drop-down", // You can set the default key or customize as needed
+                key: selectedvalue, // You can set the default key or customize as needed
                 value: "",
               },
             ],
@@ -923,7 +987,7 @@ const Createjob = ({
         console.log("Response:", response);
         if (response.status === 200) {
           openNotification("success", "Successful", response.message);
-          setPresentage(3.4);
+          setPresentage(5);
           refresh();
           // Add a delay before closing the notification
           setTimeout(() => {
@@ -1152,12 +1216,18 @@ const Createjob = ({
 
         formik1.setFieldValue("companyId", firstJob.companyId);
         formik1.setFieldValue("jobTitle", firstJob.jobTitle);
-        formik1.setFieldValue("departmentId", parseInt(response.result[0].departmentId));
-        formik1.setFieldValue("education", parseInt(response.result[0].education));
+        formik1.setFieldValue(
+          "departmentId",
+          parseInt(response.result[0].departmentId)
+        );
+        formik1.setFieldValue(
+          "education",
+          parseInt(response.result[0].education)
+        );
         formik1.setFieldValue("isActive", firstJob.isActive);
         formik1.setFieldValue("isSalaryPublic", firstJob.isSalaryPublic);
         formik1.setFieldValue("jobCode", firstJob.jobCode);
-        setContent(firstJob.jobDescription)
+        setContent(firstJob.jobDescription);
         formik1.setFieldValue("jobType", firstJob.jobType);
         formik1.setFieldValue("location", firstJob.location);
         formik1.setFieldValue("requirementType", firstJob.requirementType);
@@ -1175,7 +1245,15 @@ const Createjob = ({
           }));
         setEvaluation(formattedCustomFields);
         setSelectedWorkFlowId(firstJob.workFlowId);
-
+        formik.setFieldValue("headline", firstJob.jobApplicationFormData.headline)
+        formik.setFieldValue("phone", firstJob.jobApplicationFormData.phone)
+        formik.setFieldValue("address", firstJob.jobApplicationFormData.address)
+        formik.setFieldValue("country", firstJob.jobApplicationFormData.country)
+        formik.setFieldValue("education", firstJob.jobApplicationFormData.education)
+        formik.setFieldValue("experience", firstJob.jobApplicationFormData.experience)
+        formik.setFieldValue("summary",  firstJob.jobApplicationFormData.summary)
+        formik.setFieldValue("resume",  firstJob.jobApplicationFormData.resume)
+        formik.setFieldValue("coverLetter",  firstJob.jobApplicationFormData.coverLetter)
         console.log(firstJob.companyId);
       } else {
         console.error("No data found in the response.");
@@ -1231,14 +1309,8 @@ const Createjob = ({
           borderRadius: 0,
           borderTopLeftRadius: "0px !important",
           borderBottomLeftRadius: 0,
-
-
-
-
-
         }}
         wrapperBodyStyle={{ backgroundColor: "#F8FAFC" }}
-
         close={(e) => {
           setShow(e);
           //    setUpdateId(null);
@@ -1281,15 +1353,14 @@ const Createjob = ({
         saveAndContinue={true}
         stepsData={steps}
       >
-        <div  >
+        <div>
           {/* <div className="inset-0 absolute bg-[#F8FAFC]"></div> */}
-          <FlexCol >
+          <FlexCol>
             <div className="flex flex-col gap-6 max-w-[1070px] w-full mx-auto bg-[#F8FAFC] ">
               {steps && (
                 <div className=" sticky -top-6 w-full z-50 px-5 bg-[#F8FAFC] dark:bg-[#1f1f1f] pb-10 ">
                   <Stepper
                     currentStepNumber={activeBtn}
-
                     presentage={presentage}
                     // direction="left"
                     // labelPlacement="vertical"
@@ -1580,33 +1651,43 @@ const Createjob = ({
 
                         </div>
                         <div className='grid grid-cols-4 gap-4'>
-                          <FormInput
-                            title={'Salary Range From'}
-                            placeholder={'Enter value'}
-                            change={(e) => {
-                              formik1.setFieldValue('salaryRangeFrom', e)
-                            }}
-                            value={formik1.values.salaryRangeFrom
-                            }
-                            type={"number"}
-                            error={formik1.errors.salaryRangeFrom}
-                            required={true}
-                          />
+                        <FormInput
+  title={'Salary Range From'}
+  placeholder={'Enter value'}
+  change={(e) => {
+    formik1.setFieldValue('salaryRangeFrom', e);
+    // Validate Salary Range To when Salary Range From changes
+    console.log(e)
+   
+  }}
+  value={formik1.values.salaryRangeFrom}
+  type={"number"}
+  error={formik1.errors.salaryRangeFrom}
+  required={true}
+/>
 
+<FormInput
+  title={'Salary Range To'}
+  placeholder={'Enter value'}
+  change={(e) => {
+    formik1.setFieldValue('salaryRangeTo', e);
+    // Validate Salary Range To
+    const salaryRangeTo = parseFloat(e); // Convert input to a number
+    const salaryRangeFrom = parseFloat(formik1.values.salaryRangeFrom); // Convert Salary Range From to a number
 
-                          <FormInput
-                            title={'Salary Range To'}
-                            placeholder={'Enter value'}
-                            change={(e) => {
-                              formik1.setFieldValue('salaryRangeTo', e)
-                            }}
-                            value={formik1.values.salaryRangeTo
-                            }
-                            error={formik1.errors.salaryRangeTo}
-                            required={true}
-                            type={"number"}
-                          />
-                          <Dropdown
+    if (salaryRangeTo <= salaryRangeFrom) {
+      formik1.setFieldError('salaryRangeTo', 'Salary Range To cannot be less than or equal to Salary Range From');
+    } else {
+      // Clear the error message when the condition is met
+      formik1.setFieldError('salaryRangeTo', '');
+      formik1.setFieldValue('salaryRangeTo', e);
+    }
+  }}
+  value={formik1.values.salaryRangeTo}
+  error={formik1.errors.salaryRangeTo}
+  required={true}
+  type={"number"}
+/>                       <Dropdown
                             title={'Salary Currency'}
                             placeholder={'salary'}
                             options={saleryCurrency}
@@ -1655,13 +1736,14 @@ const Createjob = ({
                           <Dropdown
                             title={''}
                             placeholder={'Choose Job Description'}
-                            options={JobDesc}
+                            options={JobDescriptionList}
+                            change={(e)=>{
+                              setDecriptionId(e)
+                            }}
                           />
 
-                          <Button onClick={handleGenerateWithAI} type="primary" icon={<img src={image} alt="image" style={{ height: '15px', width: '15px', alignItems: "center" }} />} >
-                            Generate with AI
-
-                          </Button>
+<ButtonClick handleSubmit={handleGenerateWithAI} BtnType="primary" 
+icon={<img src={image} alt="image" style={{ height: '20px', width: '20px', alignItems: "center" }}  />} buttonName={"Generate with AI"}/>
                         </div>
                         {/* <div className="pt-4">
                                             <TextEditor
@@ -1776,6 +1858,7 @@ const Createjob = ({
                             change={(e) => {
                               formik.setFieldValue("headline", e);
                             }}
+                            defaultValue={formik.values.headline}
                           >
                             <Radio.Button value={1}>Mandatory</Radio.Button>
                             <Radio.Button value={2}>Optional</Radio.Button>
@@ -1794,6 +1877,7 @@ const Createjob = ({
                             change={(e) => {
                               formik.setFieldValue("phone", e);
                             }}
+                            defaultValue={formik.values.phone}
                           >
                             <Radio.Button value={1}>Mandatory</Radio.Button>
                             <Radio.Button value={2}>Optional</Radio.Button>
@@ -1812,6 +1896,7 @@ const Createjob = ({
                             change={(e) => {
                               formik.setFieldValue("address", e);
                             }}
+                            defaultValue={formik.values.address}
                           >
                             <Radio.Button value={1}>Mandatory</Radio.Button>
                             <Radio.Button value={2}>Optional</Radio.Button>
@@ -1830,6 +1915,7 @@ const Createjob = ({
                             change={(e) => {
                               formik.setFieldValue("country", e);
                             }}
+                            defaultValue={formik.values.country}
                           >
                             <Radio.Button value={1}>Mandatory</Radio.Button>
                             <Radio.Button value={2}>Optional</Radio.Button>
@@ -1862,6 +1948,7 @@ const Createjob = ({
                             change={(e) => {
                               formik.setFieldValue("education", e);
                             }}
+                            defaultValue={formik.values.education}
                           >
                             <Radio.Button value={2}>Optional</Radio.Button>
                             <Radio.Button value={0}>Off</Radio.Button>
@@ -1881,6 +1968,7 @@ const Createjob = ({
                             change={(e) => {
                               formik.setFieldValue("experience", e);
                             }}
+                            defaultValue={formik.values.experience}
                           >
                             <Radio.Button value={2}>Optional</Radio.Button>
                             <Radio.Button value={0}>Off</Radio.Button>
@@ -1898,6 +1986,7 @@ const Createjob = ({
                             change={(e) => {
                               formik.setFieldValue("summary", e);
                             }}
+                            defaultValue={formik.values.summary}
                           >
                             <Radio.Button value={1}>Mandatory</Radio.Button>
                             <Radio.Button value={2}>Optional</Radio.Button>
@@ -1916,6 +2005,7 @@ const Createjob = ({
                             change={(e) => {
                               formik.setFieldValue("resume", e);
                             }}
+                            defaultValue={formik.values.resume}
                           >
                             <Radio.Button value={1}>Mandatory</Radio.Button>
                             <Radio.Button value={2}>Optional</Radio.Button>
@@ -1935,6 +2025,7 @@ const Createjob = ({
                             change={(e) => {
                               formik.setFieldValue("coverLetter", e);
                             }}
+                            defaultValue={formik.values.coverLetter}
                           >
                             <Radio.Button value={1}>Mandatory</Radio.Button>
                             <Radio.Button value={2}>Optional</Radio.Button>
@@ -1970,13 +2061,14 @@ const Createjob = ({
                                   );
                                   console.log(e);
                                 }}
-
+                                  error={errorMessages}
                               />
                               <div className="flex items-center gap-5">
-                                <div className="flex-shrink-0">
+                                
                                   <Dropdown
                                     options={Form}
                                     dropdownWidth='200px'
+                                    placeholder={'Choose Job Description'}
                                     change={(e) => {
                                       setEvaluation((prevEvaluation) => prevEvaluation.map((prevCondition, i) => i === index
                                         ? {
@@ -1993,12 +2085,14 @@ const Createjob = ({
                                         : prevCondition
                                       )
                                       );
+                                      handleAddField(e)
                                     }}
-                                    value={condition.answer_type || "ShortAnswer"}
+                                    value={condition.answer_type || ""}
                                     icon={<MdOutlineShortText />}
                                     icondropDown={true}
+                                    error={errorMessages}
                                   />
-                                </div>
+                                
                                 <div style={{ display: 'flex', alignItems: 'center', gap: '15px' }}>
                                   <p>Mandatory</p>
                                   <ToggleBtn />
@@ -2036,6 +2130,7 @@ const Createjob = ({
                                           : prevCondition
                                         )
                                         )}
+                                        error={errorMessages}
                                       />
                                       <div className="ml-2">
                                         <MdDelete
@@ -2282,7 +2377,7 @@ const Createjob = ({
                   padding={false}
                   toggleBtn={false}
                   click={() => {
-                    setPresentage(4.1);
+                    // setPresentage(4.1);
                   }}
                   initialExpanded={true}
                 >
@@ -2335,7 +2430,7 @@ const Createjob = ({
                               className="h-4 w-4 rounded border text-indigo-600 focus:ring-indigo-600 absolute top-4 right-4"
                               onChange={() => {
                                 handleCheckboxChange(index);
-                                setPresentage(4.8);
+                                setPresentage(3.5);
                               }}
                               style={{ borderColor: "red" }}
                             />

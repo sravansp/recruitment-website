@@ -170,13 +170,10 @@ const Workflowstage = ({ open = "", close = () => { }, inputshow = false, isUpda
               workFlowName: values.workFlowName,
               description: values.description,
               modifiedBy: 9,
-
             },
             RecruitmentWorkFlowStage: [
               ...formattedData
-
             ]
-
           });
           console.log(response)
           if (response.status === 200) {
@@ -188,8 +185,6 @@ const Workflowstage = ({ open = "", close = () => { }, inputshow = false, isUpda
           } else if (response.status === 500) {
             openNotification("error", "error", response.message);
           }
-
-
         } else {
           const response = await saveRecruitmentWorkFlow({
             companyId: companyId,
@@ -197,33 +192,35 @@ const Workflowstage = ({ open = "", close = () => { }, inputshow = false, isUpda
             description: values.description,
             createdBy: 9,
           });
-
-          console.log(response);
-
-          if (response.status === 200) {
-            const insertedId = response.result.insertedId; // Get insertedId here
-            const formattedData = stages.map((item) => ({
-              workFlowId: insertedId,
-              stageOrder: item.stageOrder,
-              stageName: item.stageName,
-              stageRules: JSON.stringify(item.stageRules),
-              createdBy: 9,
-            }));
-
-            const response2 = await saveRecruitmentWorkFlowStageBatch(formattedData);
-            console.log('Response2:', response2);
-            console.log(formattedData);
-            console.log(insertedId);
-
-            if (response2.status === 200) {
-              openNotification("success", "Successful", response2.message);
-              setTimeout(() => {
-                handleClose();
-                refresh();
-              }, 1500);
-            } else if (response2.status === 500) {
-              openNotification("error", "error", response2.message);
-            }
+          const formattedData = stages.map((item) => ({
+            stageId: item.id, // Add stageId property
+            stageOrder: item.stageOrder,
+            stageName: item.stageName,
+            stageRules: JSON.stringify(item.stageRules),
+            workFlowId: response.data.workFlowId,  // Assuming stageRules is available in item
+            createdBy: 9,
+          }));
+          const responseWithStages = await updateWorkFlowWithStages({
+            RecruitmentWorkFlow: {
+              workFlowId: response.data.workFlowId,
+              companyId: companyId,
+              workFlowName: values.workFlowName,
+              description: values.description,
+              modifiedBy: 9,
+            },
+            RecruitmentWorkFlowStage: [
+              ...formattedData
+            ]
+          });
+          console.log(responseWithStages);
+          if (responseWithStages.status === 200) {
+            openNotification("success", "Successful", response.message);
+            setTimeout(() => {
+              handleClose();
+              refresh();
+            }, 1500);
+          } else if (responseWithStages.status === 500) {
+            openNotification("error", "error", response.message.replace(/<br\/>/g, '\n'));
           }
         }
       } catch (error) {
@@ -232,6 +229,7 @@ const Workflowstage = ({ open = "", close = () => { }, inputshow = false, isUpda
       setSubmitting(false);
     },
   });
+
   //update
 
 
@@ -250,16 +248,20 @@ const Workflowstage = ({ open = "", close = () => { }, inputshow = false, isUpda
         formik.setFieldValue("workFlowName", firstJob.workFlowName);
         formik.setFieldValue("description", firstJob.description)
 
-        // Set stages
-        const stagesData = firstJob.recruitmentWorkFlowStages.map(stage => ({
-          id: stage.stageId,
-          workFlowId: stage.workFlowId,
-          stageOrder: stage.stageOrder,
-          stageName: stage.stageName,
-          stageRules: stage.stageRules
-        }));
-        setstages(stagesData);
-        console.log(stagesData); // Check here
+        const response2 = await saveRecruitmentWorkFlowStageBatch(formattedData);
+        console.log('Response2:', response2);
+        console.log(formattedData);
+        console.log(insertedId);
+
+        if (response2.status === 200) {
+          openNotification("success", "Successful", response2.message);
+          setTimeout(() => {
+            handleClose();
+            refresh();
+          }, 1500);
+        } else if (response2.status === 500) {
+          openNotification("error", "error", response2.message.replace(/<br\/>/g, '\n'));
+        }
       }
     } catch (error) {
 

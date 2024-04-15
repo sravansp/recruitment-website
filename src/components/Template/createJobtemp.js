@@ -44,6 +44,8 @@ import {
   getAllRecruitmentJobTeamMembers,
   updateRecruitmentJobTemplate,
   getRecruitmentJobTemplateById,
+  getAllRecruitmentJobDescriptionTemplates,
+  getRecruitmentJobDescriptionTemplateById
 } from "../Api1";
 import { Formik, useFormik } from "formik";
 import { CgAdd } from "react-icons/cg";
@@ -85,6 +87,8 @@ const CreatejobTemp = ({
   const { t } = useTranslation();
 
   // const [isUpdate, setIsUpdate] = useState();
+  const[Education,seteducation] =useState("")
+  const[Experience,setExperience] =useState("")
   const [activeBtn, setActiveBtn] = useState(0);
   const [presentage, setPresentage] = useState(0);
   const [nextStep, setNextStep] = useState(0);
@@ -100,7 +104,16 @@ const CreatejobTemp = ({
   const [selectedWorkFlowId, setSelectedWorkFlowId] = useState("");
   const [selectedDivs, setSelectedDivs] = useState([]);
   const [content, setContent] = useState("");
-  // console.log(updateId);
+  const [JobDescriptionList,setJobDescriptionList]=useState([])
+  const[decriptionId,setDecriptionId] =  useState("")
+  const[Phone,setPhone] = useState("")
+  const[Headline,setHeadline] = useState("")
+  const[Address,setAddress] = useState("")
+  const[country,setCountry] = useState("")
+  const[summary,setSummary] = useState("")
+  const[resume,setResume] = useState("")
+  const[coverLetter,setCoverletter] = useState("")
+  console.log(updateId);
   useEffect(() => {
     // Retrieve the login data JSON string from local storage
     const loginDataString = localStorage.getItem("LoginData");
@@ -119,7 +132,41 @@ const CreatejobTemp = ({
   }, []); // Empty dependency array ensures the useEffect runs only once
   const [isChecked, setIsChecked] = useState(false);
 
-  // console.log("Username:", userid);
+  const getAllJobdescription = async ()=>{
+    try{
+     const data = await getAllRecruitmentJobDescriptionTemplates()
+     console.log(data)
+    // 
+    setJobDescriptionList(data.result.map((each)=>({
+      label:each.descriptionTemplateName,
+      value:each.descriptionTemplateId
+    })))
+    }catch(error){
+      console.log(error)
+    }
+  }
+
+  const getDecriptionById= async()=>{
+    const id = decriptionId
+    try{
+    const response = await getRecruitmentJobDescriptionTemplateById({id:id})
+    console.log(response)
+    
+    setContent(response.result[0].descriptionTemplate );
+    
+    
+    }catch(error){
+    console.log(error)
+    }
+  }
+  useEffect(()=>{
+    getDecriptionById()
+  },[decriptionId])
+  useEffect(()=>{
+    getAllJobdescription()
+  },[])
+
+  console.log("Username:", userid);
   const [api, contextHolder] = notification.useNotification();
   const openNotification = (type, message, description) => {
     api[type]({
@@ -231,7 +278,22 @@ const CreatejobTemp = ({
       },
       createdBy: "",
     },
+    //  enableReinitialize: true,
+    //   validateOnChange: false,
+    //   validationSchema: yup.object().shape({
+    //     companyId: yup.string().required("First Name is Required"),
+    //     jobTitle: yup.string().required("Last Name is Required"),
+    //     departmentId: yup.string().required("Email is Required"),
+    //     jobCode: yup.string().min(10).max(10).required("Mobile is Required"),
+    //     experience: yup.string().required("Gender is Required"),
+    //     education: yup.string().required("Date of Birth Group is Required"),
+    //     searchKeywords: yup.string().required("Gender is Required"),
 
+    //     salaryRangeFrom: yup.string().required("Gender is Required"),
+    //     salaryCurrency: yup.string().required("Date of Birth Group is Required"),
+
+    //   }),
+   
     onSubmit: async (e) => {
       try {
         const updatedCustomFields = evaluation.map((condition) => ({
@@ -265,17 +327,17 @@ const CreatejobTemp = ({
             jobPublishDetails: null,
             createdBy: 45,
             jobApplicationFormData: {
-              name: e.name,
-              email: e.email,
-              headline: e.headline,
-              phone: e.phone,
-              address: e.address,
-              country: e.country,
-              education: e.education,
-              experience: e.experience,
-              summary: e.summary,
-              resume: e.resume,
-              coverLetter: e.coverLetter,
+              name: 1,
+              email: 1,
+              headline: Headline,
+              phone: Phone,
+              address: Address,
+              country: country,
+              education: Education,
+              experience: Experience,
+              summary:summary,
+              resume: resume,
+              coverLetter: coverLetter,
 
               customFields: updatedCustomFields,
             },
@@ -293,7 +355,7 @@ const CreatejobTemp = ({
               refresh()
             }, 1500);
           } else if (response.status === 500) {
-            openNotification("error", response.message);
+            openNotification("error", response.message.replace(/<br\/>/g, '\n'));
           }
         } else {
           // console.log(e);
@@ -320,17 +382,17 @@ const CreatejobTemp = ({
             jobPublishDetails: null,
             createdBy: 45,
             jobApplicationFormData: {
-              name: e.name,
-              email: e.email,
-              headline: e.headline,
-              phone: e.phone,
-              address: e.address,
-              country: e.country,
-              education: e.education,
-              experience: e.experience,
-              summary: e.summary,
-              resume: e.resume,
-              coverLetter: e.coverLetter,
+              name: 1,
+              email: 1,
+              headline: Headline,
+              phone: Phone,
+              address: Address,
+              country: Experience,
+              education: Education,
+              experience: Experience,
+              summary: summary,
+              resume: resume,
+              coverLetter: coverLetter,
 
               customFields: updatedCustomFields,
             },
@@ -378,7 +440,7 @@ const CreatejobTemp = ({
 
         formik.setFieldValue("companyId", firstJob.companyId);
         formik.setFieldValue("jobTitle", firstJob.jobTitle);
-        formik.setFieldValue("departmentId", firstJob.departmentId);
+        formik.setFieldValue("departmentId", parseInt(firstJob.departmentId));
         formik.setFieldValue("education", firstJob.education);
         formik.setFieldValue("isActive", firstJob.isActive);
         formik.setFieldValue("isSalaryPublic", firstJob.isSalaryPublic);
@@ -742,7 +804,36 @@ const CreatejobTemp = ({
       case "Jobdetails":
         // Handle submission for Configuration
 
-        // console.log("valuegtgggggggggggg");
+        console.log("valuegtgggggggggggg");
+        if (
+          !formik.values.jobTitle || !formik.values.departmentId || !formik.values.jobCode||
+          !formik.values.location ||
+          !formik.values.requirementType||
+          !formik.values.jobType||
+          !formik.values.experience||
+          !formik.values.education||
+          !formik.values.searchKeywords||
+          !formik.values.salaryRangeFrom||
+          !formik.values.salaryRangeTo||
+          !formik.values.salaryCurrency||
+          !formik.values.jobType
+          ) 
+          {
+          formik.setFieldError('jobTitle', !formik.values.jobTitle ? 'Job Title is required' : '');
+          formik.setFieldError('departmentId', !formik.values.departmentId ? 'Department is required' : '');
+          formik.setFieldError('jobCode', !formik.values.jobCode ? 'Job Code is required' : '');
+          formik.setFieldError('location', !formik.values.location ? 'Location is required' : '');
+          formik.setFieldError('requirementType', !formik.values.requirementType ? 'Requirment Type is required' : '');
+          formik.setFieldError('experience', !formik.values.experience ? 'Experience is required' : '');
+          formik.setFieldError('searchKeywords', !formik.values.searchKeywords ? 'Search Key Words is required' : '');
+          formik.setFieldError('salaryRangeFrom', !formik.values.salaryRangeFrom ? 'Salery Range From is required' : '');
+          formik.setFieldError('salaryRangeTo', !formik.values.salaryRangeTo ? 'Salary Range To is required' : '');
+          formik.setFieldError('salaryCurrency', !formik.values.salaryCurrency ? 'Salary Currency is required' : '');
+          formik.setFieldError('jobType', !formik.values.jobType ? 'JobType is required' : '');
+
+          return; // Exit early if any field is empty
+        }
+
         setNextStep(nextStep + 1);
 
         break;
@@ -793,29 +884,7 @@ const CreatejobTemp = ({
 
   //Teammebers
 
-  const [employeeList, setemployeeList] = useState([]);
 
-  const AllRecruitmentJobTeamMembers = async () => {
-    // const jobId=1;
-    try {
-      const response = await getAllRecruitmentJobTeamMembers(jobId);
-      setemployeeList(
-        response.result.map((item) => ({
-          username: item.userName,
-          userId: item.userId,
-          userimage: item.userImage,
-        }))
-      );
-
-      // console.log(response);
-    } catch (error) {
-      console.error("Error updating workflow ID:", error);
-    }
-  };
-  useEffect(() => {
-    AllRecruitmentJobTeamMembers();
-    // console.log(employeeList);
-  }, []);
 
   return (
     <div>
@@ -903,6 +972,7 @@ const CreatejobTemp = ({
               {activeBtnValue === "Jobdetails" ? (
                 <>
                   <FlexCol>
+                  <div className="rounded-md borderb">
                     <Accordion
                       title={"Job Details"}
                       className="Text_area"
@@ -940,37 +1010,41 @@ const CreatejobTemp = ({
                       <div className="grid grid-cols-3 gap-4">
                         <FormInput
                           title={t("Job Title")}
-                          placeholder={t("Example : Marketing Manager")}
+                          placeholder={t("Enter Job Title")}
                           required={true}
                           change={(e) => {
                             formik.setFieldValue("jobTitle", e);
                           }}
                           value={formik.values.jobTitle}
+                          error={formik.errors.jobTitle}
                         />
 
                         <Dropdown
                           title={t("Department")}
-                          placeholder={t("Select...")}
+                          placeholder={t("Choose Department")}
                           required={true}
                           options={departmentList}
                           value={formik.values.departmentId}
                           change={(e) => {
                             formik.setFieldValue("departmentId", e);
                           }}
+                          error={formik.errors.departmentId}
                         />
 
                         <FormInput
                           title={t(" Job Code")}
-                          placeholder={t(" Job Code")}
+                          placeholder={t("Enter Job Code")}
                           required={true}
                           change={(e) => {
                             formik.setFieldValue("jobCode", e);
                           }}
                           value={formik.values.jobCode}
+                          error={formik.errors.jobCode}
                         />
                       </div>
                     </Accordion>
-
+                    </div>
+                    <div className="rounded-md borderb">
                     <Accordion
                       title={"Location "}
                       className="Text_area"
@@ -1037,17 +1111,18 @@ const CreatejobTemp = ({
                       <div className="grid grid-cols-2 gap-4">
                         <FormInput
                           title={"Location"}
-                          placeholder={"Example : Dubai"}
+                          placeholder={"Enter Location"}
                           change={(e) => {
                             formik.setFieldValue("location", e);
                           }}
                           value={formik.values.location}
                           required={true}
+                          error={formik.errors.location}
                         />
 
                         <Dropdown
                           title={"Requirement"}
-                          placeholder={"Urgent"}
+                          placeholder={"Choose Requirement"}
                           options={Requirment}
                           value={formik.values.requirementType}
                           change={(e) => {
@@ -1055,10 +1130,14 @@ const CreatejobTemp = ({
                             // console.log(e);
                           }}
                           required={true}
+                          error={formik.errors.requirementType}
                         />
                       </div>
                     </Accordion>
-                    <div>
+                    
+                    </div>
+                    <div className="rounded-md borderb">
+                    
                       <Accordion
                         title={"Employment Details"}
                         className="Text_area"
@@ -1072,7 +1151,7 @@ const CreatejobTemp = ({
                         <div className="grid grid-cols-3 gap-4">
                           <Dropdown
                             title={"Job Type"}
-                            placeholder={"Full-time"}
+                            placeholder={"Choose Job Type"}
                             options={JobType}
                             change={(e) => {
                               formik.setFieldValue("jobType", e);
@@ -1080,37 +1159,42 @@ const CreatejobTemp = ({
                             }}
                             required={true}
                             value={formik.values.jobType}
+                            error={formik.errors.jobType}
                           />
                           <Dropdown
                             title={"Experience"}
-                            placeholder={"Mid-Senior level"}
+                            placeholder={"Choose Experience"}
                             options={experiencelevel}
                             value={formik.values.experience}
                             change={(e) => {
                               formik.setFieldValue("experience", e);
                             }}
                             required={true}
+                            error={formik.errors.experience}
                           />
                           <Dropdown
                             title={"Education"}
-                            placeholder={"Bachelor’s Degree"}
+                            placeholder={"Choose Education"}
                             options={eductaion}
                             value={formik.values.education}
                             change={(e) => {
                               formik.setFieldValue("education", e);
                             }}
                             required={true}
+                            error={formik.errors.education}
                           />
                         </div>
                         <div className="grid grid-cols-3 gap-4">
                           <FormInput
                             title={"Keywords"}
-                            placeholder={"Example : Dubai"}
+                            placeholder={"Enter Keywords"}
                             change={(e) => {
                               formik.setFieldValue("searchKeywords", e);
                             }}
                             value={formik.values.searchKeywords}
                             required={true}
+                            error={formik.errors.searchKeywords}
+                            
                           />
                           {/* <Dropdown
                                                     title={'Requirement'}
@@ -1120,33 +1204,53 @@ const CreatejobTemp = ({
                                                     placeholder={'Urgent'} /> */}
                         </div>
                         <div className="grid grid-cols-4 gap-4">
-                          <FormInput
-                            title={"Salary Range From"}
-                            placeholder={"Enter value"}
-                            change={(e) => {
-                              formik.setFieldValue("salaryRangeFrom", e);
-                            }}
-                            value={formik.values.salaryRangeFrom}
-                            required={true}
-                          />
-                          <FormInput
-                            title={"Salary Range To"}
-                            placeholder={"Enter value"}
-                            change={(e) => {
-                              formik.setFieldValue("salaryRangeTo", e);
-                            }}
-                            value={formik.values.salaryRangeTo}
-                            required={true}
-                          />
+                        <FormInput
+  title={'Salary Range From'}
+  placeholder={'Enter value'}
+  change={(e) => {
+    formik.setFieldValue('salaryRangeFrom', e);
+    // Validate Salary Range To when Salary Range From changes
+    console.log(e)
+   
+  }}
+  value={formik.values.salaryRangeFrom}
+  type={"number"}
+  error={formik.errors.salaryRangeFrom}
+  required={true}
+/>
+
+<FormInput
+  title={'Salary Range To'}
+  placeholder={'Enter value'}
+  change={(e) => {
+    formik.setFieldValue('salaryRangeTo', e);
+    // Validate Salary Range To
+    const salaryRangeTo = parseFloat(e); // Convert input to a number
+    const salaryRangeFrom = parseFloat(formik.values.salaryRangeFrom); // Convert Salary Range From to a number
+
+    if (salaryRangeTo <= salaryRangeFrom) {
+      formik.setFieldError('salaryRangeTo', 'Salary Range To cannot be less than or equal to Salary Range From');
+    } else {
+      // Clear the error message when the condition is met
+      formik.setFieldError('salaryRangeTo', '');
+      formik.setFieldValue('salaryRangeTo', e);
+    }
+  }}
+  value={formik.values.salaryRangeTo}
+  error={formik.errors.salaryRangeTo}
+  required={true}
+  type={"number"}
+/>   
                           <Dropdown
                             title={"Salary Currency"}
-                            placeholder={"Urgent"}
+                            placeholder={"Enter Salary Currency"}
                             options={saleryCurrency}
                             value={formik.values.salaryCurrency}
                             change={(e) => {
                               formik.setFieldValue("salaryCurrency", e);
                             }}
                             required={true}
+                            error={formik.errors.salaryCurrency}
                           />
                           <CheckBoxInput
                             change={(e) => {
@@ -1162,7 +1266,7 @@ const CreatejobTemp = ({
                         </div>
                       </Accordion>
                     </div>
-
+                    <div className="rounded-md borderb">
                     <Accordion
                       title={"Job Description"}
                       className="Text_area"
@@ -1195,39 +1299,29 @@ const CreatejobTemp = ({
                           gap: "16px",
                         }}
                       >
-                        <Button>
-                          <Space>
-                            Choose Job Description
-                            <DownOutlined />
-                          </Space>
-                        </Button>
-                        <Button
-                          type="primary"
-                          onClick={handleGenerateWithAI}
-                          icon={
-                            <img
-                              src={image}
-                              alt="image"
-                              style={{ height: "20px", width: "20px" }}
-
-                            />
-                          }
-                        >
-                          Generate with AI
-                        </Button>
+                        <Dropdown
+                            title={''}
+                            placeholder={'Choose Job Description'}
+                            options={JobDescriptionList}
+                            change={(e)=>{
+                              setDecriptionId(e)
+                            }}
+                          />
+                    <ButtonClick handleSubmit={handleGenerateWithAI} BtnType="primary" icon={<img src={image} alt="image" style={{ height: '20px', width: '20px', alignItems: "center" }}  />} buttonName={"Generate with AI"}/>
                       </div>
                       <Card>
                         <TextEditor
                           title={t("Description")}
                           placeholder={t(
-                            "Enter the Job description here; include key reas of responsibility an what the candidate mi ht do on a typical day."
+                            "Enter Description "
                           )}
                           required={true}
                           hideBorder={true}
                           initialValue={content}
                           //  change={(e)=>{
-                          //    formik1.setFieldValue('jobDescription',e)
+                          //    formik.setFieldValue('jobDescription',e)
                           //  }}
+                          error={formik.errors.jobDescription}
                           onChange={handleEditorChange}
                         />
                         {/* <TextArea
@@ -1256,11 +1350,13 @@ const CreatejobTemp = ({
                                              /> */}
                       </Card>
                     </Accordion>
+                    </div>
                   </FlexCol>
                 </>
               ) : activeBtnValue === "ApplicationForm" ? (
                 <>
                   <FlexCol>
+                  <div className="rounded-md borderb">
                     <Accordion
                       title={"ApplicationForm "}
                       className="Text_area"
@@ -1282,7 +1378,8 @@ const CreatejobTemp = ({
                           )}
                           title={""}
                           change={(e) => {
-                            formik.setFieldValue("name", e);
+                            // formik.setFieldValue("name", e);
+                            // setBtnName(e)
                           }}
                           defaultValue={1}
                         >
@@ -1301,7 +1398,8 @@ const CreatejobTemp = ({
                           )}
                           title={""}
                           change={(e) => {
-                            formik.setFieldValue("Email", e);
+                            // formik.setFieldValue("Email", e);
+                            // setEmail(e)
                           }}
                         >
                           <Radio.Button value={1}>Mandatory</Radio.Button>
@@ -1318,7 +1416,9 @@ const CreatejobTemp = ({
                           title={""}
                           change={(e) => {
                             formik.setFieldValue("headline", e);
+                            setHeadline(e)
                           }}
+                          defaultValue={Headline}
                         >
                           <Radio.Button value={1}>Mandatory</Radio.Button>
                           <Radio.Button value={2}>Optional</Radio.Button>
@@ -1336,7 +1436,9 @@ const CreatejobTemp = ({
                           title={""}
                           change={(e) => {
                             formik.setFieldValue("phone", e);
+                            setPhone(e)
                           }}
+                          defaultValue={Phone}
                         >
                           <Radio.Button value={1}>Mandatory</Radio.Button>
                           <Radio.Button value={2}>Optional</Radio.Button>
@@ -1354,7 +1456,9 @@ const CreatejobTemp = ({
                           title={""}
                           change={(e) => {
                             formik.setFieldValue("address", e);
+                            setAddress(e)
                           }}
+                          defaultValue={Address}
                         >
                           <Radio.Button value={1}>Mandatory</Radio.Button>
                           <Radio.Button value={2}>Optional</Radio.Button>
@@ -1372,7 +1476,9 @@ const CreatejobTemp = ({
                           title={""}
                           change={(e) => {
                             formik.setFieldValue("country", e);
+                            setCountry(e)
                           }}
+                          defaultValue={country}
                         >
                           <Radio.Button value={1}>Mandatory</Radio.Button>
                           <Radio.Button value={2}>Optional</Radio.Button>
@@ -1380,6 +1486,8 @@ const CreatejobTemp = ({
                         </Radiobuttonnew>
                       </div>
                     </Accordion>
+                    </div>
+                    <div className="rounded-md borderb">
 
                     <Accordion
                       title={"Profile "}
@@ -1402,8 +1510,9 @@ const CreatejobTemp = ({
                           )}
                           title={""}
                           change={(e) => {
-                            formik.setFieldValue("education", e);
+                           seteducation(e);
                           }}
+                          defaultValue={Education}
                         >
                           <Radio.Button value={2}>Optional</Radio.Button>
                           <Radio.Button value={0}>Off</Radio.Button>
@@ -1421,8 +1530,9 @@ const CreatejobTemp = ({
                           )}
                           title={""}
                           change={(e) => {
-                            formik.setFieldValue("experience", e);
+                            setExperience(e)
                           }}
+                          defaultValue={Experience}
                         >
                           <Radio.Button value={2}>Optional</Radio.Button>
                           <Radio.Button value={0}>Off</Radio.Button>
@@ -1439,7 +1549,9 @@ const CreatejobTemp = ({
                           title={""}
                           change={(e) => {
                             formik.setFieldValue("summary", e);
+                            setSummary(e)
                           }}
+                          defaultValue={summary}
                         >
                           <Radio.Button value={1}>Mandatory</Radio.Button>
                           <Radio.Button value={2}>Optional</Radio.Button>
@@ -1457,7 +1569,9 @@ const CreatejobTemp = ({
                           title={""}
                           change={(e) => {
                             formik.setFieldValue("resume", e);
+                            setResume(e)
                           }}
+                          defaultValue={resume}
                         >
                           <Radio.Button value={1}>Mandatory</Radio.Button>
                           <Radio.Button value={2}>Optional</Radio.Button>
@@ -1476,7 +1590,9 @@ const CreatejobTemp = ({
                           title={""}
                           change={(e) => {
                             formik.setFieldValue("coverLetter", e);
+                            setCoverletter(e)
                           }}
+                          defaultValue={coverLetter}
                         >
                           <Radio.Button value={1}>Mandatory</Radio.Button>
                           <Radio.Button value={2}>Optional</Radio.Button>
@@ -1484,7 +1600,8 @@ const CreatejobTemp = ({
                         </Radiobuttonnew>
                       </div>
                     </Accordion>
-
+                     </div>
+                     <div className="rounded-md borderb">
                     <Accordion
                       title={"Custom Fields "}
                       className="Text_area"
@@ -1613,26 +1730,21 @@ icondropDown={true}
                                     gap: "15px",
                                   }}
                                 >
-                                  <Tooltip placement="top" title={"Copy"}>
-                                    <MdOutlineFileCopy
-                                      style={{
-                                        width: "18px",
-                                        height: "18px",
-                                        cursor: "pointer",
-                                      }}
-                                    />
-                                  </Tooltip>
-                                  <Tooltip placement="top" title={"Delete"}>
-                                    <MdDelete
-                                      style={{
-                                        width: "18px",
-                                        height: "18px",
-                                        cursor: "pointer",
-                                        color: "red",
-                                      }}
-                                      onClick={() => handleDeleteCondition(index)}
-                                    />
-                                  </Tooltip>
+                                  {/* <MdOutlineFileCopy
+                                    style={{
+                                      width: "18px",
+                                      height: "18px",
+                                      cursor: "pointer",
+                                    }}
+                                  /> */}
+                                  <MdDelete
+                                    style={{
+                                      width: "18px",
+                                      height: "18px",
+                                      cursor: "pointer",
+                                    }}
+                                    onClick={() => handleDeleteCondition(index)}
+                                  />
                                 </div>
                               </div>
                             </div>
@@ -1741,6 +1853,7 @@ icondropDown={true}
                         }}
                       />
                     </Accordion>
+                    </div>
                   </FlexCol>
                 </>
               ) : activeBtnValue === "Workflow" ? (
@@ -1768,9 +1881,8 @@ icondropDown={true}
       ))}
                 */}
                     <Radio.Group
-                      onChange={(e) => {
-                        setSelectedWorkFlowId(e.target.value)
-                        setPresentage(3.5)
+                      onChange={(e) => {setSelectedWorkFlowId(e.target.value)
+                        setPresentage(1.5)
                       }}
                     >
                       {Stages.map((each) => (

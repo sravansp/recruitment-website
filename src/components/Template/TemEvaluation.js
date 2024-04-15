@@ -204,9 +204,10 @@ const TemEvaluation = ({ open = "", close = () => { }, inputshow = false, isUpda
               handleClose();
               refresh()
             }, 1500);
-          } else if (response.status == 500) {
-            openNotification("error", "Error", response.message);
-
+          } else if(response.status==500)
+          {
+            openNotification("error", "Error", response.message.replace(/<br\/>/g, '\n'));
+           
           }
 
         } else {

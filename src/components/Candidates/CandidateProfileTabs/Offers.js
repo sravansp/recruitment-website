@@ -1,10 +1,11 @@
 import React, { useState, useEffect } from "react";
 import ButtonClick from "../../common/Button";
 import TextEditor from "../../common/TextEditor/TextEditor";
-
+import {stateToHTML} from 'draft-js-export-html';
+import { EditorState, convertToRaw, ContentState, convertFromHTML } from 'draft-js';
 import TabsNew from "../../common/TabsNew";
 import {getAllRecruitmentJobResumesOfferLetters,getRecruitmentJobResumesNoteById,updateRecruitmentJobResumesNote,getRecruitmentLetterTemplateById,saveRecruitmentJobResumesOfferLetter,getAllRecruitmentLetterTemplates,getAllRecruitmentJobResumesNotes,saveRecruitmentJobResumesNote } from "../../Api1";
-import { EditorState, convertToRaw, convertFromRaw, ContentState,convertToHTML } from 'draft-js';
+
 import { format } from 'date-fns';
 import {
   RiAttachment2,
@@ -40,6 +41,7 @@ const Offers = () => {
   const [selectedNoteId, setSelectedNoteId] = useState(null);
   const [isPinned, setIsPinned] = useState(0);
   const [offerLetters,setOfferLetters] = useState([])
+
 
   const handleEditClick = (jobResumeNoteId) => {
     setSelectedNoteId(jobResumeNoteId);
@@ -120,12 +122,15 @@ const openNotification = (type, message, description) => {
       icon: <BsFileEarmarkRichtext className="text-base" />,
     },
   ];
-  const handleEditorChange = (editorState) => {
-    setContent(editorState);
+  const handleEditorChange = (state) => {
+   
+  
+    setContent(state)
   };
 
 
   const [notes, setnotes] = useState("")
+  const[html,setstateHTML] =useState("")
 
 
   const handlesubmit = async () => {
@@ -136,13 +141,14 @@ const openNotification = (type, message, description) => {
         {
           jobId: jobId,
           resumeId: resumeId,
-          offerLetterData: content,
+          offerLetterData: html,
           offerLetterTemplateId: LetterTemplateId || null,
           offerLetterStatusDate: formattedDate,
           createdBy: null
         }
       )
       console.log(response)
+      getOfferLetters()
       if (response.status === 200) {
 
 
@@ -249,9 +255,10 @@ const openNotification = (type, message, description) => {
   };
 
   useEffect(() => {
-    if (LetterTemplateId !== null) {
+   
       getletteTemplateByid(LetterTemplateId);
-    }
+      console.log(content);
+    
   }, [LetterTemplateId]);
 
   const getOfferLetters = async()=>{
@@ -291,9 +298,9 @@ const openNotification = (type, message, description) => {
   ];
 
   const menu = (
-    <Menu>
-      {options.map(option => (
-        <Menu.Item key={option.id}>
+    <Menu >
+      {LetterTemplate.map(option => (
+        <Menu.Item key={option.value} onClick={({ key }) => setLetterTemplateId(key)}>
           {option.label}
         </Menu.Item>
       ))}
@@ -327,7 +334,10 @@ const openNotification = (type, message, description) => {
               <div className="pt-4">
               <TextEditor
   initialValue={content}
-  onChange={(editorState)=>{handleEditorChange(editorState)}}
+  onChange={handleEditorChange}
+  changetoHtml={(e)=>{
+    setstateHTML(e)
+  }}
   minheight="250px"
 />
               </div>

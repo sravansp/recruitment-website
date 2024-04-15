@@ -47,8 +47,10 @@ export const saveRecruitmentJob = async (e) => {
   const action = "saveRecruitmentJob";
 
   const method = "POST";
+  const kwargs = e;
+  console.log("API Request Data:", { action, method, kwargs })
+  return await apiRequest(action, method, kwargs);
 
-  return await apiRequest(action, method, { ...e });
 };
 
 export const deleteRecruitmentJobById = async (id) => {
@@ -740,7 +742,7 @@ export const getRecruitmentLetterTemplateById = async (id) => {
   const method = "POST";
 
   const kwargs = id;
-
+  console.log("API Request Data:", { action, method, kwargs });
   return await apiRequest(action, method, kwargs);
 };
 export const getAllRecruitmentJobResumeActivities = async (resumeId) => {

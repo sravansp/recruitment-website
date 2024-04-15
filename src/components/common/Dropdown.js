@@ -33,6 +33,7 @@ export default function Dropdown({
   const filterOption = (input, option) =>
     (option?.label ?? "").toLowerCase().includes(input.toLowerCase());
   const { Option } = Select;
+  console.log(placeholder)
 
   return (
     <div className={`${className} flex flex-col gap-2`}>
