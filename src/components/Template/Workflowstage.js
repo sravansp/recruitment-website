@@ -10,10 +10,13 @@ import { SlEnergy } from 'react-icons/sl';
 import { AiFillThunderbolt } from 'react-icons/ai';
 import { Formik, useFormik } from 'formik';
 import { saveRecruitmentWorkFlow, saveRecruitmentWorkFlowStageBatch, getRecruitmentWorkFlowById, updateWorkFlowWithStages } from '../Api1';
-import { PiPencilSimpleLineThin } from 'react-icons/pi';
-import { Modal, Button, notification } from 'antd';
+import { PiCopySimple, PiPencilSimpleLineThin } from 'react-icons/pi';
+import { Modal, Button, notification, Tooltip } from 'antd';
 import image from "../../assets/images/image 622.png"
 import TextArea from '../common/TextArea';
+import { RiDeleteBinLine } from 'react-icons/ri';
+import copy from "clipboard-copy";
+
 
 const Workflowstage = ({ open = "", close = () => { }, inputshow = false, isUpdate = {}, updateId, refresh }) => {
 
@@ -28,12 +31,12 @@ const Workflowstage = ({ open = "", close = () => { }, inputshow = false, isUpda
       // stack: 2,
       style: {
         background: `${type === "success"
-            ? `linear-gradient(180deg, rgba(204, 255, 233, 0.8) 0%, rgba(235, 252, 248, 0.8) 51.08%, rgba(246, 251, 253, 0.8) 100%)`
-            : "linear-gradient(180deg, rgba(255, 236, 236, 0.80) 0%, rgba(253, 246, 248, 0.80) 51.13%, rgba(251, 251, 254, 0.80) 100%)"
+          ? `linear-gradient(180deg, rgba(204, 255, 233, 0.8) 0%, rgba(235, 252, 248, 0.8) 51.08%, rgba(246, 251, 253, 0.8) 100%)`
+          : "linear-gradient(180deg, rgba(255, 236, 236, 0.80) 0%, rgba(253, 246, 248, 0.80) 51.13%, rgba(251, 251, 254, 0.80) 100%)"
           }`,
         boxShadow: `${type === "success"
-            ? "0px 4.868px 11.358px rgba(62, 255, 93, 0.2)"
-            : "0px 22px 60px rgba(134, 92, 144, 0.20)"
+          ? "0px 4.868px 11.358px rgba(62, 255, 93, 0.2)"
+          : "0px 22px 60px rgba(134, 92, 144, 0.20)"
           }`,
       },
       // duration: null,
@@ -75,10 +78,20 @@ const Workflowstage = ({ open = "", close = () => { }, inputshow = false, isUpda
       console.error('Invalid stage name:', stageIndex);
     }
   };
+
+  const handleCopy = (stageIndex) => {
+    copy(stageIndex);
+  }
+
   useEffect(() => {
     console.log(stages)
   }, [stages])
+
   const handleAddStageClick = () => {
+    if (!stageName.trim()) {
+      // If stageName is empty or contains only whitespace, return without adding a stage
+      return;
+    }
     if (editStageIndex !== null) {
       // If editStageIndex is not null, it means we're editing an existing stage
       // Update the corresponding stage name in the stages array
@@ -109,6 +122,8 @@ const Workflowstage = ({ open = "", close = () => { }, inputshow = false, isUpda
 
     setIsModalVisible(false); // Close the modal
     setEditStageIndex(null); // Clear the editStageIndex
+    setStageName('')
+    setSelectedStageName('')
   };
   const handleDeleteStage = (id) => {
     setstages((prevStages) => prevStages.filter((stage) => stage.id !== id));
@@ -125,6 +140,9 @@ const Workflowstage = ({ open = "", close = () => { }, inputshow = false, isUpda
   const handleModalClose = () => {
     // Set the state to false to hide the modal
     setIsModalVisible(false);
+    //set the state empty
+    setStageName('')
+    setSelectedStageName('')
   };
   const formik1 = useFormik({
 
@@ -369,7 +387,7 @@ const Workflowstage = ({ open = "", close = () => { }, inputshow = false, isUpda
               <FormInput
                 title={"Workflow Name"}
                 placeholder={"Type here..."}
-                className="!text-[#344054]"
+                className="!text-[#344054] w-96"
                 change={(e) => {
                   formik.setFieldValue('workFlowName', e)
                 }}
@@ -378,7 +396,7 @@ const Workflowstage = ({ open = "", close = () => { }, inputshow = false, isUpda
 
 
             </div>
-            <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
+            {/* <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
               <TextArea
                 title={"Description"}
                 placeholder={"Type here..."}
@@ -387,9 +405,8 @@ const Workflowstage = ({ open = "", close = () => { }, inputshow = false, isUpda
                   formik.setFieldValue('description', e)
                 }}
                 value={formik.values.description}
-
               />
-            </div>
+            </div> */}
             <div className="w-full sm:w-[545px] grid grid-cols-1 gap-4">
               {console.log(stages)}
               {stages.map((stage) => (
@@ -417,17 +434,29 @@ const Workflowstage = ({ open = "", close = () => { }, inputshow = false, isUpda
                     <foreignObject x="30" y="0" width="545" height="55">
                       <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', width: '100%', height: '100%' }}>
                         <span>{stage.stageName}</span>
-                        <MdOutlineLock className='mr-12' />
+                        <MdOutlineLock className='mr-12 text-gray-400' size={25}/>
                       </div>
                     </foreignObject >
                   </svg>
+
                   <div className='flex  gap-5'>
-
                     <div className='flex items-center gap-5'>
-                      <PiPencilSimpleLineThin onClick={() => handleEditStage(stage.stageName)} />
-                      <MdDelete onClick={() => handleDeleteStage(stage.id)}
+                      <div className='p-2 hover:bg-slate-300 rounded-md' onClick={() => handleEditStage(stage.stageName)}>
+                        <Tooltip placement="top" title={"Edit"} >
+                          <PiPencilSimpleLineThin className='text-gray-500' />
+                        </Tooltip>
+                      </div>
+                      <div className='p-2 hover:bg-slate-300 rounded-md' onClick={() => handleCopy(stage.stageName)} >
+                        <Tooltip placement="top" title={"Copy"} >
+                          <PiCopySimple className='text-gray-500' />
+                        </Tooltip>
+                      </div>
+                      <div className='p-2 hover:bg-slate-300 rounded-md' onClick={() => handleDeleteStage(stage.id)}>
+                        <Tooltip placement="top" color={"red"} title={"Delete"} >
+                          <RiDeleteBinLine className="cursor-pointer text-red-500" />
+                        </Tooltip>
+                      </div>
 
-                        className="cursor-pointer text-red-500" />
                     </div>
                   </div>
                 </div>
@@ -440,7 +469,9 @@ const Workflowstage = ({ open = "", close = () => { }, inputshow = false, isUpda
             </div>
 
           </div>
-          <AddMore name="Add Stage" className="text-black" change={(e) => setIsModalVisible(true)} />
+          <div className='ml-5 mb-3'>
+            <AddMore name="Add Stage" className="text-black" change={(e) => setIsModalVisible(true)} />
+          </div>
           <Modal
             // title="Vertically centered modal dialog"
             wrapClassName="vertical-center-modal"
@@ -464,17 +495,22 @@ const Workflowstage = ({ open = "", close = () => { }, inputshow = false, isUpda
                   alt="Your Image"
                 />
               </div>
-              <FormInput
-                title={"Stage Name"}
-                placeholder={"Type here..."}
-                value={selectedStageName}
-                change={(e) => {
-                  setStageName(e)
-                  setSelectedStageName(e)
+              <div onKeyDown={(event) => {
+                if (event.key === "Enter") {
+                  handleAddStageClick();
+                }
+              }}>
+                <FormInput
+                  title={"Stage Name"}
+                  placeholder={"Type here..."}
+                  value={selectedStageName}
+                  change={(e) => {
+                    setStageName(e)
+                    setSelectedStageName(e)
 
-                }}
-
-              />
+                  }}
+                />
+              </div>
               <AddMore name="Add stage rule" className="text-black" />
             </div>
 
