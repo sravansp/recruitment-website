@@ -1,17 +1,21 @@
 import React, { useEffect, useState } from "react";
-import { useDispatch, useSelector } from 'react-redux';
-import {getRecruitmentJobById,getAllCandidatesByjobId,saveRecruitmentJobResumesStage } from "../Api1";
+import { useDispatch, useSelector } from "react-redux";
+import {
+  getRecruitmentJobById,
+  getAllCandidatesByjobId,
+  saveRecruitmentJobResumesStage,
+} from "../Api1";
 // import BoardData from "../../data/board.json";
 import { DragDropContext, Droppable, Draggable } from "react-beautiful-dnd";
 import { Dropdown, Tooltip, Radio, Alert } from "antd";
 import Breadcrumbs from "../common/BreadCrumbs";
 import { motion } from "framer-motion";
 import { useMediaQuery } from "react-responsive";
-import { Link  } from "react-router-dom";
+import { Link } from "react-router-dom";
 import ButtonClick from "../common/Button";
 import SearchBox from "../common/SearchBox";
 import { FilterBtn } from "../common/FilterBtn";
-import { useNavigate,useParams } from 'react-router-dom';
+import { useNavigate, useParams } from "react-router-dom";
 
 import User from "../../assets/images/user1.jpeg";
 // ICONS
@@ -20,6 +24,7 @@ import {
   PiArrowSquareOut,
   PiBookmarkSimpleFill,
   PiCalendarFill,
+  PiDotOutlineFill,
   PiDotsThreeOutlineFill,
   PiDotsThreeOutlineVerticalFill,
   PiMapPinFill,
@@ -35,7 +40,6 @@ import {
   FcProcess,
 } from "react-icons/fc";
 import { BsGrid, BsListUl } from "react-icons/bs";
-
 
 import Createjob from "./Createjob";
 import { ColumnChooserSelection } from "devextreme-react/data-grid";
@@ -61,14 +65,16 @@ const customColors = [
 const JobDetails = () => {
   const isSmallScreen = useMediaQuery({ maxWidth: 1439 });
   const [viewType, setViewType] = useState("grid");
-  const {jobId} = useParams();
-  const [jobTitle,setjobTitle]=useState("")
-  const[Jobdetails,setJobdetails]=useState([])
-   // Initial view type
-    const breadcrumbItems = [{ label: "Jobs",
-    url:"/AllJobs" }, { label: jobTitle }];
-  const handleshow =()=>setShow(true);
-  const handleClose =()=>setShow(false)
+  const { jobId } = useParams();
+  const [jobTitle, setjobTitle] = useState("");
+  const [Jobdetails, setJobdetails] = useState([]);
+  // Initial view type
+  const breadcrumbItems = [
+    { label: "Jobs", url: "/AllJobs" },
+    { label: jobTitle },
+  ];
+  const handleshow = () => setShow(true);
+  const handleClose = () => setShow(false);
   const [show, setShow] = useState(false);
   const gridListoptions = [
     {
@@ -80,35 +86,31 @@ const JobDetails = () => {
       value: "grid",
     },
   ];
-  
+
   const onChangeView = (e) => {
     setViewType(e.target.value);
     // Additional logic if needed when view type changes
   };
   const getjobTitle = async () => {
-    
     try {
       const response = await getRecruitmentJobById({
-        id:jobId
+        id: jobId,
       });
       console.log(response);
-  
-     
-        setjobTitle(response.result[0].jobTitle);
-        setJobdetails(response.result[0]) // Access jobTitle from the first object in the array
-  
-        // Update the breadcrumb label to include the job title
-        breadcrumbItems[breadcrumbItems.length - 1].label = jobTitle;
-      
+
+      setjobTitle(response.result[0].jobTitle);
+      setJobdetails(response.result[0]); // Access jobTitle from the first object in the array
+
+      // Update the breadcrumb label to include the job title
+      breadcrumbItems[breadcrumbItems.length - 1].label = jobTitle;
     } catch (error) {
       console.error("Error fetching job title:", error);
     }
   };
-  useEffect(()=>{
-    console.log(jobTitle,"jobTitle")  
-    getjobTitle()
-  
-  },[jobTitle])
+  useEffect(() => {
+    console.log(jobTitle, "jobTitle");
+    getjobTitle();
+  }, [jobTitle]);
   const customMessage = (
     <p>
       <span>
@@ -136,90 +138,94 @@ const JobDetails = () => {
         </div>
       </div>
       {show && (
-         <motion.div initial="hidden" animate="visible" >
-        <Createjob
-        open={show}
-        close={(e) => {
-          setShow(e);
-          
-          handleClose();
+        <motion.div initial="hidden" animate="visible">
+          <Createjob
+            open={show}
+            close={(e) => {
+              setShow(e);
 
-        }}
-       
-       
-          // updateId={updateId}
-          refresh={() => {
-            // getLocationList();
-          }}
-          // openPolicy={openPop} 
-          // updateId={updateId}
-        />
+              handleClose();
+            }}
+            // updateId={updateId}
+            refresh={() => {
+              // getLocationList();
+            }}
+            // openPolicy={openPop}
+            // updateId={updateId}
+          />
         </motion.div>
       )}
       {/* FILTER SECTON AND DETAILS  */}
       <div className="flex flex-col items-baseline justify-between gap-4 lg:items-center lg:gap-0 lg:flex-row">
-  <div className="flex flex-wrap items-center gap-7">
-    <div className={`px-2.5 py-1 ${Jobdetails.jobStatus === "Open" ? "bg-emerald-500 bg-opacity-10 dark:bg-opacity-50" : "bg-rose-500 bg-opacity-10 dark:bg-opacity-50"} rounded-[18px] gap-[7px] vhcenter`}>
-      <div className="w-2.5 h-2.5 relative bg-emerald-500 rounded-[5px] border border-white shrink-0" />
-      <p className="para dark:text-white !font-normal">{Jobdetails.jobStatus}</p>
-    </div>
-    <div className="gap-2 vhcenter">
-      <PiUsersThreeFill size={20} className="text-[#DFDFDF]" />
-      <p className="para !text-black dark:!text-white !font-normal">
-        {Jobdetails.noOfApplicants}
-      </p>
-    </div>
-    <div className="gap-2 vhcenter">
-      <PiTreeStructureFill size={20} className="text-[#DFDFDF]" />
-      <p className="para !text-black dark:!text-white !font-normal">
-        {Jobdetails.jobType}
-      </p>
-    </div>
-    <div className="gap-2 vhcenter">
-      <PiCalendarFill size={20} className="text-[#DFDFDF]" />
-      <p className="para !text-black dark:!text-white !font-normal">
-        {Jobdetails.createdOn}
-      </p>
-    </div>
-    <div className="gap-2 vhcenter">
-      <PiNavigationArrowFill size={20} className="text-[#DFDFDF]" />
-      <p className="para !text-black dark:!text-white !font-normal">
-        {Jobdetails.workLocationType}
-      </p>
-    </div>
-    <div className="gap-2 vhcenter">
-      <PiMapPinFill size={20} className="text-[#DFDFDF]" />
-      <p className="para !text-black dark:!text-white !font-normal">
-        {Jobdetails.location}
-      </p>
-    </div>
-    <div className="vhcenter gap-2.5">
-      <img
-        className="w-6 h-6 border-2 rounded-full border-stone-50"
-        src={User}
-      />
-      <div className="para !text-black dark:!text-white !font-normal">
-        {Jobdetails.jobCreatedBy}
+        <div className="flex flex-wrap items-center gap-7">
+          <div
+            className={`px-2.5 py-1 ${
+              Jobdetails.jobStatus === "Open"
+                ? "bg-emerald-500 bg-opacity-10 dark:bg-opacity-50"
+                : "bg-rose-500 bg-opacity-10 dark:bg-opacity-50"
+            } rounded-[18px] gap-[7px] vhcenter`}
+          >
+            <div className="w-2.5 h-2.5 relative bg-emerald-500 rounded-[5px] border border-white shrink-0" />
+            <p className="para dark:text-white !font-normal">
+              {Jobdetails.jobStatus}
+            </p>
+          </div>
+          <div className="gap-2 vhcenter">
+            <PiUsersThreeFill size={20} className="text-[#DFDFDF]" />
+            <p className="para !text-black dark:!text-white !font-normal">
+              {Jobdetails.noOfApplicants}
+            </p>
+          </div>
+          <div className="gap-2 vhcenter">
+            <PiTreeStructureFill size={20} className="text-[#DFDFDF]" />
+            <p className="para !text-black dark:!text-white !font-normal">
+              {Jobdetails.jobType}
+            </p>
+          </div>
+          <div className="gap-2 vhcenter">
+            <PiCalendarFill size={20} className="text-[#DFDFDF]" />
+            <p className="para !text-black dark:!text-white !font-normal">
+              {Jobdetails.createdOn}
+            </p>
+          </div>
+          <div className="gap-2 vhcenter">
+            <PiNavigationArrowFill size={20} className="text-[#DFDFDF]" />
+            <p className="para !text-black dark:!text-white !font-normal">
+              {Jobdetails.workLocationType}
+            </p>
+          </div>
+          <div className="gap-2 vhcenter">
+            <PiMapPinFill size={20} className="text-[#DFDFDF]" />
+            <p className="para !text-black dark:!text-white !font-normal">
+              {Jobdetails.location}
+            </p>
+          </div>
+          <div className="vhcenter gap-2.5">
+            <img
+              className="w-6 h-6 border-2 rounded-full border-stone-50"
+              src={User}
+            />
+            <div className="para !text-black dark:!text-white !font-normal">
+              {Jobdetails.jobCreatedBy}
+            </div>
+          </div>
+        </div>
+        <div className="flex items-center gap-4 ">
+          <SearchBox
+            className="text-[#667085]"
+            placeholder="Search candidate"
+          />
+          <FilterBtn colors={customColors} />
+          <Radio.Group
+            options={gridListoptions}
+            onChange={onChangeView}
+            value={viewType}
+            optionType="button"
+            className="flex items-center py-1.5 h-full"
+            size={isSmallScreen ? "" : "large"}
+          />
+        </div>
       </div>
-    </div>
-  </div>
-  <div className="flex items-center gap-4 ">
-    
-    <SearchBox
-      className="text-[#667085]"
-      placeholder="Search candidate"
-    />
-    <FilterBtn colors={customColors} />
-    <Radio.Group
-      options={gridListoptions}
-      onChange={onChangeView}
-      value={viewType}
-      optionType="button"
-      className="flex items-center py-1.5 h-full"
-      size={isSmallScreen ? "" : "large"}
-    />
-  </div>
-</div>
 
       <Alert
         message={customMessage}
@@ -234,47 +240,43 @@ const JobDetails = () => {
         <DragView />
       ) : (
         // Render list view components
-        <ListView
-        
-        />
+        <ListView />
       )}
     </div>
   );
 };
 
 const DragView = () => {
-  
-
-  const[candidatelist,setcandidatelist]=useState([])
-  const[Workflow,setWorkflow]=useState([])
+  const [candidatelist, setcandidatelist] = useState([]);
+  const [Workflow, setWorkflow] = useState([]);
   // const selectedDataId = useSelector((state) => state.dataId.selectedDataId);
-  const selectedDataId = localStorage.getItem('selectedDataId');
-  const {jobId} = useParams();
+  const selectedDataId = localStorage.getItem("selectedDataId");
+  const { jobId } = useParams();
   useEffect(() => {
-    localStorage.setItem('jobid', jobId);
+    localStorage.setItem("jobid", jobId);
   }, [jobId]); // Run this effect whenever jobId changes
 
-  
-  
   const [boardData, setBoardData] = useState([]);
   const getCandidatesById = async () => {
     try {
       const response = await getAllCandidatesByjobId(jobId);
-      
-      setBoardData(response.result.map((item) => ({
-        id: item.stageId,
-        name: item.stageName,
-        items: item.stageCandidates.map((candidate)=>({
-          id:candidate.resumeId,
-          name:candidate.candidateName,
-          image:candidate.image,
-          date:candidate.createdOn,
-          currentStatus:candidate.currentStatus
+
+      setBoardData(
+        response.result.map((item) => ({
+          id: item.stageId,
+          name: item.stageName,
+          items: item.stageCandidates.map((candidate) => ({
+            id: candidate.resumeId,
+            name: candidate.candidateName,
+            image: candidate.image,
+            date: candidate.createdOn,
+            currentStatus: candidate.currentStatus,
+          })),
         }))
-      })));
-       
+      );
+
       console.log(response);
-      console.log(boardData)
+      console.log(boardData);
       // response.result.forEach((item) => {
       //   item.stageCandidates.forEach((candidate) => {
       //     // Call saveRecruitmentJobResumesStage with jobId, stageId, and resumeId
@@ -282,11 +284,9 @@ const DragView = () => {
       //   });
       // });
     } catch (error) {
-      console.error('Error updating workflow ID:', error);
+      console.error("Error updating workflow ID:", error);
     }
   };
-
-
 
   // const getCandidatesById = async () => {
   //   try {
@@ -309,44 +309,39 @@ const DragView = () => {
   //   }
   // };
 
-    useEffect(() => {
-    
-        // console.log('Both API calls completed');
-        // console.log('Job ID:', jobId);
-        // console.log('Workflow:', Workflow);
-        // console.log('Candidate List:', candidatelist);
+  useEffect(() => {
+    // console.log('Both API calls completed');
+    // console.log('Job ID:', jobId);
+    // console.log('Workflow:', Workflow);
+    // console.log('Candidate List:', candidatelist);
 
-        // Create the desired array structure
-        // getRecruitmentWorkflow()
-        getCandidatesById(jobId)
-       
-        // console.log(newBoardData);
+    // Create the desired array structure
+    // getRecruitmentWorkflow()
+    getCandidatesById(jobId);
 
+    // console.log(newBoardData);
+  }, [jobId]);
 
-      
-    }, [jobId]);
-    
-    useEffect(()=>{
-      // const newBoardData = Workflow.map((workflowItem) => ({
-      //   id: workflowItem.id,
-      //   name: workflowItem.name,
-      //   items: candidatelist.map((candidate) => ({
-      //     id: candidate.jobResumeMappingId,
-      //     name: candidate.candidateName,
-      //     image: candidate.candidateEmail
-      //   }))
-      // }));
-
-      // setBoardData(Workflow.map((workflowItem) => ({
-      //   id: workflowItem.id,
-      //   name: workflowItem.name,
-      //   items: candidatelist.map((candidate) => ({
-      //     id: candidate.jobResumeMappingId,
-      //     name: candidate.candidateName,
-      //     image: candidate.candidateEmail
-      //   }))
-      // })));
-    },[candidatelist])
+  useEffect(() => {
+    // const newBoardData = Workflow.map((workflowItem) => ({
+    //   id: workflowItem.id,
+    //   name: workflowItem.name,
+    //   items: candidatelist.map((candidate) => ({
+    //     id: candidate.jobResumeMappingId,
+    //     name: candidate.candidateName,
+    //     image: candidate.candidateEmail
+    //   }))
+    // }));
+    // setBoardData(Workflow.map((workflowItem) => ({
+    //   id: workflowItem.id,
+    //   name: workflowItem.name,
+    //   items: candidatelist.map((candidate) => ({
+    //     id: candidate.jobResumeMappingId,
+    //     name: candidate.candidateName,
+    //     image: candidate.candidateEmail
+    //   }))
+    // })));
+  }, [candidatelist]);
   // const BoardData=[
   //   {
   //     "id" : "",
@@ -357,23 +352,20 @@ const DragView = () => {
   //         "name": "",
   //         "image": ""
   //       }
-        
+
   //     ]
   //   }
-  
+
   //  ]
-  
-  
+
   const [ready, setReady] = useState(false);
- 
+
   const [draggingPosition, setDraggingPosition] = useState(null);
-  
 
   const [currentStageId, setCurrentStageId] = useState(null);
   const [currentResumeId, setCurrentResumeId] = useState(null);
-  const resumeId = currentResumeId
-  const stageId =currentStageId
-
+  const resumeId = currentResumeId;
+  const stageId = currentStageId;
 
   // console.log(BoardData);
   useEffect(() => {
@@ -382,53 +374,52 @@ const DragView = () => {
     }
   }, []);
 
-  const JobResumesStage = async (jobId,stageId,resumeId) => {
-    console.log(jobId)
+  const JobResumesStage = async (jobId, stageId, resumeId) => {
+    console.log(jobId);
     try {
       const response = await saveRecruitmentJobResumesStage({
-        jobId:jobId, 
-        stageId:stageId, 
-        resumeId:resumeId});
+        jobId: jobId,
+        stageId: stageId,
+        resumeId: resumeId,
+      });
 
-      
       console.log(response);
-      console.log(boardData)
+      console.log(boardData);
     } catch (error) {
-      console.error('Error updating workflow ID:', error);
+      console.error("Error updating workflow ID:", error);
     }
   };
- useEffect(()=>{
-  JobResumesStage(jobId,stageId,resumeId)
- },[jobId,stageId,resumeId])
- const onDragEnd = (re) => {
-  if (!re.destination) return;
-  setBoardData((prevData) => {
-    const newBoardData = [...prevData];
-    const sourceStageId = newBoardData[re.source.droppableId].id;
-    const destinationStageId = newBoardData[re.destination.droppableId].id;
+  useEffect(() => {
+    JobResumesStage(jobId, stageId, resumeId);
+  }, [jobId, stageId, resumeId]);
+  const onDragEnd = (re) => {
+    if (!re.destination) return;
+    setBoardData((prevData) => {
+      const newBoardData = [...prevData];
+      const sourceStageId = newBoardData[re.source.droppableId].id;
+      const destinationStageId = newBoardData[re.destination.droppableId].id;
 
-    const dragItem =
-      newBoardData[re.source.droppableId].items[re.source.index];
+      const dragItem =
+        newBoardData[re.source.droppableId].items[re.source.index];
 
       setCurrentStageId(destinationStageId);
       setCurrentResumeId(dragItem.id);
-    console.log(destinationStageId)
-    console.log(dragItem.id)
+      console.log(destinationStageId);
+      console.log(dragItem.id);
 
+      newBoardData[re.source.droppableId].items.splice(re.source.index, 1);
+      newBoardData[re.destination.droppableId].items.splice(
+        re.destination.index,
+        0,
+        dragItem
+      );
 
-    newBoardData[re.source.droppableId].items.splice(re.source.index, 1);
-    newBoardData[re.destination.droppableId].items.splice(
-      re.destination.index,
-      0,
-      dragItem
-    );
+      return newBoardData;
+    });
 
-    return newBoardData;
-  });
-
-  // Reset dragging position after drop
-  setDraggingPosition(null);
-};
+    // Reset dragging position after drop
+    setDraggingPosition(null);
+  };
   const onDragOver = (snapshot) => {
     if (snapshot.isDraggingOver) {
       // Set the top position of the dropping div based on clientY
@@ -463,7 +454,7 @@ const DragView = () => {
       ],
     },
   ];
-  
+
   return (
     <div className="flex flex-col gap-5">
       {/* BREADCRUMB AND BUTTONS */}
@@ -482,13 +473,12 @@ const DragView = () => {
           ></ButtonClick>
         </div>
       </div> */}
-      
 
       {/* FILTER SECTON AND DETAILS  */}
       {/* <div className="flex items-center justify-between">
         <div className="flex items-center gap-7"> */}
-          {/* <div className=" flex-col justify-start items-start gap-2.5 inline-flex"> */}
-          {/* <div className="w-[70px] h-[26px] px-2.5 py-1 bg-emerald-500 bg-opacity-10 dark:bg-opacity-50 rounded-[18px] gap-[7px] vhcenter">
+      {/* <div className=" flex-col justify-start items-start gap-2.5 inline-flex"> */}
+      {/* <div className="w-[70px] h-[26px] px-2.5 py-1 bg-emerald-500 bg-opacity-10 dark:bg-opacity-50 rounded-[18px] gap-[7px] vhcenter">
             <div className="w-2.5 h-2.5 relative bg-emerald-500 rounded-[5px] border border-white shrink-0" />
             <p className="para dark:text-white !font-normal">Open</p>
           </div>
@@ -504,14 +494,14 @@ const DragView = () => {
             <div className="para dark:text-white !font-normal">Cody Fisher</div>
           </div>
           {/* </div> */}
-        {/* </div>
+      {/* </div>
         <div className="flex">
           <SearchBox
             className="text-[#667085]"
             placeholder="Search candidate"
           />
         </div>
-      </div> */} 
+      </div> */}
 
       {/* DRAG N DROP SECTION START  */}
       <div className="flex flex-col lg:h-[85vh] overflow-auto">
@@ -520,7 +510,7 @@ const DragView = () => {
             <div className="flex w-full h-full gap-3">
               {boardData.map((board, bIndex) => (
                 <div key={board.name} className="flex flex-col gap-5">
-                  <div className="flex items-center justify-between gap-2 p-3 bg-white border rounded-md w-[270px] 2xl:w-[303px] border-borderlight dark:border-borderdark dark:bg-secondaryDark dark:text-white">
+                  <div className="flex items-center justify-between gap-2 p-3 bg-white border rounded-md w-[270px] 2xl:w-[303px] border-borderlight dark:border-borderdark dark:bg-[#0c101c] dark:text-white">
                     <div className="flex items-center gap-4 overflow-hidden">
                       <div
                         className="w-4 h-4 overflow-hidden rounded-full vhcenter shrink-0"
@@ -561,7 +551,7 @@ const DragView = () => {
                       <div
                         {...provided.droppableProps}
                         ref={provided.innerRef}
-                        className={`bg-[#F7FBFF] dark:bg-lightdark h-full flex flex-col relative overflow-hidden p-1.5 border border-solid border-borderlight dark:border-borderdark 
+                        className={`bg-white dark:bg-[#0c101c] h-full flex flex-col relative overflow-hidden p-1.5 border border-solid border-borderlight dark:border-borderdark 
                         2xl:w-[303px] w-[270px] rounded-lg
                       ${
                         snapshot.isDraggingOver &&
@@ -573,17 +563,15 @@ const DragView = () => {
                           className="flex flex-col h-auto overflow-x-hidden overflow-y-auto"
                           style={{ maxHeight: "calc(100vh - 50px)" }}
                         >
-                          {
-                            board.items.map((item, iIndex) => (
-                              <CardItem
-                                key={item.id}
-                                data={item}
-                                index={iIndex}
-                                
-                                color={colors[bIndex]}
-                                className="m-3"
-                              />
-                            ))}
+                          {board.items.map((item, iIndex) => (
+                            <CardItem
+                              key={item.id}
+                              data={item}
+                              index={iIndex}
+                              color={colors[bIndex]}
+                              className="m-3"
+                            />
+                          ))}
                           {provided.placeholder}
                         </div>
                       </div>
@@ -608,7 +596,7 @@ const DragView = () => {
   );
 };
 
-const CardItem = ({ data, index, color,jobId }) => {
+const CardItem = ({ data, index, color, jobId }) => {
   const [bookmarkState, setBookmarkState] = useState({});
   const navigate = useNavigate();
 
@@ -620,16 +608,13 @@ const CardItem = ({ data, index, color,jobId }) => {
   };
   const navigateToCandidateProfile = () => {
     // Set data.id as the selectedId in localStorage
-    
-    
+
     // Navigate to candidateprofile page with data.id
     navigate(`/Candidate_Profile/${data.id}`);
-    
+
     // navigate(`/candidateprofile/${data.id}`);
-    
-    
+
     // Optionally, update the state with the selectedId
-    
   };
   const items = [
     {
@@ -667,10 +652,18 @@ const CardItem = ({ data, index, color,jobId }) => {
   ];
 
   const firstLetter = data?.name ? data.name.charAt(0).toUpperCase() : "";
- 
- 
- 
- 
+
+  const currentDate = new Date();
+  const given = new Date(data?.date.replace(" ", "T")); // Replace space with 'T' for proper formatting
+
+  // Calculate the difference in milliseconds between the two dates
+  const diffInTime = given.getTime() - currentDate.getTime();
+
+  // Convert the difference to days and get the absolute value
+  const diffInDays = Math.abs(Math.ceil(diffInTime / (1000 * 3600 * 24)));
+
+  console.log(diffInDays); // Logging the difference in days
+
   return (
     <Draggable
       index={index}
@@ -692,67 +685,86 @@ const CardItem = ({ data, index, color,jobId }) => {
             snapshot.isDragging &&
             "shadow-dragShadow dark:shadow-dragShadowDark"
           } p-3 mb-1.5 bg-white border rounded-md ${
-            parseInt(data.currentStatus) !== 0 ? " cursor-default" : "cursor-grab"
-          }  border-borderlight dark:border-borderdark dark:bg-secondaryDark dark:text-white`}
-          
+            parseInt(data.currentStatus) !== 0
+              ? " cursor-default"
+              : "cursor-grab"
+          }  border-borderlight dark:border-borderdark dark:bg-[#0c101c] dark:text-white`}
         >
           <div className="flex flex-col gap-1 2xl:gap-2">
-            <div className="flex items-center gap-3">
-              <div
-                className={`2xl:w-8 2xl:h-8 w-6 h-6 overflow-hidden rounded-full vhcenter`}
-                style={{
-                  backgroundColor: `${data?.image ? "" : color}`,
-                }}
-                onClick={navigateToCandidateProfile}
-              >
-                {data?.image ? (
-                  <img
-                    src={data?.image}
-                    alt={data?.image}
-                    className="object-cover object-center w-full h-full"
-                  />
-                ) : (
-                  <span className="h6 !text-white !font-medium leading-none">
-                    {firstLetter}
-                  </span>
-                )}
+            <div className="flex items-center justify-between">
+              <div className="flex items-center gap-3 overflow-hidden">
+                <div
+                  className={`2xl:w-8 2xl:h-8 w-6 h-6 overflow-hidden rounded-full vhcenter shrink-0`}
+                  style={{
+                    backgroundColor: `${data?.image ? "" : color}`,
+                  }}
+                  // onClick={navigateToCandidateProfile}
+                >
+                  {data?.image ? (
+                    <img
+                      src={data?.image}
+                      alt={data?.image}
+                      className="object-cover object-center w-full h-full"
+                    />
+                  ) : (
+                    <span className="h6 !text-white !font-medium leading-none">
+                      {firstLetter}
+                    </span>
+                  )}
+                </div>
+                <p
+                  // onClick={navigateToCandidateProfile}
+                  className="!font-semibold h6 !text-black dark:!text-white truncate"
+                >
+                  {" "}
+                  {data?.name && data?.name}
+                </p>
               </div>
-              <p onClick={navigateToCandidateProfile} className="!font-semibold h6 !text-black dark:!text-white">
-                {" "}
-                {data?.name && data?.name}
-              </p>
+
+              <Tooltip placement="topRight" title="View candidate profile" color={color}>
+                {/* <Button>TR</Button> */}
+                <button
+                  onClick={navigateToCandidateProfile}
+                  className="p-1 text-black text-opacity-50 cursor-pointer dark:text-white dark:hover:text-primary hover:text-opacity-90"
+                >
+                  <PiArrowSquareOut className="text-xl dark:text-white" />
+                </button>
+              </Tooltip>
             </div>
-            <div className="flex justify-between gap-3">
+            <div className="flex items-center justify-between gap-3">
               <div className="flex items-center gap-2">
-                <GoClock className="text-lg 2xl:text-2xl opacity-30" />
+                <GoClock className="text-lg 2xl:text-xl opacity-30" />
                 <p className="para !text-black !font-normal dark:!text-white">
-                  {data?.date}
+                  {/* {data?.date} */}
+                  {diffInDays}d ago
                 </p>
               </div>
               <div
-  key={data?.currentStatus}
-  className={`${parseInt(data?.currentStatus) === 0
-    ? "bg-yellow-100 text-yellow-600"
-    : parseInt(data?.currentStatus) === 1
-    ? "bg-emerald-100 text-emerald-600"
-    : "bg-rose-100 text-rose-600"
-  } rounded-full pr-2 py-[2px] w-fit font-medium text-[10px] 2xl:text-sm vhcenter flex-nowrap`}
- 
->
-  <RxDotFilled
-    className={`${parseInt(data?.currentStatus) === 0
-      ? "text-yellow-600"
-      : parseInt(data?.currentStatus) === 1
-      ? "text-emerald-600"
-      : "text-rose-600"
-    } text-base 2xl:text-lg`}
-  />
-  {parseInt(data?.currentStatus) === 0
-    ? "Under Process"
-    : parseInt(data?.currentStatus) === 1
-    ? "Hired"
-    : "Disqualified"}
-</div>
+                key={data?.currentStatus}
+                className={`${
+                  parseInt(data?.currentStatus) === 0
+                    ? "bg-yellow-100 text-yellow-600"
+                    : parseInt(data?.currentStatus) === 1
+                    ? "bg-emerald-100 text-emerald-600"
+                    : "bg-rose-100 text-rose-600"
+                } rounded-full px-2 py-0.5 w-fit h-fit font-medium text-[9px] 2xl:text-xs vhcenter gap-1 flex-nowrap`}
+              >
+                <div
+                  className={`dot h-1 w-1 rounded-full ${
+                    parseInt(data?.currentStatus) === 0
+                      ? "bg-yellow-600"
+                      : parseInt(data?.currentStatus) === 1
+                      ? "bg-emerald-600"
+                      : "bg-rose-600"
+                  }`}
+                />
+
+                {parseInt(data?.currentStatus) === 0
+                  ? "Validating"
+                  : parseInt(data?.currentStatus) === 1
+                  ? "Hired"
+                  : "Disqualified"}
+              </div>
               <div className="flex items-center gap-2">
                 <Tooltip
                   title={`${
@@ -762,9 +774,7 @@ const CardItem = ({ data, index, color,jobId }) => {
                   }`}
                   color={color}
                   key={color}
-                >
-       
-                </Tooltip>
+                ></Tooltip>
 
                 <Dropdown
                   menu={{
@@ -789,32 +799,32 @@ const CardItem = ({ data, index, color,jobId }) => {
 };
 
 const ListView = () => {
-  
-  
-  const selectedDataId = localStorage.getItem('selectedDataId');
-  const[stageId,setStageId]=useState(null)
-  const jobId = selectedDataId
+  const selectedDataId = localStorage.getItem("selectedDataId");
+  const [stageId, setStageId] = useState(null);
+  const jobId = selectedDataId;
   const [boardData, setBoardData] = useState([]);
   const getCandidatesById = async () => {
     try {
       const response = await getAllCandidatesByjobId(jobId);
-      
-      setBoardData(response.result.map((item) => ({
-        id: item.stageId,
-        title:item.stageName,
-        items: item.stageCandidates.map((candidate)=>({
-          id:candidate.resumeId,
-          name:candidate.candidateName,
-          image:candidate.image,
-          contact:candidate.candidateContact,
-          source:candidate.candidateSource,
-          appliedDate:candidate.createdOn,
-          stageName: item.stageName,
+
+      setBoardData(
+        response.result.map((item) => ({
+          id: item.stageId,
+          title: item.stageName,
+          items: item.stageCandidates.map((candidate) => ({
+            id: candidate.resumeId,
+            name: candidate.candidateName,
+            image: candidate.image,
+            contact: candidate.candidateContact,
+            source: candidate.candidateSource,
+            appliedDate: candidate.createdOn,
+            stageName: item.stageName,
+          })),
         }))
-      })));
-       
+      );
+
       console.log(response);
-      console.log(boardData)
+      console.log(boardData);
       // response.result.forEach((item) => {
       //   item.stageCandidates.forEach((candidate) => {
       //     // Call saveRecruitmentJobResumesStage with jobId, stageId, and resumeId
@@ -822,21 +832,21 @@ const ListView = () => {
       //   });
       // });
     } catch (error) {
-      console.error('Error updating workflow ID:', error);
+      console.error("Error updating workflow ID:", error);
     }
   };
-  const selectedStageItems = boardData.find((board) => board.id === stageId)?.items || [];
-  useEffect(()=>{
-    getCandidatesById(jobId)
-    console.log(selectedStageItems)
-    
-  },[jobId])
+  const selectedStageItems =
+    boardData.find((board) => board.id === stageId)?.items || [];
+  useEffect(() => {
+    getCandidatesById(jobId);
+    console.log(selectedStageItems);
+  }, [jobId]);
   const handleSelectCard = (selectedStageId) => {
     // Handle the selected stageId in your parent component
-    console.log('Selected Stage ID:', selectedStageId);
+    console.log("Selected Stage ID:", selectedStageId);
     setStageId(selectedStageId);
   };
-  
+
   const header = [
     {
       CandidateProfile: [
@@ -860,14 +870,12 @@ const ListView = () => {
           id: 4,
           title: "source",
           value: "source",
-         
         },
         {
           id: 5,
 
           title: "applied date",
           value: "appliedDate",
-         
         },
         {
           id: 7,
@@ -875,36 +883,25 @@ const ListView = () => {
           value: "action",
           dotsVertical: true,
         },
-        
-       
       ],
     },
   ];
-  
+
   return (
-  
-  <FlexCol>
-  <div>
-
-  
-  <JobCard 
-  options={boardData}
-  selectcard={handleSelectCard}
-  />
-</div>
-<div>
-
-<TableAnt 
-header={header} 
-path='CandidateProfile' 
-actionID="resumeId"
-data={selectedStageItems}
-
-/>
-</div>
-
-</FlexCol>
-
-)};
+    <FlexCol>
+      <div>
+        <JobCard options={boardData} selectcard={handleSelectCard} />
+      </div>
+      <div>
+        <TableAnt
+          header={header}
+          path="CandidateProfile"
+          actionID="resumeId"
+          data={selectedStageItems}
+        />
+      </div>
+    </FlexCol>
+  );
+};
 
 export default JobDetails;
