@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-import profile from "../../assets/images/user3.webp";
+import noImg from "../../assets/images/noImg.webp";
 import { IoLogOut } from "react-icons/io5";
 import { RiAccountCircleFill } from "react-icons/ri";
 import { RiArrowDownSLine } from "react-icons/ri";
@@ -65,7 +65,7 @@ const ProfileDropdown = ({ Email = "", Profile = "", Name = "" }) => {
                 <div className=" size-[33px] 2xl:size-[43px] rounded-full overflow-hidden">
                   <img
                     className="object-cover w-full"
-                    src={Profile ? Profile : profile}
+                    src={Profile ? Profile : noImg}
                     alt=""
                   />
                 </div>
@@ -109,7 +109,7 @@ const ProfileDropdown = ({ Email = "", Profile = "", Name = "" }) => {
               {}
               <img
                 className="object-cover w-full"
-                src={Profile ? Profile : profile}
+                src={Profile ? Profile : noImg}
                 alt=""
               />
             </div>
