@@ -1,23 +1,21 @@
 import { DatePicker } from "antd";
-import { Value } from "devextreme-react/range-selector";
-import React from "react";
 import { FiAlertCircle } from "react-icons/fi";
 import { HiMiniStar } from "react-icons/hi2";
 import { useMediaQuery } from "react-responsive";
+import React from "react";
 
 export default function DateSelect({
   change = () => {},
   className,
-  selectpicker = "",
-  dateFormat = "",
+  picker = "",
+  dateFormat = "YYYY-MM-DD", // Default date format
   value = "",
   title = "",
   description = "",
   error = "",
   required = false,
+  placeholder = "",
 }) {
-  const dateFormatList = ["DD/MM/YYYY", "DD/MM/YY", "DD-MM-YYYY", "DD-MM-YY"];
-  const customFormat = (value) => `custom format: ${value.format(dateFormat)}`;
   const isSmallScreen = useMediaQuery({ maxWidth: 1439 });
 
   return (
@@ -35,16 +33,14 @@ export default function DateSelect({
       </div>
 
       <DatePicker
-        // value={value}
-        picker={selectpicker}
-        title={title}
-        format={dateFormatList}
+        format={dateFormat} // Pass the provided date format
         onChange={(date, dateString) => {
           console.log(dateString);
           change(dateString);
         }}
         status={error && "error"}
         size={isSmallScreen ? "default" : "large"}
+        placeholder={placeholder}
       />
 
       {error && (

@@ -87,8 +87,8 @@ function Web({ closeDrawer, selectedJobId, onClick }) {
   const [filePdfresume, setfilepdfresume] = useState();
 
   const [questionAnswers, setQuestionAnswers] = useState([]);
-  const[coverLetter,setCoverletter]= useState("")
-  const [questionfield,setQuestionfield]=useState("")
+  const [coverLetter, setCoverletter] = useState("");
+  const [questionfield, setQuestionfield] = useState("");
   //
   const [dropdownvalue, Setdopdownvalue] = useState(null);
   const [textAreaValue, setTextAreavalue] = useState(null);
@@ -417,15 +417,14 @@ function Web({ closeDrawer, selectedJobId, onClick }) {
       console.error("Error fetching data:", error);
     }
   };
-  
+
   useEffect(() => {
     fetchdata();
   }, [questid]);
-  
+
   useEffect(() => {
     console.log("Updated questid:", questid);
   }, [questid]);
-  
 
   const handleCloseModal = () => {
     setShowModal(false);
@@ -642,8 +641,6 @@ function Web({ closeDrawer, selectedJobId, onClick }) {
     onSubmit: async (values) => {
       try {
         console.log(values, "gggg");
-       
-        
 
         // Make your API call here
         values.candidateName =
@@ -672,7 +669,7 @@ function Web({ closeDrawer, selectedJobId, onClick }) {
           const response = await saveRecruitmentResume(values);
           console.log("API Response:", response);
           console.log(response.result.insertedId, "inserted id responsee");
-          Fileuplaod(response.result.insertedId)
+          Fileuplaod(response.result.insertedId);
 
           setinsertedId1(response.result.insertedId);
           console.log(insertedid1, "insertede i");
@@ -690,8 +687,7 @@ function Web({ closeDrawer, selectedJobId, onClick }) {
             );
           }
         }
-        console.log(insertedid1)
-       
+        console.log(insertedid1);
       } catch (error) {
         console.error("Error during form submission:", error);
         openNotification(
@@ -702,30 +698,27 @@ function Web({ closeDrawer, selectedJobId, onClick }) {
       }
     },
   });
-  const Fileuplaod = async(e)=>{
-    console.log(e,"hhhhhhhhhhhhhh")
-    try{
+  const Fileuplaod = async (e) => {
+    console.log(e, "hhhhhhhhhhhhhh");
+    try {
       if (e) {
-        console.log("hhhhhh")
-      const formData = new FormData();
-  
-      formData.append('file', filePdf);
-  
-      console.log("inside file upload api");
-  
-      formData.append('action', 'resumePhotoUpload');
-      formData.append('resumeId', e);
-  
-      
-  
-      const FileUpload = await fileAction(formData);
-      console.log(FileUpload, "fileUploadResult")
+        console.log("hhhhhh");
+        const formData = new FormData();
+
+        formData.append("file", filePdf);
+
+        console.log("inside file upload api");
+
+        formData.append("action", "resumePhotoUpload");
+        formData.append("resumeId", e);
+
+        const FileUpload = await fileAction(formData);
+        console.log(FileUpload, "fileUploadResult");
+      }
+    } catch (error) {
+      console.log(error);
     }
-  }catch(error){
-    console.log(error)
-  }
-  
- }
+  };
 
   // You can handle the API response here
   // For example, update UI, show success message, etc.
@@ -820,7 +813,6 @@ function Web({ closeDrawer, selectedJobId, onClick }) {
   //   fromDate: Yup.string().required("From Date is required"),
   //   toDate: Yup.string().required("To Date is required"),
   // });
-  
 
   const formik2 = useFormik({
     initialValues: {
@@ -864,10 +856,10 @@ function Web({ closeDrawer, selectedJobId, onClick }) {
         const response = await saveRecruitmentResumesExperienceDetailBatch(
           formattedData1
         );
-        Fileuplaodresume(insertedid1)
+        Fileuplaodresume(insertedid1);
         console.log("work experience Details API Response:", response);
-       
-        console.log(response.result.insertedId1)
+
+        console.log(response.result.insertedId1);
         if (response.status === 200) {
           openNotification("success", "Successful", response.message);
           setActiveBtn(activeBtn + 1);
@@ -884,30 +876,28 @@ function Web({ closeDrawer, selectedJobId, onClick }) {
       }
     },
   });
-  const Fileuplaodresume = async(e)=>{
-    console.log(e,"hhhhhhhhhhhhhh")
-    try{
+  const Fileuplaodresume = async (e) => {
+    console.log(e, "hhhhhhhhhhhhhh");
+    try {
       if (e) {
-        console.log("hhhhhh")
-      const formData = new FormData();
-  
-      formData.append('file', filePdfresume);
-  
-      console.log("inside file upload api");
-  
-      formData.append('action', 'resumeFileUpload');
-      formData.append('resumeId', e);
-  
-      
-  
-      const FileUploadresume = await fileAction(formData);
-      console.log(FileUploadresume, "fileUploadResult")
+        console.log("hhhhhh");
+        const formData = new FormData();
+
+        formData.append("file", filePdfresume);
+        formData.append("text",coverLetter)
+
+        console.log("inside file upload api");
+
+        formData.append("action", "resumeFileUpload");
+        formData.append("resumeId", e);
+
+        const FileUploadresume = await fileAction(formData);
+        console.log(FileUploadresume, "fileUploadResult");
+      }
+    } catch (error) {
+      console.log(error);
     }
-  }catch(error){
-    console.log(error)
-  }
-  
- }
+  };
 
   // const validationSchema3 = Yup.object().shape({
   //   customQuestion: Yup.string().required("This field is required"),
@@ -939,10 +929,9 @@ function Web({ closeDrawer, selectedJobId, onClick }) {
     setSelectedCheckboxes(newSelectedCheckboxes);
   };
 
-
   const formik3 = useFormik({
     initialValues: {
-      customQuestion:questionfield,
+      customQuestion: questionfield,
       jobId: selectedJobId,
       resumeId: insertedid1,
       // highestEducationLevel: "",
@@ -988,8 +977,8 @@ function Web({ closeDrawer, selectedJobId, onClick }) {
             answers[detailsId] = {
               jobId: selectedJobId,
               resumeId: insertedid1,
-              customQuestion:"",
-             
+              customQuestion: "",
+
               createdBy: null,
             };
           });
@@ -998,7 +987,7 @@ function Web({ closeDrawer, selectedJobId, onClick }) {
         });
 
         console.log("New Answers:", newAnswers);
-       
+
         const response = await saveRecruitmentJobResumesCustomField(values);
         console.log("question Details API Response:", response);
         setActiveBtn(activeBtn + 1);
@@ -1203,8 +1192,7 @@ function Web({ closeDrawer, selectedJobId, onClick }) {
         if (currentStep === 4) {
           // Check if the current step is the review page
           const response = await getAllRecruitmentResumeEducationalDetails(
-            insertedid1   
-            
+            insertedid1
           );
           setEducationaldetails(
             response.result.map((item) => ({
@@ -1232,7 +1220,6 @@ function Web({ closeDrawer, selectedJobId, onClick }) {
           // Check if the current step is the review page
           const response = await getAllRecruitmentResumesExperienceDetails(
             insertedid1
-            
           );
           setExperience(
             response.result.map((items) => ({
@@ -1337,7 +1324,7 @@ function Web({ closeDrawer, selectedJobId, onClick }) {
       case 0:
         formik.handleSubmit();
         // setCurrentStage(currentStage + 1);
- // Move to next stage after successful submission
+        // Move to next stage after successful submission
 
         break;
       case 1:
@@ -1347,11 +1334,11 @@ function Web({ closeDrawer, selectedJobId, onClick }) {
         break;
       case 2:
         formik2.handleSubmit();
-        // setCurrentStage(currentStage + 1); 
+        // setCurrentStage(currentStage + 1);
 
         break;
       case 3:
-        // formik3.handleSubmit();
+        handleSubmit();
         // setCurrentStage(currentStage + 1);
         // formik.resetForm();
         // formik1.resetForm();
@@ -1391,6 +1378,13 @@ function Web({ closeDrawer, selectedJobId, onClick }) {
     setPresentage(presentage - 1);
   };
 
+
+  const handleTextChange = (value) => {
+    // Validate the input if necessary
+   
+    setCoverletter(value);
+  };
+
   return (
     <div className="flex flex-col gap-6 container-wrapper ">
       <FlexCol />
@@ -1427,15 +1421,14 @@ function Web({ closeDrawer, selectedJobId, onClick }) {
                   <h2
                     /* <button
                       type="button" */
-                      className="flex items-center justify-between w-full px-6 py-4 font-semibold text-left rounded-md"
-                      style={{ backgroundColor: `${primaryColor}10` }}
-                    /* > */>
-                      <div className="text-left rtl:text-right">
-                        <h1 className="acco-h1">Personal Information </h1>
-                        <p className="para">
-                          lorem ipsum dummy text dolar sit.
-                        </p>
-                      </div>
+                    className="flex items-center justify-between w-full px-6 py-4 font-semibold text-left rounded-md"
+                    style={{ backgroundColor: `${primaryColor}10` }}
+                    /* > */
+                  >
+                    <div className="text-left rtl:text-right">
+                      <h1 className="acco-h1">Personal Information </h1>
+                      <p className="para">lorem ipsum dummy text dolar sit.</p>
+                    </div>
                     {/* </button> */}
                   </h2>
                   {/* <form onSubmit={formik.handleSubmit}> */}
@@ -1549,8 +1542,8 @@ function Web({ closeDrawer, selectedJobId, onClick }) {
                         className={
                           "relative max-w-[1070px] sm:w-[492px] w-full borderb rounded-md h-24 bg-[#FAFAFA] dark:bg-black"
                         }
-                        change={(e)=>{
-                          setfilepdf(e)
+                        change={(e) => {
+                          setfilepdf(e);
                         }}
                       />
                       {/* </div> */}
@@ -1617,17 +1610,13 @@ function Web({ closeDrawer, selectedJobId, onClick }) {
               <div className="relative flex flex-col gap-12">
                 <div className="p-1 bg-white rounded-[10px] dark:bg-transparent dark:border dark:border-secondaryWhite border-opacity-20 dark:border-opacity-10">
                   <h2
-                   
-                      className="flex items-center justify-between w-full px-6 py-4 font-semibold text-left rounded-md"
-                      style={{ backgroundColor: `${primaryColor}10` }}
-                    >
-                      <div className="text-left rtl:text-right">
-                        <h1 className="acco-h1">Educational Details </h1>
-                        <p className="para">
-                          lorem ipsum dummy text dolar sit.
-                        </p>
-                      </div>
-                    
+                    className="flex items-center justify-between w-full px-6 py-4 font-semibold text-left rounded-md"
+                    style={{ backgroundColor: `${primaryColor}10` }}
+                  >
+                    <div className="text-left rtl:text-right">
+                      <h1 className="acco-h1">Educational Details </h1>
+                      <p className="para">lorem ipsum dummy text dolar sit.</p>
+                    </div>
                   </h2>
                   <div
                     id={`acco-text-item`}
@@ -1647,20 +1636,27 @@ function Web({ closeDrawer, selectedJobId, onClick }) {
                             className="text-[#344054]"
                             name={`additionalEducationalDetails[${index}].institute`}
                             value={detail.institute}
+                            // change={(e) => {
+                            //   const updatedDetails = [
+                            //     ...additionalEducationalDetails,
+                            //   ];
+                            //   updatedDetails[index].institute = e;
+                            //   setAdditionalEducationalDetails(updatedDetails);
+                            // }}
                             change={(e) => {
-                              const updatedDetails = [
-                                ...additionalEducationalDetails,
-                              ];
+                              const updatedDetails = [...additionalEducationalDetails];
                               updatedDetails[index].institute = e;
                               setAdditionalEducationalDetails(updatedDetails);
+                              formik1.setFieldValue(`additionalEducationalDetails[${index}].institute`, e);
                             }}
                             required={false}
                             error={
                               isFormSubmitted
-                                ? formik1.errors.additionalExperiences?.[index]
+                                ? formik1.errors.additionalEducationalDetails?.[index]
                                     ?.institute
                                 : ""
                             }
+                            
                           />
                           <FormInput
                             title={"Degree"}
@@ -1668,17 +1664,23 @@ function Web({ closeDrawer, selectedJobId, onClick }) {
                             name={`additionalEducationalDetails[${index}].courseType`}
                             className="text-[#344054]"
                             value={detail.courseType}
+                            // change={(e) => {
+                            //   const updatedDetails = [
+                            //     ...additionalEducationalDetails,
+                            //   ];
+                            //   updatedDetails[index].courseType = e;
+                            //   setAdditionalEducationalDetails(updatedDetails);
+                            // }}
                             change={(e) => {
-                              const updatedDetails = [
-                                ...additionalEducationalDetails,
-                              ];
+                              const updatedDetails = [...additionalEducationalDetails];
                               updatedDetails[index].courseType = e;
                               setAdditionalEducationalDetails(updatedDetails);
+                              formik1.setFieldValue(`additionalEducationalDetails[${index}].courseType`, e);
                             }}
                             required={false}
                             error={
                               isFormSubmitted
-                                ? formik1.errors.additionalExperiences?.[index]
+                                ? formik1.errors.additionalEducationalDetails?.[index]
                                     ?.courseType
                                 : ""
                             }
@@ -1692,16 +1694,15 @@ function Web({ closeDrawer, selectedJobId, onClick }) {
                             name={`additionalEducationalDetails[${index}].courseName`}
                             value={detail.courseName}
                             change={(e) => {
-                              const updatedDetails = [
-                                ...additionalEducationalDetails,
-                              ];
+                              const updatedDetails = [...additionalEducationalDetails];
                               updatedDetails[index].courseName = e;
                               setAdditionalEducationalDetails(updatedDetails);
+                              formik1.setFieldValue(`additionalEducationalDetails[${index}].courseName`, e);
                             }}
                             required={false}
                             error={
                               isFormSubmitted
-                                ? formik1.errors.additionalExperiences?.[index]
+                                ? formik1.errors.additionalEducationalDetails?.[index]
                                     ?.courseName
                                 : ""
                             }
@@ -1710,19 +1711,19 @@ function Web({ closeDrawer, selectedJobId, onClick }) {
                             title={"Year"}
                             className="text-[#344054]"
                             name={`additionalEducationalDetails[${index}].yearOfStudy`}
-                            selectpicker="year"
+                            picker="year"
+                            placeholder="year"
                             value={detail.yearOfStudy}
                             change={(e) => {
-                              const updatedDetails = [
-                                ...additionalEducationalDetails,
-                              ];
+                              const updatedDetails = [...additionalEducationalDetails];
                               updatedDetails[index].yearOfStudy = e;
                               setAdditionalEducationalDetails(updatedDetails);
+                              formik1.setFieldValue(`additionalEducationalDetails[${index}].yearOfStudy`, e);
                             }}
                             required={false}
                             error={
                               isFormSubmitted
-                                ? formik1.errors.additionalExperiences?.[index]
+                                ? formik1.errors.additionalEducationalDetails?.[index]
                                     ?.yearOfStudy
                                 : ""
                             }
@@ -1816,16 +1817,13 @@ function Web({ closeDrawer, selectedJobId, onClick }) {
               <div className="relative flex flex-col gap-12">
                 <div className="p-1 bg-white rounded-[10px] dark:bg-transparent dark:border dark:border-secondaryWhite border-opacity-20 dark:border-opacity-10">
                   <h2
-                      className="flex items-center justify-between w-full px-6 py-4 font-semibold text-left rounded-md"
-                      style={{ backgroundColor: `${primaryColor}10` }}
-                    >
-                      <div className="text-left rtl:text-right">
-                        <h1 className="acco-h1">Work Experience Details </h1>
-                        <p className="para">
-                          lorem ipsum dummy text dolar sit.
-                        </p>
-                      </div>
-                    
+                    className="flex items-center justify-between w-full px-6 py-4 font-semibold text-left rounded-md"
+                    style={{ backgroundColor: `${primaryColor}10` }}
+                  >
+                    <div className="text-left rtl:text-right">
+                      <h1 className="acco-h1">Work Experience Details </h1>
+                      <p className="para">lorem ipsum dummy text dolar sit.</p>
+                    </div>
                   </h2>
                   <div
                     id={`acco-text-item`}
@@ -2012,16 +2010,15 @@ function Web({ closeDrawer, selectedJobId, onClick }) {
                 <div className="relative flex flex-col gap-12">
                   <div className="p-1 bg-white rounded-[10px] dark:bg-transparent dark:border dark:border-secondaryWhite border-opacity-20 dark:border-opacity-10">
                     <h2
-                        className="flex items-center justify-between w-full px-6 py-4 font-semibold text-left rounded-md"
-                        style={{ backgroundColor: `${primaryColor}10` }}
-                      >
-                        <div className="text-left rtl:text-right">
-                          <h1 className="acco-h1">Resume & Cover Letter </h1>
-                          <p className="para">
-                            lorem ipsum dummy text dolar sit.
-                          </p>
-                        </div>
-                      
+                      className="flex items-center justify-between w-full px-6 py-4 font-semibold text-left rounded-md"
+                      style={{ backgroundColor: `${primaryColor}10` }}
+                    >
+                      <div className="text-left rtl:text-right">
+                        <h1 className="acco-h1">Resume & Cover Letter </h1>
+                        <p className="para">
+                          lorem ipsum dummy text dolar sit.
+                        </p>
+                      </div>
                     </h2>
                     <div
                       id={`acco-text-item`}
@@ -2046,12 +2043,12 @@ function Web({ closeDrawer, selectedJobId, onClick }) {
                           </div>
                         </div>
                       </div> */}
-                       <FileUpload
+                      <FileUpload
                         className={
                           "relative max-w-[1070px] sm:w-[492px] w-full borderb rounded-md h-24 bg-[#FAFAFA] dark:bg-black"
                         }
-                        change={(e)=>{
-                          setfilepdfresume(e)
+                        change={(e) => {
+                          setfilepdfresume(e);
                         }}
                       />
                       <TextArea
@@ -2059,13 +2056,14 @@ function Web({ closeDrawer, selectedJobId, onClick }) {
                         placeholder="Type here"
                         className="!text-[#344054]"
                         name="coverLetter"
-                        value={formik.values.coverLetter}
-                        change={(e) => {
-                          setCoverletter(e)
-
-                        }}
+                        // value={formik2.values.coverLetter}
+                        value={coverLetter}
+                        // change={(e) => {
+                        //   setCoverletter(e);
+                        // }}
+                        change={handleTextChange}
                         required={false}
-                        error={formik.errors.coverLetter}
+                        // error={formik2.errors.coverLetter}
                       />
                     </div>
                   </div>
@@ -2081,17 +2079,13 @@ function Web({ closeDrawer, selectedJobId, onClick }) {
               <div className="relative flex flex-col gap-12">
                 <div className="p-1 bg-white rounded-[10px] dark:bg-transparent dark:border dark:border-secondaryWhite border-opacity-20 dark:border-opacity-10">
                   <h2
-                    
-                      className="flex items-center justify-between w-full px-6 py-4 font-semibold text-left rounded-md"
-                      style={{ backgroundColor: `${primaryColor}10` }}
-                    >
-                      <div className="text-left rtl:text-right">
-                        <h1 className="acco-h1">Questions </h1>
-                        <p className="para">
-                          lorem ipsum dummy text dolar sit.
-                        </p>
-                      </div>
-                    
+                    className="flex items-center justify-between w-full px-6 py-4 font-semibold text-left rounded-md"
+                    style={{ backgroundColor: `${primaryColor}10` }}
+                  >
+                    <div className="text-left rtl:text-right">
+                      <h1 className="acco-h1">Questions </h1>
+                      <p className="para">lorem ipsum dummy text dolar sit.</p>
+                    </div>
                   </h2>
                   <div
                     id={`acco-text-item`}
@@ -2191,12 +2185,12 @@ function Web({ closeDrawer, selectedJobId, onClick }) {
                             className="text-[#344054]"
                             name="customQuestion"
                             value={formik3.values.customQuestion}
-                            // change={(e) => {
-                            //   formik3.setFieldValue("customQuestion", e);
-                            // }}
-                            change={(e)=>{
-                              setQuestionfield(e)
+                            change={(e) => {
+                              formik3.setFieldValue("customQuestion", e);
                             }}
+                            // change={(e) => {
+                            //   setQuestionfield(e);
+                            // }}
                             required={false}
                             error={formik3.errors.customQuestion}
                           />
@@ -2230,27 +2224,26 @@ function Web({ closeDrawer, selectedJobId, onClick }) {
                   />
                 </div>
                 {data.map((item, index) => (
-                <div className="flex min-w-0 pt-3  gap-x-4">
-                  <Image
-                    className="flex-none bg-cover rounded-full h-18 w-18 object-cover"
-                    src={item.candidatePhoto}
-                    width={64}
-                    height={64}
-                    alt=""
-                    style={{
-                      flex: 'none',
-                      borderRadius: '50%',
-                      height: '4.5rem',  // Corresponds to h-18
-                      width: '4.5rem',   // Corresponds to w-18
-                      objectFit: 'cover'
-                    }}
-                  />
-                 
+                  <div className="flex min-w-0 pt-3  gap-x-4">
+                    <Image
+                      className="flex-none bg-cover rounded-full h-18 w-18 object-cover"
+                      src={item.candidatePhoto}
+                      width={64}
+                      height={64}
+                      alt=""
+                      style={{
+                        flex: "none",
+                        borderRadius: "50%",
+                        height: "4.5rem", // Corresponds to h-18
+                        width: "4.5rem", // Corresponds to w-18
+                        objectFit: "cover",
+                      }}
+                    />
+
                     <div className="flex-auto min-w-0 mt-3">
                       <p className="acco-h1"> {item.candidateName}</p>
                     </div>
-                  
-                </div>
+                  </div>
                 ))}
 
                 <div>
@@ -2399,13 +2392,13 @@ function Web({ closeDrawer, selectedJobId, onClick }) {
                       icon={<AiTwotoneEdit />}
                     />
                   </div>
-                 
+
                   <div className="divider-h" />
                   {data.map((item, index) => (
-                  <PDFViewer pdfUrl={item.resumeFile} />
-                ))}
+                    <PDFViewer pdfUrl={item.resumeFile} />
+                  ))}
                 </div>
-                 
+
                 <div className="divider-h mt-9" />
                 <div className="flex flex-col gap-8 mt-8">
                   <h2 className="h6">Prerequisite</h2>
@@ -2459,7 +2452,7 @@ function Web({ closeDrawer, selectedJobId, onClick }) {
             className={"dark:text-white"}
             handleSubmit={closeDrawer}
           />
-          <ButtonClick 
+          <ButtonClick
             buttonName="Save & Continue"
             BtnType="primary"
             handleSubmit={handleSubmitAllForms}

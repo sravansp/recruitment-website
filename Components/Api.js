@@ -7,6 +7,7 @@ const companyid="https://alpha-api.loyaltri.com/api/main"
 
 
 
+
 const apiRequest = async (action, method, kwargs) => {
   try {
     const response = await axios.post(apiUrl, {
