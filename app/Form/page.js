@@ -931,68 +931,73 @@ function Web({ closeDrawer, selectedJobId, onClick }) {
 
   const formik3 = useFormik({
     initialValues: {
-      customQuestion: questionfield,
+      customQuestion:"",
       jobId: selectedJobId,
       resumeId: insertedid1,
       // highestEducationLevel: "",
     },
     enableReinitialize: true,
     validateOnChange: false,
-    validationSchema: Yup.object().shape({
+    validationSchema3: Yup.object().shape({
       customQuestion: Yup.string().required("This field is required"),
     }),
     onSubmit: async (values, { setSubmitting }) => {
       try {
-        const newAnswers = questid.flatMap((condition, conditionIndex) => {
-          const answers = {}; // Object to store answers for each evaluationTemplateDetailsId
-          condition.answerMetaData.forEach((metadata) => {
-            const detailsId = condition.questionTemplateDetailsId;
-            const answer = questionAnswers.find(
-              (a) => a.questionTemplateDetailsId === detailsId
-            );
-            let questioneir;
-            switch (metadata.key) {
-              case "Drop-down":
-                questioneir = dropdownvalue;
-                break;
-              case "Paragraph":
-                questioneir = textAreaValue;
-                break;
-              case "Checkboxes":
-                const selectedCheckboxValues = selectedCheckboxes.filter(
-                  (option) => metadata.value.split(",").includes(option.trim())
-                );
-                questioneir = selectedCheckboxValues.join(", ");
-                break;
-              case "ShortAnswer":
-                questioneir = forminputvalue;
-                break;
-              case "MultipleChoice":
-                questioneir = selectedValues[conditionIndex];
-                break;
-              default:
-                questioneir = "";
-            }
-            // Store the answer based on evaluationTemplateDetailsId
-            answers[detailsId] = {
-              jobId: selectedJobId,
-              resumeId: insertedid1,
-              customQuestion: "",
+        // const newAnswers = questid.flatMap((condition, conditionIndex) => {
+        //   const answers = {}; // Object to store answers for each evaluationTemplateDetailsId
+        //   condition.answerMetaData.forEach((metadata) => {
+        //     const detailsId = condition.questionTemplateDetailsId;
+        //     const answer = questionAnswers.find(
+        //       (a) => a.questionTemplateDetailsId === detailsId
+        //     );
+        //     let questioneir;
+        //     switch (metadata.key) {
+        //       case "Drop-down":
+        //         questioneir = dropdownvalue;
+        //         break;
+        //       case "Paragraph":
+        //         questioneir = textAreaValue;
+        //         break;
+        //       case "Checkboxes":
+        //         const selectedCheckboxValues = selectedCheckboxes.filter(
+        //           (option) => metadata.value.split(",").includes(option.trim())
+        //         );
+        //         questioneir = selectedCheckboxValues.join(", ");
+        //         break;
+        //       case "ShortAnswer":
+        //         questioneir = forminputvalue;
+        //         break;
+        //       case "MultipleChoice":
+        //         questioneir = selectedValues[conditionIndex];
+        //         break;
+        //       default:
+        //         questioneir = "";
+        //     }
+        //     // Store the answer based on evaluationTemplateDetailsId
+        //     answers[detailsId] = {
+        //       jobId: selectedJobId,
+        //       resumeId: insertedid1,
+        //       customQuestion: "",
 
-              createdBy: null,
-            };
-          });
-          // Convert the answers object to an array
-          return Object.values(answers);
-        });
+        //       createdBy: null,
+        //     };
+        //   });
+        //   // Convert the answers object to an array
+        //   return Object.values(answers);
+        // });
 
-        console.log("New Answers:", newAnswers);
+        // console.log("New Answers:", newAnswers);
 
-        const response = await saveRecruitmentJobResumesCustomField(values);
-        console.log("question Details API Response:", response);
-        setActiveBtn(activeBtn + 1);
-        setCurrentStep(currentStep + 1);
-        setPresentage(presentage + 1);
+        // const response = await saveRecruitmentJobResumesCustomField(values);
+        // console.log("question Details API Response:", response);
+        // if (response.status === 200) {
+        //   openNotification("success", "Successful", response.message);
+        //   setActiveBtn(activeBtn + 1);
+        //   setCurrentStep(currentStep + 1);
+        //   setPresentage(presentage + 1);
+        // } else if (response.status === 500) {
+        //   openNotification("error", "input field is empty..", response.message);
+        // }
         // Handle success response if needed
       } catch (error) {
         console.error("Error saving question details:", error);
@@ -1012,7 +1017,7 @@ function Web({ closeDrawer, selectedJobId, onClick }) {
   //   }
   // };
 
-  const id = 226;
+
   // useEffect(() => {
   //   const fetchapi = async () => {
 
@@ -1241,24 +1246,24 @@ function Web({ closeDrawer, selectedJobId, onClick }) {
     callapi();
   }, [currentStep]);
 
-  useEffect(() => {
-    const callapi = async () => {
-      try {
-        if (currentStep === 4) {
-          // Check if the current step is the review page
-          const response = await getAllRecruitmentJobResumesCustomFields(
-            insertedid1
-          );
-          setCustomfield(response);
-          console.log(insertedid1, "dfrfgreg");
-          console.log(response);
-        }
-      } catch (error) {
-        console.error("error", error);
-      }
-    };
-    callapi();
-  }, [currentStep]);
+  // useEffect(() => {
+  //   const callapi = async () => {
+  //     try {
+  //       if (currentStep === 4) {
+  //         // Check if the current step is the review page
+  //         const response = await getAllRecruitmentJobResumesCustomFields(
+  //           insertedid1
+  //         );
+  //         setCustomfield(response);
+  //         console.log(insertedid1, "dfrfgreg");
+  //         console.log(response);
+  //       }
+  //     } catch (error) {
+  //       console.error("error", error);
+  //     }
+  //   };
+  //   callapi();
+  // }, [currentStep]);
 
   const handleAddMoreWorkDetailss = () => {
     setAdditionalEducationalDetails((prevDetails) => [
@@ -1338,7 +1343,7 @@ function Web({ closeDrawer, selectedJobId, onClick }) {
 
         break;
       case 3:
-        handleSubmit();
+       handleSubmit();
         // setCurrentStage(currentStage + 1);
         // formik.resetForm();
         // formik1.resetForm();

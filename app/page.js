@@ -72,9 +72,10 @@ const Home = () => {
     const callapi = async () => {
       try {
         const response = await getAllRecruitmentJobs();
-        setJobList(response.result);
-        console.log(setJobList, "joblist dataa");
-        setFilteredJobs(response.result);
+        const openJobs = response.result.filter(job => job.jobStatus === "Open");
+      setJobList(openJobs);
+      console.log(openJobs, "filtered joblist data");
+      setFilteredJobs(openJobs);
        
       } catch (error) {
         console.error(error);
