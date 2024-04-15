@@ -11,7 +11,6 @@ import {
   List,
   Radio,
   Space,
-  Tooltip,
   notification,
 } from "antd";
 import Accordion from "../common/Accordion";
@@ -77,7 +76,7 @@ import RadioButton from "../common/RadioButton";
 
 const CreatejobTemp = ({
   open = "",
-  close = () => { },
+  close = () => {},
   inputshow = false,
   isUpdate = {},
   updateId,
@@ -106,13 +105,13 @@ const CreatejobTemp = ({
   const [content, setContent] = useState("");
   const [JobDescriptionList,setJobDescriptionList]=useState([])
   const[decriptionId,setDecriptionId] =  useState("")
-  const[Phone,setPhone] = useState("")
-  const[Headline,setHeadline] = useState("")
-  const[Address,setAddress] = useState("")
-  const[country,setCountry] = useState("")
-  const[summary,setSummary] = useState("")
-  const[resume,setResume] = useState("")
-  const[coverLetter,setCoverletter] = useState("")
+  const[Phone,setPhone] = useState(1)
+  const[Headline,setHeadline] = useState(1)
+  const[Address,setAddress] = useState(1)
+  const[country,setCountry] = useState(1)
+  const[summary,setSummary] = useState(1)
+  const[resume,setResume] = useState(1)
+  const[coverLetter,setCoverletter] = useState(1)
   console.log(updateId);
   useEffect(() => {
     // Retrieve the login data JSON string from local storage
@@ -175,14 +174,16 @@ const CreatejobTemp = ({
       placement: "top",
       // stack: 2,
       style: {
-        background: `${type === "success"
-          ? `linear-gradient(180deg, rgba(204, 255, 233, 0.8) 0%, rgba(235, 252, 248, 0.8) 51.08%, rgba(246, 251, 253, 0.8) 100%)`
-          : "linear-gradient(180deg, rgba(255, 236, 236, 0.80) 0%, rgba(253, 246, 248, 0.80) 51.13%, rgba(251, 251, 254, 0.80) 100%)"
-          }`,
-        boxShadow: `${type === "success"
-          ? "0px 4.868px 11.358px rgba(62, 255, 93, 0.2)"
-          : "0px 22px 60px rgba(134, 92, 144, 0.20)"
-          }`,
+        background: `${
+          type === "success"
+            ? `linear-gradient(180deg, rgba(204, 255, 233, 0.8) 0%, rgba(235, 252, 248, 0.8) 51.08%, rgba(246, 251, 253, 0.8) 100%)`
+            : "linear-gradient(180deg, rgba(255, 236, 236, 0.80) 0%, rgba(253, 246, 248, 0.80) 51.13%, rgba(251, 251, 254, 0.80) 100%)"
+        }`,
+        boxShadow: `${
+          type === "success"
+            ? "0px 4.868px 11.358px rgba(62, 255, 93, 0.2)"
+            : "0px 22px 60px rgba(134, 92, 144, 0.20)"
+        }`,
       },
       // duration: null,
     });
@@ -213,7 +214,7 @@ const CreatejobTemp = ({
       if (response.ok) {
         const data = await response.json();
         // Handle the response data as needed
-        // console.log(data);
+        console.log(data);
         setContent(data.receivedData)
       } else {
         console.error('Failed to fetch data');
@@ -237,7 +238,7 @@ const CreatejobTemp = ({
   const [dropdownOptions, setDropdownOptions] = useState([]);
   const [jobId, setJobId] = useState("");
 
-  // console.log(evaluation);
+  console.log(evaluation);
   //job applying
 
   const formik = useFormik({
@@ -342,7 +343,7 @@ const CreatejobTemp = ({
               customFields: updatedCustomFields,
             },
           });
-          // console.log(response);
+          console.log(response);
           if (response.status === 200) {
             openNotification(
               "success",
@@ -358,7 +359,7 @@ const CreatejobTemp = ({
             openNotification("error", response.message.replace(/<br\/>/g, '\n'));
           }
         } else {
-          // console.log(e);
+          console.log(e);
 
           const response = await saveRecruitmentJobTemplate({
             companyId: companyId,
@@ -397,9 +398,9 @@ const CreatejobTemp = ({
               customFields: updatedCustomFields,
             },
           });
-          // console.log(response);
+          console.log(response);
 
-          // console.log(jobId);
+          console.log(jobId);
           if (response.status === 200) {
             openNotification(
               "success",
@@ -431,7 +432,7 @@ const CreatejobTemp = ({
   const getJobtemById = async () => {
     try {
       const response = await getRecruitmentJobTemplateById(updateId);
-      // console.log(response);
+      console.log(response);
 
       if (response.result.length > 0) {
         const firstJob = response.result[0];
@@ -440,7 +441,7 @@ const CreatejobTemp = ({
 
         formik.setFieldValue("companyId", firstJob.companyId);
         formik.setFieldValue("jobTitle", firstJob.jobTitle);
-        formik.setFieldValue("departmentId", parseInt(firstJob.departmentId));
+        formik.setFieldValue("departmentId", firstJob.departmentId);
         formik.setFieldValue("education", firstJob.education);
         formik.setFieldValue("isActive", firstJob.isActive);
         formik.setFieldValue("isSalaryPublic", firstJob.isSalaryPublic);
@@ -454,18 +455,19 @@ const CreatejobTemp = ({
         formik.setFieldValue("salaryRangeTo", firstJob.salaryRangeTo);
         formik.setFieldValue("searchKeywords", firstJob.searchKeywords);
         formik.setFieldValue("experience", firstJob.experience);
+        
 
-        // console.log(firstJob.companyId);
+        console.log(firstJob.companyId);
       } else {
-        // console.error("No data found in the response.");
+        console.error("No data found in the response.");
       }
     } catch (error) {
-      // console.log(error);
+      console.log(error);
     }
   };
   useEffect(() => {
     getJobtemById();
-    // console.log(jobdata);
+    console.log(jobdata);
   }, [updateId]);
   const [departmentList, setDepartmentList] = useState();
   const [company, setCompany] = useState([]);
@@ -482,8 +484,8 @@ const CreatejobTemp = ({
         }))
       );
 
-      // console.log("Department List:", departmentList);
-      // console.log("Is Update:", isUpdate);
+      console.log("Department List:", departmentList);
+      console.log("Is Update:", isUpdate);
     } catch (error) {
       console.error("Error fetching department list:", error);
     }
@@ -523,17 +525,17 @@ const CreatejobTemp = ({
     });
   };
   const handleDeleteField = (conditionIndex, fieldIndex) => {
-    // console.log("Deleting field", conditionIndex, fieldIndex);
+    console.log("Deleting field", conditionIndex, fieldIndex);
 
     setEvaluation((prevEvaluation) =>
       prevEvaluation.map((prevCondition, i) =>
         i === conditionIndex
           ? {
-            ...prevCondition,
-            answerMetaData: (prevCondition.answerMetaData || []).filter(
-              (field, j) => j !== fieldIndex
-            ),
-          }
+              ...prevCondition,
+              answerMetaData: (prevCondition.answerMetaData || []).filter(
+                (field, j) => j !== fieldIndex
+              ),
+            }
           : prevCondition
       )
     );
@@ -543,16 +545,16 @@ const CreatejobTemp = ({
       prevEvaluation.map((prevCondition, i) =>
         i === index
           ? {
-            ...prevCondition,
-            answerMetaData: [
-              ...prevCondition.answerMetaData,
-              {
-                id: prevCondition.answerMetaData.length + 1,
-                key: "Drop-down", // You can set the default key or customize as needed
-                value: "",
-              },
-            ],
-          }
+              ...prevCondition,
+              answerMetaData: [
+                ...prevCondition.answerMetaData,
+                {
+                  id: prevCondition.answerMetaData.length + 1,
+                  key: "Drop-down", // You can set the default key or customize as needed
+                  value: "",
+                },
+              ],
+            }
           : prevCondition
       )
     );
@@ -651,13 +653,13 @@ const CreatejobTemp = ({
   const selectedCount = selectedDivs.length;
 
   useEffect(() => {
-    // console.log(nextStep, activeBtn);
+    console.log(nextStep, activeBtn);
     if (activeBtn < 3 && activeBtn !== nextStep) {
       /// && activeBtn !== nextStep
       setActiveBtn(1 + activeBtn);
       setNextStep(nextStep);
-      // console.log(1 + activeBtn);
-      // console.log(steps?.[activeBtn + 1].data, "data");
+      console.log(1 + activeBtn);
+      console.log(steps?.[activeBtn + 1].data, "data");
       setActiveBtnValue(steps?.[activeBtn + 1].data);
     }
   }, [nextStep]);
@@ -675,15 +677,15 @@ const CreatejobTemp = ({
       );
       // console.log(result.data);
     } catch (error) {
-      // console.log(error);
+      console.log(error);
     }
-    // console.log("company", company);
+    console.log("company", company);
   };
   useEffect(() => {
     // switch (assignBtnName) {
     //   default:
     getCompany();
-    // console.log("value", company);
+    console.log("value", company);
   }, []);
   const handleCompanyChange = (selectedOption) => {
     setSelectedCompany(selectedOption);
@@ -698,7 +700,7 @@ const CreatejobTemp = ({
   //     const response = await getAllRecruitmentWorkFlows();
 
   //     // Handle the response
-      // console.log('Response:', response);
+  //     console.log('Response:', response);
   //     const stageNamesByWorkflowId = {};
   //   response.result.forEach(workflow => {
   //     const { workFlowId, recruitmentWorkFlowStages } = workflow;
@@ -725,13 +727,13 @@ const CreatejobTemp = ({
 
   // }, []);
   // useEffect(() => {
-    // console.log('Updated Workflow:', Stages);
+  //   console.log('Updated Workflow:', Stages);
   // }, [Stages]);
 
   const fetchData = async () => {
     try {
       const response = await getAllRecruitmentWorkFlows();
-      // console.log("Response:", response);
+      console.log("Response:", response);
       const stagesByWorkflowId = response.result.map((item) => ({
         workFlowId: item.workFlowId,
         stages: item.recruitmentWorkFlowStages.map((stage) => ({
@@ -741,14 +743,14 @@ const CreatejobTemp = ({
       setStages(stagesByWorkflowId);
     } catch (error) {
       // Handle errors
-      // console.log("Error:", error);
+      console.error("Error:", error);
     }
   };
   useEffect(() => {
     fetchData();
   }, []);
   useEffect(() => {
-    // console.log("Updated Workflow:", Stages);
+    console.log("Updated Workflow:", Stages);
   }, [Stages]);
   // const workflowDetails = workflow.map((stageName, index) => ({
   //   stageName,
@@ -774,7 +776,7 @@ const CreatejobTemp = ({
   //   // Update the database with the selected workflow ID for the specific job
 
   //    try {
-      // console.log(workFlowId)
+  //     console.log(workFlowId)
   //     const response = await updateRecruitmentJob(
   //        jobId,
   //        workFlowId,
@@ -782,7 +784,7 @@ const CreatejobTemp = ({
 
   //     );
 
-      // console.log(response);
+  //     console.log(response);
   //     if (response.status === 200) {
 
   //       openNotification(
@@ -830,7 +832,7 @@ const CreatejobTemp = ({
           formik.setFieldError('salaryRangeTo', !formik.values.salaryRangeTo ? 'Salary Range To is required' : '');
           formik.setFieldError('salaryCurrency', !formik.values.salaryCurrency ? 'Salary Currency is required' : '');
           formik.setFieldError('jobType', !formik.values.jobType ? 'JobType is required' : '');
-
+          formik.setFieldError('education', !formik.values.education ? 'Education is required' : '');
           return; // Exit early if any field is empty
         }
 
@@ -860,7 +862,7 @@ const CreatejobTemp = ({
         //     setNextStep(nextStep + 1);
         //   } else {
         //     // Handle the case where the radio is not selected, maybe show a message
-            // console.log('Radio not selected');
+        //     console.log('Radio not selected');
         //   }
         // } catch (error) {
         //   console.error('Error handling Workflow:', error);
@@ -936,7 +938,7 @@ const CreatejobTemp = ({
             setActiveBtn(activeBtn - 1);
             setNextStep(nextStep - 1);
             setActiveBtnValue(steps?.[activeBtn - 1].data);
-            // console.log(activeBtn - 1);
+            console.log(activeBtn - 1);
           }
           setBtnName("");
         }}
@@ -956,13 +958,13 @@ const CreatejobTemp = ({
                     // direction="left"
                     // labelPlacement="vertical"
                     steps={steps}
-                  // className=" text-sm font-medium"
-                  // style={{
-                  //   fontSize: isSmallScreen ? "8px" : "10px",
-                  //   fontWeight: 600,
-                  // }}
-                  // // className="text-[10px]"
-                  // size={isSmallScreen ? "default" : "large"}
+                    // className=" text-sm font-medium"
+                    // style={{
+                    //   fontSize: isSmallScreen ? "8px" : "10px",
+                    //   fontWeight: 600,
+                    // }}
+                    // // className="text-[10px]"
+                    // size={isSmallScreen ? "default" : "large"}
                   />
                 </div>
               )}
@@ -988,7 +990,7 @@ const CreatejobTemp = ({
                           <Dropdown
                             title={t("Choose Template")}
                             placeholder={t("Select")}
-                          // required={true}
+                            // required={true}
                           />
 
                           <Dropdown
@@ -1059,8 +1061,9 @@ const CreatejobTemp = ({
                         {regularOvertime?.map((each, i) => (
                           <div
                             key={i}
-                            className={`col-span-4 p-4 border rounded-2xl cursor-pointer showDelay dark:bg-dark  ${customRate === each.id && "border-primary "
-                              } `}
+                            className={`col-span-4 p-4 border rounded-2xl cursor-pointer showDelay dark:bg-dark  ${
+                              customRate === each.id && "border-primary "
+                            } `}
                             onClick={() => {
                               setCustomRate(each.id);
                               formik.setFieldValue(
@@ -1077,8 +1080,9 @@ const CreatejobTemp = ({
                                 } `}
                               /> */}
                                 <div
-                                  className={`${customRate === each.id && " text-primary  "
-                                    } p-2 border rounded-mdx w-fit bg-[#F8FAFC]`}
+                                  className={`${
+                                    customRate === each.id && " text-primary  "
+                                  } p-2 border rounded-mdx w-fit bg-[#F8FAFC]`}
                                 >
                                   {each.image}
                                 </div>
@@ -1095,13 +1099,15 @@ const CreatejobTemp = ({
                                 </p>
                               </div>
                               <div
-                                className={`${customRate === each.id && "border-primary"
-                                  } border  rounded-full`}
+                                className={`${
+                                  customRate === each.id && "border-primary"
+                                } border  rounded-full`}
                               >
                                 <div
-                                  className={`font-semibold text-base w-4 h-4 border-2 border-white   rounded-full ${customRate === each.id &&
+                                  className={`font-semibold text-base w-4 h-4 border-2 border-white   rounded-full ${
+                                    customRate === each.id &&
                                     "text-primary bg-primary"
-                                    } `}
+                                  } `}
                                 ></div>
                               </div>
                             </div>
@@ -1127,7 +1133,7 @@ const CreatejobTemp = ({
                           value={formik.values.requirementType}
                           change={(e) => {
                             formik.setFieldValue("requirementType", e);
-                            // console.log(e);
+                            console.log(e);
                           }}
                           required={true}
                           error={formik.errors.requirementType}
@@ -1155,7 +1161,7 @@ const CreatejobTemp = ({
                             options={JobType}
                             change={(e) => {
                               formik.setFieldValue("jobType", e);
-                              // console.log(e);
+                              console.log(e);
                             }}
                             required={true}
                             value={formik.values.jobType}
@@ -1240,7 +1246,7 @@ const CreatejobTemp = ({
   error={formik.errors.salaryRangeTo}
   required={true}
   type={"number"}
-/>   
+/> 
                           <Dropdown
                             title={"Salary Currency"}
                             placeholder={"Enter Salary Currency"}
@@ -1255,7 +1261,7 @@ const CreatejobTemp = ({
                           <CheckBoxInput
                             change={(e) => {
                               formik.setFieldValue("isSalaryPublic", e);
-                              // console.log(e);
+                              console.log(e);
                             }}
                             value={formik.values.isSalaryPublic}
                             title={"View Public"}
@@ -1676,7 +1682,7 @@ icondropDown={true}
                                         : prevCondition
                                     )
                                   );
-                                  // console.log(e);
+                                  console.log(e);
                                 }}
                               />
                               <div className="flex items-center gap-5">
@@ -1689,16 +1695,16 @@ icondropDown={true}
                                         prevEvaluation.map((prevCondition, i) =>
                                           i === index
                                             ? {
-                                              ...prevCondition,
-                                              answer_type: e,
-                                              answerMetaData: [
-                                                {
-                                                  id: 1,
-                                                  key: e,
-                                                  value: "",
-                                                },
-                                              ],
-                                            }
+                                                ...prevCondition,
+                                                answer_type: e,
+                                                answerMetaData: [
+                                                  {
+                                                    id: 1,
+                                                    key: e,
+                                                    value: "",
+                                                  },
+                                                ],
+                                              }
                                             : prevCondition
                                         )
                                       );
@@ -1762,53 +1768,53 @@ icondropDown={true}
                                         "MultipleChoice",
                                         "Checkboxes",
                                       ].includes(field.key) && (
-                                          <FormInput
-                                            title={`options ${fieldIndex + 1}`}
-                                            placeholder={"Enter value"}
-                                            value={field.value}
-                                            change={(e) =>
-                                              setEvaluation((prevEvaluation) =>
-                                                prevEvaluation.map(
-                                                  (prevCondition, i) =>
-                                                    i === index
-                                                      ? {
+                                        <FormInput
+                                          title={`options ${fieldIndex + 1}`}
+                                          placeholder={"Enter value"}
+                                          value={field.value}
+                                          change={(e) =>
+                                            setEvaluation((prevEvaluation) =>
+                                              prevEvaluation.map(
+                                                (prevCondition, i) =>
+                                                  i === index
+                                                    ? {
                                                         ...prevCondition,
                                                         answerMetaData:
                                                           prevCondition.answerMetaData.map(
                                                             (f, j) =>
                                                               j === fieldIndex
                                                                 ? {
-                                                                  ...f,
-                                                                  value:
-                                                                    String(e),
-                                                                }
+                                                                    ...f,
+                                                                    value:
+                                                                      String(e),
+                                                                  }
                                                                 : f
                                                           ),
                                                       }
-                                                      : prevCondition
-                                                )
+                                                    : prevCondition
                                               )
-                                            }
-                                          />
-                                        )}
+                                            )
+                                          }
+                                        />
+                                      )}
 
                                       {[
                                         "Drop-down",
                                         "MultipleChoice",
                                         "Checkboxes",
                                       ].includes(field.key) && (
-                                          <div className="ml-2">
-                                            <MdDelete
-                                              onClick={() =>
-                                                handleDeleteField(
-                                                  index,
-                                                  fieldIndex
-                                                )
-                                              }
-                                              className="cursor-pointer text-red-500"
-                                            />
-                                          </div>
-                                        )}
+                                        <div className="ml-2">
+                                          <MdDelete
+                                            onClick={() =>
+                                              handleDeleteField(
+                                                index,
+                                                fieldIndex
+                                              )
+                                            }
+                                            className="cursor-pointer text-red-500"
+                                          />
+                                        </div>
+                                      )}
                                     </div>
                                   )
                                 )}
@@ -1821,20 +1827,20 @@ icondropDown={true}
                                   ].includes(
                                     condition.answerMetaData[0]?.key
                                   ) && (
-                                      <CgAdd
-                                        onClick={() =>
-                                          handleAddField(
-                                            index,
-                                            condition.answerMetaData[0]?.key
-                                          )
-                                        }
-                                        style={{
-                                          width: "18px",
-                                          height: "18px",
-                                          cursor: "pointer",
-                                        }}
-                                      />
-                                    )}
+                                    <CgAdd
+                                      onClick={() =>
+                                        handleAddField(
+                                          index,
+                                          condition.answerMetaData[0]?.key
+                                        )
+                                      }
+                                      style={{
+                                        width: "18px",
+                                        height: "18px",
+                                        cursor: "pointer",
+                                      }}
+                                    />
+                                  )}
                                 </div>
                               </>
                             )}
@@ -1906,11 +1912,11 @@ icondropDown={true}
               ) : null}
               {contextHolder}
             </div>
-
+            
           </FlexCol>
         </div>
       </DrawerPop>
-
+      
     </div>
   );
 };
