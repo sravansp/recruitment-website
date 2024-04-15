@@ -22,7 +22,7 @@ import { HiDocumentText, HiOutlineSquare3Stack3D } from "react-icons/hi2";
 import { HiUsers } from "react-icons/hi";
 import { RiSettings4Fill } from "react-icons/ri";
 import { IoCashOutline, IoHelpCircle } from "react-icons/io5";
-import {  PiBriefcaseDuotone, PiBriefcaseMetalDuotone, PiCheckSquareOffsetThin, PiCreditCardLight, PiPalette, PiPaletteDuotone, PiUser } from "react-icons/pi";
+import {  PiBankLight, PiBriefcaseDuotone, PiBriefcaseMetalDuotone, PiCheckSquareOffsetThin, PiCreditCardLight, PiPalette, PiPaletteDuotone, PiUser } from "react-icons/pi";
 import { FaKey } from "react-icons/fa";
 import { GoKey } from "react-icons/go";
 import { CiBank } from "react-icons/ci";
@@ -368,7 +368,7 @@ const Sidebar = () => {
                   id: 112,
                   title: t("Appearance"),
                   icon: (
-                    <PiPaletteDuotone className="!text-base 2xl:!text-2xl" />
+                    <PiBankLight className="!text-base 2xl:!text-2xl" />
                   ),
                   link: "/Appearance",
                 },

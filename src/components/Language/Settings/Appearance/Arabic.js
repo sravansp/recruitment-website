@@ -1,5 +1,6 @@
 const appearanceLanguageArabic = {
-  Appearance: "مظهرإعدادات المظهر",
+  Appearance:"مظهر",
+  Appearance_Settings: "مظهرإعدادات المظهر",
   Appearance_Description: "إن تخصيص مساحة العمل الخاصة بك يجعل العمل أكثر متعة وراحة!",
   Custom_theme: "إنشاء موضوع مخصص",
   Inter_face_theme: "موضوع الوجه المشترك",
