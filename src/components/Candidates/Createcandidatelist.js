@@ -58,6 +58,7 @@ export default function Createcandidatelist({ open = "", close = () => { }, file
   const [candiateName, setcandidateName] = useState("")
   const [educationExperiences, seteducationExperiences] = useState([])
   const navigate = useNavigate();
+  const [PdFViewer, setPdFViewer] = useState("")
   const [workexp, setWorkexp] = useState([
     {
       id: 1,
@@ -572,6 +573,7 @@ export default function Createcandidatelist({ open = "", close = () => { }, file
       setcandidate(personelDetails);
       setImage(response.result[0].candidatePhoto)
       setcandidateName(response.result[0].candidateName)
+      setPdFViewer(response.result[0].resumeFile)
 
       console.log(personelDetails);
     } catch (error) {
@@ -1263,6 +1265,8 @@ export default function Createcandidatelist({ open = "", close = () => { }, file
                           <div>
                             <CVResume
                               showTextEditor={false}
+                              pdfUrl={PdFViewer}
+
                             />
                           </div>
 

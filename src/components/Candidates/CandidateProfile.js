@@ -1,21 +1,34 @@
 import React, { useEffect, useState } from "react";
-import { Link,useParams,useLocation } from "react-router-dom";
+import { Link, useParams, useLocation } from "react-router-dom";
 import ButtonClick from "../common/Button";
 import { Button, Divider, Dropdown, Rate, message } from "antd";
 import { useMediaQuery } from "react-responsive";
 import copy from "clipboard-copy";
 import { Menu, Space } from "antd";
 import { useTranslation } from "react-i18next";
-import {Formik, useFormik } from "formik";
-import {addJobToResume,getAllRecruitmentJobs,getRecruitmentJobById,updateRecruitmentJobResumesMapping,getResumeJobDetails,getRecruitmentResumeById,getAllRecruitmentJobWorkFlowDetails,saveRecruitmentJobResumesStage } from "../Api1";
-
+import { Formik, useFormik } from "formik";
+import {
+  addJobToResume,
+  getAllRecruitmentJobs,
+  getRecruitmentJobById,
+  updateRecruitmentJobResumesMapping,
+  getResumeJobDetails,
+  getRecruitmentResumeById,
+  getAllRecruitmentJobWorkFlowDetails,
+  saveRecruitmentJobResumesStage,
+} from "../Api1";
 
 import {
   PiArrowLeftBold,
   PiBookmarkSimpleFill,
   PiDotsThreeOutlineFill,
 } from "react-icons/pi";
-import { FcCheckmark, FcHighPriority, FcProcess, FcShare } from "react-icons/fc";
+import {
+  FcCheckmark,
+  FcHighPriority,
+  FcProcess,
+  FcShare,
+} from "react-icons/fc";
 import { MdContentCopy, MdPhone } from "react-icons/md";
 import { DownOutlined } from "@ant-design/icons";
 import {
@@ -46,7 +59,7 @@ import Evaluations from "./CandidateProfileTabs/Evaluations";
 import Questionaries from "./CandidateProfileTabs/Questionaries";
 import Offers from "./CandidateProfileTabs/Offers";
 import Events from "./CandidateProfileTabs/Events";
-import { useDispatch, useSelector } from 'react-redux';
+import { useDispatch, useSelector } from "react-redux";
 import TextEditor from "../common/TextEditor/TextEditor";
 import { BsFileEarmarkRichtext } from "react-icons/bs";
 
@@ -115,92 +128,90 @@ const CandidateProfile = () => {
   const [messageApi, contextHolder] = message.useMessage();
   const [selectedItem, setSelectedItem] = useState("0");
   const [selectedItemLabel, setSelectedItemLabel] = useState(null);
-  const[Candidate,setcandidate]=useState([])
-  const[userdata,setuserdata]=useState([])
-  const[jobId,setJobId]=useState("")
-  const[stageName,setstageName]=useState([])
-  const[stageId,setstageId]=useState("")
+  const [Candidate, setcandidate] = useState([]);
+  const [userdata, setuserdata] = useState([]);
+  const [jobId, setJobId] = useState("");
+  const [stageName, setstageName] = useState([]);
+  const [stageId, setstageId] = useState("");
   const { resumeId } = useParams();
-  const[jobName,setJobName]=useState("")
-  const[jobResumeMapping,setjobResumeMapping]=useState("")
+  const [jobName, setJobName] = useState("");
+  const [jobResumeMapping, setjobResumeMapping] = useState("");
   const [currentStatus, setCurrentStatus] = useState(0);
-  const[allJob,setAllJob]= useState([])
+  const [allJob, setAllJob] = useState([]);
   const [companyId, setCompanyId] = useState(localStorage.getItem("companyId"));
-  const[getstatus,setgetstatus]=useState("")
+  const [getstatus, setgetstatus] = useState("");
   const location = useLocation();
   const [userid, setuserid] = useState("");
 
   useEffect(() => {
     // Retrieve the login data JSON string from local storage
-    const loginDataString = localStorage.getItem('LoginData');
+    const loginDataString = localStorage.getItem("LoginData");
 
     if (loginDataString) {
       // Parse the JSON string to get the LoginData object
       const loginData = JSON.parse(loginDataString);
 
       // Extract the username from the userData object
-      setuserid(loginData && loginData.userData && loginData.userData.employeeId);
+      setuserid(
+        loginData && loginData.userData && loginData.userData.employeeId
+      );
 
       // Now, 'username' variable contains the username
-      
     } else {
-      console.error('Login data not found in local storage.');
+      console.error("Login data not found in local storage.");
     }
   }, []);
   useEffect(() => {
     setCompanyId(localStorage.getItem("companyId"));
-    
   }, []);
-  
- console.log(resumeId)
- const tabData = [
-  {
-    id: 9,
-    title: "Notes",
-    value: "notes",
-    // content: <Overview />,
-    icon: <RiStickyNoteLine className="text-base" />,
-  },
-  {
-    id: 10,
-    title: "Documents",
-    value: "documents",
-    // content: <ActivityFeed />,
-    icon: <BsFileEarmarkRichtext className="text-base" />,
-  },
-];
-  
+
+  console.log(resumeId);
+  const tabData = [
+    {
+      id: 9,
+      title: "Notes",
+      value: "notes",
+      // content: <Overview />,
+      icon: <RiStickyNoteLine className="text-base" />,
+    },
+    {
+      id: 10,
+      title: "Documents",
+      value: "documents",
+      // content: <ActivityFeed />,
+      icon: <BsFileEarmarkRichtext className="text-base" />,
+    },
+  ];
+
   useEffect(() => {
     if (state && state.jobID) {
-        setJobId(state.jobID);
-        console.log(state.jobID)
+      setJobId(state.jobID);
+      console.log(state.jobID);
     } else {
-        const storedJobId = localStorage.getItem('jobid');
-        if (storedJobId) {
-            setJobId(storedJobId);
-        }
+      const storedJobId = localStorage.getItem("jobid");
+      if (storedJobId) {
+        setJobId(storedJobId);
+      }
     }
-}, [state]);
-const [selectedEmail, setSelectedEmail] = useState(""); // State to store selected email
+  }, [state]);
+  const [selectedEmail, setSelectedEmail] = useState(""); // State to store selected email
 
-// Function to update selectedEmail state
-const handleEmailSelect = (email) => {
-  setSelectedEmail(email);
-};
-  
+  // Function to update selectedEmail state
+  const handleEmailSelect = (email) => {
+    setSelectedEmail(email);
+  };
 
-const navigateBack = () => {
-  // Navigate back to the previous page
-  window.history.back();
-};
+  const navigateBack = () => {
+    // Navigate back to the previous page
+    window.history.back();
+  };
 
-
-const tabs = [
+  const tabs = [
     {
       id: 1,
       title: t("Overview"),
       value: "overview",
-      content:  <Overview onEmailSelect={handleEmailSelect} />,
+      content: <Overview onEmailSelect={handleEmailSelect} />,
       icon: <RiHome6Line className="text-base" />,
     },
     {
@@ -221,7 +232,7 @@ const tabs = [
       id: 4,
       title: t("Emails"),
       value: "emails",
-      content: <Emails Email={selectedEmail}/>,
+      content: <Emails Email={selectedEmail} />,
       icon: <RiMailUnreadLine className="text-base" />,
     },
 
@@ -256,82 +267,78 @@ const tabs = [
   ];
 
   const getstagename = async () => {
-    console.log(jobId)
+    console.log(jobId);
     try {
       const response = await getAllRecruitmentJobWorkFlowDetails(jobId);
       console.log(response);
-  
+
       // Extract stage ID and stage name from the response
-      const stages = response.result.map(stage => ({
+      const stages = response.result.map((stage) => ({
         label: stage.stageName,
-        key: stage.stageId
+        key: stage.stageId,
       }));
       console.log("Stages:", stages);
-  
+
       // Save stage ID and stage name using setstageName
       setstageName(stages);
-  
     } catch (error) {
       console.log(error);
     }
-  }
-  useEffect(()=>{
-    getstagename()
-    getResumeJob()
-    console.log(getstatus)
-  },[jobId])
-  
-  const updatestage = async()=>{
-    try{
-     const response = await saveRecruitmentJobResumesStage({
-      jobId:parseInt(jobId),
-      stageId:parseInt(stageId),
-      resumeId:parseInt(resumeId)
-     
-
-     })
-     console.log(response)
-    }catch (error){
-      console.log (error)
-    }
-  }
+  };
   useEffect(() => {
-    if (stageId) { 
+    getstagename();
+    getResumeJob();
+    console.log(getstatus);
+  }, [jobId]);
+
+  const updatestage = async () => {
+    try {
+      const response = await saveRecruitmentJobResumesStage({
+        jobId: parseInt(jobId),
+        stageId: parseInt(stageId),
+        resumeId: parseInt(resumeId),
+      });
+      console.log(response);
+    } catch (error) {
+      console.log(error);
+    }
+  };
+  useEffect(() => {
+    if (stageId) {
       updatestage();
     }
   }, [stageId]);
   const handleMenuClick = (e) => {
     setSelectedItem(e.key);
-    const selectedItemLabel = stageName.find((item) => item.key === e.key).label;
+    const selectedItemLabel = stageName.find(
+      (item) => item.key === e.key
+    ).label;
     setSelectedItemLabel(selectedItemLabel);
     setstageId(e.key);
   };
   const handleMenuClick1 = async (e) => {
     try {
       console.log("Menu item clicked:", e);
-      
+
       // Extract selected job label based on the key
       const selectedJobLabel = allJob.find((item) => item.key === e.key).label;
-      
 
       setJobName(selectedJobLabel);
       setJobId(e.key);
-      localStorage.setItem('jobid', e.key);
+      localStorage.setItem("jobid", e.key);
       console.log("Attempting to call API...");
-  
+
       const response = await addJobToResume({
         jobId: e.key,
         resumeId: resumeId,
-        createdBy: userid
+        createdBy: userid,
       });
-      
+
       console.log("API response:", response);
     } catch (error) {
       console.log("Error calling API:", error);
     }
   };
-
-
 
   const handleCopyClick = (value) => {
     copy(value);
@@ -341,7 +348,7 @@ const tabs = [
       content: `${value} is copied succesfully`,
     });
   };
-  
+
   const menu = (
     <Menu onClick={handleMenuClick}>
       {stageName.map((item) => (
@@ -350,221 +357,196 @@ const tabs = [
     </Menu>
   );
 
-  const id=resumeId
-  
-//back end
-const getCandidatesById = async () => {
-  try {
-    const response = await getRecruitmentResumeById(id);
-    console.log(response)
-    const updatedCandidates = response.result.map(candidate => ({
-      ...candidate,
-     
-    }));
-     console.log(updatedCandidates)
-    setcandidate(updatedCandidates);
+  const id = resumeId;
 
-    
-    // setuserdata(response.result.map((items)=>({
-    //  personal:[ 
-    //   {id:1,
-    //     label:"Email Address",
-    //     value:items.candidateEmail,
-    //     icon: <RiMailSendLine />,
-    //   },
-    //   {
-    //     id:2,
-    //     label:"Phone number",
-    //     value:items.candidateContact,
-    //     icon: <RiSmartphoneLine />,
-    //   },
-    //   {
-    //     id: 3,
-    //     label: "Date of Birth",
-    //     value: "03 September 2000",
-    //     icon: <RiCake2Line />,
-    //   },
-    //   {
-    //     id: 4,
-    //     label: "Salary Expectation",
-    //     value: "AED 25000",
-    //     icon: <RiMoneyDollarBoxLine />,
-    //   },
-    // ],
-    // other:[
-    //   {
-    //     id: 5,
-    //     label: "Location",
-    //     value: items.candidateLocation,
-    //     icon: <RiMapPin2Line />,
-    //   },
-    //   {
-    //     id: 6,
-    //     label: "Work Type",
-    //     value: "Work Type",
-    //     icon: <RiMouseLine />,
-    //   },
-    // ]
-    // })))
-    console.log(response.result)
+  //back end
+  const getCandidatesById = async () => {
+    try {
+      const response = await getRecruitmentResumeById(id);
+      console.log(response);
+      const updatedCandidates = response.result.map((candidate) => ({
+        ...candidate,
+      }));
+      console.log(updatedCandidates);
+      setcandidate(updatedCandidates);
 
-  } catch (error) {
-    console.error('Error updating workflow ID:', error);
-  }
-};
-useEffect(() => {
- 
-  getCandidatesById()
-  
-  console.log(id)
-  console.log(userdata)
-  console.log(Candidate)
-  
-  console.log(currentStatus)
- 
-  
-
-
-}, []);
-const getResumeJob =async ()=>{
-  console.log(jobId)
-
-  try{
-   const response = await getResumeJobDetails(
-    {
-      jobId:jobId,
-      resumeId:resumeId
+      // setuserdata(response.result.map((items)=>({
+      //  personal:[
+      //   {id:1,
+      //     label:"Email Address",
+      //     value:items.candidateEmail,
+      //     icon: <RiMailSendLine />,
+      //   },
+      //   {
+      //     id:2,
+      //     label:"Phone number",
+      //     value:items.candidateContact,
+      //     icon: <RiSmartphoneLine />,
+      //   },
+      //   {
+      //     id: 3,
+      //     label: "Date of Birth",
+      //     value: "03 September 2000",
+      //     icon: <RiCake2Line />,
+      //   },
+      //   {
+      //     id: 4,
+      //     label: "Salary Expectation",
+      //     value: "AED 25000",
+      //     icon: <RiMoneyDollarBoxLine />,
+      //   },
+      // ],
+      // other:[
+      //   {
+      //     id: 5,
+      //     label: "Location",
+      //     value: items.candidateLocation,
+      //     icon: <RiMapPin2Line />,
+      //   },
+      //   {
+      //     id: 6,
+      //     label: "Work Type",
+      //     value: "Work Type",
+      //     icon: <RiMouseLine />,
+      //   },
+      // ]
+      // })))
+      console.log(response.result);
+    } catch (error) {
+      console.error("Error updating workflow ID:", error);
     }
-   )
-   console.log(response);
-   
-   setSelectedItemLabel(response.result.stageName)
-   setjobResumeMapping(response.result.jobResumeMappingId)
-   setgetstatus(response.result.currentStatus)
+  };
+  useEffect(() => {
+    getCandidatesById();
 
-  }catch(error){
-    console.log(error)
+    console.log(id);
+    console.log(userdata);
+    console.log(Candidate);
 
-  }
-}
-useEffect(()=>{
-  
-  getResumeJob()
-  
-},[])
-useEffect(()=>{
-  
-  
-  console.log(getstatus)
-},[getstatus])
-const handleButtonClick = async (status) => {
-  getResumeJob()
-  try {
-    const response = await updateRecruitmentJobResumesMapping({
-      id: jobResumeMapping,
-      modifiedBy: null,
-      currentStatus: status,
-    });
-    console.log(response)
-    if(response.status===200){
-      messageApi.open({
-        type: "success",
-        content: `${response.message} `,
+    console.log(currentStatus);
+  }, []);
+  const getResumeJob = async () => {
+    console.log(jobId);
+
+    try {
+      const response = await getResumeJobDetails({
+        jobId: jobId,
+        resumeId: resumeId,
       });
+      console.log(response);
+
+      setSelectedItemLabel(response.result.stageName);
+      setjobResumeMapping(response.result.jobResumeMappingId);
+      setgetstatus(response.result.currentStatus);
+    } catch (error) {
+      console.log(error);
     }
-    
-    // Handle response if needed
-  } catch (error) {
-    console.log(error);
-  }
-};
+  };
+  useEffect(() => {
+    getResumeJob();
+  }, []);
+  useEffect(() => {
+    console.log(getstatus);
+  }, [getstatus]);
+  const handleButtonClick = async (status) => {
+    getResumeJob();
+    try {
+      const response = await updateRecruitmentJobResumesMapping({
+        id: jobResumeMapping,
+        modifiedBy: null,
+        currentStatus: status,
+      });
+      console.log(response);
+      if (response.status === 200) {
+        messageApi.open({
+          type: "success",
+          content: `${response.message} `,
+        });
+      }
 
-const getJobName = async ()=>{
-  try{
-   if(jobId){
+      // Handle response if needed
+    } catch (error) {
+      console.log(error);
+    }
+  };
 
-   
-    const response = await getRecruitmentJobById({id:jobId})
-    console.log(response)
-    setJobName(response.result[0].jobTitle)  
-   }
-  }catch(error)
-  {
-    console.log(error)
-  }
-}
-useEffect(()=>{
-  getJobName()
-},[jobId])
+  const getJobName = async () => {
+    try {
+      if (jobId) {
+        const response = await getRecruitmentJobById({ id: jobId });
+        console.log(response);
+        setJobName(response.result[0].jobTitle);
+      }
+    } catch (error) {
+      console.log(error);
+    }
+  };
+  useEffect(() => {
+    getJobName();
+  }, [jobId]);
 
-const getAlljobs = async ()=>{
-  try{
-    const response = await getAllRecruitmentJobs({companyId:companyId})
-    console.log(response)
-    const jobs = response.result.map(jobs => ({
-      label: jobs.jobTitle,
-      key: jobs.jobId
-    }))
-    console.log(jobs)
-    setAllJob (
-      jobs
-    )
-    
+  const getAlljobs = async () => {
+    try {
+      const response = await getAllRecruitmentJobs({ companyId: companyId });
+      console.log(response);
+      const jobs = response.result.map((jobs) => ({
+        label: jobs.jobTitle,
+        key: jobs.jobId,
+      }));
+      console.log(jobs);
+      setAllJob(jobs);
+    } catch (error) {
+      console.log(error);
+    }
+  };
 
-  }catch(error){
-   console.log(error)
-  }
-}
+  useEffect(() => {
+    getAlljobs();
+  }, []);
 
- useEffect(()=>{
-  getAlljobs()
- },[])
-
- const jobs = (
-  <Menu onClick={handleMenuClick1}>
-    {allJob.map((item) => (
-      <Menu.Item key={item.key}>{item.label}</Menu.Item>
-    ))}
-  </Menu>
-);
+  const jobs = (
+    <Menu onClick={handleMenuClick1}>
+      {allJob.map((item) => (
+        <Menu.Item key={item.key}>{item.label}</Menu.Item>
+      ))}
+    </Menu>
+  );
+  
   return (
-    
     <div className="flex flex-col gap-6">
       {contextHolder}
       <div className="flex flex-col justify-between lg:flex-row lg:items-center">
-        <Link onClick={navigateBack} className="backBtn vhcenter gap-2.5" >
+        <Link onClick={navigateBack} className="backBtn vhcenter gap-2.5">
           <div className="bg-white border border-black rounded-full w-9 h-9 border-opacity-5 vhcenter">
-           
             <PiArrowLeftBold className="text-xl text-primary" />
           </div>
-          
-           <p  className="pblack">Back to All Candidates</p>
-         
+
+          <p className="pblack">Back to All Candidates</p>
         </Link>
         <div className="gap-2 vhcenter">
           {console.log(getstatus)}
-        {getstatus !== null && ( // Check if getstatus is not null
-  <>
-    <ButtonClick
-      buttonName="UnderProcess"
-      icon={<FcProcess />}
-      handleSubmit={() => handleButtonClick(0)}
-      backgroundColor={getstatus === "0" ? 'yellow' : 'inherit'}
-    />
-    <ButtonClick
-      buttonName="Disqualify"
-      icon={<FcHighPriority />}
-      handleSubmit={() => handleButtonClick(2)}
-      backgroundColor={getstatus === "2" ? 'red' : 'inherit'}
-    />
-    <ButtonClick
-      buttonName="Hire"
-      icon={<FcCheckmark />}
-      handleSubmit={() => handleButtonClick(1)}
-      backgroundColor={getstatus === "1" ? 'green' : 'inherit'}
-    />
-  </>
-)}
+          {getstatus !== null && ( // Check if getstatus is not null
+            <>
+              <ButtonClick
+                buttonName="UnderProcess"
+                icon={<FcProcess />}
+                handleSubmit={() => handleButtonClick(0)}
+                backgroundColor={getstatus === "0" ? "yellow" : "inherit"}
+              />
+              <ButtonClick
+                buttonName="Disqualify"
+                icon={<FcHighPriority />}
+                handleSubmit={() => handleButtonClick(2)}
+                backgroundColor={getstatus === "2" ? "red" : "inherit"}
+              />
+              <ButtonClick
+                buttonName="Hire"
+                icon={<FcCheckmark />}
+                handleSubmit={() => handleButtonClick(1)}
+                backgroundColor={getstatus === "1" ? "green" : "inherit"}
+              />
+            </>
+          )}
           <ButtonClick buttonName="Share" icon={<FcShare />} />
           <Dropdown
             menu={{
@@ -581,52 +563,56 @@ const getAlljobs = async ()=>{
         </div>
       </div>
       {Candidate.map((items) => (
-  <div key={items.id}>
+        <div key={items.id}>
           <div
-        className="flex flex-col gap-3.5 rounded-lg p-3.5 dark:!bg-secondaryDark"
-        style={{ backgroundColor: `${primaryColor}10` }}
-      >  
-        <div className="flex flex-col justify-between lg:flex-row lg:items-center">
-          <div className="flex items-center justify-start gap-5">
-            <img
-              className="w-[60px] h-[60px] rounded-full shadow border-2 border-white"
-              src={items.candidatePhoto}
-            />
-            <div className="inline-flex flex-col items-start justify-start gap-1">
-              <div className="gap-3 vhcenter">
-                <h2 className="h2">{items.candidateName}</h2>
-                <PiBookmarkSimpleFill className=" text-[#12B76A] text-base" />
-              </div>
+            className="flex flex-col gap-3.5 rounded-lg p-3.5 dark:!bg-secondaryDark"
+            style={{ backgroundColor: `${primaryColor}10` }}
+          >
+            <div className="flex flex-col justify-between lg:flex-row lg:items-center">
+              <div className="flex items-center justify-start gap-5">
+                <div className="size-[60px] rounded-full shadow border-2 border-white overflow-hidden bg-primaryalpha vhcenter">
+                  {items.candidatePhoto ? (
+                    <img
+                      className="object-cover object-center w-full h-full "
+                      src={items.candidatePhoto}
+                    />
+                  ) : (
+                    <span className="h6 !text-white !font-medium leading-none">
+                     {items.candidateName.charAt(0)}
+                    </span>
+                  )}
+                </div>
+                <div className="inline-flex flex-col items-start justify-start gap-1">
+                  <div className="gap-3 vhcenter">
+                    <h2 className="h2">{items.candidateName}</h2>
+                    <PiBookmarkSimpleFill className=" text-[#12B76A] text-base" />
+                  </div>
 
-              <div className="inline-flex items-center justify-start gap-4">
-                <p className="pblack !font-normal">
-                  {items.candidateLocation}
-                </p>
-                <p className="gap-2 pblack vhcenter">
-                  <MdPhone className="text-base text-primary" /> {items.candidateContact}
-                </p>
-               
-                <div
-                  className="text-black cursor-pointer text-opacity-30 dark:text-white dark:hover:text-primary hover:text-opacity-90"
-                  onClick={() => handleCopyClick(items.candidateContact)}
-                >
-                  <MdContentCopy size={16} />
+                  <div className="inline-flex items-center justify-start gap-4">
+                    <p className="pblack !font-normal">
+                      {items.candidateLocation}
+                    </p>
+                    <p className="gap-2 pblack vhcenter">
+                      <MdPhone className="text-base text-primary" />{" "}
+                      {items.candidateContact}
+                    </p>
+
+                    <div
+                      className="text-black cursor-pointer text-opacity-30 dark:text-white dark:hover:text-primary hover:text-opacity-90"
+                      onClick={() => handleCopyClick(items.candidateContact)}
+                    >
+                      <MdContentCopy size={16} />
+                    </div>
+                  </div>
                 </div>
               </div>
-            </div>
-          </div>
-          
-            
 
-          
-          <div className="flex gap-3">
-          <div className="flex flex-col gap-3">
-          
-          {console.log("jobId1:", jobId)}
-          {console.log("jobId1:", jobs)}
-          {jobId === "null" ? (
-            
-            <Dropdown overlay={jobs} trigger={["click"]}>
+              <div className="flex gap-3">
+                <div className="flex flex-col gap-3">
+                  {console.log("jobId1:", jobId)}
+                  {console.log("jobId1:", jobs)}
+                  {jobId === "null" ? (
+                    <Dropdown overlay={jobs} trigger={["click"]}>
                       <a className="pblack" onClick={(e) => e.preventDefault()}>
                         <Space>
                           Choose Job
@@ -634,49 +620,39 @@ const getAlljobs = async ()=>{
                         </Space>
                       </a>
                     </Dropdown>
-         
-          
-          ):(null)}
-        
-    
+                  ) : null}
 
+                  <div className="bg-[#FFE8E8] rounded-full px-4 py-1">
+                    {jobName}
+                  </div>
+                </div>
+                <div className="flex flex-col gap-3">
+                  <Dropdown overlay={menu} trigger={["click"]}>
+                    <a className="pblack" onClick={(e) => e.preventDefault()}>
+                      <Space>
+                        Stage
+                        <DownOutlined />
+                      </Space>
+                    </a>
+                  </Dropdown>
+                  <div className="bg-[#FFE8E8] rounded-full px-4 py-1">
+                    {selectedItemLabel}
+                  </div>
+                </div>
 
-          <div className="bg-[#FFE8E8] rounded-full px-4 py-1">
-              {jobName}
+                <Divider type="vertical" className="hidden h-auto lg:block" />
+                <div className="flex flex-col gap-3">
+                  <p className="pblack">Rating</p>
+                  <Rate allowHalf defaultValue={2.5} />
+                </div>
               </div>
-            </div>
-            <div className="flex flex-col gap-3">
-              <Dropdown overlay={menu} trigger={["click"]}>
-                <a className="pblack" onClick={(e) => e.preventDefault()}>
-                  <Space>
-                    Stage
-                    <DownOutlined />
-                  </Space>
-                </a>
-              </Dropdown>
-              <div className="bg-[#FFE8E8] rounded-full px-4 py-1">
-              {selectedItemLabel}
-              </div>
-            </div>
-
-            
-            <Divider type="vertical" className="hidden h-auto lg:block" />
-            <div className="flex flex-col gap-3">
-              <p className="pblack">Rating</p>
-              <Rate allowHalf defaultValue={2.5} />
             </div>
           </div>
         </div>
-      </div>
-    
-  </div>
-))}
+      ))}
 
       <TabsNew tabs={tabs} onTabChange={handleTabChange} initialTab={1} />
-      
     </div>
-    
-    
   );
 };
 

@@ -4,9 +4,9 @@ import { Select } from "antd";
 import CustomAccordion from "./CustomAccordion";
 import ThemeSwitch from "./ThemeSwitch";
 // import SampleAcco from "./SampleAcco";
-import { useMediaQuery } from 'react-responsive';
+import { useMediaQuery } from "react-responsive";
 import Breadcrumbs from "../../common/BreadCrumbs";
-
+import ThemeColor from "../../common/ThemeColor";
 
 const Appearance = () => {
   const { t, i18n } = useTranslation();
@@ -56,15 +56,23 @@ const Appearance = () => {
         </p>
       </div> */}
       <div className="flex flex-col gap-6">
-        <div className="flex flex-col justify-between gap-6 md:gap-3 box-wrapper md:flex-row border border-gray-200 rounded-2xl">
-          <div>
-            <p className="subhead">{t("Inter_face_theme")}</p>
-            <p className="para">{t("Inter_face_theme_Description")}</p>
+        <div className="flex flex-col gap-6 box-wrapper">
+          <div className="flex flex-col justify-between gap-6 md:gap-3 md:flex-row">
+            <div>
+              <p className="subhead">{t("Inter_face_theme")}</p>
+              <p className="para">{t("Inter_face_theme_Description")}</p>
+            </div>
+            <ThemeSwitch />
           </div>
-          <ThemeSwitch />
+          <div className="flex flex-col justify-between gap-3 md:items-center md:flex-row">
+            <div>
+              <p className="subhead">{t("Theme_color")}</p>
+              <p className="para">{t("Inter_face_theme_Description")}</p>
+            </div>
+            <ThemeColor />
+          </div>
         </div>
-
-        <div className="flex flex-col justify-between gap-6 md:items-center md:gap-0 box-wrapper md:flex-row border border-gray-200 rounded-2xl">
+        <div className="flex flex-col justify-between gap-6 md:items-center md:gap-0 box-wrapper md:flex-row">
           <div>
             <p className="subhead">{t("Sidebar_feature")}</p>
             <p className="para">{t("Sidebar_feature_Description")}</p>

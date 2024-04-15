@@ -97,7 +97,7 @@ const ThemeSwitch = () => {
         </label >
       </li >
 
-      <li className="relative sm:w-36 2xl:w-52">
+      {/* <li className="relative sm:w-36 2xl:w-52">
         <input
           className="sr-only peer"
           type="radio"
@@ -124,7 +124,7 @@ const ThemeSwitch = () => {
             </p>
           </div>
         </label >
-      </li >
+      </li > */}
     </ul >
   );
 };
