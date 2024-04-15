@@ -382,7 +382,7 @@ const Sidebar = () => {
                 },
                 {
                   id: 114,
-                  title: t("Role and Privileges"),
+                  title: t("Role_and_Privileges"),
                   icon: (
                     <GoKey  className="!text-base 2xl:!text-2xl" />
                   ),
@@ -410,7 +410,7 @@ const Sidebar = () => {
                 },
                 {
                   id: 116,
-                  title: t("Team members"),
+                  title: t("Team_members"),
                   icon: (
                     <HiOutlineSquare3Stack3D  className="!text-base 2xl:!text-2xl" />
                   ),
@@ -418,7 +418,7 @@ const Sidebar = () => {
                 },
                 {
                   id: 117,
-                  title: t("System settings"),
+                  title: t("System_settings"),
                   icon: (
                     <PiCheckSquareOffsetThin  className="!text-base 2xl:!text-2xl"/>
                   ),

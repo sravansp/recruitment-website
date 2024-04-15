@@ -1,4 +1,17 @@
 const appearanceLanguage = {
+
+
+  //side bar main 
+  Discover:"Discover",
+  Jobs:"Jobs",
+  Candidates:"Candidates",
+  Reports:"Reports",
+  Help:"Help",
+
+
+
+
+
   Appearance: "Appearance Settings",
   Appearance_Description: "Customizing your workspace, make it more enjoyable and comfortable to work!",
   Custom_theme: "Create custom theme",
@@ -25,5 +38,24 @@ const appearanceLanguage = {
   Show_Suggestion_Description: "This will display suggestions in Arabic.",
   Disable_Voice_Comma: "Disable voice commands",
   Disable_Voice_Comma_Description: "Control voice command here.",
+
+
+
+  //side bar 
+  Settings:"Settings",
+  General:"General",
+  Appearance:"Appearance",
+  Notification:"Notification",
+  Other:"Other",
+  Role_and_Privileges:"Role and Privileges",
+  Company:"Company",
+  Team_members:"Team Members",
+  System_settings:"System settings",
+  Integrations:"Integrations",
+  Templates:"Templates",
+
+  //comon
+
+  comon_Dscription:"Coordinates the planning, execution, and completion of projects...",
 };
 export default appearanceLanguage;

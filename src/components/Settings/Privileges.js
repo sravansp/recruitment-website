@@ -16,7 +16,7 @@ export default function Privileges() {
     const breadcrumbItems = [
       { label: t("Settings"), url: "" },
       { label: t("General"), url: "" },
-      { label: t("Role and Privileges"), url: "/" },
+      { label: t("Role_and_Privileges"), url: "/" },
       // { label: navigationPath.charAt(0).toUpperCase() + navigationPath.slice(1) },
     ];
    
@@ -80,9 +80,9 @@ export default function Privileges() {
       onSubmit: async (e) => {},
     });
     const navigateBtn = [
-      { id: 1, value: "Roles", title: "Roles Management" },
-      { id: 2, value: "Users", title: "Attendance Access" },
-      { id: 3, value: "access", title: "Access Settings" },
+      { id: 1, value: "Roles", title: t("Roles_Management") },
+      { id: 2, value: "Users", title: t("Attendance_Access") },
+      { id: 3, value: "access", title: t("Access_Settings") },
     ];
     const header = [
       {
@@ -114,13 +114,13 @@ export default function Privileges() {
     const tabss = [
       {
         id: 1,
-        title: "Role List",
+        title:t( "Role_List"),
         value: "RolesHistory",
         //   content: <CardPersonal data={employeeInfo} />,
       },
       {
         id: 2,
-        title: "Users List",
+        title: t("Users_List"),
         value: "UsersHistory",
         // content: <CardPersonal data={employeeInfo} />,
       },
@@ -215,7 +215,7 @@ export default function Privileges() {
         </div>
         <div className="gap-4 ">
           <ButtonClick
-            buttonName={t("Create Role")}
+            buttonName={t("Create_Role")}
             handleSubmit={() => {
               setShow(true);
               console.log(true);

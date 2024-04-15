@@ -23,34 +23,34 @@ export default function Notification() {
   const [notificationData, setNotificationData] = useState([
     {
       id: 1,
-      title: t("Email_Notification"),
+      title: t("Email_notification"),
       description: t("Email_Notification_description"),
       contents: [
         {
           id: 1,
-          subTitle: t("Salary Slip"),
-          subTitleDescription: t("This will show Arabic in table fields when creating and editing items."),
+          subTitle: t("Salary_Slip"),
+          subTitleDescription: t("Subtitle_Notfication"),
           value: "generalUpdates",
           isActive: false,
         },
         {
           id: 2,
-          subTitle: t("Salary Certificate"),
-          subTitleDescription: t("This will show Arabic in table fields when creating and editing items.n"),
+          subTitle: t("Salary_Certificate"),
+          subTitleDescription: t("Subtitle_Notfication"),
           value: "taskReminders",
           isActive: false,
         },
         {
           id: 3,
-          subTitle: t("Gratuity Approval"),
-          subTitleDescription: t("This will show Arabic in table fields when creating and editing items."),
+          subTitle: t("Gratuity_Approval"),
+          subTitleDescription: t("Subtitle_Notfication"),
           value: "meetingInvitations",
           isActive: false,
         },
         {
           id: 4,
-          subTitle: t("Loan approvals"),
-          subTitleDescription: t("This will show Arabic in table fields when creating and editing items."),
+          subTitle: t("Loan_approvals"),
+          subTitleDescription: t("Subtitle_Notfication"),
           value: "emailemployeeRequests",
           isActive: false,
         },
@@ -204,7 +204,8 @@ export default function Notification() {
   return (
     <div className="flex flex-col gap-6">
       <div>
-        <Breadcrumbs items={breadcrumbItems} />
+        <Breadcrumbs items={breadcrumbItems} 
+        description={t("notification_dsc")}/>
       </div>
       {/* <div>
         <h1 className="h1">{t("Notification_settings")}</h1>

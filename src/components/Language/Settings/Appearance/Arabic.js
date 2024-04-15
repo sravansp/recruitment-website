@@ -1,4 +1,16 @@
 const appearanceLanguageArabic = {
+
+   //side bar main 
+   Discover:"يكتشف",
+   Jobs:"وظائف",
+   Candidates:"مرشحين",
+   Reports:"التقارير",
+   Help:"يساعد",
+
+
+
+
+
   Appearance: "مظهرإعدادات المظهر",
   Appearance_Description: "إن تخصيص مساحة العمل الخاصة بك يجعل العمل أكثر متعة وراحة!",
   Custom_theme: "إنشاء موضوع مخصص",
@@ -25,5 +37,24 @@ const appearanceLanguageArabic = {
   Show_Suggestion_Description: "سيؤدي هذا إلى عرض الاقتراحات باللغة العربية",
   Disable_Voice_Comma: "تعطيل الفاصلة الصوتية",
   Disable_Voice_Comma_Description: "التحكم بالأوامر الصوتية هنا",
+
+
+  //side bar 
+  Settings:"إعدادات",
+  General:"عام",
+  Appearance:"مظهر",
+  Notification:"إخطار",
+  Other:"آخرين",
+  Role_and_Privileges:" الدور والامتيازات",
+  Company:"شركة",
+  Team_members:"أعضاء الفر  يق",
+  System_settings:"اعدادات النظام",
+  Integrations:"التكامل",
+  Templates:"قوالب",
+
+
+  //comon
+
+  comon_Dscription:"ينسق التخطيط والتنفيذ والانتهاء من المشاريع...",
 };
 export default appearanceLanguageArabic;
