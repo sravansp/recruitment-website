@@ -1220,15 +1220,15 @@ const Createjob = ({
 
         setJobdata(firstJob);
 
-        formik1.setFieldValue("companyId", firstJob.companyId);
+        formik1.setFieldValue("companyId", parseInt(firstJob.companyId));
         formik1.setFieldValue("jobTitle", firstJob.jobTitle);
         formik1.setFieldValue(
           "departmentId",
-          parseInt(response.result[0].departmentId)
+        parseInt(firstJob.departmentId)
         );
         formik1.setFieldValue(
           "education",
-          parseInt(response.result[0].education)
+          firstJob.education
         );
         formik1.setFieldValue("isActive", firstJob.isActive);
         formik1.setFieldValue("isSalaryPublic", firstJob.isSalaryPublic);
@@ -1240,6 +1240,7 @@ const Createjob = ({
         formik1.setFieldValue("salaryCurrency", firstJob.salaryCurrency);
         formik1.setFieldValue("salaryRangeFrom", firstJob.salaryRangeFrom);
         formik1.setFieldValue("salaryRangeTo", firstJob.salaryRangeTo);
+        formik1.setFieldValue("experience", firstJob.experience);
         formik1.setFieldValue("searchKeywords", firstJob.searchKeywords);
         const formattedCustomFields =
           firstJob.jobApplicationFormData.customFields.map((field) => ({

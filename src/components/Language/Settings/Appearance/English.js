@@ -1,5 +1,6 @@
 const appearanceLanguage = {
-  Appearance: "Appearance Settings",
+  Appearance: "Appearance",
+  Appearance_Settings: "Appearance settings",
   Appearance_Description: "Customizing your workspace, make it more enjoyable and comfortable to work!",
   Custom_theme: "Create custom theme",
   Inter_face_theme: "Interface theme",

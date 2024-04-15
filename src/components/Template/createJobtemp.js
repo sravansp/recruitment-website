@@ -931,7 +931,7 @@ const CreatejobTemp = ({
         }}
         header={[
           !updateId ? t("Create a Job Temaplate") : t("Update Job Temaplate"),
-          t("Lorem ipsum dummy text doret solo."),
+          !updateId ? t("Create a Job Temaplate") : t("Update Job Temaplate"),
         ]}
         headerRight={
           <div className="flex items-center gap-10">
@@ -1295,19 +1295,19 @@ const CreatejobTemp = ({
   type={"number"}
   change={(e) => {
     formik.setFieldValue('salaryRangeTo', e);
-    const salaryRangeTo = e; // Convert input to a number
-    const salaryRangeFrom = fieldValue
+    const salaryRangeTo = parseFloat(e); // Convert input to a number
+    const salaryRangeFrom = parseFloat(formik.values.salaryRangeFrom);
     if (salaryRangeTo <= salaryRangeFrom) {
-      formik.setFieldError('salaryRangeTo','Salary Range To is cannot be less than Salary Range from');
-    console.log("its is less ")
-    
-      
+      formik.setFieldError('salaryRangeTo', 'Salary Range To cannot be less than Salary Range from');
+      console.log("its is less ");
     } else {
       // Clear the error message when the condition is met
       formik.setFieldError('salaryRangeTo', '');
-      
-      console.log("its is greater ")
+      console.log("its is greater ");
+     
     }
+    // Manually trigger validation after setting field value
+   
   }}
 />
 

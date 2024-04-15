@@ -44,7 +44,7 @@ function App() {
 
   const getOrganisaction = async () => {
     const response = await getAllOrganisation();
-    console.log(response);
+    // console.log(response);
     localStorage.setItem(
       "organisationId",
       JSON.stringify(

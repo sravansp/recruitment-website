@@ -69,7 +69,7 @@ const Tabs = ({
   //   //   // }
   //   //   // setTabData([...tabs]);
   // }, [tabs]);
-  console.log("action",actionID)
+  // console.log("action",actionID)
   const items = [
     {
       key: "selectAll",
@@ -129,7 +129,7 @@ const Tabs = ({
 
     // Filter columns based on whether their titles contain the searchValue
     const filteredColumns = tableData.filter((column) => {
-      console.log(column, "column");
+      // console.log(column, "column");
       const titleText =
         typeof column.title === "string"
           ? column.title
@@ -142,7 +142,7 @@ const Tabs = ({
     setVisibleColumns(filteredColumns.map((col) => col.dataIndex));
   };
   const onChangeGridlist = ({ target: { value } }) => {
-    console.log("radio1 checked", value);
+    // console.log("radio1 checked", value);
     setGridList(value);
   };
   const gridListoptions = [
