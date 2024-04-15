@@ -7,7 +7,7 @@ import { useTranslation } from "react-i18next";
 const ThemeColor = () => {
   const { t } = useTranslation();
   const { changeColor } = useTheme();
-  const defaultColor = "#6A38EF"; // Set the default color here
+  const defaultColor = "#6A4BFC"; // Set the default color here
   const [selectedColor, setSelectedColor] = useState(
     localStorage.getItem("mainColor") || defaultColor
   ); // Default selected color
@@ -18,7 +18,7 @@ const ThemeColor = () => {
   };
 
   const themeColors = [
-    { color: "#6A38EF", name: "Violet" },
+    { color: "#6A4BFC", name: "Violet" },
     { color: "#EE2E5E", name: "Pink" },
     { color: "#009900", name: "Green" },
     { color: "#3F51B5", name: "Blue" },
