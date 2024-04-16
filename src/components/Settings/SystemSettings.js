@@ -25,7 +25,7 @@ function SystemSettings() {
 
       { label: t("Settings"), url: "" },
       { label: t("Other"), url: "" },
-      { label: t("System Settings"), url: "" },
+      { label: t("System_Settings"), url: "" },
       
     ];
 
@@ -132,7 +132,7 @@ function SystemSettings() {
             className="flex items-center dark:bg-black dark:text-white justify-center h-full font-medium flex-nowrap bg-[#FAFAFA] gap-2"
             size={isSmallScreen ? "default" : "large"}
           >
-            <span className="mr-2">{t("Sort by")}</span>
+            <span className="mr-2">{t("Sort_by")}</span>
             <span className="ml-auto">
               <LuArrowDownUp className="text-base 2xl:text-lg" />
             </span>
@@ -158,8 +158,8 @@ function SystemSettings() {
 
       <div className="relative  w-full mx-auto borderb rounded-md">
         <Accordion
-          title="Listing all system config"
-          description="lorem ipsum dummy text dolar sit."
+          title={t("Listing_all_system")}
+          description={t("Listing_All_description")}
           padding={true}
           className={""}
           initialExpanded={true}
@@ -173,12 +173,12 @@ function SystemSettings() {
              
               <div className="grid grid-cols-1 sm:grid-cols-4 gap-4">
                 <FormInput
-                  title={"Job Code Format"}
+                  title={t("Job_Code_Format")}
                   placeholder={"LYT"}
                   className="!text-[#344054]"
                 />
                 <FormInput
-                  title={"Prefix"}
+                  title={t("Prefix")}
                   placeholder={"LL01"}
                   className="!text-[#344054]"
                 />

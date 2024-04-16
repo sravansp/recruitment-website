@@ -19,7 +19,30 @@ const otherLanguageArabic = {
     Status:"حالة",
     Employees:"موظفين",
     Roles:"الأدوار",
-    Create_Role:"إنشاء دور"
+    Create_Role:"إنشاء دور",
+
+
+
+    Departments:"الأقسام",
+    Locations:"المواقع",
+    Name:"اسم",
+    Description:"وصف",
+
+
+    Team_Members:"أعضاء الفريق",
+    Contact:"اتصال",
+    Image:"صورة",
+    Add_Team_Member:"إضافة عضو الفريق",
+
+
+    System_Settings:"اعدادات النظام",
+    Listing_all_system:"سرد جميع تكوينات النظام",
+    Listing_All_description:"لوريم إيبسوم نص دمية دولار الجلوس.",
+    Prefix:"بادئة",
+    Job_Code_Format:"تنسيق رمز الوظيفة",
+    Sort_by:"ترتيب حسب",
+    Filters:"المرشحات",
+
 
 
 };

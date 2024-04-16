@@ -19,7 +19,27 @@ const otherLanguageEnglish = {
     Status:"Status",
     Employees:"Employees",
     Roles:"Roles",
-    Create_Role:"Create Role"
+    Create_Role:"Create Role",
+
+
+    Departments:"Departments",
+    Locations:"Locations",
+    Name:"Name",
+    Description:"Description",
+
+
+    Team_Members:"Team Members",
+    Contact:"Contact",
+    Image:"Image",
+    Add_Team_Member:"Add Team Member",
+
+    System_Settings:"System Settings",
+    Listing_all_system:"Listing all system config",
+    Listing_All_description:"lorem ipsum dummy text dolar sit.",
+    Prefix:"Prefix",
+    Job_Code_Format:"Job Code Format",
+    Filters:"Filters",
+    Sort_by:"Sort by",
 
 
 };

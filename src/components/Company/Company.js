@@ -41,12 +41,12 @@ const Company = () => {
         Departments:[
         {
          id:1,
-         title:"Name",
+         title:t("Name"),
          value:"department",
         },
         {
             id:2,
-            title:"Description",
+            title:t("Description"),
             value:"description",
            },
            
@@ -55,7 +55,7 @@ const Company = () => {
     Locations:[
         {
          id:1,
-         title:"Name",
+         title:t("Name"),
          value:"location",
         },
         {

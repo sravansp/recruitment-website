@@ -27,7 +27,7 @@ const TeamMembers = ({
   const breadcrumbItems = [
     { label: t("Settings"), url: "" },
       { label: t("Other"), url: "" },
-    { label: t("Team Members"), url: "/" },
+    { label: t("Team_Members"), url: "/" },
     // { label: navigationPath.charAt(0).toUpperCase() + navigationPath.slice(1) },
   ];
   const Header = [
@@ -35,22 +35,22 @@ const TeamMembers = ({
       Employee: [
         {
           id: 1,
-          title: "Name",
+          title: t("Name"),
           value: "userName",
         },
         {
           id: 2,
-          title: "Contact",
+          title: t("Contact"),
           value: "userEmail",
         },
         {
           id: 3,
-          title: "Image",
+          title: t("Image"),
           value: "userImage",
         },
         {
           id: 4,
-          title: "",
+          title: t("Status"),
           value: "action",
           action: true,
         },
@@ -111,7 +111,7 @@ const TeamMembers = ({
             }
             // updateFun=""
             // updateBtn={true} // Set to true if it's an update button
-            buttonName={`Add Team Member`} // Set the button name
+            buttonName={t(`Add_Team_Member`)} // Set the button name
             className="your-custom-styles" // Add any additional class names for styling
             BtnType="Add"
             // Specify the button type (Add or Update)
