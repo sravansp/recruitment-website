@@ -59,6 +59,7 @@ export default function Createcandidatelist({ open = "", close = () => { }, file
   const [educationExperiences, seteducationExperiences] = useState([])
   const navigate = useNavigate();
   const [PdFViewer, setPdFViewer] = useState("")
+  const[candidateImage,setcandidateImage] =useState("")
   const [workexp, setWorkexp] = useState([
     {
       id: 1,
@@ -559,7 +560,7 @@ export default function Createcandidatelist({ open = "", close = () => { }, file
 
   const getCandidatesById = async () => {
     try {
-      const response = await getRecruitmentResumeById(43);
+      const response = await getRecruitmentResumeById(resumeId);
       console.log(response);
 
       const personelDetails = [
@@ -573,6 +574,7 @@ export default function Createcandidatelist({ open = "", close = () => { }, file
       setcandidate(personelDetails);
       setImage(response.result[0].candidatePhoto)
       setcandidateName(response.result[0].candidateName)
+      setcandidateImage(response.result[0].candidatePhoto)
       setPdFViewer(response.result[0].resumeFile)
 
       console.log(personelDetails);
@@ -588,7 +590,7 @@ export default function Createcandidatelist({ open = "", close = () => { }, file
 
   const getEducationDetails = async () => {
     try {
-      const response = await getAllRecruitmentResumeEducationalDetails(43)
+      const response = await getAllRecruitmentResumeEducationalDetails(resumeId)
       console.log(response)
       seteducationExperiences(response.result.map((item) => ({
         institution: item.institute,
@@ -604,7 +606,7 @@ export default function Createcandidatelist({ open = "", close = () => { }, file
   const [workExperiences, setexperience] = useState([])
   const getEmployeExperiance = async () => {
     try {
-      const response = await getAllRecruitmentResumesExperienceDetails(43);
+      const response = await getAllRecruitmentResumesExperienceDetails(resumeId);
       console.log(response)
       setexperience(response.result.map((items) => ({
         companyName: items.companyName,
@@ -723,7 +725,7 @@ export default function Createcandidatelist({ open = "", close = () => { }, file
             } else if (activeBtnValue === "Review") {
               // setBtnName("Add Employee");
 
-              setNextStep(nextStep + 1);
+              handleClose()
             }
 
 
@@ -1153,7 +1155,7 @@ export default function Createcandidatelist({ open = "", close = () => { }, file
                           </div>
 
                           <div className='flex gap-2 items-center'>
-                            <img src={Image} className='rounded-full' />
+                            <img src={candidateImage} className='rounded-full' />
                             <h3 className='text-sm font-semibold text-black lg:text-xs 2xl:text-base dark:text-white'>{candiateName}</h3>
                           </div>
                           <div className="grid grid-cols-2 gap-4 w-4/5">

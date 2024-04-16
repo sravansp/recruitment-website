@@ -167,6 +167,7 @@ const formik = useFormik({
               formik.resetForm()
               setTimeout(() => {
                 handleClose();
+                refresh()
               }, 2000)
   
             } else if (response.status === 500) {

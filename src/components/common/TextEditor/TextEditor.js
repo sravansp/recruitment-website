@@ -4,6 +4,7 @@ import { Editor } from 'react-draft-wysiwyg';
 import { FaAsterisk } from "react-icons/fa";
 import 'react-draft-wysiwyg/dist/react-draft-wysiwyg.css';
 import {stateToHTML} from 'draft-js-export-html';
+import { BeatLoader } from 'react-spinners';
 
 const TextEditor = ({
   title = "",
@@ -27,7 +28,19 @@ const TextEditor = ({
       return EditorState.createEmpty();
     }
   });
+  const [loading, setLoading] = useState(true)
+  useEffect(() => {
+    // Simulate data loading with a timeout
+   
+      if(initialValue){
+      setLoading(false);
+      }else{
+        setLoading(true)
+      }
+     // Adjust timeout duration as needed
 
+    // Cleanup function
+  }, [initialValue]);
   useEffect(() => {
     // Check if initialValue exists and if it's different from the current editor content
     if (initialValue && initialValue !== editorState.getCurrentContent().getPlainText()) {
@@ -52,16 +65,21 @@ const TextEditor = ({
        // Ensure onChange is called with plainText, which is a string
     }
   };
-  
+  console.log(initialValue)
   return (
-    <div className={`relative p-4 border border-black rounded-md border-opacity-10 dark:border-secondaryDark mb-14 ${className}`} style={{minHeight: `${minheight}`}}>
+    <div className={`relative p-4 border border-black rounded-md border-opacity-10 dark:border-secondaryDark mb-14 ${className} ${loading ? 'vhcenter' : ''}`} style={{minHeight: `${minheight}`}}>
       <div className="flex">
         <p className={`text-xs font-medium 2xl:text-sm dark:text-white ${className}`}>
           {title}
         </p>
         {required && <FaAsterisk className="text-[10px] text-rose-600" />}
       </div>
-      <Editor
+      {loading ? (
+        // Render loader while data is loading
+        <BeatLoader color="#6A4BFC" />
+      ) : (
+
+     <Editor
         editorState={editorState}
         onEditorStateChange={handleEditorChange}
         placeholder={placeholder}
@@ -81,6 +99,7 @@ const TextEditor = ({
         toolbarClassName=' bg-black'
         editorClassName='h-full'
       />
+      )}
     </div>
   );
 };

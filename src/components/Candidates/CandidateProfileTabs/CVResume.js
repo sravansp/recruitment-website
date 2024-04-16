@@ -58,7 +58,14 @@ const CVResume = ({ showTextEditor,pdfUrl}) => {
   const { state } = useLocation();
   const [selectedNoteId, setSelectedNoteId] = useState(null);
   const [isPinned, setIsPinned] = useState(0);
-  const [PdFViewer, setPdFViewer] = useState(""||pdfUrl)
+  const [PdFViewer, setPdFViewer] = useState("");
+    useEffect(() => {
+    if (pdfUrl) {
+      setPdFViewer(pdfUrl);
+    }
+  }, [pdfUrl]);
+
+  
   const handleEditClick = (jobResumeNoteId) => {
     setSelectedNoteId(jobResumeNoteId);
     getnotesbyId(jobResumeNoteId)
@@ -178,7 +185,7 @@ const CVResume = ({ showTextEditor,pdfUrl}) => {
         <div className="flex flex-col gap-4 box-wrapper">
           <div className="flex items-center justify-between">
             <h6 className="h6 !text-black dark:!text-white">CV / Resume</h6>
-            <ButtonClick buttonName="Add Cover Note" icon={<IoMdAdd />} />
+            {/* <ButtonClick buttonName="Add Cover Note" icon={<IoMdAdd />} /> */}
           </div>
           <div className="flex items-center justify-between">
             <div className="flex items-center gap-2.5">
@@ -200,7 +207,7 @@ const CVResume = ({ showTextEditor,pdfUrl}) => {
           <div className="divider-h" />
           <PDFViewer pdfUrl={PdFViewer} />
         </div>
-
+{/* 
         <div className="flex flex-col gap-5 divide-y box-wrapper">
           <div className="flex items-center justify-between">
             <h6 className="h6">Question</h6>
@@ -228,7 +235,7 @@ const CVResume = ({ showTextEditor,pdfUrl}) => {
               </div>
             ))}
           </div>
-        </div>
+        </div> */}
       </div>
 
       {/* RIGHT COLUMN  */}

@@ -115,13 +115,14 @@ const Createjob = ({
   const [selectedemployee, setselectedemployee] = useState([])
   const [selectedUserIds, setSelectedUserIds] = useState([])
   const [JobDescriptionList,setJobDescriptionList]=useState([])
+  const [jobTitle,setJobTitle] =useState("")
   console.log(updateId)
 
 
   const handleGenerateWithAI = async () => {
     try {
       const requestBody = {
-        val: content,
+        val:jobTitle,
         radioval: "1",
         summarise: null,
       };
@@ -1435,6 +1436,7 @@ const Createjob = ({
                             required={true}
                             change={(e) => {
                               formik1.setFieldValue("jobTitle", e);
+                              setJobTitle(e)
                             }}
                             value={formik1.values.jobTitle}
                             error={formik1.errors.jobTitle}
@@ -2201,6 +2203,7 @@ icon={<img src={image} alt="image" style={{ height: '20px', width: '20px', align
                           setSelectedWorkFlowId(e.target.value);
                           setPresentage(2.4);
                         }}
+                        value={selectedWorkFlowId}
                       >
                         {Stages.map((each) => (
                           <Card key={each.workFlowId} className="mt-6">

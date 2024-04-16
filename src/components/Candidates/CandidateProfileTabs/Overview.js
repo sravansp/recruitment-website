@@ -364,7 +364,7 @@ const Overview = ({ onEmailSelect }) => {
           <div className="flex flex-col gap-4">
             <div className="flex items-center justify-between">
               <h6 className="h6 !text-black dark:!text-white">CV / Resume</h6>
-              <ButtonClick buttonName="Add Cover Note" icon={<IoMdAdd />} />
+              {/* <ButtonClick buttonName="Add Cover Note" icon={<IoMdAdd />} /> */}
             </div>
             <div className="flex items-center justify-between">
               <div className="flex items-center gap-2.5">

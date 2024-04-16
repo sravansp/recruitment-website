@@ -843,7 +843,8 @@ const TableAnt = ({
               </div>
             ) : (
               showsearch && (
-                <div className="search-All">
+                <div className="flex items-center gap-3">
+               
                   <SearchBox
                     data={data}
                     placeholder={t("Search_placeholder")}

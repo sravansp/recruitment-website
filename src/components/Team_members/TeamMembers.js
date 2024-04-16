@@ -64,7 +64,7 @@ const TeamMembers = ({
   //     handleShow();
   //     // You might want to set updateId and companyId here if needed
   //   };
-  useEffect(() => {
+  
     const callapi = async () => {
       try {
         const data = await getAllRecruitmentUsers();
@@ -75,8 +75,11 @@ const TeamMembers = ({
       }
     };
 
-    callapi();
-  }, []);
+    
+
+  useEffect(()=>{
+    callapi()
+  },[])
   console.log("header", Header);
   return (
     <><div className="flex flex-col gap-6">
@@ -120,7 +123,8 @@ const TeamMembers = ({
       </div>
       <div>
         <TableAnt 
-        header={Header}  
+        header={Header} 
+        All={true} 
         data={TeamMembers}  
         actionID="userId" 
         path="Employee"
@@ -147,9 +151,9 @@ const TeamMembers = ({
             setUpdateId(null)
           }}
           updateId={updateId}
-          // refresh={() => {
-          //   getCompanyList();
-          // }}
+          refresh={() => {
+            callapi();
+          }}
           //   onAction={handleLeaveTemplateAction}
           //   action={(e) => {
           //     handleLeaveTemplateAction();

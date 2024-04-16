@@ -139,7 +139,7 @@ const CandidatesList = () => {
       <JobListCopy data={jobstatic}/>
       <div className=''>
         {/* <TableCopy data={jobList} header={header} path='CandidateProfile'/> */}
-        <TableAnt data={jobList} header={header} path='Candidate_Profile' actionID="resumeId" jobId="jobId"/>
+        <TableAnt All={true} data={jobList} header={header} path='Candidate_Profile' actionID="resumeId" jobId="jobId"/>
       </div>
       {show && (
          <motion.div initial="hidden" animate="visible" >

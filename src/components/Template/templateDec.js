@@ -6,7 +6,7 @@ import { Button, Card, Space, notification } from 'antd'
 import { DownOutlined, UserOutlined } from '@ant-design/icons';
 import TextArea from '../common/TextArea'
 import image from '../../assets/images/generate-ai-img.png'
-import TextEditor from '../common/TextEditor/TextEditor'
+import TextEditor from '../../components/common/TextEditor/TextEditor'
 import { updateRecruitmentJobDescriptionTemplate, saveRecruitmentJobDescriptionTemplate, getRecruitmentJobDescriptionTemplateById } from '../Api1'
 import FormInput from '../common/FormInput'
 import ButtonClick from '../common/Button'
@@ -77,6 +77,7 @@ const TemplateDec = ({ open = "", close = () => { }, inputshow = false, isUpdate
 
   const handlesubmit = async () => {
     try {
+      console.log(content)
       if (!updateId) {
         const response = await saveRecruitmentJobDescriptionTemplate({
           companyId: companyId,
@@ -278,8 +279,9 @@ const TemplateDec = ({ open = "", close = () => { }, inputshow = false, isUpdate
             <div className='pt-5'>
               <TextEditor
                 title={"Description"}
-                change={(e)=>{
+                onChange={(e)=>{
                   setContent(e)
+                  console.log(e)
                 }}
                 initialValue={content}
                 placeholder={"Enter the job description here, include key areas of resposibility on what the candidate might do on a typical day."}

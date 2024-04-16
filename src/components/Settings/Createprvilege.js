@@ -16,6 +16,7 @@ import * as yup from "yup";
 import { useFormik } from 'formik';
 import { RxCross2 ,RxQuestionMarkCircled} from 'react-icons/rx';
 import Accordion from '../common/Accordion';
+import { saveRecruitmentRole,getAllRecruitmentFunctions } from '../Api1';
 
 
 
@@ -46,7 +47,27 @@ refresh = () => {},updateId}) {
     const [subFunctionCheckboxes, setSubFunctionCheckboxes] = useState({});
     const [employeeId, setEmployeeId] = useState([]);
     const { t } = useTranslation();
+    const [userid, setuserid] = useState("");
+     
 
+    useEffect(() => {
+      // Retrieve the login data JSON string from local storage
+      const loginDataString = localStorage.getItem("LoginData");
+  
+      if (loginDataString) {
+        // Parse the JSON string to get the LoginData object
+        const loginData = JSON.parse(loginDataString);
+  
+        // Extract the username from the userData object
+        setuserid(
+          loginData && loginData.userData && loginData.userData.employeeId
+        );
+  
+        // Now, 'username' variable contains the username
+      } else {
+        console.error("Login data not found in local storage.");
+      }
+    }, []);
 
     const handleClose = () => {
         close(false);
@@ -79,133 +100,60 @@ refresh = () => {},updateId}) {
       const formik = useFormik({
         initialValues: {
           roleName: "",
-          isActive: "",
-          createdBy: "chinju",
-        },
-        enableReinitialize: true,
-        validateOnChange: false,
-        validationSchema: yup.object().shape({
-          roleName: yup.string().required("Role Name is Required"),
-        }),
-        onSubmit: async (values) => {
-        }
-      });
-    
-      const initialValues = {
-        policyName: "",
-      };
-    
-      const Formik2 = useFormik({
-        initialValues,
-    
-        enableReinitialize: true,
-        validateOnChange: false,
-        validationSchema: yup.object({}),
-        onSubmit: async (e) => {
           
+          createdBy: "",
         },
+        // enableReinitialize: true,
+        // validateOnChange: false,
+        // validationSchema: yup.object().shape({
+        //   roleName: yup.string().required("Role Name is Required"),
+        // }),
+        onSubmit: async (e) => {
+          try{
+            const response = await saveRecruitmentRole(
+              {
+              roleName:e.roleName,
+              createdBy:userid
+              }
+
+         
+
+            )
+            console.log(response)
+          
+            }catch(error){
+            console.log(error)
+          }
+        }
       });
     
-      const CreateRoleteps = [
-        {
-          id: 0,
-          value: 0,
-          title: "Roles",
-          data: "Roles",
-        },
-        {
-          id: 1,
-          value: 1,
-          title: "Assign Roles",
-          data: "assign",
-        },
-      ];
-    
-      useEffect(() => {
-        if (activeBtn < 1 && activeBtn !== nextStep) {
-          setActiveBtn(1 + activeBtn);
-          setActiveBtnValue(CreateRoleteps?.[activeBtn + 1].data);
+      const getRoles = async()=>{
+        try{
+        const response = await getAllRecruitmentFunctions({})
+        console.log(response)
+
+        setParent(response.result)
+        }catch(error){
+          console.log(error)
         }
-      }, [nextStep]);
-    
-      const navigateBtn = [
-        { id: 1, value: "employees", title: "Employees" },
-        // { id: 2, value: "Groups", title: "Groups" },
-      ];
-      const [activeTab, setActiveTab] = useState(navigateBtn[0].id);
-    
-      const getEmployee = async () => {
-       
-        
-      };
       
+      }
+      useEffect(()=>{
+        getRoles()
+      },[])
     
-      useEffect(() => {
-        switch (assignBtnName) {
-          default:
-            getEmployee();
-            break;
-        }
-      }, [assignBtnName]);
+     
+    
+    
+    
+ 
+    
+     
     
       
     
      
-    
-      useEffect(() => {
-        // getData();
-       
-      }, []);
-    
-      const handleSubFunctionCheckboxChange = (subFunctionId) => {
-        setSubFunctionCheckboxes((prevCheckboxes) => ({
-          ...prevCheckboxes,
-          [subFunctionId]: !prevCheckboxes[subFunctionId],
-        }));
-      };
-    
-      const handleMainFunctionCheckboxChange = (mainFunction) => {
-        const mainFunctionId = mainFunction.functionId;
-        const areAllSubFunctionsChecked = mainFunction.subFunctions.every(
-          (subItem) => subFunctionCheckboxes[subItem.functionId]
-        );
-    
-        // If all subfunctions are checked, uncheck them; otherwise, check them
-        const updatedSubFunctionCheckboxes = {};
-        mainFunction.subFunctions.forEach((subItem) => {
-          updatedSubFunctionCheckboxes[subItem.functionId] =
-            !areAllSubFunctionsChecked;
-        });
-    
-        // Update the state with the new checkbox values for subfunctions
-        setSubFunctionCheckboxes((prevCheckboxes) => ({
-          ...prevCheckboxes,
-          ...updatedSubFunctionCheckboxes,
-        }));
-      };
-    
-    
-    
-     
-    
-    //   useEffect(() => {
-    //     console.log(updateId);
-    //     if (updateId);
-    //   }, [updateId]);
-    
-      const onScroll = (e) => {
-        if (e.currentTarget.scrollHeight - e.currentTarget.scrollTop === 400) {
-          getEmployee();
-        }
-      };
-      useEffect(() => {
-        console.log(employeeList);
-        setEmployeeList((prevSwitches) =>
-          prevSwitches?.map((sw) =>
-            employeeId.includes(sw?.id) ? { ...sw, assign: true } : sw
-          )
-        );
-      }, [employeeSearchData]);
+
     
       
     
@@ -235,11 +183,6 @@ refresh = () => {},updateId}) {
             handleClose();
             setIsUpdate(!isUpdate);
 
-            if (!e) {
-              console.log(isUpdate, "not e");
-              // setFunctionRender(!functionRender);
-              formik.setFieldValue("roleName", "");
-            }
             console.log(e);
             close(e);
           }}
@@ -258,58 +201,28 @@ refresh = () => {},updateId}) {
           }
           footerBtn={[
             t("Cancel"),
-            !isUpdate ? t("Save&Continue") : t("Update  Company"),
+            !isUpdate ? t("Save and continue") : t("Update Roles "),
           ]}
-          className="widthFull"
-          stepsData={CreateRoleteps}
-          buttonClick={(e) => {
-            console.log(activeBtnValue);
-            if (activeBtnValue === "Roles") {
-            //   if (!updateId) {
-            //     formik.handleSubmit();
-            //   } else {
-            //     UpdateRoleById();
-            //   }
-            setNextStep(nextStep + 1);
-              console.log("click 1");
-            } else if (activeBtnValue === "assign") {
-              console.log("click 2");
-              // setNextStep(nextStep + 1);
-            //   if (!updateId) {
-            //     Formik2.handleSubmit();
-            //   } else {
-            //     updateUserRoleById();
-            //   }
-            setNextStep(nextStep + 1);
-            }
-          }}
-          buttonClickCancel={(e) => {
-            if (activeBtn > 0) {
-              setActiveBtn(activeBtn - 1);
-              setNextStep(nextStep - 1);
-              setActiveBtnValue(CreateRoleteps?.[activeBtn - 1].data);
-              console.log(activeBtn - 1);
-            }
-            //   setBtnName("");
-          }}
-          nextStep={nextStep}
-          activeBtn={activeBtn}
-          saveAndContinue={true}
+         className="widthFull"
+        saveAndContinue={true}
+        initialBtn={true}
+         buttonClick={formik.handleSubmit}
+         
+        
+          
+         
+         
         >
           <FlexCol>
-            {CreateRoleteps && (
+            
               <Flex justify="center">
                 <div className=" sticky -top-6  z-50 px-5 dark:bg-[#1f1f1f] w-2/5 pb-6 ">
-                  <Stepper
-                    steps={CreateRoleteps}
-                    currentStepNumber={activeBtn}
-                    presentage={presentage}
-                  />
+                
                 </div>
               </Flex>
-            )}
+            
 
-            {activeBtnValue === "Roles" ? (
+            
               <>
                 <Flex justify="center" align="center" className="w-full">
                   <FlexCol
@@ -357,26 +270,27 @@ refresh = () => {},updateId}) {
                             <div className="flex items-center gap-2">
                               <div>
                                 <CheckBoxInput
-                                  value={item.subFunctions.some(
-                                    (subItem) =>
-                                      subFunctionCheckboxes[subItem.functionId]
-                                  )}
-                                  change={() =>
-                                    handleMainFunctionCheckboxChange(item)
-                                  }
+                                  // value={item.subFunctions.some(
+                                  //   (subItem) =>
+                                  //     subFunctionCheckboxes[subItem.functionId]
+                                  // )}
+                                  // change={() =>
+                                  //   handleMainFunctionCheckboxChange(item)
+                                  // }
+                                  
                                   style={{
                                     width: "20px",
                                     height: "20px",
-                                    border: `1px solid ${
-                                      item.subFunctions.some(
-                                        (subItem) =>
-                                          subFunctionCheckboxes[
-                                            subItem.functionId
-                                          ]
-                                      )
-                                        ? "#7F56D9"
-                                        : "#999"
-                                    }`,
+                                    // border: `1px solid ${
+                                    //   item.subFunctions.some(
+                                    //     (subItem) =>
+                                    //       subFunctionCheckboxes[
+                                    //         subItem.functionId
+                                    //       ]
+                                    //   )
+                                    //     ? "#7F56D9"
+                                    //     : "#999"
+                                    // }`,
                                     borderRadius: "3px",
                                     backgroundColor: "transparent",
                                   }}
@@ -386,51 +300,51 @@ refresh = () => {},updateId}) {
                               {item.functionName}
                             </div>
                           }
-                          key={item.functionId}
+                          // key={item.functionId}
                         >
                           <div className="flex gap-2 items-center dark:text-white">
-                            {item.subFunctions.length > 0 && (
+                            {/* {item.subFunctions.length > 0 && ( */}
                               <CheckBoxInput
                                 titleRight="Enable All"
-                                value={item.subFunctions.every(
-                                  (subItem) =>
-                                    subFunctionCheckboxes[subItem.functionId]
-                                )}
-                                change={() =>
-                                  handleMainFunctionCheckboxChange(item)
-                                }
+                                // value={item.subFunctions.every(
+                                //   (subItem) =>
+                                //     subFunctionCheckboxes[subItem.functionId]
+                                // )}
+                                // change={() =>
+                                //   handleMainFunctionCheckboxChange(item)
+                                // }
                                 style={{ display: "none" }}
                               />
-                            )}
+                            {/* )} */}
                           </div>
                           <div className="flex flex-wrap">
-                            {item.subFunctions.map((subItem, index) => (
+                            {/* {item.subFunctions.map((subItem, index) => ( */}
                               <div
-                                key={subItem.functionId}
-                                className="flex gap-2 items-center dark:text-white"
-                                style={{
-                                  width: "50%",
-                                  marginBottom: index % 2 === 0 ? "10px" : 0,
-                                }}
+                                // key={subItem.functionId}
+                                // className="flex gap-2 items-center dark:text-white"
+                                // style={{
+                                //   width: "50%",
+                                //   marginBottom: index % 2 === 0 ? "10px" : 0,
+                                // }}
                               >
                                 <CheckBoxInput
-                                  titleRight={subItem.functionName}
-                                  value={
-                                    subFunctionCheckboxes[subItem.functionId] ||
-                                    (item.functionids &&
-                                      item.functionids.includes(
-                                        subItem.functionId
-                                      ))
-                                  }
-                                  change={() =>
-                                    handleSubFunctionCheckboxChange(
-                                      subItem.functionId
-                                    )
-                                  }
+                                  // titleRight={subItem.functionName}
+                                  // value={
+                                  //   subFunctionCheckboxes[subItem.functionId] ||
+                                  //   (item.functionids &&
+                                  //     item.functionids.includes(
+                                  //       subItem.functionId
+                                  //     ))
+                                  // }
+                                  // change={() =>
+                                  //   handleSubFunctionCheckboxChange(
+                                  //     subItem.functionId
+                                  //   )
+                                  // }
                                   style={{ display: "none" }}
                                 />
                               </div>
-                            ))}
+                            {/* ))} */}
                           </div>
                         </Accordion>
                       ))}
@@ -439,99 +353,9 @@ refresh = () => {},updateId}) {
                 </Flex>
                 ;
               </>
-            ) : (
-              <div className="flex justify-center w-full">
-                <FlexCol>
-                  <Heading
-                    title={t("Assign")}
-                    description={t("Assign")}
-                    padding={false}
-                    className="Text_area col-span-2"
-                  />
-                  <div className="flex flex-col gap-6 p-2">
-                    <div className="!rounded-2xl flex flex-col gap-6 ">
-                      {navigateBtn && (
-                        <div className="flex gap-2 p-[6px] bg-[#FAFAFA] dark:bg-secondaryDark border border-black border-opacity-10 rounded-xl flex-wrap">
-                          {navigateBtn?.map((tab) => (
-                            <button
-                              key={tab.id}
-                              onClick={() => {
-                                setAllSelect(false);
-                                console.log(tab.value);
-                                //  tabClick(tab.value);
-                                setAssignBtnName(tab.value);
-                                setActiveTab(tab.id);
-                                //  setTabName(tab.value);
-                              }}
-                              className={`${
-                                activeTab === tab.id ? "" : ""
-                              } text-sm font-medium whitespace-nowrap py-3 px-[18px] relative rounded-lg group`}
-                            >
-                              {activeTab === tab.id && (
-                                <motion.div
-                                  layoutId="bubble"
-                                  className="absolute inset-0 z-10 rounded-lg bg-accent"
-                                  transition={{
-                                    type: "spring",
-                                    duration: 0.6,
-                                  }}
-                                ></motion.div>
-                              )}
-                              <span
-                                className={`${
-                                  activeTab === tab.id
-                                    ? "relative z-20 text-white"
-                                    : " text-black dark:text-white group-hover:text-primary"
-                                }`}
-                              >
-                                {tab.title}
-                              </span>
-                            </button>
-                          ))}
-                        </div>
-                      )}
-                      <SearchBox
-                        placeholder="Search Employess"
-                        
-                      />
-                  
-                      <div className=" flex flex-col gap-8">
-                        <div className="md:grid md:items-center flex flex-col grid-cols-12 gap-3 py-2 ">
-                          <div className="flex items-center justify-between col-span-5">
-                            <div className="flex items-center justify-between">
-                              <CheckBoxInput
-                                change={(e) => {
-                                  setAllSelect(e);
-                                  console.log(e);
-                                }}
-                                value={allSelect}
-                              >
-                                Select All
-                              </CheckBoxInput>
-                            </div>
-                            <p className="mb-0 text-sm font-semibold text-accent">
-                              All Employees-
-                              {assignBtnName === "employees" &&
-                                employeeList.length}
-                            </p>
-                          </div>
-                          <div className="flex items-center justify-end col-span-7 ">
-                            {allSelect && (
-                              <div className="flex justify-end items-center text-[12px] font-medium text-accent py-2 px-3 rounded-full bg-[#F9F5FF] dark:bg-dark">
-                                <p className="mb-0 ">Remove All</p>
-                                <RxCross2 className=" text-[18px] font-medium pl-1 text-[#9E77ED]" />
-                              </div>
-                            )}
-                          </div>
-                        </div>
-
-                       
-                      </div>
-                    </div>
-                  </div>
-                </FlexCol>
-              </div>
-            )}
+           
+         
+            
           </FlexCol>
           {contextHolder}
         </DrawerPop>

@@ -275,7 +275,7 @@ export const getRecruitmentResumeById = async (id) => {
     // Include any other necessary parameters
     id: id,
   };
-
+ console.log(id)
   return await apiRequest(action, method, requestData);
 };
 export const saveRecruitmentJobResumesStage = async (data) => {
@@ -956,7 +956,7 @@ export const saveRecruitmentJobDescriptionTemplate = async (Data) => {
   const method = "POST";
 
   const kwargs = Data;
-  // console.log("API Request Data:", { action, method, kwargs })
+  console.log("API Request Data:", { action, method, kwargs })
 
   return await apiRequest(action, method, kwargs);
 };
@@ -1127,6 +1127,26 @@ export const getAllRecruitmentJobResumesOfferLetters = async (data) => {
 
   const kwargs = data;
   // console.log("API Request Data:", { action, method, kwargs })
+
+  return await apiRequest(action, method, kwargs);
+};
+export const getAllRecruitmentFunctions = async (data) => {
+  const action = "getAllRecruitmentFunctions";
+
+  const method = "POST";
+
+  const kwargs = data;
+  // console.log("API Request Data:", { action, method, kwargs })
+
+  return await apiRequest(action, method, kwargs);
+};
+export const saveRecruitmentRole = async (data) => {
+  const action = "saveRecruitmentRole";
+
+  const method = "POST";
+
+  const kwargs = data;
+  console.log("API Request Data:", { action, method, kwargs })
 
   return await apiRequest(action, method, kwargs);
 };

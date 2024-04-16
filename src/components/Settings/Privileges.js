@@ -47,18 +47,18 @@ export default function Privileges() {
   
    
   
-    const tabs = [
-      {
-        id: 2,
-        title: t("Location"),
-        value: "location",
-      },
-      {
-        id: 3,
-        title: t("Departments"),
-        value: "departments",
-      },
-    ];
+    // const tabs = [
+    //   {
+    //     id: 2,
+    //     title: t("Location"),
+    //     value: "location",
+    //   },
+    //   {
+    //     id: 3,
+    //     title: t("Departments"),
+    //     value: "departments",
+    //   },
+    // ];
   
     const Formik3 = useFormik({
       initialValues: {
@@ -111,20 +111,20 @@ export default function Privileges() {
         ],
       },
     ];
-    const tabss = [
-      {
-        id: 1,
-        title: "Role List",
-        value: "RolesHistory",
-        //   content: <CardPersonal data={employeeInfo} />,
-      },
-      {
-        id: 2,
-        title: "Users List",
-        value: "UsersHistory",
-        // content: <CardPersonal data={employeeInfo} />,
-      },
-    ];
+    // const tabss = [
+    //   {
+    //     id: 1,
+    //     title: "Role List",
+    //     value: "RolesHistory",
+    //     //   content: <CardPersonal data={employeeInfo} />,
+    //   },
+    //   {
+    //     id: 2,
+    //     title: "Users List",
+    //     value: "UsersHistory",
+    //     // content: <CardPersonal data={employeeInfo} />,
+    //   },
+    // ];
     const Rolelistheader = [
       {
         RolesHistory: [
@@ -155,35 +155,35 @@ export default function Privileges() {
         ],
       },
     ];
-    const Userlistheader = [
-      {
-        UsersHistory: [
-          {
-            id: 1,
-            title: t("Employees"),
-            value: "firstName",
-          },
-          {
-            id: 2,
-            title: t("Roles"),
-            value: "roleName",
-          },
-          {
-            id: 3,
-            title: t("Status"),
-            value: "isActive",
-            actionToggle: true,
-          },
-          {
-            id: 4,
-            title: t("Action"),
-            value: "",
-            action: true,
-            hideIcon: "delete"
-          },
-        ],
-      },
-    ];
+    // const Userlistheader = [
+    //   {
+    //     UsersHistory: [
+    //       {
+    //         id: 1,
+    //         title: t("Employees"),
+    //         value: "firstName",
+    //       },
+    //       {
+    //         id: 2,
+    //         title: t("Roles"),
+    //         value: "roleName",
+    //       },
+    //       {
+    //         id: 3,
+    //         title: t("Status"),
+    //         value: "isActive",
+    //         actionToggle: true,
+    //       },
+    //       {
+    //         id: 4,
+    //         title: t("Action"),
+    //         value: "",
+    //         action: true,
+    //         hideIcon: "delete"
+    //       },
+    //     ],
+    //   },
+    // ];
     const [activeTab, setActiveTab] = useState(navigateBtn[0].id);
     const array = [
       { id: 3 },
@@ -224,67 +224,15 @@ export default function Privileges() {
           ></ButtonClick>
         </div>
       </div>
-
-      <TabsNew
-        tabs={navigateBtn}
-        tabClick={(e) => {
-          setActiverole(e);
-        }}
+      <TableAnt
+      header={header}
+      path='Users'
+      
+      
       />
+     
 
-      {activerole === "Roles" ? (
-        <>
-          <div>
-            {tabValue === "RolesHistory" ? (
-              <TableAnt
-                data={privileges}
-                header={
-                  tabValue === "RolesHistory" ? Rolelistheader : Userlistheader
-                }
-                actionID="roleId"
-                path={"RolesHistory"}
-                tab={tabss}
-                handleTabChange={(e) => {
-                  setTabValue(e);
-                  console.log(e);
-                }}
-                buttonClick={(e, company) => {
-                  setUpdateId(e);
-                }}
-                clickDrawer={(e) => {
-                  handleShow();
-                }}
-                // refresh={() => {
-                //   getRoleList();
-                // }}
-                // updateApi={API.TOGGLE_UPDATE}
-                // deleteApi={API.DELETE_ROLE_RECORD}
-              />
-            ) : (
-              <TableAnt
-                 data={userList}
-                header={tabValue === "UsersHistory" ? Userlistheader : Userlistheader}
-                path={"UsersHistory"}
-                tab={tabss}
-                handleTabChange={(e) => {
-                  setTabValue(e);
-                  console.log(e);
-                }}
-              />
-            )}
-          </div>
-
-          <div>
-            {/* <Accordion
-                    title={t("Attendance Settings")}
-                >
-
-                </Accordion> */}
-          </div>
-        </>
-      ) : (
-        <TableAnt path="Users" header={header} navigationValue={navigateBtn} />
-      )}
+     
 
       {show && (
         <motion.div initial="hidden" animate="visible">

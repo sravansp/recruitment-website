@@ -13,16 +13,17 @@ export default function TimeSelect({
   className = "",
   placeholder = "",
   props,
-  value = "",
-  format = "",
+  value = null,
+  format = "HH:mm:ss",
   description,
   required = false,
 }) {
   const isSmallScreen = useMediaQuery({ maxWidth: 1439 });
-  const [defaultValue, setDefaultValue] = useState("");
+  const [defaultValue, setDefaultValue] = useState(null);
 
   useEffect(() => {
     console.log(value);
+    console.log(format);
     setDefaultValue(value);
   }, [value]);
 
@@ -34,10 +35,21 @@ export default function TimeSelect({
         </p>
         {required && <HiMiniStar className="text-[10px] text-rose-600" />}
       </div>
-
+      {/* <TimePicker
+        onChange={(time, timeString) => {
+          console.log(timeString);
+          change(timeString);
+        }}
+        changeOnScroll
+        needConfirm={false}
+        showNow={false}
+        // onOk={false}
+      /> */}
       <TimePicker
+        // needConfirm={false}
+        // changeOnScroll
         placeholder={placeholder}
-        {...props}
+        // {...props}
         onChange={(time, timeString) => {
           console.log(timeString);
           change(timeString);
@@ -45,7 +57,10 @@ export default function TimeSelect({
         size={isSmallScreen ? "default" : "large"}
         className={`w-full ${error ? "border-rose-400" : ""}`}
         value={value ? moment(value, format) : null}
-        // defaultOpen={value ? moment(value, format) : null}
+        // value={value !== null && value !== " " ? dayjs(value, format) : null}
+        // defaultOpen={
+        //   defaultValue !== null ? moment(defaultValue, format) : null
+        // }
         format={format}
         status={error ? "error" : ""}
         style={
@@ -54,6 +69,13 @@ export default function TimeSelect({
               "0px 0px 0px 4px #FEE4E2, 0px 1px 2px 0px rgba(16, 24, 40, 0.05)",
           }
         }
+        // onSelect={(e, i) => {
+        //   console.log(e);
+        // }}
+        // changeOnScroll
+        // // needConfirm={true}
+        // showNow={false}
+        onOk={null}
       />
       {error && (
         <FiAlertCircle className="absolute top-3.5 right-5 mr-3 transform -translate-y-2/5 text-red-400" />
