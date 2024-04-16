@@ -42,10 +42,10 @@ function Intergration() {
   return (
     <div className="flex flex-col gap-[25px]">
       <div className="flex justify-between">
-        <div>
-          <Breadcrumbs items={breadcrumbItems}
-            description={"Coordinates the planning, execution, and completion of projects..."}
-          />
+        <div className='flex flex-col'>
+          <p className='font-bold text-lg'> Integrations</p>
+          <p className='para font-medium'>Coordinates the planning, execution, and completion of projects...
+          </p>
         </div>
         <ButtonClick
           buttonName={`Add Intergration `}// Set the button name
