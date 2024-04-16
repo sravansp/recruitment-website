@@ -1520,13 +1520,14 @@ const Createjob = ({
                                   customRate === each.id && "text-primary"
                                 } `}
                               /> */}
-                                  <div
+                                  <img
                                     className={`${customRate === each.id &&
                                       " text-primary  "
                                       } p-2 border rounded-mdx w-fit bg-[#F8FAFC]`}
+                                    src={each.image}
+                                    alt=""
                                   >
-                                    {each.image}
-                                  </div>
+                                  </img>
                                   {/* <img
                                   src={customRate === each.id ? cash : cashGray}
                                   alt=""
