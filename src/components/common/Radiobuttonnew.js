@@ -25,7 +25,7 @@ const Radiobuttonnew = ({
          
           <Radio.Group
             
-            defaultValue={1}
+            defaultValue={defaultValue}
             size={isSmallScreen ? "default" : "large"}
             onChange={(e) => {
               change(e.target.value);

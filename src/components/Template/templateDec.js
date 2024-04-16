@@ -153,9 +153,9 @@ const TemplateDec = ({ open = "", close = () => { }, inputshow = false, isUpdate
     console.log(content)
   }, [])
 
-  const handleEditorChange = (content) => {
-    setContent(content);
-  };
+  // const handleEditorChange = (content) => {
+  //   setContent(content);
+  // };
   return (
     <DrawerPop
 
@@ -271,13 +271,17 @@ const TemplateDec = ({ open = "", close = () => { }, inputshow = false, isUpdate
 
           <div className='font-bold'>About the role</div>
           <div className='border rounded-2xl p-5'>
-            <TextArea
+            {/* <TextArea
               title={"Description"}
               placeholder={"Enter the job description here, include key areas of resposibility on what the candidate might do on a typical day."}
-            />
+            /> */}
             <div className='pt-5'>
-              <TextArea
+              <TextEditor
                 title={"Description"}
+                change={(e)=>{
+                  setContent(e)
+                }}
+                initialValue={content}
                 placeholder={"Enter the job description here, include key areas of resposibility on what the candidate might do on a typical day."}
               />
             </div>

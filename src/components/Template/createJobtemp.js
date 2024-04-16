@@ -87,6 +87,7 @@ const CreatejobTemp = ({
 
   // const [isUpdate, setIsUpdate] = useState();
   const[Education,seteducation] =useState("")
+  const[fieldValue,setFieldValue] = useState("")
   const[Experience,setExperience] =useState("")
   const [activeBtn, setActiveBtn] = useState(0);
   const [presentage, setPresentage] = useState(0);
@@ -112,6 +113,7 @@ const CreatejobTemp = ({
   const[summary,setSummary] = useState(1)
   const[resume,setResume] = useState(1)
   const[coverLetter,setCoverletter] = useState(1)
+  const [errors, setErrors] = useState([]);
   console.log(updateId);
   useEffect(() => {
     // Retrieve the login data JSON string from local storage
@@ -455,7 +457,24 @@ const CreatejobTemp = ({
         formik.setFieldValue("salaryRangeTo", firstJob.salaryRangeTo);
         formik.setFieldValue("searchKeywords", firstJob.searchKeywords);
         formik.setFieldValue("experience", firstJob.experience);
-        
+        setHeadline(firstJob.jobApplicationFormData.headline)
+        setPhone(firstJob.jobApplicationFormData.phone)
+        setAddress(firstJob.jobApplicationFormData.address)
+        setCountry(firstJob.jobApplicationFormData.country)
+        seteducation(firstJob.jobApplicationFormData.education)
+        setExperience(firstJob.jobApplicationFormData.experience)
+        setSummary(firstJob.jobApplicationFormData.summary)
+        setResume(firstJob.jobApplicationFormData.resume)
+        setCoverletter(firstJob.jobApplicationFormData.coverLetter)
+        const formattedCustomFields =
+          firstJob.jobApplicationFormData.customFields.map((field) => ({
+            id: firstJob.jobTemplateId,
+            answer_type: field.answer_type || "", // Fill with appropriate value
+            question: field.question || "",
+            answerMetaData: field.answer_meta_data || "[]",
+            is_required: field.is_required || 0,
+          }));
+        setEvaluation(formattedCustomFields);
 
         console.log(firstJob.companyId);
       } else {
@@ -1210,7 +1229,7 @@ const CreatejobTemp = ({
                                                     placeholder={'Urgent'} /> */}
                         </div>
                         <div className="grid grid-cols-4 gap-4">
-                        <FormInput
+                        {/* <FormInput
   title={'Salary Range From'}
   placeholder={'Enter value'}
   change={(e) => {
@@ -1229,24 +1248,70 @@ const CreatejobTemp = ({
   title={'Salary Range To'}
   placeholder={'Enter value'}
   change={(e) => {
-    formik.setFieldValue('salaryRangeTo', e);
+    formik.setFieldError('salaryRangeTo', e);
     // Validate Salary Range To
-    const salaryRangeTo = parseFloat(e); // Convert input to a number
-    const salaryRangeFrom = parseFloat(formik.values.salaryRangeFrom); // Convert Salary Range From to a number
+    const salaryRangeTo = parseInt(e); // Convert input to a number
+    const salaryRangeFrom = parseInt(formik.values.salaryRangeFrom); // Convert Salary Range From to a number
 
     if (salaryRangeTo <= salaryRangeFrom) {
       formik.setFieldError('salaryRangeTo', 'Salary Range To cannot be less than or equal to Salary Range From');
+     
     } else {
       // Clear the error message when the condition is met
       formik.setFieldError('salaryRangeTo', '');
       formik.setFieldValue('salaryRangeTo', e);
+     
     }
   }}
   value={formik.values.salaryRangeTo}
   error={formik.errors.salaryRangeTo}
   required={true}
   type={"number"}
-/> 
+/>  */}
+
+<FormInput
+ title={'Salary Range From'}
+ placeholder={'Enter value'}
+ change={(e) => {
+   formik.setFieldValue('salaryRangeFrom', e);
+   setFieldValue(e)
+   // Validate Salary Range To when Salary Range From changes
+   console.log(e)
+  
+ }}
+ value={formik.values.salaryRangeFrom}
+ type={"number"}
+ error={formik.errors.salaryRangeFrom}
+ required={true}
+
+
+/>
+<FormInput
+  title={'Salary Range To'}
+  placeholder={'Enter value'}
+  value={formik.values.salaryRangeTo}
+  error={formik.errors.salaryRangeTo}
+  required={true}
+  type={"number"}
+  change={(e) => {
+    formik.setFieldValue('salaryRangeTo', e);
+    const salaryRangeTo = parseFloat(e); // Convert input to a number
+    const salaryRangeFrom = parseFloat(formik.values.salaryRangeFrom);
+    if (salaryRangeTo <= salaryRangeFrom) {
+      formik.setFieldError('salaryRangeTo', 'Salary Range To cannot be less than Salary Range from');
+      console.log("its is less ");
+    } else {
+      // Clear the error message when the condition is met
+      formik.setFieldError('salaryRangeTo', '');
+      console.log("its is greater ");
+     
+    }
+    // Manually trigger validation after setting field value
+   
+  }}
+/>
+
+
                           <Dropdown
                             title={"Salary Currency"}
                             placeholder={"Enter Salary Currency"}

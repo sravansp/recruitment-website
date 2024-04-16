@@ -154,10 +154,10 @@ export default function Login() {
   };
 
   return (
-    <div className="flex w-full h-screen">
+    <div className="absolute top-0 bottom-0 flex w-full">
       {contextHolder}
       <div className="w-full lg:w-1/2">
-        <div className="flex flex-col justify-between sm:w-2/3 lg:w-full mx-auto h-full p-10 py-4 md:px-20 2xl:py-20">
+        <div className="flex flex-col justify-between h-full p-10 py-4 mx-auto sm:w-2/3 lg:w-full md:px-20 2xl:py-20">
           {/* LOGO  */}
           <div className="flex justify-center logo lg:justify-start">
             <img src={logo} alt="logo" className="w-20 2xl:w-28" />
@@ -390,7 +390,7 @@ export default function Login() {
       <div className="items-center justify-center hidden text-white lg:w-1/2 lg:flex">
         <div className="h-[calc(100%_-5%)] w-[calc(100%_-5%)] bg_linear_colort rounded-3xl px-20 py-10 2xl:py-20 gap-4  flex flex-col justify-between">
           <div className="top h-[20%] 5xl:h-[5%] flex flex-col gap-1">
-            <h1 className="text-2xl 2xl:text-4xl leading-none">
+            <h1 className="text-2xl leading-none 2xl:text-4xl">
               The simplest way to manage your organisation
             </h1>
             <p className="para !text-white !font-normal">
@@ -409,7 +409,7 @@ export default function Login() {
 
           <div className="w-full mx-auto h-[10%]">
             <div className="text-center">
-
+            {/* <ImageScroll /> */}
             </div>
           </div>
         </div>
