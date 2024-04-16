@@ -6,17 +6,19 @@ import { useTranslation } from "react-i18next";
 import ButtonClick from "../common/Button";
 import Addmembers from "./Add-members";
 import { getAllRecruitmentUsers } from "../Api1";
+import { Link } from "react-router-dom";
+import { PiArrowSquareOut } from "react-icons/pi";
 
 const TeamMembers = ({
   open = "",
-  close = () => {},
+  close = () => { },
   refresh,
   createPolicyAction,
-  
+
   openPolicy,
 }) => {
   const { t } = useTranslation();
-  const[updateId,setUpdateId]=useState(null)
+  const [updateId, setUpdateId] = useState(null)
   const [showPop, setShowPop] = useState(false);
   const handleClose = () => setOpenPop(false);
   const handleShow = () => setShow(true);
@@ -81,13 +83,24 @@ const TeamMembers = ({
     callapi()
   },[])
   console.log("header", Header);
+
+  const handleNavigate = () => {
+    window.open('https://careerui.vercel.app/', '_blank');
+  };
+
+
   return (
     <><div className="flex flex-col gap-6">
       <div className="flex flex-col justify-between gap-8 lg:items-center lg:flex-row">
-        <div>
-          <Breadcrumbs items={breadcrumbItems} />
+        <div className='flex flex-col'>
+          <p className='font-bold text-lg'> Team Members</p>
+          <p className='para font-medium'>{t("Main_Description")}</p>
         </div>
         <div className="flex flex-col gap-6 sm:flex-row">
+          <Link onClick={handleNavigate} className="flex gap-2 mt-2">
+            <span className="!text-primary para">View career page</span>{" "}
+            <PiArrowSquareOut size={15} className="dark:text-white" />
+          </Link>
           <ButtonClick
             handleSubmit={
               () => {
@@ -117,7 +130,7 @@ const TeamMembers = ({
             buttonName={t(`Add_Team_Member`)} // Set the button name
             className="your-custom-styles" // Add any additional class names for styling
             BtnType="Add"
-            // Specify the button type (Add or Update)
+          // Specify the button type (Add or Update)
           />
         </div>
       </div>
@@ -141,7 +154,7 @@ const TeamMembers = ({
         }}
         />
       </div>
-      </div>
+    </div>
       {openPop === "Members" && showPop && (
         <Addmembers
           open={showPop}

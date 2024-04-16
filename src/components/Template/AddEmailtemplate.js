@@ -242,6 +242,7 @@
               </div>
 
               <TextEditor
+                placeholder={"Start typing your email..."}
                 initialValue={content}
                 onChange={handleEditorChange}
                 minheight="250px"

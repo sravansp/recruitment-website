@@ -1,4 +1,5 @@
 import React, { useEffect } from "react";
+import { useTranslation } from "react-i18next";
 import { IoIosArrowForward } from "react-icons/io";
 import { Link } from "react-router-dom";
 
@@ -10,8 +11,10 @@ import { Link } from "react-router-dom";
 // ];
 
 const Breadcrumbs = ({ items,
-  description = "Coordinates the planning, execution, and completion of projects..."
+  description = " "
 }) => {
+  const { t } = useTranslation();
+
   useEffect(() => { }, []);
 
   return (
@@ -37,7 +40,11 @@ const Breadcrumbs = ({ items,
           </li>
         ))}
       </ol>
-      {description && <p className="para font-medium">{description}</p>}
+      {description ? (
+        <p className="para font-medium">{description}</p>
+      ) : (
+        <p className="para font-medium">{t("Main_Description")}</p>
+      )}
     </nav>
   );
 };

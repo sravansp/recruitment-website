@@ -16,6 +16,8 @@ import { CgAdd } from 'react-icons/cg'
 import { getRecruitmentQuestionnaireTemplateById, updateQuestionnaireTemplateWithDetails, saveRecruitmentQuestionnaireTemplate, saveRecruitmentQuestionnaireTemplateDetailBatch } from '../Api1'
 import { Formik, useFormik } from 'formik'
 import AddMore from '../common/AddMore'
+import { IoIosCopy } from 'react-icons/io'
+import { RiDeleteBinLine } from 'react-icons/ri'
 
 
 const 
@@ -471,8 +473,8 @@ QuestionAire = ({
                   </div>
 
                   <div style={{ display: 'flex', alignItems: 'center', gap: '15px' }}>
-                    <MdOutlineFileCopy style={{ width: '18px', height: '18px', cursor: 'pointer' }} />
-                    <MdDelete style={{ width: '18px', height: '18px', cursor: 'pointer' }} onClick={() => handleDeleteCondition(index)} />
+                    <IoIosCopy className="text-gray-500" style={{ width: '18px', height: '18px', cursor: 'pointer' }} />
+                    <RiDeleteBinLine className="text-gray-500" style={{ width: '18px', height: '18px', cursor: 'pointer' }} onClick={() => handleDeleteCondition(index)} />
                   </div>
 
                 </div>

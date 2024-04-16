@@ -238,7 +238,7 @@ const formik = useFormik({
     ]}
     footerBtn={[
       t("Cancel"),
-      !updateId ? t("Add-Teammebers") : t("Update-Teammebers"),
+      t("Save"),
     ]}
     
     
