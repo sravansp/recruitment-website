@@ -6,7 +6,7 @@ import { useTranslation } from 'react-i18next';
 import { RxQuestionMarkCircled } from 'react-icons/rx';
 import DrawerPop from '../common/DrawerPop';
 import FlexCol from '../common/FlexCol';
-import { Card, Flex, Space, notification } from 'antd';
+import { Card, Flex, Space, Tooltip, notification } from 'antd';
 import Stepper from '../common/Stepper';
 import Accordion from '../common/Accordion';
 import FormInput from '../common/FormInput';
@@ -32,7 +32,7 @@ import { GrEdit } from "react-icons/gr";
 import Header from '../Header/Header';
 import CVResume from './CandidateProfileTabs/CVResume';
 import API, { action, fileAction } from '../Api1';
-import {getAllRecruitmentResumesExperienceDetails,getAllRecruitmentResumeEducationalDetails,getRecruitmentResumeById, saveRecruitmentResume, saveRecruitmentResumeEducationalDetailBatch, saveRecruitmentResumesExperienceDetailBatch, resumeFileUpload } from '../Api1'
+import { getAllRecruitmentResumesExperienceDetails, getAllRecruitmentResumeEducationalDetails, getRecruitmentResumeById, saveRecruitmentResume, saveRecruitmentResumeEducationalDetailBatch, saveRecruitmentResumesExperienceDetailBatch, resumeFileUpload } from '../Api1'
 import RangeDatePicker from '../common/RangeDatePicker';
 import DateSelect from '../common/DateSelect';
 import FileUpload from '../common/FileUpload';
@@ -52,12 +52,13 @@ export default function Createcandidatelist({ open = "", close = () => { }, file
   const { t } = useTranslation();
   const [api, contextHolder] = notification.useNotification();
   const [file, setFile] = useState("");
-  const[filePdf,setFilepdf] =useState("")
-  const[Candidate,setcandidate]=useState([])
-  const[Image,setImage]=useState("")
-  const[candiateName,setcandidateName]=useState("")
-  const[educationExperiences,seteducationExperiences] = useState([])
+  const [filePdf, setFilepdf] = useState("")
+  const [Candidate, setcandidate] = useState([])
+  const [Image, setImage] = useState("")
+  const [candiateName, setcandidateName] = useState("")
+  const [educationExperiences, seteducationExperiences] = useState([])
   const navigate = useNavigate();
+  const [PdFViewer, setPdFViewer] = useState("")
   const [workexp, setWorkexp] = useState([
     {
       id: 1,
@@ -89,7 +90,7 @@ export default function Createcandidatelist({ open = "", close = () => { }, file
 
 
 
-        }, ],
+        },],
 
     }
 
@@ -229,7 +230,7 @@ export default function Createcandidatelist({ open = "", close = () => { }, file
             type: "date"
 
 
-          }, ],
+          },],
       }
     ]);
   };
@@ -257,7 +258,7 @@ export default function Createcandidatelist({ open = "", close = () => { }, file
   useEffect(() => {
     console.log(FormData, "form data")
   }, [])
- 
+
   const formik3 = useFormik({
     initialValues: {
       ...personWorkExp,
@@ -270,14 +271,14 @@ export default function Createcandidatelist({ open = "", close = () => { }, file
     validationSchema: yup.object({
       companyName: yup.string().required("Company Name is required"),
     }),
-    
+
     onSubmit: async (values, { setSubmitting }) => {
       try {
         const response = await saveRecruitmentResumesExperienceDetailBatch(
           workexp.map((each) => {
             const fromDate = values[each.field[4].inputFeild][0]; // Extracting start date from range picker
             const toDate = values[each.field[4].inputFeild][1]; // Extracting end date from range picker
-    
+
             return {
               resumeId: resumeId,
               jobTitle: values[each.field[0].inputFeild],
@@ -290,37 +291,37 @@ export default function Createcandidatelist({ open = "", close = () => { }, file
             };
           })
         );
-         if(response.status===200){
+        if (response.status === 200) {
           if (resumeId) {
-          const formData = new FormData();
-            
-          formData.append('file', filePdf);
-     
-          console.log("inside file upload api");
-        
-          formData.append('action', 'resumeFileUpload');
-          formData.append('resumeId', resumeId);
-        
-          formData.append('coverLetter', values.coverLetter);
+            const formData = new FormData();
 
-          const FileUpload = await fileAction(formData);
-          console.log(FileUpload, "fileUploadResult")
+            formData.append('file', filePdf);
+
+            console.log("inside file upload api");
+
+            formData.append('action', 'resumeFileUpload');
+            formData.append('resumeId', resumeId);
+
+            formData.append('coverLetter', values.coverLetter);
+
+            const FileUpload = await fileAction(formData);
+            console.log(FileUpload, "fileUploadResult")
           }
           setNextStep(nextStep + 1);
           setPresentage(1);
           openNotification("success", "Success...", response.message);
 
-         }else{
+        } else {
           console.log("file upload failed")
           openNotification("error", "Failed..", response.message);
-         }
+        }
 
         // File upload
 
         // if (result.status === 200) {
         //   setNextStep(nextStep + 1);
         //   setPresentage(1);
-          
+
 
         // } else if (result.status === 500) {
         //   openNotification("error", "Failed..", result.message);
@@ -329,13 +330,13 @@ export default function Createcandidatelist({ open = "", close = () => { }, file
         // console.log(result.errors);
       } catch (error) {
         openNotification("error", "Failed..", error.message);
-      } 
+      }
       // finally {
       //   setSubmitting(false);
       // }
     }
   });
-  
+
 
   const formik = useFormik({
     initialValues: {
@@ -402,10 +403,10 @@ export default function Createcandidatelist({ open = "", close = () => { }, file
       postalCode: "",
       createdBy: "",
       candidateName: "",
-      dob:"",
+      dob: "",
       file: null // Assuming file is part of your form values
     },
-  
+
     enableReinitialize: true,
     validateOnChange: false,
     validationSchema: yup.object({
@@ -431,7 +432,7 @@ export default function Createcandidatelist({ open = "", close = () => { }, file
           jobId: null, // Assuming jobId is fixed for this form
           // createdBy: createdBy // Assuming createdBy is defined elsewhere
         });
-  
+
         if (result.status === 200) {
           setNextStep(nextStep + 1);
           setPresentage(1);
@@ -441,7 +442,7 @@ export default function Createcandidatelist({ open = "", close = () => { }, file
         }
         console.log(result);
         console.log(result.errors);
-  
+
         // Check if resumeId is available
         // if (resumeId && values.file) {
         //   console.log("inside file upload api");
@@ -449,7 +450,7 @@ export default function Createcandidatelist({ open = "", close = () => { }, file
         //   formData.append('action', 'resumePhotoUpload');
         //   formData.append('resumeId', resumeId);
         //   formData.append('file', values.file);
-  
+
         //   const response = await fileAction(formData);
         //   console.log(response, "fileUploadResult")
         //   if (response.status === 200) {
@@ -468,18 +469,18 @@ export default function Createcandidatelist({ open = "", close = () => { }, file
   });
   useEffect(() => {
     const uploadFile = async () => {
-      if (resumeId ) {
+      if (resumeId) {
         try {
           console.log("inside file upload api");
           const formData = new FormData();
           formData.append('action', 'resumePhotoUpload');
           formData.append('resumeId', resumeId);
           formData.append('file', file);
-  
+
           const response = await fileAction(formData);
           console.log(response, "fileUploadResult");
           if (response.status === 200) {
-           
+
             openNotification("success", "Success...", response.message);
           } else {
             openNotification("error", "Failed..", response.message);
@@ -490,14 +491,14 @@ export default function Createcandidatelist({ open = "", close = () => { }, file
         }
       }
     };
-  
+
     uploadFile();
   }, [resumeId]);
   const CreateDirectorSteps = [
     {
       id: 1,
       value: 0,
-      title: "Personel Details",
+      title: "Personal Details",
       data: "Personel",
     },
     {
@@ -560,10 +561,10 @@ export default function Createcandidatelist({ open = "", close = () => { }, file
     try {
       const response = await getRecruitmentResumeById(43);
       console.log(response);
-  
+
       const personelDetails = [
-        
-        { id: 1, Image: Frame1, title: "Email Address", text: response.result[0].candidateEmail},
+
+        { id: 1, Image: Frame1, title: "Email Address", text: response.result[0].candidateEmail },
         { id: 2, Image: Frame3, title: "Phone number", text: response.result[0].candidateContact },
         { id: 3, Image: Frame2, title: "DOB", text: response.result[0].dob || "Not Available" },
         { id: 4, Image: Frame4, title: "Location", text: `${response.result[0].addressLine}, ${response.result[0].cityOrTown}, ${response.result[0].postalCode}` }
@@ -572,55 +573,56 @@ export default function Createcandidatelist({ open = "", close = () => { }, file
       setcandidate(personelDetails);
       setImage(response.result[0].candidatePhoto)
       setcandidateName(response.result[0].candidateName)
-  
+      setPdFViewer(response.result[0].resumeFile)
+
       console.log(personelDetails);
     } catch (error) {
       console.error('Error updating workflow ID:', error);
     }
   };
-  
+
   useEffect(() => {
-   
+
     getCandidatesById()
   }, []);
 
-  const getEducationDetails = async()=>{
-    try{
+  const getEducationDetails = async () => {
+    try {
       const response = await getAllRecruitmentResumeEducationalDetails(43)
       console.log(response)
-      seteducationExperiences(response.result.map((item)=>({
-        institution:item.institute,
-        degree:item.courseType,
-        fieldOfStudy:item.courseName,
-        location:item.location,
-        graduationYear:item.yearOfStudy,
+      seteducationExperiences(response.result.map((item) => ({
+        institution: item.institute,
+        degree: item.courseType,
+        fieldOfStudy: item.courseName,
+        location: item.location,
+        graduationYear: item.yearOfStudy,
       })))
-    }catch(error){
+    } catch (error) {
       console.log(error)
     }
   }
-  const[workExperiences,setexperience] =useState([])
-  const getEmployeExperiance = async()=>{
-    try{
+  const [workExperiences, setexperience] = useState([])
+  const getEmployeExperiance = async () => {
+    try {
       const response = await getAllRecruitmentResumesExperienceDetails(43);
       console.log(response)
-      setexperience(response.result.map((items)=>({
-        companyName:items.companyName,
-        Shift:items.employmentType,
-        role:items.jobTitle,
-        startDate:items.fromDate,
-        endDate:items.toDate,
-        experienceDuration:items.location
+      setexperience(response.result.map((items) => ({
+        companyName: items.companyName,
+        Shift: items.employmentType,
+        role: items.jobTitle,
+        startDate: items.fromDate,
+        endDate: items.toDate,
+        experienceDuration: items.location
       })))
-    }catch(error){
-     console.log(error)
+    } catch (error) {
+      console.log(error)
     }
   }
 
-  useEffect(()=>{
+  useEffect(() => {
     getEducationDetails()
     getEmployeExperiance()
-  },[])
+  }, [])
   return (
     <div>
       {show && (
@@ -836,13 +838,13 @@ export default function Createcandidatelist({ open = "", close = () => { }, file
                     <div className='w-4/5'>
                       <p>Photo (Optional)</p>
                       <FileUpload change={(e) => {
-                          if (e) {
-                            
-                            setFile(e)
-                            
-                          }
-                          console.log(e)
-                        }} />
+                        if (e) {
+
+                          setFile(e)
+
+                        }
+                        console.log(e)
+                      }} />
                     </div>
 
 
@@ -970,7 +972,7 @@ export default function Createcandidatelist({ open = "", close = () => { }, file
                               key={each.id}
                               title={each.title}
 
-                              placeholder={t("Eg: Retail Sales Manager")}
+                              placeholder={t("Enter " + each.title)}
                               change={(e) => {
                                 formik3.setFieldValue(each.inputFeild, e);
                               }}
@@ -983,7 +985,7 @@ export default function Createcandidatelist({ open = "", close = () => { }, file
                               <Dropdown
                                 title={each.title}
                                 options={Jobtype}
-
+                                placeholder={t("Enter " + each.title)}
                                 change={(e) => {
                                   formik3.setFieldValue(each.inputFeild, e);
                                 }}
@@ -992,12 +994,12 @@ export default function Createcandidatelist({ open = "", close = () => { }, file
 
 
                               /> :
-                                <RangeDatePicker dateFormat="YYYY-MM-DD" title={each.title}
-                                  change={(e) => {
-                                    formik3.setFieldValue(each.inputFeild, e);
-                                  }}
-                                  value={formik3.values[each.inputFeild]}
-                                />
+                              <RangeDatePicker dateFormat="YYYY-MM-DD" title={each.title}
+                                change={(e) => {
+                                  formik3.setFieldValue(each.inputFeild, e);
+                                }}
+                                value={formik3.values[each.inputFeild]}
+                              />
                           )}
                           {/* <FormInput
                             title={t("Company Name")}
@@ -1015,9 +1017,11 @@ export default function Createcandidatelist({ open = "", close = () => { }, file
 
 
                         <div className='ml-auto '>
-                          {index !== 0 && (
-                            <RiDeleteBin6Line className='h-6 w-6' onClick={() => handleDeleteWork(index)} />
-                          )}
+                          <Tooltip placement="top" title={"Delete"}>
+                            {index !== 0 && (
+                              <RiDeleteBin6Line className='size-4 text-slate-500 hover:text-red-500' onClick={() => handleDeleteWork(index)} />
+                            )}
+                          </Tooltip>
                         </div>
 
                       </div>
@@ -1057,15 +1061,15 @@ export default function Createcandidatelist({ open = "", close = () => { }, file
                           /> */}
                         <FileUpload change={(e) => {
                           if (e) {
-                            
+
                             setFilepdf(e)
                           }
                         }} />
                       </div>
                       <div>
                         <TextArea
-                          title='Cover Letter'
-                          placeholder='Type here'
+                          title={'Cover Letter'}
+                          placeholder={"Enter Cover Letter"}
                           change={(e) => {
                             Formik2.setFieldValue("coverLetter", e);
                           }}
@@ -1078,200 +1082,202 @@ export default function Createcandidatelist({ open = "", close = () => { }, file
                   </Accordion>
                 </FlexCol>
               </>)
-            // ) : activeBtnValue === "Questions" ? (
-            //   <>
-            //     <FlexCol justify="center" align="center" className="w-5/6 m-auto  mt-10">
-            //       <Accordion
-            //         title={"Prerequisite"}
-            //         className="Text_area "
-            //         padding={true}
-            //         toggleBtn={false}
-            //         click={() => {
-            //           //   setPresentage(1.4);
-            //         }}
-            //         initialExpanded={true}
-            //       >
+              // ) : activeBtnValue === "Questions" ? (
+              //   <>
+              //     <FlexCol justify="center" align="center" className="w-5/6 m-auto  mt-10">
+              //       <Accordion
+              //         title={"Prerequisite"}
+              //         className="Text_area "
+              //         padding={true}
+              //         toggleBtn={false}
+              //         click={() => {
+              //           //   setPresentage(1.4);
+              //         }}
+              //         initialExpanded={true}
+              //       >
 
-            //         <div className='flex items-end'>
-            //           <div className="grid grid-cols-1 gap-4 w-4/5">
-            //             <FormInput
+              //         <div className='flex items-end'>
+              //           <div className="grid grid-cols-1 gap-4 w-4/5">
+              //             <FormInput
 
-            //               title={t("Are you legally eligible to work in the country?")}
-            //               placeholder={t("Answer here..")}
+              //               title={t("Are you legally eligible to work in the country?")}
+              //               placeholder={t("Answer here..")}
 
 
-            //             />
-            //             <FormInput
-            //               title={t("Highest level of education completed")}
-            //               placeholder={t("Answer here..")}
+              //             />
+              //             <FormInput
+              //               title={t("Highest level of education completed")}
+              //               placeholder={t("Answer here..")}
 
-            //             />
-            //             <FormInput
-            //               title={t("Highest level of education completed")}
-            //               placeholder={t("Answer here..")}
+              //             />
+              //             <FormInput
+              //               title={t("Highest level of education completed")}
+              //               placeholder={t("Answer here..")}
 
-            //             />
-            //             <FormInput
-            //               title={t("Highest level of education completed")}
-            //               placeholder={t("Answer here..")}
+              //             />
+              //             <FormInput
+              //               title={t("Highest level of education completed")}
+              //               placeholder={t("Answer here..")}
 
-            //             />
-            //           </div>
+              //             />
+              //           </div>
 
-            //         </div>
+              //         </div>
 
-            //       </Accordion>
-            //     </FlexCol>
-            //   </>
-            // ) 
-            : (activeBtnValue === "Review" && (
-              <>
-                <FlexCol justify="center" align="center" className="w-5/6 m-auto  mt-10">
-                  <Accordion
-                    title={"Review"}
-                    className="Text_area "
-                    padding={true}
-                    toggleBtn={false}
-                    click={() => {
-                      //   setPresentage(1.4);
-                    }}
-                    initialExpanded={true}
-                  >
-                    <div className='divide-y flex flex-col gap-8'>
-                      <div className='flex flex-col gap-4'>
-                        <div className='flex justify-between'>
-                          <h1 className='text-sm font-semibold text-black lg:text-xs 2xl:text-base dark:text-white'>Personel Details</h1>
-                          <ButtonClick
-                            buttonName='Edit Details'
-                            icon={<GrEdit />}
-                            handleSubmit={() => handleEditDetails("Personel")}
-                          />
-                        </div>
+              //       </Accordion>
+              //     </FlexCol>
+              //   </>
+              // ) 
+              : (activeBtnValue === "Review" && (
+                <>
+                  <FlexCol justify="center" align="center" className="w-5/6 m-auto  mt-10">
+                    <Accordion
+                      title={"Review"}
+                      className="Text_area "
+                      padding={true}
+                      toggleBtn={false}
+                      click={() => {
+                        //   setPresentage(1.4);
+                      }}
+                      initialExpanded={true}
+                    >
+                      <div className='divide-y flex flex-col gap-8'>
+                        <div className='flex flex-col gap-4'>
+                          <div className='flex justify-between'>
+                            <h1 className='text-sm font-semibold text-black lg:text-xs 2xl:text-base dark:text-white'>Personel Details</h1>
+                            <ButtonClick
+                              buttonName='Edit Details'
+                              icon={<GrEdit />}
+                              handleSubmit={() => handleEditDetails("Personel")}
+                            />
+                          </div>
 
-                        <div className='flex gap-2 items-center'>
-                          <img src={Image} className='rounded-full' />
-                          <h3 className='text-sm font-semibold text-black lg:text-xs 2xl:text-base dark:text-white'>{candiateName}</h3>
-                        </div>
-                        <div className="grid grid-cols-2 gap-4 w-4/5">
-                          {Candidate.map((item) => (
-                            <div className='flex gap-2'>
-                              <img src={item.Image} className='rounded-lg h-11 w-11' />
-                              <div>
-                                <p className='text-sm font-normal text-gray-500 2xl:text-base dark:text-white'>{item.title}</p>
-                                <h3 className='text-sm font-semibold text-black 2xl:text-base dark:text-white'>{item.text}</h3>
+                          <div className='flex gap-2 items-center'>
+                            <img src={Image} className='rounded-full' />
+                            <h3 className='text-sm font-semibold text-black lg:text-xs 2xl:text-base dark:text-white'>{candiateName}</h3>
+                          </div>
+                          <div className="grid grid-cols-2 gap-4 w-4/5">
+                            {Candidate.map((item) => (
+                              <div className='flex gap-2'>
+                                <img src={item.Image} className='rounded-lg h-11 w-11' />
+                                <div>
+                                  <p className='text-sm font-normal text-gray-500 2xl:text-base dark:text-white'>{item.title}</p>
+                                  <h3 className='text-sm font-semibold text-black 2xl:text-base dark:text-white'>{item.text}</h3>
+                                </div>
                               </div>
-                            </div>
-                         ))}
-                        </div>
-                        
-                      </div>
+                            ))}
+                          </div>
 
-                      <div className="flex flex-col gap-4 box-wrapper">
-                      <div className='flex justify-between'>
-                          <h1 className='text-sm font-semibold text-black lg:text-xs 2xl:text-base dark:text-white'>Educational Details</h1>
-                          <ButtonClick
-                            buttonName='Edit Details'
-                            icon={<GrEdit />}
-                            handleSubmit={() => handleEditDetails("Educational")}
-                          />
                         </div>
-          <div className="flex flex-col divide-y">
-            {educationExperiences.map((edu, index) => (
-              <div
-                key={index}
-                className="flex justify-start gap-5 py-3 2xl:py-6"
-              >
-                <img
-                  className="2xl:w-[60px] 2xl:h-[60px] w-11 h-11 rounded-full shadow"
-                  src="https://via.placeholder.com/60x60"
-                />
-                <div className="inline-flex flex-col items-start justify-start gap-1">
-                  <div className="gap-2 vhcenter">
-                    <h6 className="h6">{edu.institution}</h6>
-                    {/* <p className="para p-1.5 rounded-md bg-secondaryWhite !leading-none">
+
+                        <div className="flex flex-col gap-4 box-wrapper">
+                          <div className='flex justify-between'>
+                            <h1 className='text-sm font-semibold text-black lg:text-xs 2xl:text-base dark:text-white'>Educational Details</h1>
+                            <ButtonClick
+                              buttonName='Edit Details'
+                              icon={<GrEdit />}
+                              handleSubmit={() => handleEditDetails("Educational")}
+                            />
+                          </div>
+                          <div className="flex flex-col divide-y">
+                            {educationExperiences.map((edu, index) => (
+                              <div
+                                key={index}
+                                className="flex justify-start gap-5 py-3 2xl:py-6"
+                              >
+                                <img
+                                  className="2xl:w-[60px] 2xl:h-[60px] w-11 h-11 rounded-full shadow"
+                                  src="https://via.placeholder.com/60x60"
+                                />
+                                <div className="inline-flex flex-col items-start justify-start gap-1">
+                                  <div className="gap-2 vhcenter">
+                                    <h6 className="h6">{edu.institution}</h6>
+                                    {/* <p className="para p-1.5 rounded-md bg-secondaryWhite !leading-none">
                     {work.Shift}
                   </p> */}
-                    
-                  </div>
 
-                  <div className="flex flex-col gap-4">
-                    <p className="h6 !font-medium">{edu.degree}</p>
-                    <div className="flex gap-3">
-                      <p className="para !font-normal text-opacity-70">
-                        {edu.graduationYear}
-                      </p>
+                                  </div>
 
-                      <p className="para !font-normal text-opacity-70">
-                        {edu.location}
-                      </p>
-                    </div>
-                  </div>
-                </div>
-              </div>
-            ))}
-          </div>
-        </div>
+                                  <div className="flex flex-col gap-4">
+                                    <p className="h6 !font-medium">{edu.degree}</p>
+                                    <div className="flex gap-3">
+                                      <p className="para !font-normal text-opacity-70">
+                                        {edu.graduationYear}
+                                      </p>
 
-
-        <div className="flex flex-col gap-4 box-wrapper">
-        <div className='flex justify-between'>
-                          <h1 className='text-sm font-semibold text-black lg:text-xs 2xl:text-base dark:text-white'>Work Experience</h1>
-                          <ButtonClick
-                            buttonName='Edit Details'
-                            icon={<GrEdit />}
-                            handleSubmit={() => handleEditDetails("Work")}
-                          />
-                        </div>
-          <div className="flex flex-col divide-y">
-            {workExperiences.map((work, index) => (
-              <div
-                key={index}
-                className="flex items-center justify-start gap-5 py-3 2xl:py-6"
-              >
-                <img
-                  className="2xl:w-[60px] 2xl:h-[60px] w-11 h-11 rounded-full shadow"
-                  src="https://via.placeholder.com/60x60"
-                />
-                <div className="inline-flex flex-col items-start justify-start gap-1">
-                  <div className="gap-2 vhcenter">
-                    <h6 className="h6">{work.companyName}</h6>
-                    <p className="para p-1.5 rounded-md bg-secondaryWhite dark:bg-secondaryDark !leading-none">
-                      {work.Shift}
-                    </p>
-                  </div>
-
-                  <div className="inline-flex items-center justify-start gap-4">
-                    <p className="!text-opacity-50 h6">{work.role}</p>
-                    <p className="para !font-normal text-opacity-70">
-                      {work.experienceDuration}
-                    </p>
-
-                    <p className="para !font-normal text-opacity-70">
-                      {work.startDate}, {work.endDate}
-                    </p>
-                  </div>
-                </div>
-              </div>
-            ))}
-          </div>
-        </div>
-
-                      <div className='flex flex-col gap-3'>
-
-                        <div>
-                          <CVResume 
-                          showTextEditor={false}
-                          />
+                                      <p className="para !font-normal text-opacity-70">
+                                        {edu.location}
+                                      </p>
+                                    </div>
+                                  </div>
+                                </div>
+                              </div>
+                            ))}
+                          </div>
                         </div>
 
+
+                        <div className="flex flex-col gap-4 box-wrapper">
+                          <div className='flex justify-between'>
+                            <h1 className='text-sm font-semibold text-black lg:text-xs 2xl:text-base dark:text-white'>Work Experience</h1>
+                            <ButtonClick
+                              buttonName='Edit Details'
+                              icon={<GrEdit />}
+                              handleSubmit={() => handleEditDetails("Work")}
+                            />
+                          </div>
+                          <div className="flex flex-col divide-y">
+                            {workExperiences.map((work, index) => (
+                              <div
+                                key={index}
+                                className="flex items-center justify-start gap-5 py-3 2xl:py-6"
+                              >
+                                <img
+                                  className="2xl:w-[60px] 2xl:h-[60px] w-11 h-11 rounded-full shadow"
+                                  src="https://via.placeholder.com/60x60"
+                                />
+                                <div className="inline-flex flex-col items-start justify-start gap-1">
+                                  <div className="gap-2 vhcenter">
+                                    <h6 className="h6">{work.companyName}</h6>
+                                    <p className="para p-1.5 rounded-md bg-secondaryWhite dark:bg-secondaryDark !leading-none">
+                                      {work.Shift}
+                                    </p>
+                                  </div>
+
+                                  <div className="inline-flex items-center justify-start gap-4">
+                                    <p className="!text-opacity-50 h6">{work.role}</p>
+                                    <p className="para !font-normal text-opacity-70">
+                                      {work.experienceDuration}
+                                    </p>
+
+                                    <p className="para !font-normal text-opacity-70">
+                                      {work.startDate}, {work.endDate}
+                                    </p>
+                                  </div>
+                                </div>
+                              </div>
+                            ))}
+                          </div>
+                        </div>
+
+                        <div className='flex flex-col gap-3'>
+
+                          <div>
+                            <CVResume
+                              showTextEditor={false}
+                              pdfUrl={PdFViewer}
+
+                            />
+                          </div>
+
+                        </div>
                       </div>
-                    </div>
 
-                  </Accordion>
-                </FlexCol>
-              </>
-            )
-            )}
+                    </Accordion>
+                  </FlexCol>
+                </>
+              )
+              )}
           </FlexCol>
         </DrawerPop>
       )}

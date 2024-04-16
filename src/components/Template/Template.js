@@ -478,7 +478,7 @@ const Template = ({
 //     handleShow();
 //     // You might want to set updateId and companyId here if needed
 //   };
-   console.log("header",Header)
+  //  console.log("header",Header)
    
    const[TemplateList,setTemplateList]=useState([])
    
@@ -495,12 +495,12 @@ const Template = ({
         
          // setTableData(response.data);
          // console.log(response.data); // Access response data
-         console.log(response);
+        //  console.log(response);
        } catch (error) {
          console.error(error); // Handle errors
        }
      };
-     {console.log(updateId)}
+    //  {console.log(updateId)}
     
     // useEffect(()=>{
     //   gettemaplate();
@@ -519,12 +519,12 @@ const Template = ({
        
         // setTableData(response.data);
         // console.log(response.data); // Access response data
-        console.log(response);
+        // console.log(response);
       } catch (error) {
         console.error(error); // Handle errors
       }
     };
-    {console.log(updateId)}
+    // {console.log(updateId)}
    
   //  useEffect(()=>{
   //   getWorkflows();
@@ -561,9 +561,9 @@ const Template = ({
      
       // setTableData(response.data);
       // console.log(response.data); // Access response data
-      console.log(emailSubject)
-      console.log(response);
-      console.log(EmailList);
+      // console.log(emailSubject)
+      // console.log(response);
+      // console.log(EmailList);
     } catch (error) {
       console.error(error); // Handle errors
     }
@@ -572,7 +572,7 @@ const Template = ({
     try{
       const data = await getAllRecruitmentQuestionnaireTemplates()
       setQuestionaire(data.result)
-      console.log(data)
+      // console.log(data)
     }catch (error) {
       console.error(error); // Handle errors
     }
@@ -582,7 +582,7 @@ const Template = ({
     try{
       const data = await getAllRecruitmentEvaluationTemplates()
       setEvaluation(data.result)
-      console.log(data)
+      // console.log(data)
     }catch (error) {
       console.error(error); // Handle errors
     }
@@ -598,7 +598,7 @@ const Template = ({
         actionToggle: true,
         action: true,
       })))
-      console.log(data)
+      // console.log(data)
     }catch (error) {
       console.error(error); // Handle errors
     }
@@ -607,11 +607,11 @@ const Template = ({
   const getAllJobdescription = async ()=>{
     try{
      const data = await getAllRecruitmentJobDescriptionTemplates()
-     console.log(data)
+    //  console.log(data)
     // 
     setJobDescriptionList(data.result)
     }catch(error){
-      console.log(error)
+      // console.log(error)
     }
   }
 
@@ -638,34 +638,34 @@ const Template = ({
       case "Job_Description":
         // getDepartmentList();
         getAllJobdescription()
-        console.log(newData)
+        // console.log(newData)
         break;
       // Add more cases as needed
       case "Workflow":
         getWorkflows();
         
-        console.log(newData)
+        // console.log(newData)
         break;
         case "Email":
           getEmailLsit();
           
-          console.log(newData)
+          // console.log(newData)
           break;
           case "Evaluation":
             getallevaluation();
             
-            console.log(newData)
+            // console.log(newData)
             break;
             case "Questionnaire":
               // getDepartmentList();
               getallquestionaire();
               
-              console.log(newData)
+              // console.log(newData)
               break;
               case "Letter":
                 getallLetter()
                 
-                console.log(newData)
+                // console.log(newData)
                 break;
       default:
         break;
@@ -735,7 +735,7 @@ const Template = ({
           <ButtonClick
             handleSubmit={
               () => {
-                console.log("show");
+                // console.log("show");
                 handleShow();
                 // if (e === navigationPath) {
                 // setShow(true);
@@ -776,7 +776,7 @@ const Template = ({
                 // setShow(e);
               }}
               tabClick={(e) => {
-                console.log(e, "e");
+                // console.log(e, "e");
                 setNavigationPath(e);
               }}
                       data={
@@ -807,7 +807,7 @@ const Template = ({
                     // setShow(true);
         
                     // setCompanyId(company);
-                    console.log("HIIIIII")
+                    // console.log("HIIIIII")
                     setOpenPop(e);
                     
                   } else {

@@ -602,11 +602,11 @@ export const updateWorkFlowWithStages = async (e) => {
     const method = "POST";
     const kwargs = e;
 
-    console.log("API Request Data:", { action, method, kwargs });
+    // console.log("API Request Data:", { action, method, kwargs });
 
     const response = await apiRequest(action, method, kwargs);
 
-    console.log("API Response:", response);
+    // console.log("API Response:", response);
 
     return response;
   } catch (error) {
@@ -624,7 +624,7 @@ export const getRecruitmentEvaluationTemplateById = async (id) => {
   const method = "POST";
 
   const kwargs = id;
-  console.log("API Request Data:", { action, method, kwargs });
+  // console.log("API Request Data:", { action, method, kwargs });
   return await apiRequest(action, method, kwargs);
 };
 export const updateEvaluationTemplateWithDetails = async (e) => {
@@ -633,11 +633,11 @@ export const updateEvaluationTemplateWithDetails = async (e) => {
     const method = "POST";
     const kwargs = e;
 
-    console.log("API Request Data:", { action, method, kwargs });
+    // console.log("API Request Data:", { action, method, kwargs });
 
     const response = await apiRequest(action, method, kwargs);
 
-    console.log("API Response:", response);
+    // console.log("API Response:", response);
 
     return response;
   } catch (error) {
@@ -654,11 +654,11 @@ export const updateQuestionnaireTemplateWithDetails = async (e) => {
     const method = "POST";
     const kwargs = e;
 
-    console.log("API Request Data:", { action, method, kwargs });
+    // console.log("API Request Data:", { action, method, kwargs });
 
     const response = await apiRequest(action, method, kwargs);
 
-    console.log("API Response:", response);
+    // console.log("API Response:", response);
 
     return response;
   } catch (error) {
@@ -675,7 +675,7 @@ export const getRecruitmentQuestionnaireTemplateById = async (id) => {
   const method = "POST";
 
   const kwargs = id;
-  console.log(id)
+  // console.log(id)
   return await apiRequest(action, method, kwargs);
 };
 export const getRecruitmentEmailTemplateById = async (id) => {
@@ -693,11 +693,11 @@ export const updateRecruitmentEmailTemplate = async (e) => {
     const method = "POST";
     const kwargs = e;
 
-    console.log("API Request Data:", { action, method, kwargs });
+    // console.log("API Request Data:", { action, method, kwargs });
 
     const response = await apiRequest(action, method, kwargs);
 
-    console.log("API Response:", response);
+    // console.log("API Response:", response);
 
     return response;
   } catch (error) {
@@ -714,7 +714,7 @@ export const updateRecruitmentLetterTemplate = async (data) => {
   const method = "POST";
 
   const kwargs = data;
-  console.log("API Request Data:", { action, method, kwargs });
+  // console.log("API Request Data:", { action, method, kwargs });
 
   return await apiRequest(action, method, kwargs);
 };
@@ -755,23 +755,23 @@ export const getAllRecruitmentJobResumeActivities = async (resumeId) => {
   return await apiRequest(action, method, kwargs);
 };
 export const getResumeJobDetails = async (data) => {
-  console.log(data)
+  // console.log(data)
   const action = "getResumeJobDetails";
 
   const method = "POST";
 
   const kwargs = data;
-  console.log("API Request Data:", { action, method, kwargs });
+  // console.log("API Request Data:", { action, method, kwargs });
   return await apiRequest(action, method, kwargs);
 };
 export const updateRecruitmentJobResumesMapping = async (data) => {
-  console.log(data)
+  // console.log(data)
   const action = "updateRecruitmentJobResumesMapping";
 
   const method = "POST";
 
   const kwargs = data;
-  console.log("API Request Data:", { action, method, kwargs });
+  // console.log("API Request Data:", { action, method, kwargs });
   return await apiRequest(action, method, kwargs);
 };
 export const saveRecruitmentJobResumesEmailCommunication = async (e) => {
@@ -779,7 +779,7 @@ export const saveRecruitmentJobResumesEmailCommunication = async (e) => {
 
   const method = "POST";
   const kwargs = e;
-  console.log("API Request Data:", { action, method, kwargs })
+  // console.log("API Request Data:", { action, method, kwargs })
   return await apiRequest(action, method, kwargs);
 };
 
@@ -797,7 +797,7 @@ export const saveRecruitmentJobResumesEvent = async (e) => {
 
   const method = "POST";
   const kwargs = e;
-  console.log("API Request Data:", { action, method, kwargs })
+  // console.log("API Request Data:", { action, method, kwargs })
   return await apiRequest(action, method, kwargs);
 };
 
@@ -817,7 +817,7 @@ export const getAllRecruitmentJobResumesEvents = async (data) => {
   const method = "POST";
 
   const kwargs = data;
-  console.log("API Request Data:", { action, method, kwargs })
+  // console.log("API Request Data:", { action, method, kwargs })
   return await apiRequest(action, method, kwargs);
   
 };
@@ -828,7 +828,7 @@ export const saveRecruitmentJobResumesNote = async (data) => {
   const method = "POST";
 
   const kwargs = data;
-  console.log("API Request Data:", { action, method, kwargs })
+  // console.log("API Request Data:", { action, method, kwargs })
 
   return await apiRequest(action, method, kwargs);
 };
@@ -838,7 +838,7 @@ export const getAllRecruitmentJobResumesNotes = async (data) => {
   const method = "POST";
 
   const kwargs = data;
-  console.log("API Request Data:", { action, method, kwargs })
+  // console.log("API Request Data:", { action, method, kwargs })
 
   return await apiRequest(action, method, kwargs);
 };
@@ -849,7 +849,7 @@ export const getAllRecruitmentJobResumesEvaluations = async (data) => {
   const method = "POST";
 
   const kwargs = data;
-  console.log("API Request Data:", { action, method, kwargs })
+  // console.log("API Request Data:", { action, method, kwargs })
 
   return await apiRequest(action, method, kwargs);
 };
@@ -860,7 +860,7 @@ export const saveRecruitmentJobResumesEvaluationBatch = async () => {
   const method = "POST";
 
   const kwargs = {};
-  console.log("API Request Data:", { action, method, kwargs })
+  // console.log("API Request Data:", { action, method, kwargs })
 
   return await apiRequest(action, method, kwargs);
 };
@@ -871,11 +871,11 @@ export const saveOrUpdateRecruitmentJobResumesEvaluationBatch = async (e) => {
     const method = "POST";
     const kwargs = e;
 
-    console.log("API Request Data:", { action, method, kwargs });
+    // console.log("API Request Data:", { action, method, kwargs });
 
     const response = await apiRequest(action, method, kwargs);
 
-    console.log("API Response:", response);
+    // console.log("API Response:", response);
 
     return response;
   } catch (error) {
@@ -893,11 +893,11 @@ export const saveRecruitmentJobResumesOfferLetter = async (e) => {
     const method = "POST";
     const kwargs = e;
 
-    console.log("API Request Data:", { action, method, kwargs });
+    // console.log("API Request Data:", { action, method, kwargs });
 
     const response = await apiRequest(action, method, kwargs);
 
-    console.log("API Response:", response);
+    // console.log("API Response:", response);
 
     return response;
   } catch (error) {
@@ -915,7 +915,7 @@ export const getAllEmployee = async (data) => {
   const method = "POST";
 
   const kwargs = data;
-  console.log("API Request Data:", { action, method, kwargs })
+  // console.log("API Request Data:", { action, method, kwargs })
 
   return await apiRequest(action, method, kwargs);
 };
@@ -925,7 +925,7 @@ export const getAllRecruitmentRoles = async () => {
   const method = "POST";
 
   const kwargs = {};
-  console.log("API Request Data:", { action, method, kwargs })
+  // console.log("API Request Data:", { action, method, kwargs })
 
   return await apiRequest(action, method, kwargs);
 };
@@ -935,11 +935,11 @@ export const addRecruitmentUserWithRoleMapping = async (e) => {
     const method = "POST";
     const kwargs = e;
 
-    console.log("API Request Data:", { action, method, kwargs });
+    // console.log("API Request Data:", { action, method, kwargs });
 
     const response = await apiRequest(action, method, kwargs);
 
-    console.log("API Response:", response);
+    // console.log("API Response:", response);
 
     return response;
   } catch (error) {
@@ -956,7 +956,7 @@ export const saveRecruitmentJobDescriptionTemplate = async (Data) => {
   const method = "POST";
 
   const kwargs = Data;
-  console.log("API Request Data:", { action, method, kwargs })
+  // console.log("API Request Data:", { action, method, kwargs })
 
   return await apiRequest(action, method, kwargs);
 };
@@ -966,7 +966,7 @@ export const getAllRecruitmentJobDescriptionTemplates = async () => {
   const method = "POST";
 
   const kwargs = {};
-  console.log("API Request Data:", { action, method, kwargs })
+  // console.log("API Request Data:", { action, method, kwargs })
 
   return await apiRequest(action, method, kwargs);
 };
@@ -976,7 +976,7 @@ export const getRecruitmentJobDescriptionTemplateById = async (data) => {
   const method = "POST";
 
   const kwargs = data;
-  console.log("API Request Data:", { action, method, kwargs })
+  // console.log("API Request Data:", { action, method, kwargs })
 
   return await apiRequest(action, method, kwargs);
 };
@@ -986,7 +986,7 @@ export const updateRecruitmentJobDescriptionTemplate = async (data) => {
   const method = "POST";
 
   const kwargs = data;
-  console.log("API Request Data:", { action, method, kwargs })
+  // console.log("API Request Data:", { action, method, kwargs })
 
   return await apiRequest(action, method, kwargs);
 };
@@ -996,7 +996,7 @@ export const getRecruitmentJobResumesNoteById = async (data) => {
   const method = "POST";
 
   const kwargs = data;
-  console.log("API Request Data:", { action, method, kwargs })
+  // console.log("API Request Data:", { action, method, kwargs })
 
   return await apiRequest(action, method, kwargs);
 };
@@ -1006,7 +1006,7 @@ export const updateRecruitmentJobResumesNote = async (data) => {
   const method = "POST";
 
   const kwargs = data;
-  console.log("API Request Data:", { action, method, kwargs })
+  // console.log("API Request Data:", { action, method, kwargs })
 
   return await apiRequest(action, method, kwargs);
 };
@@ -1016,7 +1016,7 @@ export const getRecruitmentUserById = async (data) => {
   const method = "POST";
 
   const kwargs = data;
-  console.log("API Request Data:", { action, method, kwargs })
+  // console.log("API Request Data:", { action, method, kwargs })
 
   return await apiRequest(action, method, kwargs);
 };
@@ -1026,7 +1026,7 @@ export const getDashboardStaticDatas = async (data) => {
   const method = "POST";
 
   const kwargs = data;
-  console.log("API Request Data:", { action, method, kwargs })
+  // console.log("API Request Data:", { action, method, kwargs })
 
   return await apiRequest(action, method, kwargs);
 };
@@ -1036,7 +1036,7 @@ export const getDashboardApplicationFrequencyRate = async (data) => {
   const method = "POST";
 
   const kwargs = data;
-  console.log("API Request Data:", { action, method, kwargs })
+  // console.log("API Request Data:", { action, method, kwargs })
 
   return await apiRequest(action, method, kwargs);
 };
@@ -1046,7 +1046,7 @@ export const getDashboardUpcommingInterviewSchedules = async (data) => {
   const method = "POST";
 
   const kwargs = data;
-  console.log("API Request Data:", { action, method, kwargs })
+  // console.log("API Request Data:", { action, method, kwargs })
 
   return await apiRequest(action, method, kwargs);
 };
@@ -1056,7 +1056,7 @@ export const getDashboardLiveJobs = async (data) => {
   const method = "POST";
 
   const kwargs = data;
-  console.log("API Request Data:", { action, method, kwargs })
+  // console.log("API Request Data:", { action, method, kwargs })
 
   return await apiRequest(action, method, kwargs);
 };
@@ -1066,7 +1066,7 @@ export const getDashboardCandidateSource = async (data) => {
   const method = "POST";
 
   const kwargs = data;
-  console.log("API Request Data:", { action, method, kwargs })
+  // console.log("API Request Data:", { action, method, kwargs })
 
   return await apiRequest(action, method, kwargs);
 };
@@ -1076,7 +1076,7 @@ export const getDashboardAgeDistribution = async (data) => {
   const method = "POST";
 
   const kwargs = data;
-  console.log("API Request Data:", { action, method, kwargs })
+  // console.log("API Request Data:", { action, method, kwargs })
 
   return await apiRequest(action, method, kwargs);
 };
@@ -1086,7 +1086,7 @@ export const getDashboardNewApplicants = async (data) => {
   const method = "POST";
 
   const kwargs = data;
-  console.log("API Request Data:", { action, method, kwargs })
+  // console.log("API Request Data:", { action, method, kwargs })
 
   return await apiRequest(action, method, kwargs);
 };
@@ -1096,7 +1096,7 @@ export const getDashboardAgeOfJobs = async (data) => {
   const method = "POST";
 
   const kwargs = data;
-  console.log("API Request Data:", { action, method, kwargs })
+  // console.log("API Request Data:", { action, method, kwargs })
 
   return await apiRequest(action, method, kwargs);
 };
@@ -1106,7 +1106,7 @@ export const updateRecruitmentUserRoleMapping = async (data) => {
   const method = "POST";
 
   const kwargs = data;
-  console.log("API Request Data:", { action, method, kwargs })
+  // console.log("API Request Data:", { action, method, kwargs })
 
   return await apiRequest(action, method, kwargs);
 };
@@ -1116,7 +1116,7 @@ export const addJobToResume = async (data) => {
   const method = "POST";
 
   const kwargs = data;
-  console.log("API Request Data:", { action, method, kwargs })
+  // console.log("API Request Data:", { action, method, kwargs })
 
   return await apiRequest(action, method, kwargs);
 };
@@ -1126,7 +1126,7 @@ export const getAllRecruitmentJobResumesOfferLetters = async (data) => {
   const method = "POST";
 
   const kwargs = data;
-  console.log("API Request Data:", { action, method, kwargs })
+  // console.log("API Request Data:", { action, method, kwargs })
 
   return await apiRequest(action, method, kwargs);
 };

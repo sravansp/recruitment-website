@@ -50,7 +50,7 @@ const QA = [
     answer: "Remote",
   },
 ];
-const CVResume = ({ showTextEditor}) => {
+const CVResume = ({ showTextEditor,pdfUrl}) => {
   const [content, setContent] = useState("");
   const primaryColor = localStorage.getItem("mainColor");
   const { resumeId } = useParams()
@@ -58,7 +58,7 @@ const CVResume = ({ showTextEditor}) => {
   const { state } = useLocation();
   const [selectedNoteId, setSelectedNoteId] = useState(null);
   const [isPinned, setIsPinned] = useState(0);
-  const [PdFViewer, setPdFViewer] = useState("")
+  const [PdFViewer, setPdFViewer] = useState(""||pdfUrl)
   const handleEditClick = (jobResumeNoteId) => {
     setSelectedNoteId(jobResumeNoteId);
     getnotesbyId(jobResumeNoteId)

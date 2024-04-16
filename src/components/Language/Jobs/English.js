@@ -1,5 +1,5 @@
 const appearanceLanguage = {
-  Appearance: "Appearance Settings",
+  Appearance: "Appearance",
   
 };
 export default appearanceLanguage;
