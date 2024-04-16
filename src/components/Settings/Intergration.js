@@ -24,10 +24,6 @@ function Intergration() {
 
 
   const breadcrumbItems = [
-
-
-    { label: t("Settings"), url: "" },
-    { label: t("Other"), url: "" },
     { label: t("Intergration"), url: "" },
 
   ];
@@ -73,14 +69,14 @@ function Intergration() {
                   : "border-[#DADADA]"
                   }`}
               >
-                <div className="items-center flex flex-col lg:flex-row">
+                <div className="flex flex-col items-center lg:flex-row">
                   <img
                     src={item.image}
                     alt="Logo"
                     className="w-[58px] h-[58px] object-cover rounded-md borderb lg:border-b-0"
                   />
                   <div className="ml-2">
-                    <h3 className="h6  ">{item.title}</h3>
+                    <h3 className="h6 ">{item.title}</h3>
                     <p className="para">abcd@gmail</p>
                   </div>
                   <input
@@ -93,7 +89,7 @@ function Intergration() {
                   />
                 </div>
                 <div className="text-wrap">
-                  <p className="para mt-4 ">
+                  <p className="mt-4 para ">
                     Indeed is a global job search engine for job listings with
                     over 200 million unique monthly visitors
                   </p>
