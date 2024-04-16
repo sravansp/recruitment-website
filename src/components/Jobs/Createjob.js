@@ -1,5 +1,6 @@
 import React, { useState, useEffect, useRef } from "react";
 import DrawerPop from "../common/DrawerPop";
+import AI_Text from "../../assets/images/AI_Text.jpg"
 import { useTranslation } from "react-i18next";
 import { RxCross2, RxQuestionMarkCircled } from "react-icons/rx";
 import Stepper from "../common/Stepper";
@@ -82,6 +83,7 @@ import { Check } from "@mui/icons-material";
 import AddMore from "../common/AddMore";
 import TextEditor from "../common/TextEditor/TextEditor";
 import RadioButton from "../common/RadioButton";
+import { IoClose } from "react-icons/io5";
 
 
 const Createjob = ({
@@ -1732,12 +1734,19 @@ const Createjob = ({
                       }}
                       initialExpanded={true}
                     >
-                      <Card>
-                        <div>
-                          <img alt=''></img>
-                          <p>Generate personalized job descriptions based on pas account data.</p>
-                          <p>When you generate with Al, we look for similar jobs you've created in the past and use he data to create content that's
-                            impactful, accurate, and personalized to your company</p>
+                      <Card className="bg-primaryalpha/5">
+                        <div className="flex items-center">
+                          <img src={AI_Text} alt=''></img>
+                          <div className="flex flex-col gap-1">
+                            <div className="flex items-center justify-between">
+                              <p className="font-bold">Generate personalized job descriptions based on pas account data.
+                              </p>
+                              <p className="text-primary"><IoClose /></p>
+                            </div>
+                            <p className="text-gray-400">When you generate with Al, we look for similar jobs you've created in the past and use he data to create content that's
+                              impactful, accurate, and personalized to your company
+                            </p>
+                          </div>
                         </div>
 
                       </Card>
