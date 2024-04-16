@@ -34,14 +34,25 @@ export default function DrawerPop({
   initialBtn = true,
 }) {
   const { t } = useTranslation();
-
   const layout = useSelector((state) => state.layout.value);
   const [show, setShow] = useState(open);
   const [choosePolicies, setChoosePolicies] = useState(activeBtn);
   const [chooseNextStep, setChooseNextStep] = useState(nextStep);
+  const mode = useSelector((state) => state.layout.mode)
+
+  const classNames = {
+    body: ['my-drawer-body'],
+    mask: ['my-drawer-mask'],
+    header: ['my-drawer-header'],
+    footer: ['my-drawer-footer'],
+    content: ['my-drawer-content'],
+  };
   const drawerStyles = {
     mask: {
       // backdropFilter: "blur(1px)",
+    },
+    body: {
+     backgroundColor: `${mode == "light" && "#F8FAFC"}`,
     },
   };
 
@@ -53,6 +64,7 @@ export default function DrawerPop({
   return (
     <Drawer
       // width="100%"
+      classNames={classNames}
       styles={drawerStyles}
       contentWrapperStyle={contentWrapperStyle}
    

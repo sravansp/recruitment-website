@@ -10,7 +10,9 @@ import Naukrigulf from "../../assets/images/Naukrigulf.png";
 import loyaltri from "../../assets/images/logo.png";
 import { useTranslation } from "react-i18next";
 import Breadcrumbs from "../common/BreadCrumbs";
-function Intergration() {
+import CheckBoxInput from "../common/CheckBoxInput";
+
+function Integration() {
   const data = [
     { title: "Naukarigulf", image: Naukrigulf },
     { title: "Bayt", image: bayt },
@@ -19,80 +21,71 @@ function Intergration() {
     { title: "Indeed", image: indeed },
     { title: "Loyaltri", image: loyaltri },
   ];
-  const [selectedDivs, setSelectedDivs] = useState([]);
+  const [selectedItems, setSelectedItems] = useState([]);
   const { t } = useTranslation();
 
-
-  const breadcrumbItems = [
-
-
-    { label: t("Settings"), url: "" },
-    { label: t("Other"), url: "" },
-    { label: t("Intergration"), url: "" },
-
-  ];
+  const breadcrumbItems = [{ label: t("Integration"), url: "" }];
 
   const handleCheckboxChange = (index) => {
-    if (selectedDivs.includes(index)) {
-      setSelectedDivs(selectedDivs.filter((item) => item !== index));
+    if (selectedItems.includes(index)) {
+      setSelectedItems(selectedItems.filter((item) => item !== index));
     } else {
-      setSelectedDivs([...selectedDivs, index]);
+      setSelectedItems([...selectedItems, index]);
     }
   };
+
   return (
     <div className="flex flex-col gap-[25px]">
       <div className="flex justify-between">
-        <div className='flex flex-col'>
-          <p className='font-bold text-lg'> Integrations</p>
-          <p className='para font-medium'>{t("Main_Description")}</p>
+        <div>
+          <Breadcrumbs
+            items={breadcrumbItems}
+            description={
+              "Coordinates the planning, execution, and completion of projects..."
+            }
+          />
         </div>
         <ButtonClick
-          buttonName={`Add Intergration `}// Set the button name
+          buttonName={`Add Integration `} // Set the button name
           className="your-custom-styles" // Add any additional class names for styling
           BtnType="Add" // Specify the button type (Add or Update)
         />
       </div>
 
-      {/* <div className="flex justify-between">
-        <Heading title="Intergration" description="Lorem ipsum " />
-        <div className="flex gap-4">
-          {" "}
-          <ButtonClick buttonName={"Add Intergration"} BtnType="add" />
-        </div>
-      </div> */}
       <div className="grid gap-6 lg:grid-cols-9">
         <div className="flex flex-col gap-6 lg:col-span-8">
           <div className="flex flex-wrap gap-6">
-            {/* Small card-like div */}
             {data.map((item, index) => (
               <div
                 key={index}
-                className={`bg-white dark:bg-black rounded-lg border-[1px] p-4 max-w-[300px] ${selectedDivs.includes(index)
-                  ? "border-[#6A4BFC]"
-                  : "border-[#DADADA]"
-                  }`}
+                className={`bg-white dark:bg-[#0c101c] rounded-lg border p-2 max-w-[300px] relative ${
+                  selectedItems.includes(index)
+                    ? "border-primary"
+                    : "border-black/10 dark:border-white/10"
+                }`}
               >
-                <div className="items-center flex flex-col lg:flex-row">
-                  <img
-                    src={item.image}
-                    alt="Logo"
-                    className="w-[58px] h-[58px] object-cover rounded-md borderb lg:border-b-0"
-                  />
+                <div className="flex flex-col items-center lg:flex-row">
+                  <div className="rounded-md borderb size-12 2xl:size-[58px] overflow-hidden"> 
+                    <img
+                      src={item.image}
+                      alt="Logo"
+                      className="object-cover object-center w-full h-full"
+                    />
+                  </div>
                   <div className="ml-2">
-                    <h3 className="h6  ">{item.title}</h3>
+                    <h3 className="h6 ">{item.title}</h3>
                     <p className="para">abcd@gmail</p>
                   </div>
-                  <input
-                    id={`comments-${index}`}
-                    name={`comments-${index}`}
-                    type="checkbox"
-                    className="h-4 w-4 rounded border  text-indigo-600 focus:ring-indigo-600 absolute mt-[-60px] ml-64"
-                    onChange={() => handleCheckboxChange(index)}
-                    style={{ borderColor: "red" }}
-                  />
+                
+                  <div className="absolute top-2 right-2">
+                    <CheckBoxInput
+                      value={selectedItems.includes(index)}
+                      change={() => handleCheckboxChange(index)}
+                    />
+                  </div>
                 </div>
                 <div className="text-wrap">
-                  <p className="para mt-4 ">
+                  <p className="mt-4 para !font-normal">
                     Indeed is a global job search engine for job listings with
                     over 200 million unique monthly visitors
                   </p>
@@ -102,7 +95,7 @@ function Intergration() {
                     BtnType="text"
                     icon={<RiEdit2Line />}
                     buttonName="Edit"
-                    className={"bg-[#e8e4e4]"}
+                    className={"bg-black/5 dark:border-white/10 dark:border"}
                   />
                 </div>
               </div>
@@ -114,4 +107,4 @@ function Intergration() {
   );
 }
 
-export default Intergration;
+export default Integration;

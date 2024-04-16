@@ -110,17 +110,15 @@ const SelectCompany = () => {
         {selectedCompany && (
           <div className="flex items-center justify-between">
             <div className="flex items-center gap-2 overflow-hidden">
-              <div className="flex-1 w-6 h-6 overflow-hidden rounded-full 2xl:w-9 2xl:h-9">
+              <div className="w-6 h-6 overflow-hidden rounded-full 2xl:w-9 2xl:h-9 shrink-0">
                 <img src={Clogo} alt="" />
               </div>
-              <div className="flex flex-col items-baseline">
-                <h1 className="text-[10px] font-semibold capitalize truncate 2xl:text-sm dark:text-white">
-                  {selectedCompany.company}
-                </h1>
-                {/* <p className="para !text-[8px] 2xl:!text-xs">
-                  {/* {selectedCompany.subtitle} * 2.5k members
-                </p> */}
-              </div>
+              <h1
+                className="text-[10px] font-semibold capitalize truncate  2xl:text-sm dark:text-white"
+                title={selectedCompany.company}
+              >
+                {selectedCompany.company}
+              </h1>
             </div>
             <MdKeyboardArrowRight size={18} className="opacity-50 " />
             {/* <MdUnfoldMore size={18} /> */}
