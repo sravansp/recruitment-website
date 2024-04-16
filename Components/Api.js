@@ -147,12 +147,12 @@ export const getAllRecruitmentJobs = async () => {
     const kwargs = { resumeId: id }; 
     return await apiRequest(action, method, kwargs);
   };
-  export const getAllRecruitmentJobResumesCustomFields = async (id) => {
-    const action = "getAllRecruitmentJobResumesCustomFields";
-    const method = "POST";
-    const kwargs = { resumeId: id }; 
-    return await apiRequest(action, method, kwargs);
-  };
+  // export const getAllRecruitmentJobResumesCustomFields = async (id) => {
+  //   const action = "getAllRecruitmentJobResumesCustomFields";
+  //   const method = "POST";
+  //   const kwargs = { resumeId: id }; 
+  //   return await apiRequest(action, method, kwargs);
+  // };
   export const updateRecruitmentResume = async (e) => {
     const action = "updateRecruitmentResume";
     const method = "POST";
@@ -203,3 +203,19 @@ export const getAllRecruitmentJobs = async () => {
   
   //   return await apiformRequest(action, method, { resumeId, formData });
   // }
+
+
+
+  export const getAllRecruitmentJobApplicationFormSettings = async (id) => {
+    const action = "getAllRecruitmentJobApplicationFormSettings";
+    const method = "POST";
+    const kwargs = {  jobId: id }; 
+    return await apiRequest(action, method, kwargs);
+  }
+
+  export const getAllRecruitmentJobResumesCustomFields = async (id) => {
+    const action = "getAllRecruitmentJobResumesCustomFields";
+    const method = "POST";
+    const kwargs = {  resumeId: id }; 
+    return await apiRequest(action, method, kwargs);
+  }

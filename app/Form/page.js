@@ -14,10 +14,13 @@ import FlexCol from "@components/ui/FlexCol";
 import Review from "./Form-items/Review";
 import { useMediaQuery } from "react-responsive";
 import {
+  getAllRecruitmentJobApplicationFormSettings,
   getAllRecruitmentJobResumesCustomFields,
   getAllRecruitmentResumeEducationalDetails,
   getAllRecruitmentResumesExperienceDetails,
+  getRecruitmentJobApplicationFormSettingById,
   getRecruitmentJobById,
+  getRecruitmentJobResumesCustomFieldById,
   getRecruitmentQuestionnaireTemplateDetailsById,
   getRecruitmentResumeById,
   imageupload,
@@ -632,11 +635,11 @@ function Web({ closeDrawer, selectedJobId, onClick }) {
       candidateEmail: Yup.string()
         .email("Invalid email address")
         .required("Email is required"),
-      candidateContact: Yup.string().required("Phone number is required"),
+      candidateContact: Yup.number().required("Phone number is required"),
       candidateLocation: Yup.string().required("Location is required"),
       city: Yup.string().required("City is required"),
       address: Yup.string().required("Address is required"),
-      postalCode: Yup.string().required("Postal code is required"),
+      postalCode: Yup.number().required("Postal code is required"),
     }),
     onSubmit: async (values) => {
       try {
@@ -931,7 +934,8 @@ function Web({ closeDrawer, selectedJobId, onClick }) {
 
   const formik3 = useFormik({
     initialValues: {
-      customQuestion:"",
+      customQuestion:"Are you legally eligible to work in the country?",
+      answer:"",
       jobId: selectedJobId,
       resumeId: insertedid1,
       // highestEducationLevel: "",
@@ -939,17 +943,15 @@ function Web({ closeDrawer, selectedJobId, onClick }) {
     enableReinitialize: true,
     validateOnChange: false,
     validationSchema3: Yup.object().shape({
-      customQuestion: Yup.string().required("This field is required"),
+      answer: Yup.string().required("This field is required"),
     }),
     onSubmit: async (values, { setSubmitting }) => {
       try {
-        // const newAnswers = questid.flatMap((condition, conditionIndex) => {
-        //   const answers = {}; // Object to store answers for each evaluationTemplateDetailsId
+        // const newAnswers = questtemp.flatMap((condition, conditionIndex) => {
+        //   const answers = {};
         //   condition.answerMetaData.forEach((metadata) => {
-        //     const detailsId = condition.questionTemplateDetailsId;
-        //     const answer = questionAnswers.find(
-        //       (a) => a.questionTemplateDetailsId === detailsId
-        //     );
+        //     const detailsId = condition.customFields;
+            
         //     let questioneir;
         //     switch (metadata.key) {
         //       case "Drop-down":
@@ -973,31 +975,28 @@ function Web({ closeDrawer, selectedJobId, onClick }) {
         //       default:
         //         questioneir = "";
         //     }
-        //     // Store the answer based on evaluationTemplateDetailsId
         //     answers[detailsId] = {
         //       jobId: selectedJobId,
         //       resumeId: insertedid1,
-        //       customQuestion: "",
-
-        //       createdBy: null,
+        //       customQuestion: questioneir,
+        //       createdBy: null, // Replace with actual createdBy value
         //     };
         //   });
-        //   // Convert the answers object to an array
         //   return Object.values(answers);
         // });
-
+    
         // console.log("New Answers:", newAnswers);
-
-        // const response = await saveRecruitmentJobResumesCustomField(values);
-        // console.log("question Details API Response:", response);
-        // if (response.status === 200) {
-        //   openNotification("success", "Successful", response.message);
-        //   setActiveBtn(activeBtn + 1);
-        //   setCurrentStep(currentStep + 1);
-        //   setPresentage(presentage + 1);
-        // } else if (response.status === 500) {
-        //   openNotification("error", "input field is empty..", response.message);
-        // }
+        // console.log(detailsId)
+        const response = await saveRecruitmentJobResumesCustomField(values);
+        console.log("question Details API Response:", response);
+        if (response.status === 200) {
+          openNotification("success", "Successful", response.message);
+          setActiveBtn(activeBtn + 1);
+          setCurrentStep(currentStep + 1);
+          setPresentage(presentage + 1);
+        } else if (response.status === 500) {
+          openNotification("error", "input field is empty..", response.message);
+        }
         // Handle success response if needed
       } catch (error) {
         console.error("Error saving question details:", error);
@@ -1043,86 +1042,88 @@ function Web({ closeDrawer, selectedJobId, onClick }) {
   //   console.log(data, "dhcdghcvhd");
   // }, [currentStep]);
 
-  const getquestionnaire = async () => {
-    try {
-      console.log(questid, "iddd");
-      const idnew = questid;
-      console.log(idnew, "daataa of idd new");
-      const response = await getRecruitmentQuestionnaireTemplateDetailsById(
-        questid
-      );
+  // const getquestionnaire = async () => {
+  //   try {
+  //     console.log(questid, "iddd");
+  //     const idnew = questid;
+  //     console.log(idnew, "daataa of idd new");
+  //     const response = await getAllRecruitmentJobApplicationFormSettings(
+  //       jobid
+  //     );
 
-      const questionData = response.result.map((item) => ({
-        questionTemplateDetailsId: item.questionnaireTemplateDetailsId, // Assuming this is the correct ID
-        question: item.question,
-        answerMetaData: item.answerMetaData.map((metadata) => ({
-          key: metadata.key,
-          value: metadata.value,
-        })),
-      }));
+  //     const questionData = response.result.customFields.map((item) => ({
+  //       questionTemplateDetailsId: item.formSettingsId,
+  //       question: item.question,
+  //       answerMetaData: item.customFields.map((field) => ({
+  //         key: field.answer_type,
+  //         value: field.answer_meta_data[0].value,
+  //       })),
+  //     }));
+         
+  //     // return questionData;
 
-      setQuesttemp(questionData);
-      console.log(questionData);
-      console.log(response, "questionnaire");
-    } catch (error) {
-      console.error("error", error);
-    }
-  };
+  //     setQuesttemp(questionData);
+  //     console.log(questionData);
+  //     console.log(response, "questionnaire");
+  //   } catch (error) {
+  //     console.error("error", error);
+  //   }
+  // };
 
-  useEffect(() => {
-    getquestionnaire();
-  }, []);
+  // useEffect(() => {
+  //   getquestionnaire();
+  // }, []);
 
-  useEffect(() => {
-    fetchedAnswers.forEach((answer) => {
-      const { questionTemplateDetailsId, questionAnswer } = answer;
-      const matchedCondition = questtemp.find(
-        (condition) =>
-          condition.questionTemplateDetailsId === questionTemplateDetailsId
-      );
+  // useEffect(() => {
+  //   fetchedAnswers.forEach((answer) => {
+  //     const { questionTemplateDetailsId, questionAnswer } = answer;
+  //     const matchedCondition = questtemp.find(
+  //       (condition) =>
+  //         condition.customFields === questionTemplateDetailsId
+  //     );
 
-      if (matchedCondition) {
-        const metaData = matchedCondition.answerMetaData.find(
-          (meta) => meta.key
-        );
+  //     if (matchedCondition) {
+  //       const metaData = matchedCondition.answerMetaData.find(
+  //         (meta) => meta.key
+  //       );
 
-        if (metaData) {
-          const { key } = metaData;
-          switch (key) {
-            case "Drop-down":
-              Setdopdownvalue(questionAnswer);
-              break;
-            case "Paragraph":
-              setTextAreavalue(questionAnswer);
-              break;
-            case "Checkboxes":
-              const selectedOptions = questionAnswer
-                .split(",")
-                .map((option) => option.trim());
-              setSelectedCheckboxes(selectedOptions);
-              break;
-            case "ShortAnswer":
-              setForminputValue(questionAnswer);
-              break;
-            case "MultipleChoice":
-              setSelectedValues((prevState) => {
-                const newState = [...prevState];
-                const index = questtemp.findIndex(
-                  (condition) =>
-                    condition.questionTemplateDetailsId ===
-                    questionTemplateDetailsId
-                );
-                newState[index] = questionAnswer;
-                return newState;
-              });
-              break;
-            default:
-              break;
-          }
-        }
-      }
-    });
-  }, [questtemp, questionAnswers]);
+  //       if (metaData) {
+  //         const { key } = metaData;
+  //         switch (key) {
+  //           case "Drop-down":
+  //             Setdopdownvalue(questionAnswer);
+  //             break;
+  //           case "Paragraph":
+  //             setTextAreavalue(questionAnswer);
+  //             break;
+  //           case "Checkboxes":
+  //             const selectedOptions = questionAnswer
+  //               .split(",")
+  //               .map((option) => option.trim());
+  //             setSelectedCheckboxes(selectedOptions);
+  //             break;
+  //           case "ShortAnswer":
+  //             setForminputValue(questionAnswer);
+  //             break;
+  //           case "MultipleChoice":
+  //             setSelectedValues((prevState) => {
+  //               const newState = [...prevState];
+  //               const index = questtemp.findIndex(
+  //                 (condition) =>
+  //                   condition.questionTemplateDetailsId ===
+  //                   questionTemplateDetailsId
+  //               );
+  //               newState[index] = questionAnswer;
+  //               return newState;
+  //             });
+  //             break;
+  //           default:
+  //             break;
+  //         }
+  //       }
+  //     }
+  //   });
+  // }, [questtemp, questionAnswers]);
 
   useEffect(() => {
     const fetchapi = async () => {
@@ -1246,6 +1247,35 @@ function Web({ closeDrawer, selectedJobId, onClick }) {
     callapi();
   }, [currentStep]);
 
+
+
+
+  useEffect(() => {
+    const callapi = async () => {
+      try {
+        if (currentStep === 4) {
+          // Check if the current step is the review page
+          const response = await getAllRecruitmentJobResumesCustomFields(
+            insertedid1
+          );
+          setCustomfield(
+            response.result.map((items) => ({
+              customQuestion: items.customQuestion,
+              answer: items.answer,
+              
+              
+            }))
+          );
+          console.log(insertedid1, "dfrfgreg");
+          console.log(response);
+        }
+      } catch (error) {
+        console.error("error", error);
+      }
+    };
+    callapi();
+  }, [currentStep]);
+
   // useEffect(() => {
   //   const callapi = async () => {
   //     try {
@@ -1343,7 +1373,7 @@ function Web({ closeDrawer, selectedJobId, onClick }) {
 
         break;
       case 3:
-       handleSubmit();
+       formik3.handleSubmit();
         // setCurrentStage(currentStage + 1);
         // formik.resetForm();
         // formik1.resetForm();
@@ -1442,7 +1472,7 @@ function Web({ closeDrawer, selectedJobId, onClick }) {
                       id={`acco-text-item`}
                       role="region"
                       aria-labelledby={`acco-title-item`}
-                      className="flex flex-col justify-between w-full gap-6 px-6 py-4"
+                      className="flex flex-col justify-between w-full gap-6 p-5"
                     >
                       <div className="grid grid-cols-2 gap-4 sm:grid-cols-6">
                         <Dropdown
@@ -1543,6 +1573,8 @@ function Web({ closeDrawer, selectedJobId, onClick }) {
                               accept="image/*"
                             />
                           </div> */}
+                           <div className='w-4/5'>
+                      <p>Photo <span className="text-[#C1C1C1]">(Optional)</span></p>
                       <FileUpload
                         className={
                           "relative max-w-[1070px] sm:w-[492px] w-full borderb rounded-md h-24 bg-[#FAFAFA] dark:bg-black"
@@ -1551,6 +1583,7 @@ function Web({ closeDrawer, selectedJobId, onClick }) {
                           setfilepdf(e);
                         }}
                       />
+                      </div>
                       {/* </div> */}
                       {/* </div> */}
                       <div className="grid grid-cols-1 gap-4 sm:grid-cols-3">
@@ -2099,88 +2132,81 @@ function Web({ closeDrawer, selectedJobId, onClick }) {
                     className="flex flex-col justify-between w-full gap-6 px-6 py-4"
                   >
                     <div>
-                      {questtemp.length > 0 ? (
-                        questtemp.map((condition, index) => (
-                          <div key={index}>
-                            <h4>{condition.question}</h4>
-                            {condition.answerMetaData.map((metadata, idx) => (
-                              <div key={idx}>
-                                {metadata.key === "Drop-down" && idx === 0 && (
-                                  <Dropdown
-                                    options={condition.answerMetaData
-                                      .filter(
-                                        (meta) => meta.key === "Drop-down"
-                                      )
-                                      .flatMap((meta) => meta.value.split(","))
-                                      .map((option) => ({
-                                        label: option.trim(),
-                                        value: option.trim(),
-                                      }))}
-                                    change={Setdopdownvalue}
-                                    value={dropdownvalue}
-                                  />
-                                )}
-                                {metadata.key === "Paragraph" && (
-                                  <TextArea
-                                    rows={4}
-                                    change={setTextAreavalue}
-                                    value={textAreaValue}
-                                  />
-                                )}
-                                {metadata.key === "Checkboxes" && (
-                                  <div>
-                                    {metadata.value
-                                      .split(",")
-                                      .map((option, optIdx) => (
-                                        <label key={optIdx}>
-                                          <Checkbox
-                                            value={option.trim()}
-                                            checked={selectedCheckboxes.includes(
-                                              option.trim()
-                                            )}
-                                            onChange={() =>
-                                              handleCheckboxChange(
-                                                option.trim()
-                                              )
-                                            }
-                                          />
-                                          {option.trim()}
-                                        </label>
-                                      ))}
-                                  </div>
-                                )}
-                                {metadata.key === "ShortAnswer" && (
-                                  <FormInput
-                                    change={setForminputValue}
-                                    value={forminputvalue}
-                                  />
-                                )}
-                                {metadata.key === "MultipleChoice" && (
-                                  <div>
-                                    <Radio.Group
-                                      onChange={(e) =>
-                                        handleRadioChange(e, index)
-                                      }
-                                      value={selectedValues[index]}
-                                    >
-                                      {metadata.value
-                                        .split(",")
-                                        .map((option, optIdx) => (
-                                          <Radio
-                                            key={optIdx}
-                                            value={option.trim()}
-                                          >
-                                            {option.trim()}
-                                          </Radio>
-                                        ))}
-                                    </Radio.Group>
-                                  </div>
-                                )}
-                              </div>
-                            ))}
-                          </div>
-                        ))
-                      ) : (
+                    {/* {questtemp.length > 0 ? (
+        questtemp.map((condition, index) => (
+          <div key={index}>
+            <h4>{condition.question}</h4>
+            {condition.answerMetaData.map((metadata, idx) => (
+              <div key={idx}>
+                {metadata.key === "Paragraph" && (
+                  <TextArea
+                    rows={4}
+                    change={(e) => setTextAreavalue(e.target.value)}
+                    value={textAreaValue}
+                  />
+                )}
+                {metadata.key === "ShortAnswer" && (
+                  <FormInput
+                    change={(e) => setForminputValue(e.target.value)}
+                    value={forminputvalue}
+                  />
+                )}
+                {metadata.key === "Checkboxes" && (
+                  <div>
+                    {metadata.value
+                      .split(",")
+                      .map((option, optIdx) => (
+                        <label key={optIdx}>
+                          <Checkbox
+                            value={option.trim()}
+                            checked={selectedCheckboxes.includes(option.trim())}
+                            onChange={() => {
+                              const newSelected = selectedCheckboxes.includes(option.trim())
+                                ? selectedCheckboxes.filter((item) => item !== option.trim())
+                                : [...selectedCheckboxes, option.trim()];
+                              setSelectedCheckboxes(newSelected);
+                            }}
+                          />
+                          {option.trim()}
+                        </label>
+                      ))}
+                  </div>
+                )}
+                {metadata.key === "Drop-down" && idx === 0 && (
+                  <Dropdown
+                    options={metadata.value
+                      .split(",")
+                      .map((option) => ({
+                        label: option.trim(),
+                        value: option.trim(),
+                      }))}
+                    change={(value) => setDropdownValue(value)}
+                    value={dropdownvalue}
+                  />
+                )}
+                {metadata.key === "MultipleChoice" && (
+                  <div>
+                    <Radio.Group
+                      onChange={(e) => {
+                        const newSelectedValues = [...selectedValues];
+                        newSelectedValues[index] = e.target.value;
+                        setSelectedValues(newSelectedValues);
+                      }}
+                      value={selectedValues[index] || ''}
+                    >
+                      {metadata.value.split(",").map((option, optIdx) => (
+                        <Radio key={optIdx} value={option.trim()}>
+                          {option.trim()}
+                        </Radio>
+                      ))}
+                    </Radio.Group>
+                  </div>
+                )}
+              </div>
+            ))}
+          </div>
+        ))
+                      ) : ( */}
                         <div className="grid grid-cols-1 gap-4 sm:grid-cols-2 ">
                           <FormInput
                             title={
@@ -2188,20 +2214,29 @@ function Web({ closeDrawer, selectedJobId, onClick }) {
                             }
                             placeholder={"Answer here.."}
                             className="text-[#344054]"
-                            name="customQuestion"
-                            value={formik3.values.customQuestion}
-                            change={(e) => {
-                              formik3.setFieldValue("customQuestion", e);
-                            }}
+                            // name="customQuestion"
+                            // value={questionfield}
+                            // change={(e) => {
+                            //   formik3.setFieldValue("customQuestion", e);
+                            // }}
                             // change={(e) => {
                             //   setQuestionfield(e);
                             // }}
+                            name="answer"
+                            value={formik3.values.answer}
+                            // change={formik3.handleChange}
+                            change={(e) => {
+                              formik3.setFieldValue("answer", e);
+                            }}
+                            // onBlur={formik3.handleBlur}
                             required={false}
-                            error={formik3.errors.customQuestion}
+                            error={formik3.errors.answer}
+                            // required={false}
+                            // error={formik3.errors.customQuestion}
                           />
                           {/* Additional FormInput components can be added here */}
                         </div>
-                      )}
+                      {/* )} */}
                     </div>
                   </div>
                 </div>
@@ -2229,27 +2264,39 @@ function Web({ closeDrawer, selectedJobId, onClick }) {
                   />
                 </div>
                 {data.map((item, index) => (
-                  <div className="flex min-w-0 pt-3  gap-x-4">
-                    <Image
-                      className="flex-none bg-cover rounded-full h-18 w-18 object-cover"
-                      src={item.candidatePhoto}
-                      width={64}
-                      height={64}
-                      alt=""
-                      style={{
-                        flex: "none",
-                        borderRadius: "50%",
-                        height: "4.5rem", // Corresponds to h-18
-                        width: "4.5rem", // Corresponds to w-18
-                        objectFit: "cover",
-                      }}
-                    />
-
-                    <div className="flex-auto min-w-0 mt-3">
-                      <p className="acco-h1"> {item.candidateName}</p>
-                    </div>
-                  </div>
-                ))}
+      <div key={index} className="flex justify-between items-center mt-3">
+        <div className="flex-none">
+          {item.candidatePhoto ? (
+            <Image
+              className="bg-cover rounded-full h-18 w-18 object-cover"
+              src={item.candidatePhoto}
+              width={64}
+              height={64}
+              alt="profilepic"
+              style={{
+                borderRadius: "50%",
+                height: "4.5rem",
+                width: "4.5rem",
+                objectFit: "cover",
+              }}
+            />
+          ) : (
+            <div
+              className="rounded-full h-18 w-18"
+              style={{
+                borderRadius: "50%",
+                height: "4.5rem",
+                width: "4.5rem",
+              }}
+            ></div>
+          )}
+        </div>
+        <div className="flex-auto min-w-0 ml-4">
+          <p className="acco-h1">{item.candidateName}</p>
+        </div>
+      </div>
+    ))}
+                
 
                 <div>
                   {userdata.map((user) => (
@@ -2399,9 +2446,18 @@ function Web({ closeDrawer, selectedJobId, onClick }) {
                   </div>
 
                   <div className="divider-h" />
-                  {data.map((item, index) => (
+                  {/* {data.map((item, index) => (
                     <PDFViewer pdfUrl={item.resumeFile} />
-                  ))}
+                  ))} */}
+                  {data.map((item, index) => (
+  <iframe 
+    key={index} 
+    src={item.resumeFile} 
+    width="100%" 
+    height="500px" 
+    title={`Resume-${index}`} 
+  />
+))}
                 </div>
 
                 <div className="divider-h mt-9" />
@@ -2409,16 +2465,16 @@ function Web({ closeDrawer, selectedJobId, onClick }) {
                   <h2 className="h6">Prerequisite</h2>
                 </div>
                 <div className="inline-flex flex-col items-start justify-start pt-4 gap-7">
-                  {/* {customfield?.map((quest) => ( */}
+                  {customfield?.map((quest) => (
                   <div className="flex flex-col gap-3">
                     {/* key={quest.id} */}
                     <div className="flex">
                       <div className="w-12 ">
-                        {/* <span className="pblack">Q{quest.id}.</span> */}
+                        <span className="pblack">Q.</span>
                       </div>
                       <div>
                         <span className="pblack !text-opacity-80">
-                          {/* {quest.customQuestion} */}
+                          {quest.customQuestion}
                         </span>
                       </div>
                     </div>
@@ -2427,11 +2483,11 @@ function Web({ closeDrawer, selectedJobId, onClick }) {
                         <p className="pblack">Ans.</p>
                       </div>
                       <p className="pblack !text-opacity-80">
-                        {/* {quest.answer} */}
+                        {quest.answer}
                       </p>
                     </div>
                   </div>
-                  {/* // ))} */}
+                  ))} 
                 </div>
               </div>
             </div>
