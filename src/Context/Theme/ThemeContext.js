@@ -11,7 +11,7 @@ export const ThemeProvider = ({ children }) => {
   
   // Default theme and color settings
   const [theme, setTheme] = useState(localStorage.getItem("theme") || "light");
-  const defaultColor = "#6A38EF"; // Set the default color here
+  const defaultColor = "#6A4BFC"; // Set the default color here
   const [color, setColor] = useState(localStorage.getItem("mainColor") || defaultColor);
 
   useEffect(() => {
