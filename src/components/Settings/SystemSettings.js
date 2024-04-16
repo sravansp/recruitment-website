@@ -45,8 +45,7 @@ function SystemSettings() {
 
       <div className='flex flex-col'>
         <p className='font-bold text-lg'> Team Members</p>
-        <p className='para font-medium'>Coordinates the planning, execution, and completion of projects...
-        </p>
+        <p className='para font-medium'>{t("Main_Description")}</p>
       </div>
 
       {/* <div className="flex justify-between">

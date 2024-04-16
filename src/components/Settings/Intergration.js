@@ -44,8 +44,7 @@ function Intergration() {
       <div className="flex justify-between">
         <div className='flex flex-col'>
           <p className='font-bold text-lg'> Integrations</p>
-          <p className='para font-medium'>Coordinates the planning, execution, and completion of projects...
-          </p>
+          <p className='para font-medium'>{t("Main_Description")}</p>
         </div>
         <ButtonClick
           buttonName={`Add Intergration `}// Set the button name

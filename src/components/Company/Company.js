@@ -222,8 +222,7 @@ const Company = () => {
       <div className="flex flex-col justify-between gap-6 lg:items-center lg:flex-row">
         <div className='flex flex-col'>
           <p className='font-bold text-lg'> Company</p>
-          <p className='para font-medium'>Coordinates the planning, execution, and completion of projects...
-          </p>
+          <p className='para font-medium'>{t("Main_Description")}</p>
         </div>
         <div className="flex flex-col gap-6 sm:flex-row">
           <ButtonClick
