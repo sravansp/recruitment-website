@@ -1390,7 +1390,8 @@ const Createjob = ({
                   <FlexCol>
                     <div className="rounded-md borderb">
                       <Accordion
-                        title={"Job Details"}
+                        title={"Job title & Department details"}
+                        description={"Job title & Department details"}
                         className="Text_area "
                         padding={true}
                         toggleBtn={false}
@@ -1492,7 +1493,8 @@ const Createjob = ({
 
                     <div className="rounded-md borderb">
                       <Accordion
-                        title={"Location "}
+                        title={"Location"}
+                        description={"Location "}
                         className="Text_area"
                         padding={true}
                         toggleBtn={false}
@@ -1588,6 +1590,7 @@ const Createjob = ({
                     <div className='rounded-md borderb'>
                       <Accordion
                         title={"Employment Details"}
+                        description={"Employment Details"}
                         className="Text_area"
                         padding={true}
                         toggleBtn={false}
@@ -1722,6 +1725,7 @@ const Createjob = ({
                     <div className='rounded-md borderb'>
                       <Accordion
                         title={"Job Description"}
+                        description={"Job Description"}
                         className="Text_area"
                         padding={true}
                         toggleBtn={false}
