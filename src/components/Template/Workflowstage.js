@@ -1,5 +1,6 @@
 import React, { useEffect, useState } from 'react'
 import { useTranslation } from 'react-i18next';
+import Automate from "../../assets/images/Automate.svg"
 import DrawerPop from '../common/DrawerPop';
 import FlexCol from '../common/FlexCol';
 import Accordion from '../common/Accordion';
@@ -433,7 +434,8 @@ const Workflowstage = ({ open = "", close = () => { }, inputshow = false, isUpda
                     <foreignObject x="30" y="0" width="545" height="55">
                       <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', width: '100%', height: '100%' }}>
                         <span>{stage.stageName}</span>
-                        <MdOutlineLock className='mr-12 text-gray-400' size={25}/>
+                        <img src={Automate} alt='' className='w-6 h-6 ml-auto pr-1' />
+                        <MdOutlineLock className='mr-12 text-gray-400' size={25} />
                       </div>
                     </foreignObject >
                   </svg>
@@ -442,17 +444,17 @@ const Workflowstage = ({ open = "", close = () => { }, inputshow = false, isUpda
                     <div className='flex items-center gap-5'>
                       <div className='p-2 hover:bg-slate-300 rounded-md' onClick={() => handleEditStage(stage.stageName)}>
                         <Tooltip placement="top" title={"Edit"} >
-                          <PiPencilSimpleLineThin className='text-gray-500' />
+                          <PiPencilSimpleLineThin className='text-gray-500' size={16} />
                         </Tooltip>
                       </div>
                       <div className='p-2 hover:bg-slate-300 rounded-md' onClick={() => handleCopy(stage.stageName)} >
                         <Tooltip placement="top" title={"Copy"} >
-                          <PiCopySimple className='text-gray-500' />
+                          <PiCopySimple className='text-gray-500' size={16} />
                         </Tooltip>
                       </div>
                       <div className='p-2 hover:bg-slate-300 rounded-md' onClick={() => handleDeleteStage(stage.id)}>
                         <Tooltip placement="top" color={"red"} title={"Delete"} >
-                          <RiDeleteBinLine className="cursor-pointer text-red-500" />
+                          <RiDeleteBinLine className="cursor-pointer text-red-500" size={16} />
                         </Tooltip>
                       </div>
 
