@@ -1777,6 +1777,7 @@ const Createjob = ({
                                              />
                                              </div> */}
                       <div className="pt-4">
+                        <p className="pb-2">About the role</p>
                         <TextEditor
                           initialValue={content}
                           onChange={handleEditorChange}
