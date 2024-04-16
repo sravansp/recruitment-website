@@ -26,5 +26,7 @@ const appearanceLanguage = {
   Show_Suggestion_Description: "This will display suggestions in Arabic.",
   Disable_Voice_Comma: "Disable voice commands",
   Disable_Voice_Comma_Description: "Control voice command here.",
+
+  Main_Description: "Coordinates the planning, execution, and completion of projects...",
 };
 export default appearanceLanguage;

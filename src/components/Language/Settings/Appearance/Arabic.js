@@ -1,5 +1,5 @@
 const appearanceLanguageArabic = {
-  Appearance:"مظهر",
+  Appearance: "مظهر",
   Appearance_Settings: "مظهرإعدادات المظهر",
   Appearance_Description: "إن تخصيص مساحة العمل الخاصة بك يجعل العمل أكثر متعة وراحة!",
   Custom_theme: "إنشاء موضوع مخصص",
@@ -26,5 +26,7 @@ const appearanceLanguageArabic = {
   Show_Suggestion_Description: "سيؤدي هذا إلى عرض الاقتراحات باللغة العربية",
   Disable_Voice_Comma: "تعطيل الفاصلة الصوتية",
   Disable_Voice_Comma_Description: "التحكم بالأوامر الصوتية هنا",
+
+  Main_Description: "ينسق التخطيط، التنفيذ، وإكمال المشروع",
 };
 export default appearanceLanguageArabic;
