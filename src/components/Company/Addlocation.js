@@ -57,10 +57,8 @@ const Location = ({ open,
         //   updateIdBasedLocation();
       }}
       header={[
-        !isUpdate ? t("Create Location") : t("Update_Location"),
-        !isUpdate
-          ? t("lorem ipusm")
-          : t("Update_Selected_Location"),
+        !isUpdate ? t("Create New Location") : t("Update_Location"),
+        !isUpdate ? t("Create New Location") : t("Update_Selected_Location"),
 
       ]}
       footerBtn={[
@@ -83,7 +81,7 @@ const Location = ({ open,
 
         <TextArea
           title={t("Description")}
-          placeholder={t("Enter_Description_here")}
+          placeholder={t("Enter_Description")}
           className=""
           change={(e) => {
             // formik.setFieldValue("description", e);
