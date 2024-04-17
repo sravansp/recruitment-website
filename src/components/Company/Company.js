@@ -50,18 +50,18 @@ const Company = () => {
           title: "Description",
           value: "description",
         },
-        //  {
-        //   id:3,
-        //   title:"status",
-        //   value:"status",
-        //   actionToggle:true,
-        //  },
-        //  {
-        //   id:4,
-        //   title:"actions",
-        //   value:"actions",
-        //   action:true,
-        //  },
+         {
+          id:3,
+          title:"status",
+          value:"status",
+          actionToggle:true,
+         },
+         {
+          id:4,
+          title:"actions",
+          value:"actions",
+          action:true,
+         },
       ],
       Locations: [
         {
@@ -74,19 +74,18 @@ const Company = () => {
           title: "Description",
           value: "description",
         },
-        //  {
-        //   id:3,
-        //   title:"status",
-        //   value:"status",
-        //   actionToggle:true,
-        //  },
-        //  {
-        //   id:4,
-        //   title:"actions",
-        //   value:"actions",
-        //   action:true,
-        //  },
-
+         {
+          id:3,
+          title:"status",
+          value:"status",
+          actionToggle:true,
+         },
+         {
+          id:4,
+          title:"actions",
+          value:"actions",
+          action:true,
+         },
       ]
 
 
