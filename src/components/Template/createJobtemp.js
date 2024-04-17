@@ -1095,7 +1095,7 @@ const CreatejobTemp = ({
                                 } `}
                               /> */}
                                 <img
-                                  className={`${customRate === each.id && " text-primary  "
+                                  className={`w-12 h-12 ${customRate === each.id && " text-primary  "
                                     } p-2 border rounded-mdx w-fit bg-[#F8FAFC]`}
                                   src={each.image}
                                   alt=""
