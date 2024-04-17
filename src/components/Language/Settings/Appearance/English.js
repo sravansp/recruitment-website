@@ -1,5 +1,6 @@
 const appearanceLanguage = {
-  Appearance: "Appearance Settings",
+  Appearance: "Appearance",
+  Appearance_Settings: "Appearance settings",
   Appearance_Description: "Customizing your workspace, make it more enjoyable and comfortable to work!",
   Custom_theme: "Create custom theme",
   Inter_face_theme: "Interface theme",
@@ -25,5 +26,7 @@ const appearanceLanguage = {
   Show_Suggestion_Description: "This will display suggestions in Arabic.",
   Disable_Voice_Comma: "Disable voice commands",
   Disable_Voice_Comma_Description: "Control voice command here.",
+
+  Main_Description: "Coordinates the planning, execution, and completion of projects...",
 };
 export default appearanceLanguage;

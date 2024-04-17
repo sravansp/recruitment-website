@@ -167,7 +167,7 @@ const AddLetter = ({
         }}
         header={[
           !updateId ? t("Create Letter Template") : t("Update Letter Template"),
-          t("Lorem ipsum dummy text doret solo."),
+          !updateId ? t("Create Letter Template") : t("Update Letter Template"),
         ]}
         //  headerRight={
         //    <div className="flex items-center gap-10">
@@ -216,14 +216,14 @@ const AddLetter = ({
             <div className="grid grid-cols-2 ">
               <FormInput
                 title={"Letter Template Name"}
-                placeholder={"type here"}
+                placeholder={"Enter Letter Template Name"}
                 value={templateName}
                 change={setTemplateName}
               />
             </div>
             <FormInput
                 title={"Subject"}
-                placeholder={"type here"}
+                placeholder={"Enter Subject"}
                 value={subject}
                 change={setsubject}
               />

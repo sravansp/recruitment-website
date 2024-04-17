@@ -9,7 +9,7 @@ import Notification from "./Notification";
 
 export default function Header() {
   const hamburger = useSelector((state) => state.layout.hamburger);
-console.log(hamburger);
+// console.log(hamburger);
   const [theamMode, setTheamMode] = useState("1");
 
 

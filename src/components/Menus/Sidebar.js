@@ -22,7 +22,7 @@ import { HiDocumentText, HiOutlineSquare3Stack3D } from "react-icons/hi2";
 import { HiUsers } from "react-icons/hi";
 import { RiSettings4Fill } from "react-icons/ri";
 import { IoCashOutline, IoHelpCircle } from "react-icons/io5";
-import {  PiBriefcaseDuotone, PiBriefcaseMetalDuotone, PiCheckSquareOffsetThin, PiCreditCardLight, PiPalette, PiPaletteDuotone, PiUser } from "react-icons/pi";
+import {  PiBankLight, PiBell, PiBriefcaseDuotone, PiBriefcaseMetalDuotone, PiCheckSquareOffsetThin, PiCreditCardLight, PiPalette, PiPaletteDuotone, PiUser } from "react-icons/pi";
 import { FaKey } from "react-icons/fa";
 import { GoKey } from "react-icons/go";
 import { CiBank } from "react-icons/ci";
@@ -81,7 +81,7 @@ const Sidebar = () => {
   const handleMenuClick = (menu) => {
     setActiveMenu(menu.id);
     // setSelectedMainMenu(menu.title);
-    console.log(selectedMainMenu);
+    // console.log(selectedMainMenu);
     localStorage.setItem("selectedMainMenu", menu.title);
   };
 
@@ -102,21 +102,21 @@ const Sidebar = () => {
       if (!hoveredMenu.submenus || hoveredMenu.submenus.length === 0) {
         // Display the selected menu's submenus
         const storedSelectedMenu = localStorage.getItem("selectedMainMenu");
-        console.log("selected menu1", storedSelectedMenu);
+        // console.log("selected menu1", storedSelectedMenu);
 
         const activeTopMenuData = navData[0]?.topmenu?.find(
           (menuItem) => menuItem.title === storedSelectedMenu
         );
 
         if (activeTopMenuData) {
-          console.log("active", activeTopMenuData.id);
+          // console.log("active", activeTopMenuData.id);
           setActiveMenu(activeTopMenuData.id);
         } else {
           // Handle the case when the stored menu is not found in top menu
           setActiveMenu(null);
         }
       } else {
-        console.log("selected menu2", showSelectedMenu);
+        // console.log("selected menu2", showSelectedMenu);
 
         // Display the hovered menu's submenus
         setShowSelectedMenu(false);
@@ -136,10 +136,10 @@ const Sidebar = () => {
 
 
   const handleMenuMouseLeave = () => {
-    console.log("hhhhhhhhhhhhhhhhhhhhhhhhhhhhhhh");
-    console.log(menuClick);
+    // console.log("hhhhhhhhhhhhhhhhhhhhhhhhhhhhhhh");
+    // console.log(menuClick);
     if (!menuClick) {
-      console.log(menuClick);
+      // console.log(menuClick);
       handleHamburgerClick();
     }
     // Update selectedMainMenu based on the value in local storage
@@ -167,7 +167,7 @@ const Sidebar = () => {
 
 
   const handleHamburgerClick = (data) => {
-    console.log(data, "dsdsdsdsd");
+    // console.log(data, "dsdsdsdsd");
     if (data === false) {
       setHamburgerClicked(false);
     } else {
@@ -368,7 +368,7 @@ const Sidebar = () => {
                   id: 112,
                   title: t("Appearance"),
                   icon: (
-                    <PiPaletteDuotone className="!text-base 2xl:!text-2xl" />
+                    <PiBankLight className="!text-base 2xl:!text-2xl" />
                   ),
                   link: "/Appearance",
                 },
@@ -376,7 +376,7 @@ const Sidebar = () => {
                   id: 113,
                   title: t("Notification"),
                   icon: (
-                    <IoCashOutline  className="!text-base 2xl:!text-2xl" />
+                    <PiBell  className="!text-base 2xl:!text-2xl" />
                   ),
                   link: "/Notification",
                 },
@@ -537,8 +537,7 @@ const Sidebar = () => {
                     
                   </div>
                   <p className="text-[9px] 2xl:text-xs text-white">
-                    <Link to={menuItem.link}>{menuItem.title}</Link>
-                    
+                    {menuItem.title}
                   </p>
                 </Link>
               </li>

@@ -18,7 +18,7 @@ export default function ButtonClick({
   const isSmallScreen = useMediaQuery({ maxWidth: 1439 });
   
   
-  console.log(backgroundColor)
+  // console.log(backgroundColor)
   
   
   const getButtonType = () => {

@@ -21,7 +21,7 @@ const SelectCompany = () => {
   const selectedCompany = companyData?.find(
     (item) => parseInt(item.companyId) === parseInt(selectedItemId)
   );
-  console.log(selectedCompany)
+  // console.log(selectedCompany)
   const handleItemClick = (itemId) => {
     dispatch(companyIdSet(itemId));
     setSelectedItemId(itemId);

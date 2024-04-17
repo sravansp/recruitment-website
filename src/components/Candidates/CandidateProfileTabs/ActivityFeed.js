@@ -200,8 +200,8 @@ const ActivityFeed = () => {
         <div className="box-wrapper">
           <div className="flex flex-col gap-6 ">
             <h6 className="h6">
-              <span className="text-primary">Marketing Manager</span> at
-              Emirates
+              <span className="text-primary">Activity Feed</span> 
+          
             </h6>
             <div>
               {candidateStatus.map((status, i) => (

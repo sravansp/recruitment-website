@@ -12,12 +12,12 @@ export default function Dropdown({
   title = "",
   formik,
   value = null,
-  change = () => {},
+  change = () => { },
   options = [],
   error = "",
   placeholder = "",
   className = "",
-  onSearch = () => {},
+  onSearch = () => { },
   styles,
   description,
   required = false,
@@ -25,11 +25,11 @@ export default function Dropdown({
   rightIcon = false,
   PopoverContent = {},
   icondropDown = false,
-  icon ,
+  icon,
   image = false,
-  dropdownWidth = ""
+  dropdownWidth = "",
+  needStar = true,
 }) {
-  console.log(options,"hi");
   const isSmallScreen = useMediaQuery({ maxWidth: 1439 });
   const filterOption = (input, option) =>
     (option?.label ?? "").toLowerCase().includes(input.toLowerCase());
@@ -79,7 +79,7 @@ export default function Dropdown({
               ? "0px 0px 0px 4px #FEE4E2, 0px 1px 2px 0px rgba(16, 24, 40, 0.05)"
               : "", // Add box shadow for error
           }}
-          menuItemSelectedIcon={<HiMiniStar className="text-[10px]" />}
+          // menuItemSelectedIcon={<HiMiniStar className="text-[10px]" />}
           value={value}
           status={`${error && "error"}`}
           size={isSmallScreen ? "default" : "large"}
@@ -90,7 +90,7 @@ export default function Dropdown({
             <Option key={i} value={each.value}>
               <div className="flex flex-col gap-1 country-option">
                 <div className="flex items-center gap-2">
-                {each.icon}
+                  {each.icon}
                   {/* {image && (
                     <img
                       src={each.image}
@@ -100,9 +100,9 @@ export default function Dropdown({
                   )} */}
                   {/* <FlagIcon code={91} className="w-5 h-5 rounded-full" />
                     <span>mkck</span> */}
-                    <span>{each.label}</span>
+                  <span>{each.label}</span>
                 </div>
-                
+
                 <p class="text-gray-500 text-xs font-medium font-['Inter'] leading-none">
                   {each.description}
                 </p>
@@ -132,7 +132,7 @@ export default function Dropdown({
               ? "0px 0px 0px 4px #FEE4E2, 0px 1px 2px 0px rgba(16, 24, 40, 0.05)"
               : "", // Add box shadow for error
           }}
-          menuItemSelectedIcon={<HiMiniStar className="text-[10px]" />}
+          // menuItemSelectedIcon={<HiMiniStar className="text-[10px]" />}
           value={value}
           status={`${error && "error"}`}
           size={isSmallScreen ? "default" : "large"}
