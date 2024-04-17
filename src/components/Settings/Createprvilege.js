@@ -270,10 +270,10 @@ refresh = () => {},updateId}) {
                             <div className="flex items-center gap-2">
                               <div>
                                 <CheckBoxInput
-                                  // value={item.subFunctions.some(
-                                  //   (subItem) =>
-                                  //     subFunctionCheckboxes[subItem.functionId]
-                                  // )}
+                                  value={item.subFunctions.some(
+                                    (subItem) =>
+                                      subFunctionCheckboxes[subItem.functionId]
+                                  )}
                                   // change={() =>
                                   //   handleMainFunctionCheckboxChange(item)
                                   // }
@@ -281,16 +281,16 @@ refresh = () => {},updateId}) {
                                   style={{
                                     width: "20px",
                                     height: "20px",
-                                    // border: `1px solid ${
-                                    //   item.subFunctions.some(
-                                    //     (subItem) =>
-                                    //       subFunctionCheckboxes[
-                                    //         subItem.functionId
-                                    //       ]
-                                    //   )
-                                    //     ? "#7F56D9"
-                                    //     : "#999"
-                                    // }`,
+                                    border: `1px solid ${
+                                      item.subFunctions.some(
+                                        (subItem) =>
+                                          subFunctionCheckboxes[
+                                            subItem.functionId
+                                          ]
+                                      )
+                                        ? "#7F56D9"
+                                        : "#999"
+                                    }`,
                                     borderRadius: "3px",
                                     backgroundColor: "transparent",
                                   }}
@@ -303,32 +303,35 @@ refresh = () => {},updateId}) {
                           // key={item.functionId}
                         >
                           <div className="flex gap-2 items-center dark:text-white">
-                            {/* {item.subFunctions.length > 0 && ( */}
+                            {item.subFunctions.length > 0 && (
                               <CheckBoxInput
                                 titleRight="Enable All"
-                                // value={item.subFunctions.every(
-                                //   (subItem) =>
-                                //     subFunctionCheckboxes[subItem.functionId]
-                                // )}
+                                value={item.subFunctions.every(
+                                  (subItem) =>
+                                    subFunctionCheckboxes[subItem.functionId]
+                                )}
                                 // change={() =>
                                 //   handleMainFunctionCheckboxChange(item)
                                 // }
                                 style={{ display: "none" }}
                               />
-                            {/* )} */}
+                              
+                             )} 
                           </div>
                           <div className="flex flex-wrap">
-                            {/* {item.subFunctions.map((subItem, index) => ( */}
+                            {item.subFunctions.map((subItem, index) => ([
+                              
                               <div
-                                // key={subItem.functionId}
-                                // className="flex gap-2 items-center dark:text-white"
-                                // style={{
-                                //   width: "50%",
-                                //   marginBottom: index % 2 === 0 ? "10px" : 0,
-                                // }}
+                                key={subItem.functionId}
+                                className="flex gap-2 items-center dark:text-white"
+                                style={{
+                                  width: "50%",
+                                  marginBottom: index % 2 === 0 ? "10px" : 0,
+                                }}
                               >
+                                 {console.log(subItem.functionName)}
                                 <CheckBoxInput
-                                  // titleRight={subItem.functionName}
+                                  titleRight= {subItem.functionName}
                                   // value={
                                   //   subFunctionCheckboxes[subItem.functionId] ||
                                   //   (item.functionids &&
@@ -341,10 +344,12 @@ refresh = () => {},updateId}) {
                                   //     subItem.functionId
                                   //   )
                                   // }
-                                  style={{ display: "none" }}
+                                  // style={{ display: "none" }}
+                                  
                                 />
+                               
                               </div>
-                            {/* ))} */}
+]))}
                           </div>
                         </Accordion>
                       ))}
