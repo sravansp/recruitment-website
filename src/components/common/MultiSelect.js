@@ -194,7 +194,7 @@ export default function MultiSelect({
                     className="rounded-full size-12"
                   />
                   
-                  <span title={selected.label}>{displayName}</span>
+                  {/* <span title={selected.label}>{displayName}</span> */}
                 </div>
               </div>
             );

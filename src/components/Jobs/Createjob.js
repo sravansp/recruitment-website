@@ -1737,9 +1737,11 @@ const Createjob = ({
                       }}
                       initialExpanded={true}
                     >
-                      <Card className="bg-primaryalpha/5">
-                        <div className="flex items-center">
-                          <img src={AI_Text} alt=''></img>
+                      <div className="bg-primaryalpha/5 p-1.5 rounded-[10px]">
+                        <div className="flex items-center gap-2">
+                         <div className="rounded-lg">
+                         <img src={AI_Text} alt=''></img>
+                         </div>
                           <div className="flex flex-col gap-1">
                             <div className="flex items-center justify-between">
                               <p className="font-bold">Generate personalized job descriptions based on pas account data.
@@ -1752,7 +1754,7 @@ const Createjob = ({
                           </div>
                         </div>
 
-                      </Card>
+                      </div>
                       <div style={{ display: 'flex', justifyContent: 'flex-end', gap: '16px' }}>
 
                         <Dropdown

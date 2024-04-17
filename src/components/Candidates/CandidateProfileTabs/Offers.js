@@ -311,7 +311,7 @@ const openNotification = (type, message, description) => {
     <div className="grid gap-6 lg:grid-cols-12">
       {/* LEFT COLUMN  */}
       <div className="flex flex-col gap-6 lg:col-span-8">
-        <div className="flex flex-col gap-4 box-wrapper border-2">
+        <div className="flex flex-col gap-4 box-wrapper border !p-4">
           <div className="flex flex-col gap-4 divide-y">
             <div className="flex items-center justify-between">
               <h6 className="h6">Offer Letter</h6>

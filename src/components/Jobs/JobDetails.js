@@ -125,9 +125,9 @@ const JobDetails = () => {
       <div className="flex flex-col items-baseline justify-between gap-4 lg:items-center lg:gap-0 lg:flex-row">
         <Breadcrumbs items={breadcrumbItems} />
         <div className="flex gap-2.5 items-center">
-          <Link className="flex gap-2">
+          <Link className="flex items-center gap-2">
             <span className="!text-primary para">View career page</span>{" "}
-            <PiArrowSquareOut size={15} className="dark:text-white" />
+            <PiArrowSquareOut size={20} className="dark:text-white" />
           </Link>
           {/* <ButtonClick buttonName="Edit" /> */}
           {/* <ButtonClick BtnType="add" buttonName="Create a Job"   handleSubmit={() => {
