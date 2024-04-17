@@ -2,7 +2,7 @@ import React, { useState, useEffect } from 'react'
 import DrawerPop from '../common/DrawerPop'
 import Accordion from '../common/Accordion'
 import { useTranslation } from 'react-i18next'
-import { Button, Card, Space, notification } from 'antd'
+import { Button, Card, Space, Tooltip, notification } from 'antd'
 import { DownOutlined, UserOutlined } from '@ant-design/icons';
 import TextArea from '../common/TextArea'
 import image from '../../assets/images/generate-ai-img.png'
@@ -476,8 +476,12 @@ const
                     </div>
 
                     <div style={{ display: 'flex', alignItems: 'center', gap: '15px' }}>
-                      <IoIosCopy className="text-gray-500" style={{ width: '18px', height: '18px', cursor: 'pointer' }} />
-                      <RiDeleteBinLine className="text-gray-500" style={{ width: '18px', height: '18px', cursor: 'pointer' }} onClick={() => handleDeleteCondition(index)} />
+                      <Tooltip placement="top" title={"Copy"}>
+                        <IoIosCopy className="text-gray-500" style={{ width: '18px', height: '18px', cursor: 'pointer' }} />
+                      </Tooltip>
+                      <Tooltip placement="top" color={"red"} title={"Delete"}>
+                        <RiDeleteBinLine className="text-gray-500" style={{ width: '18px', height: '18px', cursor: 'pointer' }} onClick={() => handleDeleteCondition(index)} />
+                      </Tooltip>
                     </div>
 
                   </div>
