@@ -44,7 +44,7 @@ function SystemSettings() {
     <div className="flex flex-col gap-[25px]">
 
       <div className='flex flex-col'>
-        <p className='font-bold text-lg'> Team Members</p>
+        <p className='font-bold text-lg'>System Settings</p>
         <p className='para font-medium'>{t("Main_Description")}</p>
       </div>
 
