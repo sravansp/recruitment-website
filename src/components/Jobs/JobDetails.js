@@ -890,7 +890,7 @@ const ListView = () => {
   return (
     <FlexCol>
       <div>
-        <JobCard options={boardData} selectcard={handleSelectCard} />
+        <JobCard options={boardData} selectcard={(e)=>{handleSelectCard(e)}} />
       </div>
       <div>
         <TableAnt

@@ -119,6 +119,11 @@ const Createjob = ({
   const [JobDescriptionList,setJobDescriptionList]=useState([])
   const [jobTitle,setJobTitle] =useState("")
   console.log(updateId)
+  const handleSelectCard = (selectedStageId) => {
+    // Handle the selected stageId in your parent component
+    console.log("Selected Stage ID:", selectedStageId);
+    
+  };
 
   const [loader, setloader] = useState(false)
   
@@ -627,6 +632,7 @@ const Createjob = ({
           openNotification("success", "Successful", response.message);
           setPresentage(2);
           setNextStep(nextStep + 1);
+          fetchData();
         } else {
           // Handle other status codes or error messages here
           openNotification("error", "Error", "Failed to save data.");
@@ -924,7 +930,9 @@ const Createjob = ({
         workFlowId: item.workFlowId,
         WorkflowName:item.workFlowName,
         stages: item.recruitmentWorkFlowStages.map((stage) => ({
+          id:stage.stageId,
           title: stage.stageName,
+
         })),
       }));
       setStages(stagesByWorkflowId);
@@ -933,9 +941,7 @@ const Createjob = ({
       console.error("Error:", error);
     }
   };
-  useEffect(() => {
-    fetchData();
-  }, []);
+
   useEffect(() => {
     console.log("Updated Workflow:", Stages);
   }, [Stages]);
@@ -2230,7 +2236,7 @@ const Createjob = ({
                           <Card 
                           title={each.WorkflowName}
                           key={each.workFlowId} className="mt-6">
-                            <JobCard options={each.stages} />
+                            <JobCard options={each.stages} selectable={false} firstCardSelectable={false} />
                             <div
                               style={{
                                 position: "absolute",

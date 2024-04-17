@@ -1,4 +1,5 @@
 import { Card } from "antd";
+import { Options } from "devextreme-react/autocomplete";
 import React, { useRef, useState,useEffect } from "react";
 import { BsFillLightningFill, BsThreeDotsVertical } from "react-icons/bs";
 
@@ -9,6 +10,8 @@ function JobCard({
   selectcard =()=>{},
   options=[],
   renderContent ,
+  selectable = true, // New prop to control whether cards can be selected
+  firstCardSelectable = true, 
 
 
 }) {
@@ -24,34 +27,30 @@ function JobCard({
       container.scrollLeft += scrollAmount;
     }
   };
-  const handleSvgClick = (id) => {
+  const handleSvgClick = (id, index) => {
+    // Check if selectable prop is false or it's the first card and firstCardSelectable prop is false
+    if (!selectable || (index === 0 && !firstCardSelectable)) return;
+
     // Toggle the selected state
     setSelectedId((prevId) => (prevId === id ? null : id));
     // Call the selectcard function
     selectcard(id);
+    console.log(options)
+    console.log(selectedId)
   };
-  console.log(options)
-  console.log(selectedId)
-  useEffect(() => {
-    const storedId = localStorage.getItem("selectedId");
-    if (storedId) {
-      setSelectedId(storedId);
-    }
-  }, []);
+  
+  
 
   // Save the selectedId to localStorage whenever it changes
+ 
   useEffect(() => {
-    localStorage.setItem("selectedId", selectedId);
-  }, [selectedId]);
-
-  useEffect(() => {
-    if (options.length > 0 && selectedId === null) {
-      // If no card is selected and options are present, select the first card
+    if (options.length > 0 && selectable && firstCardSelectable) {
       const firstItemId = options[0].id;
       setSelectedId(firstItemId);
       selectcard(firstItemId);
+      console.log(selectedId);
     }
-  }, [options, selectcard, selectedId]);
+  }, [options]);
   return (
     
     
