@@ -236,7 +236,7 @@ const CreateEventSection = ({ onCreateEventClick }) => {
     <div className="h-full gap-4 vhcenter box-wrapper borderb">
       <div className="flex flex-col items-center gap-4">
         <div className=" size-11 bg-[#F9FAFB] dark:bg-secondaryDark rounded-full vhcenter">
-          <RiImage2Fill size={60} className="text-black text-opacity-50 dark:text-white" />
+          <RiImage2Fill size={25} className="text-black text-opacity-50 dark:text-white" />
         </div>
         <h6 className="h6"> You don't have any events now</h6>
         <p className="para">

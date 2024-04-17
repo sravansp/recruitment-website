@@ -442,16 +442,16 @@ function AllJobs() {
 
   return (
     <div className="flex flex-col gap-[25px]">
-      <div className="flex justify-between">
+      <div className="flex items-center justify-between">
         <Heading
           title="Jobs"
           description="Coordinates the planning,execution,and completion of projects... "
         />
-        <div className="flex gap-4">
+        <div className="flex items-center gap-4">
           {" "}
-          <Link onClick={handleNavigate} className="flex gap-2 mt-2">
+          <Link onClick={handleNavigate} className="flex items-center gap-2">
             <span className="!text-primary para">View career page</span>{" "}
-            <PiArrowSquareOut size={15} className="dark:text-white" />
+            <PiArrowSquareOut size={20} className="dark:text-white" />
           </Link>
           <ButtonClick
             buttonName={"Create a Job"}
