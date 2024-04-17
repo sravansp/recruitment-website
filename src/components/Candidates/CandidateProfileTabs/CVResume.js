@@ -25,13 +25,13 @@ const tabData = [
     // content: <Overview />,
     icon: <RiStickyNoteLine className="text-base" />,
   },
-  {
-    id: 10,
-    title: "Documents",
-    value: "documents",
-    // content: <ActivityFeed />,
-    icon: <BsFileEarmarkRichtext className="text-base" />,
-  },
+  // {
+  //   id: 10,
+  //   title: "Documents",
+  //   value: "documents",
+  //   // content: <ActivityFeed />,
+  //   icon: <BsFileEarmarkRichtext className="text-base" />,
+  // },
 ];
 const QA = [
   {

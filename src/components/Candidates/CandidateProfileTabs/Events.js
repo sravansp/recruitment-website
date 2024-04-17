@@ -26,13 +26,13 @@ const tabData = [
     // content: <Overview />,
     icon: <RiStickyNoteLine className="text-base" />,
   },
-  {
-    id: 10,
-    title: "Documents",
-    value: "documents",
-    // content: <ActivityFeed />,
-    icon: <BsFileEarmarkRichtext className="text-base" />,
-  },
+  // {
+  //   id: 10,
+  //   title: "Documents",
+  //   value: "documents",
+  //   // content: <ActivityFeed />,
+  //   icon: <BsFileEarmarkRichtext className="text-base" />,
+  // },
 ];
 const Events = () => {
   const [content, setContent] = useState("");
@@ -183,10 +183,10 @@ const Events = () => {
         <div className="rounded-lg bg-white dark:bg-secondaryDark p-1.5 ">
           <div className="flex justify-between items-center">
             <TabsNew tabs={tabData} onTabChange={onTabChange} initialTab={9} />
-            <div className="flex text-xs gap-1 font-bold text-primary translate-y-[-8px]">
+            {/* <div className="flex text-xs gap-1 font-bold text-primary translate-y-[-8px]">
               <PiPushPinSlashBold />
               Unpin
-            </div>
+            </div> */}
           </div>
           <TextEditor
             initialValue={formik.values.notes}

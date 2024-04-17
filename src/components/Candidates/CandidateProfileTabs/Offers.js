@@ -107,20 +107,20 @@ const openNotification = (type, message, description) => {
       icon: <RiHome6Line className="text-base" />,
     },
 
-    {
-      id: 10,
-      title: "Tags",
-      value: "tags",
+    // {
+    //   id: 10,
+    //   title: "Tags",
+    //   value: "tags",
 
-      icon: <RiStickyNoteLine className="text-base" />,
-    },
-    {
-      id: 11,
-      title: "Documents",
-      value: "documents",
+    //   icon: <RiStickyNoteLine className="text-base" />,
+    // },
+    // {
+    //   id: 11,
+    //   title: "Documents",
+    //   value: "documents",
 
-      icon: <BsFileEarmarkRichtext className="text-base" />,
-    },
+    //   icon: <BsFileEarmarkRichtext className="text-base" />,
+    // },
   ];
   const handleEditorChange = (state) => {
    

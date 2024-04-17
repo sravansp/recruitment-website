@@ -120,11 +120,15 @@ const Createjob = ({
   const [jobTitle,setJobTitle] =useState("")
   console.log(updateId)
 
-
+  const [loader, setloader] = useState(false)
+  
   const handleGenerateWithAI = async () => {
+    setloader(true); // Show loader when request is initiated
+     // You may already have this state variable
+
     try {
       const requestBody = {
-        val:jobTitle,
+        val: jobTitle,
         radioval: "1",
         summarise: null,
       };
@@ -147,6 +151,8 @@ const Createjob = ({
       }
     } catch (error) {
       console.error("Error:", error);
+    } finally {
+      setloader(false); // Hide loader after response is received
     }
   };
   const getAllJobdescription = async () => {
@@ -916,6 +922,7 @@ const Createjob = ({
       console.log("Response:", response);
       const stagesByWorkflowId = response.result.map((item) => ({
         workFlowId: item.workFlowId,
+        WorkflowName:item.workFlowName,
         stages: item.recruitmentWorkFlowStages.map((stage) => ({
           title: stage.stageName,
         })),
@@ -1782,11 +1789,13 @@ const Createjob = ({
                                              />
                                              </div> */}
                       <div className="pt-4">
-                        <p className="pb-2">About the role</p>
+                        
                         <TextEditor
                           initialValue={content}
                           onChange={handleEditorChange}
                           minheight="250px"
+                          loader={loader}
+                         
                         />
                       </div>
                       {/* <TextArea
@@ -2220,7 +2229,9 @@ const Createjob = ({
                         value={selectedWorkFlowId}
                       >
                         {Stages.map((each) => (
-                          <Card key={each.workFlowId} className="mt-6">
+                          <Card 
+                          title={each.WorkflowName}
+                          key={each.workFlowId} className="mt-6">
                             <JobCard options={each.stages} />
                             <div
                               style={{
@@ -2234,6 +2245,7 @@ const Createjob = ({
                                 value={each.workFlowId || selectedWorkFlowId}
                               ></Radio>
                             </div>
+                            {console.log(Stages)}
                           </Card>
                         ))}
                       </Radio.Group>

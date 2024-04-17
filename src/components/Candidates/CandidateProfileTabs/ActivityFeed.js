@@ -70,13 +70,13 @@ const tabData = [
     // content: <Overview />,
     icon: <RiStickyNoteLine className="text-base" />,
   },
-  {
-    id: 10,
-    title: "Documents",
-    value: "documents",
-    // content: <ActivityFeed />,
-    icon: <BsFileEarmarkRichtext className="text-base" />,
-  },
+  // {
+  //   id: 10,
+  //   title: "Documents",
+  //   value: "documents",
+  //   // content: <ActivityFeed />,
+  //   icon: <BsFileEarmarkRichtext className="text-base" />,
+  // },
 ];
 const ActivityFeed = () => {
   const [content, setContent] = useState("");
@@ -223,7 +223,10 @@ const ActivityFeed = () => {
                   </div>
                   <div className="flex items-center justify-between w-full">
                     <p className="pblack flex-grow pl-4 !font-normal">
-                      <span className="font-semibold" dangerouslySetInnerHTML={{ __html: status.description }} />
+                   <span className="font-normal" dangerouslySetInnerHTML={{ __html: status.description
+  .replace(/<b>(.*?)<\/b>/g, '<span class="bold">$1</span>') // Make content within <b> tags bold
+  .replace(/([^<b>]*)(<\/?b>)/g, '<span class="grey">$1</span>$2') // Make content outside <b> tags grey
+}} />
                       {status.scheduled === 1 ? (
                         <>
                           {/* <span className="!font-semibold">
@@ -286,10 +289,10 @@ const ActivityFeed = () => {
         <div className="rounded-lg bg-white dark:bg-secondaryDark p-1.5 ">
           <div className="flex justify-between items-center">
             <TabsNew tabs={tabData} onTabChange={onTabChange} initialTab={9} />
-            <div className="flex text-xs gap-1 font-bold text-primary translate-y-[-8px]">
+            {/* <div className="flex text-xs gap-1 font-bold text-primary translate-y-[-8px]">
               <PiPushPinSlashBold />
               Unpin
-            </div>
+            </div> */}
           </div>
           <TextEditor
             initialValue={formik.values.notes}

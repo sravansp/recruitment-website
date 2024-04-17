@@ -8,7 +8,7 @@ export default function CheckBoxInput({
   value = "",
   title = "",
   titleRight = "",
-  description = "",
+  titleDescription = "",
   required = false,
   actionId=null,
   roleId=null ,
@@ -34,11 +34,11 @@ export default function CheckBoxInput({
             }
           }}
         />
-        {title && (
-          <p className="text-xs font-medium 2xl:text-sm dark:text-white">{title}</p>
+        {titleRight && (
+          <p className="text-xs font-medium 2xl:text-sm">{titleRight}</p>
         )}
-        {description && (
-          <p className=" text-sx font-normal dark:text-white">{description}</p>
+        {titleDescription && (
+          <p className=" text-sx font-normal">{titleDescription}</p>
         )}
       </div>
     </div>

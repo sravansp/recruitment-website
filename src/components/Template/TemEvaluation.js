@@ -2,7 +2,7 @@ import React, { useState, useEffect } from 'react'
 import DrawerPop from '../common/DrawerPop'
 import Accordion from '../common/Accordion'
 import { useTranslation } from 'react-i18next'
-import { Button, Card, Space, notification } from 'antd'
+import { Button, Card, Space, Tooltip, notification } from 'antd'
 import { DownOutlined, UserOutlined } from '@ant-design/icons';
 import TextArea from '../common/TextArea'
 import image from '../../assets/images/generate-ai-img.png'
@@ -204,10 +204,9 @@ const TemEvaluation = ({ open = "", close = () => { }, inputshow = false, isUpda
               handleClose();
               refresh()
             }, 1500);
-          } else if(response.status==500)
-          {
+          } else if (response.status == 500) {
             openNotification("error", "Error", response.message.replace(/<br\/>/g, '\n'));
-           
+
           }
 
         } else {
@@ -468,8 +467,12 @@ const TemEvaluation = ({ open = "", close = () => { }, inputshow = false, isUpda
                   </div>
 
                   <div style={{ display: 'flex', alignItems: 'center', gap: '15px' }}>
-                    <MdOutlineFileCopy style={{ width: '18px', height: '18px', cursor: 'pointer' }} />
-                    <MdDelete style={{ width: '18px', height: '18px', cursor: 'pointer' }} onClick={() => handleDeleteCondition(index)} />
+                    <Tooltip placement="top" title={"Copy"} >
+                      <MdOutlineFileCopy style={{ width: '18px', height: '18px', cursor: 'pointer' }} />
+                    </Tooltip>
+                    <Tooltip placement="top" title={"Delete"} >
+                      <MdDelete className='text-red-600' style={{ width: '18px', height: '18px', cursor: 'pointer' }} onClick={() => handleDeleteCondition(index)} />
+                    </Tooltip>
                   </div>
 
                 </div>
