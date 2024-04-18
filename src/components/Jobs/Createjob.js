@@ -84,6 +84,9 @@ import AddMore from "../common/AddMore";
 import TextEditor from "../common/TextEditor/TextEditor";
 import RadioButton from "../common/RadioButton";
 import { IoClose } from "react-icons/io5";
+import Meta from "antd/es/card/Meta";
+import Jobcardcopy from "../common/Jobcardcopy";
+import noImg from "../../assets/images/noImg.webp"
 
 
 const Createjob = ({
@@ -103,7 +106,7 @@ const Createjob = ({
   const [activeBtn, setActiveBtn] = useState(0);
   const [presentage, setPresentage] = useState(0);
   const [nextStep, setNextStep] = useState(0);
-  const [activeBtnValue, setActiveBtnValue] = useState("Jobdetails"); //Publish//TeamMembers//LeaveType//ApplicationForm//Jobdetails////Workflow
+  const [activeBtnValue, setActiveBtnValue] = useState("Workflow"); //Publish//TeamMembers//LeaveType//ApplicationForm//Jobdetails////Workflow
   const [btnName, setBtnName] = useState();
   const [customRate, setCustomRate] = useState(1);
   const [savedContent, setSavedContent] = useState([]);
@@ -118,7 +121,13 @@ const Createjob = ({
   const [selectedUserIds, setSelectedUserIds] = useState([])
   const [JobDescriptionList,setJobDescriptionList]=useState([])
   const [jobTitle,setJobTitle] =useState("")
+  
   console.log(updateId)
+  const handleSelectCard = (selectedStageId) => {
+    // Handle the selected stageId in your parent component
+    console.log("Selected Stage ID:", selectedStageId);
+    
+  };
 
   const [loader, setloader] = useState(false)
   
@@ -627,6 +636,7 @@ const Createjob = ({
           openNotification("success", "Successful", response.message);
           setPresentage(2);
           setNextStep(nextStep + 1);
+          fetchData();
         } else {
           // Handle other status codes or error messages here
           openNotification("error", "Error", "Failed to save data.");
@@ -920,11 +930,14 @@ const Createjob = ({
     try {
       const response = await getAllRecruitmentWorkFlows();
       console.log("Response:", response);
+     
       const stagesByWorkflowId = response.result.map((item) => ({
         workFlowId: item.workFlowId,
-        WorkflowName:item.workFlowName,
+        workFlowName:item.workFlowName,
         stages: item.recruitmentWorkFlowStages.map((stage) => ({
+          id:stage.stageId,
           title: stage.stageName,
+
         })),
       }));
       setStages(stagesByWorkflowId);
@@ -933,9 +946,7 @@ const Createjob = ({
       console.error("Error:", error);
     }
   };
-  useEffect(() => {
-    fetchData();
-  }, []);
+
   useEffect(() => {
     console.log("Updated Workflow:", Stages);
   }, [Stages]);
@@ -1516,7 +1527,7 @@ const Createjob = ({
                         {regularOvertime?.map((each, i) => (
                           <div
                             key={i}
-                            className={`col-span-4 p-4 border rounded-2xl cursor-pointer showDelay dark:bg-dark  ${customRate === each.id && "border-primary "
+                            className={`col-span-4 p-1.5 border rounded-2xl  cursor-pointer showDelay dark:bg-dark  ${customRate === each.id && "border-primary "
                               } `}
                             onClick={() => {
                               setCustomRate(each.id);
@@ -1534,7 +1545,7 @@ const Createjob = ({
                                 <img
                                   className={`${customRate === each.id &&
                                     " text-primary  "
-                                    } p-2 border rounded-mdx w-fit bg-[#F8FAFC]`}
+                                    } p-2 border rounded-md w-[66px] bg-[#F8FAFC]`}
                                   src={each.image}
                                   alt=""
                                 >
@@ -1545,7 +1556,7 @@ const Createjob = ({
                                   className=" w-6 h-6"
                                 /> */}
                                 <div>
-                                  <h3 className=" text-sm font-semibold">
+                                  <h3 className=" text-sm font-semibold mt-[10px]">
                                     {each.title}
                                   </h3>
                                   <p className=" text-xs font-medium text-[#667085] ">
@@ -1744,24 +1755,23 @@ const Createjob = ({
                       }}
                       initialExpanded={true}
                     >
-                      <div className="bg-primaryalpha/5 p-1.5 rounded-[10px]">
-                        <div className="flex items-center gap-2">
-                         <div className="rounded-lg">
-                         <img src={AI_Text} alt=''></img>
-                         </div>
-                          <div className="flex flex-col gap-1">
-                            <div className="flex items-center justify-between">
+                      {/* <Card className="bg-primaryalpha/5"> */}
+                      <div className="border rounded-md bg-primaryalpha/5">
+                        <div className="flex items-center px-1.5  ">
+                          <img src={AI_Text} alt=''className="border rounded-md"></img>
+                          <div className="flex flex-col gap-1 p-1.5">
+                            <div className="flex items-center justify-between ">
                               <p className="font-bold">Generate personalized job descriptions based on pas account data.
                               </p>
-                              <p className="text-primary"><IoClose /></p>
+                              {/* <p className="text-primary"><IoClose /></p> */}
                             </div>
                             <p className="text-gray-400">When you generate with Al, we look for similar jobs you've created in the past and use he data to create content that's
                               impactful, accurate, and personalized to your company
                             </p>
                           </div>
                         </div>
-
-                      </div>
+                        </div>
+                      {/* </Card> */}
                       <div style={{ display: 'flex', justifyContent: 'flex-end', gap: '16px' }}>
 
                         <Dropdown
@@ -2202,7 +2212,7 @@ const Createjob = ({
                     <Accordion
                       title={"Workflow"}
                       className="Text_area"
-                      padding={false}
+                      padding={true}
                       toggleBtn={false}
                       click={() => {
                         setPresentage(1.4);
@@ -2229,10 +2239,14 @@ const Createjob = ({
                         value={selectedWorkFlowId}
                       >
                         {Stages.map((each) => (
-                          <Card 
-                          title={each.WorkflowName}
-                          key={each.workFlowId} className="mt-6">
-                            <JobCard options={each.stages} />
+                          <div key={each.workFlowId} className={`  relative p-2.5  mt-6 border rounded-md ${selectedWorkFlowId === each.workFlowId ? 'bg-[#F2F0FD]  border-[#690CE7]' : ''}`}  >
+                            {/* <title={<span className="no-underline">{each.workFlowName}</span>}> */}
+                              {/* <h6 className="h6 mt">{each.workFlowName}</h6> */}
+                              <h6 className="h6 mb-4"> {each.workFlowName}  </h6>
+                           
+                            <div className="">
+                            <Jobcardcopy options={each.stages}  selectable={false} firstCardSelectable={false}/>
+                            </div>
                             <div
                               style={{
                                 position: "absolute",
@@ -2241,12 +2255,12 @@ const Createjob = ({
                                 padding: "8px",
                               }}
                             >
+                             
                               <Radio
                                 value={each.workFlowId || selectedWorkFlowId}
                               ></Radio>
                             </div>
-                            {console.log(Stages)}
-                          </Card>
+                          </div>
                         ))}
                       </Radio.Group>
                     </Accordion>
@@ -2352,11 +2366,19 @@ const Createjob = ({
                               <td>
                                 <div className="flex items-center gap-4">
                                   {/* Assuming you have an 'image' property in your employee object */}
-                                  <img
-                                    src={employee.userimage}
-                                    alt={`${employee.username} Avatar`}
-                                    style={{ width: "50px", height: "50px" }}
-                                  />
+                                  {employee.userimage ? (
+        <img
+            src={employee.userimage}
+            alt={`${employee.username} Avatar`}
+            style={{ width: "50px", height: "50px" }}
+        />
+    ) : (
+        <img
+            src={noImg}  // replace with your default image path
+            alt="Default Avatar"
+            style={{ width: "54px", height: "54px" }}
+        />
+    )}
                                   <div className="flex flex-col">
                                     <div class="text-gray-900 text-sm font-semibold font-['Inter'] leading-tight">
                                       {employee.username}
@@ -2445,7 +2467,7 @@ const Createjob = ({
                         {data.map((item, index) => (
                           <div
                             key={index}
-                            className={`bg-white dark:bg-black rounded-lg border-[1px] p-2 w-[291px] h-[68px] ${selectedDivs.includes(index)
+                            className={`bg-white dark:bg-black rounded-md border-[1px]  p-2 w-[291px] h-[68px] ${selectedDivs.includes(index)
                               ? "border-[#6A4BFC]"
                               : "border-[#DADADA]"
                               }`}
@@ -2455,7 +2477,7 @@ const Createjob = ({
                               <img
                                 src={item.image}
                                 alt="Logo"
-                                className="w-[51px] h-[49px] object-cover rounded-md borderb lg:border-b-0"
+                                className="w-[51px] h-[51px] object-cover border rounded-md  lg:border-b-0"
                               />
                               <div className="ml-2">
                                 <h3 className="h6">{item.title}</h3>
@@ -2479,7 +2501,7 @@ const Createjob = ({
                       <FormInput
                         type={"text"}
                         websiteLink
-                        className="w-[320px]"
+                        className="w-[310px]"
                         title="Sharable Link"
                         placeholder="loyaltri.com/jkjskl3lsjlfsdf"
                         icon={<MdContentCopy />}

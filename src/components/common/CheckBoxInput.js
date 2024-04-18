@@ -15,7 +15,7 @@ export default function CheckBoxInput({
 }) {
   
   return (
-    <div className={`flex flex-col ${title ? "gap-2" : "gap-0 items-center"} `}>
+    <div className={`flex flex-col ${title ? "gap-2" : "gap-0 "} `}>
       <div className="flex">
         <p className="text-xs font-medium 2xl:text-sm dark:text-white ">
           {/* {title} */}
