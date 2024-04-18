@@ -1150,6 +1150,16 @@ export const saveRecruitmentRole = async (data) => {
 
   return await apiRequest(action, method, kwargs);
 };
+export const saveOrUpdateRecruitmentRoleFunctionBatch = async (data) => {
+  const action = "saveOrUpdateRecruitmentRoleFunctionBatch";
+
+  const method = "POST";
+
+  const kwargs = data;
+  console.log("API Request Data:", { action, method, kwargs })
+
+  return await apiRequest(action, method, kwargs);
+};
 const API = {
   UPDATE_Job_Templates: "toggleRecruitmentJobTemplateStatus",
   UPDATE_Job_Description: "toggleRecruitmentJobDescriptionTemplateStatus",

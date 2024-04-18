@@ -15,7 +15,8 @@ const TextEditor = ({
   className,
   minheight = "250px",
   placeholder = "",
-  loader = false
+  loader = false,
+  error = ""
 }) => {
   const [editorState, setEditorState] = useState(() => {
     if (initialValue) {
@@ -29,7 +30,7 @@ const TextEditor = ({
       return EditorState.createEmpty();
     }
   });
-
+  console.log(error)
   useEffect(() => {
     // Check if initialValue exists and if it's different from the current editor content
     if (initialValue && initialValue !== editorState.getCurrentContent().getPlainText()) {
@@ -130,7 +131,9 @@ const TextEditor = ({
           toolbarClassName=' bg-black'
           editorClassName='h-full'
         />
+        
       )}
+     
     </div>
   );
 };

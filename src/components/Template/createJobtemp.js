@@ -1079,46 +1079,46 @@ const CreatejobTemp = ({
                       // } }
                       initialExpanded={true}
                     >
-                      <div className="md:grid grid-cols-12 flex flex-col gap-6 dark:text-white">
+                     <div className="md:grid grid-cols-12 flex flex-col gap-6 dark:text-white">
                         {regularOvertime?.map((each, i) => (
                           <div
                             key={i}
-                            className={`col-span-4 p-4 border rounded-2xl cursor-pointer showDelay dark:bg-dark  ${customRate === each.id && "border-primary "
+                            className={`col-span-4 p-1.5 border rounded-2xl  cursor-pointer showDelay dark:bg-dark  ${customRate === each.id && "border-primary "
                               } `}
                             onClick={() => {
                               setCustomRate(each.id);
-                              formik.setFieldValue(
-                                "workLocationType",
-                                each.value
-                              );
+                              formik.setFieldValue("workLocationType", each.value);
                             }}
+
                           >
                             <div className="flex justify-between items-start">
-                              <div className=" flex flex-col gap-2">
+                              <div className=" flex  gap-2">
                                 {/* <GiReceiveMoney
                                 className={`${
                                   customRate === each.id && "text-primary"
                                 } `}
                               /> */}
                                 <img
-                                  className={`w-12 h-12 ${customRate === each.id && " text-primary  "
-                                    } p-2 border rounded-mdx w-fit bg-[#F8FAFC]`}
+                                  className={`${customRate === each.id &&
+                                    " text-primary  "
+                                    } p-2 border rounded-md w-[66px] bg-[#F8FAFC]`}
                                   src={each.image}
                                   alt=""
                                 >
-
                                 </img>
                                 {/* <img
                                   src={customRate === each.id ? cash : cashGray}
                                   alt=""
                                   className=" w-6 h-6"
                                 /> */}
-                                <h3 className=" text-sm font-semibold">
-                                  {each.title}
-                                </h3>
-                                <p className=" text-xs font-medium text-[#667085] ">
-                                  {each.description}
-                                </p>
+                                <div>
+                                  <h3 className=" text-sm font-semibold mt-[10px]">
+                                    {each.title}
+                                  </h3>
+                                  <p className=" text-xs font-medium text-[#667085] ">
+                                    {each.description}
+                                  </p>
+                                </div>
                               </div>
                               <div
                                 className={`${customRate === each.id && "border-primary"
