@@ -538,7 +538,7 @@ const TemEvaluation = ({ open = "", close = () => { }, inputshow = false, isUpda
                               : prevCondition
                             )
                             )} 
-                            error={errorMessages[index]||''}
+                            error={field.value.trim() === '' ? 'Please enter a value.' : ''}
                             />
                         )}
 
