@@ -14,6 +14,7 @@ const TextEditor = ({
   changetoHtml =() => {},
   className, 
   minheight = "250px",
+  height= "",
   placeholder = "", 
   loader = false
 }) => {
@@ -73,6 +74,7 @@ const TextEditor = ({
         editorState={editorState}
         onEditorStateChange={handleEditorChange}
         placeholder={placeholder}
+        wrapperStyle={{ height: height }}
         toolbar={{
           options: ['inline', 'fontSize', 'list', 'textAlign'],
           inline: {
