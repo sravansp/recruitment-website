@@ -887,7 +887,7 @@ function Web({ closeDrawer, selectedJobId, onClick }) {
         const formData = new FormData();
 
         formData.append("file", filePdfresume);
-        formData.append("text",coverLetter)
+        formData.append("text", coverLetter);
 
         console.log("inside file upload api");
 
@@ -934,8 +934,8 @@ function Web({ closeDrawer, selectedJobId, onClick }) {
 
   const formik3 = useFormik({
     initialValues: {
-      customQuestion:"Are you legally eligible to work in the country?",
-      answer:"",
+      customQuestion: "Are you legally eligible to work in the country?",
+      answer: "",
       jobId: selectedJobId,
       resumeId: insertedid1,
       // highestEducationLevel: "",
@@ -951,7 +951,7 @@ function Web({ closeDrawer, selectedJobId, onClick }) {
         //   const answers = {};
         //   condition.answerMetaData.forEach((metadata) => {
         //     const detailsId = condition.customFields;
-            
+
         //     let questioneir;
         //     switch (metadata.key) {
         //       case "Drop-down":
@@ -984,7 +984,7 @@ function Web({ closeDrawer, selectedJobId, onClick }) {
         //   });
         //   return Object.values(answers);
         // });
-    
+
         // console.log("New Answers:", newAnswers);
         // console.log(detailsId)
         const response = await saveRecruitmentJobResumesCustomField(values);
@@ -1015,7 +1015,6 @@ function Web({ closeDrawer, selectedJobId, onClick }) {
   //     formikEducationalDetails.handleSubmit(); // Submit educational details form
   //   }
   // };
-
 
   // useEffect(() => {
   //   const fetchapi = async () => {
@@ -1059,7 +1058,7 @@ function Web({ closeDrawer, selectedJobId, onClick }) {
   //         value: field.answer_meta_data[0].value,
   //       })),
   //     }));
-         
+
   //     // return questionData;
 
   //     setQuesttemp(questionData);
@@ -1247,9 +1246,6 @@ function Web({ closeDrawer, selectedJobId, onClick }) {
     callapi();
   }, [currentStep]);
 
-
-
-
   useEffect(() => {
     const callapi = async () => {
       try {
@@ -1262,8 +1258,6 @@ function Web({ closeDrawer, selectedJobId, onClick }) {
             response.result.map((items) => ({
               customQuestion: items.customQuestion,
               answer: items.answer,
-              
-              
             }))
           );
           console.log(insertedid1, "dfrfgreg");
@@ -1373,7 +1367,7 @@ function Web({ closeDrawer, selectedJobId, onClick }) {
 
         break;
       case 3:
-       formik3.handleSubmit();
+        formik3.handleSubmit();
         // setCurrentStage(currentStage + 1);
         // formik.resetForm();
         // formik1.resetForm();
@@ -1413,10 +1407,9 @@ function Web({ closeDrawer, selectedJobId, onClick }) {
     setPresentage(presentage - 1);
   };
 
-
   const handleTextChange = (value) => {
     // Validate the input if necessary
-   
+
     setCoverletter(value);
   };
 
@@ -1573,16 +1566,19 @@ function Web({ closeDrawer, selectedJobId, onClick }) {
                               accept="image/*"
                             />
                           </div> */}
-                           <div className='w-4/5'>
-                      <p>Photo <span className="text-[#C1C1C1]">(Optional)</span></p>
-                      <FileUpload
-                        className={
-                          "relative max-w-[1070px] sm:w-[492px] w-full borderb rounded-md h-24 bg-[#FAFAFA] dark:bg-black"
-                        }
-                        change={(e) => {
-                          setfilepdf(e);
-                        }}
-                      />
+                      <div className="w-4/5">
+                        <p>
+                          Photo{" "}
+                          <span className="text-[#C1C1C1]">(Optional)</span>
+                        </p>
+                        <FileUpload
+                          className={
+                            "relative max-w-[1070px] sm:w-[492px] w-full borderb rounded-md h-24 bg-[#FAFAFA] dark:bg-black"
+                          }
+                          change={(e) => {
+                            setfilepdf(e);
+                          }}
+                        />
                       </div>
                       {/* </div> */}
                       {/* </div> */}
@@ -1660,12 +1656,12 @@ function Web({ closeDrawer, selectedJobId, onClick }) {
                     id={`acco-text-item`}
                     role="region"
                     aria-labelledby={`acco-title-item`}
-                    className="flex flex-col justify-between w-full gap-6 px-6 py-4"
+                    className="flex flex-col justify-between w-full gap-6 p-5 "
                   >
                     {additionalEducationalDetails.map((detail, index) => (
                       <div
                         key={index}
-                        className="flex flex-col justify-between w-full gap-6 px-6 py-4"
+                        className="flex flex-col justify-between w-full gap-6 "
                       >
                         <div className="grid grid-cols-1 gap-4 sm:grid-cols-3">
                           <FormInput
@@ -1682,19 +1678,24 @@ function Web({ closeDrawer, selectedJobId, onClick }) {
                             //   setAdditionalEducationalDetails(updatedDetails);
                             // }}
                             change={(e) => {
-                              const updatedDetails = [...additionalEducationalDetails];
+                              const updatedDetails = [
+                                ...additionalEducationalDetails,
+                              ];
                               updatedDetails[index].institute = e;
                               setAdditionalEducationalDetails(updatedDetails);
-                              formik1.setFieldValue(`additionalEducationalDetails[${index}].institute`, e);
+                              formik1.setFieldValue(
+                                `additionalEducationalDetails[${index}].institute`,
+                                e
+                              );
                             }}
                             required={false}
                             error={
                               isFormSubmitted
-                                ? formik1.errors.additionalEducationalDetails?.[index]
-                                    ?.institute
+                                ? formik1.errors.additionalEducationalDetails?.[
+                                    index
+                                  ]?.institute
                                 : ""
                             }
-                            
                           />
                           <FormInput
                             title={"Degree"}
@@ -1710,16 +1711,22 @@ function Web({ closeDrawer, selectedJobId, onClick }) {
                             //   setAdditionalEducationalDetails(updatedDetails);
                             // }}
                             change={(e) => {
-                              const updatedDetails = [...additionalEducationalDetails];
+                              const updatedDetails = [
+                                ...additionalEducationalDetails,
+                              ];
                               updatedDetails[index].courseType = e;
                               setAdditionalEducationalDetails(updatedDetails);
-                              formik1.setFieldValue(`additionalEducationalDetails[${index}].courseType`, e);
+                              formik1.setFieldValue(
+                                `additionalEducationalDetails[${index}].courseType`,
+                                e
+                              );
                             }}
                             required={false}
                             error={
                               isFormSubmitted
-                                ? formik1.errors.additionalEducationalDetails?.[index]
-                                    ?.courseType
+                                ? formik1.errors.additionalEducationalDetails?.[
+                                    index
+                                  ]?.courseType
                                 : ""
                             }
                           />
@@ -1732,16 +1739,22 @@ function Web({ closeDrawer, selectedJobId, onClick }) {
                             name={`additionalEducationalDetails[${index}].courseName`}
                             value={detail.courseName}
                             change={(e) => {
-                              const updatedDetails = [...additionalEducationalDetails];
+                              const updatedDetails = [
+                                ...additionalEducationalDetails,
+                              ];
                               updatedDetails[index].courseName = e;
                               setAdditionalEducationalDetails(updatedDetails);
-                              formik1.setFieldValue(`additionalEducationalDetails[${index}].courseName`, e);
+                              formik1.setFieldValue(
+                                `additionalEducationalDetails[${index}].courseName`,
+                                e
+                              );
                             }}
                             required={false}
                             error={
                               isFormSubmitted
-                                ? formik1.errors.additionalEducationalDetails?.[index]
-                                    ?.courseName
+                                ? formik1.errors.additionalEducationalDetails?.[
+                                    index
+                                  ]?.courseName
                                 : ""
                             }
                           />
@@ -1753,16 +1766,22 @@ function Web({ closeDrawer, selectedJobId, onClick }) {
                             placeholder="year"
                             value={detail.yearOfStudy}
                             change={(e) => {
-                              const updatedDetails = [...additionalEducationalDetails];
+                              const updatedDetails = [
+                                ...additionalEducationalDetails,
+                              ];
                               updatedDetails[index].yearOfStudy = e;
                               setAdditionalEducationalDetails(updatedDetails);
-                              formik1.setFieldValue(`additionalEducationalDetails[${index}].yearOfStudy`, e);
+                              formik1.setFieldValue(
+                                `additionalEducationalDetails[${index}].yearOfStudy`,
+                                e
+                              );
                             }}
                             required={false}
                             error={
                               isFormSubmitted
-                                ? formik1.errors.additionalEducationalDetails?.[index]
-                                    ?.yearOfStudy
+                                ? formik1.errors.additionalEducationalDetails?.[
+                                    index
+                                  ]?.yearOfStudy
                                 : ""
                             }
                           />
@@ -1867,12 +1886,12 @@ function Web({ closeDrawer, selectedJobId, onClick }) {
                     id={`acco-text-item`}
                     role="region"
                     aria-labelledby={`acco-title-item`}
-                    className="flex flex-col justify-between w-full gap-6 px-6 py-4"
+                    className="flex flex-col justify-between w-full gap-6 p-5"
                   >
                     {additionalExperiences.map((experience, index) => (
                       <div
                         key={index}
-                        className="flex flex-col justify-between w-full gap-6 px-6 py-4"
+                        className="flex flex-col justify-between w-full gap-6 "
                       >
                         <div className="grid grid-cols-1 gap-4 sm:grid-cols-3">
                           <FormInput
@@ -2062,7 +2081,7 @@ function Web({ closeDrawer, selectedJobId, onClick }) {
                       id={`acco-text-item`}
                       role="region"
                       aria-labelledby={`acco-title-item`}
-                      className="flex flex-col justify-between w-full gap-6 px-6 py-4"
+                      className="flex flex-col justify-between w-full gap-6 p-5"
                     >
                       {/* <div className="relative max-w-[1070px] sm:w-[492px] w-full borderb rounded-md h-24 bg-[#FAFAFA] dark:bg-black">
                         <div className="flex min-w-0 pt-5 pl-5 gap-x-4">
@@ -2129,10 +2148,10 @@ function Web({ closeDrawer, selectedJobId, onClick }) {
                     id={`acco-text-item`}
                     role="region"
                     aria-labelledby={`acco-title-item`}
-                    className="flex flex-col justify-between w-full gap-6 px-6 py-4"
+                    className="flex flex-col justify-between w-full gap-6 p-5"
                   >
                     <div>
-                    {/* {questtemp.length > 0 ? (
+                      {/* {questtemp.length > 0 ? (
         questtemp.map((condition, index) => (
           <div key={index}>
             <h4>{condition.question}</h4>
@@ -2207,35 +2226,35 @@ function Web({ closeDrawer, selectedJobId, onClick }) {
           </div>
         ))
                       ) : ( */}
-                        <div className="grid grid-cols-1 gap-4 sm:grid-cols-2 ">
-                          <FormInput
-                            title={
-                              "Are you legally eligible to work in the country?"
-                            }
-                            placeholder={"Answer here.."}
-                            className="text-[#344054]"
-                            // name="customQuestion"
-                            // value={questionfield}
-                            // change={(e) => {
-                            //   formik3.setFieldValue("customQuestion", e);
-                            // }}
-                            // change={(e) => {
-                            //   setQuestionfield(e);
-                            // }}
-                            name="answer"
-                            value={formik3.values.answer}
-                            // change={formik3.handleChange}
-                            change={(e) => {
-                              formik3.setFieldValue("answer", e);
-                            }}
-                            // onBlur={formik3.handleBlur}
-                            required={false}
-                            error={formik3.errors.answer}
-                            // required={false}
-                            // error={formik3.errors.customQuestion}
-                          />
-                          {/* Additional FormInput components can be added here */}
-                        </div>
+                      <div className="grid grid-cols-1 gap-4 sm:grid-cols-2 ">
+                        <FormInput
+                          title={
+                            "Are you legally eligible to work in the country?"
+                          }
+                          placeholder={"Answer here.."}
+                          className="text-[#344054]"
+                          // name="customQuestion"
+                          // value={questionfield}
+                          // change={(e) => {
+                          //   formik3.setFieldValue("customQuestion", e);
+                          // }}
+                          // change={(e) => {
+                          //   setQuestionfield(e);
+                          // }}
+                          name="answer"
+                          value={formik3.values.answer}
+                          // change={formik3.handleChange}
+                          change={(e) => {
+                            formik3.setFieldValue("answer", e);
+                          }}
+                          // onBlur={formik3.handleBlur}
+                          required={false}
+                          error={formik3.errors.answer}
+                          // required={false}
+                          // error={formik3.errors.customQuestion}
+                        />
+                        {/* Additional FormInput components can be added here */}
+                      </div>
                       {/* )} */}
                     </div>
                   </div>
@@ -2264,39 +2283,41 @@ function Web({ closeDrawer, selectedJobId, onClick }) {
                   />
                 </div>
                 {data.map((item, index) => (
-      <div key={index} className="flex justify-between items-center mt-3">
-        <div className="flex-none">
-          {item.candidatePhoto ? (
-            <Image
-              className="bg-cover rounded-full h-18 w-18 object-cover"
-              src={item.candidatePhoto}
-              width={64}
-              height={64}
-              alt="profilepic"
-              style={{
-                borderRadius: "50%",
-                height: "4.5rem",
-                width: "4.5rem",
-                objectFit: "cover",
-              }}
-            />
-          ) : (
-            <div
-              className="rounded-full h-18 w-18"
-              style={{
-                borderRadius: "50%",
-                height: "4.5rem",
-                width: "4.5rem",
-              }}
-            ></div>
-          )}
-        </div>
-        <div className="flex-auto min-w-0 ml-4">
-          <p className="acco-h1">{item.candidateName}</p>
-        </div>
-      </div>
-    ))}
-                
+                  <div
+                    key={index}
+                    className="flex justify-between items-center mt-3"
+                  >
+                    <div className="flex-none">
+                      {item.candidatePhoto ? (
+                        <Image
+                          className="bg-cover rounded-full h-18 w-18 object-cover"
+                          src={item.candidatePhoto}
+                          width={64}
+                          height={64}
+                          alt="profilepic"
+                          style={{
+                            borderRadius: "50%",
+                            height: "4.5rem",
+                            width: "4.5rem",
+                            objectFit: "cover",
+                          }}
+                        />
+                      ) : (
+                        <div
+                          className="rounded-full h-18 w-18"
+                          style={{
+                            borderRadius: "50%",
+                            height: "4.5rem",
+                            width: "4.5rem",
+                          }}
+                        ></div>
+                      )}
+                    </div>
+                    <div className="flex-auto min-w-0 ml-4">
+                      <p className="acco-h1">{item.candidateName}</p>
+                    </div>
+                  </div>
+                ))}
 
                 <div>
                   {userdata.map((user) => (
@@ -2450,14 +2471,14 @@ function Web({ closeDrawer, selectedJobId, onClick }) {
                     <PDFViewer pdfUrl={item.resumeFile} />
                   ))} */}
                   {data.map((item, index) => (
-  <iframe 
-    key={index} 
-    src={item.resumeFile} 
-    width="100%" 
-    height="500px" 
-    title={`Resume-${index}`} 
-  />
-))}
+                    <iframe
+                      key={index}
+                      src={item.resumeFile}
+                      width="100%"
+                      height="500px"
+                      title={`Resume-${index}`}
+                    />
+                  ))}
                 </div>
 
                 <div className="divider-h mt-9" />
@@ -2466,28 +2487,28 @@ function Web({ closeDrawer, selectedJobId, onClick }) {
                 </div>
                 <div className="inline-flex flex-col items-start justify-start pt-4 gap-7">
                   {customfield?.map((quest) => (
-                  <div className="flex flex-col gap-3">
-                    {/* key={quest.id} */}
-                    <div className="flex">
-                      <div className="w-12 ">
-                        <span className="pblack">Q.</span>
+                    <div className="flex flex-col gap-3">
+                      {/* key={quest.id} */}
+                      <div className="flex">
+                        <div className="w-12 ">
+                          <span className="pblack">Q.</span>
+                        </div>
+                        <div>
+                          <span className="pblack !text-opacity-80">
+                            {quest.customQuestion}
+                          </span>
+                        </div>
                       </div>
-                      <div>
-                        <span className="pblack !text-opacity-80">
-                          {quest.customQuestion}
-                        </span>
+                      <div className="flex">
+                        <div className="w-12 ">
+                          <p className="pblack">Ans.</p>
+                        </div>
+                        <p className="pblack !text-opacity-80">
+                          {quest.answer}
+                        </p>
                       </div>
                     </div>
-                    <div className="flex">
-                      <div className="w-12 ">
-                        <p className="pblack">Ans.</p>
-                      </div>
-                      <p className="pblack !text-opacity-80">
-                        {quest.answer}
-                      </p>
-                    </div>
-                  </div>
-                  ))} 
+                  ))}
                 </div>
               </div>
             </div>

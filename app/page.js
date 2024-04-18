@@ -33,6 +33,8 @@ const Home = () => {
   const [clearInput, setClearInput] = useState(false); // State to toggle clearing input
   const [sortOrder, setSortOrder] = useState("dsc"); // "asc" or "desc"
   const [company,setCompany]=useState([])
+  const [isSearchClicked, setIsSearchClicked] = useState(false);
+
   
 
   const router = useRouter();
@@ -109,21 +111,48 @@ const Home = () => {
   //     console.error(error);
   //   }
   // };
-  const handleSearch = () => {
-    console.log("Searching...");
-    const newFilteredJobs = JobsList.filter(
-      (job) =>
-        job.jobTitle.toLowerCase().includes(searchJobTitle.toLowerCase()) &&
-        job.location.toLowerCase().includes(searchJobLocation.toLowerCase())
-    );
-    console.log("Search title:", searchJobTitle);
-    console.log("Search location:", searchJobLocation);
-    console.log("Filtered jobs:", newFilteredJobs);
-    setFilteredJobs(newFilteredJobs); // Update the filtered jobs state based on the new search
-    setSearchJobTitle(""); // Clear the searchJobTitle state
-    setSearchJobLocation(""); // Clear the searchJobLocation state
-    setClearInput(prevState => !prevState);
-  };
+  // const handleSearch = () => {
+  //   console.log("Searching...");
+  //   const newFilteredJobs = JobsList.filter(
+  //     (job) =>
+  //       job.jobTitle.toLowerCase().includes(searchJobTitle.toLowerCase()) &&
+  //       job.location.toLowerCase().includes(searchJobLocation.toLowerCase())
+  //   );
+  //   console.log("Search title:", searchJobTitle);
+  //   console.log("Search location:", searchJobLocation);
+  //   console.log("Filtered jobs:", newFilteredJobs);
+  //   setFilteredJobs(newFilteredJobs); // Update the filtered jobs state based on the new search
+  //   setSearchJobTitle(""); // Clear the searchJobTitle state
+  //   setSearchJobLocation(""); // Clear the searchJobLocation state
+  //   setClearInput(prevState => !prevState);
+  // };
+  
+  // useEffect(() => {
+  //   // Check if both search terms are empty
+  //   if (!searchJobTitle && !searchJobLocation) {
+  //     setFilteredJobs(JobsList); // Reset filtered jobs to the original JobsList
+  //     return;
+  //   }
+
+  //   // Filter the JobsList to get jobs that start with the entered search terms
+  //   const newFilteredJobs = JobsList.filter(
+  //     (job) =>
+  //       job.jobTitle.toLowerCase().startsWith(searchJobTitle.toLowerCase()) &&
+  //       job.location.toLowerCase().startsWith(searchJobLocation.toLowerCase())
+  //   );
+  //   setFilteredJobs(newFilteredJobs);
+  // }, [searchJobTitle, searchJobLocation]);
+
+
+
+
+  // Function to handle search when the search button is clicked
+  // const handleSearch = () => {
+  //   // Clear the search input fields
+  //   setSearchJobTitle("");
+  //   setSearchJobLocation("");
+  //   setClearInput(prevState => !prevState);
+  // };
   
   // console.log("Search title:", searchJobTitle);
   useEffect(() => {
@@ -175,6 +204,46 @@ const Home = () => {
 
   //   setFilteredJobs(sortedJobs);
   // }, [sortOrder]);
+
+  useEffect(() => {
+    if (isSearchClicked) {
+      handleSearch();
+      setIsSearchClicked(false); // Reset to false after filtering
+    }
+  }, [isSearchClicked]);
+
+
+
+
+  useEffect(() => {
+    const handleSearch = () => {
+      if (!searchJobTitle && !searchJobLocation) {
+        setFilteredJobs(JobsList); // Reset to all jobs when both search inputs are empty
+        return;
+      }
+  
+      let newFilteredJobs = JobsList.filter(
+        (job) =>
+          job.jobTitle.toLowerCase().includes(searchJobTitle.toLowerCase()) 
+          // &&
+          // job.location.toLowerCase().includes(searchJobLocation.toLowerCase())
+      );
+  
+      setFilteredJobs(newFilteredJobs);
+    };
+  
+    handleSearch();
+  }, [searchJobTitle, searchJobLocation]);
+  
+  const handleSearch = () => {
+    let newFilteredJobs = filteredJobs.filter(
+      (job) =>
+        job.location.toLowerCase().includes(searchJobLocation.toLowerCase())
+    );
+  
+    setFilteredJobs(newFilteredJobs);
+  };
+
 
   const handleSortChange = (key) => {
     let sortedJobs = [...filteredJobs];
@@ -261,21 +330,30 @@ useEffect(() => {
             <SearchBox
               placeholder="Job title or keyword"
               // value={searchJobTitle !== undefined ? searchJobTitle : ""} 
-              value={clearInput ? "" : searchJobTitle} 
-              items={[...new Set(JobsList.map((job) => job.jobTitle))]} // Convert the job titles to a Set to remove duplicates
+              value={searchJobTitle} 
+              // items={[...new Set(JobsList.map((job) => job.jobTitle))]} // Convert the job titles to a Set to remove duplicates
               icon={<PiMagnifyingGlass className="text-2xl " />}
               clearInput={clearInput}
               onItemSelected={setSearchJobTitle}
+              onChange={(value) => {
+                setSearchJobTitle(value);
+                // handleSearch();
+              }}
+              
+             
             />
             <SearchBox
               placeholder="Location or Timezone"
               // value={searchJobLocation}
-              value={clearInput ? "" : searchJobLocation}
+              value={searchJobLocation}
               className="pt-3 md:pl-6 md:pt-0"
-              items={[...new Set(JobsList.map((job) => job.location))]} // Convert the locations to a Set to remove duplicates
+              // items={[...new Set(JobsList.map((job) => job.location))]} // Convert the locations to a Set to remove duplicates
               icon={<PiNavigationArrow className="text-2xl " />}
               onItemSelected={setSearchJobLocation}
+              onChange={(value) => setSearchJobLocation(value)}
+              onSearch={() => setIsSearchClicked(true)}
               clearInput={clearInput}
+             
               
             />
             <div className="flex items-center w-full gap-4 pt-3 md:w-auto md:pl-6 md:pt-0">

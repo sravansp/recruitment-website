@@ -1,47 +1,32 @@
-// SearchBox.js
-"use client";
-import React, { useEffect, useState } from "react";
+import { Input } from "antd";
 
-const SearchBox = ({ items, onItemSelected, icon,  placeholder="",clearInput, className=""}) => {
-  const [searchTerm, setSearchTerm] = useState("");
-  const [selectedItem, setSelectedItem] = useState(null);
-
-  const filteredItems = items.filter((item) =>
-    item.toLowerCase().includes(searchTerm.toLowerCase())
-  );
-  useEffect(() => {
-    if (clearInput) {
-      setSearchTerm("");
-    }
-  }, [clearInput]);
-
-  const hasResults = searchTerm && filteredItems.length > 0;
-  const handleItemClick = (item) => {
-    setSelectedItem(item);
-    setSearchTerm("");
-    onItemSelected(item); // Call the provided callback with the selected item
-  };
-  const handleInputChange = (e) => {
-    setSearchTerm(e.target.value);
-    setSelectedItem(null); // Clear selected item when input value changes
-    
-    
-  };
+export default function SearchBox({
+  placeholder = "",
+  value = "",
+  icon = <LuSearch/>,
+  onChange = () => {},
+  className = "",
+  error = "",
+}) {
   return (
-    <div className={`relative w-full ${className}`}>
+   
+
+<div className={`relative w-full ${className}`}>
       <div className="flex items-center gap-2 text-black text-opacity-50 dark:text-white">
         {icon && icon}
       <input
-        type="text"
-        placeholder={placeholder}
+         type="text"
+         placeholder={placeholder}
+         value={value}
+         onChange={(e) => onChange(e.target.value)}
         className="w-full p-2 bg-transparent border-none rounded-md outline-none pblack"
-        value={selectedItem ? selectedItem : searchTerm}
-       
-        onChange={handleInputChange}
+        // value={selectedItem ? selectedItem : searchTerm}
+        // onChange={(e) => setSearchTerm(e.target.value)}
+        // onChange={handleInputChange}
       />
       </div>
-      {hasResults && (
-        <ul className="absolute left-0 z-50 w-full mt-2 overflow-hidden bg-white border border-gray-300 rounded-md top-10">
+      {/* {hasResults && (
+        <ul className="absolute left-0 w-full mt-2 overflow-hidden bg-white border border-gray-300 rounded-md top-10">
           {filteredItems.map((item, index) => (
             <li
               key={index}
@@ -52,9 +37,7 @@ const SearchBox = ({ items, onItemSelected, icon,  placeholder="",clearInput, cl
             </li>
           ))}
         </ul>
-      )}
+      )} */}
     </div>
   );
 };
-
-export default SearchBox;
