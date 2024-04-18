@@ -106,7 +106,7 @@ const Createjob = ({
   const [activeBtn, setActiveBtn] = useState(0);
   const [presentage, setPresentage] = useState(0);
   const [nextStep, setNextStep] = useState(0);
-  const [activeBtnValue, setActiveBtnValue] = useState("Workflow"); //Publish//TeamMembers//LeaveType//ApplicationForm//Jobdetails////Workflow
+  const [activeBtnValue, setActiveBtnValue] = useState("Jobdetails"); //Publish//TeamMembers//LeaveType//ApplicationForm//Jobdetails////Workflow
   const [btnName, setBtnName] = useState();
   const [customRate, setCustomRate] = useState(1);
   const [savedContent, setSavedContent] = useState([]);
@@ -2239,7 +2239,7 @@ const Createjob = ({
                         value={selectedWorkFlowId}
                       >
                         {Stages.map((each) => (
-                          <div key={each.workFlowId} className={`  relative p-2.5  mt-6 border rounded-md ${selectedWorkFlowId === each.workFlowId ? 'bg-[#F2F0FD]  border-[#690CE7]' : ''}`}  >
+                          <div key={each.workFlowId} className={`  relative p-2.5  mt-6 border rounded-md ${selectedWorkFlowId === each.workFlowId ? 'bg-[#F2F0FD]  border-[#6A4BFC]' : ''}`}  >
                             {/* <title={<span className="no-underline">{each.workFlowName}</span>}> */}
                               {/* <h6 className="h6 mt">{each.workFlowName}</h6> */}
                               <h6 className="h6 mb-4"> {each.workFlowName}  </h6>
@@ -2271,7 +2271,7 @@ const Createjob = ({
                   <Accordion
                     title={"TeamMembers"}
                     className="Text_area"
-                    padding={false}
+                    padding={true}
                     toggleBtn={false}
                     click={() => {
                       setPresentage(4.1);
@@ -2325,8 +2325,8 @@ const Createjob = ({
                       <tbody>
                         {employeeList.map((employee) => (
                           <React.Fragment key={employee.userId}>
-                            <tr>
-                              <td>
+                            <tr >
+                              <td >
                                 <CheckBoxInput
                                   change={(isChecked, userId, roleId) => {
                                     setPresentage(3.4);
@@ -2364,21 +2364,24 @@ const Createjob = ({
                                 />
                               </td>
                               <td>
-                                <div className="flex items-center gap-4">
+                                <div className="flex items-center gap-4 py-2">
                                   {/* Assuming you have an 'image' property in your employee object */}
-                                  {employee.userimage ? (
+                                
+    <div className="size-10 2xl:size-11 rounded-full overflow-hidden">
+    {employee.userimage ? (
         <img
             src={employee.userimage}
             alt={`${employee.username} Avatar`}
-            style={{ width: "50px", height: "50px" }}
+           className="object-cover object-center w-full h-full"
         />
     ) : (
         <img
             src={noImg}  // replace with your default image path
             alt="Default Avatar"
-            style={{ width: "54px", height: "54px" }}
+         className="object-cover object-center w-full h-full"
         />
     )}
+    </div>
                                   <div className="flex flex-col">
                                     <div class="text-gray-900 text-sm font-semibold font-['Inter'] leading-tight">
                                       {employee.username}
