@@ -75,6 +75,7 @@ import AddMore from "../common/AddMore";
 import TextEditor from "../common/TextEditor/TextEditor";
 import RadioButton from "../common/RadioButton";
 import { IoClose } from "react-icons/io5";
+import Jobcardcopy from "../common/Jobcardcopy";
 
 const CreatejobTemp = ({
   open = "",
@@ -88,9 +89,9 @@ const CreatejobTemp = ({
   const { t } = useTranslation();
 
   // const [isUpdate, setIsUpdate] = useState();
-  const [Education, seteducation] = useState("")
+  const [Education, seteducation] = useState(1)
   const [fieldValue, setFieldValue] = useState("")
-  const [Experience, setExperience] = useState("")
+  const [Experience, setExperience] = useState(1)
   const [activeBtn, setActiveBtn] = useState(0);
   const [presentage, setPresentage] = useState(0);
   const [nextStep, setNextStep] = useState(0);
@@ -265,18 +266,18 @@ const CreatejobTemp = ({
       jobPublishType: "",
       jobPublishDetails: "",
       jobApplicationFormData: {
-        name: "1",
-        email: "1",
-        headline: "1",
-        phone: "1",
-        address: "1",
-        country: "1",
-        education: "1",
-        experience: "1",
-        summary: "1",
-        resume: "1",
-        coverLetter: "1",
-
+        name: 1,
+        email: 1,
+        headline: 1,
+        phone: 1,
+        address: 1,
+        country: 1,
+        education: 1,
+        experience: 1,
+        summary: 1,
+        resume: 1,
+        coverLetter: 1,
+       
         customFields: [],
       },
       createdBy: "",
@@ -390,7 +391,7 @@ const CreatejobTemp = ({
               headline: Headline,
               phone: Phone,
               address: Address,
-              country: Experience,
+              country: country,
               education: Education,
               experience: Experience,
               summary: summary,
@@ -753,10 +754,14 @@ const CreatejobTemp = ({
     try {
       const response = await getAllRecruitmentWorkFlows();
       console.log("Response:", response);
+     
       const stagesByWorkflowId = response.result.map((item) => ({
         workFlowId: item.workFlowId,
+        workFlowName:item.workFlowName,
         stages: item.recruitmentWorkFlowStages.map((stage) => ({
+          id:stage.stageId,
           title: stage.stageName,
+
         })),
       }));
       setStages(stagesByWorkflowId);
@@ -765,9 +770,10 @@ const CreatejobTemp = ({
       console.error("Error:", error);
     }
   };
-  useEffect(() => {
-    fetchData();
-  }, []);
+  useEffect(()=>{
+    fetchData()
+  },[])
+
   useEffect(() => {
     console.log("Updated Workflow:", Stages);
   }, [Stages]);
@@ -1941,28 +1947,38 @@ icondropDown={true}
         </Card>
       ))}
                 */}
-                    <Radio.Group
-                      onChange={(e) => {
-                        setSelectedWorkFlowId(e.target.value)
-                        setPresentage(1.5)
-                      }}
-                    >
-                      {Stages.map((each) => (
-                        <Card key={each.workFlowId}>
-                          <JobCard options={each.stages} />
-                          <div
-                            style={{
-                              position: "absolute",
-                              top: 0,
-                              right: 0,
-                              padding: "8px",
-                            }}
-                          >
-                            <Radio value={each.workFlowId}></Radio>
+                      <Radio.Group
+                        onChange={(e) => {
+                          setSelectedWorkFlowId(e.target.value);
+                          setPresentage(2.4);
+                        }}
+                        value={selectedWorkFlowId}
+                      >
+                        {Stages.map((each) => (
+                          <div key={each.workFlowId} className={`  relative p-2.5  mt-6 border rounded-md ${selectedWorkFlowId === each.workFlowId ? 'bg-[#F2F0FD]  border-[#690CE7]' : ''}`}  >
+                            {/* <title={<span className="no-underline">{each.workFlowName}</span>}> */}
+                              {/* <h6 className="h6 mt">{each.workFlowName}</h6> */}
+                              <h6 className="h6 mb-4"> {each.workFlowName}  </h6>
+                           
+                            <div className="">
+                            <Jobcardcopy options={each.stages}  selectable={false} firstCardSelectable={false}/>
+                            </div>
+                            <div
+                              style={{
+                                position: "absolute",
+                                top: 0,
+                                right: 0,
+                                padding: "8px",
+                              }}
+                            >
+                             
+                              <Radio
+                                value={each.workFlowId || selectedWorkFlowId}
+                              ></Radio>
+                            </div>
                           </div>
-                        </Card>
-                      ))}
-                    </Radio.Group>
+                        ))}
+                      </Radio.Group>
                   </Accordion>
                 </FlexCol>
               ) : null}

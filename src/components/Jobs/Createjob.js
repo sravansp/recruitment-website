@@ -106,7 +106,7 @@ const Createjob = ({
   const [activeBtn, setActiveBtn] = useState(0);
   const [presentage, setPresentage] = useState(0);
   const [nextStep, setNextStep] = useState(0);
-  const [activeBtnValue, setActiveBtnValue] = useState("Workflow"); //Publish//TeamMembers//LeaveType//ApplicationForm//Jobdetails////Workflow
+  const [activeBtnValue, setActiveBtnValue] = useState("Jobdetails"); //Publish//TeamMembers//LeaveType//ApplicationForm//Jobdetails////Workflow
   const [btnName, setBtnName] = useState();
   const [customRate, setCustomRate] = useState(1);
   const [savedContent, setSavedContent] = useState([]);
@@ -535,17 +535,17 @@ const Createjob = ({
 
   const formik = useFormik({
     initialValues: {
-      name: "1",
-      email: "1",
-      headline: "1",
-      phone: "1",
-      address: "1",
-      country: "1",
-      education: "1",
-      experience: "1",
-      summary: "1",
-      resume: "1",
-      coverLetter: "1",
+      name: 1,
+      email: 1,
+      headline: 1,
+      phone: 1,
+      address: 1,
+      country: 1,
+      education: 2,
+      experience: 2,
+      summary: 1,
+      resume: 1,
+      coverLetter: 1,
       customFields: [
         {
           question: "",
@@ -617,8 +617,8 @@ const Createjob = ({
         const response =
           await insertOrUpdateRecruitmentJobApplicationFormSettingWithJobId({
             jobId: UpdateId || jobId,
-            name: e.name,
-            email: e.email,
+            name: 1,
+            email: 1,
             headline: e.headline,
             phone: e.phone,
             address: e.address,
@@ -636,7 +636,7 @@ const Createjob = ({
           openNotification("success", "Successful", response.message);
           setPresentage(2);
           setNextStep(nextStep + 1);
-          fetchData();
+         
         } else {
           // Handle other status codes or error messages here
           openNotification("error", "Error", "Failed to save data.");
@@ -946,6 +946,9 @@ const Createjob = ({
       console.error("Error:", error);
     }
   };
+  useEffect(()=>{
+    fetchData()
+  },[])
 
   useEffect(() => {
     console.log("Updated Workflow:", Stages);
@@ -1109,7 +1112,7 @@ const Createjob = ({
       // Add more cases for additional activeBtnValues...
 
       case "Workflow":
-        // fetchData();
+        fetchData();
         // try {
         //   await fetchData(); // Assuming fetchData is an asynchronous function
 
@@ -1210,9 +1213,8 @@ const Createjob = ({
           openNotification("success", "Successful", response.message);
           setPresentage(3.4);
           // Add a delay before closing the notification
-          setTimeout(() => {
-            setNextStep(nextStep + 1);
-          }, 2000); // Adjust the delay time as needed
+         // Adjust the delay time as needed
+         setNextStep(nextStep+1)
         } else if (response.status === 500) {
           openNotification("error", response.message);
         }
@@ -1273,6 +1275,7 @@ const Createjob = ({
           }));
         setEvaluation(formattedCustomFields);
         setSelectedWorkFlowId(firstJob.workFlowId);
+       
         formik.setFieldValue("headline", firstJob.jobApplicationFormData.headline)
         formik.setFieldValue("phone", firstJob.jobApplicationFormData.phone)
         formik.setFieldValue("address", firstJob.jobApplicationFormData.address)
@@ -1863,9 +1866,7 @@ const Createjob = ({
                               (option) => option.label === t("Mandatory")
                             )}
                             title={""}
-                            change={(e) => {
-                              formik.setFieldValue("name", e);
-                            }}
+                            
                             defaultValue={1}
                           >
                             <Radio.Button value={1}>Mandatory</Radio.Button>
@@ -1882,16 +1883,15 @@ const Createjob = ({
                               (option) => option.label === t("Mandatory")
                             )}
                             title={""}
-                            change={(e) => {
-                              formik.setFieldValue("Email", e);
-                            }}
+                           
+                            defaultValue={1}
                           >
                             <Radio.Button value={1}>Mandatory</Radio.Button>
                           </Radiobuttonnew>
                         </div>
                         <div className="v-divider" />
                         <div className="flex items-center justify-between w-full">
-                          <p className="pblack text-black text-sm font-mediumleading-tight">
+                          <p className="w-[53.92px] text-black text-sm font-medium font-['Inter'] leading-tight">
                             Headline
                           </p>
 
@@ -1901,7 +1901,7 @@ const Createjob = ({
                             change={(e) => {
                               formik.setFieldValue("headline", e);
                             }}
-                            defaultValue={formik.values.headline}
+                            defaultValue={formik.values.headline }
                           >
                             <Radio.Button value={1}>Mandatory</Radio.Button>
                             <Radio.Button value={2}>Optional</Radio.Button>

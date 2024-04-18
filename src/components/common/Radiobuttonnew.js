@@ -10,7 +10,7 @@ const Radiobuttonnew = ({
     options = [],
     required = false,
     children,
-    defaultValue=1
+    defaultValue= ""
 
 }) => {
 
