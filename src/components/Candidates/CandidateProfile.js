@@ -512,7 +512,7 @@ const CandidateProfile = () => {
       ))}
     </Menu>
   );
-  
+  const priority = 3;
   return (
     <div className="flex flex-col gap-6">
       {contextHolder}
@@ -590,6 +590,10 @@ const CandidateProfile = () => {
                   .map((name) => name.charAt(0).toUpperCase() + name.slice(1).toLowerCase())
                   .join(' ')}</h2>
                     <PiBookmarkSimpleFill className=" text-[#12B76A] text-base" />
+                    <div className="bg-[#6A4BFC]/10 rounded-full px-4 py-1 text-[#6A4BFC] text-xs 2xl:text-sm font-semibold border border-[#6A4BFC]/20">
+                   {/* {jobName ? jobName : "Choose Job"} */}
+                    {jobName}
+                  </div> 
                   </div>
 
                   <div className="inline-flex items-center justify-start gap-4">
@@ -625,10 +629,12 @@ const CandidateProfile = () => {
                       </a>
                     </Dropdown>
                   ) : null}
+                   {
+                    !jobName && <div className="bg-[#6A4BFC]/10 rounded-full px-4 py-1 text-[#6A4BFC] text-xs 2xl:text-sm font-semibold border border-[#6A4BFC]/20">
+                    {jobName ? jobName : "Choose Job"}
+                   </div> 
+                   }
 
-                  <div className="bg-[#FFE8E8] rounded-full px-4 py-1">
-                    {jobName}
-                  </div>
                 </div>
                 <div className="flex flex-col gap-3">
                   <Dropdown overlay={menu} trigger={["click"]}>
@@ -639,11 +645,68 @@ const CandidateProfile = () => {
                       </Space>
                     </a>
                   </Dropdown>
-                  <div className="bg-[#FFE8E8] rounded-full px-4 py-1">
-                    {selectedItemLabel}
+                  <div className="bg-[#A95959]/10 rounded-full px-4 py-1 text-[#A95959] text-xs 2xl:text-sm font-semibold border border-[#A95959]/20">
+                    {selectedItemLabel ? selectedItemLabel : "Choose Stage"}
                   </div>
                 </div>
 
+                <Divider type="vertical" className="hidden h-auto lg:block" />
+                <div className="flex flex-col gap-3">
+                  <Dropdown overlay={menu} trigger={["click"]}>
+                    <a className="pblack" onClick={(e) => e.preventDefault()}>
+                      <Space>
+                        Priority
+                        <DownOutlined />
+                      </Space>
+                    </a>
+                  </Dropdown>
+                  <div className="flex gap-2 items-center">
+                    <div className="size-3 flex justify-between items-baseline">
+                      <span
+                        className={`${
+                          priority === 1
+                            ? "bg-red-500 opacity-100"
+                            : priority === 2
+                            ? "bg-orange-500 opacity-100"
+                            : "bg-[#12B76A] opacity-100"
+                        } w-0.5 rounded-sm h-1`}
+                      ></span>
+                      <span
+                        className={`${
+                          priority === 1
+                            ? "bg-red-500 opacity-20"
+                            : priority === 2
+                            ? "bg-orange-500 opacity-100"
+                            : priority === 3 && "bg-[#12B76A] opacity-100"
+                        } w-0.5 rounded-sm h-2`}
+                      ></span>
+                      <span
+                        className={`${
+                          priority === 1
+                            ? "bg-red-500 opacity-20"
+                            : priority === 2
+                            ? "bg-orange-500 opacity-20"
+                            : priority === 3 && "bg-[#12B76A] opacity-100"
+                        } w-0.5 rounded-sm h-3`}
+                      ></span>
+                    </div>
+                    <p
+                      className={`pblack ${
+                        priority === 1
+                          ? "!text-red-500"
+                          : priority === 2
+                          ? "!text-orange-500"
+                          : "!text-[#12B76A]"
+                      }`}
+                    >
+                      {priority === 1
+                        ? "Low"
+                        : priority === 2
+                        ? "Medium"
+                        : "High"}
+                    </p>
+                  </div>
+                </div>
                 <Divider type="vertical" className="hidden h-auto lg:block" />
                 <div className="flex flex-col gap-3">
                   <p className="pblack">Rating</p>
