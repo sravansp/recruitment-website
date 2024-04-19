@@ -78,7 +78,7 @@
         }
 
         if (!content) {
-          setContentError('Description is required.');
+          setContentError('Content is required.');
           hasError = true;
   
           

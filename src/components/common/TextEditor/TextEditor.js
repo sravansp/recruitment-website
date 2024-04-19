@@ -117,6 +117,11 @@ const TextEditor = ({
         minHeight: `${minheight}`,
       }}
     >
+      {error && (
+            <p className="flex justify-start items-center mt-2 my-1 mb-0 text-[10px] text-red-600">
+              <span className="text-[10px] pl-1">{error}</span>
+            </p>
+          )}
       <div className="flex">
         <p
           className={`text-xs font-medium 2xl:text-sm dark:text-white ${className}`}

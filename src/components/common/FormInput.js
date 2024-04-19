@@ -47,15 +47,8 @@ export default function FormInput({
           {title}
         </p>
         {required && <FaAsterisk className="text-[6px] text-rose-600" />}
-      </div> */}
-      <div className="flex items-center dark:text-white gap-0.5">
-        {title && (
-          <label htmlFor="" className="text-xs font-medium 2xl:text-sm ">
-            {title}
-          </label>
-        )}
-        {required && <FaAsterisk className="text-[6px] text-rose-600" />}
-      </div>
+      </div> 
+     
 
       {websiteLink ? (
         <span className="relative w-full">

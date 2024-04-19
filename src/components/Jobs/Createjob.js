@@ -107,7 +107,7 @@ const Createjob = ({
   const [activeBtn, setActiveBtn] = useState(0);
   const [presentage, setPresentage] = useState(0);
   const [nextStep, setNextStep] = useState(0);
-  const [activeBtnValue, setActiveBtnValue] = useState("Jobdetails"); //Publish//TeamMembers//LeaveType//ApplicationForm//Jobdetails////Workflow
+  const [activeBtnValue, setActiveBtnValue] = useState("Publish"); //Publish//TeamMembers//LeaveType//ApplicationForm//Jobdetails////Workflow
   const [btnName, setBtnName] = useState();
   const [customRate, setCustomRate] = useState(1);
   const [savedContent, setSavedContent] = useState([]);
@@ -371,35 +371,65 @@ const Createjob = ({
       questionnaireTemplateId: "",
     },
 
-    enableReinitialize: true,
-    validateOnChange: false,
-    validationSchema: Yup.object().shape({
-      companyId: Yup.string().required('Company is required'),
-      jobTitle: Yup.string().required('Job Title is required'),
-      departmentId: Yup.string().required('Department ID is required'),
-      jobCode: Yup.string().required('Job Code is required'),
-      workLocationType: Yup.string().required('Work Location Type is required'),
+    // enableReinitialize: true,
+    // validateOnChange: false,
+    // validationSchema: Yup.object().shape({
+    //   companyId: Yup.string().required('Company is required'),
+    //   jobTitle: Yup.string().required('Job Title is required'),
+    //   departmentId: Yup.string().required('Department ID is required'),
+    //   jobCode: Yup.string().required('Job Code is required'),
+    //   workLocationType: Yup.string().required('Work Location Type is required'),
 
-      location: Yup.string().required('Location is required'),
-      requirementType: Yup.string().required('Requirement Type is required'),
-      jobType: Yup.string().required('Job Type is required'),
-      experience: Yup.string().required('Experience is required'),
-      education: Yup.string().required('Education is required'),
-      searchKeywords: Yup.string().required('Search Keywords is required'),
-      salaryRangeFrom: Yup.number()
-        .typeError('Salary Range From must be a number')
-        .required('Salary Range From is required'),
-      salaryRangeTo: Yup.number()
-        .typeError('Salary Range To must be a number')
-        .required('Salary Range To is required'),
-      salaryCurrency: Yup.string().required('Salary Currency is required'),
-      noOfVaccancies: Yup.number()
-        .typeError('Number Of Vaccancies must be a number')
-        .required('Number Of Vaccancies is required'),
+    //   location: Yup.string().required('Location is required'),
+    //   requirementType: Yup.string().required('Requirement Type is required'),
+    //   jobType: Yup.string().required('Job Type is required'),
+    //   experience: Yup.string().required('Experience is required'),
+    //   education: Yup.string().required('Education is required'),
+    //   searchKeywords: Yup.string().required('Search Keywords is required'),
+    //   salaryRangeFrom: Yup.number()
+    //     .typeError('Salary Range From must be a number')
+    //     .required('Salary Range From is required'),
+    //   salaryRangeTo: Yup.number()
+    //     .typeError('Salary Range To must be a number')
+    //     .required('Salary Range To is required'),
+    //   salaryCurrency: Yup.string().required('Salary Currency is required'),
+    //   noOfVaccancies: Yup.number()
+    //     .typeError('Number Of Vaccancies must be a number')
+    //     .required('Number Of Vaccancies is required'),
 
-    }),
+    // }),
     onSubmit: async (e) => {
-
+      if (
+        !formik1.values.jobTitle || !formik1.values.departmentId || !formik1.values.jobCode ||
+        !formik1.values.companyId ||
+        !formik1.values.location ||
+        !formik1.values.requirementType ||
+        !formik1.values.jobType ||
+        !formik1.values.experience ||
+        !formik1.values.education ||
+        !formik1.values.searchKeywords ||
+        !formik1.values.salaryRangeFrom ||
+        !formik1.values.salaryRangeTo ||
+        !formik1.values.salaryCurrency ||
+        !formik1.values.jobType||
+        !content
+      ) {
+        formik1.setFieldError('companyId', !formik1.values.companyId ? 'Company  is required' : '');
+        formik1.setFieldError('jobTitle', !formik1.values.jobTitle ? 'Job Title is required' : '');
+        formik1.setFieldError('departmentId', !formik1.values.departmentId ? 'Department is required' : '');
+        formik1.setFieldError('jobCode', !formik1.values.jobCode ? 'Job Code is required' : '');
+        formik1.setFieldError('location', !formik1.values.location ? 'Location is required' : '');
+        formik1.setFieldError('requirementType', !formik1.values.requirementType ? 'Requirment Type is required' : '');
+        formik1.setFieldError('experience', !formik1.values.experience ? 'Experience is required' : '');
+        formik1.setFieldError('searchKeywords', !formik1.values.searchKeywords ? 'Search Key Words is required' : '');
+        formik1.setFieldError('salaryRangeFrom', !formik1.values.salaryRangeFrom ? 'Salery Range From is required' : '');
+        formik1.setFieldError('salaryRangeTo', !formik1.values.salaryRangeTo ? 'Salary Range To is required' : '');
+        formik1.setFieldError('salaryCurrency', !formik1.values.salaryCurrency ? 'Salary Currency is required' : '');
+        formik1.setFieldError('jobType', !formik1.values.jobType ? 'JobType is required' : '');
+        formik1.setFieldError('education', !formik1.values.education ? 'Education is required' : '');
+        formik1.setFieldError('jobDescription', !content ?'jobDescription is required' : '')
+        return; // Exit early if any field is empty
+      }
       try {
         console.log(e);
         console.log(jobId);
@@ -1592,6 +1622,7 @@ const Createjob = ({
                           }}
                           value={formik1.values.location}
                           error={formik1.errors.location}
+                          required={true}
                         />
 
                         <Dropdown
@@ -1809,7 +1840,7 @@ const Createjob = ({
                           onChange={handleEditorChange}
                           minheight="250px"
                           loader={loader}
-                         
+                          error={formik1.errors.jobDescription}
                         />
                       </div>
                       {/* <TextArea

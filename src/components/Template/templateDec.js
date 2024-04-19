@@ -273,21 +273,21 @@ const TemplateDec = ({ open = "", close = () => { }, inputshow = false, isUpdate
               required={true}
             />
           </div>
-          <Card className="bg-primaryalpha/5">
-            <div className="flex items-center">
-              <img src={AI_Text} alt=''></img>
-              <div className="flex flex-col gap-1">
-                <div className="flex items-center justify-between">
-                  <p className="font-bold">Generate personalized job descriptions based on pas account data.
-                  </p>
-                  {/* <p className="text-primary"><IoClose /></p> */}
-                </div>
-                <p className="text-gray-400">When you generate with Al, we look for similar jobs you've created in the past and use he data to create content that's
-                  impactful, accurate, and personalized to your company
-                </p>
-              </div>
-            </div>
-          </Card>
+          <div className="border rounded-md bg-primaryalpha/5">
+                        <div className="flex items-center px-1.5  ">
+                          <img src={AI_Text} alt=''className="border rounded-md"></img>
+                          <div className="flex flex-col gap-1 p-1.5">
+                            <div className="flex items-center justify-between ">
+                              <p className="font-bold">Generate personalized job descriptions based on pas account data.
+                              </p>
+                              {/* <p className="text-primary"><IoClose /></p> */}
+                            </div>
+                            <p className="text-gray-400">When you generate with Al, we look for similar jobs you've created in the past and use he data to create content that's
+                              impactful, accurate, and personalized to your company
+                            </p>
+                          </div>
+                        </div>
+                        </div>
           <div style={{ display: 'flex', justifyContent: 'flex-end', gap: '16px' }}>
             {/* <Button>
         <Space>

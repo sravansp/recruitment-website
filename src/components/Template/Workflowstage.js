@@ -263,6 +263,8 @@ const Workflowstage = ({ open = "", close = () => { }, inputshow = false, isUpda
             } else if (response2.status === 500) {
               openNotification("error", "error", response2.message.replace(/<br\/>/g, '\n'));
             }
+          }else if (response.status === 500){
+            openNotification("error", "error", response.message.replace(/<br\/>/g, '\n'));
           }
         }
       } catch (error) {

@@ -117,6 +117,7 @@ const CreatejobTemp = ({
   const [coverLetter, setCoverletter] = useState(1)
   const [errors, setErrors] = useState([]);
   const [jobTitle,setJobTitle] =useState("")
+  
   console.log(updateId);
   useEffect(() => {
     // Retrieve the login data JSON string from local storage
@@ -311,6 +312,8 @@ const CreatejobTemp = ({
           is_required: condition.is_required,
           answer_meta_data: condition.answerMetaData,
         }));
+
+  
 
         if (updateId) {
           const response = await updateRecruitmentJobTemplate({
@@ -848,7 +851,8 @@ const CreatejobTemp = ({
           !formik.values.salaryRangeFrom ||
           !formik.values.salaryRangeTo ||
           !formik.values.salaryCurrency ||
-          !formik.values.jobType
+          !formik.values.jobType||
+          !content
         ) {
           formik.setFieldError('jobTitle', !formik.values.jobTitle ? 'Job Title is required' : '');
           formik.setFieldError('departmentId', !formik.values.departmentId ? 'Department is required' : '');
@@ -862,6 +866,7 @@ const CreatejobTemp = ({
           formik.setFieldError('salaryCurrency', !formik.values.salaryCurrency ? 'Salary Currency is required' : '');
           formik.setFieldError('jobType', !formik.values.jobType ? 'JobType is required' : '');
           formik.setFieldError('education', !formik.values.education ? 'Education is required' : '');
+          formik.setFieldError('jobDescription', !content ?'jobDescription is required' : '')
           return; // Exit early if any field is empty
         }
 
@@ -1326,6 +1331,7 @@ const CreatejobTemp = ({
                           required={true}
                           error={formik.errors.salaryCurrency}
                         />
+                        <div className="flex flex-col gap-1">
                         <CheckBoxInput
                           change={(e) => {
                             formik.setFieldValue("isSalaryPublic", e);
@@ -1333,10 +1339,11 @@ const CreatejobTemp = ({
                           }}
                           value={formik.values.isSalaryPublic}
                           title={"View Public"}
-                          description={
-                            "Given Salary will be visible for public"
-                          }
+                          titleRight={true}
+                         
                         />
+                        <p className="text-xs text-gray-500">Given Salary will be visible for public</p>
+                      </div>
                       </div>
                     </Accordion>
 
@@ -1350,11 +1357,11 @@ const CreatejobTemp = ({
                       }}
                       initialExpanded={true}
                     >
-                      <Card className="bg-primaryalpha/5">
-                        <div className="flex items-center">
-                          <img src={AI_Text} alt=''></img>
-                          <div className="flex flex-col gap-1">
-                            <div className="flex items-center justify-between">
+                        <div className="border rounded-md bg-primaryalpha/5">
+                        <div className="flex items-center px-1.5  ">
+                          <img src={AI_Text} alt=''className="border rounded-md"></img>
+                          <div className="flex flex-col gap-1 p-1.5">
+                            <div className="flex items-center justify-between ">
                               <p className="font-bold">Generate personalized job descriptions based on pas account data.
                               </p>
                               {/* <p className="text-primary"><IoClose /></p> */}
@@ -1364,7 +1371,7 @@ const CreatejobTemp = ({
                             </p>
                           </div>
                         </div>
-                      </Card>
+                        </div>
                       <div
                         style={{
                           display: "flex",

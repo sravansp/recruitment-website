@@ -54,7 +54,7 @@ export default function Dropdown({
           )}
         </div>
       )}
-      {/* <div className="relative flex items-center "> */}
+      <div className="relative flex items-center ">
       {icondropDown ? (
         <Select
           showSearch
@@ -151,7 +151,7 @@ export default function Dropdown({
           <IoAlertCircleOutline className="pl-1 text-xl opacity-50" />
         </Popover>
       )}
-      {/* </div> */}
+      </div>
       {description && (
         <p className="text-xs font-normal 2xl:text-sm opacity-70 dark:text-white">
           {description}
@@ -163,5 +163,6 @@ export default function Dropdown({
         </p>
       )}
     </div>
+
   );
 }
