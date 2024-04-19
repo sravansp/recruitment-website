@@ -143,6 +143,7 @@ const CandidateProfile = () => {
   const [getstatus, setgetstatus] = useState("");
   const location = useLocation();
   const [userid, setuserid] = useState("");
+  const [priority, setPriority] = useState("2");
 
   useEffect(() => {
     // Retrieve the login data JSON string from local storage
@@ -266,7 +267,23 @@ const CandidateProfile = () => {
       icon: <RiCouponLine className="text-base" />,
     },
   ];
-
+  const priorityItems = [
+    {
+      label: 'Low',
+      key: '1',
+    },
+    {
+      label: 'Medium',
+      key: '2',
+    },
+    {
+      label: 'High',
+      key: '3',
+    },
+  ];
+  const onClickPriority = ({ key }) => {
+    setPriority(key);
+  };
   const getstagename = async () => {
     console.log(jobId);
     try {
@@ -512,7 +529,7 @@ const CandidateProfile = () => {
       ))}
     </Menu>
   );
-  const priority = 3;
+ 
   return (
     <div className="flex flex-col gap-6">
       {contextHolder}
@@ -652,7 +669,14 @@ const CandidateProfile = () => {
 
                 <Divider type="vertical" className="hidden h-auto lg:block" />
                 <div className="flex flex-col gap-3">
-                  <Dropdown overlay={menu} trigger={["click"]}>
+                  <Dropdown  
+                    menu={{
+                      items : priorityItems,
+                      onClick : onClickPriority,
+                      selectable: true,
+                      defaultSelectedKeys: [{priority}],
+                    }}
+                    trigger={["click"]}>
                     <a className="pblack" onClick={(e) => e.preventDefault()}>
                       <Space>
                         Priority
@@ -664,44 +688,44 @@ const CandidateProfile = () => {
                     <div className="size-3 flex justify-between items-baseline">
                       <span
                         className={`${
-                          priority === 1
+                          priority === "1"
                             ? "bg-red-500 opacity-100"
-                            : priority === 2
-                            ? "bg-orange-500 opacity-100"
+                            : priority === "2"
+                            ? " bg-amber-500 opacity-100"
                             : "bg-[#12B76A] opacity-100"
                         } w-0.5 rounded-sm h-1`}
                       ></span>
                       <span
                         className={`${
-                          priority === 1
+                          priority === '1'
                             ? "bg-red-500 opacity-20"
-                            : priority === 2
-                            ? "bg-orange-500 opacity-100"
-                            : priority === 3 && "bg-[#12B76A] opacity-100"
+                            : priority === "2"
+                            ? "bg-amber-500 opacity-100"
+                            : priority === "3" && "bg-[#12B76A] opacity-100"
                         } w-0.5 rounded-sm h-2`}
                       ></span>
                       <span
                         className={`${
-                          priority === 1
+                          priority === "1"
                             ? "bg-red-500 opacity-20"
-                            : priority === 2
-                            ? "bg-orange-500 opacity-20"
-                            : priority === 3 && "bg-[#12B76A] opacity-100"
+                            : priority === "2"
+                            ? "bg-amber-500 opacity-20"
+                            : priority === "3" && "bg-[#12B76A] opacity-100"
                         } w-0.5 rounded-sm h-3`}
                       ></span>
                     </div>
                     <p
                       className={`pblack ${
-                        priority === 1
+                        priority === "1"
                           ? "!text-red-500"
-                          : priority === 2
-                          ? "!text-orange-500"
+                          : priority === "2"
+                          ? "!text-amber-500"
                           : "!text-[#12B76A]"
                       }`}
                     >
-                      {priority === 1
+                      {priority === "1"
                         ? "Low"
-                        : priority === 2
+                        : priority === "2"
                         ? "Medium"
                         : "High"}
                     </p>
