@@ -325,11 +325,11 @@ const Workflowstage = ({ open = "", close = () => { }, inputshow = false, isUpda
 
       header={[
         !updateId
-          ? t("Create a Worklow Template")
-          : t("Update Worklow stages"),
+          ? t("Create a Workflow Template")
+          : t("Update Workflow stages"),
         !updateId
-          ? t("Create a Worklow Template")
-          : t("Update Worklow stages"),]}
+          ? t("Create a Workflow Template")
+          : t("Update Workflow stages"),]}
 
       //  headerRight={
       //    <div className="flex items-center gap-10">
