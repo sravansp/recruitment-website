@@ -19,6 +19,10 @@ import { Value } from 'devextreme-react/range-selector'
 import AddMore from '../common/AddMore'
 import { CoPresentOutlined } from '@mui/icons-material'
 import * as Yup from "yup";
+import { IoCloseSharp } from 'react-icons/io5'
+import { HiMiniHandThumbDown, HiMiniHandThumbUp } from 'react-icons/hi2'
+import { FaMinus, FaStar } from 'react-icons/fa'
+import { TiMinus } from 'react-icons/ti'
 
 
 const TemEvaluation = ({ open = "", close = () => { }, inputshow = false, isUpdate = {}, updateId, refresh }) => {
@@ -164,12 +168,12 @@ const TemEvaluation = ({ open = "", close = () => { }, inputshow = false, isUpda
       description: "",
       createdBy: null,
     },
-    
+
     enableReinitialize: true,
     validateOnChange: false,
     validationSchema: Yup.object().shape({
-      evaluationTemplateName : Yup.string().required('Evalutaion is required'),
-      description:Yup.string().required('Description is required'),
+      evaluationTemplateName: Yup.string().required('Evalutaion is required'),
+      description: Yup.string().required('Description is required'),
     }),
 
     onSubmit: async (values, { setSubmitting }) => {
@@ -200,7 +204,7 @@ const TemEvaluation = ({ open = "", close = () => { }, inputshow = false, isUpda
           return errorMessage;
         });
 
-        
+
         setErrorMessages(newErrorMessages);
         const hasErrors = newErrorMessages.some(errorMessage => errorMessage !== '');
         if (hasErrors) {
@@ -420,7 +424,8 @@ const TemEvaluation = ({ open = "", close = () => { }, inputshow = false, isUpda
 
       > <div className="relative max-w-[1070px]  w-full mx-auto">
           <Accordion
-            title={"New Evaluation Templates"}
+            title={"New Evaluation Template"}
+            description={"New Evaluation Template"}
             className="Text_area"
             padding={true}
 
@@ -468,8 +473,8 @@ const TemEvaluation = ({ open = "", close = () => { }, inputshow = false, isUpda
                     ))
                     // console.log(e)
                   }}
-                  error={errorMessages[index]||''}
-                  />
+                  error={errorMessages[index] || ''}
+                />
 
                 <div className="flex items-center gap-5">
                   <div className="flex-shrink-0"> {/* Add this container for the dropdown and icons */}
@@ -492,9 +497,9 @@ const TemEvaluation = ({ open = "", close = () => { }, inputshow = false, isUpda
                         ))
                         handleAddField(e)
                       }}
-                      value={condition.answerMetaData[0]?.key|| ''}
+                      value={condition.answerMetaData[0]?.key || ''}
                       icondropDown={true}
-                      error={errorMessages[index]||''}
+                      error={errorMessages[index] || ''}
                     />
                   </div>
                   {/* Additional dynamic input fields based on the selected value in the dropdown */}
@@ -537,9 +542,9 @@ const TemEvaluation = ({ open = "", close = () => { }, inputshow = false, isUpda
                               }
                               : prevCondition
                             )
-                            )} 
-                            error={errorMessages[index]||''}
-                            />
+                            )}
+                            error={errorMessages[index] || ''}
+                          />
                         )}
 
                         {['Drop-down', 'MultipleChoice', 'Checkboxes'].includes(field.key) && (
@@ -572,12 +577,72 @@ const TemEvaluation = ({ open = "", close = () => { }, inputshow = false, isUpda
               <AddMore name="Add New Question" className="!text-black" change={(e) => { handleAddCondition() }} />
 
             </div>
+
+            <div className='border-t'></div>
+            <div className='flex flex-col gap-2'>
+              <div className='dark:text-white'>Overall Score</div>
+              <div className='grid grid-cols-2'>
+                <FormInput
+                  placeholder={"Type question here..."}
+                />
+              </div>
+
+              <div className="w-full  rounded-sm h-24 sm:w-full mt-5">
+                <div className="bg-white rounded-md borderb  p-4 flex dark:bg-black dark:text-white h-24">
+                  <div className="flex items-center w-1/5 sm:w-1/5">
+                    <div className="ml-4">
+                      <div className='flex items-center flex-col gap-1'>
+                        <p className='bg-slate-400 rounded-full text-md p-1 opacity-60 font-medium'> <IoCloseSharp /></p>
+                        <p className="font-bold text-gray-400 justify-center">Strong No</p>
+                      </div>
+                    </div>
+                  </div>
+                  <div className="h-divider !border-gray-300 ml-12"></div>
+                  <div className="flex items-center w-1/5 sm:w-1/5">
+                    <div className="ml-8">
+                      <div className='flex items-center flex-col gap-1'>
+                        <p className='text-lg p-1 opacity-60 font-medium'> <HiMiniHandThumbDown className='text-gray-500' /></p>
+                        <p className="font-bold text-gray-400 justify-center">No</p>
+                      </div>
+                    </div>
+                  </div>
+                  <div className="h-divider !border-gray-300 ml-12"></div>
+                  <div className="flex items-center w-1/5 sm:w-1/5">
+                    <div className="ml-8">
+                      <div className='flex items-center flex-col gap-1'>
+                        <p className='bg-slate-400 rounded-full text-md p-1 opacity-60 font-medium'> <TiMinus /></p>
+                        <p className="font-bold text-gray-400 justify-center">Not Sure</p>
+                      </div>
+                    </div>
+                  </div>
+                  <div className="h-divider !border-gray-300 ml-12"></div>
+                  <div className="flex items-center w-1/5 sm:w-1/5">
+                    <div className="ml-8">
+                      <div className='flex items-center flex-col gap-1'>
+                        <p className='text-lg p-1 opacity-60 font-medium'> <HiMiniHandThumbUp className='text-gray-500' /></p>
+                        <p className="font-bold text-gray-400 justify-center">Yes</p>
+                      </div>
+                    </div>
+                  </div>
+                  <div className="h-divider !border-gray-300 ml-12"></div>
+                  <div className="flex items-center w-1/5 sm:w-1/5">
+                    <div className="ml-8">
+                      <div className='flex items-center flex-col gap-1'>
+                        <p className='text-lg p-1 opacity-60 font-medium'> <FaStar className='text-gray-500' /></p>
+                        <p className="font-bold text-gray-400 justify-center">Strong Yes</p>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+
             {contextHolder}
           </Accordion>
         </div>
-      </DrawerPop>
+      </DrawerPop >
 
-    </div>
+    </div >
   )
 }
 
