@@ -60,6 +60,7 @@ const Workflowstage = ({ open = "", close = () => { }, inputshow = false, isUpda
   const [presentage, setPresentage] = useState(0);
   const [stageName, setStageName] = useState('');
   const [insertedId, setInsertedId] = useState("")
+  const[stageError,setStageError] = useState("")
   const [stages, setstages] = useState(
     [
 
@@ -90,6 +91,15 @@ const Workflowstage = ({ open = "", close = () => { }, inputshow = false, isUpda
   }, [stages])
 
   const handleAddStageClick = () => {
+   
+    if(!stageName){
+      setStageError('Stage Name is required.')
+    }else{
+      setStageError('')
+    }
+   
+   
+   
     if (!stageName.trim()) {
       // If stageName is empty or contains only whitespace, return without adding a stage
       return;
@@ -177,6 +187,11 @@ const Workflowstage = ({ open = "", close = () => { }, inputshow = false, isUpda
     }),
     onSubmit: async (values, { setSubmitting }) => {
       try {
+        if (stages.length===0) {
+          setIsModalVisible(true);
+          return;
+        }
+
         if (updateId) {
           const formattedData = stages.map((item) => ({
             stageId: item.id, // Add stageId property
@@ -186,6 +201,7 @@ const Workflowstage = ({ open = "", close = () => { }, inputshow = false, isUpda
             workFlowId: updateId,  // Assuming stageRules is available in item
             createdBy: 9,
           }));
+           
           const response = await updateWorkFlowWithStages({
             RecruitmentWorkFlow: {
               workFlowId: updateId,
@@ -250,7 +266,7 @@ const Workflowstage = ({ open = "", close = () => { }, inputshow = false, isUpda
           }
         }
       } catch (error) {
-        console.log(error);
+        openNotification("error", "error", "WorkFlow Template Name Already Exist");
       }
       setSubmitting(false);
     },
@@ -265,7 +281,7 @@ const Workflowstage = ({ open = "", close = () => { }, inputshow = false, isUpda
       const response = await getRecruitmentWorkFlowById({ id })
       console.log(response)
       setworkFlowsatges(response.result)
-
+      console.log({"stageName":stageName})
       if (response.result.length > 0) {
         const firstJob = response.result[0];
 
@@ -459,9 +475,9 @@ const Workflowstage = ({ open = "", close = () => { }, inputshow = false, isUpda
                         </Tooltip>
                       </div>
                       <div className='p-2 hover:bg-slate-300 rounded-md' onClick={() => handleCopy(stage.stageName)} >
-                        <Tooltip placement="top" title={"Copy"} >
+                        {/* <Tooltip placement="top" title={"Copy"} >
                           <PiCopySimple className='text-gray-500' size={16} />
-                        </Tooltip>
+                        </Tooltip> */}
                       </div>
                       <div className='p-2 hover:bg-slate-300 rounded-md' onClick={() => handleDeleteStage(stage.id)}>
                         <Tooltip placement="top" color={"red"} title={"Delete"} >
@@ -521,6 +537,7 @@ const Workflowstage = ({ open = "", close = () => { }, inputshow = false, isUpda
                     setSelectedStageName(e)
 
                   }}
+                  error={stageError}
                 />
               </div>
               <AddMore name="Add stage rule" className="text-black" />

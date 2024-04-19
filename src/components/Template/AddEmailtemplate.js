@@ -58,19 +58,27 @@
     console.log(subject)
     const handleSubmit = async () => {
       try {
-        if (templateName === undefined) {
-          setTemplateNameError('Template Name is required.');
-          return;
+        let hasError = false; // Flag to track if any error occurred
+
+        // Check if templateName is empty
+        if (!templateName) {
+            setTemplateNameError('Template Name is required.');
+            hasError = true; // Set flag to true if there's an error
         } else {
-          setTemplateNameError('');
+            setTemplateNameError('');
         }
-  
-        // Check if content is empty
-        if (subject === undefined) {
-          setSubjectError('Subject is required.');
-          return;
+
+        // Check if subject is empty
+        if (!subject) {
+            setSubjectError('Please enter a subject.');
+            hasError = true; // Set flag to true if there's an error
         } else {
-          setSubjectError('');
+            setSubjectError('');
+        }
+
+        // If any error occurred, return early
+        if (hasError) {
+            return;
         }
         if (updateId){
           const id = updateId

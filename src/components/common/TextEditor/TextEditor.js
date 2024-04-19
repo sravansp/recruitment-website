@@ -1,10 +1,16 @@
-import React, { useState, useEffect } from 'react';
-import { EditorState, convertToRaw, ContentState, convertFromHTML, AtomicBlockUtils } from 'draft-js';
-import { Editor } from 'react-draft-wysiwyg';
+import React, { useState, useEffect } from "react";
+import {
+  EditorState,
+  convertToRaw,
+  ContentState,
+  convertFromHTML,
+  AtomicBlockUtils
+} from "draft-js";
+import { Editor } from "react-draft-wysiwyg";
 import { FaAsterisk } from "react-icons/fa";
-import 'react-draft-wysiwyg/dist/react-draft-wysiwyg.css';
-import { stateToHTML } from 'draft-js-export-html';
-import { BeatLoader } from 'react-spinners';
+import "react-draft-wysiwyg/dist/react-draft-wysiwyg.css";
+import { stateToHTML } from "draft-js-export-html";
+import { BeatLoader } from "react-spinners";
 
 const TextEditor = ({
   title = "",
@@ -14,9 +20,10 @@ const TextEditor = ({
   changetoHtml = () => {},
   className,
   minheight = "250px",
+  height = "",
   placeholder = "",
   loader = false,
-  error = ""
+  error = "",
 }) => {
   const [editorState, setEditorState] = useState(() => {
     if (initialValue) {
@@ -30,10 +37,12 @@ const TextEditor = ({
       return EditorState.createEmpty();
     }
   });
-  console.log(error)
   useEffect(() => {
     // Check if initialValue exists and if it's different from the current editor content
-    if (initialValue && initialValue !== editorState.getCurrentContent().getPlainText()) {
+    if (
+      initialValue &&
+      initialValue !== editorState.getCurrentContent().getPlainText()
+    ) {
       const contentState = ContentState.createFromText(initialValue);
       const newEditorState = EditorState.createWithContent(contentState);
       setEditorState(newEditorState);
@@ -47,7 +56,7 @@ const TextEditor = ({
       const rawContentState = convertToRaw(contentState);
       const plainText = rawContentState.blocks
         .map((block) => block.text)
-        .join('\n');
+        .join("\n");
       const htmlContent = stateToHTML(contentState);
 
       onChange(plainText);
@@ -97,7 +106,9 @@ const TextEditor = ({
   return (
     <div className={`relative p-4 border border-black rounded-md border-opacity-10 dark:border-secondaryDark mb-14 ${className} ${loader ? 'vhcenter' : ''}`} style={{ minHeight: `${minheight}` }}>
       <div className="flex">
-        <p className={`text-xs font-medium 2xl:text-sm dark:text-white ${className}`}>
+        <p
+          className={`text-xs font-medium 2xl:text-sm dark:text-white ${className}`}
+        >
           {title}
         </p>
         {required && <FaAsterisk className="text-[10px] text-rose-600" />}
@@ -130,7 +141,12 @@ const TextEditor = ({
           toolbarStyle={{ position: 'absolute', bottom: '-60px', left: '0', right: '0' }}
           toolbarClassName=' bg-black'
           editorClassName='h-full'
+          wrapperStyle={{ height: height }}
         />
+        
+         
+          
+        
         
       )}
      

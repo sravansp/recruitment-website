@@ -24,6 +24,8 @@ const AddLetter = ({
   const [show, setShow] = useState(open);
   const [subject,setsubject] = useState("")
   const { t } = useTranslation();
+  const [templateNameError, setTemplateNameError] = useState('');
+  const [ subjectError,setSubjectError] = useState('')
   const handleClose = () => {
     close(false);
   };
@@ -54,6 +56,30 @@ const AddLetter = ({
   const handleSubmit = async () => {
     try {
       // API call
+
+      let hasError = false; // Flag to track if any error occurred
+
+        // Check if templateName is empty
+        if (!templateName) {
+            setTemplateNameError('Template Name is required.');
+            hasError = true; // Set flag to true if there's an error
+        } else {
+            setTemplateNameError('');
+        }
+
+        // Check if subject is empty
+        if (!subject) {
+            setSubjectError('Please enter a subject.');
+            hasError = true; // Set flag to true if there's an error
+        } else {
+            setSubjectError('');
+        }
+
+        // If any error occurred, return early
+        if (hasError) {
+            return;
+        }
+  
       if(updateId){
         const id = updateId
        const response = await updateRecruitmentLetterTemplate(
@@ -219,6 +245,7 @@ const AddLetter = ({
                 placeholder={"Enter Letter Template Name"}
                 value={templateName}
                 change={setTemplateName}
+                error={templateNameError}
               />
             </div>
             <FormInput
@@ -226,6 +253,7 @@ const AddLetter = ({
                 placeholder={"Enter Subject"}
                 value={subject}
                 change={setsubject}
+                error={subjectError}
               />
 
             <TextEditor

@@ -18,6 +18,7 @@ import { Formik, useFormik } from 'formik'
 import AddMore from '../common/AddMore'
 import { IoIosCopy } from 'react-icons/io'
 import { RiDeleteBinLine } from 'react-icons/ri'
+import * as Yup from "yup";
 
 
 const
@@ -35,6 +36,7 @@ const
     console.log(insertedId)
     const [evaluationlist, setevaluationlist] = useState([])
     const [evaluationTemplateDetailsIds, setEvaluationTemplateDetailsIds] = useState([]);
+    const [errorMessages, setErrorMessages] = useState("");
     const [evaluation, setEvaluation] = useState([
       {
         id: 1,
@@ -165,10 +167,17 @@ const
     const formik = useFormik({
       initialValues: {
         companyId: "",
-        evaluationTemplateName: "",
+        questionnaireTemplateName: "",
         description: "",
         createdBy: null,
       },
+      // enableReinitialize: true,
+      // validateOnChange: false,
+      // validationSchema: Yup.object().shape({
+      //   questionnaireTemplateName : Yup.string().required('Template Name is required'),
+      //   description:Yup.string().required('Description is required'),
+      // }),
+
       onSubmit: async (values, { setSubmitting }) => {
         try {
           console.log({
@@ -177,6 +186,36 @@ const
             description: values.description,
             createdBy: null,
           });
+          if (
+            !formik.values.questionnaireTemplateName || !formik.values.description){
+              formik.setFieldError('questionnaireTemplateName', !formik.values.questionnaireTemplateName ? 'QuestionAre is required' : '');
+              formik.setFieldError('description', !formik.values.description ? 'Description is required' : '');
+            }
+
+          const newErrorMessages = evaluation.map((condition) => {
+            let errorMessage = '';
+          
+            if (!condition.question) {
+              errorMessage = 'Please enter a question.';
+            } else if (!condition.answerMetaData || !condition.answerMetaData[0]?.key) {
+              errorMessage = 'Please choose an answer type.';
+            } else if (
+              ["Drop-down", "MultipleChoice", "Checkboxes"].includes(condition.answerMetaData[0]?.key) &&
+              (condition.answerMetaData.some((field) => !field.value) ||
+                (!condition.answerMetaData[0]?.value && condition.answerMetaData[0]?.key))
+            ) {
+              errorMessage = 'Please enter values for all options.';
+            }
+          
+            return errorMessage;
+          });
+          
+          setErrorMessages(newErrorMessages);
+          const hasErrors = newErrorMessages.some(errorMessage => errorMessage !== '');
+          if (hasErrors) {
+            // Don't proceed if there are errors
+            return;
+          }
 
           // Make the first API call
           if (updateId) {
@@ -268,7 +307,7 @@ const
           openNotification(
             "error",
             "Error saving category",
-            "There was an error while saving the category. Please try again."
+            "Qestionnare Template name already exist."
           );
         }
         setSubmitting(false);
@@ -412,7 +451,7 @@ const
                   change={(e) => {
                     formik.setFieldValue('questionnaireTemplateName', e)
                   }}
-
+                  error={formik.errors.questionnaireTemplateName}
                 />
               </div>
               <div className='grid grid-cols-2'>
@@ -423,6 +462,7 @@ const
                   change={(e) => {
                     formik.setFieldValue('description', e)
                   }}
+                  error={formik.errors.description}
 
                 />
               </div>
@@ -440,7 +480,10 @@ const
                         : prevCondition
                       ))
                       console.log(e)
-                    }} />
+
+                    }}
+                    error={condition.question ? '' : errorMessages[index] || ''}
+                     />
 
                   <div className="flex items-center gap-5">
                     <div className="flex-shrink-0"> {/* Add this container for the dropdown and icons */}
@@ -463,8 +506,9 @@ const
                           ))
                           handleAddField(e)
                         }}
-                        value={condition.answerMetaData[0]?.key || "MultipleChoice"}
+                        value={condition.answerMetaData[0]?.key }
                         icondropDown={true}
+                        error={condition.answerMetaData[0]?.key ? '' : errorMessages[index] || ''}
                       />
                     </div>
                     {/* Additional dynamic input fields based on the selected value in the dropdown */}
@@ -476,9 +520,9 @@ const
                     </div>
 
                     <div style={{ display: 'flex', alignItems: 'center', gap: '15px' }}>
-                      <Tooltip placement="top" title={"Copy"}>
+                      {/* <Tooltip placement="top" title={"Copy"}>
                         <IoIosCopy className="text-gray-500" style={{ width: '18px', height: '18px', cursor: 'pointer' }} />
-                      </Tooltip>
+                      </Tooltip> */}
                       <Tooltip placement="top" color={"red"} title={"Delete"}>
                         <RiDeleteBinLine className="text-gray-500" style={{ width: '18px', height: '18px', cursor: 'pointer' }} onClick={() => handleDeleteCondition(index)} />
                       </Tooltip>
@@ -507,7 +551,9 @@ const
                                 }
                                 : prevCondition
                               )
-                              )} />
+                              )} 
+                              error={field.value ? '' : errorMessages[index] || ''}
+                              />
                           )}
 
                           {['Drop-down', 'MultipleChoice', 'Checkboxes'].includes(field.key) && (

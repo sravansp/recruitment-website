@@ -165,12 +165,12 @@ const TemEvaluation = ({ open = "", close = () => { }, inputshow = false, isUpda
       createdBy: null,
     },
     
-    enableReinitialize: true,
-    validateOnChange: false,
-    validationSchema: Yup.object().shape({
-      evaluationTemplateName : Yup.string().required('Evalutaion is required'),
-      description:Yup.string().required('Description is required'),
-    }),
+    // enableReinitialize: true,
+    // validateOnChange: false,
+    // validationSchema: Yup.object().shape({
+    //   evaluationTemplateName : Yup.string().required('Evalutaion is required'),
+    //   description:Yup.string().required('Description is required'),
+    // }),
 
     onSubmit: async (values, { setSubmitting }) => {
       try {
@@ -182,24 +182,28 @@ const TemEvaluation = ({ open = "", close = () => { }, inputshow = false, isUpda
         // });
 
         // Make the first API call
+        if (
+          !formik.values.evaluationTemplateName || !formik.values.description){
+            formik.setFieldError('evaluationTemplateName', !formik.values.evaluationTemplateName ? 'Evaluation is Required is required' : '');
+            formik.setFieldError('description', !formik.values.description ? 'Description is required' : '');
+          }
         const newErrorMessages = evaluation.map((condition) => {
           let errorMessage = '';
-
+        
           if (!condition.question) {
             errorMessage = 'Please enter a question.';
-          } else if (!condition.answerMetaData) {
+          } else if (!condition.answerMetaData || !condition.answerMetaData[0]?.key) {
             errorMessage = 'Please choose an answer type.';
           } else if (
-            ["Drop-down", "MultipleChoice", "Checkboxes"].includes(condition.answerMetaData) &&
+            ["Drop-down", "MultipleChoice", "Checkboxes"].includes(condition.answerMetaData[0]?.key) &&
             (condition.answerMetaData.some((field) => !field.value) ||
-              (!condition.answerMetaData[0]?.value && condition.answerMetaData[0]?.key !== "ShortAnswer"))
+              (!condition.answerMetaData[0]?.value && condition.answerMetaData[0]?.key))
           ) {
             errorMessage = 'Please enter values for all options.';
           }
-
+        
           return errorMessage;
         });
-
         
         setErrorMessages(newErrorMessages);
         const hasErrors = newErrorMessages.some(errorMessage => errorMessage !== '');
@@ -294,8 +298,8 @@ const TemEvaluation = ({ open = "", close = () => { }, inputshow = false, isUpda
         console.error("Error during form submission:", error);
         openNotification(
           "error",
-          "Error saving category",
-          "There was an error while saving the category. Please try again."
+          "Error saving Evaluation",
+          "Evaluation Template Name Already Exist"
         );
       }
       setSubmitting(false);
@@ -468,7 +472,7 @@ const TemEvaluation = ({ open = "", close = () => { }, inputshow = false, isUpda
                     ))
                     // console.log(e)
                   }}
-                  error={errorMessages[index]||''}
+                  error={condition.question ? '' : errorMessages[index] || ''}
                   />
 
                 <div className="flex items-center gap-5">
@@ -494,7 +498,7 @@ const TemEvaluation = ({ open = "", close = () => { }, inputshow = false, isUpda
                       }}
                       value={condition.answerMetaData[0]?.key|| ''}
                       icondropDown={true}
-                      error={errorMessages[index]||''}
+                      error={condition.answerMetaData[0]?.key ? '' : errorMessages[index] || ''}
                     />
                   </div>
                   {/* Additional dynamic input fields based on the selected value in the dropdown */}
@@ -506,9 +510,9 @@ const TemEvaluation = ({ open = "", close = () => { }, inputshow = false, isUpda
                   </div>
 
                   <div style={{ display: 'flex', alignItems: 'center', gap: '15px' }}>
-                    <Tooltip placement="top" title={"Copy"} >
+                    {/* <Tooltip placement="top" title={"Copy"} >
                       <MdOutlineFileCopy style={{ width: '18px', height: '18px', cursor: 'pointer' }} />
-                    </Tooltip>
+                    </Tooltip> */}
                     <Tooltip placement="top" title={"Delete"} >
                       <MdDelete className='text-red-600' style={{ width: '18px', height: '18px', cursor: 'pointer' }} onClick={() => handleDeleteCondition(index)} />
                     </Tooltip>
@@ -538,7 +542,7 @@ const TemEvaluation = ({ open = "", close = () => { }, inputshow = false, isUpda
                               : prevCondition
                             )
                             )} 
-                            error={field.value.trim() === '' ? 'Please enter a value.' : ''}
+                            error={field.value ? '' : errorMessages[index] || ''}
                             />
                         )}
 

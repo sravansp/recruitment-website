@@ -148,7 +148,7 @@ const TemplateDec = ({ open = "", close = () => { }, inputshow = false, isUpdate
 
       }
     } catch (error) {
-      console.log(error)
+      openNotification("error", "input field is empty..", "Template name already exist");
     }
 
   }
@@ -260,6 +260,7 @@ const TemplateDec = ({ open = "", close = () => { }, inputshow = false, isUpdate
               value={templateName}
               change={setTemplateName}
               error={templateNameError}
+              required={true}
             />
           </div>
           <Card className="bg-primaryalpha/5">

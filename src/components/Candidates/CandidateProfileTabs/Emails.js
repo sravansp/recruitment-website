@@ -293,6 +293,7 @@ const Emails = ({ Email }) => {
                 }}
                 minheight="300px"
                 className="border-none"
+                height="250px"
               />
             </div>
           </div>
