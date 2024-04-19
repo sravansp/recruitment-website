@@ -17,6 +17,7 @@ import image from "../../assets/images/image 622.png"
 import TextArea from '../common/TextArea';
 import { RiDeleteBinLine } from 'react-icons/ri';
 import copy from "clipboard-copy";
+import * as Yup from "yup";
 
 
 const Workflowstage = ({ open = "", close = () => { }, inputshow = false, isUpdate = {}, updateId, refresh }) => {
@@ -166,6 +167,14 @@ const Workflowstage = ({ open = "", close = () => { }, inputshow = false, isUpda
       description: "",
       createdBy: "",
     },
+
+    enableReinitialize: true,
+    validateOnChange: false,
+    validationSchema: Yup.object().shape({
+      workFlowName : Yup.string().required('WorkFlow Name is required '),
+      description :  Yup.string().required('Description  is required '),
+
+    }),
     onSubmit: async (values, { setSubmitting }) => {
       try {
         if (updateId) {
@@ -392,6 +401,7 @@ const Workflowstage = ({ open = "", close = () => { }, inputshow = false, isUpda
                   formik.setFieldValue('workFlowName', e)
                 }}
                 value={formik.values.workFlowName}
+                error={formik.errors.workFlowName}
               />
 
 
@@ -405,6 +415,7 @@ const Workflowstage = ({ open = "", close = () => { }, inputshow = false, isUpda
                   formik.setFieldValue('description', e)
                 }}
                 value={formik.values.description}
+                error={formik.errors.description}
               />
             </div>
             <div className="w-full sm:w-[545px] grid grid-cols-1 gap-4">

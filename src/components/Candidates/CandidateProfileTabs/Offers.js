@@ -9,11 +9,12 @@ import {getAllRecruitmentJobResumesOfferLetters,getRecruitmentJobResumesNoteById
 import { format } from 'date-fns';
 import {
   RiAttachment2,
+  RiDeleteBin6Line,
   RiEmojiStickerFill,
   RiHome6Line,
   RiStickyNoteLine,
 } from "react-icons/ri";
-import { BsFileEarmarkRichtext } from "react-icons/bs";
+import { BsFileEarmarkRichtext, BsFileImage, BsFileWord, BsFiletypePdf } from "react-icons/bs";
 import { Editor } from "react-draft-wysiwyg";
 import "react-draft-wysiwyg/dist/react-draft-wysiwyg.css";
 import { FcCheckmark } from "react-icons/fc";
@@ -41,6 +42,7 @@ const Offers = () => {
   const [selectedNoteId, setSelectedNoteId] = useState(null);
   const [isPinned, setIsPinned] = useState(0);
   const [offerLetters,setOfferLetters] = useState([])
+  const [userid, setuserid] = useState("");
 
 
   const handleEditClick = (jobResumeNoteId) => {
@@ -63,7 +65,50 @@ const Offers = () => {
 const handleViewResume= (PdFViewer)=>{
   window.open(PdFViewer, '_blank');
 }
+const getFileIcon = (fileType) => {
+  switch (fileType) {
+    case "application/pdf":
+      return <BsFiletypePdf className="mr-2 text-red-500" size={20} />;
+    case "image/jpeg":
+    case "image/png":
+      return <BsFileImage className="mr-2 text-blue-500" size={20} />;
+    case "application/msword":
+    case "application/vnd.openxmlformats-officedocument.wordprocessingml.document":
+      return <BsFileWord className="mr-2 text-blue-700" size={20} />;
+    default:
+      return null;
+  }
+};
+const formatSize = (bytes) => {
+  const sizes = ['Bytes', 'KB', 'MB', 'GB', 'TB'];
+  if (bytes === 0) return '0 Byte';
+  const i = parseInt(Math.floor(Math.log(bytes) / Math.log(1024)));
+  return Math.round(bytes / Math.pow(1024, i), 2) + ' ' + sizes[i];
+};
+const removeFile = (index) => {
+  const updatedFiles = [...uploadedFiles];
+  updatedFiles.splice(index, 1);
+  setUploadedFiles(updatedFiles);
+};
 
+useEffect(() => {
+  // Retrieve the login data JSON string from local storage
+  const loginDataString = localStorage.getItem("LoginData");
+
+  if (loginDataString) {
+    // Parse the JSON string to get the LoginData object
+    const loginData = JSON.parse(loginDataString);
+
+    // Extract the username from the userData object
+    setuserid(
+      loginData && loginData.userData && loginData.userData.employeeId
+    );
+
+    // Now, 'username' variable contains the username
+  } else {
+    console.error("Login data not found in local storage.");
+  }
+}, []);
 const [api, contextHolder] = notification.useNotification();
 const openNotification = (type, message, description) => {
   api[type]({
@@ -144,7 +189,10 @@ const openNotification = (type, message, description) => {
           offerLetterData: html,
           offerLetterTemplateId: LetterTemplateId || null,
           offerLetterStatusDate: formattedDate,
-          createdBy: null
+          seal:null,
+          signature:null,
+          attachments:null,
+          createdBy: userid
         }
       )
       console.log(response)
@@ -182,7 +230,7 @@ const openNotification = (type, message, description) => {
             jobId: jobId,
             resumeId: resumeId,
             notes: e.notes,
-            createdBy: null,
+            createdBy: userid,
           })
           console.log(response)
           getnotes()
@@ -193,7 +241,7 @@ const openNotification = (type, message, description) => {
             resumeId: resumeId,
             notes: e.notes,
             isPinned: isPinned,
-            modifiedBy: null
+            modifiedBy: userid
           })
           console.log(response)
           getnotes()
@@ -319,8 +367,8 @@ const openNotification = (type, message, description) => {
                 className="flex items-center justify-end gap-2.5 p-1.5  rounded-lg"
               // style={{ backgroundColor: `${primaryColor}10` }}
               >
-                <ButtonClick buttonName="Reject" icon={<FiAlertOctagon size={16} className="text-white bg-red-700 rounded-full" />} />
-                <ButtonClick buttonName="Accept" icon={<PiChecks size={16} className="text-green " />} />
+                {/* <ButtonClick buttonName="Reject" icon={<FiAlertOctagon size={16} className="text-white bg-red-700 rounded-full" />} />
+                <ButtonClick buttonName="Accept" icon={<PiChecks size={16} className="text-green " />} /> */}
                 <Dropdown overlay={menu} trigger={['click']} placement="bottomCenter">
                   <Button className="flex items-center gap-2 ml-auto">
                     <div className="text-primary text-xs font-bold">Choose Template</div>
@@ -341,6 +389,23 @@ const openNotification = (type, message, description) => {
   minheight="250px"
 />
               </div>
+              {uploadedFiles.length > 0 && (
+            <div className="flex flex-wrap items-center gap-2">
+              {/* <p className="font-bold">Uploaded Files:</p> */}
+              {uploadedFiles.map((file, index) => (
+                <div key={index} className="flex items-center p-4 text-black border border-black rounded-lg border-opacity-20 dark:border-white dark:text-white">
+                  {getFileIcon(file.type)}
+                  <p><span>{file.name}</span>   <span className="text-black text-opacity-50">{formatSize(file.size)}</span></p>
+                  <button
+                    className="ml-2 text-black text-opacity-40 hover:text-red-500"
+                    onClick={() => removeFile(index)}
+                  >
+                    <RiDeleteBin6Line />
+                  </button>
+                </div>
+              ))}
+            </div>
+          )}
               <div
                 className="flex justify-between items-center gap-2.5 p-1.5  rounded-lg "
                 style={{

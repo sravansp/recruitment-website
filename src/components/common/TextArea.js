@@ -29,7 +29,7 @@ export default function TextArea({
     setLetterCount(inputValue.length);
     change(inputValue);
   };
-
+  
   return (
     <div className={` ${className}  relative flex flex-col gap-1`}>
       <div className="flex">
