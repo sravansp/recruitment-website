@@ -20,6 +20,8 @@ function JobCard({
   const containerRef = useRef(0);
   const scrollAmount = 253;
   const [selectedId, setSelectedId] = useState(null);
+  const [Count,setCount]=useState("")
+  const primaryColor = localStorage.getItem('mainColor')
 
   const slidemover = () => {
     const container = containerRef.current;
@@ -51,6 +53,16 @@ function JobCard({
       console.log(selectedId);
     }
   }, [options]);
+
+
+  
+
+
+
+
+
+
+
   return (
     
     
@@ -90,7 +102,8 @@ function JobCard({
                 </text>
                 <foreignObject x="30" y="40" width="34" height="26">
                   <p className="flex items-center justify-center rounded-md bg-violet-100 font-semibold text-sm px-1 py-1">
-                    {each.nummber}
+                    {each.number}
+                  
                   </p>
                 </foreignObject>
                 <foreignObject x="210" y="50" width="100" height="40">
@@ -132,17 +145,21 @@ function JobCard({
                   >
                     {/* {each.label} */}{each.title}
                   </text>
-                  {/* <foreignObject x="30" y="40" width="34" height="26">
-                    <p className="flex items-center justify-center rounded-md bg-violet-100 font-semibold text-sm px-1 py-1">
+                  <foreignObject x="40" y="40" width="24" height="26">
+                    <p className="flex items-center justify-center rounded-md bg-violet-100 font-semibold text-sm  px-1 py-1 w-full">
                       {each.nummber}
+                      12
                     </p>
-                  </foreignObject> */}
-                  <foreignObject x="75" y="43" width="34" height="26" style={{ color: "gray" }} size={18}>
-                    {each.icons1}
                   </foreignObject>
-                  <foreignObject x="100" y="43" width="34" height="26"  style={{ color: "#FF9900" }}
+                  <foreignObject x="75" y="43"  style={{ color: "gray",width:"18px",height:"18px" }} size={18}>
+                    {/* {each.icons1} */}
+                    <MdMessage/>
+                    
+                  </foreignObject>
+                  <foreignObject x="100" y="43"   style={{ color: "#FF9900" ,width:"11px",height:"17px"}}
                       size={18}>
                     {each.icons2}
+                    <BsFillLightningFill/>
                   </foreignObject>
                   <foreignObject x="210" y="50" width="100" height="40">
                     <button
@@ -211,7 +228,7 @@ function JobCard({
 
                 <foreignObject x="190" y="50" width="100" height="40">
                   <button
-                    style={{ color: "#6A4BFC", width: "2px", height: "13px" }}
+                    style={{color: `${primaryColor}`, width: "2px", height: "13px" }}
                   >
                     
                     <BsThreeDotsVertical />
@@ -228,7 +245,7 @@ function JobCard({
           onClick={slidemover}
         >
           <span className=" inset-0 flex items-center justify-center rounded-md bg-white">
-            <span className="flex items-center justify-center w-6 h-6  rounded-full border-2 border-blue-700  bg-violet-100">
+          <span className={`flex items-center justify-center w-6 h-6 rounded-full border-2 border-[${primaryColor}] bg-[${primaryColor}10]`}>
               <MdArrowForwardIos
                 style={{ width: "10.69px", height: "17.37", color: "black" }}
               />
