@@ -70,12 +70,12 @@ function AllJobs() {
   const tabs =[
     {
       id: 1,
-      title: t("My Open Jobs"),
+      title: t("My_Open_Jobs"),
       value: "MyOpenJobs",
     },
     {
       id: 2,
-      title: t("All Jobs"),
+      title: t("All_Jobs"),
       value: "AllJobs",
     },
     {
@@ -96,40 +96,40 @@ function AllJobs() {
       AllJobs: [
         {
           id: 1,
-          title: "NAME",
+          title: t("Name"),
           value: "jobTitle",
         },
         {
           id: 2,
-          title: "APPLIED",
+          title: t("Applied"),
           value: "noOfApplicants",
         },
         {
           id: 3,
-          title: "TYPE",
+          title: t("Type"),
           value: "workLocationType",
         },
 
         {
           id: 4,
-          title: "LOCATION",
+          title: t("Location"),
           value: "location",
         },
         {
           id: 5,
 
-          title: "STATUS",
+          title: t("Status"),
           value: "isActive",
           actionToggle: true,
         },
         {
           id: 6,
-          title: "POSTED BY",
+          title: t("Posted_By"),
           value: "jobCreatedBy",
         },
         {
           id: 7,
-          title: "DATE",
+          title: t("Date"),
           value: "createdOn",
         },
         // {
@@ -142,40 +142,40 @@ function AllJobs() {
       MyOpenJobs: [
         {
           id: 1,
-          title: "NAME",
+          title: t("Name"),
           value: "jobTitle",
         },
         {
           id: 2,
-          title: "APPLIED",
+          title: t("Applied"),
           value: "noOfApplicants",
         },
         {
           id: 3,
-          title: "TYPE",
+          title: t("Type"),
           value: "workLocationType",
         },
 
         {
           id: 4,
-          title: "LOCATION",
+          title: t("Location"),
           value: "location",
         },
         {
           id: 5,
 
-          title: "Status",
+          title: t("Status"),
           value: "isActive",
           actionToggle: true,
         },
         {
           id: 6,
-          title: "POSTED BY",
+          title: t("Posted_By"),
           value: "jobCreatedBy",
         },
         {
           id: 7,
-          title: "DATE",
+          title: t("Date"),
           value: "createdOn",
         },
         // {
@@ -188,40 +188,40 @@ function AllJobs() {
       Open: [
         {
           id: 1,
-          title: "NAME",
+          title: t("Name"),
           value: "jobTitle",
         },
         {
           id: 2,
-          title: "APPLIED",
+          title: t("Applied"),
           value: "noOfApplicants",
         },
         {
           id: 3,
-          title: "TYPE",
+          title: t("Type"),
           value: "workLocationType",
         },
 
         {
           id: 4,
-          title: "LOCATION",
+          title: t("Location"),
           value: "location",
         },
         {
           id: 5,
 
-          title: "Status",
+          title: t("Status"),
           value: "isActive",
           actionToggle: true,
         },
         {
           id: 6,
-          title: "POSTED BY",
+          title: t("Posted_By"),
           value: "jobCreatedBy",
         },
         {
           id: 7,
-          title: "DATE",
+          title: t("Date"),
           value: "createdOn",
         },
         // {
@@ -234,40 +234,40 @@ function AllJobs() {
       Draft: [
         {
           id: 1,
-          title: "NAME",
+          title: t("Name"),
           value: "jobTitle",
         },
         {
           id: 2,
-          title: "APPLIED",
+          title: t("Applied"),
           value: "noOfApplicants",
         },
         {
           id: 3,
-          title: "TYPE",
+          title: t("Type"),
           value: "workLocationType",
         },
 
         {
           id: 4,
-          title: "LOCATION",
+          title: t("Location"),
           value: "location",
         },
         {
           id: 5,
 
-          title: "Status",
+          title: t("Status"),
           value: "isActive",
           actionToggle: true,
         },
         {
           id: 6,
-          title: "POSTED BY",
+          title: t("Posted_By"),
           value: "jobCreatedBy",
         },
         {
           id: 7,
-          title: "DATE",
+          title: t("Date"),
           value: "createdOn",
         },
         {
@@ -396,7 +396,7 @@ function AllJobs() {
       Draft: [
         {
           id: 1,
-          title: "NAME",
+          title: t("Name"),
           value: "jobTitle",
         },
         {
@@ -444,8 +444,8 @@ function AllJobs() {
     <div className="flex flex-col gap-[25px]">
       <div className="flex items-center justify-between">
         <Heading
-          title="Jobs"
-          description="Coordinates the planning,execution,and completion of projects... "
+          title={t("Jobs")}
+          description={t("Main_Description")}
         />
         <div className="flex items-center gap-4">
           {" "}
@@ -454,7 +454,7 @@ function AllJobs() {
             <PiArrowSquareOut size={20} className="dark:text-white" />
           </Link>
           <ButtonClick
-            buttonName={"Create a Job"}
+            buttonName={t("Create_a_Job")}
             BtnType="primary"
             handleSubmit={() => {
               setShow(true);

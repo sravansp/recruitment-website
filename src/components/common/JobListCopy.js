@@ -1,10 +1,12 @@
 import React, { useEffect, useState } from 'react'
 import { getAllRecruitmentJobs } from '../Api1';
+import { useTranslation } from 'react-i18next';
 
 function  JobListCopy({data = [],}  ) {
   const [JobsList, setJobList] = useState([]);
   const [activeJobs, setActiveJobs] = useState(0);
   console.log(data)
+  const { t } = useTranslation();
 
     // const data = [
     //     {
@@ -73,7 +75,7 @@ function  JobListCopy({data = [],}  ) {
      <div className="bg-white rounded-md borderb  p-4 flex dark:bg-black dark:text-white h-24">
        <div className="flex items-center w-1/5 sm:w-1/5">
          <div className="ml-4">
-           <p className="para">Total No of Jobs Posted</p>
+           <p className="para">{t("Total_No_of_Jobs_Posted")}</p>
            <h1 className="h1 mt-4">
              <b>{result.TotalJobsPosted}</b>
            </h1>
@@ -82,7 +84,7 @@ function  JobListCopy({data = [],}  ) {
        <div className="h-divider !border-gray-300 ml-12"></div>
        <div className="flex items-center w-1/5 sm:w-1/5">
          <div className="ml-4">
-           <p className="para">Source Diversity</p>
+           <p className="para">{t("Source_Diversity")}</p>
            <h1 className="h1 mt-4">
              <b>{result.SourceDiversity}</b>
            </h1>
@@ -91,7 +93,7 @@ function  JobListCopy({data = [],}  ) {
        <div className="h-divider !border-gray-300 ml-12"></div>
        <div className="flex items-center w-1/5 sm:w-1/5">
          <div className="ml-4">
-           <p className="para">Open Jobs</p>
+           <p className="para">{t("Open_Jobs")}</p>
            <h1 className="h1 mt-4">
              <b>{result.OpenJobs}</b>
            </h1>
@@ -100,7 +102,7 @@ function  JobListCopy({data = [],}  ) {
        <div className="h-divider !border-gray-300 ml-12"></div>
        <div className="flex items-center w-1/5 sm:w-1/5">
          <div className="ml-4">
-           <p className="para">Rejection Average</p>
+           <p className="para">{t("Rejection_Average")}</p>
            <h1 className="h1 mt-4">
              <b>{result.RejectionAverage}</b>
            </h1>
@@ -109,7 +111,7 @@ function  JobListCopy({data = [],}  ) {
        <div className="h-divider !border-gray-300 ml-12"></div>
        <div className="flex items-center w-1/5 sm:w-1/5">
          <div className="ml-4">
-           <p className="para">Hired Count</p>
+           <p className="para">{t("Hired_Count")}</p>
            <h1 className="h1 mt-4">
              <b>{result.HiredCount}</b>
            </h1>

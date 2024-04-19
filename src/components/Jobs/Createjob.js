@@ -767,14 +767,14 @@ const Createjob = ({
     {
       id: 1,
       value: 0,
-      title: t("Job Details"),
+      title: t("Job_Details"),
       data: "Jobdetails",
     },
 
     {
       id: 2,
       value: 1,
-      title: t("Application Form"),
+      title: t("Application_Form"),
       data: "ApplicationForm",
     },
     {
@@ -786,7 +786,7 @@ const Createjob = ({
     {
       id: 4,
       value: 3,
-      title: t("Team Members"),
+      title: t("Team_Members"),
       data: "TeamMembers",
     },
     {

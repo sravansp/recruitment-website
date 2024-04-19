@@ -42,11 +42,19 @@ export default function FormInput({
   // console.log(value)
   return (
     <div className={`flex flex-col ${title ? "gap-2" : "gap-0 items-center "} `}>
-      <div className="flex gap-3">
+      {/* <div className="flex gap-3">
         <p className={`text-xs font-medium 2xl:text-sm dark:text-white ${className}`}>
           {title}
         </p>
-        {required && <FaAsterisk className="text-[7px] text-rose-600" />}
+        {required && <FaAsterisk className="text-[6px] text-rose-600" />}
+      </div> */}
+      <div className="flex items-center dark:text-white gap-0.5">
+        {title && (
+          <label htmlFor="" className="text-xs font-medium 2xl:text-sm ">
+            {title}
+          </label>
+        )}
+        {required && <FaAsterisk className="text-[6px] text-rose-600" />}
       </div>
 
       {websiteLink ? (
