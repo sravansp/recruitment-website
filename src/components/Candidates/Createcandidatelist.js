@@ -397,7 +397,7 @@ export default function Createcandidatelist({ open = "", close = () => { }, file
       lastName: "",
       candidateEmail: "",
       candidateContact: "",
-      namePrefix: "",
+      namePrefix: null,
       cityOrTown: "",
       candidateLocation: "",
       addressLine: "",
@@ -499,19 +499,19 @@ export default function Createcandidatelist({ open = "", close = () => { }, file
     {
       id: 1,
       value: 0,
-      title: "Personal Details",
+      title: t("Personal_Details"),
       data: "Personel",
     },
     {
       id: 2,
       value: 1,
-      title: "Educational Details",
+      title: t("Educational_Details"),
       data: "Educational",
     },
     {
       id: 3,
       value: 2,
-      title: "Work Experience",
+      title: t("Work_Experience"),
       data: "Work",
     },
     // {
@@ -523,7 +523,7 @@ export default function Createcandidatelist({ open = "", close = () => { }, file
     {
       id: 4,
       value: 3,
-      title: "Review",
+      title: t("Review"),
       data: "Review",
     },
 
@@ -658,7 +658,7 @@ export default function Createcandidatelist({ open = "", close = () => { }, file
           }}
           header={[
             !isUpdate
-              ? t("Head Of Director")
+              ? t("Head_Of_Director")
               : t("Update_Employee_Onboarding"),
             t("at Dubai, United Arab Emirates"),
           ]}
@@ -669,7 +669,7 @@ export default function Createcandidatelist({ open = "", close = () => { }, file
               </p>
               <div className="flex items-center gap-2.5">
                 <p className="xl:text-sm text-xs font-medium text-gray-400">
-                  help
+                {t("help")}
                 </p>
                 <RxQuestionMarkCircled className=" xl:text-2xl text-sm font-medium text-gray-400" />
               </div>
@@ -769,7 +769,7 @@ export default function Createcandidatelist({ open = "", close = () => { }, file
               <>
                 <FlexCol justify="center" align="center" className="w-5/6 m-auto mt-10">
                   <Accordion
-                    title={"Personal Information"}
+                    title={t("Personal_Information")}
                     className="Text_area"
                     padding={true}
                     toggleBtn={false}
@@ -780,7 +780,7 @@ export default function Createcandidatelist({ open = "", close = () => { }, file
                   >
 
                     <Dropdown
-                      title='Prefix'
+                      title={t('Prefix')}
                       placeholder={`Mr`}
                       options={genderoption}
                       className='w-24'
@@ -792,8 +792,8 @@ export default function Createcandidatelist({ open = "", close = () => { }, file
 
                     <div className="grid grid-cols-2 gap-4 w-4/5">
                       <FormInput
-                        title={t("First Name")}
-                        placeholder={t("First Name")}
+                        title={t("First_Name")}
+                        placeholder={t("First_Name")}
                         change={(e) => {
                           Formik2.setFieldValue("firstName", e);
                         }}
@@ -806,8 +806,8 @@ export default function Createcandidatelist({ open = "", close = () => { }, file
                       />
 
                       <FormInput
-                        title={t("Last Name")}
-                        placeholder={t("Last Name")}
+                        title={t("Last_Name")}
+                        placeholder={t("Last_Name")}
                         change={(e) => {
                           Formik2.setFieldValue("lastName", e);
                         }}
@@ -827,8 +827,8 @@ export default function Createcandidatelist({ open = "", close = () => { }, file
 
                       />
                       <FormInput
-                        title={t("Phone number")}
-                        placeholder={t("Phone number")}
+                        title={t("Phone_number")}
+                        placeholder={t("Phone_number")}
                         change={(e) => {
                           Formik2.setFieldValue("candidateContact", e);
                         }}
@@ -862,24 +862,24 @@ export default function Createcandidatelist({ open = "", close = () => { }, file
                       />
 
                       <FormInput
-                        title={t("City Or Town")}
-                        placeholder={t("City Or Town")}
+                        title={t("City_Or_Town")}
+                        placeholder={t("City_Or_Town")}
                         change={(e) => {
                           Formik2.setFieldValue("cityOrTown", e);
                         }}
                         value={Formik2.values.cityOrTown}
                       />
                       <FormInput
-                        title={t("Address Line")}
-                        placeholder={t("Address Line")}
+                        title={t("Address_Line")}
+                        placeholder={t("Address_Line")}
                         change={(e) => {
                           Formik2.setFieldValue("addressLine", e);
                         }}
                         value={Formik2.values.addressLine}
                       />
                       <FormInput
-                        title={t("Postal Code")}
-                        placeholder={t("Postal Code")}
+                        title={t("Postal_Code")}
+                        placeholder={t("Postal_Code")}
                         change={(e) => {
                           Formik2.setFieldValue("postalCode", e);
                         }}

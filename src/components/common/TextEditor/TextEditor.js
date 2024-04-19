@@ -13,6 +13,9 @@ const TextEditor = ({
   onChange = () => {},
   changetoHtml = () => {},
   className,
+  
+ 
+  
   minheight = "250px",
   height = "",
   placeholder = "",

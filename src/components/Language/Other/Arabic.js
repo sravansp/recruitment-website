@@ -43,7 +43,22 @@ const otherLanguageArabic = {
     Sort_by:"ترتيب حسب",
     Filters:"المرشحات",
 
+    Main_Description:"ينسق تخطيط وتنفيذ وإكمال المشاريع",
+    System_Settings:"اعدادات النظام",
+    Integration:"التكامل",
 
 
+
+    Templates:"قوالب",
+    Letter:"خطاب",
+    Questionnaire:"استبيان",
+       Evaluation:"تقييم",
+            Email:"بريد إلكتروني",
+         Workflow:"سير العمل",
+  Job_Description:"المسمى الوظيفي",
+    Job_Templates:"قوالب الوظائف",
+    Name:"اسم",
+    Description:"وصف",
+         Status:"حالة",
 };
 export default otherLanguageArabic;

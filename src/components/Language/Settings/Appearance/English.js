@@ -53,6 +53,8 @@ const appearanceLanguage = {
   System_settings:"System settings",
   Integrations:"Integrations",
   Templates:"Templates",
+  Theme_color:"Theme Color",
+  Choose_Color:"Choose Color",
 
   //comon
 
