@@ -85,8 +85,9 @@ import TextEditor from "../common/TextEditor/TextEditor";
 import RadioButton from "../common/RadioButton";
 import { IoClose } from "react-icons/io5";
 import Meta from "antd/es/card/Meta";
-import Jobcardcopy from "../common/Jobcardcopy";
+
 import noImg from "../../assets/images/noImg.webp"
+import Jobcardcopy from "../common/Jobcardcopy";
 
 
 const Createjob = ({

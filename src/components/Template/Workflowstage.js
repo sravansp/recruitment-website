@@ -412,12 +412,13 @@ const Workflowstage = ({ open = "", close = () => { }, inputshow = false, isUpda
               <FormInput
                 title={"Workflow Name"}
                 placeholder={"Type here..."}
-                className="!text-[#344054] w-96"
+                className="!text-[#344054] "
                 change={(e) => {
                   formik.setFieldValue('workFlowName', e)
                 }}
                 value={formik.values.workFlowName}
                 error={formik.errors.workFlowName}
+                required={true}
               />
 
 
@@ -432,6 +433,7 @@ const Workflowstage = ({ open = "", close = () => { }, inputshow = false, isUpda
                 }}
                 value={formik.values.description}
                 error={formik.errors.description}
+                required={true}
               />
             </div>
             <div className="w-full sm:w-[545px] grid grid-cols-1 gap-4">
@@ -538,6 +540,7 @@ const Workflowstage = ({ open = "", close = () => { }, inputshow = false, isUpda
 
                   }}
                   error={stageError}
+                  required={true}
                 />
               </div>
               <AddMore name="Add stage rule" className="text-black" />

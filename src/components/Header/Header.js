@@ -65,10 +65,10 @@ export default function Header() {
         </h1> }  
       </div>
       {/* hamburger */}
-      <div className="text-black sm:col-span-0 dark:text-white lg:hidden">
+      <div className="text-black col-span-1 sm:col-span-0 dark:text-white lg:hidden">
         <CgMenuLeft size={30} />
       </div>
-      <div className={` ${hamburger == false ? "sm:col-span-2" : "sm:col-span-4"}`}>
+      <div className={` ${hamburger == false ? "vhcenter col-span-3 sm:col-span-2" : "sm:col-span-4"}`}>
       <SelectCompany />
       </div>
       {/* <!-- search bar --> */}
@@ -117,11 +117,11 @@ export default function Header() {
         </div>
       </div> */}
       {/* <!-- end search bar --> */}
-      <div className="flex justify-end col-span-6 sm:col-span-2">
+      <div className="flex justify-end col-span-4 sm:col-span-2">
         <DarkModeSwitch />
       </div>
       {/* <!-- login --> */}
-      <div className="flex justify-end col-span-5 sm:col-span-2 lg:col-span-2 xl:col-span-3">
+      <div className="flex justify-end col-span-4 sm:col-span-2 lg:col-span-2 xl:col-span-3">
         <div className="flex-initial">
           <div className="relative flex items-center justify-end">
             <Notification />

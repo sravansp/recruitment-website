@@ -1,16 +1,10 @@
-import React, { useState, useEffect } from "react";
-import {
-  EditorState,
-  convertToRaw,
-  ContentState,
-  convertFromHTML,
-  AtomicBlockUtils
-} from "draft-js";
-import { Editor } from "react-draft-wysiwyg";
+import React, { useState, useEffect } from 'react';
+import { EditorState, convertToRaw, ContentState, convertFromHTML, AtomicBlockUtils } from 'draft-js';
+import { Editor } from 'react-draft-wysiwyg';
 import { FaAsterisk } from "react-icons/fa";
-import "react-draft-wysiwyg/dist/react-draft-wysiwyg.css";
-import { stateToHTML } from "draft-js-export-html";
-import { BeatLoader } from "react-spinners";
+import 'react-draft-wysiwyg/dist/react-draft-wysiwyg.css';
+import { stateToHTML } from 'draft-js-export-html';
+import { BeatLoader } from 'react-spinners';
 
 const TextEditor = ({
   title = "",
@@ -37,6 +31,7 @@ const TextEditor = ({
       return EditorState.createEmpty();
     }
   });
+  console.log(error)
   useEffect(() => {
     // Check if initialValue exists and if it's different from the current editor content
     if (
@@ -61,9 +56,12 @@ const TextEditor = ({
 
       onChange(plainText);
       changetoHtml(htmlContent);
+      console.log(plainText);
+      // Ensure onChange is called with plainText, which is a string
     }
   };
-
+  console.log(initialValue);
+  
   const uploadImageCallBack = (file) => {
     return new Promise((resolve, reject) => {
       const reader = new FileReader();
@@ -102,9 +100,20 @@ const TextEditor = ({
       setEditorState(newEditorState);
     }
   };
-
   return (
-    <div className={`relative p-4 border border-black rounded-md border-opacity-10 dark:border-secondaryDark mb-14 ${className} ${loader ? 'vhcenter' : ''}`} style={{ minHeight: `${minheight}` }}>
+    <div
+      className={`relative p-4 border border-black rounded-md border-opacity-10 dark:border-secondaryDark mb-14 ${className} ${
+        loader ? "vhcenter" : ""
+      }`}
+      style={{
+        ...(error && {
+          boxShadow:
+            "0px 0px 0px 4px #FEE4E2, 0px 1px 2px 0px rgba(16, 24, 40, 0.05)",
+            border: "1px solid red",
+        }),
+        minHeight: `${minheight}`,
+      }}
+    >
       <div className="flex">
         <p
           className={`text-xs font-medium 2xl:text-sm dark:text-white ${className}`}
@@ -121,32 +130,34 @@ const TextEditor = ({
           editorState={editorState}
           onEditorStateChange={handleEditorChange}
           placeholder={placeholder}
-          onDrop={handleDroppedImage}
+          wrapperStyle={{ height: height }}
           toolbar={{
-            options: ['inline', 'fontSize', 'list', 'textAlign', 'image'],
+            options: ["inline", "fontSize", "list", "textAlign"],
             inline: {
-              options: ['bold', 'italic', 'underline', 'strikethrough'],
+              options: ["bold", "italic", "underline", "strikethrough"],
             },
             list: {
-              options: ['unordered', 'ordered', 'indent'],
+              options: ["unordered", "ordered", "indent"],
             },
             textAlign: {
-              options: ['left', 'center', 'right', 'justify'],
+              options: ["left", "center", "right", "justify"],
+
             },
             image: {
               uploadCallback: uploadImageCallBack,
               alt: { present: true, mandatory: false },
             },
           }}
-          toolbarStyle={{ position: 'absolute', bottom: '-60px', left: '0', right: '0' }}
-          toolbarClassName=' bg-black'
-          editorClassName='h-full'
-          wrapperStyle={{ height: height }}
+          toolbarStyle={{
+            position: "absolute",
+            bottom: "-60px",
+            left: "0",
+            right: "0",
+          }}
+          toolbarClassName=" bg-black"
+          editorClassName="h-full"
         />
-        
-         
           
-        
         
       )}
      

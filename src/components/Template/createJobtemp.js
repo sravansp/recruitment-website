@@ -117,6 +117,7 @@ const CreatejobTemp = ({
   const [resume, setResume] = useState(1)
   const [coverLetter, setCoverletter] = useState(1)
   const [errors, setErrors] = useState([]);
+  const [jobTitle,setJobTitle] =useState("")
   console.log(updateId);
   useEffect(() => {
     // Retrieve the login data JSON string from local storage
@@ -198,10 +199,12 @@ const CreatejobTemp = ({
     localStorage.getItem("organisationId")
   );
   // const [isGoogleFormVisible, setIsGoogleFormVisible] = useState(false);
+  const [loader, setloader] = useState(false)
   const handleGenerateWithAI = async () => {
+    setloader(true)
     try {
       const requestBody = {
-        val: content,
+        val: jobTitle,
         radioval: '1',
         summarise: null
       };
@@ -224,6 +227,9 @@ const CreatejobTemp = ({
       }
     } catch (error) {
       console.error('Error:', error);
+    }
+    finally {
+      setloader(false); // Hide loader after response is received
     }
   };
   const handleEditorChange = (content) => {
@@ -1383,7 +1389,7 @@ const CreatejobTemp = ({
                           placeholder={t(
                             "Enter Description "
                           )}
-                          required={true}
+                          
                           hideBorder={true}
                           initialValue={content}
                           //  change={(e)=>{
@@ -1391,6 +1397,7 @@ const CreatejobTemp = ({
                           //  }}
                           error={formik.errors.jobDescription}
                           onChange={handleEditorChange}
+                          loader={loader}
                         />
                         {/* <TextArea
                                              title={t("Requirement")}

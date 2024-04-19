@@ -48,10 +48,12 @@ const TemplateDec = ({ open = "", close = () => { }, inputshow = false, isUpdate
       // duration: null,
     });
   };
+  const [loader, setloader] = useState(false)
   const handleGenerateWithAI = async () => {
+    setloader(true); 
     try {
       const requestBody = {
-        val: content,
+        val: templateName,
         radioval: '1',
         summarise: null
       };
@@ -74,15 +76,19 @@ const TemplateDec = ({ open = "", close = () => { }, inputshow = false, isUpdate
       }
     } catch (error) {
       console.error('Error:', error);
+    }finally {
+      setloader(false); // Hide loader after response is received
     }
   };
 
   const handlesubmit = async (e) => {
     try {
       console.log(content)
+
+      let hasError = false; 
       if (templateName=== undefined) {
         setTemplateNameError('Template Name is required.');
-        return;
+        hasError = true;
       } else {
         setTemplateNameError('');
       }
@@ -90,11 +96,15 @@ const TemplateDec = ({ open = "", close = () => { }, inputshow = false, isUpdate
       // Check if content is empty
       if (content=== undefined) {
         setContentError('Description is required.');
-        return;
+        hasError = true;
+
+        
       } else {
         setContentError('');
       }
-       
+      if (hasError) {
+        return;
+    }
       if (!updateId) {
         const response = await saveRecruitmentJobDescriptionTemplate({
           companyId: companyId,
@@ -270,7 +280,7 @@ const TemplateDec = ({ open = "", close = () => { }, inputshow = false, isUpdate
                 <div className="flex items-center justify-between">
                   <p className="font-bold">Generate personalized job descriptions based on pas account data.
                   </p>
-                  <p className="text-primary"><IoClose /></p>
+                  {/* <p className="text-primary"><IoClose /></p> */}
                 </div>
                 <p className="text-gray-400">When you generate with Al, we look for similar jobs you've created in the past and use he data to create content that's
                   impactful, accurate, and personalized to your company
@@ -305,6 +315,7 @@ const TemplateDec = ({ open = "", close = () => { }, inputshow = false, isUpdate
                 initialValue={content}
                 placeholder={"Enter the job description here, include key areas of resposibility on what the candidate might do on a typical day."}
                 error={contentError}
+                loader={loader}
               />
             </div>
           </div>

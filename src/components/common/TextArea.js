@@ -1,5 +1,6 @@
 import { Input } from "antd";
 import React, { useState } from "react";
+import { FaAsterisk } from "react-icons/fa";
 import { FiAlertCircle } from 'react-icons/fi';
 import { HiMiniStar } from "react-icons/hi2";
 import { TbNorthStar } from "react-icons/tb";
@@ -32,13 +33,13 @@ export default function TextArea({
   
   return (
     <div className={` ${className}  relative flex flex-col gap-1`}>
-      <div className="flex">
+      <div className="flex gap-1.5">
         {
           <label className="text-xs font-medium 2xl:text-sm dark:text-white">
             {title}
           </label>
           
-        }        {required && <TbNorthStar className="text-[10px] text-rose-600" />}
+        }        {required && <FaAsterisk className="text-[7px] text-rose-600" />}
       </div>
       <div style={{ position: "relative" }}>
         <TextArea

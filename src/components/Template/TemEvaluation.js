@@ -442,7 +442,7 @@ const TemEvaluation = ({ open = "", close = () => { }, inputshow = false, isUpda
                   formik.setFieldValue('evaluationTemplateName', e)
                 }}
                 error={formik.errors.evaluationTemplateName}
-
+                required={true}
 
               />
             </div>
@@ -455,6 +455,7 @@ const TemEvaluation = ({ open = "", close = () => { }, inputshow = false, isUpda
                   formik.setFieldValue('description', e)
                 }}
                 error={formik.errors.description}
+                required={true}
               />
             </div>
 
@@ -473,6 +474,7 @@ const TemEvaluation = ({ open = "", close = () => { }, inputshow = false, isUpda
                     // console.log(e)
                   }}
                   error={condition.question ? '' : errorMessages[index] || ''}
+                  required={true}
                   />
 
                 <div className="flex items-center gap-5">
@@ -498,6 +500,7 @@ const TemEvaluation = ({ open = "", close = () => { }, inputshow = false, isUpda
                       }}
                       value={condition.answerMetaData[0]?.key|| ''}
                       icondropDown={true}
+                      required={true}
                       error={condition.answerMetaData[0]?.key ? '' : errorMessages[index] || ''}
                     />
                   </div>

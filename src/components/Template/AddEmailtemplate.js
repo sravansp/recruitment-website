@@ -28,6 +28,7 @@
     const { t } = useTranslation();
     const [templateNameError, setTemplateNameError] = useState('');
     const [ subjectError,setSubjectError] = useState('')
+    const [contentError, setContentError] = useState('');
     const handleClose = () => {
       close(false);
     };
@@ -74,6 +75,15 @@
             hasError = true; // Set flag to true if there's an error
         } else {
             setSubjectError('');
+        }
+
+        if (!content) {
+          setContentError('Description is required.');
+          hasError = true;
+  
+          
+        } else {
+          setContentError('');
         }
 
         // If any error occurred, return early
@@ -254,6 +264,7 @@
                   value={templateName}
                   change={setTemplateName}
                   error={templateNameError}
+                  required={true}
                 />
               </div>
               <div>
@@ -263,6 +274,7 @@
                   value={subject}
                   change={setsubject}
                   error={subjectError}
+                  required={true}
                 />
 
               </div>
@@ -272,6 +284,8 @@
                 initialValue={content}
                 onChange={handleEditorChange}
                 minheight="250px"
+                error={contentError}
+                
               />
               <div class="relative max-w-[1070px]  w-full mx-auto h-[49.72px] bg-purple-50 rounded-lg">
                 <div className="flex justify-start items-center m-3 gap-3">

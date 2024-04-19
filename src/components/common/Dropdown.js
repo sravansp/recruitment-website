@@ -40,7 +40,7 @@ export default function Dropdown({
     <div className={`${className} flex flex-col gap-2`}>
       {title && (
         <div className="flex flex-col gap-0.5">
-          <div className="flex dark:text-white gap-3">
+          <div className="flex dark:text-white gap-1.5">
             <label htmlFor="" className="text-xs font-medium 2xl:text-sm ">
               {title}
             </label>

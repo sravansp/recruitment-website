@@ -452,6 +452,7 @@ const
                     formik.setFieldValue('questionnaireTemplateName', e)
                   }}
                   error={formik.errors.questionnaireTemplateName}
+                  required={true}
                 />
               </div>
               <div className='grid grid-cols-2'>
@@ -463,6 +464,7 @@ const
                     formik.setFieldValue('description', e)
                   }}
                   error={formik.errors.description}
+                  required={true}
 
                 />
               </div>
@@ -483,6 +485,8 @@ const
 
                     }}
                     error={condition.question ? '' : errorMessages[index] || ''}
+                     required={true}
+                     
                      />
 
                   <div className="flex items-center gap-5">
@@ -509,6 +513,7 @@ const
                         value={condition.answerMetaData[0]?.key }
                         icondropDown={true}
                         error={condition.answerMetaData[0]?.key ? '' : errorMessages[index] || ''}
+                        required={true}
                       />
                     </div>
                     {/* Additional dynamic input fields based on the selected value in the dropdown */}

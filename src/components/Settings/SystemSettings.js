@@ -168,7 +168,7 @@ function SystemSettings() {
               id={`acco-text-item`}
               role="region"
               aria-labelledby={`acco-title-item`}
-              className="flex flex-col gap-6  justify-between w-full px-6 py-4"
+              className="flex flex-col gap-6  justify-between w-full"
             >
              
               <div className="grid grid-cols-1 sm:grid-cols-4 gap-4">

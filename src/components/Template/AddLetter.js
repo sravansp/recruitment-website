@@ -26,6 +26,7 @@ const AddLetter = ({
   const { t } = useTranslation();
   const [templateNameError, setTemplateNameError] = useState('');
   const [ subjectError,setSubjectError] = useState('')
+  const [contentError, setContentError] = useState('');
   const handleClose = () => {
     close(false);
   };
@@ -74,7 +75,14 @@ const AddLetter = ({
         } else {
             setSubjectError('');
         }
-
+        if (!content) {
+          setContentError('Description is required.');
+          hasError = true;
+  
+          
+        } else {
+          setContentError('');
+        }
         // If any error occurred, return early
         if (hasError) {
             return;
@@ -246,6 +254,7 @@ const AddLetter = ({
                 value={templateName}
                 change={setTemplateName}
                 error={templateNameError}
+                required={true}
               />
             </div>
             <FormInput
@@ -254,12 +263,14 @@ const AddLetter = ({
                 value={subject}
                 change={setsubject}
                 error={subjectError}
+                required={true}
               />
 
             <TextEditor
               initialValue={content}
               onChange={handleEditorChange}
               minheight="250px"
+              error={contentError}
             />
             <div class="relative max-w-[1070px]  w-full mx-auto h-[49.72px] bg-purple-50 rounded-lg">
               <div className="flex justify-start items-center m-3 gap-3">

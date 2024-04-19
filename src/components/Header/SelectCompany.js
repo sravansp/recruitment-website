@@ -170,7 +170,7 @@ const SelectCompany = () => {
               </h1>
             </div>
             <div className="shrink-0">
-            <PiCaretDown size={18} className="opacity-50 " />
+            <PiCaretDown size={18} className="opacity-50  dark:text-white" />
             </div>
           </div>
         )}
