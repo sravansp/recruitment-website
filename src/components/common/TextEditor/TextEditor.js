@@ -18,6 +18,9 @@ const TextEditor = ({
   onChange = () => {},
   changetoHtml = () => {},
   className,
+  
+ 
+  
   minheight = "250px",
   height = "",
   placeholder = "",
@@ -48,6 +51,7 @@ const TextEditor = ({
       setEditorState(newEditorState);
     }
   }, [initialValue, editorState]);
+
   const handleEditorChange = (state) => {
     setEditorState(state);
     if (onChange) {
@@ -118,6 +122,7 @@ const TextEditor = ({
           editorClassName="h-full"
         />
       )}
+     
     </div>
   );
 };

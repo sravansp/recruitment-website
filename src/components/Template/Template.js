@@ -52,43 +52,43 @@ const Template = ({
   const tabs = [
     {
       id: 1,
-      title: "Job Templates",
+      title: t("Job_Templates"),
       value: "Job",
       tabheading: "Job Template List"
     },
     {
       id: 2,
-      title: "Job Description",
+      title: t("Job_Description"),
       value: "Job_Description",
       tabheading: "Job Description Template List"
     },
     {
       id: 3,
-      title: "Workflow",
+      title: t("Workflow"),
       value: "Workflow",
       tabheading: "Work Flow Template List"
     },
     {
       id: 4,
-      title: "Email",
+      title: t("Email"),
       value: "Email",
       tabheading: "Email Templates"
     },
     {
       id: 5,
-      title: "Evaluation",
+      title: t("Evaluation"),
       value: "Evaluation",
       tabheading: "Evaluation Templates"
     },
     {
       id: 6,
-      title: "Questionnaire",
+      title: t("Questionnaire"),
       value: "Questionnaire",
       tabheading: "Questionnaire Templates"
     },
     {
       id: 7,
-      title: "Letter",
+      title: t("Letter"),
       value: "Letter",
       tabheading: "Letter Templates"
     }
@@ -123,23 +123,23 @@ const Template = ({
       Job: [
         {
           id: 1,
-          title: "Name",
+          title: t("Name"),
           value: "jobTitle",
         },
         {
           id: 2,
-          title: "Description",
+          title: t("Description"),
           value: "Job_Description",
         },
         {
           id: 3,
-          title: "Status",
+          title: t("Status"),
           value: "",
           actionToggle: true,
         },
         {
           id: 4,
-          title: "Action",
+          title: t("Action"),
           value: "Action",
           action: true,
         },
@@ -147,23 +147,23 @@ const Template = ({
       Job_Description: [
         {
           id: 1,
-          title: "Name",
+          title: t("Name"),
           value: "descriptionTemplateName",
         },
         {
           id: 2,
-          title: "Description",
+          title: t("Description"),
           value: "descriptionTemplate",
         },
         {
           id: 3,
-          title: "Status",
+          title: t("Status"),
           value: "",
           actionToggle: true,
         },
         {
           id: 4,
-          title: "Status",
+          title: t("Status"),
           value: "Status",
           action: true,
         },
@@ -171,23 +171,23 @@ const Template = ({
       Workflow: [
         {
           id: 1,
-          title: "Name",
+          title: t("Name"),
           value: "workFlowName",
         },
         {
           id: 2,
-          title: "Description",
+          title: t("Description"),
           value: "description",
         },
         {
           id: 3,
-          title: "Status",
+          title: t("Status"),
           value: "",
           actionToggle: true,
         },
         {
           id: 4,
-          title: "Status",
+          title: t("Status"),
           value: "Status",
           action: true,
         },
@@ -195,23 +195,23 @@ const Template = ({
       Email: [
         {
           id: 1,
-          title: "Name",
+          title: t("Name"),
           value: "title",
         },
         {
           id: 2,
-          title: "Description",
+          title: t("Description"),
           value: "value",
         },
         {
           id: 3,
-          title: "Status",
+          title: t("Status"),
           value: "",
           actionToggle: true,
         },
         {
           id: 4,
-          title: "Action",
+          title: t("Action"),
           value: "Action",
           action: true,
         },
@@ -219,23 +219,23 @@ const Template = ({
       Evaluation: [
         {
           id: 1,
-          title: "Name",
+          title: t("Name"),
           value: "evaluationTemplateName",
         },
         {
           id: 2,
-          title: "Description",
+          title: t("Description"),
           value: "description",
         },
         {
           id: 3,
-          title: "Status",
+          title: t("Status"),
           value: "",
           actionToggle: true,
         },
         {
           id: 4,
-          title: "Action",
+          title: t("Action"),
           value: "Action",
           action: true,
         },
@@ -243,23 +243,23 @@ const Template = ({
       Questionnaire: [
         {
           id: 1,
-          title: "Name",
+          title: t("Name"),
           value: "questionnaireTemplateName",
         },
         {
           id: 2,
-          title: "Description",
+          title: t("Description"),
           value: "description",
         },
         {
           id: 3,
-          title: "Status",
+          title: t("Status"),
           value: "Status",
           actionToggle: true,
         },
         {
           id: 4,
-          title: "Action",
+          title: t("Action"),
           value: "actions",
           action: true,
         },
@@ -267,23 +267,23 @@ const Template = ({
       Letter: [
         {
           id: 1,
-          title: "Name",
+          title: t("Name"),
           value: "title",
         },
         {
           id: 2,
-          title: "Description",
+          title: t("Description"),
           value: "value",
         },
         {
           id: 3,
-          title: "Status",
+          title: t("Status"),
           value: "",
           actionToggle: true,
         },
         {
           id: 4,
-          title: "Action",
+          title: t("Action"),
           value: "actions",
           action: true,
         },
@@ -408,17 +408,17 @@ const Template = ({
       Questionnaire: [
         {
           id: 1,
-          title: "Name",
+          title: t("Name"),
           value: "questionnaireTemplateName",
         },
         {
           id: 2,
-          title: "Description",
+          title: t("Description"),
           value: "description",
         },
         {
           id: 3,
-          title: "Status",
+          title: t("Status"),
           value: "Status",
           actionToggle: true,
         },
@@ -432,17 +432,17 @@ const Template = ({
       Letter: [
         {
           id: 1,
-          title: "Name",
+          title: t("Name"),
           value: "title",
         },
         {
           id: 2,
-          title: "Description",
+          title: t("Description"),
           value: "value",
         },
         {
           id: 3,
-          title: "Status",
+          title: t("Status"),
           value: "",
           actionToggle: true,
         },
@@ -726,7 +726,7 @@ const Template = ({
     <div className='flex flex-col gap-6'>
       <div className="flex flex-col justify-between gap-6 lg:items-center lg:flex-row">
         <div className='flex flex-col'>
-          <p className='font-bold text-lg'> Templates</p>
+          <p className='font-bold text-lg'> {("Templates")}</p>
           <p className='para font-medium'>{t("Main_Description")}</p>
         </div>
         {/* <div className="flex flex-col gap-6 sm:flex-row">

@@ -18,12 +18,14 @@ import { Formik, useFormik } from 'formik';
 import { Value } from 'devextreme-react/range-selector'
 import AddMore from '../common/AddMore'
 import { CoPresentOutlined } from '@mui/icons-material'
+import * as Yup from "yup";
 
 
 const TemEvaluation = ({ open = "", close = () => { }, inputshow = false, isUpdate = {}, updateId, refresh }) => {
 
   const [companyId, setCompanyId] = useState(localStorage.getItem("companyId"));
   const [insertedId, setinsertedId] = useState("")
+  const [errorMessages, setErrorMessages] = useState("");
   // console.log(companyId)
   // console.log(insertedId)
   const [evaluationlist, setevaluationlist] = useState([])
@@ -162,6 +164,14 @@ const TemEvaluation = ({ open = "", close = () => { }, inputshow = false, isUpda
       description: "",
       createdBy: null,
     },
+    
+    enableReinitialize: true,
+    validateOnChange: false,
+    validationSchema: Yup.object().shape({
+      evaluationTemplateName : Yup.string().required('Evalutaion is required'),
+      description:Yup.string().required('Description is required'),
+    }),
+
     onSubmit: async (values, { setSubmitting }) => {
       try {
         // console.log({
@@ -172,6 +182,31 @@ const TemEvaluation = ({ open = "", close = () => { }, inputshow = false, isUpda
         // });
 
         // Make the first API call
+        const newErrorMessages = evaluation.map((condition) => {
+          let errorMessage = '';
+
+          if (!condition.question) {
+            errorMessage = 'Please enter a question.';
+          } else if (!condition.answerMetaData) {
+            errorMessage = 'Please choose an answer type.';
+          } else if (
+            ["Drop-down", "MultipleChoice", "Checkboxes"].includes(condition.answerMetaData) &&
+            (condition.answerMetaData.some((field) => !field.value) ||
+              (!condition.answerMetaData[0]?.value && condition.answerMetaData[0]?.key !== "ShortAnswer"))
+          ) {
+            errorMessage = 'Please enter values for all options.';
+          }
+
+          return errorMessage;
+        });
+
+        
+        setErrorMessages(newErrorMessages);
+        const hasErrors = newErrorMessages.some(errorMessage => errorMessage !== '');
+        if (hasErrors) {
+          // Don't proceed if there are errors
+          return;
+        }
         if (updateId) {
           const formattedData = evaluation.map((item, index) => ({
             companyId: companyId,
@@ -402,6 +437,8 @@ const TemEvaluation = ({ open = "", close = () => { }, inputshow = false, isUpda
                 change={(e) => {
                   formik.setFieldValue('evaluationTemplateName', e)
                 }}
+                error={formik.errors.evaluationTemplateName}
+
 
               />
             </div>
@@ -413,7 +450,7 @@ const TemEvaluation = ({ open = "", close = () => { }, inputshow = false, isUpda
                 change={(e) => {
                   formik.setFieldValue('description', e)
                 }}
-
+                error={formik.errors.description}
               />
             </div>
 
@@ -430,7 +467,9 @@ const TemEvaluation = ({ open = "", close = () => { }, inputshow = false, isUpda
                       : prevCondition
                     ))
                     // console.log(e)
-                  }} />
+                  }}
+                  error={errorMessages[index]||''}
+                  />
 
                 <div className="flex items-center gap-5">
                   <div className="flex-shrink-0"> {/* Add this container for the dropdown and icons */}
@@ -453,9 +492,9 @@ const TemEvaluation = ({ open = "", close = () => { }, inputshow = false, isUpda
                         ))
                         handleAddField(e)
                       }}
-                      value={condition.answerMetaData[0]?.key || "MultipleChoice"}
+                      value={condition.answerMetaData[0]?.key|| ''}
                       icondropDown={true}
-
+                      error={errorMessages[index]||''}
                     />
                   </div>
                   {/* Additional dynamic input fields based on the selected value in the dropdown */}
@@ -498,7 +537,9 @@ const TemEvaluation = ({ open = "", close = () => { }, inputshow = false, isUpda
                               }
                               : prevCondition
                             )
-                            )} />
+                            )} 
+                            error={field.value.trim() === '' ? 'Please enter a value.' : ''}
+                            />
                         )}
 
                         {['Drop-down', 'MultipleChoice', 'Checkboxes'].includes(field.key) && (

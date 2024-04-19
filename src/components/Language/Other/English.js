@@ -42,5 +42,25 @@ const otherLanguageEnglish = {
     Sort_by:"Sort by",
 
 
+
+    
+    Main_Description:"Cordinates the planning, execution and completion of the projects",
+    System_Settings:"System Settings",
+    Integration:"Integration",
+
+    Templates:"Templates",
+    Letter:"Letter",
+    Questionnaire:"Questionnaire",
+       Evaluation:"Evaluation",
+            Email:"Email",
+         Workflow:"Workflow",
+  Job_Description:"Job Description",
+    Job_Templates:"Job Templates",
+           Name:"Name",
+    Description:"Description",
+         Status:"Status",
+    
+
+
 };
 export default otherLanguageEnglish;

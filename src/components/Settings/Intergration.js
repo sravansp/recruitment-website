@@ -41,7 +41,7 @@ function Integration() {
           <Breadcrumbs
             items={breadcrumbItems}
             description={
-              "Coordinates the planning, execution, and completion of projects..."
+              t("Main_Description")
             }
           />
         </div>

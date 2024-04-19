@@ -10,6 +10,7 @@ import { getAllRecruitmentResumes,getJobStatics } from '../Api1'
 
 import { motion } from "framer-motion";
 import Createcandidatelist from './Createcandidatelist'
+import { useTranslation } from 'react-i18next'
 
 
 const CandidatesList = () => {
@@ -18,48 +19,50 @@ const CandidatesList = () => {
   const [openPop, setOpenPop] = useState("");
   const [updateId, setUpdateId] = useState("");
   const[jobId,setJobId]=useState(null)
+  const { t } = useTranslation();
+
   const header = [
     {
       Candidate_Profile: [
         {
           id: 1,
-          title: "Name",
+          title: t("Name"),
           value: "candidateName",
         },
         {
           id: 2,
-          title: "Contact",
+          title: t("Contact"),
           value: "candidateContact",
         },
         {
           id: 3,
-          title: "Job",
+          title: t("Job"),
           value: "jobTitle",
         },
 
         {
           id: 4,
-          title: "Stage",
+          title: t("Stage"),
           value: "stageName",
          
         },
         {
           id: 5,
 
-          title: "Source",
+          title: t("Source"),
           value: "candidateSource",
          
         },
         {
           id: 6,
 
-          title: "Status",
+          title: t("Status"),
           value: "currentStatus",
          
         },
         {
           id: 7,
-          title: "Applied Date",
+          title: t("Applied_Date"),
           value: "createdOn",
         },
         
@@ -121,7 +124,7 @@ const CandidatesList = () => {
     <div className="flex flex-col gap-[25px]">
       <div className='flex justify-between'>
         <Heading
-          title="Candidates"
+          title={t("Candidates")}
           description="Coordinates the planning, execution, and completion of projects..."/>
            <div className="flex gap-4">
           {" "}
@@ -129,7 +132,7 @@ const CandidatesList = () => {
             <span className="!text-primary para">View career page</span>{" "}
             <PiArrowSquareOut size={15} className="dark:text-white" />
           </Link>
-          <ButtonClick buttonName={"Add Candidates"}
+          <ButtonClick buttonName={t("Add_Candidates")}
            handleSubmit={() => {
             setShow(true);
             console.log(true);
