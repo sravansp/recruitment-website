@@ -26,6 +26,8 @@
     const [show, setShow] = useState(open);
     const [subject,setsubject] = useState("")
     const { t } = useTranslation();
+    const [templateNameError, setTemplateNameError] = useState('');
+    const [ subjectError,setSubjectError] = useState('')
     const handleClose = () => {
       close(false);
     };
@@ -53,9 +55,23 @@
       });
     };
     console.log(updateId)
+    console.log(subject)
     const handleSubmit = async () => {
       try {
-      
+        if (templateName === undefined) {
+          setTemplateNameError('Template Name is required.');
+          return;
+        } else {
+          setTemplateNameError('');
+        }
+  
+        // Check if content is empty
+        if (subject === undefined) {
+          setSubjectError('Subject is required.');
+          return;
+        } else {
+          setSubjectError('');
+        }
         if (updateId){
           const id = updateId
           const response = await updateRecruitmentEmailTemplate(
@@ -152,7 +168,7 @@
       getEmailById()
       console.log(templateName)
       console.log(content)  
-    },[])
+    },[updateId])
 
     return (
       <div>
@@ -229,6 +245,7 @@
                   placeholder={"type here"}
                   value={templateName}
                   change={setTemplateName}
+                  error={templateNameError}
                 />
               </div>
               <div>
@@ -237,6 +254,7 @@
                   placeholder={"type here"}
                   value={subject}
                   change={setsubject}
+                  error={subjectError}
                 />
 
               </div>

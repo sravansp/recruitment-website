@@ -586,7 +586,7 @@ export default function Createcandidatelist({ open = "", close = () => { }, file
   useEffect(() => {
 
     getCandidatesById()
-  }, []);
+  }, [resumeId,PdFViewer]);
 
   const getEducationDetails = async () => {
     try {
@@ -624,7 +624,7 @@ export default function Createcandidatelist({ open = "", close = () => { }, file
   useEffect(() => {
     getEducationDetails()
     getEmployeExperiance()
-  }, [])
+  }, [resumeId])
   return (
     <div>
       {show && (

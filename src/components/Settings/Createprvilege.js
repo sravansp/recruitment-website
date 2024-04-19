@@ -16,7 +16,7 @@ import * as yup from "yup";
 import { useFormik } from "formik";
 import { RxCross2, RxQuestionMarkCircled } from "react-icons/rx";
 import Accordion from "../common/Accordion";
-import { saveRecruitmentRole, getAllRecruitmentFunctions } from "../Api1";
+import { saveRecruitmentRole, getAllRecruitmentFunctions,saveOrUpdateRecruitmentRoleFunctionBatch } from "../Api1";
 
 export default function Createprvilege({
   open = "",
@@ -47,6 +47,9 @@ export default function Createprvilege({
   const [employeeId, setEmployeeId] = useState([]);
   const { t } = useTranslation();
   const [userid, setuserid] = useState("");
+  const[roleId,setRoleId] =useState("")
+  const[selectedfunctionId,setSelectedfunctionId] =useState([])
+  const[selectedRoles,setselectedRoles] = useState([])
 
   useEffect(() => {
     // Retrieve the login data JSON string from local storage
@@ -113,18 +116,20 @@ export default function Createprvilege({
           createdBy: userid,
         });
         console.log(response);
+        setRoleId(response.result)
       } catch (error) {
         console.log(error);
       }
     },
   });
-
+   
   const getRoles = async () => {
     try {
       const response = await getAllRecruitmentFunctions({});
       console.log(response);
 
       setParent(response.result);
+      
     } catch (error) {
       console.log(error);
     }
@@ -132,7 +137,25 @@ export default function Createprvilege({
   useEffect(() => {
     getRoles();
   }, []);
+  const fromik1 = useFormik({
+    initialValues:{
+      roleId:"",
+      functionId:"",
+      createdBy:"",
+    },
+    onSubmit: async(e) =>{
+     try{
+      const response = await saveOrUpdateRecruitmentRoleFunctionBatch({
+      roleId:"",
+      functionId:"",
+      createdBy:userid,
+      })
+     }catch(error){
+      console.log(error)
+     }
 
+    }
+  }) 
   return (
     <div>
       {show && (
@@ -233,32 +256,40 @@ export default function Createprvilege({
                         title={
                           <div className="flex items-center gap-2">
                             <div>
-                              <CheckBoxInput
-                                value={item.subFunctions.some(
-                                  (subItem) =>
-                                    subFunctionCheckboxes[subItem.functionId]
-                                )}
-                                // change={() =>
-                                //   handleMainFunctionCheckboxChange(item)
-                                // }
-
-                                style={{
-                                  width: "20px",
-                                  height: "20px",
-                                  border: `1px solid ${
-                                    item.subFunctions.some(
-                                      (subItem) =>
-                                        subFunctionCheckboxes[
-                                          subItem.functionId
-                                        ]
-                                    )
-                                      ? "#7F56D9"
-                                      : "#999"
-                                  }`,
-                                  borderRadius: "3px",
-                                  backgroundColor: "transparent",
-                                }}
-                              />
+                            <CheckBoxInput
+                                  change={(isChecked, functionId) => {
+                                   
+                                    if (isChecked) {
+                                      setSelectedfunctionId((prevState) => [
+                                        ...prevState,
+                                        functionId,
+                                      ]);
+                                      setselectedRoles((prevState) => [
+                                        ...prevState,
+                                        {
+                                          id: prevState.length + 1, // Generate a unique ID for the selected entry
+                                         
+                                          userId: functionId,
+      
+                                        },
+                                      ]);
+                                    } else {
+                                      setSelectedfunctionId((prevState) =>
+                                        prevState.filter((id) => id !== functionId)
+                                      );
+                                      setselectedRoles((prevState) =>
+                                        prevState.filter(
+                                          (entry) => entry.functionId !== functionId
+                                        )
+                                      );
+                                    }
+                                  }}
+                                  value={selectedfunctionId.includes(
+                                    item.functionId
+                                  )}
+                                  actionId={item.functionId}
+                                  roleId={roleId}
+                                />
                             </div>
                             {/* Title comes here */}
                             {item.functionName}
@@ -295,10 +326,44 @@ export default function Createprvilege({
                           }}>
                               {subItem.subFunctions.map((subsubItem) => (
                                
+                                  // <CheckBoxInput
+                                  //  titleRight={subsubItem.functionName}
+                                  // />
                                   <CheckBoxInput
-                                   titleRight={subsubItem.functionName}
-                                  />
-                                  
+                                  titleRight={subsubItem.functionName}
+                                  change={(isChecked, functionId) => {
+                                   
+                                    if (isChecked) {
+                                      setSelectedfunctionId((prevState) => [
+                                        ...prevState,
+                                        functionId,
+                                      ]);
+                                      setselectedRoles((prevState) => [
+                                        ...prevState,
+                                        {
+                                          id: prevState.length + 1, // Generate a unique ID for the selected entry
+                                         
+                                          userId: functionId,
+      
+                                        },
+                                      ]);
+                                    } else {
+                                      setSelectedfunctionId((prevState) =>
+                                        prevState.filter((id) => id !== functionId)
+                                      );
+                                      setselectedRoles((prevState) =>
+                                        prevState.filter(
+                                          (entry) => entry.functionId !== functionId
+                                        )
+                                      );
+                                    }
+                                  }}
+                                  value={selectedfunctionId.includes(
+                                    subsubItem.functionId
+                                  )}
+                                  actionId={subsubItem.functionId}
+                                  roleId={roleId}
+                                />
                                 
                               ))}
                             </div>
