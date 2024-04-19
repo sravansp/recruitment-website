@@ -272,7 +272,7 @@ const Template = ({
         },
         {
           id: 2,
-          title: "Description",
+          title: "Subject",
           value: "value",
         },
         {
