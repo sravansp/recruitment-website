@@ -39,7 +39,7 @@ export default function FormInput({
     }
     change(inputValue);
   };
-  // console.log(value)
+  console.log(error)
   return (
     <div className={`flex flex-col ${title ? "gap-2" : "gap-0 items-center "} `}>
       {/* <div className="flex gap-3">

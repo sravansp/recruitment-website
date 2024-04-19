@@ -20,6 +20,8 @@ const TemplateDec = ({ open = "", close = () => { }, inputshow = false, isUpdate
   const [templateName, setTemplateName] = useState("");
   const [show, setShow] = useState(open);
   const [content, setContent] = useState("");
+  const [templateNameError, setTemplateNameError] = useState('');
+  const [contentError, setContentError] = useState('');
   console.log(updateId)
   const { t } = useTranslation();
   const handleClose = () => {
@@ -75,9 +77,24 @@ const TemplateDec = ({ open = "", close = () => { }, inputshow = false, isUpdate
     }
   };
 
-  const handlesubmit = async () => {
+  const handlesubmit = async (e) => {
     try {
       console.log(content)
+      if (templateName=== undefined) {
+        setTemplateNameError('Template Name is required.');
+        return;
+      } else {
+        setTemplateNameError('');
+      }
+
+      // Check if content is empty
+      if (content=== undefined) {
+        setContentError('Description is required.');
+        return;
+      } else {
+        setContentError('');
+      }
+       
       if (!updateId) {
         const response = await saveRecruitmentJobDescriptionTemplate({
           companyId: companyId,
@@ -208,7 +225,7 @@ const TemplateDec = ({ open = "", close = () => { }, inputshow = false, isUpdate
 
       ]}
       className="widthFull"
-      handleSubmit={handlesubmit}
+      handleSubmit={(e)=>{handlesubmit(e)}}
     //  buttonClickCancel={(e) => {
     //    if (activeBtn > 0) {
     //      setActiveBtn(activeBtn - 1);
@@ -242,6 +259,7 @@ const TemplateDec = ({ open = "", close = () => { }, inputshow = false, isUpdate
               placeholder={"type here"}
               value={templateName}
               change={setTemplateName}
+              error={templateNameError}
             />
           </div>
           <Card className="bg-primaryalpha/5">
@@ -285,6 +303,7 @@ const TemplateDec = ({ open = "", close = () => { }, inputshow = false, isUpdate
                 }}
                 initialValue={content}
                 placeholder={"Enter the job description here, include key areas of resposibility on what the candidate might do on a typical day."}
+                error={contentError}
               />
             </div>
           </div>
