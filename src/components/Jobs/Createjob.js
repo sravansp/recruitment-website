@@ -2504,7 +2504,7 @@ const Createjob = ({
                       <FormInput
                         type={"text"}
                         websiteLink
-                        className="w-[310px]"
+                        className="w-[305px]"
                         title="Sharable Link"
                         placeholder="loyaltri.com/jkjskl3lsjlfsdf"
                         icon={<MdContentCopy />}

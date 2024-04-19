@@ -19,6 +19,7 @@ function Jobcardcopy({
   const containerRef = useRef(0);
   const scrollAmount = 253;
   const [selectedId, setSelectedId] = useState(null);
+  const primaryColor = localStorage.getItem('mainColor')
 
   const slidemover = () => {
     const container = containerRef.current;
@@ -84,7 +85,8 @@ function Jobcardcopy({
                   x="70"
                   y="40"
                   fill="black"
-                  className="font-semibold text-sm text-wrap"
+                  className="font-semibold text-sm "
+                 
                 >
                   {each.title}
                 </text>
@@ -113,14 +115,17 @@ function Jobcardcopy({
                     stroke="black"
                     strokeOpacity="0.1"
                   />
+                  <div>
                   <text
                     x="70"
                     y="40"
                     fill="black"
                     className="font-semibold text-sm "
+                    
                   >
                     {/* {each.label} */}{each.title}
                   </text>
+                  </div>
                   {/* <foreignObject x="30" y="40" width="34" height="26">
                     <p className="flex items-center justify-center rounded-md bg-violet-100 font-semibold text-sm px-1 py-1">
                       {each.nummber}
