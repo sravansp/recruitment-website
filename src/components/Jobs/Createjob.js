@@ -119,21 +119,21 @@ const Createjob = ({
   const [selectedDivs, setSelectedDivs] = useState([]);
   const [selectedemployee, setselectedemployee] = useState([])
   const [selectedUserIds, setSelectedUserIds] = useState([])
-  const [JobDescriptionList,setJobDescriptionList]=useState([])
-  const [jobTitle,setJobTitle] =useState("")
-  
+  const [JobDescriptionList, setJobDescriptionList] = useState([])
+  const [jobTitle, setJobTitle] = useState("")
+
   console.log(updateId)
   const handleSelectCard = (selectedStageId) => {
     // Handle the selected stageId in your parent component
     console.log("Selected Stage ID:", selectedStageId);
-    
+
   };
 
   const [loader, setloader] = useState(false)
-  
+
   const handleGenerateWithAI = async () => {
     setloader(true); // Show loader when request is initiated
-     // You may already have this state variable
+    // You may already have this state variable
 
     try {
       const requestBody = {
@@ -930,12 +930,12 @@ const Createjob = ({
     try {
       const response = await getAllRecruitmentWorkFlows();
       console.log("Response:", response);
-     
+
       const stagesByWorkflowId = response.result.map((item) => ({
         workFlowId: item.workFlowId,
-        workFlowName:item.workFlowName,
+        workFlowName: item.workFlowName,
         stages: item.recruitmentWorkFlowStages.map((stage) => ({
-          id:stage.stageId,
+          id: stage.stageId,
           title: stage.stageName,
 
         })),
@@ -1337,7 +1337,7 @@ const Createjob = ({
           borderRadius: 0,
           borderTopLeftRadius: "0px !important",
           borderBottomLeftRadius: 0,
-          
+
         }}
         wrapperBodyStyle={{ backgroundColor: "#F8FAFC" }}
         close={(e) => {
@@ -1435,32 +1435,32 @@ const Createjob = ({
                           // required={true}
                           />
 
-                            <Dropdown
-                              title={t("Choose Company")}
-                              placeholder={t("Choose Company")}
-                              options={company}
-                              value={formik1.values.companyId}
-                              error={formik1.errors.companyId}
-                              required={true}
-                              change={(e) => {
-                                formik1.setFieldValue("companyId", e);
-                                getDepartmentList(e);
-                              }}
-                            />
-                          </div>
-                        )}
-                        <div className="grid grid-cols-3 gap-4">
-                          <FormInput
-                            title={t("Job Title")}
-                            placeholder={t("Example : Marketing Manager")}
+                          <Dropdown
+                            title={t("Choose Company")}
+                            placeholder={t("Choose Company")}
+                            options={company}
+                            value={formik1.values.companyId}
+                            error={formik1.errors.companyId}
                             required={true}
                             change={(e) => {
-                              formik1.setFieldValue("jobTitle", e);
-                              setJobTitle(e)
+                              formik1.setFieldValue("companyId", e);
+                              getDepartmentList(e);
                             }}
-                            value={formik1.values.jobTitle}
-                            error={formik1.errors.jobTitle}
                           />
+                        </div>
+                      )}
+                      <div className="grid grid-cols-3 gap-4">
+                        <FormInput
+                          title={t("Job Title")}
+                          placeholder={t("Example : Marketing Manager")}
+                          required={true}
+                          change={(e) => {
+                            formik1.setFieldValue("jobTitle", e);
+                            setJobTitle(e)
+                          }}
+                          value={formik1.values.jobTitle}
+                          error={formik1.errors.jobTitle}
+                        />
 
                         <Dropdown
                           title={t("Department")}
@@ -1758,7 +1758,7 @@ const Createjob = ({
                       {/* <Card className="bg-primaryalpha/5"> */}
                       <div className="border rounded-md bg-primaryalpha/5">
                         <div className="flex items-center px-1.5  ">
-                          <img src={AI_Text} alt=''className="border rounded-md"></img>
+                          <img src={AI_Text} alt='' className="border rounded-md"></img>
                           <div className="flex flex-col gap-1 p-1.5">
                             <div className="flex items-center justify-between ">
                               <p className="font-bold">Generate personalized job descriptions based on pas account data.
@@ -1770,7 +1770,7 @@ const Createjob = ({
                             </p>
                           </div>
                         </div>
-                        </div>
+                      </div>
                       {/* </Card> */}
                       <div style={{ display: 'flex', justifyContent: 'flex-end', gap: '16px' }}>
 
@@ -1799,13 +1799,13 @@ const Createjob = ({
                                              />
                                              </div> */}
                       <div className="pt-4">
-                        
+
                         <TextEditor
                           initialValue={content}
                           onChange={handleEditorChange}
                           minheight="250px"
                           loader={loader}
-                         
+
                         />
                       </div>
                       {/* <TextArea
@@ -2208,18 +2208,17 @@ const Createjob = ({
                 </>
               ) : activeBtnValue === "Workflow" ? (
                 <FlexCol>
-                  <div className="rounded-md borderb">
-                    <Accordion
-                      title={"Workflow"}
-                      className="Text_area"
-                      padding={true}
-                      toggleBtn={false}
-                      click={() => {
-                        setPresentage(1.4);
-                      }}
-                      initialExpanded={true}
-                    >
-                      {/* {Object.keys(Stages).map(workFlowId => (
+                  <Accordion
+                    title={"Workflow"}
+                    className="Text_area"
+                    padding={true}
+                    toggleBtn={false}
+                    click={() => {
+                      setPresentage(1.4);
+                    }}
+                    initialExpanded={true}
+                  >
+                    {/* {Object.keys(Stages).map(workFlowId => (
         <Card key={workFlowId}>
           {/* <JobCard options={Stages[workFlowId]} /> *
           <JobCard/>
@@ -2231,40 +2230,39 @@ const Createjob = ({
         </Card>
       ))}
                 */}
-                      <Radio.Group
-                        onChange={(e) => {
-                          setSelectedWorkFlowId(e.target.value);
-                          setPresentage(2.4);
-                        }}
-                        value={selectedWorkFlowId}
-                      >
-                        {Stages.map((each) => (
-                          <div key={each.workFlowId} className={`  relative p-2.5  mt-6 border rounded-md ${selectedWorkFlowId === each.workFlowId ? 'bg-[#F2F0FD]  border-[#690CE7]' : ''}`}  >
-                            {/* <title={<span className="no-underline">{each.workFlowName}</span>}> */}
-                              {/* <h6 className="h6 mt">{each.workFlowName}</h6> */}
-                              <h6 className="h6 mb-4"> {each.workFlowName}  </h6>
-                           
-                            <div className="">
-                            <Jobcardcopy options={each.stages}  selectable={false} firstCardSelectable={false}/>
-                            </div>
-                            <div
-                              style={{
-                                position: "absolute",
-                                top: 0,
-                                right: 0,
-                                padding: "8px",
-                              }}
-                            >
-                             
-                              <Radio
-                                value={each.workFlowId || selectedWorkFlowId}
-                              ></Radio>
-                            </div>
+                    <Radio.Group
+                      onChange={(e) => {
+                        setSelectedWorkFlowId(e.target.value);
+                        setPresentage(2.4);
+                      }}
+                      value={selectedWorkFlowId}
+                    >
+                      {Stages.map((each) => (
+                        <div key={each.workFlowId} className={`  relative p-2.5  mt-6 border rounded-md ${selectedWorkFlowId === each.workFlowId ? 'bg-[#F2F0FD]  border-[#690CE7]' : ''}`}  >
+                          {/* <title={<span className="no-underline">{each.workFlowName}</span>}> */}
+                          {/* <h6 className="h6 mt">{each.workFlowName}</h6> */}
+                          <h6 className="h6 mb-4"> {each.workFlowName}  </h6>
+
+                          <div className="">
+                            <Jobcardcopy options={each.stages} selectable={false} firstCardSelectable={false} />
                           </div>
-                        ))}
-                      </Radio.Group>
-                    </Accordion>
-                  </div>
+                          <div
+                            style={{
+                              position: "absolute",
+                              top: 0,
+                              right: 0,
+                              padding: "8px",
+                            }}
+                          >
+
+                            <Radio
+                              value={each.workFlowId || selectedWorkFlowId}
+                            ></Radio>
+                          </div>
+                        </div>
+                      ))}
+                    </Radio.Group>
+                  </Accordion>
                 </FlexCol>
               ) : activeBtnValue === "TeamMembers" ? (
                 <FlexCol>
@@ -2367,18 +2365,18 @@ const Createjob = ({
                                 <div className="flex items-center gap-4">
                                   {/* Assuming you have an 'image' property in your employee object */}
                                   {employee.userimage ? (
-        <img
-            src={employee.userimage}
-            alt={`${employee.username} Avatar`}
-            style={{ width: "50px", height: "50px" }}
-        />
-    ) : (
-        <img
-            src={noImg}  // replace with your default image path
-            alt="Default Avatar"
-            style={{ width: "54px", height: "54px" }}
-        />
-    )}
+                                    <img
+                                      src={employee.userimage}
+                                      alt={`${employee.username} Avatar`}
+                                      style={{ width: "50px", height: "50px" }}
+                                    />
+                                  ) : (
+                                    <img
+                                      src={noImg}  // replace with your default image path
+                                      alt="Default Avatar"
+                                      style={{ width: "54px", height: "54px" }}
+                                    />
+                                  )}
                                   <div className="flex flex-col">
                                     <div class="text-gray-900 text-sm font-semibold font-['Inter'] leading-tight">
                                       {employee.username}
