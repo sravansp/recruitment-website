@@ -12,6 +12,7 @@ import {
   List,
   Radio,
   Space,
+  Tooltip,
   notification,
 } from "antd";
 import Accordion from "../common/Accordion";
@@ -75,6 +76,7 @@ import TextEditor from "../common/TextEditor/TextEditor";
 import RadioButton from "../common/RadioButton";
 import { IoClose } from "react-icons/io5";
 import Jobcardcopy from "../common/Jobcardcopy";
+import { RiDeleteBinLine } from "react-icons/ri";
 
 const CreatejobTemp = ({
   open = "",
@@ -283,7 +285,7 @@ const CreatejobTemp = ({
         summary: 1,
         resume: 1,
         coverLetter: 1,
-       
+
         customFields: [],
       },
       createdBy: "",
@@ -762,12 +764,12 @@ const CreatejobTemp = ({
     try {
       const response = await getAllRecruitmentWorkFlows();
       console.log("Response:", response);
-     
+
       const stagesByWorkflowId = response.result.map((item) => ({
         workFlowId: item.workFlowId,
-        workFlowName:item.workFlowName,
+        workFlowName: item.workFlowName,
         stages: item.recruitmentWorkFlowStages.map((stage) => ({
-          id:stage.stageId,
+          id: stage.stageId,
           title: stage.stageName,
 
         })),
@@ -778,9 +780,9 @@ const CreatejobTemp = ({
       console.error("Error:", error);
     }
   };
-  useEffect(()=>{
+  useEffect(() => {
     fetchData()
-  },[])
+  }, [])
 
   useEffect(() => {
     console.log("Updated Workflow:", Stages);
@@ -945,8 +947,8 @@ const CreatejobTemp = ({
           refresh()
         }}
         header={[
-          !updateId ? t("Create a Job Temaplate") : t("Update Job Temaplate"),
-          !updateId ? t("Create a Job Temaplate") : t("Update Job Temaplate"),
+          !updateId ? t("Create a Job Template") : t("Update Job Template"),
+          !updateId ? t("Create a Job Template") : t("Update Job Template"),
         ]}
         headerRight={
           <div className="flex items-center gap-10">
@@ -1089,7 +1091,7 @@ const CreatejobTemp = ({
                       // } }
                       initialExpanded={true}
                     >
-                     <div className="md:grid grid-cols-12 flex flex-col gap-6 dark:text-white">
+                      <div className="md:grid grid-cols-12 flex flex-col gap-6 dark:text-white">
                         {regularOvertime?.map((each, i) => (
                           <div
                             key={i}
@@ -1817,14 +1819,16 @@ icondropDown={true}
                                       cursor: "pointer",
                                     }}
                                   /> */}
-                                    <MdDelete
-                                      style={{
-                                        width: "18px",
-                                        height: "18px",
-                                        cursor: "pointer",
-                                      }}
-                                      onClick={() => handleDeleteCondition(index)}
-                                    />
+                                    <Tooltip placement="top" title={"Delete"}>
+                                      <RiDeleteBinLine className="text-gray-400"
+                                        style={{
+                                          width: "18px",
+                                          height: "18px",
+                                          cursor: "pointer",
+                                        }}
+                                        onClick={() => handleDeleteCondition(index)}
+                                      />
+                                    </Tooltip>
                                   </div>
                                 </div>
                               </div>
@@ -1877,17 +1881,19 @@ icondropDown={true}
                                           "MultipleChoice",
                                           "Checkboxes",
                                         ].includes(field.key) && (
-                                            <div className="ml-2">
-                                              <MdDelete
-                                                onClick={() =>
-                                                  handleDeleteField(
-                                                    index,
-                                                    fieldIndex
-                                                  )
-                                                }
-                                                className="cursor-pointer text-red-500"
-                                              />
-                                            </div>
+                                            <Tooltip placement="top" title={"Delete"}>
+                                              <div className="ml-2">
+                                                <MdDelete
+                                                  onClick={() =>
+                                                    handleDeleteField(
+                                                      index,
+                                                      fieldIndex
+                                                    )
+                                                  }
+                                                  className="cursor-pointer text-red-500"
+                                                />
+                                              </div>
+                                            </Tooltip>
                                           )}
                                       </div>
                                     )
@@ -1901,19 +1907,21 @@ icondropDown={true}
                                     ].includes(
                                       condition.answerMetaData[0]?.key
                                     ) && (
-                                        <CgAdd
-                                          onClick={() =>
-                                            handleAddField(
-                                              index,
-                                              condition.answerMetaData[0]?.key
-                                            )
-                                          }
-                                          style={{
-                                            width: "18px",
-                                            height: "18px",
-                                            cursor: "pointer",
-                                          }}
-                                        />
+                                        <Tooltip placement="top" title={"Add new"}>
+                                          <CgAdd
+                                            onClick={() =>
+                                              handleAddField(
+                                                index,
+                                                condition.answerMetaData[0]?.key
+                                              )
+                                            }
+                                            style={{
+                                              width: "18px",
+                                              height: "18px",
+                                              cursor: "pointer",
+                                            }}
+                                          />
+                                        </Tooltip>
                                       )}
                                   </div>
                                 </>
@@ -1960,38 +1968,38 @@ icondropDown={true}
         </Card>
       ))}
                 */}
-                      <Radio.Group
-                        onChange={(e) => {
-                          setSelectedWorkFlowId(e.target.value);
-                          setPresentage(2.4);
-                        }}
-                        value={selectedWorkFlowId}
-                      >
-                        {Stages.map((each) => (
-                          <div key={each.workFlowId} className={`  relative p-2.5  mt-6 border rounded-md ${selectedWorkFlowId === each.workFlowId ? 'bg-[#F2F0FD]  border-[#690CE7]' : ''}`}  >
-                            {/* <title={<span className="no-underline">{each.workFlowName}</span>}> */}
-                              {/* <h6 className="h6 mt">{each.workFlowName}</h6> */}
-                              <h6 className="h6 mb-4"> {each.workFlowName}  </h6>
-                           
-                            <div className="">
-                            <Jobcardcopy options={each.stages}  selectable={false} firstCardSelectable={false}/>
-                            </div>
-                            <div
-                              style={{
-                                position: "absolute",
-                                top: 0,
-                                right: 0,
-                                padding: "8px",
-                              }}
-                            >
-                             
-                              <Radio
-                                value={each.workFlowId || selectedWorkFlowId}
-                              ></Radio>
-                            </div>
+                    <Radio.Group
+                      onChange={(e) => {
+                        setSelectedWorkFlowId(e.target.value);
+                        setPresentage(2.4);
+                      }}
+                      value={selectedWorkFlowId}
+                    >
+                      {Stages.map((each) => (
+                        <div key={each.workFlowId} className={`  relative p-2.5  mt-6 border rounded-md ${selectedWorkFlowId === each.workFlowId ? 'bg-[#F2F0FD]  border-[#690CE7]' : ''}`}  >
+                          {/* <title={<span className="no-underline">{each.workFlowName}</span>}> */}
+                          {/* <h6 className="h6 mt">{each.workFlowName}</h6> */}
+                          <h6 className="h6 mb-4"> {each.workFlowName}  </h6>
+
+                          <div className="">
+                            <Jobcardcopy options={each.stages} selectable={false} firstCardSelectable={false} />
                           </div>
-                        ))}
-                      </Radio.Group>
+                          <div
+                            style={{
+                              position: "absolute",
+                              top: 0,
+                              right: 0,
+                              padding: "8px",
+                            }}
+                          >
+
+                            <Radio
+                              value={each.workFlowId || selectedWorkFlowId}
+                            ></Radio>
+                          </div>
+                        </div>
+                      ))}
+                    </Radio.Group>
                   </Accordion>
                 </FlexCol>
               ) : null}

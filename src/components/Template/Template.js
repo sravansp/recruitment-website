@@ -163,8 +163,8 @@ const Template = ({
         },
         {
           id: 4,
-          title: t("Status"),
-          value: "Status",
+          title: t("Action"),
+          value: "action",
           action: true,
         },
       ],
@@ -187,8 +187,8 @@ const Template = ({
         },
         {
           id: 4,
-          title: t("Status"),
-          value: "Status",
+          title: t("Action"),
+          value: "action",
           action: true,
         },
       ],
@@ -272,7 +272,7 @@ const Template = ({
         },
         {
           id: 2,
-          title: t("Description"),
+          title: "Subject",
           value: "value",
         },
         {
@@ -288,16 +288,9 @@ const Template = ({
           action: true,
         },
       ]
-
     }
-
-
-
-
-
-
-
   ]
+
   const DraweHeader = [
     {
       Job: [

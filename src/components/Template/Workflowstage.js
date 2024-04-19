@@ -181,8 +181,8 @@ const Workflowstage = ({ open = "", close = () => { }, inputshow = false, isUpda
     enableReinitialize: true,
     validateOnChange: false,
     validationSchema: Yup.object().shape({
-      workFlowName : Yup.string().required('WorkFlow Name is required '),
-      description :  Yup.string().required('Description  is required '),
+      workFlowName: Yup.string().required('WorkFlow Name is required '),
+      description: Yup.string().required('Description  is required '),
 
     }),
     onSubmit: async (values, { setSubmitting }) => {
@@ -261,10 +261,13 @@ const Workflowstage = ({ open = "", close = () => { }, inputshow = false, isUpda
                 refresh();
               }, 1500);
             } else if (response2.status === 500) {
-              openNotification("error", "error", response2.message.replace(/<br\/>/g, '\n'));
+              openNotification("error", "error", response2.message);
             }
           }else if (response.status === 500){
             openNotification("error", "error", response.message.replace(/<br\/>/g, '\n'));
+          }
+          else if (response.status === 500) {
+            openNotification("error", "Failed", response.message);
           }
         }
       } catch (error) {
@@ -343,11 +346,11 @@ const Workflowstage = ({ open = "", close = () => { }, inputshow = false, isUpda
 
       header={[
         !updateId
-          ? t("Create a Worklow Template")
-          : t("Update Worklow stages"),
+          ? t("Create a Workflow Template")
+          : t("Update Workflow stages"),
         !updateId
-          ? t("Create a Worklow Template")
-          : t("Update Worklow stages"),]}
+          ? t("Create a Workflow Template")
+          : t("Update Workflow stages"),]}
 
       //  headerRight={
       //    <div className="flex items-center gap-10">
