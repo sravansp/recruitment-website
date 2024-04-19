@@ -359,7 +359,7 @@ const openNotification = (type, message, description) => {
     <div className="grid gap-6 lg:grid-cols-12">
       {/* LEFT COLUMN  */}
       <div className="flex flex-col gap-6 lg:col-span-8">
-        <div className="flex flex-col gap-4 box-wrapper border !p-4">
+        <div className="flex flex-col gap-4 box-wrapper ">
           <div className="flex flex-col gap-4 divide-y">
             <div className="flex items-center justify-between">
               <h6 className="h6">Offer Letter</h6>
@@ -378,7 +378,7 @@ const openNotification = (type, message, description) => {
               </div>
             </div>
 
-            <div>
+            <div className="flex flex-col gap-4">
               <div className="pt-4">
               <TextEditor
   initialValue={content}
@@ -410,11 +410,11 @@ const openNotification = (type, message, description) => {
                 className="flex justify-between items-center gap-2.5 p-1.5  rounded-lg "
                 style={{
                   backgroundColor: `${primaryColor}10`,
-                  color: `${primaryColor}10`,
+                 
                 }}
               >
                 <div className="flex justify-items-start !important  gap-2.5 p-1.5 ">
-                  <label className="p-2 cursor-pointer">
+                  <label className="p-2 cursor-pointer flex items-center gap-2">
                     <RiAttachment2 size={18} className="text-primary" />
                     <input
                       type="file"
@@ -423,16 +423,17 @@ const openNotification = (type, message, description) => {
                       multiple
                       accept=".doc, .docx, .pdf, .jpg, .jpeg, .png" // Specify the allowed file types
                     />
+                    Add Attachment
                   </label>
-                  <label className="p-2 cursor-pointer">
+                  {/* <label className="p-2 cursor-pointer">
                     <RiEmojiStickerFill size={18} className="text-primary" />
-                  </label>
+                  </label> */}
 
-                  <ButtonClick
+                  {/* <ButtonClick
                     buttonName="Add Signature"
                     BtnType="link"
                     className="text-primary"
-                  />
+                  /> */}
                 </div>
                 <div className="flex gap-2.5 p-1.5">
                   <ButtonClick buttonName="Cancel" />
@@ -469,10 +470,10 @@ const openNotification = (type, message, description) => {
         <div className="rounded-lg bg-white dark:bg-secondaryDark p-1.5 ">
           <div className="flex justify-between items-center">
             <TabsNew tabs={tabData} onTabChange={onTabChange} initialTab={9} />
-            <div className="flex text-xs gap-1 font-bold text-primary translate-y-[-8px]">
+            {/* <div className="flex text-xs gap-1 font-bold text-primary translate-y-[-8px]">
               <PiPushPinSlashBold />
               Unpin
-            </div>
+            </div> */}
           </div>
           <TextEditor
             initialValue={formik.values.notes}

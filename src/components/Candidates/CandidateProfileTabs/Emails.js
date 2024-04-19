@@ -319,7 +319,7 @@ const Emails = ({ Email }) => {
             className="flex items-center justify-between gap-2.5 p-1.5  rounded-lg"
             style={{ backgroundColor: `${primaryColor}10` }}
           >
-            <label className="p-2 cursor-pointer">
+            <label className="p-2 cursor-pointer flex items-center gap-2">
               <RiAttachment2 size={18} className="text-primary" />
               <input
                 type="file"
@@ -328,6 +328,7 @@ const Emails = ({ Email }) => {
                 multiple
                 accept=".doc, .docx, .pdf, .jpg, .jpeg, .png" // Specify the allowed file types
               />
+              Add Attachment
             </label>
             <div className="flex items-center gap-2.5">
               <ButtonClick buttonName="Cancel" />
