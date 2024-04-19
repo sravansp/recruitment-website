@@ -1358,7 +1358,7 @@ const CreatejobTemp = ({
                             <div className="flex items-center justify-between">
                               <p className="font-bold">Generate personalized job descriptions based on pas account data.
                               </p>
-                              <p className="text-primary"><IoClose /></p>
+                              {/* <p className="text-primary"><IoClose /></p> */}
                             </div>
                             <p className="text-gray-400">When you generate with Al, we look for similar jobs you've created in the past and use he data to create content that's
                               impactful, accurate, and personalized to your company
