@@ -937,8 +937,8 @@ const CreatejobTemp = ({
           refresh()
         }}
         header={[
-          !updateId ? t("Create a Job Temaplate") : t("Update Job Temaplate"),
-          !updateId ? t("Create a Job Temaplate") : t("Update Job Temaplate"),
+          !updateId ? t("Create a Job Template") : t("Update Job Template"),
+          !updateId ? t("Create a Job Template") : t("Update Job Template"),
         ]}
         headerRight={
           <div className="flex items-center gap-10">
