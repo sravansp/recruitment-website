@@ -37,7 +37,7 @@ const appearanceLanguage = {
   Prefix: "Prefix",
   First_Name: "First Name",
   Last_Name: "Last Name",
-  Phone_number: "Phone number",
+  Phone_number: "Phone Number",
   City_Or_Town: "City or Town",
   Address_Line: "Address Line",
   Postal_Code: "Postal Code",

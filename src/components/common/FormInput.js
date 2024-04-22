@@ -48,7 +48,7 @@ export default function FormInput({
   // console.log(error)
   return (
     <div className={`flex flex-col ${title ? "gap-2" : "gap-0 items-center "} `}>
-      <div className="flex gap-1.5">
+       <div className="flex gap-1.5">
         <p className={`text-xs font-medium 2xl:text-sm dark:text-white ${className}`}>
           {title}
         </p>

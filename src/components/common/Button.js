@@ -12,15 +12,10 @@ export default function ButtonClick({
   BtnType = "",
   icon,
   iconAdd = false,
-  backgroundColor="",
+  backgroundColor, // Add backgroundColor prop
 }) {
-
   const isSmallScreen = useMediaQuery({ maxWidth: 1439 });
-  
-  
-  // console.log(backgroundColor)
-  
-  
+
   const getButtonType = () => {
     switch (BtnType.toLowerCase()) {
       case "add":
@@ -34,6 +29,10 @@ export default function ButtonClick({
       default:
         return "default";
     }
+  };
+
+  const buttonStyle = {
+    backgroundColor: backgroundColor // Apply backgroundColor to inline style
   };
 
   return (
