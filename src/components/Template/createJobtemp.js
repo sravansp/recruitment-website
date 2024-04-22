@@ -1339,6 +1339,7 @@ const CreatejobTemp = ({
                               console.log("it is greater ");
                             }
                             // Manually trigger validation after setting field value
+                            formik.validateField('salaryRangeTo');
                           }}
                         />
 
