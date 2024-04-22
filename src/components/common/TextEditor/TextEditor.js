@@ -34,7 +34,7 @@ const TextEditor = ({
       return EditorState.createEmpty();
     }
   });
-  console.log(error)
+  // console.log(error)
   useEffect(() => {
     // Check if initialValue exists and if it's different from the current editor content
     if (
@@ -63,7 +63,7 @@ const TextEditor = ({
       // Ensure onChange is called with plainText, which is a string
     }
   };
-  console.log(initialValue);
+  // console.log(initialValue);
   
   const uploadImageCallBack = (file) => {
     return new Promise((resolve, reject) => {

@@ -119,9 +119,9 @@ const CreatejobTemp = ({
   const [resume, setResume] = useState(1)
   const [coverLetter, setCoverletter] = useState(1)
   const [errors, setErrors] = useState([]);
-  const [jobTitle,setJobTitle] =useState("")
-  
-  console.log(updateId);
+  const [jobTitle, setJobTitle] = useState("")
+
+  // console.log(updateId);
   useEffect(() => {
     // Retrieve the login data JSON string from local storage
     const loginDataString = localStorage.getItem("LoginData");
@@ -174,7 +174,7 @@ const CreatejobTemp = ({
     getAllJobdescription()
   }, [])
 
-  console.log("Username:", userid);
+  // console.log("Username:", userid);
   const [api, contextHolder] = notification.useNotification();
   const openNotification = (type, message, description) => {
     api[type]({
@@ -250,7 +250,7 @@ const CreatejobTemp = ({
   const [dropdownOptions, setDropdownOptions] = useState([]);
   const [jobId, setJobId] = useState("");
 
-  console.log(evaluation);
+  // console.log(evaluation);
   //job applying
 
   const formik = useFormik({
@@ -316,7 +316,7 @@ const CreatejobTemp = ({
           answer_meta_data: condition.answerMetaData,
         }));
 
-  
+
 
         if (updateId) {
           const response = await updateRecruitmentJobTemplate({
@@ -372,9 +372,6 @@ const CreatejobTemp = ({
           } else if (response.status === 500) {
             openNotification("error", response.message.replace(/<br\/>/g, '\n'));
 
-          }else if (response.message==="The jobCode field must contain a unique value."){
-            setActiveBtnValue("Jobdetails")
-            formik.setFieldError('jobCode', formik.values.jobCode ? 'Job Code Already exist' : '');
           }
         } else {
           console.log(e);
@@ -433,10 +430,8 @@ const CreatejobTemp = ({
           } else if (response.status === 500) {
             openNotification("error", response.message);
           }
-         if (response.message==="The jobCode field must contain a unique value."){
-            setActiveBtnValue("Jobdetails")
-            formik.setFieldError('jobCode', formik.values.jobCode ? 'Job Code Already exist' : '');
-          }
+        
+
         }
       } catch (error) {
         // Handle the error here
@@ -612,14 +607,14 @@ const CreatejobTemp = ({
     {
       id: 1,
       value: 0,
-      title: t("Jobdetails"),
+      title: t("Job Details"),
       data: "Jobdetails",
     },
 
     {
       id: 2,
       value: 1,
-      title: t("Applicationform"),
+      title: t("Application Form"),
       data: "ApplicationForm",
     },
     {
@@ -851,8 +846,6 @@ const CreatejobTemp = ({
     switch (activeBtnValue) {
       case "Jobdetails":
         // Handle submission for Configuration
-
-        console.log("valuegtgggggggggggg");
         if (
           !formik.values.jobTitle || !formik.values.departmentId || !formik.values.jobCode ||
           !formik.values.location ||
@@ -864,7 +857,7 @@ const CreatejobTemp = ({
           !formik.values.salaryRangeFrom ||
           !formik.values.salaryRangeTo ||
           !formik.values.salaryCurrency ||
-          !formik.values.jobType||
+          !formik.values.jobType ||
           !content
         ) {
           formik.setFieldError('jobTitle', !formik.values.jobTitle ? 'Job Title is required' : '');
@@ -879,7 +872,7 @@ const CreatejobTemp = ({
           formik.setFieldError('salaryCurrency', !formik.values.salaryCurrency ? 'Salary Currency is required' : '');
           formik.setFieldError('jobType', !formik.values.jobType ? 'JobType is required' : '');
           formik.setFieldError('education', !formik.values.education ? 'Education is required' : '');
-          formik.setFieldError('jobDescription', !content ?'jobDescription is required' : '')
+          formik.setFieldError('jobDescription', !content ? 'jobDescription is required' : '')
           return; // Exit early if any field is empty
         }
 
@@ -1322,16 +1315,13 @@ const CreatejobTemp = ({
                             formik.setFieldValue('salaryRangeFrom', e);
                             setFieldValue(e)
                             // Validate Salary Range To when Salary Range From changes
-                            console.log(e)
-
                           }}
                           value={formik.values.salaryRangeFrom}
                           type={"number"}
                           error={formik.errors.salaryRangeFrom}
                           required={true}
-
-
                         />
+
                         <FormInput
                           title={'Salary Range To'}
                           placeholder={'Enter value'}
@@ -1340,23 +1330,25 @@ const CreatejobTemp = ({
                           required={true}
                           type={"number"}
                           change={(e) => {
-                            formik.setFieldValue('salaryRangeTo', e);
                             const salaryRangeTo = parseFloat(e); // Convert input to a number
                             const salaryRangeFrom = parseFloat(formik.values.salaryRangeFrom);
-                            if (salaryRangeTo <= salaryRangeFrom) {
-                              formik.setFieldError('salaryRangeTo', 'Salary Range To cannot be less than Salary Range from');
-                              console.log("its is less ");
+
+                            if (salaryRangeTo < salaryRangeFrom) {
+                              formik.setFieldError('salaryRangeTo', 'Salary Range To must be greater than Salary Range From');
+                              console.log("it is less: ", salaryRangeTo);
                             } else {
                               // Clear the error message when the condition is met
                               formik.setFieldError('salaryRangeTo', '');
-                              console.log("its is greater ");
-
+                              console.log("it is greater: ", salaryRangeTo);
                             }
-                            // Manually trigger validation after setting field value
 
+                            // Update the formik field value
+                            formik.setFieldValue('salaryRangeTo', e);
+
+                            // Manually trigger validation after setting field value
+                            formik.validateForm();
                           }}
                         />
-
 
                         <Dropdown
                           title={"Salary Currency"}
@@ -1370,18 +1362,18 @@ const CreatejobTemp = ({
                           error={formik.errors.salaryCurrency}
                         />
                         <div className="flex flex-col gap-1">
-                        <CheckBoxInput
-                          change={(e) => {
-                            formik.setFieldValue("isSalaryPublic", e);
-                            console.log(e);
-                          }}
-                          value={formik.values.isSalaryPublic}
-                          title={"View Public"}
-                          titleRight={true}
-                         
-                        />
-                        <p className="text-xs text-gray-500">Given Salary will be visible for public</p>
-                      </div>
+                          <CheckBoxInput
+                            change={(e) => {
+                              formik.setFieldValue("isSalaryPublic", e);
+                              console.log(e);
+                            }}
+                            value={formik.values.isSalaryPublic}
+                            title={"View Public"}
+                            titleRight={true}
+
+                          />
+                          <p className="text-xs text-gray-500">Given Salary will be visible for public</p>
+                        </div>
                       </div>
                     </Accordion>
 
@@ -1395,9 +1387,9 @@ const CreatejobTemp = ({
                       }}
                       initialExpanded={true}
                     >
-                        <div className="border rounded-md bg-primaryalpha/5">
+                      <div className="border rounded-md bg-primaryalpha/5">
                         <div className="flex items-center px-1.5  ">
-                          <img src={AI_Text} alt=''className="border rounded-md"></img>
+                          <img src={AI_Text} alt='' className="border rounded-md"></img>
                           <div className="flex flex-col gap-1 p-1.5">
                             <div className="flex items-center justify-between ">
                               <p className="font-bold">Generate personalized job descriptions based on pas account data.
@@ -1409,7 +1401,7 @@ const CreatejobTemp = ({
                             </p>
                           </div>
                         </div>
-                        </div>
+                      </div>
                       <div
                         style={{
                           display: "flex",
@@ -1428,12 +1420,12 @@ const CreatejobTemp = ({
                         <ButtonClick handleSubmit={handleGenerateWithAI} BtnType="primary" icon={<img src={image} alt="image" style={{ height: '20px', width: '20px', alignItems: "center" }} />} buttonName={"Generate with AI"} />
                       </div>
                       <Card>
+                        <p>Description</p>
                         <TextEditor
-                          title={t("Description")}
                           placeholder={t(
                             "Enter Description "
                           )}
-                          
+
                           hideBorder={true}
                           initialValue={content}
                           //  change={(e)=>{
@@ -1824,7 +1816,7 @@ icondropDown={true}
                                         );
                                       }}
                                       value={
-                                        condition.answer_type 
+                                        condition.answer_type
                                       }
                                       icondropDown={true}
                                       error={condition.answer_type ? '':errorMessages[index] || ''}
