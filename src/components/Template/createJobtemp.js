@@ -1330,8 +1330,9 @@ const CreatejobTemp = ({
                             formik.setFieldValue('salaryRangeTo', e);
                             const salaryRangeTo = parseFloat(e); // Convert input to a number
                             const salaryRangeFrom = parseFloat(formik.values.salaryRangeFrom);
-                            if (!isNaN(salaryRangeFrom) && salaryRangeTo <= salaryRangeFrom) {
+                            if (salaryRangeTo <= salaryRangeFrom) {
                               formik.setFieldError('salaryRangeTo', 'Salary Range To must be greater than Salary Range From');
+                              formik.validateField('salaryRangeTo');
                               console.log("it is less ");
                             } else {
                               // Clear the error message when the condition is met
