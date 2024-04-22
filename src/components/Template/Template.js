@@ -474,6 +474,7 @@ const Template = ({
   //  console.log("header",Header)
 
   const [TemplateList, setTemplateList] = useState([])
+  console.log(TemplateList,'this is template');
 
   const gettemaplate = async () => {
     try {

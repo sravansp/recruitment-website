@@ -40,7 +40,7 @@ import { useNavigate } from 'react-router-dom';
 
 export default function Createcandidatelist({ open = "", close = () => { }, fileUpdateId, refresh, ConfigurationAction, updateId = null, }) {
   const [show, setShow] = useState(open);
-  const [activeBtnValue, setActiveBtnValue] = useState("Personel");//Review//Questions//Work//Personel
+  const [activeBtnValue, setActiveBtnValue] = useState("Personel");//Review//Questions//Work//Personel//Educational
   const [nextStep, setNextStep] = useState(0);
   const [applicableData, setApplicableData] = useState([]);
   const [isUpdate, setIsUpdate] = useState();
@@ -349,6 +349,7 @@ export default function Createcandidatelist({ open = "", close = () => { }, file
     validateOnChange: false,
     validationSchema: yup.object({
       courseName: yup.string().required("First Name is required"),
+      institute:  yup.string().required("School or University Name is required"),
     }),
 
     onSubmit: async (values) => {
@@ -412,6 +413,9 @@ export default function Createcandidatelist({ open = "", close = () => { }, file
     validateOnChange: false,
     validationSchema: yup.object({
       firstName: yup.string().required("First Name is required"),
+      candidateEmail: yup.string().required("Email is required"),
+      candidateLocation:  yup.string().required("Location is required"),
+      candidateContact : yup.string().required("Phone Number is required"),
     }),
     onSubmit: async (values) => {
       try {
@@ -800,7 +804,7 @@ export default function Createcandidatelist({ open = "", close = () => { }, file
 
                         value={Formik2.values.firstName}
 
-                        error={Formik2.errors.firstName}
+                        error={Formik2.values.firstName ? "" : Formik2.errors.firstName}
                         required={true}
 
                       />
@@ -813,7 +817,7 @@ export default function Createcandidatelist({ open = "", close = () => { }, file
                         }}
 
                         value={Formik2.values.lastName}
-
+                        
                       />
                       <FormInput
                         title={t("Email")}
@@ -824,6 +828,9 @@ export default function Createcandidatelist({ open = "", close = () => { }, file
 
                         value={Formik2.values.candidateEmail
                         }
+                        error={Formik2.values.candidateEmail ? "" : Formik2.errors.candidateEmail}
+                        required={true}
+
 
                       />
                       <FormInput
@@ -833,6 +840,8 @@ export default function Createcandidatelist({ open = "", close = () => { }, file
                           Formik2.setFieldValue("candidateContact", e);
                         }}
                         value={Formik2.values.candidateContact}
+                        error={Formik2.values.candidateContact ? "" : Formik2.errors.candidateContact}
+                        required={true}
                       />
 
                     </div>
@@ -858,7 +867,8 @@ export default function Createcandidatelist({ open = "", close = () => { }, file
                           Formik2.setFieldValue("candidateLocation", e);
                         }}
                         value={Formik2.values.candidateLocation}
-
+                        error={Formik2.values.candidateLocation ? "" : Formik2.errors.candidateLocation}
+                        required={true}
                       />
 
                       <FormInput
@@ -917,6 +927,8 @@ export default function Createcandidatelist({ open = "", close = () => { }, file
                                 formik.setFieldValue(each.inputName, e);
                               }}
                               value={formik.values[each.inputName]}
+                              // error={formik.values[each.field[0].inputName] ? "" : formik.errors.institute}
+                              // required={true}
 
                             />
                               :

@@ -12,15 +12,10 @@ export default function ButtonClick({
   BtnType = "",
   icon,
   iconAdd = false,
-  backgroundColor="",
+  backgroundColor, // Add backgroundColor prop
 }) {
-
   const isSmallScreen = useMediaQuery({ maxWidth: 1439 });
-  
-  
-  // console.log(backgroundColor)
-  
-  
+
   const getButtonType = () => {
     switch (BtnType.toLowerCase()) {
       case "add":
@@ -34,6 +29,10 @@ export default function ButtonClick({
       default:
         return "default";
     }
+  };
+
+  const buttonStyle = {
+    backgroundColor: backgroundColor // Apply backgroundColor to inline style
   };
 
   return (
@@ -54,10 +53,10 @@ export default function ButtonClick({
           "bg-accent"
         } ${
           getButtonType() === "default" || getButtonType() === ""
-            ? "!bg-white dark:!bg-transparent"
+            ? ` ${className}!bg-white dark:!bg-transparent`
             : ""
         } text-xs 2xl:text-sm font-medium w-fit flex items-center justify-center leading-6 z-50 ${className}`}
-        style={{ backgroundColor }} // Set background color inline style
+      style={buttonStyle} // Apply buttonStyle object
     >
       {buttonName}
     </Button>
