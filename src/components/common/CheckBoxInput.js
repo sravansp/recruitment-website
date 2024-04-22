@@ -13,7 +13,7 @@ export default function CheckBoxInput({
   actionId=null,
   roleId=null ,
 }) {
-  
+  console.log(actionId)
   return (
     <div className={`flex flex-col ${title ? "gap-2" : "gap-0 "} `}>
       <div className="flex">

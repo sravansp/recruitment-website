@@ -416,7 +416,7 @@ const Workflowstage = ({ open = "", close = () => { }, inputshow = false, isUpda
             <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
               <FormInput
                 title={"Workflow Name"}
-                placeholder={"Type here..."}
+                placeholder={"Enter Template Name..."}
                 className="!text-[#344054] "
                 change={(e) => {
                   formik.setFieldValue('workFlowName', e)
@@ -431,7 +431,7 @@ const Workflowstage = ({ open = "", close = () => { }, inputshow = false, isUpda
             <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
               <TextArea
                 title={"Description"}
-                placeholder={"Type here..."}
+                placeholder={"Enter Description..."}
                 className="!text-[#344054]"
                 change={(e) => {
                   formik.setFieldValue('description', e)
@@ -537,7 +537,7 @@ const Workflowstage = ({ open = "", close = () => { }, inputshow = false, isUpda
               }}>
                 <FormInput
                   title={"Stage Name"}
-                  placeholder={"Type here..."}
+                  placeholder={"Enter Stage Name.."}
                   value={selectedStageName}
                   change={(e) => {
                     setStageName(e)

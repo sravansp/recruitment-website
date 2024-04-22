@@ -274,8 +274,8 @@ const AddLetter = ({
             />
             <div class="relative max-w-[1070px]  w-full mx-auto h-[49.72px] bg-purple-50 rounded-lg">
               <div className="flex justify-start items-center m-3 gap-3">
-                <img src={image}></img>
-                <img src={image2}></img>
+                {/* <img src={image}></img>
+                <img src={image2}></img> */}
               </div>
             </div>
           </Accordion>

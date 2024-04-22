@@ -16,6 +16,7 @@ import {
   getRecruitmentResumeById,
   getAllRecruitmentJobWorkFlowDetails,
   saveRecruitmentJobResumesStage,
+  updateRecruitmentResume
 } from "../Api1";
 
 import {
@@ -387,6 +388,9 @@ const CandidateProfile = () => {
       }));
       console.log(updatedCandidates);
       setcandidate(updatedCandidates);
+      setPriority(response.result[0].priority)
+      setRating(response.result[0].rating)
+
 
       // setuserdata(response.result.map((items)=>({
       //  personal:[
@@ -462,16 +466,17 @@ const CandidateProfile = () => {
   };
   useEffect(() => {
     getResumeJob();
-  }, []);
-  useEffect(() => {
-    console.log(getstatus);
-  }, [getstatus]);
+    console.log(getstatus)
+  }, [getstatus,selectedItemLabel]);
+  // useEffect(() => {
+  //   console.log(getstatus);
+  // }, [getstatus]);
   const handleButtonClick = async (status) => {
     getResumeJob();
     try {
       const response = await updateRecruitmentJobResumesMapping({
         id: jobResumeMapping,
-        modifiedBy: null,
+        modifiedBy: userid,
         currentStatus: status,
       });
       console.log(response);
@@ -529,6 +534,60 @@ const CandidateProfile = () => {
       ))}
     </Menu>
   );
+
+  const [rating, setRating] = useState(""); // State to store the selected rating value
+
+  // Function to handle the change in rating
+  const handleRatingChange = (value) => {
+    setRating(value);
+    // Update the state with the selected rating value
+  };
+
+
+const SaveData = async()=>{
+  try{
+   const response = await updateRecruitmentResume(
+   {
+    id:resumeId,
+    rating:rating,
+    modifiedBy:userid
+
+   }
+   
+   )
+   console.log(response)
+
+  }catch(error){
+    console.log()
+  }
+}
+   
+useEffect(()=>{
+  SaveData()
+},[rating])
+
+const SavePriority = async()=>{
+  try{
+   const response = await updateRecruitmentResume(
+   {
+    id:resumeId,
+    priority:priority,
+    modifiedBy:userid
+
+   }
+   
+   )
+   console.log(response)
+
+  }catch(error){
+    console.log()
+  }
+}
+useEffect(()=>{
+  SavePriority()
+},[priority])
+   
+
  
   return (
     <div className="flex flex-col gap-6">
@@ -734,7 +793,7 @@ const CandidateProfile = () => {
                 <Divider type="vertical" className="hidden h-auto lg:block" />
                 <div className="flex flex-col gap-3">
                   <p className="pblack">Rating</p>
-                  <Rate allowHalf defaultValue={2.5} />
+                  <Rate allowHalf defaultValue={1} onChange={handleRatingChange} value={rating} />
                 </div>
               </div>
             </div>

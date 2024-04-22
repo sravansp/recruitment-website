@@ -129,7 +129,7 @@ const Template = ({
         {
           id: 2,
           title: t("Description"),
-          value: "Job_Description",
+          value: "jobDescription",
         },
         {
           id: 3,
@@ -478,7 +478,7 @@ const Template = ({
   const gettemaplate = async () => {
     try {
 
-      const response = await getAllRecruitmentJobTemplates();
+      const response = await getAllRecruitmentJobTemplates({});
 
       setTemplateList(response.result);
       // const newData = {};

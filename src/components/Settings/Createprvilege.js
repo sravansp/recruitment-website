@@ -97,7 +97,7 @@ export default function Createprvilege({
       // duration: null,
     });
   };
-
+   console.log({"Value":selectedRoles})
   const formik = useFormik({
     initialValues: {
       roleName: "",
@@ -110,13 +110,29 @@ export default function Createprvilege({
     //   roleName: yup.string().required("Role Name is Required"),
     // }),
     onSubmit: async (e) => {
+      
       try {
+        
         const response = await saveRecruitmentRole({
           roleName: e.roleName,
           createdBy: userid,
         });
         console.log(response);
-        setRoleId(response.result)
+        setRoleId(response.result.insertedId)
+        if(response.result.insertedId){
+          const dataTosave = selectedRoles.map((roles)=>({
+            roleId:response.result.insertedId,
+            functionId:roles.userId,
+            createdBy:userid
+      
+           }))
+           console.log(dataTosave)
+          const response1 = await saveOrUpdateRecruitmentRoleFunctionBatch(
+            dataTosave
+          )
+          console.log(response1);
+
+        }
       } catch (error) {
         console.log(error);
       }
@@ -137,25 +153,25 @@ export default function Createprvilege({
   useEffect(() => {
     getRoles();
   }, []);
-  const fromik1 = useFormik({
-    initialValues:{
-      roleId:"",
-      functionId:"",
-      createdBy:"",
-    },
-    onSubmit: async(e) =>{
-     try{
-      const response = await saveOrUpdateRecruitmentRoleFunctionBatch({
-      roleId:"",
-      functionId:"",
-      createdBy:userid,
-      })
-     }catch(error){
-      console.log(error)
-     }
+  // const fromik1 = useFormik({
+  //   initialValues:{
+  //     roleId:"",
+  //     functionId:"",
+  //     createdBy:"",
+  //   },
+  //   onSubmit: async(e) =>{
+     
+     
+  //    console.log(dataTosave);
+  //     try{
+     
+  //     console.log(response)
+  //    }catch(error){
+  //     console.log(error)
+  //    }
 
-    }
-  }) 
+  //   }
+  // }) 
   return (
     <div>
       {show && (
@@ -254,7 +270,7 @@ export default function Createprvilege({
                     {parent.map((item) => (
                       <Accordion
                         title={
-                          <div className="flex items-center gap-2">
+                          <div className="flex items-center gap-2" key={item.functionId}>
                             <div>
                             <CheckBoxInput
                                   change={(isChecked, functionId) => {
@@ -329,6 +345,7 @@ export default function Createprvilege({
                                   // <CheckBoxInput
                                   //  titleRight={subsubItem.functionName}
                                   // />
+                                  <div key={subsubItem.functionId}>
                                   <CheckBoxInput
                                   titleRight={subsubItem.functionName}
                                   change={(isChecked, functionId) => {
@@ -364,7 +381,7 @@ export default function Createprvilege({
                                   actionId={subsubItem.functionId}
                                   roleId={roleId}
                                 />
-                                
+                                </div>
                               ))}
                             </div>
                           ))}

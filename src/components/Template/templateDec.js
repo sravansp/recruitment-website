@@ -266,7 +266,7 @@ const TemplateDec = ({ open = "", close = () => { }, inputshow = false, isUpdate
           <div className="grid grid-cols-2 ">
             <FormInput
               title={"Template Name"}
-              placeholder={"type here"}
+              placeholder={"Enter Template Name..."}
               value={templateName}
               change={setTemplateName}
               error={templateNameError}

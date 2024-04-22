@@ -115,7 +115,7 @@ function Jobcardcopy({
                     stroke="black"
                     strokeOpacity="0.1"
                   />
-                  <div>
+                  
                   <text
                     x="70"
                     y="40"
@@ -125,7 +125,7 @@ function Jobcardcopy({
                   >
                     {/* {each.label} */}{each.title}
                   </text>
-                  </div>
+                  
                   {/* <foreignObject x="30" y="40" width="34" height="26">
                     <p className="flex items-center justify-center rounded-md bg-violet-100 font-semibold text-sm px-1 py-1">
                       {each.nummber}

@@ -303,7 +303,7 @@ const Createjob = ({
     try {
       const response = await getRecruitmentJobById({ id });
 
-      if (response.result.length > 0) {
+     
         const firstJob = response.result[0];
 
         setDraftJobs(firstJob);
@@ -332,16 +332,14 @@ const Createjob = ({
 
         console.log(firstJob.companyId);
         console.log(response);
-      } else {
-        console.error("No data found in the response.");
-      }
+     
     } catch (error) {
       console.log(error);
     }
   };
   useEffect(() => {
     getDraftjobs();
-    console.log(DraftJobs);
+    console.log({"Value":UpdateId});
   }, [UpdateId]);
   const formik1 = useFormik({
     initialValues: {
@@ -412,6 +410,7 @@ const Createjob = ({
         !formik1.values.salaryRangeTo ||
         !formik1.values.salaryCurrency ||
         !formik1.values.jobType||
+        !formik1.values.noOfVaccancies||
         !content
       ) {
         formik1.setFieldError('companyId', !formik1.values.companyId ? 'Company  is required' : '');
@@ -428,6 +427,7 @@ const Createjob = ({
         formik1.setFieldError('jobType', !formik1.values.jobType ? 'JobType is required' : '');
         formik1.setFieldError('education', !formik1.values.education ? 'Education is required' : '');
         formik1.setFieldError('jobDescription', !content ?'jobDescription is required' : '')
+        formik1.setFieldError('noOfVaccancies', !formik1.values.noOfVaccancies ?'Number Of Vacancies is required' : '')
         return; // Exit early if any field is empty
       }
       try {
@@ -1067,7 +1067,9 @@ const Createjob = ({
   const [jobtemplate, setjobtemplate] = useState("");
   const getJobtemp = async () => {
     try {
-      const response = await getAllRecruitmentJobTemplates();
+      const response = await getAllRecruitmentJobTemplates({
+        isActive:1
+      });
 
       console.log(response);
       setjobtemplate(
@@ -2143,7 +2145,7 @@ const Createjob = ({
                                 <Dropdown
                                   options={Form}
                                   dropdownWidth='200px'
-                                  placeholder={'Choose Job Description'}
+                                  
                                   change={(e) => {
                                     setEvaluation((prevEvaluation) => prevEvaluation.map((prevCondition, i) => i === index
                                       ? {
@@ -2166,6 +2168,7 @@ const Createjob = ({
                                   icon={<MdOutlineShortText />}
                                   icondropDown={true}
                                   error={errorMessages[index] || ''}
+                                  placeholder={"Choose Options"}
 
                                 />
 

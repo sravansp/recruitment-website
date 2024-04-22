@@ -90,6 +90,7 @@ const CreatejobTemp = ({
   const { t } = useTranslation();
 
   // const [isUpdate, setIsUpdate] = useState();
+  const [errorMessages, setErrorMessages] = useState("");
   const [Education, seteducation] = useState(1)
   const [fieldValue, setFieldValue] = useState("")
   const [Experience, setExperience] = useState(1)
@@ -486,6 +487,8 @@ const CreatejobTemp = ({
             is_required: field.is_required || 0,
           }));
         setEvaluation(formattedCustomFields);
+        setSelectedWorkFlowId(firstJob.workFlowId);
+
 
         console.log(firstJob.companyId);
       } else {
@@ -880,6 +883,31 @@ const CreatejobTemp = ({
         // Handle submission for Applicability
         // Your logic for Applicability form submission...
         // Move to the next step if applicable
+        const newErrorMessages = evaluation.map((condition) => {
+          let errorMessage = '';
+
+          if (!condition.question) {
+            errorMessage = 'Please enter a question.';
+          } else if (!condition.answer_type) {
+            errorMessage = 'Please choose an answer type.';
+          } else if (
+            ["Drop-down", "MultipleChoice", "Checkboxes"].includes(condition.answer_type) &&
+            (condition.answerMetaData.some((field) => !field.value) ||
+              (!condition.answerMetaData[0]?.value && condition.answerMetaData[0]?.key !== "ShortAnswer"))
+          ) {
+            errorMessage = 'Please enter values for all options.';
+          }
+
+          return errorMessage;
+        });
+
+        // Update errorMessages state with new error messages
+        setErrorMessages(newErrorMessages);
+        const hasErrors = newErrorMessages.some(errorMessage => errorMessage !== '');
+        if (hasErrors) {
+          // Don't proceed if there are errors
+          return;
+        }
         setNextStep(nextStep + 1);
 
         break;
@@ -1483,6 +1511,7 @@ const CreatejobTemp = ({
                               // formik.setFieldValue("Email", e);
                               // setEmail(e)
                             }}
+                            defaultValue={1}
                           >
                             <Radio.Button value={1}>Mandatory</Radio.Button>
                           </Radiobuttonnew>
@@ -1760,6 +1789,7 @@ icondropDown={true}
                                     );
                                     console.log(e);
                                   }}
+                                  error={errorMessages[index]}
                                 />
                                 <div className="flex items-center gap-5">
                                   <div className="flex-shrink-0">
@@ -1786,9 +1816,10 @@ icondropDown={true}
                                         );
                                       }}
                                       value={
-                                        condition.answer_type || "ShortAnswer"
+                                        condition.answer_type 
                                       }
                                       icondropDown={true}
+                                      error={errorMessages[index]}
                                     />
                                   </div>
                                   {/* Additional dynamic input fields based on the selected value in the dropdown */}
@@ -1873,6 +1904,7 @@ icondropDown={true}
                                                   )
                                                 )
                                               }
+                                              error={errorMessages[index]}
                                             />
                                           )}
 
@@ -1971,7 +2003,7 @@ icondropDown={true}
                     <Radio.Group
                       onChange={(e) => {
                         setSelectedWorkFlowId(e.target.value);
-                        setPresentage(2.4);
+                        setPresentage(2);
                       }}
                       value={selectedWorkFlowId}
                     >
