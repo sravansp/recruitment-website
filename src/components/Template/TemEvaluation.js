@@ -514,9 +514,11 @@ const TemEvaluation = ({ open = "", close = () => { }, inputshow = false, isUpda
                     {/* Additional dynamic input fields based on the selected value in the dropdown */}
                     {/* Add your logic here */}
 
-                    <div style={{ display: 'flex', alignItems: 'center', gap: '15px' }}>
+                    <div>
+                      <Tooltip placement="topRight" title={"Active / Inactive"} className="flex items-center gap-2">
                       <p>Mandatory</p>
-                      <ToggleBtn />
+                        <ToggleBtn />
+                      </Tooltip>
                     </div>
 
                     <div style={{ display: 'flex', alignItems: 'center', gap: '15px' }}>

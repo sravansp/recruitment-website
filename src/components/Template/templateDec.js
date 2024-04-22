@@ -326,7 +326,7 @@ const TemplateDec = ({ open = "", close = () => { }, inputshow = false, isUpdate
               placeholder={"Enter the job description here, include key areas of resposibility on what the candidate might do on a typical day."}
             /> */}
             <div className='pt-5'>
-              <p>Description</p>
+              <p className='pb-2'>Description</p>
               <TextEditor
                 onChange={(e) => {
                   setContent(e)
