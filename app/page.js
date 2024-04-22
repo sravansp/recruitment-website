@@ -293,7 +293,7 @@ const Home = () => {
   //   });
 
   //   setFilteredJobs(sortedJobs);
-  // }, [sortOrder, filteredJobs]);
+  // }, [sortOrder, filteredJobs])
 
 useEffect(() => {
   const fetchdata = async () => {

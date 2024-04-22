@@ -93,6 +93,11 @@ function Web({ closeDrawer, selectedJobId, onClick }) {
   const [coverLetter, setCoverletter] = useState("");
   const [questionfield, setQuestionfield] = useState("");
   //
+const [instituteerror,setInstituteerror]=useState("");
+const [coursetype,setCoursetype]=useState("");
+const [coursename,setCoursename]=useState("");
+const [yearofstudy,setYearofstudy]=useState("")
+
   const [dropdownvalue, Setdopdownvalue] = useState(null);
   const [textAreaValue, setTextAreavalue] = useState(null);
   const [forminputvalue, setForminputValue] = useState(null);
@@ -299,7 +304,7 @@ function Web({ closeDrawer, selectedJobId, onClick }) {
 
   useEffect(() => {
     if (closeDrawer) {
-      setCurrentStep(0);
+      setCurrentStep(1);
       setActiveBtn(0);
       setPresentage(0);
     }
@@ -747,23 +752,62 @@ function Web({ closeDrawer, selectedJobId, onClick }) {
       yearOfStudy: "",
       location: "jnvkjdn",
     },
-    enableReinitialize: true,
-    validateOnChange: false,
-    validationSchema1: Yup.object().shape({
-      // ...existing validations
-      additionalEducationalDetails: Yup.array().of(
-        Yup.object().shape({
-          institute: Yup.string().required("School or University is required"),
-          courseType: Yup.string().required("Degree is required"),
-          courseName: Yup.string().required("Field of Study is required"),
-          yearOfStudy: Yup.string().required("Year is required"),
-        })
-      ),
-    }),
+    // enableReinitialize: true,
+    // validateOnChange: false,
+    // validationSchema: Yup.object().shape({
+    //   // ...existing validations
+    //   additionalEducationalDetails: Yup.array().of(
+    //     Yup.object().shape({
+    //       institute: Yup.string().required("School or University is required"),
+    //       courseType: Yup.string().required("Degree is required"),
+    //       courseName: Yup.string().required("Field of Study is required"),
+    //       yearOfStudy: Yup.string().required("Year is required"),
+    //     })
+    //   ),
+    // }),
 
     onSubmit: async (values, { setSubmitting }) => {
       console.log(values, "submiteddd valuess");
-      try {
+      setInstituteerror('');
+    setCoursetype('');
+    setCoursename('');
+    setYearofstudy('');
+
+    const additionalDetailsErrors = values.additionalEducationalDetails.map((detail, index) => {
+      let errors = {};
+      
+      if (!detail.institute) {
+        setInstituteerror("School or University is required");
+        errors.institute = "School or University is required";
+      }
+      
+      if (!detail.courseType) {
+        setCoursetype("Degree is required");
+        errors.courseType = "Degree is required";
+      }
+      
+      if (!detail.courseName) {
+        setCoursename("Field of Study is required");
+        errors.courseName = "Field of Study is required";
+      }
+      
+      if (!detail.yearOfStudy) {
+        setYearofstudy("Year is required");
+        errors.yearOfStudy = "Year is required";
+      }
+
+      return errors;
+    });
+
+    // Check if any error exists
+    const hasErrors = additionalDetailsErrors.some((error) => Object.keys(error).length > 0);
+
+    if (hasErrors) {
+      formik1.setErrors({
+        additionalEducationalDetails: additionalDetailsErrors,
+      });
+    } else {
+        try {
         // const transformedData = Object.values(additionalEducationalDetails);
 
         // const response = await saveRecruitmentResumeEducationalDetailBatch(Object.entries(additionalEducationalDetails).map(([_, value]) => value));
@@ -806,6 +850,7 @@ function Web({ closeDrawer, selectedJobId, onClick }) {
         setSubmitting(false);
         // setIsFormSubmitted(true);
       }
+    }
     },
   });
   // const validationSchema2 = Yup.object().shape({
@@ -1688,14 +1733,21 @@ function Web({ closeDrawer, selectedJobId, onClick }) {
                                 e
                               );
                             }}
-                            required={false}
-                            error={
-                              isFormSubmitted
-                                ? formik1.errors.additionalEducationalDetails?.[
-                                    index
-                                  ]?.institute
-                                : ""
-                            }
+                           
+                            
+                            required={true}
+                            // error={
+                            //   isFormSubmitted
+                            //     ? formik1.errors.additionalEducationalDetails?.[
+                            //         index
+                            //       ]?.institute
+                            //     : ""
+                            // }
+                            // error={instituteerror}
+                            error={formik1.errors.additionalEducationalDetails?.[index]?.institute || ""}
+                            
+                           
+                            
                           />
                           <FormInput
                             title={"Degree"}
@@ -1722,13 +1774,15 @@ function Web({ closeDrawer, selectedJobId, onClick }) {
                               );
                             }}
                             required={false}
-                            error={
-                              isFormSubmitted
-                                ? formik1.errors.additionalEducationalDetails?.[
-                                    index
-                                  ]?.courseType
-                                : ""
-                            }
+                            // error={
+                            //   isFormSubmitted
+                            //     ? formik1.errors.additionalEducationalDetails?.[
+                            //         index
+                            //       ]?.courseType
+                            //     : ""
+                            // }
+                            // error={coursetype}
+                            error={formik1.errors.additionalEducationalDetails?.[index]?.courseType || ""}
                           />
                         </div>
                         <div className="grid grid-cols-1 gap-4 sm:grid-cols-3">
@@ -1750,13 +1804,15 @@ function Web({ closeDrawer, selectedJobId, onClick }) {
                               );
                             }}
                             required={false}
-                            error={
-                              isFormSubmitted
-                                ? formik1.errors.additionalEducationalDetails?.[
-                                    index
-                                  ]?.courseName
-                                : ""
-                            }
+                            // error={
+                            //   isFormSubmitted
+                            //     ? formik1.errors.additionalEducationalDetails?.[
+                            //         index
+                            //       ]?.courseName
+                            //     : ""
+                            // }
+                            // error={coursename}
+                            error={formik1.errors.additionalEducationalDetails?.[index]?.courseName || ""}
                           />
                           <DateSelect
                             title={"Year"}
@@ -1777,13 +1833,15 @@ function Web({ closeDrawer, selectedJobId, onClick }) {
                               );
                             }}
                             required={false}
-                            error={
-                              isFormSubmitted
-                                ? formik1.errors.additionalEducationalDetails?.[
-                                    index
-                                  ]?.yearOfStudy
-                                : ""
-                            }
+                            // error={
+                            //   isFormSubmitted
+                            //     ? formik1.errors.additionalEducationalDetails?.[
+                            //         index
+                            //       ]?.yearOfStudy
+                            //     : ""
+                            // }
+                            // error={yearofstudy}
+                            error={formik1.errors.additionalEducationalDetails?.[index]?.yearOfStudy || ""}
                           />
                           <div className="flex items-center justify-end">
                             <button
@@ -1797,6 +1855,7 @@ function Web({ closeDrawer, selectedJobId, onClick }) {
                         </div>
                         <div className="divider-h" />
                       </div>
+                      
                     ))}
 
                     {/* <div className="grid grid-cols-1 gap-4 sm:grid-cols-3">
@@ -1865,6 +1924,7 @@ function Web({ closeDrawer, selectedJobId, onClick }) {
                 </div>
               </div>
             </div>
+            
           </>
         ) : currentStep === 2 ? (
           <>

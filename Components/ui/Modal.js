@@ -25,7 +25,7 @@ const Modal2 = ({ show, handleClose, countDown }) => {
   };
   const handleCountDown = () => {
 
-    let secondsToGo = 5000;
+    let secondsToGo = 100000;
     const instance = Modal.info({
       title:(
        <div className='rounded-lg items-center'>

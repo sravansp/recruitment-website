@@ -8,12 +8,12 @@ const Navbar =({ company }) => {
   return (
     <div className="absolute top-0 z-[999] w-full bg-transparent">
       <header className="text-gray-600 body-font container-wrapper">
-        <div className="flex flex-row items-center justify-between py-5">
-          <a className="flex items-center font-medium text-gray-900 cursor-pointer title-font md:mb-0">
+        <div className="flex flex-row items-center justify-between py-5 ">
+          <a className="flex items-center font-medium text-gray-900 cursor-pointer title-font md:mb-0 gap-4">
         {/* {company?.logo&&<Image src={"company?.logo"} alt="logo" width={50} height={50} />} */}
          <img src={company.logo}></img>
-         {/* <p className= "h1  !text-[#6A4BFC] !font-[Red Hat Display] pr-2">Loyaltri</p> */}
-{/* <p className="h2">RECRUITMENT</p> */}
+         <p className= "h1  !text-[#6A4BFC] !font-[Red Hat Display] pr-2">{company.company}</p> 
+{/* /* <p className="h2">RECRUITMENT</p> */}
         
           </a>
           {/* <nav className="flex flex-wrap items-center justify-center text-base font-semibold transition-all duration-300 md:ml-auto">
