@@ -45,7 +45,8 @@ import {
   updateRecruitmentJobTemplate,
   getRecruitmentJobTemplateById,
   getAllRecruitmentJobDescriptionTemplates,
-  getRecruitmentJobDescriptionTemplateById
+  getRecruitmentJobDescriptionTemplateById,
+  getAllRecruitmentJobTemplates
 } from "../Api1";
 import { Formik, useFormik } from "formik";
 import { CgAdd } from "react-icons/cg";
@@ -90,6 +91,7 @@ const CreatejobTemp = ({
   const { t } = useTranslation();
 
   // const [isUpdate, setIsUpdate] = useState();
+  const [Jobcode,setJobcode] = useState("")
   const [errorMessages, setErrorMessages] = useState("");
   const [Education, seteducation] = useState(1)
   const [fieldValue, setFieldValue] = useState("")
@@ -841,7 +843,25 @@ const CreatejobTemp = ({
 
   //   }
   // };
-
+  const [jobcodelength,setJobcodelength] = useState("")
+  const getJobsByJoBecode = async()=>{
+    try{
+     const response = await getAllRecruitmentJobTemplates({
+      jobCode : Jobcode
+     })
+     setJobcodelength(response.result.length)
+     if (response.result.length > 0 ){
+      formik.setFieldError('jobCode', 'Job code already exists.');
+     }
+     
+     console.log(response)
+    }catch(error){
+      console.log(error);
+    }
+  }
+   useEffect(()=>{
+    getJobsByJoBecode()
+   },[Jobcode])
   const handleButtonClick = async (e) => {
     switch (activeBtnValue) {
       case "Jobdetails":
@@ -875,8 +895,13 @@ const CreatejobTemp = ({
           formik.setFieldError('jobDescription', !content ? 'jobDescription is required' : '')
           return; // Exit early if any field is empty
         }
-
+        if(jobcodelength===0){
+        
         setNextStep(nextStep + 1);
+        }else(
+          getJobsByJoBecode()
+        )
+       
 
         break;
 
@@ -909,6 +934,7 @@ const CreatejobTemp = ({
           // Don't proceed if there are errors
           return;
         }
+       
         setNextStep(nextStep + 1);
 
         break;
@@ -1103,6 +1129,7 @@ const CreatejobTemp = ({
                           required={true}
                           change={(e) => {
                             formik.setFieldValue("jobCode", e);
+                            setJobcode(e)
                           }}
                           value={formik.values.jobCode}
                           error={formik.errors.jobCode}
