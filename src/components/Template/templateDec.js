@@ -50,7 +50,7 @@ const TemplateDec = ({ open = "", close = () => { }, inputshow = false, isUpdate
   };
   const [loader, setloader] = useState(false)
   const handleGenerateWithAI = async () => {
-    setloader(true); 
+    setloader(true);
     try {
       const requestBody = {
         val: templateName,
@@ -76,7 +76,7 @@ const TemplateDec = ({ open = "", close = () => { }, inputshow = false, isUpdate
       }
     } catch (error) {
       console.error('Error:', error);
-    }finally {
+    } finally {
       setloader(false); // Hide loader after response is received
     }
   };
@@ -85,8 +85,8 @@ const TemplateDec = ({ open = "", close = () => { }, inputshow = false, isUpdate
     try {
       console.log(content)
 
-      let hasError = false; 
-      if (templateName=== undefined) {
+      let hasError = false;
+      if (templateName === undefined) {
         setTemplateNameError('Template Name is required.');
         hasError = true;
       } else {
@@ -94,17 +94,17 @@ const TemplateDec = ({ open = "", close = () => { }, inputshow = false, isUpdate
       }
 
       // Check if content is empty
-      if (content=== undefined) {
+      if (content === undefined) {
         setContentError('Description is required.');
         hasError = true;
 
-        
+
       } else {
         setContentError('');
       }
       if (hasError) {
         return;
-    }
+      }
       if (!updateId) {
         const response = await saveRecruitmentJobDescriptionTemplate({
           companyId: companyId,
@@ -235,7 +235,7 @@ const TemplateDec = ({ open = "", close = () => { }, inputshow = false, isUpdate
 
       ]}
       className="widthFull"
-      handleSubmit={(e)=>{handlesubmit(e)}}
+      handleSubmit={(e) => { handlesubmit(e) }}
     //  buttonClickCancel={(e) => {
     //    if (activeBtn > 0) {
     //      setActiveBtn(activeBtn - 1);
@@ -274,20 +274,20 @@ const TemplateDec = ({ open = "", close = () => { }, inputshow = false, isUpdate
             />
           </div>
           <div className="border rounded-md bg-primaryalpha/5">
-                        <div className="flex items-center px-1.5  ">
-                          <img src={AI_Text} alt=''className="border rounded-md"></img>
-                          <div className="flex flex-col gap-1 p-1.5">
-                            <div className="flex items-center justify-between ">
-                              <p className="font-bold">Generate personalized job descriptions based on pas account data.
-                              </p>
-                              {/* <p className="text-primary"><IoClose /></p> */}
-                            </div>
-                            <p className="text-gray-400">When you generate with Al, we look for similar jobs you've created in the past and use he data to create content that's
-                              impactful, accurate, and personalized to your company
-                            </p>
-                          </div>
-                        </div>
-                        </div>
+            <div className="flex items-center px-1.5  ">
+              <img src={AI_Text} alt='' className="border rounded-md"></img>
+              <div className="flex flex-col gap-1 p-1.5">
+                <div className="flex items-center justify-between ">
+                  <p className="font-bold">Generate personalized job descriptions based on pas account data.
+                  </p>
+                  {/* <p className="text-primary"><IoClose /></p> */}
+                </div>
+                <p className="text-gray-400">When you generate with Al, we look for similar jobs you've created in the past and use he data to create content that's
+                  impactful, accurate, and personalized to your company
+                </p>
+              </div>
+            </div>
+          </div>
           <div style={{ display: 'flex', justifyContent: 'flex-end', gap: '16px' }}>
             {/* <Button>
         <Space>
@@ -306,9 +306,9 @@ const TemplateDec = ({ open = "", close = () => { }, inputshow = false, isUpdate
               placeholder={"Enter the job description here, include key areas of resposibility on what the candidate might do on a typical day."}
             /> */}
             <div className='pt-5'>
+              <p>Description</p>
               <TextEditor
-                title={"Description"}
-                onChange={(e)=>{
+                onChange={(e) => {
                   setContent(e)
                   console.log(e)
                 }}
