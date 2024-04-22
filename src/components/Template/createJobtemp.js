@@ -1312,8 +1312,6 @@ const CreatejobTemp = ({
                             formik.setFieldValue('salaryRangeFrom', e);
                             setFieldValue(e)
                             // Validate Salary Range To when Salary Range From changes
-                            console.log(e)
-
                           }}
                           value={formik.values.salaryRangeFrom}
                           type={"number"}
