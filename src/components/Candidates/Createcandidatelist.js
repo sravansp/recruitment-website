@@ -270,7 +270,13 @@ export default function Createcandidatelist({ open = "", close = () => { }, file
     enableReinitialize: true,
     validateOnChange: false,
     validationSchema: yup.object({
-      companyName: yup.string().required("Company Name is required"),
+      jobTitle: yup.string().required("Job Title is required"),
+      location: yup.string().required("Location is required"),
+      companyName: yup.string().required("Company Name is required"),      
+      fromDate: yup.string().required("Date is required"),
+      employmentType: yup.string().required("Employment Type is required"),
+
+
     }),
 
     onSubmit: async (values, { setSubmitting }) => {
@@ -338,7 +344,12 @@ export default function Createcandidatelist({ open = "", close = () => { }, file
     }
   });
 
-
+  
+  // const validationSchema = yup.object().shape({
+  //   institute: yup.string().required('School or University is required'),
+  //   courseType: yup.string().required('Degree is required'),
+  //   courseName: yup.string().required('Field of Study is required'),
+  // });
   const formik = useFormik({
     initialValues: {
       ...personalInfo,
@@ -347,9 +358,14 @@ export default function Createcandidatelist({ open = "", close = () => { }, file
     },
     enableReinitialize: true,
     validateOnChange: false,
-    validationSchema: yup.object({
-      courseName: yup.string().required("First Name is required"),
-      institute:  yup.string().required("School or University Name is required"),
+    validationSchema: yup.object().shape({
+      institute: yup.string().required('School or University is required'),
+      courseType: yup.string().required('Degree is required'),
+      courseName: yup.string().required('Field of Study is required'),     
+      yearOfStudy: yup.string().required('Year is required'),
+      location: yup.string().required('Location is required'),
+
+
     }),
 
     onSubmit: async (values) => {
@@ -926,7 +942,9 @@ export default function Createcandidatelist({ open = "", close = () => { }, file
                               change={(e) => {
                                 formik.setFieldValue(each.inputName, e);
                               }}
+                              required={["institute", "courseType", "courseName","yearOfStudy","location"].includes(each.inputName)}                            
                               value={formik.values[each.inputName]}
+                              error={formik.values[each.inputName] ? "" : formik.errors[each.inputName] }
                               // error={formik.values[each.field[0].inputName] ? "" : formik.errors.institute}
                               // required={true}
 
@@ -936,10 +954,12 @@ export default function Createcandidatelist({ open = "", close = () => { }, file
                                 title={each.title}
                                 placeholder="Degree"
                                 options={Degree}
+                                required={true}
                                 change={(e) => {
                                   formik.setFieldValue(each.inputName, e);
                                 }}
                                 value={formik.values[each.inputName]}
+                                error={formik.values[each.inputName] ? "" :  formik.errors[each.inputName]}
                               />)}
 
 
@@ -990,9 +1010,10 @@ export default function Createcandidatelist({ open = "", close = () => { }, file
                               change={(e) => {
                                 formik3.setFieldValue(each.inputFeild, e);
                               }}
+                              required={["jobTitle" ,"location","companyName","fromDate"].includes(each.inputFeild)}
                               value={formik3.values[each.inputFeild]}
-
-
+                              error={formik3.values[each.inputFeild] ? "" :  formik3.errors[each.inputFeild]}
+                            
 
                             /> : each.type === "dropdown" ?
 
@@ -1003,8 +1024,9 @@ export default function Createcandidatelist({ open = "", close = () => { }, file
                                 change={(e) => {
                                   formik3.setFieldValue(each.inputFeild, e);
                                 }}
+                                required={["employmentType"].includes(each.inputFeild)}                            
                                 value={formik3.values[each.inputFeild]}
-
+                                error={formik3.values[each.inputFeild] ? "" :  formik3.errors[each.inputFeild]}
 
 
                               /> :
@@ -1012,7 +1034,9 @@ export default function Createcandidatelist({ open = "", close = () => { }, file
                                 change={(e) => {
                                   formik3.setFieldValue(each.inputFeild, e);
                                 }}
+                                required={["fromDate"].includes(each.inputFeild)}
                                 value={formik3.values[each.inputFeild]}
+                                error={formik3.values[each.inputFeild] ? "" :  formik3.errors[each.inputFeild]}
                               />
                           )}
                           {/* <FormInput
