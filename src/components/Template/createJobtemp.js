@@ -121,7 +121,7 @@ const CreatejobTemp = ({
   const [errors, setErrors] = useState([]);
   const [jobTitle, setJobTitle] = useState("")
 
-  console.log(updateId);
+  // console.log(updateId);
   useEffect(() => {
     // Retrieve the login data JSON string from local storage
     const loginDataString = localStorage.getItem("LoginData");
@@ -174,7 +174,7 @@ const CreatejobTemp = ({
     getAllJobdescription()
   }, [])
 
-  console.log("Username:", userid);
+  // console.log("Username:", userid);
   const [api, contextHolder] = notification.useNotification();
   const openNotification = (type, message, description) => {
     api[type]({
@@ -250,7 +250,7 @@ const CreatejobTemp = ({
   const [dropdownOptions, setDropdownOptions] = useState([]);
   const [jobId, setJobId] = useState("");
 
-  console.log(evaluation);
+  // console.log(evaluation);
   //job applying
 
   const formik = useFormik({
@@ -843,8 +843,6 @@ const CreatejobTemp = ({
     switch (activeBtnValue) {
       case "Jobdetails":
         // Handle submission for Configuration
-
-        console.log("valuegtgggggggggggg");
         if (
           !formik.values.jobTitle || !formik.values.departmentId || !formik.values.jobCode ||
           !formik.values.location ||
