@@ -119,8 +119,8 @@ const CreatejobTemp = ({
   const [resume, setResume] = useState(1)
   const [coverLetter, setCoverletter] = useState(1)
   const [errors, setErrors] = useState([]);
-  const [jobTitle,setJobTitle] =useState("")
-  
+  const [jobTitle, setJobTitle] = useState("")
+
   console.log(updateId);
   useEffect(() => {
     // Retrieve the login data JSON string from local storage
@@ -316,7 +316,7 @@ const CreatejobTemp = ({
           answer_meta_data: condition.answerMetaData,
         }));
 
-  
+
 
         if (updateId) {
           const response = await updateRecruitmentJobTemplate({
@@ -604,14 +604,14 @@ const CreatejobTemp = ({
     {
       id: 1,
       value: 0,
-      title: t("Jobdetails"),
+      title: t("Job Details"),
       data: "Jobdetails",
     },
 
     {
       id: 2,
       value: 1,
-      title: t("Applicationform"),
+      title: t("Application Form"),
       data: "ApplicationForm",
     },
     {
@@ -856,7 +856,7 @@ const CreatejobTemp = ({
           !formik.values.salaryRangeFrom ||
           !formik.values.salaryRangeTo ||
           !formik.values.salaryCurrency ||
-          !formik.values.jobType||
+          !formik.values.jobType ||
           !content
         ) {
           formik.setFieldError('jobTitle', !formik.values.jobTitle ? 'Job Title is required' : '');
@@ -871,7 +871,7 @@ const CreatejobTemp = ({
           formik.setFieldError('salaryCurrency', !formik.values.salaryCurrency ? 'Salary Currency is required' : '');
           formik.setFieldError('jobType', !formik.values.jobType ? 'JobType is required' : '');
           formik.setFieldError('education', !formik.values.education ? 'Education is required' : '');
-          formik.setFieldError('jobDescription', !content ?'jobDescription is required' : '')
+          formik.setFieldError('jobDescription', !content ? 'jobDescription is required' : '')
           return; // Exit early if any field is empty
         }
 
@@ -1362,18 +1362,18 @@ const CreatejobTemp = ({
                           error={formik.errors.salaryCurrency}
                         />
                         <div className="flex flex-col gap-1">
-                        <CheckBoxInput
-                          change={(e) => {
-                            formik.setFieldValue("isSalaryPublic", e);
-                            console.log(e);
-                          }}
-                          value={formik.values.isSalaryPublic}
-                          title={"View Public"}
-                          titleRight={true}
-                         
-                        />
-                        <p className="text-xs text-gray-500">Given Salary will be visible for public</p>
-                      </div>
+                          <CheckBoxInput
+                            change={(e) => {
+                              formik.setFieldValue("isSalaryPublic", e);
+                              console.log(e);
+                            }}
+                            value={formik.values.isSalaryPublic}
+                            title={"View Public"}
+                            titleRight={true}
+
+                          />
+                          <p className="text-xs text-gray-500">Given Salary will be visible for public</p>
+                        </div>
                       </div>
                     </Accordion>
 
@@ -1387,9 +1387,9 @@ const CreatejobTemp = ({
                       }}
                       initialExpanded={true}
                     >
-                        <div className="border rounded-md bg-primaryalpha/5">
+                      <div className="border rounded-md bg-primaryalpha/5">
                         <div className="flex items-center px-1.5  ">
-                          <img src={AI_Text} alt=''className="border rounded-md"></img>
+                          <img src={AI_Text} alt='' className="border rounded-md"></img>
                           <div className="flex flex-col gap-1 p-1.5">
                             <div className="flex items-center justify-between ">
                               <p className="font-bold">Generate personalized job descriptions based on pas account data.
@@ -1401,7 +1401,7 @@ const CreatejobTemp = ({
                             </p>
                           </div>
                         </div>
-                        </div>
+                      </div>
                       <div
                         style={{
                           display: "flex",
@@ -1420,12 +1420,12 @@ const CreatejobTemp = ({
                         <ButtonClick handleSubmit={handleGenerateWithAI} BtnType="primary" icon={<img src={image} alt="image" style={{ height: '20px', width: '20px', alignItems: "center" }} />} buttonName={"Generate with AI"} />
                       </div>
                       <Card>
+                        <p>Description</p>
                         <TextEditor
-                          title={t("Description")}
                           placeholder={t(
                             "Enter Description "
                           )}
-                          
+
                           hideBorder={true}
                           initialValue={content}
                           //  change={(e)=>{
@@ -1816,7 +1816,7 @@ icondropDown={true}
                                         );
                                       }}
                                       value={
-                                        condition.answer_type 
+                                        condition.answer_type
                                       }
                                       icondropDown={true}
                                       error={errorMessages[index]}
