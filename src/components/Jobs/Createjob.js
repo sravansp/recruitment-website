@@ -1730,6 +1730,7 @@ const Createjob = ({
                           type={"number"}
                           error={formik1.errors.salaryRangeFrom}
                           required={true}
+                          maxLength={15}
                         />
 
                         <FormInput
@@ -1754,7 +1755,9 @@ const Createjob = ({
                           error={formik1.errors.salaryRangeTo}
                           required={true}
                           type={"number"}
-                        />                       <Dropdown
+                          maxLength={15}
+                        />
+                        <Dropdown
                           title={'Salary Currency'}
                           placeholder={'salary'}
                           options={saleryCurrency}
