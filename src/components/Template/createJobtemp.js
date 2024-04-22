@@ -363,7 +363,7 @@ const CreatejobTemp = ({
           if (response.status === 200) {
             openNotification(
               "success",
-
+              "success",
               response.message
             );
             setPresentage(2);
@@ -372,7 +372,7 @@ const CreatejobTemp = ({
               refresh()
             }, 1500);
           } else if (response.status === 500) {
-            openNotification("error", response.message.replace(/<br\/>/g, '\n'));
+            openNotification("error","Error", response.message.replace(/<br\/>/g, '\n'));
 
           }
         } else {
@@ -421,6 +421,7 @@ const CreatejobTemp = ({
           if (response.status === 200) {
             openNotification(
               "success",
+              "success",
 
               response.message
             );
@@ -430,7 +431,7 @@ const CreatejobTemp = ({
               refresh()
             }, 1500);
           } else if (response.status === 500) {
-            openNotification("error", response.message);
+            openNotification("error","Error", response.message);
           }
         
 
@@ -578,7 +579,7 @@ const CreatejobTemp = ({
       )
     );
   };
-  const handleAddField = (index) => {
+  const handleAddField = (index, selectedvalue) => {
     setEvaluation((prevEvaluation) =>
       prevEvaluation.map((prevCondition, i) =>
         i === index
@@ -588,7 +589,7 @@ const CreatejobTemp = ({
               ...prevCondition.answerMetaData,
               {
                 id: prevCondition.answerMetaData.length + 1,
-                key: "Drop-down", // You can set the default key or customize as needed
+                key: selectedvalue, // You can set the default key or customize as needed
                 value: "",
               },
             ],
@@ -1739,7 +1740,7 @@ const CreatejobTemp = ({
                         </div>
                       </Accordion>
                     </div>
-                    <div className="rounded-md borderb">
+                    
                       <Accordion
                         title={"Custom Fields "}
                         className="Text_area"
@@ -1750,6 +1751,7 @@ const CreatejobTemp = ({
                         }}
                         initialExpanded={true}
                       >
+                        <div className="flex flex-col gap-4 overflow-hidden">
                         {evaluation.map((condition, index) => (
                           <>
                             {/* {conditions.map((condition, index) => (
@@ -1819,7 +1821,7 @@ icondropDown={true}
                                   error={condition.question ? '' : errorMessages[index] || ''}
                                 />
                                 <div className="flex items-center gap-5">
-                                  <div className="flex-shrink-0">
+                                <div className="flex-shrink-0">
                                     <Dropdown
                                       options={Form}
                                       dropdownWidth="200px"
@@ -1841,14 +1843,14 @@ icondropDown={true}
                                               : prevCondition
                                           )
                                         );
+                                        handleAddField(e)
                                       }}
-                                      value={
-                                        condition.answer_type
-                                      }
+                                      value={condition.answerMetaData[0]?.key}
                                       icondropDown={true}
                                       error={condition.answer_type ? '':errorMessages[index] || ''}
+                                      placeholder={"Choose Options"}
                                     />
-                                  </div>
+                                </div>
                                   {/* Additional dynamic input fields based on the selected value in the dropdown */}
                                   {/* Add your logic here */}
 
@@ -1901,7 +1903,7 @@ icondropDown={true}
                                           "Checkboxes",
                                         ].includes(field.key) && (
                                             <FormInput
-                                              title={`options ${fieldIndex + 1}`}
+                                              title={`Options ${fieldIndex + 1}`}
                                               placeholder={"Enter value"}
                                               value={field.value}
                                               change={(e) =>
@@ -1954,7 +1956,7 @@ icondropDown={true}
                                     )
                                   )}
 
-                                  <div className="mt-2">
+                                 
                                     {[
                                       "Drop-down",
                                       "MultipleChoice",
@@ -1978,7 +1980,7 @@ icondropDown={true}
                                           />
                                         </Tooltip>
                                       )}
-                                  </div>
+                                 
                                 </>
                               )}
                             </>
@@ -1995,8 +1997,9 @@ icondropDown={true}
                             handleAddCondition();
                           }}
                         />
+                        </div>
                       </Accordion>
-                    </div>
+                    
                   </FlexCol>
                 </>
               ) : activeBtnValue === "Workflow" ? (

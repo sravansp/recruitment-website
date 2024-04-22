@@ -29,13 +29,17 @@ export default function Dropdown({
   image = false,
   dropdownWidth = "",
   needStar = true,
-}) {
+})
+
+
+
+{
   const isSmallScreen = useMediaQuery({ maxWidth: 1439 });
   const filterOption = (input, option) =>
     (option?.label ?? "").toLowerCase().includes(input.toLowerCase());
   const { Option } = Select;
   // console.log(placeholder)
-
+  console.log(placeholder)
   return (
     <div className={`${className} flex flex-col gap-2`}>
       {title && (

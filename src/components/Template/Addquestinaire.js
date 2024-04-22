@@ -468,7 +468,7 @@ const
 
                 />
               </div>
-
+              <div className="flex flex-col gap-4 overflow-hidden">
               {evaluation.map((condition, index) => (
                 <><div className="flex items-center justify-between">
                   <FormInput
@@ -577,7 +577,7 @@ const
                         </div>
                       ))}
 
-                      <div className="mt-2">
+                    
                         {['Drop-down', 'MultipleChoice', 'Checkboxes'].includes(
                           condition.answerMetaData[0]?.key
                         ) && (
@@ -588,7 +588,7 @@ const
                               />
                             </Tooltip>
                           )}
-                      </div>
+                      
                     </>
                   )}
 
@@ -599,6 +599,7 @@ const
               <div className="flex items-center gap-2">
                 <AddMore name="Add New Question" className="!text-black" change={(e) => { handleAddCondition() }} />
 
+              </div>
               </div>
               {contextHolder}
             </Accordion>

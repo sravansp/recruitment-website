@@ -23,6 +23,7 @@ import { IoCloseSharp } from 'react-icons/io5'
 import { HiMiniHandThumbDown, HiMiniHandThumbUp } from 'react-icons/hi2'
 import { FaMinus, FaStar } from 'react-icons/fa'
 import { TiMinus } from 'react-icons/ti'
+import { RiDeleteBinLine } from 'react-icons/ri'
 
 
 const TemEvaluation = ({ open = "", close = () => { }, inputshow = false, isUpdate = {}, updateId, refresh }) => {
@@ -463,7 +464,7 @@ const TemEvaluation = ({ open = "", close = () => { }, inputshow = false, isUpda
                 required={true}
               />
             </div>
-
+            <div className="flex flex-col gap-4 overflow-hidden">
             {evaluation.map((condition, index) => (
               <>
                 <div className="flex items-center justify-between">
@@ -504,7 +505,7 @@ const TemEvaluation = ({ open = "", close = () => { }, inputshow = false, isUpda
                           ))
                           handleAddField(e)
                         }}
-                        value={condition.answerMetaData[0]?.key || ''}
+                        value={condition.answerMetaData[0]?.key }
                         icondropDown={true}
                         required={true}
                         error={condition.answerMetaData[0]?.key ? '' : errorMessages[index] || ''}
@@ -526,7 +527,7 @@ const TemEvaluation = ({ open = "", close = () => { }, inputshow = false, isUpda
                       <MdOutlineFileCopy style={{ width: '18px', height: '18px', cursor: 'pointer' }} />
                     </Tooltip> */}
                       <Tooltip placement="top" title={"Delete"} >
-                        <MdDelete className='text-red-600' style={{ width: '18px', height: '18px', cursor: 'pointer' }} onClick={() => handleDeleteCondition(index)} />
+                      <RiDeleteBinLine className="text-gray-500" style={{ width: '18px', height: '18px', cursor: 'pointer' }} onClick={() => handleDeleteCondition(index)} />
                       </Tooltip>
                     </div>
 
@@ -571,7 +572,7 @@ const TemEvaluation = ({ open = "", close = () => { }, inputshow = false, isUpda
                       </div>
                     ))}
 
-                    <div className="mt-2">
+                    
                       {['Drop-down', 'MultipleChoice', 'Checkboxes'].includes(
                         condition.answerMetaData[0]?.key
                       ) && (
@@ -582,7 +583,7 @@ const TemEvaluation = ({ open = "", close = () => { }, inputshow = false, isUpda
                             />
                           </Tooltip>
                         )}
-                    </div>
+                    
                   </>
                 )}
 
@@ -595,7 +596,8 @@ const TemEvaluation = ({ open = "", close = () => { }, inputshow = false, isUpda
               <AddMore name="Add New Question" className="!text-black" change={(e) => { handleAddCondition() }} />
 
             </div>
-
+            
+            </div>
             {/* <div className='border-t'></div>
             <div className='flex flex-col gap-2'>
               <div className='dark:text-white'>Overall Score</div>
