@@ -244,7 +244,7 @@ const
             })
             console.log(response)
             if (response.status == 200) {
-              openNotification("success", "Successful", response.message);
+              openNotification("success", "success", response.message);
               setSuccessNotificationVisible(true);
               setTimeout(() => {
                 handleClose();
@@ -288,7 +288,7 @@ const
               console.log(insertedId);
 
               if (response2.status === 200) {
-                openNotification("success", "Successful", response2.message);
+                openNotification("success", "success", response2.message);
                 setSuccessNotificationVisible(true);
                 setTimeout(() => {
                   handleClose();
@@ -296,7 +296,7 @@ const
 
                 }, 1500);
               } else if (response2.status === 500) {
-                openNotification("error", "error", response2.message);
+                openNotification("error", "Error", response2.message);
               }
             } else if (response.status === 500) {
               openNotification("error", "Error", response.message);
@@ -306,7 +306,7 @@ const
           console.error("Error during form submission:", error);
           openNotification(
             "error",
-            "Error saving category",
+            "Error...",
             "Qestionnare Template name already exist."
           );
         }

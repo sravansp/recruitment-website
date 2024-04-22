@@ -178,15 +178,22 @@ const Workflowstage = ({ open = "", close = () => { }, inputshow = false, isUpda
       createdBy: "",
     },
 
-    enableReinitialize: true,
-    validateOnChange: false,
-    validationSchema: Yup.object().shape({
-      workFlowName: Yup.string().required('WorkFlow Name is required '),
-      description: Yup.string().required('Description  is required '),
+    // enableReinitialize: true,
+    // validateOnChange: false,
+    // validationSchema: Yup.object().shape({
+    //   workFlowName: Yup.string().required('WorkFlow Name is required '),
+    //   description: Yup.string().required('Description  is required '),
 
-    }),
+    // }),
     onSubmit: async (values, { setSubmitting }) => {
       try {
+        if (
+          !formik.values.workFlowName || !formik.values.description){
+            formik.setFieldError('workFlowName', !formik.values.workFlowName ? 'WorkFlow Name is required' : '');
+            formik.setFieldError('description', !formik.values.description ? 'Description  is required' : '');
+          return;
+          }
+        
         if (stages.length===0) {
           setIsModalVisible(true);
           return;
@@ -219,13 +226,13 @@ const Workflowstage = ({ open = "", close = () => { }, inputshow = false, isUpda
           });
           console.log(response)
           if (response.status === 200) {
-            openNotification("success", "Successful", response.message);
+            openNotification("success", "success", response.message);
             setTimeout(() => {
               handleClose();
               refresh();
             }, 1500);
           } else if (response.status === 500) {
-            openNotification("error", "error", response.message.replace(/<br\/>/g, '\n'));
+            openNotification("Error", "Error", response.message.replace(/<br\/>/g, '\n'));
           }
 
 
@@ -255,23 +262,23 @@ const Workflowstage = ({ open = "", close = () => { }, inputshow = false, isUpda
             console.log(insertedId);
 
             if (response2.status === 200) {
-              openNotification("success", "Successful", response2.message);
+              openNotification("success", "success", response2.message);
               setTimeout(() => {
                 handleClose();
                 refresh();
               }, 1500);
             } else if (response2.status === 500) {
-              openNotification("error", "error", response2.message);
+              openNotification("Error", "Error", response2.message);
             }
           }else if (response.status === 500){
-            openNotification("error", "error", response.message.replace(/<br\/>/g, '\n'));
+            openNotification("Error", "Error", response.message.replace(/<br\/>/g, '\n'));
           }
           else if (response.status === 500) {
-            openNotification("error", "Failed", response.message);
+            openNotification("Error", "Failed", response.message);
           }
         }
       } catch (error) {
-        openNotification("error", "error", "WorkFlow Template Name Already Exist");
+        openNotification("error", "Error", "WorkFlow Template Name Already Exist");
       }
       setSubmitting(false);
     },
@@ -537,7 +544,7 @@ const Workflowstage = ({ open = "", close = () => { }, inputshow = false, isUpda
               }}>
                 <FormInput
                   title={"Stage Name"}
-                  placeholder={"Enter Stage Name.."}
+                  placeholder={"Enter Stage Name"}
                   value={selectedStageName}
                   change={(e) => {
                     setStageName(e)

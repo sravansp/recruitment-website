@@ -54,6 +54,21 @@ const AddLetter = ({
     });
   };
   console.log(updateId)
+
+  const handletemplateName =(Value) =>{
+    if (!Value) {
+      setTemplateNameError('Template Name is required.');
+      // Set flag to true if there's an error
+  } else {
+      setTemplateNameError('');
+  }
+  }
+  const handleSubject = (value) =>{
+    if (value) {
+      setSubjectError('');
+       // Set flag to true if there's an error
+  } 
+  }
   const handleSubmit = async () => {
     try {
       // API call
@@ -109,7 +124,7 @@ const AddLetter = ({
         
         openNotification(
           "success",
-          "Successful",
+          "success",
           response.message
         );
         setTimeout(() => {
@@ -118,7 +133,7 @@ const AddLetter = ({
         }, 1500);
       
       }else if (response.status === 500) {
-        openNotification("error", "input field is empty..", response.message.replace(/<br\/>/g, '\n'));
+        openNotification("error", "Error..", response.message.replace(/<br\/>/g, '\n'));
       }
       }
       else{
@@ -138,7 +153,7 @@ const AddLetter = ({
       if (response.status === 200) {
         openNotification(
           "success",
-          "Successful",
+          "success",
           response.message
         );
         setTimeout(() => {
@@ -146,12 +161,12 @@ const AddLetter = ({
           refresh()
         }, 1500);
       } else {
-        openNotification("error", "input field is empty..", response.message);
+        openNotification("error", "Error..", response.message);
       }
     }
     } catch (error) {
       console.error("Error saving email template:", error);
-      openNotification("error", "input field is empty..", error);
+      openNotification("error", "Error..", error);
     }
   };
   const getLetterById= async()=>{
@@ -177,6 +192,11 @@ const AddLetter = ({
 
   const handleEditorChange = (content) => {
     setContent(content);
+    if (content) {
+      setContentError('');
+      
+      
+    } 
   };
   return (
     <div>
@@ -252,7 +272,10 @@ const AddLetter = ({
                 title={"Letter Template Name"}
                 placeholder={"Enter Letter Template Name"}
                 value={templateName}
-                change={setTemplateName}
+                change={(e)=>{
+                  setTemplateName(e)
+                  handletemplateName(e)
+                }}
                 error={templateNameError}
                 required={true}
               />
@@ -261,7 +284,9 @@ const AddLetter = ({
                 title={"Subject"}
                 placeholder={"Enter Subject"}
                 value={subject}
-                change={setsubject}
+                change={(e)=>{setsubject(e)
+                  handleSubject(e)
+                 }}
                 error={subjectError}
                 required={true}
               />

@@ -241,7 +241,7 @@ const TemEvaluation = ({ open = "", close = () => { }, inputshow = false, isUpda
           })
           // console.log(response)
           if (response.status == 200) {
-            openNotification("success", "Successful", response.message);
+            openNotification("success", "success", response.message);
             setSuccessNotificationVisible(true);
             setTimeout(() => {
               handleClose();
@@ -285,14 +285,14 @@ const TemEvaluation = ({ open = "", close = () => { }, inputshow = false, isUpda
             // console.log(insertedId);
 
             if (response2.status === 200) {
-              openNotification("success", "Successful", response2.message);
+              openNotification("success", "success", response2.message);
               setSuccessNotificationVisible(true);
               setTimeout(() => {
                 handleClose();
                 refresh()
               }, 1500);
             } else if (response2.status === 500) {
-              openNotification("error", "error", response2.message);
+              openNotification("error", "Error", response2.message);
             }
           } else if (response.status === 500) {
             openNotification("error", "Error", response.message);
@@ -302,7 +302,7 @@ const TemEvaluation = ({ open = "", close = () => { }, inputshow = false, isUpda
         console.error("Error during form submission:", error);
         openNotification(
           "error",
-          "Error saving Evaluation",
+          "Error ...",
           "Evaluation Template Name Already Exist"
         );
       }

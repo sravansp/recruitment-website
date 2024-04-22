@@ -90,11 +90,11 @@ const TemplateDec = ({ open = "", close = () => { }, inputshow = false, isUpdate
   };
   
   const handleContentChange = (value) => {
-    if (!value) {
-      setContentError('Description is required.');
-    } else {
+    if (value) {
       setContentError('');
-    }
+    } 
+     
+    
   };
 
   const handlesubmit = async (e) => {
@@ -142,8 +142,10 @@ const TemplateDec = ({ open = "", close = () => { }, inputshow = false, isUpdate
           }, 2000);
 
         } else if (response.status === 500) {
-          openNotification("error", "input field is empty..", response.message.replace(/<br\/>/g, '\n'));
+          openNotification("Error", "Error..", response.message);
         }
+
+        
       } else {
         const id = updateId
         const response = await updateRecruitmentJobDescriptionTemplate({
@@ -168,12 +170,12 @@ const TemplateDec = ({ open = "", close = () => { }, inputshow = false, isUpdate
           }, 2000);
 
         } else if (response.status === 500) {
-          openNotification("error", "input field is empty..", response.message);
+          openNotification("Error", "Error..", response.message);
         }
 
       }
     } catch (error) {
-      openNotification("error", "input field is empty..", "Template name already exist");
+      openNotification("error", "Error..", "Template name already exist");
     }
 
   }
