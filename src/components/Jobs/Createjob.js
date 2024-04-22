@@ -2175,9 +2175,7 @@ const Createjob = ({
 
                                 <div style={{ display: 'flex', alignItems: 'center', gap: '15px' }}>
                                   <p>Mandatory</p>
-                                  <Tooltip placement="top" title={"Active/Inactive"}>
                                     <ToggleBtn />
-                                  </Tooltip>
                                 </div>
                                 <div style={{ display: 'flex', alignItems: 'center', gap: '15px' }}>
                                   <Tooltip placement="top" title={"Copy"}>
