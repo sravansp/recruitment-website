@@ -472,7 +472,7 @@ const CandidateProfile = () => {
   //   console.log(getstatus);
   // }, [getstatus]);
   const handleButtonClick = async (status) => {
-    getResumeJob();
+   
     try {
       const response = await updateRecruitmentJobResumesMapping({
         id: jobResumeMapping,
@@ -485,6 +485,7 @@ const CandidateProfile = () => {
           type: "success",
           content: `${response.message} `,
         });
+        getResumeJob();
       }
 
       // Handle response if needed
@@ -606,21 +607,24 @@ useEffect(()=>{
             <>
               <ButtonClick
                 buttonName="UnderProcess"
-                icon={<FcProcess />}
+                icon={<FcProcess className="text-white"/>}
                 handleSubmit={() => handleButtonClick(0)}
-                backgroundColor={getstatus === "0" ? "yellow" : "inherit"}
+                BtnType={getstatus === "0" ? "primary":""}
+                // backgroundColor={getstatus === "0" ? "yellow" : "inherit"}
               />
               <ButtonClick
                 buttonName="Disqualify"
                 icon={<FcHighPriority />}
                 handleSubmit={() => handleButtonClick(2)}
-                backgroundColor={getstatus === "2" ? "red" : "inherit"}
+                // backgroundColor={getstatus === "2" ? "text-rose-600" : "inherit"}
+                BtnType={getstatus === "2" ? "primary":""}
               />
               <ButtonClick
                 buttonName="Hire"
                 icon={<FcCheckmark />}
                 handleSubmit={() => handleButtonClick(1)}
-                backgroundColor={getstatus === "1" ? "green" : "inherit"}
+                // backgroundColor={getstatus === "1" ? "green" : "inherit"}
+                BtnType={getstatus === "1" ? "primary":""}
               />
             </>
           )}

@@ -81,30 +81,45 @@ const TemplateDec = ({ open = "", close = () => { }, inputshow = false, isUpdate
     }
   };
 
+  const handleTemplateNameChange = (value) => {
+    if (!value) {
+      setTemplateNameError('Template Name is required.');
+    } else {
+      setTemplateNameError('');
+    }
+  };
+  
+  const handleContentChange = (value) => {
+    if (!value) {
+      setContentError('Description is required.');
+    } else {
+      setContentError('');
+    }
+  };
+
   const handlesubmit = async (e) => {
     try {
       console.log(content)
 
       let hasError = false; 
-      if (templateName=== undefined) {
+      if (!templateName) {
         setTemplateNameError('Template Name is required.');
         hasError = true;
       } else {
         setTemplateNameError('');
       }
-
+      
       // Check if content is empty
-      if (content=== undefined) {
+      if (!content) {
         setContentError('Description is required.');
         hasError = true;
-
-        
       } else {
         setContentError('');
       }
+      
       if (hasError) {
         return;
-    }
+      }
       if (!updateId) {
         const response = await saveRecruitmentJobDescriptionTemplate({
           companyId: companyId,
@@ -118,7 +133,7 @@ const TemplateDec = ({ open = "", close = () => { }, inputshow = false, isUpdate
 
           openNotification(
             "success",
-            "Successful",
+            "success",
             response.message.replace(/<br\/>/g, '\n')
           );
           setTimeout(() => {
@@ -268,7 +283,10 @@ const TemplateDec = ({ open = "", close = () => { }, inputshow = false, isUpdate
               title={"Template Name"}
               placeholder={"Enter Template Name..."}
               value={templateName}
-              change={setTemplateName}
+              change={(e) => {
+                setTemplateName(e);
+                handleTemplateNameChange(e); // Trigger validation on change
+              }}
               error={templateNameError}
               required={true}
             />
@@ -310,7 +328,7 @@ const TemplateDec = ({ open = "", close = () => { }, inputshow = false, isUpdate
                 title={"Description"}
                 onChange={(e)=>{
                   setContent(e)
-                  console.log(e)
+                  handleContentChange(e);
                 }}
                 initialValue={content}
                 placeholder={"Enter the job description here, include key areas of resposibility on what the candidate might do on a typical day."}

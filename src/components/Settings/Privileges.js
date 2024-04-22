@@ -10,6 +10,7 @@ import * as yup from "yup";
 import TabsNew from "../common/TabsNew";
 import TableAnt from "../common/TableAnt";
 import Createprvilege from './Createprvilege';
+import { getAllRecruitmentUserRoleMappings } from '../Api1';
 
 export default function Privileges() {
     const { t } = useTranslation();
@@ -33,6 +34,7 @@ export default function Privileges() {
     const [privileges, setPrivileges] = useState([]);
     const [openPop, setOpenPop] = useState("");
     const [userList, setUserList] = useState([]);
+    const [roles,setRoles] = useState([])
   
     const handleClose = () => {
       setShow(false);
@@ -90,24 +92,25 @@ export default function Privileges() {
           {
             id: 1,
             title: t("Roles"),
-            value: "shiftScheme",
+            value: "roleName",
           },
+         
           {
             id: 2,
-            title: t("Status"),
-            value: "description",
+            title: t("User Name"),
+            value: "userName",
           },
           {
             id: 3,
-            title: t("No Of Features"),
-            value: "description",
+            title: t("Status"),
+            value: "isActive",
           },
-          {
-            id: 4,
-            title: t("Action"),
-            value: "",
-            action: true,
-          },
+          // {
+          //   id: 4,
+          //   title: t("Action"),
+          //   value: "",
+          //   action: true,
+          // },
         ],
       },
     ];
@@ -204,7 +207,20 @@ export default function Privileges() {
     //   getRoleList();
     //   getUserRoleList();
     // }, []);
+   const getRoles = async()=>{
+    try{
+     const response = await getAllRecruitmentUserRoleMappings()
+    console.log(response)
+    setRoles(response.result)
+    }catch(error){
+      console.log(error)
+    }
 
+   }
+
+   useEffect(()=>{
+    getRoles()
+   },[])
 
   return (
     <div>
@@ -227,6 +243,7 @@ export default function Privileges() {
       <TableAnt
       header={header}
       path='Users'
+      data={roles}
       
       
       />

@@ -1885,8 +1885,8 @@ const Createjob = ({
 
               ) : activeBtnValue === "ApplicationForm" ? (
                 <>
-                  <FlexCol>
-                    <div className="rounded-md borderb">
+                  
+                   <FlexCol>
                       <Accordion
                         title={"Application Form "}
                         className="Text_area"
@@ -1897,6 +1897,7 @@ const Createjob = ({
                         }}
                         initialExpanded={true}
                       >
+                        <div className="flex flex-col gap-4 overflow-hidden">
                         <div className="flex items-center justify-between">
                           <div className="w-[53.92px] text-black text-sm font-medium font-['Inter'] leading-tight">
                             Name
@@ -2006,9 +2007,10 @@ const Createjob = ({
                             <Radio.Button value={0}>Off</Radio.Button>
                           </Radiobuttonnew>
                         </div>
+                        </div>
                       </Accordion>
-                    </div>
-                    <div className="rounded-md borderb">
+                    
+                    
                       <Accordion
                         title={"Profile "}
                         className="Text_area"
@@ -2019,6 +2021,7 @@ const Createjob = ({
                         }}
                         initialExpanded={true}
                       >
+                        <div className="flex flex-col gap-4 overflow-hidden">
                         <div className="flex items-center justify-between">
                           <div className="w-[53.92px] text-black text-sm font-medium font-['Inter'] leading-tight">
                             Education
@@ -2116,9 +2119,10 @@ const Createjob = ({
                             <Radio.Button value={0}>Off</Radio.Button>
                           </Radiobuttonnew>
                         </div>
+                        </div>
                       </Accordion>
-                    </div>
-                    <div className="rounded-md borderb">
+                     
+                   
                       <Accordion
                         title={"Custom Fields "}
                         className="Text_area"
@@ -2129,7 +2133,9 @@ const Createjob = ({
                         }}
                         initialExpanded={true}
                       >
+                        <div className="flex flex-col gap-4 overflow-hidden">
 
+                      
                         {evaluation.map((condition, index) => (
                           <>
                             <div className="flex items-center justify-between ">
@@ -2145,7 +2151,7 @@ const Createjob = ({
                                   );
                                   // console.log(e);
                                 }}
-                                error={errorMessages[index] || ''}
+                                error={condition.question ? '' : errorMessages[index] || ''}
                               />
                               <div className="flex items-center gap-5">
 
@@ -2174,7 +2180,7 @@ const Createjob = ({
                                   value={condition.answer_type || ""}
                                   icon={<MdOutlineShortText />}
                                   icondropDown={true}
-                                  error={errorMessages[index] || ''}
+                                  error={condition.answer_type ? '':errorMessages[index] || ''}
                                   placeholder={"Choose Options"}
 
                                 />
@@ -2220,7 +2226,7 @@ const Createjob = ({
                                           : prevCondition
                                         )
                                         )}
-                                        error={errorMessages[index] || ''}
+                                        error={field.value ? '': errorMessages[index] || ''}
                                       />
                                       <div className="ml-2">
                                         <MdDelete
@@ -2231,7 +2237,7 @@ const Createjob = ({
                                     </div>
                                   ))
                                 )}
-                                <div className="mt-2">
+                                <div>
                                   {['Drop-down', 'MultipleChoice', 'Checkboxes'].includes(
                                     condition.answerMetaData[0]?.key
                                   ) && (
@@ -2248,9 +2254,10 @@ const Createjob = ({
                           </>
                         ))}
                         <AddMore name="Add Custom Field " className="!text-black" change={(e) => { handleAddCondition(); }} />
+                        </div>
                       </Accordion>
-                    </div>
-                  </FlexCol>
+                      </FlexCol>
+                  
                 </>
               ) : activeBtnValue === "Workflow" ? (
                 <FlexCol>

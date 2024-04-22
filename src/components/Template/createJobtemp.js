@@ -371,6 +371,10 @@ const CreatejobTemp = ({
             }, 1500);
           } else if (response.status === 500) {
             openNotification("error", response.message.replace(/<br\/>/g, '\n'));
+
+          }else if (response.message==="The jobCode field must contain a unique value."){
+            setActiveBtnValue("Jobdetails")
+            formik.setFieldError('jobCode', formik.values.jobCode ? 'Job Code Already exist' : '');
           }
         } else {
           console.log(e);
@@ -428,6 +432,10 @@ const CreatejobTemp = ({
             }, 1500);
           } else if (response.status === 500) {
             openNotification("error", response.message);
+          }
+         if (response.message==="The jobCode field must contain a unique value."){
+            setActiveBtnValue("Jobdetails")
+            formik.setFieldError('jobCode', formik.values.jobCode ? 'Job Code Already exist' : '');
           }
         }
       } catch (error) {
@@ -1789,7 +1797,7 @@ icondropDown={true}
                                     );
                                     console.log(e);
                                   }}
-                                  error={errorMessages[index]}
+                                  error={condition.question ? '' : errorMessages[index] || ''}
                                 />
                                 <div className="flex items-center gap-5">
                                   <div className="flex-shrink-0">
@@ -1819,7 +1827,7 @@ icondropDown={true}
                                         condition.answer_type 
                                       }
                                       icondropDown={true}
-                                      error={errorMessages[index]}
+                                      error={condition.answer_type ? '':errorMessages[index] || ''}
                                     />
                                   </div>
                                   {/* Additional dynamic input fields based on the selected value in the dropdown */}
@@ -1904,7 +1912,7 @@ icondropDown={true}
                                                   )
                                                 )
                                               }
-                                              error={errorMessages[index]}
+                                              error={field.value ? '': errorMessages[index] || ''}
                                             />
                                           )}
 
