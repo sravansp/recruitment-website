@@ -6,6 +6,7 @@ import { RiCommandFill } from "react-icons/ri";
 import ProfileDropdown from "./ProfileDropdown";
 import { CgMenuLeft } from "react-icons/cg";
 import Notification from "./Notification";
+import SelectCompany from "./SelectCompany";
 
 export default function Header() {
   const hamburger = useSelector((state) => state.layout.hamburger);
@@ -58,17 +59,20 @@ export default function Header() {
     <nav
       className={` bg-white w-full grid grid-cols-12 relative justify-end items-center mx-auto px-4 lg:px-8 2xl:h-[76px] dark:bg-lightdark border-b border-opacity-10 dark:border-none py-[14px] z-[999]`}
     >
-      <div className="hidden sm:col-span-2 brand-name lg:block">
+      <div className={` ${hamburger == false ? "sm:col-span-2 hidden brand-name lg:block" : "sm:col-span-0 hidden"}`}>
       {hamburger == false &&  <h1 className="text-sm font-semibold 2xl:text-lg text-primary">
       <span className="font-bold uppercase">Loyaltri</span> <span className="uppercase text-[#707070] font-light">Recruitment</span>
         </h1> }  
       </div>
       {/* hamburger */}
-      <div className="text-black sm:col-span-0 dark:text-white lg:hidden">
+      <div className="text-black col-span-1 sm:col-span-0 dark:text-white lg:hidden">
         <CgMenuLeft size={30} />
       </div>
+      <div className={` ${hamburger == false ? "vhcenter col-span-3 sm:col-span-2" : "sm:col-span-4"}`}>
+      <SelectCompany />
+      </div>
       {/* <!-- search bar --> */}
-      <div className="justify-end hidden sm:col-span-7 lg:col-span-5 sm:flex">
+      <div className="justify-end hidden sm:col-span-5 lg:col-span-4 xl:col-span-3 sm:flex">
         <div className="sm:flex w-max flex-shrink flex-grow-0 items-center justify-start py-[10px] px-4 h-8 2xl:h-10 bg-secondaryWhite dark:bg-secondaryDark rounded-full gap-3">
           <RiVoiceprintFill className=" dark:text-white text-md 2xl:text-lg" />
 
@@ -113,11 +117,11 @@ export default function Header() {
         </div>
       </div> */}
       {/* <!-- end search bar --> */}
-      <div className="flex justify-end col-span-6 sm:col-span-2">
+      <div className="flex justify-end col-span-4 sm:col-span-2">
         <DarkModeSwitch />
       </div>
       {/* <!-- login --> */}
-      <div className="flex justify-end col-span-5 sm:col-span-2 lg:col-span-3">
+      <div className="flex justify-end col-span-4 sm:col-span-2 lg:col-span-2 xl:col-span-3">
         <div className="flex-initial">
           <div className="relative flex items-center justify-end">
             <Notification />

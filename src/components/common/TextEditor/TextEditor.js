@@ -13,10 +13,14 @@ const TextEditor = ({
   onChange = () => {},
   changetoHtml = () => {},
   className,
+  
+ 
+  
   minheight = "250px",
+  height = "",
   placeholder = "",
   loader = false,
-  error = ""
+  error = "",
 }) => {
   const [editorState, setEditorState] = useState(() => {
     if (initialValue) {
@@ -33,7 +37,10 @@ const TextEditor = ({
   console.log(error)
   useEffect(() => {
     // Check if initialValue exists and if it's different from the current editor content
-    if (initialValue && initialValue !== editorState.getCurrentContent().getPlainText()) {
+    if (
+      initialValue &&
+      initialValue !== editorState.getCurrentContent().getPlainText()
+    ) {
       const contentState = ContentState.createFromText(initialValue);
       const newEditorState = EditorState.createWithContent(contentState);
       setEditorState(newEditorState);
@@ -47,14 +54,17 @@ const TextEditor = ({
       const rawContentState = convertToRaw(contentState);
       const plainText = rawContentState.blocks
         .map((block) => block.text)
-        .join('\n');
+        .join("\n");
       const htmlContent = stateToHTML(contentState);
 
       onChange(plainText);
       changetoHtml(htmlContent);
+      console.log(plainText);
+      // Ensure onChange is called with plainText, which is a string
     }
   };
-
+  console.log(initialValue);
+  
   const uploadImageCallBack = (file) => {
     return new Promise((resolve, reject) => {
       const reader = new FileReader();
@@ -93,11 +103,29 @@ const TextEditor = ({
       setEditorState(newEditorState);
     }
   };
-
   return (
-    <div className={`relative p-4 border border-black rounded-md border-opacity-10 dark:border-secondaryDark mb-14 ${className} ${loader ? 'vhcenter' : ''}`} style={{ minHeight: `${minheight}` }}>
+    <div
+      className={`relative p-4 border border-black rounded-md border-opacity-10 dark:border-secondaryDark mb-14 ${className} ${
+        loader ? "vhcenter" : ""
+      }`}
+      style={{
+        ...(error && {
+          boxShadow:
+            "0px 0px 0px 4px #FEE4E2, 0px 1px 2px 0px rgba(16, 24, 40, 0.05)",
+            border: "1px solid red",
+        }),
+        minHeight: `${minheight}`,
+      }}
+    >
+      {error && (
+            <p className="flex justify-start items-center mt-2 my-1 mb-0 text-[10px] text-red-600">
+              <span className="text-[10px] pl-1">{error}</span>
+            </p>
+          )}
       <div className="flex">
-        <p className={`text-xs font-medium 2xl:text-sm dark:text-white ${className}`}>
+        <p
+          className={`text-xs font-medium 2xl:text-sm dark:text-white ${className}`}
+        >
           {title}
         </p>
         {required && <FaAsterisk className="text-[10px] text-rose-600" />}
@@ -110,27 +138,34 @@ const TextEditor = ({
           editorState={editorState}
           onEditorStateChange={handleEditorChange}
           placeholder={placeholder}
-          onDrop={handleDroppedImage}
+          wrapperStyle={{ height: height }}
           toolbar={{
-            options: ['inline', 'fontSize', 'list', 'textAlign', 'image'],
+            options: ["inline", "fontSize", "list", "textAlign"],
             inline: {
-              options: ['bold', 'italic', 'underline', 'strikethrough'],
+              options: ["bold", "italic", "underline", "strikethrough"],
             },
             list: {
-              options: ['unordered', 'ordered', 'indent'],
+              options: ["unordered", "ordered", "indent"],
             },
             textAlign: {
-              options: ['left', 'center', 'right', 'justify'],
+              options: ["left", "center", "right", "justify"],
+
             },
             image: {
               uploadCallback: uploadImageCallBack,
               alt: { present: true, mandatory: false },
             },
           }}
-          toolbarStyle={{ position: 'absolute', bottom: '-60px', left: '0', right: '0' }}
-          toolbarClassName=' bg-black'
-          editorClassName='h-full'
+          toolbarStyle={{
+            position: "absolute",
+            bottom: "-60px",
+            left: "0",
+            right: "0",
+          }}
+          toolbarClassName=" bg-black"
+          editorClassName="h-full"
         />
+          
         
       )}
      

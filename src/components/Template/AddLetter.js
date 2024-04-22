@@ -24,6 +24,9 @@ const AddLetter = ({
   const [show, setShow] = useState(open);
   const [subject,setsubject] = useState("")
   const { t } = useTranslation();
+  const [templateNameError, setTemplateNameError] = useState('');
+  const [ subjectError,setSubjectError] = useState('')
+  const [contentError, setContentError] = useState('');
   const handleClose = () => {
     close(false);
   };
@@ -54,6 +57,37 @@ const AddLetter = ({
   const handleSubmit = async () => {
     try {
       // API call
+
+      let hasError = false; // Flag to track if any error occurred
+
+        // Check if templateName is empty
+        if (!templateName) {
+            setTemplateNameError('Template Name is required.');
+            hasError = true; // Set flag to true if there's an error
+        } else {
+            setTemplateNameError('');
+        }
+
+        // Check if subject is empty
+        if (!subject) {
+            setSubjectError('Please enter a subject.');
+            hasError = true; // Set flag to true if there's an error
+        } else {
+            setSubjectError('');
+        }
+        if (!content) {
+          setContentError('Content is required.');
+          hasError = true;
+  
+          
+        } else {
+          setContentError('');
+        }
+        // If any error occurred, return early
+        if (hasError) {
+            return;
+        }
+  
       if(updateId){
         const id = updateId
        const response = await updateRecruitmentLetterTemplate(
@@ -219,6 +253,8 @@ const AddLetter = ({
                 placeholder={"Enter Letter Template Name"}
                 value={templateName}
                 change={setTemplateName}
+                error={templateNameError}
+                required={true}
               />
             </div>
             <FormInput
@@ -226,12 +262,15 @@ const AddLetter = ({
                 placeholder={"Enter Subject"}
                 value={subject}
                 change={setsubject}
+                error={subjectError}
+                required={true}
               />
 
             <TextEditor
               initialValue={content}
               onChange={handleEditorChange}
               minheight="250px"
+              error={contentError}
             />
             <div class="relative max-w-[1070px]  w-full mx-auto h-[49.72px] bg-purple-50 rounded-lg">
               <div className="flex justify-start items-center m-3 gap-3">

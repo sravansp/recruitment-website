@@ -19,6 +19,10 @@ import { Value } from 'devextreme-react/range-selector'
 import AddMore from '../common/AddMore'
 import { CoPresentOutlined } from '@mui/icons-material'
 import * as Yup from "yup";
+import { IoCloseSharp } from 'react-icons/io5'
+import { HiMiniHandThumbDown, HiMiniHandThumbUp } from 'react-icons/hi2'
+import { FaMinus, FaStar } from 'react-icons/fa'
+import { TiMinus } from 'react-icons/ti'
 
 
 const TemEvaluation = ({ open = "", close = () => { }, inputshow = false, isUpdate = {}, updateId, refresh }) => {
@@ -165,12 +169,12 @@ const TemEvaluation = ({ open = "", close = () => { }, inputshow = false, isUpda
       createdBy: null,
     },
     
-    enableReinitialize: true,
-    validateOnChange: false,
-    validationSchema: Yup.object().shape({
-      evaluationTemplateName : Yup.string().required('Evalutaion is required'),
-      description:Yup.string().required('Description is required'),
-    }),
+    // enableReinitialize: true,
+    // validateOnChange: false,
+    // validationSchema: Yup.object().shape({
+    //   evaluationTemplateName : Yup.string().required('Evalutaion is required'),
+    //   description:Yup.string().required('Description is required'),
+    // }),
 
     onSubmit: async (values, { setSubmitting }) => {
       try {
@@ -182,24 +186,28 @@ const TemEvaluation = ({ open = "", close = () => { }, inputshow = false, isUpda
         // });
 
         // Make the first API call
+        if (
+          !formik.values.evaluationTemplateName || !formik.values.description){
+            formik.setFieldError('evaluationTemplateName', !formik.values.evaluationTemplateName ? 'Evaluation is Required is required' : '');
+            formik.setFieldError('description', !formik.values.description ? 'Description is required' : '');
+          }
         const newErrorMessages = evaluation.map((condition) => {
           let errorMessage = '';
-
+        
           if (!condition.question) {
             errorMessage = 'Please enter a question.';
-          } else if (!condition.answerMetaData) {
+          } else if (!condition.answerMetaData || !condition.answerMetaData[0]?.key) {
             errorMessage = 'Please choose an answer type.';
           } else if (
-            ["Drop-down", "MultipleChoice", "Checkboxes"].includes(condition.answerMetaData) &&
+            ["Drop-down", "MultipleChoice", "Checkboxes"].includes(condition.answerMetaData[0]?.key) &&
             (condition.answerMetaData.some((field) => !field.value) ||
-              (!condition.answerMetaData[0]?.value && condition.answerMetaData[0]?.key !== "ShortAnswer"))
+              (!condition.answerMetaData[0]?.value && condition.answerMetaData[0]?.key))
           ) {
             errorMessage = 'Please enter values for all options.';
           }
-
+        
           return errorMessage;
         });
-
         
         setErrorMessages(newErrorMessages);
         const hasErrors = newErrorMessages.some(errorMessage => errorMessage !== '');
@@ -294,8 +302,8 @@ const TemEvaluation = ({ open = "", close = () => { }, inputshow = false, isUpda
         console.error("Error during form submission:", error);
         openNotification(
           "error",
-          "Error saving category",
-          "There was an error while saving the category. Please try again."
+          "Error saving Evaluation",
+          "Evaluation Template Name Already Exist"
         );
       }
       setSubmitting(false);
@@ -420,7 +428,8 @@ const TemEvaluation = ({ open = "", close = () => { }, inputshow = false, isUpda
 
       > <div className="relative max-w-[1070px]  w-full mx-auto">
           <Accordion
-            title={"New Evaluation Templates"}
+            title={"New Evaluation Template"}
+            description={"New Evaluation Template"}
             className="Text_area"
             padding={true}
 
@@ -438,7 +447,7 @@ const TemEvaluation = ({ open = "", close = () => { }, inputshow = false, isUpda
                   formik.setFieldValue('evaluationTemplateName', e)
                 }}
                 error={formik.errors.evaluationTemplateName}
-
+                required={true}
 
               />
             </div>
@@ -451,6 +460,7 @@ const TemEvaluation = ({ open = "", close = () => { }, inputshow = false, isUpda
                   formik.setFieldValue('description', e)
                 }}
                 error={formik.errors.description}
+                required={true}
               />
             </div>
 
@@ -468,7 +478,8 @@ const TemEvaluation = ({ open = "", close = () => { }, inputshow = false, isUpda
                     ))
                     // console.log(e)
                   }}
-                  error={errorMessages[index]||''}
+                  error={condition.question ? '' : errorMessages[index] || ''}
+                  required={true}
                   />
 
                 <div className="flex items-center gap-5">
@@ -492,9 +503,10 @@ const TemEvaluation = ({ open = "", close = () => { }, inputshow = false, isUpda
                         ))
                         handleAddField(e)
                       }}
-                      value={condition.answerMetaData[0]?.key|| ''}
+                      value={condition.answerMetaData[0]?.key || ''}
                       icondropDown={true}
-                      error={errorMessages[index]||''}
+                      required={true}
+                      error={condition.answerMetaData[0]?.key ? '' : errorMessages[index] || ''}
                     />
                   </div>
                   {/* Additional dynamic input fields based on the selected value in the dropdown */}
@@ -506,9 +518,9 @@ const TemEvaluation = ({ open = "", close = () => { }, inputshow = false, isUpda
                   </div>
 
                   <div style={{ display: 'flex', alignItems: 'center', gap: '15px' }}>
-                    <Tooltip placement="top" title={"Copy"} >
+                    {/* <Tooltip placement="top" title={"Copy"} >
                       <MdOutlineFileCopy style={{ width: '18px', height: '18px', cursor: 'pointer' }} />
-                    </Tooltip>
+                    </Tooltip> */}
                     <Tooltip placement="top" title={"Delete"} >
                       <MdDelete className='text-red-600' style={{ width: '18px', height: '18px', cursor: 'pointer' }} onClick={() => handleDeleteCondition(index)} />
                     </Tooltip>
@@ -538,7 +550,7 @@ const TemEvaluation = ({ open = "", close = () => { }, inputshow = false, isUpda
                               : prevCondition
                             )
                             )} 
-                            error={field.value.trim() === '' ? 'Please enter a value.' : ''}
+                            error={field.value ? '' : errorMessages[index] || ''}
                             />
                         )}
 
@@ -572,12 +584,72 @@ const TemEvaluation = ({ open = "", close = () => { }, inputshow = false, isUpda
               <AddMore name="Add New Question" className="!text-black" change={(e) => { handleAddCondition() }} />
 
             </div>
+
+            {/* <div className='border-t'></div>
+            <div className='flex flex-col gap-2'>
+              <div className='dark:text-white'>Overall Score</div>
+              <div className='grid grid-cols-2'>
+                <FormInput
+                  placeholder={"Type question here..."}
+                />
+              </div>
+
+              <div className="w-full  rounded-sm h-24 sm:w-full mt-5">
+                <div className="bg-white rounded-md borderb  p-4 flex dark:bg-black dark:text-white h-24">
+                  <div className="flex items-center w-1/5 sm:w-1/5">
+                    <div className="ml-4">
+                      <div className='flex items-center flex-col gap-1'>
+                        <p className='bg-slate-400 rounded-full text-md p-1 opacity-60 font-medium'> <IoCloseSharp /></p>
+                        <p className="font-bold text-gray-400 justify-center">Strong No</p>
+                      </div>
+                    </div>
+                  </div>
+                  <div className="h-divider !border-gray-300 ml-12"></div>
+                  <div className="flex items-center w-1/5 sm:w-1/5">
+                    <div className="ml-8">
+                      <div className='flex items-center flex-col gap-1'>
+                        <p className='text-lg p-1 opacity-60 font-medium'> <HiMiniHandThumbDown className='text-gray-500' /></p>
+                        <p className="font-bold text-gray-400 justify-center">No</p>
+                      </div>
+                    </div>
+                  </div>
+                  <div className="h-divider !border-gray-300 ml-12"></div>
+                  <div className="flex items-center w-1/5 sm:w-1/5">
+                    <div className="ml-8">
+                      <div className='flex items-center flex-col gap-1'>
+                        <p className='bg-slate-400 rounded-full text-md p-1 opacity-60 font-medium'> <TiMinus /></p>
+                        <p className="font-bold text-gray-400 justify-center">Not Sure</p>
+                      </div>
+                    </div>
+                  </div>
+                  <div className="h-divider !border-gray-300 ml-12"></div>
+                  <div className="flex items-center w-1/5 sm:w-1/5">
+                    <div className="ml-8">
+                      <div className='flex items-center flex-col gap-1'>
+                        <p className='text-lg p-1 opacity-60 font-medium'> <HiMiniHandThumbUp className='text-gray-500' /></p>
+                        <p className="font-bold text-gray-400 justify-center">Yes</p>
+                      </div>
+                    </div>
+                  </div>
+                  <div className="h-divider !border-gray-300 ml-12"></div>
+                  <div className="flex items-center w-1/5 sm:w-1/5">
+                    <div className="ml-8">
+                      <div className='flex items-center flex-col gap-1'>
+                        <p className='text-lg p-1 opacity-60 font-medium'> <FaStar className='text-gray-500' /></p>
+                        <p className="font-bold text-gray-400 justify-center">Strong Yes</p>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div> */}
+
             {contextHolder}
           </Accordion>
         </div>
-      </DrawerPop>
+      </DrawerPop >
 
-    </div>
+    </div >
   )
 }
 

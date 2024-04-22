@@ -12,6 +12,7 @@ import {
   List,
   Radio,
   Space,
+  Tooltip,
   notification,
 } from "antd";
 import Accordion from "../common/Accordion";
@@ -75,6 +76,7 @@ import TextEditor from "../common/TextEditor/TextEditor";
 import RadioButton from "../common/RadioButton";
 import { IoClose } from "react-icons/io5";
 import Jobcardcopy from "../common/Jobcardcopy";
+import { RiDeleteBinLine } from "react-icons/ri";
 
 const CreatejobTemp = ({
   open = "",
@@ -116,6 +118,8 @@ const CreatejobTemp = ({
   const [resume, setResume] = useState(1)
   const [coverLetter, setCoverletter] = useState(1)
   const [errors, setErrors] = useState([]);
+  const [jobTitle,setJobTitle] =useState("")
+  
   console.log(updateId);
   useEffect(() => {
     // Retrieve the login data JSON string from local storage
@@ -197,10 +201,12 @@ const CreatejobTemp = ({
     localStorage.getItem("organisationId")
   );
   // const [isGoogleFormVisible, setIsGoogleFormVisible] = useState(false);
+  const [loader, setloader] = useState(false)
   const handleGenerateWithAI = async () => {
+    setloader(true)
     try {
       const requestBody = {
-        val: content,
+        val: jobTitle,
         radioval: '1',
         summarise: null
       };
@@ -223,6 +229,9 @@ const CreatejobTemp = ({
       }
     } catch (error) {
       console.error('Error:', error);
+    }
+    finally {
+      setloader(false); // Hide loader after response is received
     }
   };
   const handleEditorChange = (content) => {
@@ -276,7 +285,7 @@ const CreatejobTemp = ({
         summary: 1,
         resume: 1,
         coverLetter: 1,
-       
+
         customFields: [],
       },
       createdBy: "",
@@ -305,6 +314,8 @@ const CreatejobTemp = ({
           is_required: condition.is_required,
           answer_meta_data: condition.answerMetaData,
         }));
+
+  
 
         if (updateId) {
           const response = await updateRecruitmentJobTemplate({
@@ -753,12 +764,12 @@ const CreatejobTemp = ({
     try {
       const response = await getAllRecruitmentWorkFlows();
       console.log("Response:", response);
-     
+
       const stagesByWorkflowId = response.result.map((item) => ({
         workFlowId: item.workFlowId,
-        workFlowName:item.workFlowName,
+        workFlowName: item.workFlowName,
         stages: item.recruitmentWorkFlowStages.map((stage) => ({
-          id:stage.stageId,
+          id: stage.stageId,
           title: stage.stageName,
 
         })),
@@ -769,9 +780,9 @@ const CreatejobTemp = ({
       console.error("Error:", error);
     }
   };
-  useEffect(()=>{
+  useEffect(() => {
     fetchData()
-  },[])
+  }, [])
 
   useEffect(() => {
     console.log("Updated Workflow:", Stages);
@@ -842,7 +853,8 @@ const CreatejobTemp = ({
           !formik.values.salaryRangeFrom ||
           !formik.values.salaryRangeTo ||
           !formik.values.salaryCurrency ||
-          !formik.values.jobType
+          !formik.values.jobType||
+          !content
         ) {
           formik.setFieldError('jobTitle', !formik.values.jobTitle ? 'Job Title is required' : '');
           formik.setFieldError('departmentId', !formik.values.departmentId ? 'Department is required' : '');
@@ -856,6 +868,7 @@ const CreatejobTemp = ({
           formik.setFieldError('salaryCurrency', !formik.values.salaryCurrency ? 'Salary Currency is required' : '');
           formik.setFieldError('jobType', !formik.values.jobType ? 'JobType is required' : '');
           formik.setFieldError('education', !formik.values.education ? 'Education is required' : '');
+          formik.setFieldError('jobDescription', !content ?'jobDescription is required' : '')
           return; // Exit early if any field is empty
         }
 
@@ -934,8 +947,8 @@ const CreatejobTemp = ({
           refresh()
         }}
         header={[
-          !updateId ? t("Create a Job Temaplate") : t("Update Job Temaplate"),
-          !updateId ? t("Create a Job Temaplate") : t("Update Job Temaplate"),
+          !updateId ? t("Create a Job Template") : t("Update Job Template"),
+          !updateId ? t("Create a Job Template") : t("Update Job Template"),
         ]}
         headerRight={
           <div className="flex items-center gap-10">
@@ -1078,7 +1091,7 @@ const CreatejobTemp = ({
                       // } }
                       initialExpanded={true}
                     >
-                     <div className="md:grid grid-cols-12 flex flex-col gap-6 dark:text-white">
+                      <div className="md:grid grid-cols-12 flex flex-col gap-6 dark:text-white">
                         {regularOvertime?.map((each, i) => (
                           <div
                             key={i}
@@ -1320,6 +1333,7 @@ const CreatejobTemp = ({
                           required={true}
                           error={formik.errors.salaryCurrency}
                         />
+                        <div className="flex flex-col gap-1">
                         <CheckBoxInput
                           change={(e) => {
                             formik.setFieldValue("isSalaryPublic", e);
@@ -1327,10 +1341,11 @@ const CreatejobTemp = ({
                           }}
                           value={formik.values.isSalaryPublic}
                           title={"View Public"}
-                          description={
-                            "Given Salary will be visible for public"
-                          }
+                          titleRight={true}
+                         
                         />
+                        <p className="text-xs text-gray-500">Given Salary will be visible for public</p>
+                      </div>
                       </div>
                     </Accordion>
 
@@ -1344,21 +1359,21 @@ const CreatejobTemp = ({
                       }}
                       initialExpanded={true}
                     >
-                      <Card className="bg-primaryalpha/5">
-                        <div className="flex items-center">
-                          <img src={AI_Text} alt=''></img>
-                          <div className="flex flex-col gap-1">
-                            <div className="flex items-center justify-between">
+                        <div className="border rounded-md bg-primaryalpha/5">
+                        <div className="flex items-center px-1.5  ">
+                          <img src={AI_Text} alt=''className="border rounded-md"></img>
+                          <div className="flex flex-col gap-1 p-1.5">
+                            <div className="flex items-center justify-between ">
                               <p className="font-bold">Generate personalized job descriptions based on pas account data.
                               </p>
-                              <p className="text-primary"><IoClose /></p>
+                              {/* <p className="text-primary"><IoClose /></p> */}
                             </div>
                             <p className="text-gray-400">When you generate with Al, we look for similar jobs you've created in the past and use he data to create content that's
                               impactful, accurate, and personalized to your company
                             </p>
                           </div>
                         </div>
-                      </Card>
+                        </div>
                       <div
                         style={{
                           display: "flex",
@@ -1382,7 +1397,7 @@ const CreatejobTemp = ({
                           placeholder={t(
                             "Enter Description "
                           )}
-                          required={true}
+                          
                           hideBorder={true}
                           initialValue={content}
                           //  change={(e)=>{
@@ -1390,6 +1405,7 @@ const CreatejobTemp = ({
                           //  }}
                           error={formik.errors.jobDescription}
                           onChange={handleEditorChange}
+                          loader={loader}
                         />
                         {/* <TextArea
                                              title={t("Requirement")}
@@ -1803,14 +1819,16 @@ icondropDown={true}
                                       cursor: "pointer",
                                     }}
                                   /> */}
-                                    <MdDelete
-                                      style={{
-                                        width: "18px",
-                                        height: "18px",
-                                        cursor: "pointer",
-                                      }}
-                                      onClick={() => handleDeleteCondition(index)}
-                                    />
+                                    <Tooltip placement="top" title={"Delete"}>
+                                      <RiDeleteBinLine className="text-gray-400"
+                                        style={{
+                                          width: "18px",
+                                          height: "18px",
+                                          cursor: "pointer",
+                                        }}
+                                        onClick={() => handleDeleteCondition(index)}
+                                      />
+                                    </Tooltip>
                                   </div>
                                 </div>
                               </div>
@@ -1863,17 +1881,19 @@ icondropDown={true}
                                           "MultipleChoice",
                                           "Checkboxes",
                                         ].includes(field.key) && (
-                                            <div className="ml-2">
-                                              <MdDelete
-                                                onClick={() =>
-                                                  handleDeleteField(
-                                                    index,
-                                                    fieldIndex
-                                                  )
-                                                }
-                                                className="cursor-pointer text-red-500"
-                                              />
-                                            </div>
+                                            <Tooltip placement="top" title={"Delete"}>
+                                              <div className="ml-2">
+                                                <MdDelete
+                                                  onClick={() =>
+                                                    handleDeleteField(
+                                                      index,
+                                                      fieldIndex
+                                                    )
+                                                  }
+                                                  className="cursor-pointer text-red-500"
+                                                />
+                                              </div>
+                                            </Tooltip>
                                           )}
                                       </div>
                                     )
@@ -1887,19 +1907,21 @@ icondropDown={true}
                                     ].includes(
                                       condition.answerMetaData[0]?.key
                                     ) && (
-                                        <CgAdd
-                                          onClick={() =>
-                                            handleAddField(
-                                              index,
-                                              condition.answerMetaData[0]?.key
-                                            )
-                                          }
-                                          style={{
-                                            width: "18px",
-                                            height: "18px",
-                                            cursor: "pointer",
-                                          }}
-                                        />
+                                        <Tooltip placement="top" title={"Add new"}>
+                                          <CgAdd
+                                            onClick={() =>
+                                              handleAddField(
+                                                index,
+                                                condition.answerMetaData[0]?.key
+                                              )
+                                            }
+                                            style={{
+                                              width: "18px",
+                                              height: "18px",
+                                              cursor: "pointer",
+                                            }}
+                                          />
+                                        </Tooltip>
                                       )}
                                   </div>
                                 </>
@@ -1946,38 +1968,38 @@ icondropDown={true}
         </Card>
       ))}
                 */}
-                      <Radio.Group
-                        onChange={(e) => {
-                          setSelectedWorkFlowId(e.target.value);
-                          setPresentage(2.4);
-                        }}
-                        value={selectedWorkFlowId}
-                      >
-                        {Stages.map((each) => (
-                          <div key={each.workFlowId} className={`  relative p-2.5  mt-6 border rounded-md ${selectedWorkFlowId === each.workFlowId ? 'bg-[#F2F0FD]  border-[#690CE7]' : ''}`}  >
-                            {/* <title={<span className="no-underline">{each.workFlowName}</span>}> */}
-                              {/* <h6 className="h6 mt">{each.workFlowName}</h6> */}
-                              <h6 className="h6 mb-4"> {each.workFlowName}  </h6>
-                           
-                            <div className="">
-                            <Jobcardcopy options={each.stages}  selectable={false} firstCardSelectable={false}/>
-                            </div>
-                            <div
-                              style={{
-                                position: "absolute",
-                                top: 0,
-                                right: 0,
-                                padding: "8px",
-                              }}
-                            >
-                             
-                              <Radio
-                                value={each.workFlowId || selectedWorkFlowId}
-                              ></Radio>
-                            </div>
+                    <Radio.Group
+                      onChange={(e) => {
+                        setSelectedWorkFlowId(e.target.value);
+                        setPresentage(2.4);
+                      }}
+                      value={selectedWorkFlowId}
+                    >
+                      {Stages.map((each) => (
+                        <div key={each.workFlowId} className={`  relative p-2.5  mt-6 border rounded-md ${selectedWorkFlowId === each.workFlowId ? 'bg-[#F2F0FD]  border-[#690CE7]' : ''}`}  >
+                          {/* <title={<span className="no-underline">{each.workFlowName}</span>}> */}
+                          {/* <h6 className="h6 mt">{each.workFlowName}</h6> */}
+                          <h6 className="h6 mb-4"> {each.workFlowName}  </h6>
+
+                          <div className="">
+                            <Jobcardcopy options={each.stages} selectable={false} firstCardSelectable={false} />
                           </div>
-                        ))}
-                      </Radio.Group>
+                          <div
+                            style={{
+                              position: "absolute",
+                              top: 0,
+                              right: 0,
+                              padding: "8px",
+                            }}
+                          >
+
+                            <Radio
+                              value={each.workFlowId || selectedWorkFlowId}
+                            ></Radio>
+                          </div>
+                        </div>
+                      ))}
+                    </Radio.Group>
                   </Accordion>
                 </FlexCol>
               ) : null}

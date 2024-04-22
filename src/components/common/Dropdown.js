@@ -40,14 +40,7 @@ export default function Dropdown({
     <div className={`${className} flex flex-col gap-2`}>
       {title && (
         <div className="flex flex-col gap-0.5">
-            {/* <div className="flex dark:text-white gap-3">
-              <label htmlFor="" className="text-xs font-medium 2xl:text-sm ">
-                {title}
-              </label>
-
-              {required && <FaAsterisk className="text-[7px] text-rose-600" />}
-            </div> */}
-            <div className="flex items-center dark:text-white gap-0.5">
+          <div className="flex dark:text-white gap-1.5">
             <label htmlFor="" className="text-xs font-medium 2xl:text-sm ">
               {title}
             </label>
@@ -170,5 +163,6 @@ export default function Dropdown({
         </p>
       )}
     </div>
+
   );
 }

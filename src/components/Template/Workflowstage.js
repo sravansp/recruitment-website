@@ -60,6 +60,7 @@ const Workflowstage = ({ open = "", close = () => { }, inputshow = false, isUpda
   const [presentage, setPresentage] = useState(0);
   const [stageName, setStageName] = useState('');
   const [insertedId, setInsertedId] = useState("")
+  const[stageError,setStageError] = useState("")
   const [stages, setstages] = useState(
     [
 
@@ -90,6 +91,15 @@ const Workflowstage = ({ open = "", close = () => { }, inputshow = false, isUpda
   }, [stages])
 
   const handleAddStageClick = () => {
+   
+    if(!stageName){
+      setStageError('Stage Name is required.')
+    }else{
+      setStageError('')
+    }
+   
+   
+   
     if (!stageName.trim()) {
       // If stageName is empty or contains only whitespace, return without adding a stage
       return;
@@ -171,12 +181,17 @@ const Workflowstage = ({ open = "", close = () => { }, inputshow = false, isUpda
     enableReinitialize: true,
     validateOnChange: false,
     validationSchema: Yup.object().shape({
-      workFlowName : Yup.string().required('WorkFlow Name is required '),
-      description :  Yup.string().required('Description  is required '),
+      workFlowName: Yup.string().required('WorkFlow Name is required '),
+      description: Yup.string().required('Description  is required '),
 
     }),
     onSubmit: async (values, { setSubmitting }) => {
       try {
+        if (stages.length===0) {
+          setIsModalVisible(true);
+          return;
+        }
+
         if (updateId) {
           const formattedData = stages.map((item) => ({
             stageId: item.id, // Add stageId property
@@ -186,6 +201,7 @@ const Workflowstage = ({ open = "", close = () => { }, inputshow = false, isUpda
             workFlowId: updateId,  // Assuming stageRules is available in item
             createdBy: 9,
           }));
+           
           const response = await updateWorkFlowWithStages({
             RecruitmentWorkFlow: {
               workFlowId: updateId,
@@ -245,12 +261,17 @@ const Workflowstage = ({ open = "", close = () => { }, inputshow = false, isUpda
                 refresh();
               }, 1500);
             } else if (response2.status === 500) {
-              openNotification("error", "error", response2.message.replace(/<br\/>/g, '\n'));
+              openNotification("error", "error", response2.message);
             }
+          }else if (response.status === 500){
+            openNotification("error", "error", response.message.replace(/<br\/>/g, '\n'));
+          }
+          else if (response.status === 500) {
+            openNotification("error", "Failed", response.message);
           }
         }
       } catch (error) {
-        console.log(error);
+        openNotification("error", "error", "WorkFlow Template Name Already Exist");
       }
       setSubmitting(false);
     },
@@ -265,7 +286,7 @@ const Workflowstage = ({ open = "", close = () => { }, inputshow = false, isUpda
       const response = await getRecruitmentWorkFlowById({ id })
       console.log(response)
       setworkFlowsatges(response.result)
-
+      console.log({"stageName":stageName})
       if (response.result.length > 0) {
         const firstJob = response.result[0];
 
@@ -325,11 +346,11 @@ const Workflowstage = ({ open = "", close = () => { }, inputshow = false, isUpda
 
       header={[
         !updateId
-          ? t("Create a Worklow Template")
-          : t("Update Worklow stages"),
+          ? t("Create a Workflow Template")
+          : t("Update Workflow stages"),
         !updateId
-          ? t("Create a Worklow Template")
-          : t("Update Worklow stages"),]}
+          ? t("Create a Workflow Template")
+          : t("Update Workflow stages"),]}
 
       //  headerRight={
       //    <div className="flex items-center gap-10">
@@ -396,12 +417,13 @@ const Workflowstage = ({ open = "", close = () => { }, inputshow = false, isUpda
               <FormInput
                 title={"Workflow Name"}
                 placeholder={"Type here..."}
-                className="!text-[#344054] w-96"
+                className="!text-[#344054] "
                 change={(e) => {
                   formik.setFieldValue('workFlowName', e)
                 }}
                 value={formik.values.workFlowName}
                 error={formik.errors.workFlowName}
+                required={true}
               />
 
 
@@ -416,6 +438,7 @@ const Workflowstage = ({ open = "", close = () => { }, inputshow = false, isUpda
                 }}
                 value={formik.values.description}
                 error={formik.errors.description}
+                required={true}
               />
             </div>
             <div className="w-full sm:w-[545px] grid grid-cols-1 gap-4">
@@ -459,9 +482,9 @@ const Workflowstage = ({ open = "", close = () => { }, inputshow = false, isUpda
                         </Tooltip>
                       </div>
                       <div className='p-2 hover:bg-slate-300 rounded-md' onClick={() => handleCopy(stage.stageName)} >
-                        <Tooltip placement="top" title={"Copy"} >
+                        {/* <Tooltip placement="top" title={"Copy"} >
                           <PiCopySimple className='text-gray-500' size={16} />
-                        </Tooltip>
+                        </Tooltip> */}
                       </div>
                       <div className='p-2 hover:bg-slate-300 rounded-md' onClick={() => handleDeleteStage(stage.id)}>
                         <Tooltip placement="top" color={"red"} title={"Delete"} >
@@ -521,6 +544,8 @@ const Workflowstage = ({ open = "", close = () => { }, inputshow = false, isUpda
                     setSelectedStageName(e)
 
                   }}
+                  error={stageError}
+                  required={true}
                 />
               </div>
               <AddMore name="Add stage rule" className="text-black" />
