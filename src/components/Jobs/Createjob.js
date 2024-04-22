@@ -555,7 +555,7 @@ const Createjob = ({
       // console.log("Department List:", departmentList);
       // console.log("Is Update:", isUpdate);
     } catch (error) {
-      console.error("Error fetching department list:", error);
+      // console.error("Error fetching department list:", error);
     }
   };
   useEffect(() => {
