@@ -12,6 +12,7 @@ import {
   List,
   Radio,
   Space,
+  Tooltip,
   notification,
 } from "antd";
 import Accordion from "../common/Accordion";
@@ -120,21 +121,21 @@ const Createjob = ({
   const [selectedDivs, setSelectedDivs] = useState([]);
   const [selectedemployee, setselectedemployee] = useState([])
   const [selectedUserIds, setSelectedUserIds] = useState([])
-  const [JobDescriptionList,setJobDescriptionList]=useState([])
-  const [jobTitle,setJobTitle] =useState("")
-  
+  const [JobDescriptionList, setJobDescriptionList] = useState([])
+  const [jobTitle, setJobTitle] = useState("")
+
   // console.log(updateId)
   const handleSelectCard = (selectedStageId) => {
     // Handle the selected stageId in your parent component
     console.log("Selected Stage ID:", selectedStageId);
-    
+
   };
 
   const [loader, setloader] = useState(false)
-  
+
   const handleGenerateWithAI = async () => {
     setloader(true); // Show loader when request is initiated
-     // You may already have this state variable
+    // You may already have this state variable
 
     try {
       const requestBody = {
@@ -411,7 +412,7 @@ const Createjob = ({
         !formik1.values.salaryRangeFrom ||
         !formik1.values.salaryRangeTo ||
         !formik1.values.salaryCurrency ||
-        !formik1.values.jobType||
+        !formik1.values.jobType ||
         !content
       ) {
         formik1.setFieldError('companyId', !formik1.values.companyId ? 'Company  is required' : '');
@@ -427,7 +428,7 @@ const Createjob = ({
         formik1.setFieldError('salaryCurrency', !formik1.values.salaryCurrency ? 'Salary Currency is required' : '');
         formik1.setFieldError('jobType', !formik1.values.jobType ? 'JobType is required' : '');
         formik1.setFieldError('education', !formik1.values.education ? 'Education is required' : '');
-        formik1.setFieldError('jobDescription', !content ?'jobDescription is required' : '')
+        formik1.setFieldError('jobDescription', !content ? 'jobDescription is required' : '')
         return; // Exit early if any field is empty
       }
       try {
@@ -667,7 +668,7 @@ const Createjob = ({
           openNotification("success", "Successful", response.message);
           setPresentage(2);
           setNextStep(nextStep + 1);
-         
+
         } else {
           // Handle other status codes or error messages here
           openNotification("error", "Error", "Failed to save data.");
@@ -961,12 +962,12 @@ const Createjob = ({
     try {
       const response = await getAllRecruitmentWorkFlows();
       // console.log("Response:", response);
-     
+
       const stagesByWorkflowId = response.result.map((item) => ({
         workFlowId: item.workFlowId,
-        workFlowName:item.workFlowName,
+        workFlowName: item.workFlowName,
         stages: item.recruitmentWorkFlowStages.map((stage) => ({
-          id:stage.stageId,
+          id: stage.stageId,
           title: stage.stageName,
 
         })),
@@ -977,9 +978,9 @@ const Createjob = ({
       console.error("Error:", error);
     }
   };
-  useEffect(()=>{
+  useEffect(() => {
     fetchData()
-  },[])
+  }, [])
 
   useEffect(() => {
     // console.log("Updated Workflow:", Stages);
@@ -1244,8 +1245,8 @@ const Createjob = ({
           openNotification("success", "Successful", response.message);
           setPresentage(3.4);
           // Add a delay before closing the notification
-         // Adjust the delay time as needed
-         setNextStep(nextStep+1)
+          // Adjust the delay time as needed
+          setNextStep(nextStep + 1)
         } else if (response.status === 500) {
           openNotification("error", response.message);
         }
@@ -1306,7 +1307,7 @@ const Createjob = ({
           }));
         setEvaluation(formattedCustomFields);
         setSelectedWorkFlowId(firstJob.workFlowId);
-       
+
         formik.setFieldValue("headline", firstJob.jobApplicationFormData.headline)
         formik.setFieldValue("phone", firstJob.jobApplicationFormData.phone)
         formik.setFieldValue("address", firstJob.jobApplicationFormData.address)
@@ -1371,7 +1372,7 @@ const Createjob = ({
           borderRadius: 0,
           borderTopLeftRadius: "0px !important",
           borderBottomLeftRadius: 0,
-          
+
         }}
         wrapperBodyStyle={{ backgroundColor: "#F8FAFC" }}
         close={(e) => {
@@ -1469,32 +1470,32 @@ const Createjob = ({
                           // required={true}
                           />
 
-                            <Dropdown
-                              title={t("Choose Company")}
-                              placeholder={t("Choose Company")}
-                              options={company}
-                              value={formik1.values.companyId}
-                              error={formik1.errors.companyId}
-                              required={true}
-                              change={(e) => {
-                                formik1.setFieldValue("companyId", e);
-                                getDepartmentList(e);
-                              }}
-                            />
-                          </div>
-                        )}
-                        <div className="grid grid-cols-3 gap-4">
-                          <FormInput
-                            title={t("Job Title")}
-                            placeholder={t("Example : Marketing Manager")}
+                          <Dropdown
+                            title={t("Choose Company")}
+                            placeholder={t("Choose Company")}
+                            options={company}
+                            value={formik1.values.companyId}
+                            error={formik1.errors.companyId}
                             required={true}
                             change={(e) => {
-                              formik1.setFieldValue("jobTitle", e);
-                              setJobTitle(e)
+                              formik1.setFieldValue("companyId", e);
+                              getDepartmentList(e);
                             }}
-                            value={formik1.values.jobTitle}
-                            error={formik1.errors.jobTitle}
                           />
+                        </div>
+                      )}
+                      <div className="grid grid-cols-3 gap-4">
+                        <FormInput
+                          title={t("Job Title")}
+                          placeholder={t("Example : Marketing Manager")}
+                          required={true}
+                          change={(e) => {
+                            formik1.setFieldValue("jobTitle", e);
+                            setJobTitle(e)
+                          }}
+                          value={formik1.values.jobTitle}
+                          error={formik1.errors.jobTitle}
+                        />
 
                         <Dropdown
                           title={t("Department")}
@@ -1764,17 +1765,20 @@ const Createjob = ({
                           }}
                           required={true}
                         />
-                        <div className="flex flex-col gap-1">
+                        <div className="flex items center gap-2">
                           <CheckBoxInput
+                            title={"View Public"}
+                            // titleRight={true}
                             change={(e) => {
                               formik1.setFieldValue('isSalaryPublic', e)
                               // console.log(e)
                             }}
                             value={formik1.values.isSalaryPublic}
-                            title={"View Public"}
-                            titleRight={true}
                           />
-                          <p className="text-xs text-gray-500">Given Salary will be visible for public</p>
+                          <div className="flex flex-col gap-1 pt-2">
+                            <p className="text-sm dark:text-white">View Public</p>
+                            <p className="text-xs text-gray-500">Given Salary will be visible for public</p>
+                          </div>
                         </div>
                       </div>
                     </Accordion>
@@ -1793,7 +1797,7 @@ const Createjob = ({
                       {/* <Card className="bg-primaryalpha/5"> */}
                       <div className="border rounded-md bg-primaryalpha/5">
                         <div className="flex items-center px-1.5  ">
-                          <img src={AI_Text} alt=''className="border rounded-md"></img>
+                          <img src={AI_Text} alt='' className="border rounded-md"></img>
                           <div className="flex flex-col gap-1 p-1.5">
                             <div className="flex items-center justify-between ">
                               <p className="font-bold">Generate personalized job descriptions based on pas account data.
@@ -1805,7 +1809,7 @@ const Createjob = ({
                             </p>
                           </div>
                         </div>
-                        </div>
+                      </div>
                       {/* </Card> */}
                       <div style={{ display: 'flex', justifyContent: 'flex-end', gap: '16px' }}>
 
@@ -1834,7 +1838,7 @@ const Createjob = ({
                                              />
                                              </div> */}
                       <div className="pt-4">
-                        
+
                         <TextEditor
                           initialValue={content}
                           onChange={handleEditorChange}
@@ -1879,7 +1883,7 @@ const Createjob = ({
                   <FlexCol>
                     <div className="rounded-md borderb">
                       <Accordion
-                        title={"ApplicationForm "}
+                        title={"Application Form "}
                         className="Text_area"
                         padding={true}
                         toggleBtn={false}
@@ -1898,7 +1902,7 @@ const Createjob = ({
                               (option) => option.label === t("Mandatory")
                             )}
                             title={""}
-                            
+
                             defaultValue={1}
                           >
                             <Radio.Button value={1}>Mandatory</Radio.Button>
@@ -1915,7 +1919,7 @@ const Createjob = ({
                               (option) => option.label === t("Mandatory")
                             )}
                             title={""}
-                           
+
                             defaultValue={1}
                           >
                             <Radio.Button value={1}>Mandatory</Radio.Button>
@@ -1933,7 +1937,7 @@ const Createjob = ({
                             change={(e) => {
                               formik.setFieldValue("headline", e);
                             }}
-                            defaultValue={formik.values.headline }
+                            defaultValue={formik.values.headline}
                           >
                             <Radio.Button value={1}>Mandatory</Radio.Button>
                             <Radio.Button value={2}>Optional</Radio.Button>
@@ -2171,16 +2175,22 @@ const Createjob = ({
 
                                 <div style={{ display: 'flex', alignItems: 'center', gap: '15px' }}>
                                   <p>Mandatory</p>
-                                  <ToggleBtn />
+                                  <Tooltip placement="top" title={"Active/Inactive"}>
+                                    <ToggleBtn />
+                                  </Tooltip>
                                 </div>
                                 <div style={{ display: 'flex', alignItems: 'center', gap: '15px' }}>
-                                  <MdOutlineFileCopy
-                                    style={{ width: '18px', height: '18px', cursor: 'pointer' }}
-                                  />
-                                  <MdDelete
-                                    style={{ width: '18px', height: '18px', cursor: 'pointer' }}
-                                    onClick={() => handleDeleteCondition(index)}
-                                  />
+                                  <Tooltip placement="top" title={"Copy"}>
+                                    <MdOutlineFileCopy
+                                      style={{ width: '18px', height: '18px', cursor: 'pointer' }}
+                                    />
+                                  </Tooltip>
+                                  <Tooltip placement="top" color={"red"} title={"Delete"}>
+                                    <MdDelete
+                                      style={{ width: '18px', height: '18px', cursor: 'pointer' }}
+                                      onClick={() => handleDeleteCondition(index)}
+                                    />
+                                  </Tooltip>
                                 </div>
                               </div>
                             </div>
@@ -2273,11 +2283,11 @@ const Createjob = ({
                         {Stages.map((each) => (
                           <div key={each.workFlowId} className={`  relative p-2.5  mt-6 border rounded-md ${selectedWorkFlowId === each.workFlowId ? 'bg-[#F2F0FD]  border-[#6A4BFC]' : ''}`}  >
                             {/* <title={<span className="no-underline">{each.workFlowName}</span>}> */}
-                              {/* <h6 className="h6 mt">{each.workFlowName}</h6> */}
-                              <h6 className="h6 mb-4"> {each.workFlowName}  </h6>
-                           
+                            {/* <h6 className="h6 mt">{each.workFlowName}</h6> */}
+                            <h6 className="h6 mb-4"> {each.workFlowName}  </h6>
+
                             <div className="">
-                            <Jobcardcopy options={each.stages}  selectable={false} firstCardSelectable={false}/>
+                              <Jobcardcopy options={each.stages} selectable={false} firstCardSelectable={false} />
                             </div>
                             <div
                               style={{
@@ -2287,7 +2297,7 @@ const Createjob = ({
                                 padding: "8px",
                               }}
                             >
-                             
+
                               <Radio
                                 value={each.workFlowId || selectedWorkFlowId}
                               ></Radio>
@@ -2398,22 +2408,22 @@ const Createjob = ({
                               <td>
                                 <div className="flex items-center gap-4 py-2">
                                   {/* Assuming you have an 'image' property in your employee object */}
-                                
-    <div className="size-10 2xl:size-11 rounded-full overflow-hidden">
-    {employee.userimage ? (
-        <img
-            src={employee.userimage}
-            alt={`${employee.username} Avatar`}
-           className="object-cover object-center w-full h-full"
-        />
-    ) : (
-        <img
-            src={noImg}  // replace with your default image path
-            alt="Default Avatar"
-         className="object-cover object-center w-full h-full"
-        />
-    )}
-    </div>
+
+                                  <div className="size-10 2xl:size-11 rounded-full overflow-hidden">
+                                    {employee.userimage ? (
+                                      <img
+                                        src={employee.userimage}
+                                        alt={`${employee.username} Avatar`}
+                                        className="object-cover object-center w-full h-full"
+                                      />
+                                    ) : (
+                                      <img
+                                        src={noImg}  // replace with your default image path
+                                        alt="Default Avatar"
+                                        className="object-cover object-center w-full h-full"
+                                      />
+                                    )}
+                                  </div>
                                   <div className="flex flex-col">
                                     <div class="text-gray-900 text-sm font-semibold font-['Inter'] leading-tight">
                                       {employee.username}
