@@ -123,7 +123,7 @@ const Createjob = ({
   const [JobDescriptionList,setJobDescriptionList]=useState([])
   const [jobTitle,setJobTitle] =useState("")
   
-  console.log(updateId)
+  // console.log(updateId)
   const handleSelectCard = (selectedStageId) => {
     // Handle the selected stageId in your parent component
     console.log("Selected Stage ID:", selectedStageId);
@@ -154,7 +154,7 @@ const Createjob = ({
       if (response.ok) {
         const data = await response.json();
         // Handle the response data as needed
-        console.log(data);
+        // console.log(data);
         setContent(data.receivedData);
       } else {
         console.error("Failed to fetch data");
@@ -168,14 +168,14 @@ const Createjob = ({
   const getAllJobdescription = async () => {
     try {
       const data = await getAllRecruitmentJobDescriptionTemplates()
-      console.log(data)
+      // console.log(data)
       // 
       setJobDescriptionList(data.result.map((each) => ({
         label: each.descriptionTemplateName,
         value: each.descriptionTemplateId
       })))
     } catch (error) {
-      console.log(error)
+      // console.log(error)
     }
   }
 
@@ -183,13 +183,13 @@ const Createjob = ({
     const id = decriptionId
     try {
       const response = await getRecruitmentJobDescriptionTemplateById({ id: id })
-      console.log(response)
+      // console.log(response)
 
       setContent(response.result[0].descriptionTemplate);
 
 
     } catch (error) {
-      console.log(error)
+      // console.log(error)
     }
   }
   useEffect(() => {
@@ -220,7 +220,7 @@ const Createjob = ({
   const handleEditorChange = (content) => {
     setContent(content);
   };
-  console.log('Username:', userid);
+  // console.log('Username:', userid);
   const [api, contextHolder] = notification.useNotification();
   const openNotification = (type, message, description) => {
     api[type]({
@@ -298,7 +298,7 @@ const Createjob = ({
   const [DraftJobs, setDraftJobs] = useState([]);
 
   const getDraftjobs = async () => {
-    console.log(UpdateId);
+    // console.log(UpdateId);
     const id = UpdateId;
     try {
       const response = await getRecruitmentJobById({ id });
@@ -330,18 +330,18 @@ const Createjob = ({
 
 
 
-        console.log(firstJob.companyId);
-        console.log(response);
+        // console.log(firstJob.companyId);
+        // console.log(response);
       } else {
         console.error("No data found in the response.");
       }
     } catch (error) {
-      console.log(error);
+      // console.log(error);
     }
   };
   useEffect(() => {
     getDraftjobs();
-    console.log(DraftJobs);
+    // console.log(DraftJobs);
   }, [UpdateId]);
   const formik1 = useFormik({
     initialValues: {
@@ -431,8 +431,8 @@ const Createjob = ({
         return; // Exit early if any field is empty
       }
       try {
-        console.log(e);
-        console.log(jobId);
+        // console.log(e);
+        // console.log(jobId);
 
         // Check if jobId or UpdateId is present
         if ((!jobId || jobId.length === 0) && !UpdateId) {
@@ -465,9 +465,9 @@ const Createjob = ({
           });
           setJobId(response.result.insertedId);
 
-          console.log(response);
+          // console.log(response);
 
-          console.log(jobId);
+          // console.log(jobId);
 
           if (response.status === 200) {
             openNotification("success", "Successful", response.message);
@@ -509,7 +509,7 @@ const Createjob = ({
             evaluationTemplateId: e.evaluationTemplateId || null,
           });
 
-          console.log(response);
+          // console.log(response);
 
           if (response.status === 200) {
             openNotification("success", "Successful", "success");
@@ -535,7 +535,7 @@ const Createjob = ({
   });
 
   useEffect(() => {
-    console.log("Job ID:", jobId);
+    // console.log("Job ID:", jobId);
   }, [jobId]);
   const [departmentList, setDepartmentList] = useState();
   const [company, setCompany] = useState([]);
@@ -552,8 +552,8 @@ const Createjob = ({
         }))
       );
 
-      console.log("Department List:", departmentList);
-      console.log("Is Update:", isUpdate);
+      // console.log("Department List:", departmentList);
+      // console.log("Is Update:", isUpdate);
     } catch (error) {
       console.error("Error fetching department list:", error);
     }
@@ -589,7 +589,7 @@ const Createjob = ({
 
     onSubmit: async (e) => {
       try {
-        console.log(e);
+        // console.log(e);
         const updatedCustomFields = evaluation.map((condition) => ({
           question: condition.question,
           answer_type: condition.answer_type,
@@ -643,7 +643,7 @@ const Createjob = ({
           return;
         }
 
-        console.log(UpdateId);
+        // console.log(UpdateId);
         // if (jobId){
         const response =
           await insertOrUpdateRecruitmentJobApplicationFormSettingWithJobId({
@@ -662,7 +662,7 @@ const Createjob = ({
 
             customFields: updatedCustomFields,
           });
-        console.log(response);
+        // console.log(response);
         if (response && response.status === 200) {
           openNotification("success", "Successful", response.message);
           setPresentage(2);
@@ -708,7 +708,7 @@ const Createjob = ({
         // }
       } catch (error) {
         // Handle the error here
-        console.error("Error:", error);
+        // console.error("Error:", error);
         // openNotification("error", "Failed..");
       }
     },
@@ -755,7 +755,7 @@ const Createjob = ({
     });
   };
   const handleDeleteField = (conditionIndex, fieldIndex) => {
-    console.log("Deleting field", conditionIndex, fieldIndex);
+    // console.log("Deleting field", conditionIndex, fieldIndex);
 
     setEvaluation((prevEvaluation) =>
       prevEvaluation.map((prevCondition, i) =>
@@ -880,13 +880,13 @@ const Createjob = ({
   const selectedCount = selectedDivs.length;
 
   useEffect(() => {
-    console.log(nextStep, activeBtn);
+    // console.log(nextStep, activeBtn);
     if (activeBtn < 4 && activeBtn !== nextStep) {
       /// && activeBtn !== nextStep
       setActiveBtn(1 + activeBtn);
       setNextStep(nextStep);
-      console.log(1 + activeBtn);
-      console.log(steps?.[activeBtn + 1].data, "data");
+      // console.log(1 + activeBtn);
+      // console.log(steps?.[activeBtn + 1].data, "data");
       setActiveBtnValue(steps?.[activeBtn + 1].data);
     }
   }, [nextStep]);
@@ -904,15 +904,15 @@ const Createjob = ({
       );
       // console.log(result.data);
     } catch (error) {
-      console.log(error);
+      // console.log(error);
     }
-    console.log("company", company);
+    // console.log("company", company);
   };
   useEffect(() => {
     // switch (assignBtnName) {
     //   default:
     getCompany();
-    console.log("value", company);
+    // console.log("value", company);
   }, []);
   const handleCompanyChange = (selectedOption) => {
     setSelectedCompany(selectedOption);
@@ -960,7 +960,7 @@ const Createjob = ({
   const fetchData = async () => {
     try {
       const response = await getAllRecruitmentWorkFlows();
-      console.log("Response:", response);
+      // console.log("Response:", response);
      
       const stagesByWorkflowId = response.result.map((item) => ({
         workFlowId: item.workFlowId,
@@ -982,7 +982,7 @@ const Createjob = ({
   },[])
 
   useEffect(() => {
-    console.log("Updated Workflow:", Stages);
+    // console.log("Updated Workflow:", Stages);
   }, [Stages]);
 
   const formik2 = useFormik({
@@ -997,7 +997,7 @@ const Createjob = ({
       const modifiedBy = userid;
 
       try {
-        console.log(e);
+        // console.log(e);
         const response = await updateRecruitmentJob({
           id: parseInt(idToUpdate),
           workFlowId: parseInt(workFlowId),
@@ -1005,7 +1005,7 @@ const Createjob = ({
         });
 
         // Handle the response if needed
-        console.log("Response:", response);
+        // console.log("Response:", response);
         if (response.status === 200) {
           openNotification("success", "Successful", response.message);
           setPresentage(3.4);
@@ -1030,10 +1030,10 @@ const Createjob = ({
     },
     onSubmit: async (e) => {
       const modifiedBy = userid;
-      console.log(modifiedBy);
+      // console.log(modifiedBy);
 
       try {
-        console.log(e);
+        // console.log(e);
         const workFlowId = selectedWorkFlowId;
         const response = await updateRecruitmentJob({
           id: jobId || updateId,
@@ -1045,7 +1045,7 @@ const Createjob = ({
         });
 
         // Handle the response if needed
-        console.log("Response:", response);
+        // console.log("Response:", response);
         if (response.status === 200) {
           openNotification("success", "Successful", response.message);
 
@@ -1069,7 +1069,7 @@ const Createjob = ({
     try {
       const response = await getAllRecruitmentJobTemplates();
 
-      console.log(response);
+      // console.log(response);
       setjobtemplate(
         response.result.map((each) => ({
           label: each.jobTitle,
@@ -1080,13 +1080,13 @@ const Createjob = ({
   };
   useEffect(() => {
     getJobtemp();
-    console.log(jobtemplate);
+    // console.log(jobtemplate);
   }, []);
   const [evalutaionTem, setEvalutaionTem] = useState([]);
   const getEvaluationtem = async () => {
     try {
       const response = await getAllRecruitmentEvaluationTemplates();
-      console.log(response);
+      // console.log(response);
       setEvalutaionTem(
         response.result.map((each) => ({
           label: each.evaluationTemplateName,
@@ -1094,19 +1094,19 @@ const Createjob = ({
         }))
       );
     } catch (error) {
-      console.log(error);
+      // console.log(error);
     }
   };
   useEffect(() => {
     getEvaluationtem();
-    console.log(evalutaionTem);
+    // console.log(evalutaionTem);
   }, []);
 
   const [questionareTem, setQuestionare] = useState([]);
   const getQuestionare = async () => {
     try {
       const response = await getAllRecruitmentQuestionnaireTemplates();
-      console.log(response);
+      // console.log(response);
       setQuestionare(
         response.result.map((each) => ({
           label: each.questionnaireTemplateName,
@@ -1114,12 +1114,12 @@ const Createjob = ({
         }))
       );
     } catch (error) {
-      console.log(error);
+      // console.log(error);
     }
   };
   useEffect(() => {
     getQuestionare();
-    console.log(evalutaionTem);
+    // console.log(evalutaionTem);
   }, []);
 
   const handleButtonClick = async (e) => {
@@ -1127,7 +1127,7 @@ const Createjob = ({
       case "Jobdetails":
         // Handle submission for Configuration
 
-        console.log("valuegtgggggggggggg");
+        // console.log("valuegtgggggggggggg");
         formik1.handleSubmit();
 
         break;
@@ -1196,7 +1196,7 @@ const Createjob = ({
     // const jobId=1;
     try {
       const response = await getAllRecruitmentUsers();
-      console.log(response);
+      // console.log(response);
       setemployeeList(
         response.result.map((item) => ({
           username: item.userName,
@@ -1213,7 +1213,7 @@ const Createjob = ({
   };
   useEffect(() => {
     AllRecruitmentJobTeamMembers();
-    console.log(employeeList);
+    // console.log(employeeList);
   }, []);
   const formik4 = useFormik({
     initialValues: {
@@ -1225,21 +1225,21 @@ const Createjob = ({
     onSubmit: async (e) => {
       const idToUpdate = jobId || UpdateId;
       const createdBy = userid;
-      console.log(createdBy);
+      // console.log(createdBy);
       const dataToSave = selectedemployee.map((employee) => ({
         jobId: idToUpdate, // Assuming jobId is present in the employee object
         userId: employee.userId,
         roleId: employee.roleId,
         createdBy: createdBy,
       }));
-      console.log(dataToSave);
+      // console.log(dataToSave);
       try {
-        console.log(e);
+        // console.log(e);
 
         const response = await saveRecruitmentJobTeamMemberBatch(dataToSave);
 
         // Handle the response if needed
-        console.log("Response:", response);
+        // console.log("Response:", response);
         if (response.status === 200) {
           openNotification("success", "Successful", response.message);
           setPresentage(3.4);
@@ -1266,9 +1266,9 @@ const Createjob = ({
   const getjobById = async (id) => {
     try {
       const response = await getRecruitmentJobTemplateById(id);
-      console.log(response);
+      // console.log(response);
 
-      console.log(id);
+      // console.log(id);
       if (response.result.length > 0) {
         const firstJob = response.result[0];
 
@@ -1316,19 +1316,19 @@ const Createjob = ({
         formik.setFieldValue("summary", firstJob.jobApplicationFormData.summary)
         formik.setFieldValue("resume", firstJob.jobApplicationFormData.resume)
         formik.setFieldValue("coverLetter", firstJob.jobApplicationFormData.coverLetter)
-        console.log(firstJob.companyId);
+        // console.log(firstJob.companyId);
       } else {
         console.error("No data found in the response.");
       }
     } catch (error) {
-      console.log(error);
+      // console.log(error);
     }
   };
 
   useEffect(() => {
     if (selectedJobId) {
       getjobById(selectedJobId);
-      console.log(selectedJobId);
+      // console.log(selectedJobId);
     }
   }, [selectedJobId]);
 
@@ -1407,7 +1407,7 @@ const Createjob = ({
             setActiveBtn(activeBtn - 1);
             setNextStep(nextStep - 1);
             setActiveBtnValue(steps?.[activeBtn - 1].data);
-            console.log(activeBtn - 1);
+            // console.log(activeBtn - 1);
           }
           setBtnName("");
         }}
@@ -1634,7 +1634,7 @@ const Createjob = ({
                           error={formik1.errors.requirementType}
                           change={(e) => {
                             formik1.setFieldValue('requirementType', e)
-                            console.log(e)
+                            // console.log(e)
                           }}
                           required={true}
                         />
@@ -1659,7 +1659,7 @@ const Createjob = ({
                           options={JobType}
                           change={(e) => {
                             formik1.setFieldValue('jobType', e)
-                            console.log(e)
+                            // console.log(e)
                           }}
                           value={formik1.values.jobType}
                           error={formik1.errors.jobType}
@@ -1722,7 +1722,7 @@ const Createjob = ({
                           change={(e) => {
                             formik1.setFieldValue('salaryRangeFrom', e);
                             // Validate Salary Range To when Salary Range From changes
-                            console.log(e)
+                            // console.log(e)
 
                           }}
                           value={formik1.values.salaryRangeFrom}
@@ -1768,7 +1768,7 @@ const Createjob = ({
                           <CheckBoxInput
                             change={(e) => {
                               formik1.setFieldValue('isSalaryPublic', e)
-                              console.log(e)
+                              // console.log(e)
                             }}
                             value={formik1.values.isSalaryPublic}
                             title={"View Public"}
@@ -2134,7 +2134,7 @@ const Createjob = ({
                                     : prevCondition
                                   )
                                   );
-                                  console.log(e);
+                                  // console.log(e);
                                 }}
                                 error={errorMessages[index] || ''}
                               />
