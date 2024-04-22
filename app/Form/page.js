@@ -304,7 +304,7 @@ const [yearofstudy,setYearofstudy]=useState("")
 
   useEffect(() => {
     if (closeDrawer) {
-      setCurrentStep(1);
+      setCurrentStep(0);
       setActiveBtn(0);
       setPresentage(0);
     }
