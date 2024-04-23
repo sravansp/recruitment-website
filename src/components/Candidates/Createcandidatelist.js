@@ -259,7 +259,13 @@ export default function Createcandidatelist({ open = "", close = () => { }, file
   useEffect(() => {
     console.log(FormData, "form data")
   }, [])
-
+  const safeWorkMap = (list) =>
+  (list ?? []).flatMap((each) =>
+    (each.field ?? []).map((field) => [
+      field.inputFeild,
+      yup.string().required(`${field.title} is required`),
+    ])
+  );
   const formik3 = useFormik({
     initialValues: {
       ...personWorkExp,
@@ -270,12 +276,13 @@ export default function Createcandidatelist({ open = "", close = () => { }, file
     enableReinitialize: true,
     validateOnChange: false,
     validationSchema: yup.object({
-      jobTitle: yup.string().required("Job Title is required"),
-      location: yup.string().required("Location is required"),
-      companyName: yup.string().required("Company Name is required"),      
-      fromDate: yup.string().required("Date is required"),
-      employmentType: yup.string().required("Employment Type is required"),
-
+      // jobTitle: yup.string().required("Job Title is required"),
+      // location: yup.string().required("Location is required"),
+      // companyName: yup.string().required("Company Name is required"),      
+      // fromDate: yup.string().required("Date is required"),
+      // employmentType: yup.string().required("Employment Type is required"),
+      ...Object.fromEntries(
+        safeWorkMap(workexp))
 
     }),
 
@@ -350,6 +357,13 @@ export default function Createcandidatelist({ open = "", close = () => { }, file
   //   courseType: yup.string().required('Degree is required'),
   //   courseName: yup.string().required('Field of Study is required'),
   // });
+  const safeFlatMap = (list) =>
+    (list ?? []).flatMap((each) =>
+      (each.field ?? []).map((field) => [
+        field.inputName,
+        yup.string().required(`${field.title} is required`),
+      ])
+    );
   const formik = useFormik({
     initialValues: {
       ...personalInfo,
@@ -359,14 +373,16 @@ export default function Createcandidatelist({ open = "", close = () => { }, file
     enableReinitialize: true,
     validateOnChange: false,
     validationSchema: yup.object().shape({
-      institute: yup.string().required('School or University is required'),
-      courseType: yup.string().required('Degree is required'),
-      courseName: yup.string().required('Field of Study is required'),     
-      yearOfStudy: yup.string().required('Year is required'),
-      location: yup.string().required('Location is required'),
+      // institute: yup.string().required('School or University is required'),
+      // courseType: yup.string().required('Degree is required'),
+      // courseName: yup.string().required('Field of Study is required'),     
+      // yearOfStudy: yup.string().required('Year is required'),
+      // location: yup.string().required('Location is required'),
 
-
+      ...Object.fromEntries(
+        safeFlatMap(education))
     }),
+    
 
     onSubmit: async (values) => {
       try {
@@ -942,9 +958,9 @@ export default function Createcandidatelist({ open = "", close = () => { }, file
                               change={(e) => {
                                 formik.setFieldValue(each.inputName, e);
                               }}
-                              required={["institute", "courseType", "courseName","yearOfStudy","location"].includes(each.inputName)}                            
+                              required={true}                            
                               value={formik.values[each.inputName]}
-                              error={formik.values[each.inputName] ? "" : formik.errors[each.inputName] }
+                              error={ formik.errors[each.inputName] }
                               // error={formik.values[each.field[0].inputName] ? "" : formik.errors.institute}
                               // required={true}
 
@@ -1010,9 +1026,9 @@ export default function Createcandidatelist({ open = "", close = () => { }, file
                               change={(e) => {
                                 formik3.setFieldValue(each.inputFeild, e);
                               }}
-                              required={["jobTitle" ,"location","companyName","fromDate"].includes(each.inputFeild)}
+                              required={true}
                               value={formik3.values[each.inputFeild]}
-                              error={formik3.values[each.inputFeild] ? "" :  formik3.errors[each.inputFeild]}
+                              error={formik3.errors[each.inputFeild]}
                             
 
                             /> : each.type === "dropdown" ?
@@ -1024,9 +1040,9 @@ export default function Createcandidatelist({ open = "", close = () => { }, file
                                 change={(e) => {
                                   formik3.setFieldValue(each.inputFeild, e);
                                 }}
-                                required={["employmentType"].includes(each.inputFeild)}                            
+                                required={true}                            
                                 value={formik3.values[each.inputFeild]}
-                                error={formik3.values[each.inputFeild] ? "" :  formik3.errors[each.inputFeild]}
+                                error={formik3.errors[each.inputFeild]}
 
 
                               /> :
@@ -1034,9 +1050,9 @@ export default function Createcandidatelist({ open = "", close = () => { }, file
                                 change={(e) => {
                                   formik3.setFieldValue(each.inputFeild, e);
                                 }}
-                                required={["fromDate"].includes(each.inputFeild)}
+                                required={true}
                                 value={formik3.values[each.inputFeild]}
-                                error={formik3.values[each.inputFeild] ? "" :  formik3.errors[each.inputFeild]}
+                                error={formik3.errors[each.inputFeild]}
                               />
                           )}
                           {/* <FormInput
