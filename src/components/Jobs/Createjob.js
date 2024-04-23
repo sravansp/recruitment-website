@@ -1845,6 +1845,7 @@ const Createjob = ({
                       <div className="pt-4">
 
                         <TextEditor
+                          placeholder={"Enter Description"}
                           initialValue={content}
                           onChange={handleEditorChange}
                           minheight="250px"
