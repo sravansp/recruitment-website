@@ -1495,7 +1495,7 @@ const CreatejobTemp = ({
                   <FlexCol>
                     <div className="rounded-md borderb">
                       <Accordion
-                        title={"ApplicationForm "}
+                        title={"Application Form "}
                         className="Text_area"
                         padding={true}
                         toggleBtn={false}
@@ -1545,9 +1545,9 @@ const CreatejobTemp = ({
                         </div>
                         <div className="v-divider" />
                         <div className="flex items-center justify-between w-full">
-                          <p className="pblack text-black text-sm font-mediumleading-tight">
+                        <div className="w-[53.92px] text-black text-sm font-medium font-['Inter'] leading-tight">
                             Headline
-                          </p>
+                          </div>
 
                           <Radiobuttonnew
                             options={Radiobuttons}
@@ -1804,7 +1804,7 @@ icondropDown={true}
                               <div className="flex items-center justify-between">
                                 <FormInput
                                   title={`Question ${index + 1}`}
-                                  placeholder={"Type question here"}
+                                  placeholder={`Enter Question ${index + 1}`}
                                   value={condition.question}
                                   change={(e) => {
                                     setEvaluation((prevEvaluation) =>
