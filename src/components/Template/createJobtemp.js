@@ -1447,7 +1447,7 @@ const CreatejobTemp = ({
                         <ButtonClick handleSubmit={handleGenerateWithAI} BtnType="primary" icon={<img src={image} alt="image" style={{ height: '20px', width: '20px', alignItems: "center" }} />} buttonName={"Generate with AI"} />
                       </div>
                       <Card>
-                        <p>Description</p>
+                        <p className="pb-2">Description</p>
                         <TextEditor
                           placeholder={t(
                             "Enter Description "
