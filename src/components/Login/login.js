@@ -19,10 +19,70 @@ import API from "../Api";
 import logindash from "../../assets/images/logindash.png";
 import ImageScroll from "../common/ImageScroll";
 import FormInput from "../common/FormInput";
+import { googleLogout, useGoogleLogin } from "@react-oauth/google";
+
 
 export default function Login() {
   const [showPassword, setShowPassword] = useState(false);
   // const [loginData, setLoginData] = useState();
+
+  const [profile, setProfile] = useState(null);
+  const [user, setUser] = useState([]);
+  const googleLogin = useGoogleLogin({
+    onSuccess: (codeResponse) => setUser(codeResponse),
+    onError: (error) => console.log("Login Failed:", error),
+  });
+  useEffect(() => {
+    if (user.access_token) {
+      user == [] ? console.log(user) : console.log("Empty user");
+      axios
+        .get(
+          `https://www.googleapis.com/oauth2/v1/userinfo?access_token=${user.access_token}`,
+          {
+            headers: {
+              Authorization: `Bearer ${user.access_token}`,
+              Accept: "application/json",
+            },
+          }
+        )
+        .then((res) => {
+          setProfile(res.data);
+          console.log("data assigned");
+        })
+        .catch((err) => console.log(err));
+    }
+  }, [user]);
+  // console.log(profile, "profile from google")
+
+  useEffect(() => {
+    const fetchUserProfile = async () => {
+      if (profile) {
+        // try {
+        //   const result = await axios.post(API.HOST + API.LOGIN_USER, {
+        //     username: profile.email,
+        //     thirdPartyLogin: 1,
+        //   });
+        //   console.log(result, "result from fetchUserProfile");
+        //   if (result.data.status == false) {
+        //     openNotification("error", "Failure", result.data.message);
+        //   }
+        //   if (result.data.status == true) {
+        //     localStorage.setItem("LoginData", JSON.stringify(result.data));
+        //     localStorage.setItem(
+        //       "employeeId",
+        //       JSON.stringify(parseInt(result?.data?.userData?.employeeId))
+        //     );
+        //     window.location.reload();
+        //   }
+        // } catch (err) {
+        //   console.log(err);
+        // }
+      }
+    };
+
+    fetchUserProfile();
+  }, [profile]);
+
   const [visible, setVisible] = useState(false);
   const handleForgotPasswordClick = () => {
     setVisible(true);
@@ -182,7 +242,9 @@ export default function Login() {
                   <div className="mneta_login bg-blue-600 2xl:h-[62px] 2xl:w-[62px] h-12 w-12 rounded-full flex justify-center items-center cursor-pointer">
                     <img src={metaLogo} alt="metaLogin" className="w-6 h-6" />
                   </div>
-                  <div className="google_login 2xl:h-[62px] 2xl:w-[62px] h-12 w-12 rounded-full flex justify-center items-center bg-white border border-[#D9D9D9] cursor-pointer">
+                  <div className="google_login 2xl:h-[62px] 2xl:w-[62px] h-12 w-12 rounded-full flex justify-center items-center bg-white border border-[#D9D9D9] cursor-pointer"
+                    onClick={googleLogin}
+                  >
                     <img
                       src={googleLogo}
                       alt="googleLogin"
@@ -409,7 +471,7 @@ export default function Login() {
 
           <div className="w-full mx-auto h-[10%]">
             <div className="text-center">
-            {/* <ImageScroll /> */}
+              {/* <ImageScroll /> */}
             </div>
           </div>
         </div>

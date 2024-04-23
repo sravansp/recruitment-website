@@ -6,12 +6,15 @@ import reportWebVitals from "./reportWebVitals";
 import "./i18"; // Import the i18n configuration
 import { store } from "./Redux/store";
 import { Provider } from "react-redux";
+import { GoogleOAuthProvider } from "@react-oauth/google"
 
 const root = ReactDOM.createRoot(document.getElementById("root"));
 root.render(
   // <React.StrictMode>
   <Provider store={store}>
-    <App />
+    <GoogleOAuthProvider clientId='116197081390-bm9pam7494g1ahhv2e6qc6e43a5p2a4j.apps.googleusercontent.com'>
+      <App />
+    </GoogleOAuthProvider>
   </Provider>
   // </React.StrictMode>
 );
