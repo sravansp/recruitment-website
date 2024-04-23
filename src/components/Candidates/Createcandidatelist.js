@@ -953,12 +953,12 @@ export default function Createcandidatelist({ open = "", close = () => { }, file
                           {condition.field.map((each) =>
                             each.type === "input" ? <FormInput
                               key={each.id}
-                              title={each.title + (index)}
+                              title={each.title}
                               placeholder={t("School or University")}
                               change={(e) => {
                                 formik.setFieldValue(each.inputName, e);
                               }}
-                              required={["institute", "courseType", "courseName","yearOfStudy","location"].includes(each.inputName)}                            
+                              required={true}                            
                               value={formik.values[each.inputName]}
                               error={ formik.errors[each.inputName] }
                               // error={formik.values[each.field[0].inputName] ? "" : formik.errors.institute}
