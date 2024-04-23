@@ -1342,7 +1342,7 @@ const CreatejobTemp = ({
 
                         <FormInput
                           title={'Salary Range From'}
-                          placeholder={'Enter value'}
+                          placeholder={'Enter Salary Range From'}
                           change={(e) => {
                             formik.setFieldValue('salaryRangeFrom', e);
                             // setFieldValue(e)
@@ -1356,7 +1356,7 @@ const CreatejobTemp = ({
 
                         <FormInput
                           title={'Salary Range To'}
-                          placeholder={'Enter value'}
+                          placeholder={'Enter Salary Range To'}
                           value={formik.values.salaryRangeTo}
                           error={formik.errors.salaryRangeTo}
                           required={true}
@@ -1390,7 +1390,7 @@ const CreatejobTemp = ({
                           required={true}
                           error={formik.errors.salaryCurrency}
                         />
-                        <div className="flex flex-col gap-1">
+                        <div className="flex items-center gap-1">
                           <CheckBoxInput
                             change={(e) => {
                               formik.setFieldValue("isSalaryPublic", e);
@@ -1401,7 +1401,10 @@ const CreatejobTemp = ({
                             titleRight={true}
 
                           />
-                          <p className="text-xs text-gray-500">Given Salary will be visible for public</p>
+                          <div className="flex flex-col gap-1 pt-2">
+                            <p className="text-sm dark:text-white">View Public</p>
+                            <p className="text-xs text-gray-500">Given Salary will be visible for public</p>
+                          </div>
                         </div>
                       </div>
                     </Accordion>
