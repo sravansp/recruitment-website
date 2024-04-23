@@ -187,16 +187,16 @@ const
             createdBy: null,
           });
           if (
-            !formik.values.questionnaireTemplateName || !formik.values.description){
-              formik.setFieldError('questionnaireTemplateName', !formik.values.questionnaireTemplateName ? 'QuestionAre is required' : '');
-              formik.setFieldError('description', !formik.values.description ? 'Description is required' : '');
-            }
+            !formik.values.questionnaireTemplateName || !formik.values.description) {
+            formik.setFieldError('questionnaireTemplateName', !formik.values.questionnaireTemplateName ? 'Template name is required' : '');
+            formik.setFieldError('description', !formik.values.description ? 'Description is required' : '');
+          }
 
           const newErrorMessages = evaluation.map((condition) => {
             let errorMessage = '';
-          
+
             if (!condition.question) {
-              errorMessage = 'Please enter a question.';
+              errorMessage = 'Question is Required.';
             } else if (!condition.answerMetaData || !condition.answerMetaData[0]?.key) {
               errorMessage = 'Please choose an answer type.';
             } else if (
@@ -206,10 +206,10 @@ const
             ) {
               errorMessage = 'Please enter values for all options.';
             }
-          
+
             return errorMessage;
           });
-          
+
           setErrorMessages(newErrorMessages);
           const hasErrors = newErrorMessages.some(errorMessage => errorMessage !== '');
           if (hasErrors) {
@@ -474,7 +474,7 @@ const
                   <FormInput
                     // showValueParagraph={true}
                     title={`Question ${index + 1}`}
-                    placeholder={'Type question here'}
+                    placeholder={`Enter Question ${index + 1}`}
                     value={condition.question}
                     change={(e) => {
                       setEvaluation((prevEvaluation) => prevEvaluation.map((prevCondition, i) => i === index
@@ -485,9 +485,9 @@ const
 
                     }}
                     error={condition.question ? '' : errorMessages[index] || ''}
-                     required={true}
-                     
-                     />
+                    required={true}
+
+                  />
 
                   <div className="flex items-center gap-5">
                     <div className="flex-shrink-0"> {/* Add this container for the dropdown and icons */}
@@ -510,7 +510,7 @@ const
                           ))
                           handleAddField(e)
                         }}
-                        value={condition.answerMetaData[0]?.key }
+                        value={condition.answerMetaData[0]?.key}
                         icondropDown={true}
                         error={condition.answerMetaData[0]?.key ? '' : errorMessages[index] || ''}
                         required={true}
@@ -557,16 +557,19 @@ const
                                 }
                                 : prevCondition
                               )
-                              )} 
+                              )}
                               error={field.value ? '' : errorMessages[index] || ''}
-                              />
+                            />
                           )}
 
                           {['Drop-down', 'MultipleChoice', 'Checkboxes'].includes(field.key) && (
                             <div className="ml-2">
-                              <MdDelete
-                                onClick={() => handleDeleteField(index, fieldIndex)}
-                                className="cursor-pointer text-red-500" />
+                              <Tooltip placement="top" title={"Delete"}>
+                                <MdDelete
+                                  onClick={() => handleDeleteField(index, fieldIndex)}
+                                  className="cursor-pointer text-red-500"
+                                />
+                              </Tooltip>
                             </div>
                           )}
                         </div>
@@ -576,9 +579,12 @@ const
                         {['Drop-down', 'MultipleChoice', 'Checkboxes'].includes(
                           condition.answerMetaData[0]?.key
                         ) && (
-                            <CgAdd
-                              onClick={() => handleAddField(index, condition.answerMetaData[0]?.key)}
-                              style={{ width: '18px', height: '18px', cursor: 'pointer' }} />
+                            <Tooltip placement="top" title={"Add new"}>
+                              <CgAdd
+                                onClick={() => handleAddField(index, condition.answerMetaData[0]?.key)}
+                                style={{ width: '18px', height: '18px', cursor: 'pointer' }}
+                              />
+                            </Tooltip>
                           )}
                       </div>
                     </>

@@ -168,7 +168,7 @@ const TemEvaluation = ({ open = "", close = () => { }, inputshow = false, isUpda
       description: "",
       createdBy: null,
     },
-    
+
     // enableReinitialize: true,
     // validateOnChange: false,
     // validationSchema: Yup.object().shape({
@@ -187,15 +187,15 @@ const TemEvaluation = ({ open = "", close = () => { }, inputshow = false, isUpda
 
         // Make the first API call
         if (
-          !formik.values.evaluationTemplateName || !formik.values.description){
-            formik.setFieldError('evaluationTemplateName', !formik.values.evaluationTemplateName ? 'Evaluation is Required is required' : '');
-            formik.setFieldError('description', !formik.values.description ? 'Description is required' : '');
-          }
+          !formik.values.evaluationTemplateName || !formik.values.description) {
+          formik.setFieldError('evaluationTemplateName', !formik.values.evaluationTemplateName ? 'Evaluation is Required is required' : '');
+          formik.setFieldError('description', !formik.values.description ? 'Description is required' : '');
+        }
         const newErrorMessages = evaluation.map((condition) => {
           let errorMessage = '';
-        
+
           if (!condition.question) {
-            errorMessage = 'Please enter a question.';
+            errorMessage = 'Question is required.';
           } else if (!condition.answerMetaData || !condition.answerMetaData[0]?.key) {
             errorMessage = 'Please choose an answer type.';
           } else if (
@@ -205,10 +205,10 @@ const TemEvaluation = ({ open = "", close = () => { }, inputshow = false, isUpda
           ) {
             errorMessage = 'Please enter values for all options.';
           }
-        
+
           return errorMessage;
         });
-        
+
         setErrorMessages(newErrorMessages);
         const hasErrors = newErrorMessages.some(errorMessage => errorMessage !== '');
         if (hasErrors) {
@@ -465,70 +465,71 @@ const TemEvaluation = ({ open = "", close = () => { }, inputshow = false, isUpda
             </div>
 
             {evaluation.map((condition, index) => (
-              <><div className="flex items-center justify-between">
-                <FormInput
-                  // showValueParagraph={true}
-                  title={`Question ${index + 1}`}
-                  placeholder={'Type question here'}
-                  value={condition.question}
-                  change={(e) => {
-                    setEvaluation((prevEvaluation) => prevEvaluation.map((prevCondition, i) => i === index
-                      ? { ...prevCondition, question: e }
-                      : prevCondition
-                    ))
-                    // console.log(e)
-                  }}
-                  error={condition.question ? '' : errorMessages[index] || ''}
-                  required={true}
+              <>
+                <div className="flex items-center justify-between">
+                  <FormInput
+                    // showValueParagraph={true}
+                    title={`Question ${index + 1}`}
+                    placeholder={`Enter Question ${index + 1}`}
+                    value={condition.question}
+                    change={(e) => {
+                      setEvaluation((prevEvaluation) => prevEvaluation.map((prevCondition, i) => i === index
+                        ? { ...prevCondition, question: e }
+                        : prevCondition
+                      ))
+                      // console.log(e)
+                    }}
+                    error={condition.question ? '' : errorMessages[index] || ''}
+                    required={true}
                   />
 
-                <div className="flex items-center gap-5">
-                  <div className="flex-shrink-0"> {/* Add this container for the dropdown and icons */}
-                    <Dropdown
-                      options={Form}
-                      dropdownWidth='200px'
-                      change={(e) => {
-                        setEvaluation((prevEvaluation) => prevEvaluation.map((prevCondition, i) => i === index
-                          ? {
-                            ...prevCondition,
-                            answerMetaData: [
-                              {
-                                id: 1,
-                                key: e,
-                                value: e === condition.answerMetaData[0]?.key ? condition.answerMetaData[0]?.value : '',
-                              }
-                            ],
-                          }
-                          : prevCondition
-                        ))
-                        handleAddField(e)
-                      }}
-                      value={condition.answerMetaData[0]?.key || ''}
-                      icondropDown={true}
-                      required={true}
-                      error={condition.answerMetaData[0]?.key ? '' : errorMessages[index] || ''}
-                      placeholder={"Choose Options"}
-                    />
-                  </div>
-                  {/* Additional dynamic input fields based on the selected value in the dropdown */}
-                  {/* Add your logic here */}
+                  <div className="flex items-center gap-5">
+                    <div className="flex-shrink-0"> {/* Add this container for the dropdown and icons */}
+                      <Dropdown
+                        options={Form}
+                        dropdownWidth='200px'
+                        change={(e) => {
+                          setEvaluation((prevEvaluation) => prevEvaluation.map((prevCondition, i) => i === index
+                            ? {
+                              ...prevCondition,
+                              answerMetaData: [
+                                {
+                                  id: 1,
+                                  key: e,
+                                  value: e === condition.answerMetaData[0]?.key ? condition.answerMetaData[0]?.value : '',
+                                }
+                              ],
+                            }
+                            : prevCondition
+                          ))
+                          handleAddField(e)
+                        }}
+                        value={condition.answerMetaData[0]?.key || ''}
+                        icondropDown={true}
+                        required={true}
+                        error={condition.answerMetaData[0]?.key ? '' : errorMessages[index] || ''}
+                        placeholder={"Choose Options"}
+                      />
+                    </div>
+                    {/* Additional dynamic input fields based on the selected value in the dropdown */}
+                    {/* Add your logic here */}
 
-                  <div style={{ display: 'flex', alignItems: 'center', gap: '15px' }}>
-                    <p>Mandatory</p>
-                    <ToggleBtn />
-                  </div>
+                    <div style={{ display: 'flex', alignItems: 'center', gap: '15px' }}>
+                      <p>Mandatory</p>
+                      <ToggleBtn />
+                    </div>
 
-                  <div style={{ display: 'flex', alignItems: 'center', gap: '15px' }}>
-                    {/* <Tooltip placement="top" title={"Copy"} >
+                    <div style={{ display: 'flex', alignItems: 'center', gap: '15px' }}>
+                      {/* <Tooltip placement="top" title={"Copy"} >
                       <MdOutlineFileCopy style={{ width: '18px', height: '18px', cursor: 'pointer' }} />
                     </Tooltip> */}
-                    <Tooltip placement="top" title={"Delete"} >
-                      <MdDelete className='text-red-600' style={{ width: '18px', height: '18px', cursor: 'pointer' }} onClick={() => handleDeleteCondition(index)} />
-                    </Tooltip>
-                  </div>
+                      <Tooltip placement="top" title={"Delete"} >
+                        <MdDelete className='text-red-600' style={{ width: '18px', height: '18px', cursor: 'pointer' }} onClick={() => handleDeleteCondition(index)} />
+                      </Tooltip>
+                    </div>
 
+                  </div>
                 </div>
-              </div>
                 {condition.answerMetaData[0]?.key && (
                   <>
                     {/* Render existing FormInput components */}
@@ -550,16 +551,19 @@ const TemEvaluation = ({ open = "", close = () => { }, inputshow = false, isUpda
                               }
                               : prevCondition
                             )
-                            )} 
+                            )}
                             error={field.value ? '' : errorMessages[index] || ''}
-                            />
+                          />
                         )}
 
                         {['Drop-down', 'MultipleChoice', 'Checkboxes'].includes(field.key) && (
                           <div className="ml-2">
-                            <MdDelete
-                              onClick={() => handleDeleteField(index, fieldIndex)}
-                              className="cursor-pointer text-red-500" />
+                            <Tooltip placement="top" title={"Delete"}>
+                              <MdDelete
+                                onClick={() => handleDeleteField(index, fieldIndex)}
+                                className="cursor-pointer text-red-500"
+                              />
+                            </Tooltip>
                           </div>
                         )}
                       </div>
@@ -569,16 +573,20 @@ const TemEvaluation = ({ open = "", close = () => { }, inputshow = false, isUpda
                       {['Drop-down', 'MultipleChoice', 'Checkboxes'].includes(
                         condition.answerMetaData[0]?.key
                       ) && (
-                          <CgAdd
-                            onClick={() => handleAddField(index, condition.answerMetaData[0]?.key)}
-                            style={{ width: '18px', height: '18px', cursor: 'pointer' }} />
+                          <Tooltip placement="top" title={"Add new"}>
+                            <CgAdd
+                              onClick={() => handleAddField(index, condition.answerMetaData[0]?.key)}
+                              style={{ width: '18px', height: '18px', cursor: 'pointer' }}
+                            />
+                          </Tooltip>
                         )}
                     </div>
                   </>
                 )}
 
 
-                <div className="v-divider"></div></>
+                <div className="v-divider"></div>
+              </>
             ))}
 
             <div className="flex items-center gap-2">
