@@ -116,7 +116,7 @@ const regularOvertime = [
     id: 1,
     title: "Onsite ",
     description:
-      "Employees work from an office",
+      "Employees work from Office",
     image: OnSite,
     value: "Onsite",
   },
@@ -124,7 +124,7 @@ const regularOvertime = [
     id: 2,
     title: "Hybrid",
     description:
-      "Employees work from an office",
+      "Employees work from  Office and work form Home",
     image: Hybrid,
     value: "Hybrid",
   },
@@ -132,7 +132,7 @@ const regularOvertime = [
     id: 3,
     title: "Remote",
     description:
-      "Employees work from an office",
+      "Employees work form Home",
     image: Remote,
     value: "Remote",
   },

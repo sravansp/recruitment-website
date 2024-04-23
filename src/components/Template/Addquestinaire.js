@@ -244,7 +244,7 @@ const
             })
             console.log(response)
             if (response.status == 200) {
-              openNotification("success", "success", response.message);
+              openNotification("success", "Success", response.message);
               setSuccessNotificationVisible(true);
               setTimeout(() => {
                 handleClose();
@@ -288,7 +288,7 @@ const
               console.log(insertedId);
 
               if (response2.status === 200) {
-                openNotification("success", "success", response2.message);
+                openNotification("success", "Success", response2.message);
                 setSuccessNotificationVisible(true);
                 setTimeout(() => {
                   handleClose();

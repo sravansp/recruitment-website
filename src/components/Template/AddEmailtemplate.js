@@ -128,7 +128,7 @@
         
             openNotification(
               "success",
-              "success",
+              "Success",
               response.message
             );
             setTimeout(() => {
@@ -159,7 +159,7 @@
         
           openNotification(
             "success",
-            "success",
+            "Success",
             response.message
           );
           setTimeout(() => {
