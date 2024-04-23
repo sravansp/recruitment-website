@@ -1852,15 +1852,11 @@ icondropDown={true}
                                   {/* Additional dynamic input fields based on the selected value in the dropdown */}
                                   {/* Add your logic here */}
 
-                                  <div
-                                    style={{
-                                      display: "flex",
-                                      alignItems: "center",
-                                      gap: "15px",
-                                    }}
-                                  >
-                                    <p>Mandatory</p>
-                                    <ToggleBtn />
+                                  <div>
+                                    <Tooltip placement="topRight" title={"Active / Inactive"} className="flex items-center gap-2">
+                                      <p>Mandatory</p>
+                                      <ToggleBtn />
+                                    </Tooltip>
                                   </div>
 
                                   <div
