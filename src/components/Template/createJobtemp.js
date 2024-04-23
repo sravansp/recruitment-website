@@ -91,7 +91,7 @@ const CreatejobTemp = ({
   const { t } = useTranslation();
 
   // const [isUpdate, setIsUpdate] = useState();
-  const [Jobcode,setJobcode] = useState("")
+  const [Jobcode, setJobcode] = useState("")
   const [errorMessages, setErrorMessages] = useState("");
   const [Education, seteducation] = useState(1)
   const [fieldValue, setFieldValue] = useState("")
@@ -432,7 +432,7 @@ const CreatejobTemp = ({
           } else if (response.status === 500) {
             openNotification("error", response.message);
           }
-        
+
 
         }
       } catch (error) {
@@ -843,29 +843,34 @@ const CreatejobTemp = ({
 
   //   }
   // };
-  const [jobcodelength,setJobcodelength] = useState("")
-  const getJobsByJoBecode = async()=>{
-    try{
-     const response = await getAllRecruitmentJobTemplates({
-      jobCode : Jobcode
-     })
-     setJobcodelength(response.result.length)
-     if (response.result.length > 0 ){
-      formik.setFieldError('jobCode', 'Job code already exists.');
-     }
-     
-     console.log(response)
-    }catch(error){
+  const [jobcodelength, setJobcodelength] = useState("")
+  const getJobsByJoBecode = async () => {
+    try {
+      const response = await getAllRecruitmentJobTemplates({
+        jobCode: Jobcode
+      })
+      setJobcodelength(response.result.length)
+      if (response.result.length > 0) {
+        formik.setFieldError('jobCode', 'Job code already exists.');
+      }
+
+      console.log(response)
+    } catch (error) {
       console.log(error);
     }
   }
-   useEffect(()=>{
+  useEffect(() => {
     getJobsByJoBecode()
-   },[Jobcode])
+  }, [Jobcode])
   const handleButtonClick = async (e) => {
     switch (activeBtnValue) {
       case "Jobdetails":
         // Handle submission for Configuration
+
+        if (formik.values.salaryRangeTo && formik.values.salaryRangeFrom && parseFloat(formik.values.salaryRangeTo) <= parseFloat(formik.values.salaryRangeFrom)) {
+          formik.setFieldError('salaryRangeTo', '"Salary Range To" must be greater than "Salary Range From"');
+          return;
+        }
         if (
           !formik.values.jobTitle || !formik.values.departmentId || !formik.values.jobCode ||
           !formik.values.location ||
@@ -895,13 +900,13 @@ const CreatejobTemp = ({
           formik.setFieldError('jobDescription', !content ? 'jobDescription is required' : '')
           return; // Exit early if any field is empty
         }
-        if(jobcodelength===0){
-        
-        setNextStep(nextStep + 1);
-        }else(
+        if (jobcodelength === 0) {
+
+          setNextStep(nextStep + 1);
+        } else (
           getJobsByJoBecode()
         )
-       
+
 
         break;
 
@@ -934,7 +939,7 @@ const CreatejobTemp = ({
           // Don't proceed if there are errors
           return;
         }
-       
+
         setNextStep(nextStep + 1);
 
         break;
@@ -1340,7 +1345,7 @@ const CreatejobTemp = ({
                           placeholder={'Enter value'}
                           change={(e) => {
                             formik.setFieldValue('salaryRangeFrom', e);
-                            setFieldValue(e)
+                            // setFieldValue(e)
                             // Validate Salary Range To when Salary Range From changes
                           }}
                           value={formik.values.salaryRangeFrom}
@@ -1358,19 +1363,19 @@ const CreatejobTemp = ({
                           type={"number"}
                           change={(e) => {
                             formik.setFieldValue('salaryRangeTo', e);
-                            const salaryRangeTo = parseFloat(e); // Convert input to a number
-                            const salaryRangeFrom = parseFloat(formik.values.salaryRangeFrom);
+                            // const salaryRangeTo = parseFloat(e); // Convert input to a number
+                            // const salaryRangeFrom = parseFloat(formik.values.salaryRangeFrom);
 
-                            if (salaryRangeTo <= salaryRangeFrom) {
-                              formik.setFieldError('salaryRangeTo', 'Salary Range To must be greater than Salary Range From');
-                              console.log("it is less: ", salaryRangeTo);
-                            } else {
-                              // Clear the error message when the condition is met
-                              formik.setFieldError('salaryRangeTo', '');
-                              console.log("it is greater: ", salaryRangeTo);
-                            }
-                            // Manually trigger validation after setting field value
-                            formik.validateForm();
+                            // if (salaryRangeTo <= salaryRangeFrom) {
+                            //   formik.setFieldError('salaryRangeTo', 'Salary Range To must be greater than Salary Range From');
+                            //   console.log("it is less: ", salaryRangeTo);
+                            // } else {
+                            //   // Clear the error message when the condition is met
+                            //   formik.setFieldError('salaryRangeTo', '');
+                            //   console.log("it is greater: ", salaryRangeTo);
+                            // }
+                            // // Manually trigger validation after setting field value
+                            // formik.validateForm();
                           }}
                         />
 
@@ -1542,7 +1547,7 @@ const CreatejobTemp = ({
                         </div>
                         <div className="v-divider" />
                         <div className="flex items-center justify-between w-full">
-                        <div className="w-[53.92px] text-black text-sm font-medium font-['Inter'] leading-tight">
+                          <div className="w-[53.92px] text-black text-sm font-medium font-['Inter'] leading-tight">
                             Headline
                           </div>
 
@@ -1843,7 +1848,7 @@ icondropDown={true}
                                         condition.answer_type
                                       }
                                       icondropDown={true}
-                                      error={condition.answer_type ? '':errorMessages[index] || ''}
+                                      error={condition.answer_type ? '' : errorMessages[index] || ''}
                                     />
                                   </div>
                                   {/* Additional dynamic input fields based on the selected value in the dropdown */}
@@ -1924,7 +1929,7 @@ icondropDown={true}
                                                   )
                                                 )
                                               }
-                                              error={field.value ? '': errorMessages[index] || ''}
+                                              error={field.value ? '' : errorMessages[index] || ''}
                                             />
                                           )}
 
