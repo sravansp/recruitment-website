@@ -1357,10 +1357,11 @@ const CreatejobTemp = ({
                           required={true}
                           type={"number"}
                           change={(e) => {
+                            formik.setFieldValue('salaryRangeTo', e);
                             const salaryRangeTo = parseFloat(e); // Convert input to a number
                             const salaryRangeFrom = parseFloat(formik.values.salaryRangeFrom);
 
-                            if (salaryRangeTo < salaryRangeFrom) {
+                            if (salaryRangeTo <= salaryRangeFrom) {
                               formik.setFieldError('salaryRangeTo', 'Salary Range To must be greater than Salary Range From');
                               console.log("it is less: ", salaryRangeTo);
                             } else {
@@ -1368,10 +1369,6 @@ const CreatejobTemp = ({
                               formik.setFieldError('salaryRangeTo', '');
                               console.log("it is greater: ", salaryRangeTo);
                             }
-
-                            // Update the formik field value
-                            formik.setFieldValue('salaryRangeTo', e);
-
                             // Manually trigger validation after setting field value
                             formik.validateForm();
                           }}
