@@ -68,6 +68,7 @@ const
     //   });
     // }, [insertedId]);
     const handleAddCondition = () => {
+      if(!updateId){
       setEvaluation((prevEvaluation) => [
         ...prevEvaluation,
         {
@@ -80,6 +81,25 @@ const
           createdBy: 493
         },
       ]);
+    }else{
+      
+      const nextId = evaluation[evaluation.length - 1].questionnaireTemplateDetailsId + 1 || 1;
+// Update the state with the new id
+
+
+// Add a new condition with the calculated nextId
+setEvaluation(prevEvaluation => [
+  ...prevEvaluation,
+  {
+    companyId: companyId, // Replace companyId with your actual value
+    evaluationTemplateId: "",
+    questionnaireTemplateDetailsId:nextId, // Set the calculated nextId
+    question: "",
+    answerMetaData: '[]',
+    description: "hihihihi",
+  },
+]);
+    }
     };
 
     const handleDeleteCondition = (index) => {
@@ -160,10 +180,12 @@ const
 
 
 
-
+    const[Questionerror,setQuestionError] = useState('')
+    const[answerError,setAnswerError] = useState('')
+    const[OptionError,setoptionserror] = useState('')
 
     // const[insertedId,setinsertedId] =useState(null)
-
+    
     const formik = useFormik({
       initialValues: {
         companyId: "",
@@ -192,30 +214,37 @@ const
             formik.setFieldError('description', !formik.values.description ? 'Description is required' : '');
           }
 
-          const newErrorMessages = evaluation.map((condition) => {
-            let errorMessage = '';
-
+          let hasError = false;
+          evaluation.forEach((condition) => {
             if (!condition.question) {
-              errorMessage = 'Question is Required.';
-            } else if (!condition.answerMetaData || !condition.answerMetaData[0]?.key) {
-              errorMessage = 'Please choose an answer type.';
-            } else if (
+              setQuestionError('Question is Required.');
+              hasError = true;
+   
+            }
+         
+            if (!condition.answerMetaData || !condition.answerMetaData[0]?.key) {
+              setAnswerError('Please choose an answer type.');
+              hasError = true;
+            }
+            if (
               ["Drop-down", "MultipleChoice", "Checkboxes"].includes(condition.answerMetaData[0]?.key) &&
               (condition.answerMetaData.some((field) => !field.value) ||
                 (!condition.answerMetaData[0]?.value && condition.answerMetaData[0]?.key))
             ) {
-              errorMessage = 'Please enter values for all options.';
-            }
-
-            return errorMessage;
+              setoptionserror('Please enter values for all options.');
+              hasError = true;
+            } 
           });
-
-          setErrorMessages(newErrorMessages);
-          const hasErrors = newErrorMessages.some(errorMessage => errorMessage !== '');
-          if (hasErrors) {
-            // Don't proceed if there are errors
+          if (hasError) {
             return;
-          }
+        }
+
+          // setErrorMessages(newErrorMessages);
+          // const hasErrors = newErrorMessages.some(errorMessage => errorMessage !== '');
+          // if (hasErrors) {
+          //   // Don't proceed if there are errors
+          //   return;
+          // }
 
           // Make the first API call
           if (updateId) {
@@ -226,7 +255,7 @@ const
               answerMetaData: item.answerMetaData,
               description: item.description,
               createdBy: item.createdBy,
-              questionnaireTemplateDetailsId: evaluationTemplateDetailsIds[index],
+              questionnaireTemplateDetailsId: item.questionnaireTemplateDetailsId,
 
               modifiedBy: null
             }));
@@ -333,9 +362,9 @@ const
           return item.questionaireTemplateDetailData.map(detail => ({
             companyId: detail.companyId,
             question: detail.question,
-            evaluationTemplateDetailsId: detail.questionnaireTemplateDetailsId,
+            questionnaireTemplateDetailsId: detail.questionnaireTemplateDetailsId,
             description: detail.description,
-            evaluationTemplateId: detail.questionnaireTemplateId,
+            questionnaireTemplateId: detail.questionnaireTemplateId,
             isActive: detail.isActive,
             modifiedBy: null,
             modifiedOn: detail.modifiedOn,
@@ -345,8 +374,8 @@ const
             }))
           }));
         });
-        const ids = response.result.map(item => item.questionaireTemplateDetailData.map(detail => detail.questionnaireTemplateDetailsId)).flat();
-        setEvaluationTemplateDetailsIds(ids);
+        // const ids = response.result.map(item => item.questionaireTemplateDetailData.map(detail => detail.questionnaireTemplateDetailsId)).flat();
+        // setEvaluationTemplateDetailsIds(ids);
         setEvaluation(evaluationData);
         console.log(evaluationData)
         const firstEvaluation = response.result[0];
@@ -360,7 +389,7 @@ const
     useEffect(() => {
       getevaluationtem()
 
-    }, [])
+    }, [updateId])
     return (
       <div>
 
@@ -484,7 +513,7 @@ const
                       console.log(e)
 
                     }}
-                    error={condition.question ? '' : errorMessages[index] || ''}
+                    error={condition.question ? '' : Questionerror || ''}
                     required={true}
 
                   />
@@ -512,7 +541,7 @@ const
                         }}
                         value={condition.answerMetaData[0]?.key}
                         icondropDown={true}
-                        error={condition.answerMetaData[0]?.key ? '' : errorMessages[index] || ''}
+                        error={condition.answerMetaData[0]?.key ? '' : answerError || ''}
                         required={true}
                         placeholder={"Choose Options"}
                       />
@@ -560,7 +589,7 @@ const
                                 : prevCondition
                               )
                               )}
-                              error={field.value ? '' : errorMessages[index] || ''}
+                              error={field.value ? '' : OptionError || ''}
                             />
                           )}
 

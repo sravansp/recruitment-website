@@ -66,18 +66,37 @@ const TemEvaluation = ({ open = "", close = () => { }, inputshow = false, isUpda
   //   });
   // }, [insertedId]);
   const handleAddCondition = () => {
-    setEvaluation((prevEvaluation) => [
-      ...prevEvaluation,
-      {
-        id: prevEvaluation.length + 1,
-        companyId: companyId, // Replace companyId with your actual value
-        evaluationTemplateId: "", // Replace insertedId with your actual value
-        question: "",
-        answerMetaData: '[]',
-        description: "hihihihi",
-        createdBy: 493
-      },
-    ]);
+    if (!updateId) {
+      setEvaluation((prevEvaluation) => [
+        ...prevEvaluation,
+        {
+          id: prevEvaluation.length + 1,
+          companyId: companyId, // Replace companyId with your actual value
+          evaluationTemplateId: "", // Replace insertedId with your actual value
+          question: "",
+          answerMetaData: '[]',
+          description: "hihihihi",
+          createdBy: 493
+        },
+       
+      ]);
+    } else {
+      const nextId = evaluation[evaluation.length - 1].questionnaireTemplateDetailsId + 1 || 1;
+
+      setEvaluation((prevEvaluation) => [
+        ...prevEvaluation,
+        {
+          
+          companyId: companyId, // Replace companyId with your actual value
+          evaluationTemplateId: "",
+          evaluationTemplateDetailsId: nextId, // Set the calculated nextId
+          question: "",
+          answerMetaData: '[]',
+          description: "hihihihi",
+         
+        },
+      ]);
+    }
   };
  
   const handleDeleteCondition = (index) => {
@@ -102,7 +121,6 @@ const TemEvaluation = ({ open = "", close = () => { }, inputshow = false, isUpda
     );
   };
   const handleAddField = (index, selectedvalue) => {
-    if(!updateId){
     setEvaluation((prevEvaluation) =>
       prevEvaluation.map((prevCondition, i) =>
         i === index
@@ -120,9 +138,6 @@ const TemEvaluation = ({ open = "", close = () => { }, inputshow = false, isUpda
           : prevCondition
       )
     );
-        }else{
-
-        }
   };
   //<--------------------------------------------------->//
   const [successNotificationVisible, setSuccessNotificationVisible] = useState(false);
@@ -232,7 +247,7 @@ const TemEvaluation = ({ open = "", close = () => { }, inputshow = false, isUpda
             answerMetaData: item.answerMetaData,
             description: item.description,
             createdBy: item.createdBy,
-            evaluationTemplateDetailsId: evaluationTemplateDetailsIds[index],
+            evaluationTemplateDetailsId: item.evaluationTemplateDetailsId,
  
             modifiedBy: null
           }));
@@ -334,7 +349,6 @@ const TemEvaluation = ({ open = "", close = () => { }, inputshow = false, isUpda
     try {
       const response = await getRecruitmentEvaluationTemplateById({ id });
       // console.log("work flow by id", response);
-      console.log(response.result)
       setevaluationlist(response.result)
       const evaluationData = response.result.flatMap(item => {
         return item.evaluationTemplateDetailData.map(detail => ({
@@ -352,20 +366,9 @@ const TemEvaluation = ({ open = "", close = () => { }, inputshow = false, isUpda
           }))
         }));
       });
-
-
-      const ids = response.result.flatMap(item =>
-        item.evaluationTemplateDetailData.map(detail => detail.evaluationTemplateDetailsId)
-      );
-      
-      // Get the last element of the array
-      const lastId = ids[ids.length - 1];
-      
-      // Add 1 to the last ID to get the new ID
-      const newId = lastId + 1;
-       console.log(newId)
-      // Set the new ID to the state
-      setEvaluationTemplateDetailsIds(newId);
+      // const ids = response.result.map(item => item.evaluationTemplateDetailData.map(detail => detail.evaluationTemplateDetailsId)).flat();
+      // console.log(ids)
+      // setEvaluationTemplateDetailsIds(ids);
       setEvaluation(evaluationData);
       // console.log(evaluationData)
       const firstEvaluation = response.result[0];
@@ -517,7 +520,7 @@ const TemEvaluation = ({ open = "", close = () => { }, inputshow = false, isUpda
                               ...prevCondition,
                               answerMetaData: [
                                 {
-                                  id: 1,
+                                  
                                   key: e,
                                   value: e === condition.answerMetaData[0]?.key ? condition.answerMetaData[0]?.value : '',
                                 }

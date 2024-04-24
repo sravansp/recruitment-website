@@ -59,6 +59,7 @@ const TextEditor = ({
 
       onChange(plainText);
       changetoHtml(htmlContent);
+      console.log(htmlContent)
       console.log(plainText);
       // Ensure onChange is called with plainText, which is a string
     }

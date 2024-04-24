@@ -123,6 +123,7 @@ const CreatejobTemp = ({
   const [coverLetter, setCoverletter] = useState(1)
   const [errors, setErrors] = useState([]);
   const [jobTitle, setJobTitle] = useState("")
+  const[html,setstateHTML] =useState("")
 
   // console.log(updateId);
   useEffect(() => {
@@ -1475,8 +1476,11 @@ const CreatejobTemp = ({
                           //  change={(e)=>{
                           //    formik.setFieldValue('jobDescription',e)
                           //  }}
-                          error={formik.errors.jobDescription}
                           onChange={handleEditorChange}
+                          error={formik.errors.jobDescription}
+                          changetoHtml={(e)=>{
+                            setstateHTML(e)
+                          }}
                           loader={loader}
                         />
                         
