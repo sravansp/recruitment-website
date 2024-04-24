@@ -2490,7 +2490,7 @@ const Createjob = ({
                 <Accordion
                   title={"Publish"}
                   className="Text_area"
-                  description={"lorem ipsum dummy text dolar sit."}
+                  description={"Publish"}
                   padding={true}
                   toggleBtn={false}
                   click={() => {
