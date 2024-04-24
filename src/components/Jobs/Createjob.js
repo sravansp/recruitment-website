@@ -2242,10 +2242,12 @@ const Createjob = ({
                                   {['Drop-down', 'MultipleChoice', 'Checkboxes'].includes(
                                     condition.answerMetaData[0]?.key
                                   ) && (
+                                    <Tooltip placement="top" title={"Add more"}>
                                       <CgAdd
                                         onClick={() => handleAddField(index, condition.answerMetaData[0]?.key)}
                                         style={{ width: '18px', height: '18px', cursor: 'pointer' }}
                                       />
+                                      </Tooltip>
                                     )}
                                 </div>
                               </>
