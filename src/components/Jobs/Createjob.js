@@ -104,7 +104,7 @@ const Createjob = ({
   const [errors, setErrors] = useState([]);
   const [content, setContent] = useState("");
   // const [isUpdate, setIsUpdate] = useState();
-  const [decriptionId, setDecriptionId] = useState("")
+  const [decriptionId, setDecriptionId] = useState(null)
   const [activeBtn, setActiveBtn] = useState(0);
   const [presentage, setPresentage] = useState(0);
   const [nextStep, setNextStep] = useState(0);
@@ -1822,6 +1822,8 @@ const Createjob = ({
                           title={''}
                           placeholder={'Choose Job Description'}
                           options={JobDescriptionList}
+                          value={decriptionId}
+                          className={'min-w-40'}
                           change={(e) => {
                             setDecriptionId(e)
                           }}

@@ -112,7 +112,7 @@ const CreatejobTemp = ({
   const [selectedDivs, setSelectedDivs] = useState([]);
   const [content, setContent] = useState("");
   const [JobDescriptionList, setJobDescriptionList] = useState([])
-  const [decriptionId, setDecriptionId] = useState("")
+  const [decriptionId, setDecriptionId] = useState(null)
   const [Phone, setPhone] = useState(1)
   const [Headline, setHeadline] = useState(1)
   const [Address, setAddress] = useState(1)
@@ -1446,6 +1446,8 @@ const CreatejobTemp = ({
                           title={''}
                           placeholder={'Choose Job Description'}
                           options={JobDescriptionList}
+                          value={decriptionId}
+                          className={'min-w-40'}
                           change={(e) => {
                             setDecriptionId(e)
                           }}
