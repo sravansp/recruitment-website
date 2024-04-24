@@ -2178,7 +2178,7 @@ const Createjob = ({
                                     );
                                     handleAddField(e)
                                   }}
-                                  value={condition.answer_type || ""}
+                                  value={condition.answerMetaData[0]?.key}
                                   icon={<MdOutlineShortText />}
                                   icondropDown={true}
                                   error={condition.answer_type ? '':errorMessages[index] || ''}

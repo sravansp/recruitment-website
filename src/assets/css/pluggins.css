@@ -157,6 +157,16 @@
   border-radius: 7px;
   gap: 4px;
 }
+.rdw-image-wrapper{
+  display: flex;
+  align-items: center;
+  margin-bottom: 6px;
+  flex-wrap: wrap;
+  background: #eff2f7;
+  padding: 4px;
+  border-radius: 7px;
+  gap: 4px;
+}
 .rdw-option-wrapper:hover {
   box-shadow: inset 1px 1px 4px 0px #BFBDBD !important;
 }

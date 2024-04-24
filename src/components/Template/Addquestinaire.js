@@ -244,7 +244,7 @@ const
             })
             console.log(response)
             if (response.status == 200) {
-              openNotification("success", "Successful", response.message);
+              openNotification("success", "success", response.message);
               setSuccessNotificationVisible(true);
               setTimeout(() => {
                 handleClose();
@@ -288,7 +288,7 @@ const
               console.log(insertedId);
 
               if (response2.status === 200) {
-                openNotification("success", "Successful", response2.message);
+                openNotification("success", "success", response2.message);
                 setSuccessNotificationVisible(true);
                 setTimeout(() => {
                   handleClose();
@@ -296,7 +296,7 @@ const
 
                 }, 1500);
               } else if (response2.status === 500) {
-                openNotification("error", "error", response2.message);
+                openNotification("error", "Error", response2.message);
               }
             } else if (response.status === 500) {
               openNotification("error", "Error", response.message);
@@ -306,7 +306,7 @@ const
           console.error("Error during form submission:", error);
           openNotification(
             "error",
-            "Error saving category",
+            "Error...",
             "Qestionnare Template name already exist."
           );
         }
@@ -468,7 +468,7 @@ const
 
                 />
               </div>
-
+              <div className="flex flex-col gap-4 overflow-hidden">
               {evaluation.map((condition, index) => (
                 <><div className="flex items-center justify-between">
                   <FormInput
@@ -577,7 +577,7 @@ const
                         </div>
                       ))}
 
-                      <div className="mt-2">
+                    
                         {['Drop-down', 'MultipleChoice', 'Checkboxes'].includes(
                           condition.answerMetaData[0]?.key
                         ) && (
@@ -588,7 +588,7 @@ const
                               />
                             </Tooltip>
                           )}
-                      </div>
+                      
                     </>
                   )}
 
@@ -599,6 +599,7 @@ const
               <div className="flex items-center gap-2">
                 <AddMore name="Add New Question" className="!text-black" change={(e) => { handleAddCondition() }} />
 
+              </div>
               </div>
               {contextHolder}
             </Accordion>

@@ -57,6 +57,21 @@
     };
     console.log(updateId)
     console.log(subject)
+
+    const handletemplateName =(Value) =>{
+      if (!Value) {
+        setTemplateNameError('Template Name is required.');
+        // Set flag to true if there's an error
+    } else {
+        setTemplateNameError('');
+    }
+    }
+    const handleSubject = (value) =>{
+      if (value) {
+        setSubjectError('');
+         // Set flag to true if there's an error
+    } 
+    }
     const handleSubmit = async () => {
       try {
         let hasError = false; // Flag to track if any error occurred
@@ -113,7 +128,7 @@
         
             openNotification(
               "success",
-              "Successful",
+              "success",
               response.message
             );
             setTimeout(() => {
@@ -122,7 +137,7 @@
             }, 1500);
           
           }else if (response.status === 500) {
-            openNotification("error", "input field is empty..", response.message.replace(/<br\/>/g, '\n'));
+            openNotification("error", "Error", response.message.replace(/<br\/>/g, '\n'));
           }
 
         } 
@@ -144,7 +159,7 @@
         
           openNotification(
             "success",
-            "Successful",
+            "success",
             response.message
           );
           setTimeout(() => {
@@ -153,7 +168,7 @@
           }, 1500);
         
         }else if (response.status === 500) {
-          openNotification("error", "input field is empty..", response.message);
+          openNotification("error", "Error", response.message);
         }
       }
       }
@@ -167,6 +182,11 @@
     };
     const handleEditorChange = (content) => {
       setContent(content);
+      if (content) {
+        setContentError('');
+        
+        
+      } 
     };
   
     const getEmailById= async()=>{
@@ -262,7 +282,10 @@
                   title={"Template Name"}
                   placeholder={"Enter Template Name..."}
                   value={templateName}
-                  change={setTemplateName}
+                  change={(e)=>{
+                    setTemplateName(e)
+                    handletemplateName(e)
+                  }}
                   error={templateNameError}
                   required={true}
                 />
@@ -272,7 +295,9 @@
                   title={"Subject"}
                   placeholder={"Enter Subject..."}
                   value={subject}
-                  change={setsubject}
+                  change={(e)=>{setsubject(e)
+                   handleSubject(e)
+                  }}
                   error={subjectError}
                   required={true}
                 />
