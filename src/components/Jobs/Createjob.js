@@ -2262,7 +2262,6 @@ const Createjob = ({
                 </>
               ) : activeBtnValue === "Workflow" ? (
                 <FlexCol>
-                  <div className="rounded-md borderb">
                     <Accordion
                       title={"Workflow"}
                       className="Text_area"
@@ -2318,7 +2317,6 @@ const Createjob = ({
                         ))}
                       </Radio.Group>
                     </Accordion>
-                  </div>
                 </FlexCol>
               ) : activeBtnValue === "TeamMembers" ? (
                 <FlexCol>
