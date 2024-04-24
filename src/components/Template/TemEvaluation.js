@@ -81,7 +81,7 @@ const TemEvaluation = ({ open = "", close = () => { }, inputshow = false, isUpda
        
       ]);
     } else {
-      const nextId = evaluation[evaluation.length - 1].questionnaireTemplateDetailsId + 1 || 1;
+      const nextId = evaluation[evaluation.length - 1].evaluationTemplateDetailsId + 1 || 1;
 
       setEvaluation((prevEvaluation) => [
         ...prevEvaluation,

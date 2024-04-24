@@ -105,7 +105,7 @@ const Createjob = ({
   const [errors, setErrors] = useState([]);
   const [content, setContent] = useState("");
   // const [isUpdate, setIsUpdate] = useState();
-  const [decriptionId, setDecriptionId] = useState("")
+  const [decriptionId, setDecriptionId] = useState(null)
   const [activeBtn, setActiveBtn] = useState(0);
   const [presentage, setPresentage] = useState(0);
   const [nextStep, setNextStep] = useState(0);
@@ -1490,7 +1490,7 @@ const Createjob = ({
                       <div className="grid grid-cols-3 gap-4">
                         <FormInput
                           title={t("Job Title")}
-                          placeholder={t("Example : Marketing Manager")}
+                          placeholder={t("Enter job title")}
                           required={true}
                           change={(e) => {
                             formik1.setFieldValue("jobTitle", e);
@@ -1502,7 +1502,7 @@ const Createjob = ({
 
                         <Dropdown
                           title={t("Department")}
-                          placeholder={t("Select...")}
+                          placeholder={t("Choose department")}
                           required={true}
                           options={departmentList}
                           value={formik1.values.departmentId}
@@ -1514,7 +1514,7 @@ const Createjob = ({
 
                         <FormInput
                           title={t(" Job Code")}
-                          placeholder={t(" Job Code")}
+                          placeholder={t("Enter Job Code")}
                           required={true}
                           change={(e) => {
                             formik1.setFieldValue("jobCode", e);
@@ -1619,7 +1619,7 @@ const Createjob = ({
                       <div className='grid grid-cols-2 gap-4'>
                         <FormInput
                           title={"Location"}
-                          placeholder={'Example : Dubai'}
+                          placeholder={'Enter Location'}
                           change={(e) => {
                             formik1.setFieldValue('location', e)
 
@@ -1631,7 +1631,7 @@ const Createjob = ({
 
                         <Dropdown
                           title={'Requirement'}
-                          placeholder={'Urgent'}
+                          placeholder={'Choose Requirement'}
                           options={Requirment}
                           value={formik1.values.requirementType
                           }
@@ -1659,7 +1659,7 @@ const Createjob = ({
                       <div className='grid grid-cols-3 gap-4'>
                         <Dropdown
                           title={'Job Type'}
-                          placeholder={'Full-time'}
+                          placeholder={'Choose Job Type'}
                           options={JobType}
                           change={(e) => {
                             formik1.setFieldValue('jobType', e)
@@ -1672,7 +1672,7 @@ const Createjob = ({
                         />
                         <Dropdown
                           title={'Experience'}
-                          placeholder={'Mid-Senior level'}
+                          placeholder={'Choose Experience'}
                           options={experiencelevel}
                           value={formik1.values.experience}
                           error={formik1.errors.experience}
@@ -1683,7 +1683,7 @@ const Createjob = ({
                         />
                         <Dropdown
                           title={'Education'}
-                          placeholder={'Bachelor’s Degree'}
+                          placeholder={'Choose Education'}
                           options={eductaion}
                           value={formik1.values.education}
                           error={formik1.errors.education}
@@ -1697,7 +1697,7 @@ const Createjob = ({
                       <div className='grid grid-cols-3 gap-4'>
                         <FormInput
                           title={'Keywords'}
-                          placeholder={'Example : Dubai'}
+                          placeholder={'Enter Keywords'}
                           change={(e) => {
                             formik1.setFieldValue('searchKeywords', e)
                           }}
@@ -1707,7 +1707,7 @@ const Createjob = ({
                         />
                         <FormInput
                           title={'Number of Opennings'}
-                          placeholder={'Enter Value'}
+                          placeholder={'Enter Number of Opennings'}
                           change={(e) => {
                             formik1.setFieldValue('noOfVaccancies', e)
                           }}
@@ -1721,7 +1721,7 @@ const Createjob = ({
                       <div className='grid grid-cols-4 gap-4'>
                         <FormInput
                           title={'Salary Range From'}
-                          placeholder={'Enter value'}
+                          placeholder={'Enter Salary Range From'}
                           description={'Minimum Annual Salary'}
                           change={(e) => {
                             formik1.setFieldValue('salaryRangeFrom', e);
@@ -1738,7 +1738,7 @@ const Createjob = ({
 
                         <FormInput
                           title={'Salary Range To'}
-                          placeholder={'Enter value'}
+                          placeholder={'Enter Salary Range To'}
                           description={'Maximum Annual Salary'}
                           change={(e) => {
                             formik1.setFieldValue('salaryRangeTo', e);
@@ -1762,7 +1762,7 @@ const Createjob = ({
                         />
                         <Dropdown
                           title={'Salary Currency'}
-                          placeholder={'salary'}
+                          placeholder={'Choose salary currency'}
                           options={saleryCurrency}
                           value={formik1.values.salaryCurrency}
                           error={formik1.errors.salaryCurrency}
@@ -1771,7 +1771,7 @@ const Createjob = ({
                           }}
                           required={true}
                         />
-                        <div className="flex items center gap-2">
+                        <div className="flex items-center gap-2">
                           <CheckBoxInput
                             title={"View Public"}
                             // titleRight={true}
@@ -1825,6 +1825,8 @@ const Createjob = ({
                           title={''}
                           placeholder={'Choose Job Description'}
                           options={JobDescriptionList}
+                          value={decriptionId}
+                          className={'min-w-40'}
                           change={(e) => {
                             setDecriptionId(e)
                           }}
@@ -1851,6 +1853,7 @@ const Createjob = ({
                         <FaAsterisk className="text-[6px] text-rose-600" />
                         </div>
                         <TextEditor
+                          placeholder={"Enter Description"}
                           initialValue={content}
                           onChange={handleEditorChange}
                           minheight="250px"
@@ -2247,10 +2250,12 @@ const Createjob = ({
                                   {['Drop-down', 'MultipleChoice', 'Checkboxes'].includes(
                                     condition.answerMetaData[0]?.key
                                   ) && (
+                                    <Tooltip placement="top" title={"Add more"}>
                                       <CgAdd
                                         onClick={() => handleAddField(index, condition.answerMetaData[0]?.key)}
                                         style={{ width: '18px', height: '18px', cursor: 'pointer' }}
                                       />
+                                      </Tooltip>
                                     )}
                                 </div>
                               </>
@@ -2267,7 +2272,6 @@ const Createjob = ({
                 </>
               ) : activeBtnValue === "Workflow" ? (
                 <FlexCol>
-                  <div className="rounded-md borderb">
                     <Accordion
                       title={"Workflow"}
                       className="Text_area"
@@ -2323,7 +2327,6 @@ const Createjob = ({
                         ))}
                       </Radio.Group>
                     </Accordion>
-                  </div>
                 </FlexCol>
               ) : activeBtnValue === "TeamMembers" ? (
                 <FlexCol>
@@ -2495,7 +2498,7 @@ const Createjob = ({
                 <Accordion
                   title={"Publish"}
                   className="Text_area"
-                  description={"lorem ipsum dummy text dolar sit."}
+                  description={"Publish"}
                   padding={true}
                   toggleBtn={false}
                   click={() => {
