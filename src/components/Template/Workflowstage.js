@@ -189,7 +189,7 @@ const Workflowstage = ({ open = "", close = () => { }, inputshow = false, isUpda
       try {
         if (
           !formik.values.workFlowName || !formik.values.description){
-            formik.setFieldError('workFlowName', !formik.values.workFlowName ? 'WorkFlow Name is required' : '');
+            formik.setFieldError('workFlowName', !formik.values.workFlowName ? 'Workflow Name is required' : '');
             formik.setFieldError('description', !formik.values.description ? 'Description  is required' : '');
           return;
           }
@@ -353,10 +353,10 @@ const Workflowstage = ({ open = "", close = () => { }, inputshow = false, isUpda
 
       header={[
         !updateId
-          ? t("Create a Workflow Template")
+          ? t("Create Workflow Template")
           : t("Update Workflow stages"),
         !updateId
-          ? t("Create a Workflow Template")
+          ? t("Create Workflow Template")
           : t("Update Workflow stages"),]}
 
       //  headerRight={
