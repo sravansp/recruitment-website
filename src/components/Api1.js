@@ -39,7 +39,7 @@ export const getAllRecruitmentJobs = async (Data) => {
   const method = "POST";
 
   const kwargs = Data;
-
+   console.log(Data)
   return await apiRequest(action, method, kwargs);
 };
 

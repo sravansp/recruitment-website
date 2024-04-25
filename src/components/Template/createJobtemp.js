@@ -27,6 +27,7 @@ import TextArea from "../common/TextArea";
 import Radiobuttonnew from "../common/Radiobuttonnew";
 import GoogleForm from "../common/GoogleForm";
 import JobCard from "../common/JobCard";
+import DOMPurify from 'dompurify';
 import {
   cardData,
   regularOvertime,
@@ -78,6 +79,8 @@ import RadioButton from "../common/RadioButton";
 import { IoClose } from "react-icons/io5";
 import Jobcardcopy from "../common/Jobcardcopy";
 import { RiDeleteBinLine } from "react-icons/ri";
+import { FaAsterisk } from "react-icons/fa";
+import TextEditorcopy from "../common/TextEditor/textEditorCopy";
 
 const CreatejobTemp = ({
   open = "",
@@ -122,6 +125,7 @@ const CreatejobTemp = ({
   const [coverLetter, setCoverletter] = useState(1)
   const [errors, setErrors] = useState([]);
   const [jobTitle, setJobTitle] = useState("")
+  const[html,setstateHTML] =useState("")
 
   // console.log(updateId);
   useEffect(() => {
@@ -363,7 +367,7 @@ const CreatejobTemp = ({
           if (response.status === 200) {
             openNotification(
               "success",
-              "success",
+              "Success",
               response.message
             );
             setPresentage(2);
@@ -421,7 +425,7 @@ const CreatejobTemp = ({
           if (response.status === 200) {
             openNotification(
               "success",
-              "success",
+              "Success",
 
               response.message
             );
@@ -900,6 +904,7 @@ const CreatejobTemp = ({
           formik.setFieldError('education', !formik.values.education ? 'Education is required' : '');
           formik.setFieldError('jobDescription', !content ? 'Description is required' : '');
           return; // Exit early if any field is empty
+         
         }
         if (jobcodelength === 0) {
 
@@ -907,8 +912,8 @@ const CreatejobTemp = ({
         } else (
           getJobsByJoBecode()
         )
-
-
+        console.log(content)
+        setPresentage(1)
         break;
 
       case "ApplicationForm":
@@ -944,7 +949,7 @@ const CreatejobTemp = ({
         setNextStep(nextStep + 1);
 
         break;
-
+        setPresentage(2)
       // Add more cases for additional activeBtnValues...
 
       case "Workflow":
@@ -1112,6 +1117,8 @@ const CreatejobTemp = ({
                           required={true}
                           change={(e) => {
                             formik.setFieldValue("jobTitle", e);
+                            setPresentage(.1)
+                            setJobTitle(e)
                           }}
                           value={formik.values.jobTitle}
                           error={formik.errors.jobTitle}
@@ -1125,6 +1132,7 @@ const CreatejobTemp = ({
                           value={formik.values.departmentId}
                           change={(e) => {
                             formik.setFieldValue("departmentId", e);
+                            setPresentage(.2)
                           }}
                           error={formik.errors.departmentId}
                         />
@@ -1136,6 +1144,7 @@ const CreatejobTemp = ({
                           change={(e) => {
                             formik.setFieldValue("jobCode", e);
                             setJobcode(e)
+                            setPresentage(.3)
                           }}
                           value={formik.values.jobCode}
                           error={formik.errors.jobCode}
@@ -1162,6 +1171,7 @@ const CreatejobTemp = ({
                             onClick={() => {
                               setCustomRate(each.id);
                               formik.setFieldValue("workLocationType", each.value);
+                              setPresentage(.4)
                             }}
 
                           >
@@ -1214,6 +1224,7 @@ const CreatejobTemp = ({
                           placeholder={"Enter Location"}
                           change={(e) => {
                             formik.setFieldValue("location", e);
+                            setPresentage(.5)
                           }}
                           value={formik.values.location}
                           required={true}
@@ -1228,6 +1239,7 @@ const CreatejobTemp = ({
                           change={(e) => {
                             formik.setFieldValue("requirementType", e);
                             console.log(e);
+                            setPresentage(.6)
                           }}
                           required={true}
                           error={formik.errors.requirementType}
@@ -1253,6 +1265,7 @@ const CreatejobTemp = ({
                           change={(e) => {
                             formik.setFieldValue("jobType", e);
                             console.log(e);
+                            setPresentage(.7)
                           }}
                           required={true}
                           value={formik.values.jobType}
@@ -1265,6 +1278,7 @@ const CreatejobTemp = ({
                           value={formik.values.experience}
                           change={(e) => {
                             formik.setFieldValue("experience", e);
+                            setPresentage(.8)
                           }}
                           required={true}
                           error={formik.errors.experience}
@@ -1276,6 +1290,7 @@ const CreatejobTemp = ({
                           value={formik.values.education}
                           change={(e) => {
                             formik.setFieldValue("education", e);
+                            setPresentage(.9)
                           }}
                           required={true}
                           error={formik.errors.education}
@@ -1409,7 +1424,7 @@ const CreatejobTemp = ({
                         </div>
                       </div>
                     </Accordion>
-
+                     
                     <Accordion
                       title={"Job Description"}
                       className="Text_area"
@@ -1420,6 +1435,7 @@ const CreatejobTemp = ({
                       }}
                       initialExpanded={true}
                     >
+                      <div class="flex flex-col gap-4 overflow-hidden">
                       <div className="border rounded-md bg-primaryalpha/5">
                         <div className="flex items-center px-1.5  ">
                           <img src={AI_Text} alt='' className="border rounded-md"></img>
@@ -1454,19 +1470,34 @@ const CreatejobTemp = ({
                         />
                         <ButtonClick handleSubmit={handleGenerateWithAI} BtnType="primary" icon={<img src={image} alt="image" style={{ height: '20px', width: '20px', alignItems: "center" }} />} buttonName={"Generate with AI"} />
                       </div>
-                      <Card>
+                       <div className="flex gap-1.5">
                         <p className="pb-2">Description</p>
-                        <TextEditor
-                          placeholder={t("Enter Description")}
+                        <FaAsterisk className="text-[6px] text-rose-600" />
+                        </div>
+                        {/* <TextEditor
+                          placeholder={t(
+                            "Enter Description "
+                          )}
+
                           hideBorder={true}
                           initialValue={content}
                           //  change={(e)=>{
                           //    formik.setFieldValue('jobDescription',e)
                           //  }}
-                          error={formik.errors.jobDescription}
                           onChange={handleEditorChange}
+                          error={formik.errors.jobDescription}
+                          // changetoHtml={(e)=>{
+                          //   setstateHTML(e)
+                          // }}
                           loader={loader}
+                        /> */}
+                        <TextEditorcopy
+                        onChange={handleEditorChange}
+                        initialValue={content}
+                        error={formik.errors.jobDescription}
                         />
+                        
+                        </div>
                         {/* <TextArea
                                              title={t("Requirement")}
                                              placeholder={t("Enter the job requirements here; from soft skills to the specific qualifications needed to perform the role.")}
@@ -1491,8 +1522,9 @@ const CreatejobTemp = ({
                                             //  value={formik.values.description || selectedAccordionItem?.description || fetchedData.description}
                                             //  error={formik.errors.description}
                                              /> */}
-                      </Card>
+                     
                     </Accordion>
+                    
                   </FlexCol>
                 </>
               ) : activeBtnValue === "ApplicationForm" ? (
@@ -1654,6 +1686,7 @@ const CreatejobTemp = ({
                             title={""}
                             change={(e) => {
                               seteducation(e);
+                              setPresentage(1.1)
                             }}
                             defaultValue={Education}
                           >
@@ -1674,6 +1707,7 @@ const CreatejobTemp = ({
                             title={""}
                             change={(e) => {
                               setExperience(e)
+                              setPresentage(1.2)
                             }}
                             defaultValue={Experience}
                           >
@@ -1693,6 +1727,7 @@ const CreatejobTemp = ({
                             change={(e) => {
                               formik.setFieldValue("summary", e);
                               setSummary(e)
+                              setPresentage(1.3)
                             }}
                             defaultValue={summary}
                           >
@@ -1713,6 +1748,7 @@ const CreatejobTemp = ({
                             change={(e) => {
                               formik.setFieldValue("resume", e);
                               setResume(e)
+                              setPresentage(1.4)
                             }}
                             defaultValue={resume}
                           >
@@ -1734,6 +1770,7 @@ const CreatejobTemp = ({
                             change={(e) => {
                               formik.setFieldValue("coverLetter", e);
                               setCoverletter(e)
+                              setPresentage(1.5)
                             }}
                             defaultValue={coverLetter}
                           >
@@ -1813,6 +1850,7 @@ icondropDown={true}
                                   placeholder={`Enter Question ${index + 1}`}
                                   value={condition.question}
                                   change={(e) => {
+                                    setPresentage(1.6)
                                     setEvaluation((prevEvaluation) =>
                                       prevEvaluation.map((prevCondition, i) =>
                                         i === index
@@ -1830,6 +1868,7 @@ icondropDown={true}
                                       options={Form}
                                       dropdownWidth="200px"
                                       change={(e) => {
+                                        setPresentage(1.7)
                                         setEvaluation((prevEvaluation) =>
                                           prevEvaluation.map((prevCondition, i) =>
                                             i === index
@@ -1851,7 +1890,7 @@ icondropDown={true}
                                       }}
                                       value={condition.answerMetaData[0]?.key}
                                       icondropDown={true}
-                                      error={condition.answer_type ? '' : errorMessages[index] || ''}
+                                      error={condition.answer_type ? '':errorMessages[index] || ''}
                                       placeholder={"Choose Options"}
                                     />
                                   </div>
@@ -1910,7 +1949,8 @@ icondropDown={true}
                                               title={`Options ${fieldIndex + 1}`}
                                               placeholder={"Enter value"}
                                               value={field.value}
-                                              change={(e) =>
+                                              change={(e) =>{
+                                                setPresentage(1.8)
                                                 setEvaluation((prevEvaluation) =>
                                                   prevEvaluation.map(
                                                     (prevCondition, i) =>
@@ -1932,7 +1972,7 @@ icondropDown={true}
                                                         : prevCondition
                                                   )
                                                 )
-                                              }
+                                              }}
                                               error={field.value ? '' : errorMessages[index] || ''}
                                             />
                                           )}

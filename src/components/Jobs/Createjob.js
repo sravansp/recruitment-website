@@ -89,6 +89,7 @@ import Meta from "antd/es/card/Meta";
 
 import noImg from "../../assets/images/noImg.webp"
 import Jobcardcopy from "../common/Jobcardcopy";
+import { FaAsterisk } from "react-icons/fa";
 
 
 const Createjob = ({
@@ -264,7 +265,7 @@ const Createjob = ({
   const [UpdateId, setupdateId] = useState(null);
   useEffect(() => {
     setupdateId(updateId);
-  }, []);
+  }, [updateId]);
 
   //job applying
 
@@ -486,7 +487,7 @@ const Createjob = ({
         } else {
           const idToUpdate = jobId || UpdateId;
           const response = await updateRecruitmentJob({
-            id: idToUpdate,
+            id: jobId || UpdateId,
             companyId: companyId,
             jobTitle: e.jobTitle,
             departmentId: e.departmentId,
@@ -1800,6 +1801,7 @@ const Createjob = ({
                       initialExpanded={true}
                     >
                       {/* <Card className="bg-primaryalpha/5"> */}
+                      <div class="flex flex-col gap-4 overflow-hidden">
                       <div className="border rounded-md bg-primaryalpha/5">
                         <div className="flex items-center px-1.5  ">
                           <img src={AI_Text} alt='' className="border rounded-md"></img>
@@ -1815,6 +1817,7 @@ const Createjob = ({
                           </div>
                         </div>
                       </div>
+                    
                       {/* </Card> */}
                       <div style={{ display: 'flex', justifyContent: 'flex-end', gap: '16px' }}>
 
@@ -1845,7 +1848,10 @@ const Createjob = ({
                                              />
                                              </div> */}
                       <div className="pt-4">
+                      <div className="flex gap-1.5">
                         <p className="pb-2">Description</p>
+                        <FaAsterisk className="text-[6px] text-rose-600" />
+                        </div>
                         <TextEditor
                           placeholder={"Enter Description"}
                           initialValue={content}
@@ -1880,7 +1886,7 @@ const Createjob = ({
                                             //  error={formik.errors.description}
                                              /> */}
 
-
+                       </div>
                     </Accordion>
                   </FlexCol>
                 </>
