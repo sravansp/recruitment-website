@@ -3192,7 +3192,6 @@ button.rbc-button-link {
   cursor: pointer;
 }
 .svg-item {
-  cursor: pointer;
   transition: fill 0.3s ease; /* Add transition for smooth color change */
 }
 
