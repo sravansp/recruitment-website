@@ -125,7 +125,7 @@ const CreatejobTemp = ({
   const [coverLetter, setCoverletter] = useState(1)
   const [errors, setErrors] = useState([]);
   const [jobTitle, setJobTitle] = useState("")
-  const[html,setstateHTML] =useState("")
+  const [html, setstateHTML] = useState("")
 
   // console.log(updateId);
   useEffect(() => {
@@ -512,14 +512,14 @@ const CreatejobTemp = ({
     getJobtemById();
     console.log(jobdata);
   }, [updateId]);
-  const [departmentList, setDepartmentList] = useState();
+  const [departmentList, setDepartmentList] = useState([]);
   const [company, setCompany] = useState([]);
   const getDepartmentList = async () => {
     try {
       const result = await axios.post(
         API.HOST + API.GET_DEPARTMENT + "/" + companyId
       );
-
+      // console.log(result,"result")
       setDepartmentList(
         result.data.tbl_department.map((each) => ({
           label: each.department,
@@ -887,7 +887,6 @@ const CreatejobTemp = ({
           !formik.values.salaryRangeFrom ||
           !formik.values.salaryRangeTo ||
           !formik.values.salaryCurrency ||
-          !formik.values.jobType ||
           !content
         ) {
           formik.setFieldError('jobTitle', !formik.values.jobTitle ? 'Job Title is required' : '');
@@ -904,7 +903,7 @@ const CreatejobTemp = ({
           formik.setFieldError('education', !formik.values.education ? 'Education is required' : '');
           formik.setFieldError('jobDescription', !content ? 'Description is required' : '');
           return; // Exit early if any field is empty
-         
+
         }
         if (jobcodelength === 0) {
 
@@ -1424,7 +1423,7 @@ const CreatejobTemp = ({
                         </div>
                       </div>
                     </Accordion>
-                     
+
                     <Accordion
                       title={"Job Description"}
                       className="Text_area"
@@ -1436,43 +1435,43 @@ const CreatejobTemp = ({
                       initialExpanded={true}
                     >
                       <div class="flex flex-col gap-4 overflow-hidden">
-                      <div className="border rounded-md bg-primaryalpha/5">
-                        <div className="flex items-center px-1.5  ">
-                          <img src={AI_Text} alt='' className="border rounded-md"></img>
-                          <div className="flex flex-col gap-1 p-1.5">
-                            <div className="flex items-center justify-between ">
-                              <p className="font-bold">Generate personalized job descriptions based on pas account data.
+                        <div className="border rounded-md bg-primaryalpha/5">
+                          <div className="flex items-center px-1.5  ">
+                            <img src={AI_Text} alt='' className="border rounded-md"></img>
+                            <div className="flex flex-col gap-1 p-1.5">
+                              <div className="flex items-center justify-between ">
+                                <p className="font-bold">Generate personalized job descriptions based on pas account data.
+                                </p>
+                                {/* <p className="text-primary"><IoClose /></p> */}
+                              </div>
+                              <p className="text-gray-400">When you generate with Al, we look for similar jobs you've created in the past and use he data to create content that's
+                                impactful, accurate, and personalized to your company
                               </p>
-                              {/* <p className="text-primary"><IoClose /></p> */}
                             </div>
-                            <p className="text-gray-400">When you generate with Al, we look for similar jobs you've created in the past and use he data to create content that's
-                              impactful, accurate, and personalized to your company
-                            </p>
                           </div>
                         </div>
-                      </div>
-                      <div
-                        style={{
-                          display: "flex",
-                          justifyContent: "flex-end",
-                          gap: "16px",
-                        }}
-                      >
-                        <Dropdown
-                          title={''}
-                          placeholder={'Choose Job Description'}
-                          options={JobDescriptionList}
-                          value={decriptionId}
-                          className={'min-w-40'}
-                          change={(e) => {
-                            setDecriptionId(e)
+                        <div
+                          style={{
+                            display: "flex",
+                            justifyContent: "flex-end",
+                            gap: "16px",
                           }}
-                        />
-                        <ButtonClick handleSubmit={handleGenerateWithAI} BtnType="primary" icon={<img src={image} alt="image" style={{ height: '20px', width: '20px', alignItems: "center" }} />} buttonName={"Generate with AI"} />
-                      </div>
-                       <div className="flex gap-1.5">
-                        <p className="pb-2">Description</p>
-                        <FaAsterisk className="text-[6px] text-rose-600" />
+                        >
+                          <Dropdown
+                            title={''}
+                            placeholder={'Choose Job Description'}
+                            options={JobDescriptionList}
+                            value={decriptionId}
+                            className={'min-w-40'}
+                            change={(e) => {
+                              setDecriptionId(e)
+                            }}
+                          />
+                          <ButtonClick handleSubmit={handleGenerateWithAI} BtnType="primary" icon={<img src={image} alt="image" style={{ height: '20px', width: '20px', alignItems: "center" }} />} buttonName={"Generate with AI"} />
+                        </div>
+                        <div className="flex gap-1.5">
+                          <p className="pb-2">Description</p>
+                          <FaAsterisk className="text-[6px] text-rose-600" />
                         </div>
                         {/* <TextEditor
                           placeholder={t(
@@ -1492,13 +1491,13 @@ const CreatejobTemp = ({
                           loader={loader}
                         /> */}
                         <TextEditorcopy
-                        onChange={handleEditorChange}
-                        initialValue={content}
-                        error={formik.errors.jobDescription}
+                          onChange={handleEditorChange}
+                          initialValue={content}
+                          error={formik.errors.jobDescription}
                         />
-                        
-                        </div>
-                        {/* <TextArea
+
+                      </div>
+                      {/* <TextArea
                                              title={t("Requirement")}
                                              placeholder={t("Enter the job requirements here; from soft skills to the specific qualifications needed to perform the role.")}
                                              required={true}
@@ -1522,9 +1521,9 @@ const CreatejobTemp = ({
                                             //  value={formik.values.description || selectedAccordionItem?.description || fetchedData.description}
                                             //  error={formik.errors.description}
                                              /> */}
-                     
+
                     </Accordion>
-                    
+
                   </FlexCol>
                 </>
               ) : activeBtnValue === "ApplicationForm" ? (
@@ -1890,7 +1889,7 @@ icondropDown={true}
                                       }}
                                       value={condition.answerMetaData[0]?.key}
                                       icondropDown={true}
-                                      error={condition.answer_type ? '':errorMessages[index] || ''}
+                                      error={condition.answer_type ? '' : errorMessages[index] || ''}
                                       placeholder={"Choose Options"}
                                     />
                                   </div>
@@ -1949,7 +1948,7 @@ icondropDown={true}
                                               title={`Options ${fieldIndex + 1}`}
                                               placeholder={"Enter value"}
                                               value={field.value}
-                                              change={(e) =>{
+                                              change={(e) => {
                                                 setPresentage(1.8)
                                                 setEvaluation((prevEvaluation) =>
                                                   prevEvaluation.map(
