@@ -36,7 +36,7 @@ import Dropdown from "../common/Dropdown";
 
 const Workflowstage = ({
   open = "",
-  close = () => {},
+  close = () => { },
   inputshow = false,
   isUpdate = {},
   updateId,
@@ -52,16 +52,14 @@ const Workflowstage = ({
       placement: "top",
       // stack: 2,
       style: {
-        background: `${
-          type === "success"
+        background: `${type === "success"
             ? `linear-gradient(180deg, rgba(204, 255, 233, 0.8) 0%, rgba(235, 252, 248, 0.8) 51.08%, rgba(246, 251, 253, 0.8) 100%)`
             : "linear-gradient(180deg, rgba(255, 236, 236, 0.80) 0%, rgba(253, 246, 248, 0.80) 51.13%, rgba(251, 251, 254, 0.80) 100%)"
-        }`,
-        boxShadow: `${
-          type === "success"
+          }`,
+        boxShadow: `${type === "success"
             ? "0px 4.868px 11.358px rgba(62, 255, 93, 0.2)"
             : "0px 22px 60px rgba(134, 92, 144, 0.20)"
-        }`,
+          }`,
       },
       // duration: null,
     });
@@ -100,7 +98,13 @@ const Workflowstage = ({
       console.error("Invalid stage name:", stageIndex);
     }
   };
-
+  const handleModalClose = () => {
+    // Set the state to false to hide the modal
+    setIsModalVisible(false);
+    //set the state empty
+    setStageName('')
+    setSelectedStageName('')
+  };
   const handleCopy = (stageIndex) => {
     copy(stageIndex);
   };
@@ -378,21 +382,54 @@ const Workflowstage = ({
     },
   ];
 
-  const emailoption = [
-    { id: 1, title: "Email Template" },
-    { id: 2, title: "Email Sender" },
-  ];
+  // const emailoption = [
+  //   {
+  //     id: "send_email", name: "Send Email",
+  //     option1: [{ id: 1, title: "Email Template" },
+  //     { id: 2, title: "Email Sender" },]
+  //   }, {
+  //     id: "send_questionnaire", name: "Send Questionnaire ",
+  //     option1: [{ id: 1, title: "Email Template" },
+  //     { id: 2, title: "Email Sender" },]
+  //   },{
+  //     id: "add_tag", name: "Add Tag",
+  //     option1: [{ id: 1, titletag: "Add New Tag" },
+  //     ]
+  //   }
+  // ];
+  const [emailOptions, setEmailOptions] = useState([
+    {
+      id: "send_email", name: "Send Email",
+      option1: [{ id: 1, title: "Email Template" },
+      { id: 2, title: "Email Sender" },]
+    },
+    {
+      id: "send_questionnaire", name: "Send Questionnaire ",
+      option1: [{ id: 1, title: "Email Template" },
+      { id: 2, title: "Email Sender" },]
+    },
+    {
+      id: "add_tag", name: "Add Tag",
+      option1: [{ id: 1, titletag: "Add New Tag" },
+      ]
+    }
+  ]);
+  
 
+ 
   const handleMenuClick = (option) => {
     console.log("Selected option:", option);
     // Handle the selected option here
     setmenuitem(true)
     setMenuVisible(false); // Close the menu after selection
   };
-  const handleDeleteSection = () => {
-    // Logic to delete the section
-    setmenuitem(false); // Set menuitem state to false to hide the section
+  const handleDeleteSection = (id) => {
+    const updatedOptions = emailOptions.filter(option => option.id !== id);
+    setEmailOptions(updatedOptions);
+    console.log(`Option with id '${id}' deleted successfully.`);
   };
+
+  
   return (
     <DrawerPop
       open={show}
@@ -602,9 +639,11 @@ const Workflowstage = ({
           </div>
           <WorkflowModal
             // title="Vertically centered modal dialog"
+            className="w-96"
             wrapClassName="vertical-center-modal"
             isOpen={isModalVisible}
             onClose={closeModal}
+            handleSubmit={handleAddStageClick}
           >
             <div className="flex flex-col items-center justify-center w-full h-full gap-5">
               <div className="flex flex-col items-center gap-2 text-center">
@@ -643,19 +682,33 @@ const Workflowstage = ({
                 />
               </div>
             </div>
-            <div className="flex flex-col gap-3 w-full border border-black-500 ring-1 ring-black ring-opacity-5 shadow-lg rounded-lg p-1" style={{ display: menuitem ? "block" : "none" }}>
-              <div className="w-full m-auto bg-slate-100 h-12 rounded-lg flex justify-between items-center pr-2">
-              <h1 className="mt-3.5 m-3 font-semibold">Request Evaluation</h1>
-              <RiDeleteBin5Line className="text-gray-500 2xl:text-base dark:text-white hover:text-red-500" onClick={handleDeleteSection} />
-              </div>
-              <div className="flex gap-2  w-full p-1">
-              {emailoption.map((item) => (
-                <div className="w-1/2">
-                  <Dropdown title={item.title} />
+            {emailOptions.map((items,index) => (
+              <div key={items.id} className="flex flex-col gap-3 w-full border border-black-500 ring-1 ring-black ring-opacity-5 shadow-lg rounded-lg p-1" style={{ display: menuitem ? "block" : "none" }}>
+                <div className="w-full m-auto bg-slate-100 h-12 rounded-lg flex justify-between items-center pr-2">
+                  <h1 className="mt-3.5 m-3 font-semibold">{items.name}</h1>
+                  <RiDeleteBin5Line className="text-gray-500 2xl:text-base dark:text-white hover:text-red-500" onClick={() => handleDeleteSection(`${items.id}`)} />
                 </div>
-              ))}
+                <div className="flex gap-2  w-full p-1">
+                  {items.option1.map((item) => (
+                    <>
+                       {item.title ?
+                    <div className="w-1/2">
+                    <Dropdown title={item.title} />
+                     
+                    </div>
+                    :""}
+                    {item.titletag ?
+                    <div className="w-full">
+                     <FormInput title={item.titletag}/>
+                    </div>
+                    :""}
+                    </>
+                  ))}
+                </div>
               </div>
-            </div>
+            ))}
+            
+
             <div className="justify-start">
               <AddMore
                 name="Add stage rule"
@@ -663,7 +716,7 @@ const Workflowstage = ({
                 change={() => setMenuVisible(true)}
               />
             </div>
-          
+
             <Menu
               onClick={({ key }) => handleMenuClick(key)}
               style={{ display: menuVisible ? "block" : "none" }}
@@ -678,8 +731,53 @@ const Workflowstage = ({
                 </Menu.Item>
               ))}
             </Menu>
-            
+
           </WorkflowModal>
+            {/* <Modal
+            // title="Vertically centered modal dialog"
+            wrapClassName="vertical-center-modal"
+            open={isModalVisible}
+            onCancel={handleModalClose}
+            footer={[
+              <Button key="back" onClick={handleModalClose}>
+                Cancel
+              </Button>,
+              <Button key="submit" type="primary" onClick={handleAddStageClick}>
+                OK
+              </Button>,
+            ]}
+          >
+            <div className='flex flex-col gap-5'>
+              <div className="flex flex-col items-center justify-center font-semibold font-['Inter'] leading-relaxed">
+                <p>Add Stages</p>
+                <img
+                  src={image}
+                  style={{ width: '50px', height: '50px', borderRadius: '50%', objectFit: 'cover' }}
+                  alt="Your Image"
+                />
+              </div>
+              <div onKeyDown={(event) => {
+                if (event.key === "Enter") {
+                  handleAddStageClick();
+                }
+              }}>
+                <FormInput
+                  title={"Stage Name"}
+                  placeholder={"Enter Stage Name"}
+                  value={selectedStageName}
+                  change={(e) => {
+                    setStageName(e)
+                    setSelectedStageName(e)
+ 
+                  }}
+                  error={stageError}
+                  required={true}
+                />
+              </div>
+              <AddMore name="Add stage rule" className="text-black" />
+            </div>
+ 
+          </Modal> */}
         </Accordion>
         {contextHolder}
       </div>
