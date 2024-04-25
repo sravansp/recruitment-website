@@ -238,7 +238,7 @@ const Workflowstage = ({
           });
           console.log(response);
           if (response.status === 200) {
-            openNotification("success", "success", response.message);
+            openNotification("success", "Success", response.message);
             setTimeout(() => {
               handleClose();
               refresh();
@@ -278,7 +278,7 @@ const Workflowstage = ({
             console.log(insertedId);
 
             if (response2.status === 200) {
-              openNotification("success", "success", response2.message);
+              openNotification("success", "Success", response2.message);
               setTimeout(() => {
                 handleClose();
                 refresh();
@@ -484,7 +484,7 @@ const Workflowstage = ({
           >
             <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
               <FormInput
-                title={"Workflow Name"}
+                title={"Template Name"}
                 placeholder={"Enter Template Name..."}
                 className="!text-[#344054] "
                 change={(e) => {

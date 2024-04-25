@@ -24,10 +24,10 @@ import { HiMiniHandThumbDown, HiMiniHandThumbUp } from 'react-icons/hi2'
 import { FaMinus, FaStar } from 'react-icons/fa'
 import { TiMinus } from 'react-icons/ti'
 import { RiDeleteBinLine } from 'react-icons/ri'
-
-
+ 
+ 
 const TemEvaluation = ({ open = "", close = () => { }, inputshow = false, isUpdate = {}, updateId, refresh }) => {
-
+ 
   const [companyId, setCompanyId] = useState(localStorage.getItem("companyId"));
   const [insertedId, setinsertedId] = useState("")
   const [errorMessages, setErrorMessages] = useState("");
@@ -46,11 +46,11 @@ const TemEvaluation = ({ open = "", close = () => { }, inputshow = false, isUpda
       createdBy: 499
     },
   ]);
-
-
+ 
+ 
   //condition data
-
-
+ 
+ 
   // console.log(updateId)
   // const parsedAnswerMetaData = JSON.parse(evaluation[0].answerMetaData);
   // parsedAnswerMetaData[0].key = "updatedKey";
@@ -61,25 +61,44 @@ const TemEvaluation = ({ open = "", close = () => { }, inputshow = false, isUpda
   //     return prevEvaluation.map((item) => ({
   //       ...item,
   //       evaluationTemplateId: insertedId,
-
+ 
   //     }));
   //   });
   // }, [insertedId]);
   const handleAddCondition = () => {
-    setEvaluation((prevEvaluation) => [
-      ...prevEvaluation,
-      {
-        id: prevEvaluation.length + 1,
-        companyId: companyId, // Replace companyId with your actual value
-        evaluationTemplateId: "", // Replace insertedId with your actual value
-        question: "",
-        answerMetaData: '[]',
-        description: "hihihihi",
-        createdBy: 493
-      },
-    ]);
-  };
+    if (!updateId) {
+      setEvaluation((prevEvaluation) => [
+        ...prevEvaluation,
+        {
+          id: prevEvaluation.length + 1,
+          companyId: companyId, // Replace companyId with your actual value
+          evaluationTemplateId: "", // Replace insertedId with your actual value
+          question: "",
+          answerMetaData: '[]',
+          description: "hihihihi",
+          createdBy: 493
+        },
+       
+      ]);
+    } else {
+      const nextId = evaluation[evaluation.length - 1].questionnaireTemplateDetailsId + 1 || 1;
 
+      setEvaluation((prevEvaluation) => [
+        ...prevEvaluation,
+        {
+          
+          companyId: companyId, // Replace companyId with your actual value
+          evaluationTemplateId: "",
+          evaluationTemplateDetailsId: nextId, // Set the calculated nextId
+          question: "",
+          answerMetaData: '[]',
+          description: "hihihihi",
+         
+        },
+      ]);
+    }
+  };
+ 
   const handleDeleteCondition = (index) => {
     setEvaluation((prevEvaluation) =>
       prevEvaluation.filter((_, i) => i !== index)
@@ -87,7 +106,7 @@ const TemEvaluation = ({ open = "", close = () => { }, inputshow = false, isUpda
   };
   const handleDeleteField = (conditionIndex, fieldIndex) => {
     // console.log("Deleting field", conditionIndex, fieldIndex);
-
+ 
     setEvaluation((prevEvaluation) =>
       prevEvaluation.map((prevCondition, i) =>
         i === conditionIndex
@@ -125,16 +144,16 @@ const TemEvaluation = ({ open = "", close = () => { }, inputshow = false, isUpda
   const [show, setShow] = useState(open);
   const { t } = useTranslation();
   const handleClose = () => {
-
+ 
     close(false)
-
-
+ 
+ 
   };
   const [content, setContent] = useState("")
   const handleEditorChange = (content) => {
     setContent(content);
   };
-
+ 
   const [api, contextHolder] = notification.useNotification();
   const openNotification = (type, message, description) => {
     api[type]({
@@ -155,13 +174,14 @@ const TemEvaluation = ({ open = "", close = () => { }, inputshow = false, isUpda
       // duration: null,
     });
   };
-
-
-
-
-
+ 
+   const[Questionerror,setQuestionError] = useState('')
+   const[answerError,setAnswerError] = useState('')
+   const[OptionError,setoptionserror] = useState('')
+ 
+ 
   // const[insertedId,setinsertedId] =useState(null)
-
+ 
   const formik = useFormik({
     initialValues: {
       companyId: "",
@@ -169,14 +189,14 @@ const TemEvaluation = ({ open = "", close = () => { }, inputshow = false, isUpda
       description: "",
       createdBy: null,
     },
-
+ 
     // enableReinitialize: true,
     // validateOnChange: false,
     // validationSchema: Yup.object().shape({
     //   evaluationTemplateName : Yup.string().required('Evalutaion is required'),
     //   description:Yup.string().required('Description is required'),
     // }),
-
+ 
     onSubmit: async (values, { setSubmitting }) => {
       try {
         // console.log({
@@ -185,37 +205,40 @@ const TemEvaluation = ({ open = "", close = () => { }, inputshow = false, isUpda
         //   description: values.description,
         //   createdBy: null,
         // });
-
+ 
         // Make the first API call
         if (
           !formik.values.evaluationTemplateName || !formik.values.description) {
           formik.setFieldError('evaluationTemplateName', !formik.values.evaluationTemplateName ? 'Evaluation is Required is required' : '');
           formik.setFieldError('description', !formik.values.description ? 'Description is required' : '');
         }
-        const newErrorMessages = evaluation.map((condition) => {
-          let errorMessage = '';
-
+        let hasError = false;
+        evaluation.forEach((condition) => {
           if (!condition.question) {
-            errorMessage = 'Question is required.';
-          } else if (!condition.answerMetaData || !condition.answerMetaData[0]?.key) {
-            errorMessage = 'Please choose an answer type.';
-          } else if (
+            setQuestionError('Question is Required.');
+            hasError = true;
+ 
+          }
+       
+          if (!condition.answerMetaData || !condition.answerMetaData[0]?.key) {
+            setAnswerError('Please choose an answer type.');
+            hasError = true;
+          }
+          if (
             ["Drop-down", "MultipleChoice", "Checkboxes"].includes(condition.answerMetaData[0]?.key) &&
             (condition.answerMetaData.some((field) => !field.value) ||
               (!condition.answerMetaData[0]?.value && condition.answerMetaData[0]?.key))
           ) {
-            errorMessage = 'Please enter values for all options.';
-          }
-
-          return errorMessage;
+            setoptionserror('Please enter values for all options.');
+            hasError = true;
+          } 
         });
-
-        setErrorMessages(newErrorMessages);
-        const hasErrors = newErrorMessages.some(errorMessage => errorMessage !== '');
-        if (hasErrors) {
-          // Don't proceed if there are errors
+        if (hasError) {
           return;
-        }
+      }
+        // Now you have updated all error states synchronously
+        // Check if there are any errors
+       
         if (updateId) {
           const formattedData = evaluation.map((item, index) => ({
             companyId: companyId,
@@ -224,10 +247,11 @@ const TemEvaluation = ({ open = "", close = () => { }, inputshow = false, isUpda
             answerMetaData: item.answerMetaData,
             description: item.description,
             createdBy: item.createdBy,
-            evaluationTemplateDetailsId: evaluationTemplateDetailsIds[index],
-
+            evaluationTemplateDetailsId: item.evaluationTemplateDetailsId,
+ 
             modifiedBy: null
           }));
+         
           const response = await updateEvaluationTemplateWithDetails({
             RecruitmentEvaluationTemplate: {
               evaluationTemplateId: updateId,
@@ -237,8 +261,8 @@ const TemEvaluation = ({ open = "", close = () => { }, inputshow = false, isUpda
               modifiedBy: null,
             },
             RecruitmentEvaluationTemplateDetail: formattedData
-
-
+ 
+ 
           })
           // console.log(response)
           if (response.status == 200) {
@@ -250,9 +274,9 @@ const TemEvaluation = ({ open = "", close = () => { }, inputshow = false, isUpda
             }, 1500);
           } else if (response.status == 500) {
             openNotification("error", "Error", response.message.replace(/<br\/>/g, '\n'));
-
+ 
           }
-
+ 
         } else {
           const response = await saveRecruitmentEvaluationTemplate({
             companyId: companyId,
@@ -260,13 +284,13 @@ const TemEvaluation = ({ open = "", close = () => { }, inputshow = false, isUpda
             description: values.description,
             createdBy: null,
           });
-
+ 
           // console.log(response);
-
+ 
           if (response.status === 200) {
             // Update the state with the insertedId
             const insertedId = response.result.insertedId;
-
+ 
             // Process the data for the second formik here
             const formattedData = evaluation.map((item) => ({
               companyId: companyId,
@@ -276,15 +300,15 @@ const TemEvaluation = ({ open = "", close = () => { }, inputshow = false, isUpda
               description: item.description,
               createdBy: item.createdBy,
             }));
-
+ 
             // Call your API to save data using the formatted data
             const response2 = await saveRecruitmentEvaluationTemplateDetailBatch(formattedData);
-
+ 
             // Handle the response if needed
             // console.log('Response2:', response2);
             // console.log(formattedData);
             // console.log(insertedId);
-
+ 
             if (response2.status === 200) {
               openNotification("success", "success", response2.message);
               setSuccessNotificationVisible(true);
@@ -310,15 +334,15 @@ const TemEvaluation = ({ open = "", close = () => { }, inputshow = false, isUpda
       setSubmitting(false);
     },
   });
-
-
-
-
-
+ 
+ 
+ 
+ 
+ 
   const handleSubmit = async (e) => {
     formik.handleSubmit()
-
-
+ 
+ 
   }
   const getevaluationtem = async () => {
     const id = updateId;
@@ -342,28 +366,29 @@ const TemEvaluation = ({ open = "", close = () => { }, inputshow = false, isUpda
           }))
         }));
       });
-      const ids = response.result.map(item => item.evaluationTemplateDetailData.map(detail => detail.evaluationTemplateDetailsId)).flat();
-      setEvaluationTemplateDetailsIds(ids);
+      // const ids = response.result.map(item => item.evaluationTemplateDetailData.map(detail => detail.evaluationTemplateDetailsId)).flat();
+      // console.log(ids)
+      // setEvaluationTemplateDetailsIds(ids);
       setEvaluation(evaluationData);
       // console.log(evaluationData)
       const firstEvaluation = response.result[0];
       formik.setFieldValue("evaluationTemplateName", firstEvaluation.evaluationTemplateName);
       formik.setFieldValue("description", firstEvaluation.description);
-
+ 
     } catch (error) {
       // console.error("Error fetching evaluation data:", error);
     }
   };
   useEffect(() => {
     getevaluationtem()
-
+ 
   }, [])
   return (
     <div>
-
-
+ 
+ 
       <DrawerPop
-
+ 
         open={show}
         contentWrapperStyle={{
           position: "absolute",
@@ -377,16 +402,16 @@ const TemEvaluation = ({ open = "", close = () => { }, inputshow = false, isUpda
           borderTopLeftRadius: "0px !important",
           borderBottomLeftRadius: 0,
         }}
-
-
+ 
+ 
         close={(e) => {
           setShow(e);
           //    setUpdateId(null);
           handleClose();
-
-
+ 
+ 
         }}
-
+ 
         header={[
           !updateId
             ? t("Create Evaluation Template")
@@ -394,7 +419,7 @@ const TemEvaluation = ({ open = "", close = () => { }, inputshow = false, isUpda
           !updateId ? t("Create Evaluation Template")
             : t("update Evaluation Template"),
         ]}
-
+ 
         //  headerRight={
         //    <div className="flex items-center gap-10">
         //      <p className="text-sm font-medium text-gray-400">
@@ -425,15 +450,15 @@ const TemEvaluation = ({ open = "", close = () => { }, inputshow = false, isUpda
       //  activeBtn={activeBtn}
       //  saveAndContinue={true}
       //  stepsData={steps}
-
-
+ 
+ 
       > <div className="relative max-w-[1070px]  w-full mx-auto">
           <Accordion
             title={"New Evaluation Template"}
             description={"New Evaluation Template"}
             className="Text_area"
             padding={true}
-
+ 
             click={() => {
               //    setPresentage(1.4);
             }}
@@ -449,7 +474,7 @@ const TemEvaluation = ({ open = "", close = () => { }, inputshow = false, isUpda
                 }}
                 error={formik.errors.evaluationTemplateName}
                 required={true}
-
+ 
               />
             </div>
             <div className='grid grid-cols-2'>
@@ -480,10 +505,10 @@ const TemEvaluation = ({ open = "", close = () => { }, inputshow = false, isUpda
                       ))
                       // console.log(e)
                     }}
-                    error={condition.question ? '' : errorMessages[index] || ''}
+                    error={condition.question ? '' : Questionerror || ''}
                     required={true}
                   />
-
+ 
                   <div className="flex items-center gap-5">
                     <div className="flex-shrink-0"> {/* Add this container for the dropdown and icons */}
                       <Dropdown
@@ -495,7 +520,7 @@ const TemEvaluation = ({ open = "", close = () => { }, inputshow = false, isUpda
                               ...prevCondition,
                               answerMetaData: [
                                 {
-                                  id: 1,
+                                  
                                   key: e,
                                   value: e === condition.answerMetaData[0]?.key ? condition.answerMetaData[0]?.value : '',
                                 }
@@ -508,20 +533,20 @@ const TemEvaluation = ({ open = "", close = () => { }, inputshow = false, isUpda
                         value={condition.answerMetaData[0]?.key }
                         icondropDown={true}
                         required={true}
-                        error={condition.answerMetaData[0]?.key ? '' : errorMessages[index] || ''}
+                        error={condition.answerMetaData[0]?.key ? '' : answerError || ''}
                         placeholder={"Choose Options"}
                       />
                     </div>
                     {/* Additional dynamic input fields based on the selected value in the dropdown */}
                     {/* Add your logic here */}
-
+ 
                     <div>
                       <Tooltip placement="topRight" title={"Active / Inactive"} className="flex items-center gap-2">
                       <p>Mandatory</p>
                         <ToggleBtn />
                       </Tooltip>
                     </div>
-
+ 
                     <div style={{ display: 'flex', alignItems: 'center', gap: '15px' }}>
                       {/* <Tooltip placement="top" title={"Copy"} >
                       <MdOutlineFileCopy style={{ width: '18px', height: '18px', cursor: 'pointer' }} />
@@ -530,7 +555,7 @@ const TemEvaluation = ({ open = "", close = () => { }, inputshow = false, isUpda
                       <RiDeleteBinLine className="text-gray-500" style={{ width: '18px', height: '18px', cursor: 'pointer' }} onClick={() => handleDeleteCondition(index)} />
                       </Tooltip>
                     </div>
-
+ 
                   </div>
                 </div>
                 {condition.answerMetaData[0]?.key && (
@@ -555,10 +580,10 @@ const TemEvaluation = ({ open = "", close = () => { }, inputshow = false, isUpda
                               : prevCondition
                             )
                             )}
-                            error={field.value ? '' : errorMessages[index] || ''}
+                            error={field.value ? '' : OptionError || ''}
                           />
                         )}
-
+ 
                         {['Drop-down', 'MultipleChoice', 'Checkboxes'].includes(field.key) && (
                           <div className="ml-2">
                             <Tooltip placement="top" title={"Delete"}>
@@ -571,8 +596,8 @@ const TemEvaluation = ({ open = "", close = () => { }, inputshow = false, isUpda
                         )}
                       </div>
                     ))}
-
-                    
+ 
+                   
                       {['Drop-down', 'MultipleChoice', 'Checkboxes'].includes(
                         condition.answerMetaData[0]?.key
                       ) && (
@@ -583,20 +608,20 @@ const TemEvaluation = ({ open = "", close = () => { }, inputshow = false, isUpda
                             />
                           </Tooltip>
                         )}
-                    
+                   
                   </>
                 )}
-
-
+ 
+ 
                 <div className="v-divider"></div>
               </>
             ))}
-
+ 
             <div className="flex items-center gap-2">
               <AddMore name="Add New Question" className="!text-black" change={(e) => { handleAddCondition() }} />
-
+ 
             </div>
-            
+           
             </div>
             {/* <div className='border-t'></div>
             <div className='flex flex-col gap-2'>
@@ -606,7 +631,7 @@ const TemEvaluation = ({ open = "", close = () => { }, inputshow = false, isUpda
                   placeholder={"Type question here..."}
                 />
               </div>
-
+ 
               <div className="w-full  rounded-sm h-24 sm:w-full mt-5">
                 <div className="bg-white rounded-md borderb  p-4 flex dark:bg-black dark:text-white h-24">
                   <div className="flex items-center w-1/5 sm:w-1/5">
@@ -656,14 +681,14 @@ const TemEvaluation = ({ open = "", close = () => { }, inputshow = false, isUpda
                 </div>
               </div>
             </div> */}
-
+ 
             {contextHolder}
           </Accordion>
         </div>
       </DrawerPop >
-
+ 
     </div >
   )
 }
-
+ 
 export default TemEvaluation

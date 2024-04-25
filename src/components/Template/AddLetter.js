@@ -124,7 +124,7 @@ const AddLetter = ({
         
         openNotification(
           "success",
-          "success",
+          "Success",
           response.message
         );
         setTimeout(() => {
@@ -153,7 +153,7 @@ const AddLetter = ({
       if (response.status === 200) {
         openNotification(
           "success",
-          "success",
+          "Success",
           response.message
         );
         setTimeout(() => {
@@ -269,7 +269,7 @@ const AddLetter = ({
           >
             <div className="grid grid-cols-2 ">
               <FormInput
-                title={"Letter Template Name"}
+                title={"Template Name"}
                 placeholder={"Enter Letter Template Name"}
                 value={templateName}
                 change={(e)=>{

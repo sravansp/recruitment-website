@@ -84,6 +84,8 @@ export default function Router() {
                 <Route path="/Templates" element={<Template/>}></Route>
                 <Route path="/Privilege" element={<Privileges/>}></Route>
                 
+
+                
                  <Route path="/Systemsettings" element={<SystemSettings/>}></Route>
                 
               </Routes>

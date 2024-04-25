@@ -388,6 +388,7 @@ const openNotification = (type, message, description) => {
   }}
   minheight="250px"
 />
+
               </div>
               {uploadedFiles.length > 0 && (
             <div className="flex flex-wrap items-center gap-2">
