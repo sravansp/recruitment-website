@@ -113,7 +113,7 @@ const CreatejobTemp = ({
   const [workFlows, setWorkFlows] = useState([]);
   const [selectedWorkFlowId, setSelectedWorkFlowId] = useState("");
   const [selectedDivs, setSelectedDivs] = useState([]);
-  const [content, setContent] = useState("");
+  const [content, setContent] = useState(null);
   const [JobDescriptionList, setJobDescriptionList] = useState([])
   const [decriptionId, setDecriptionId] = useState(null)
   const [Phone, setPhone] = useState(1)
@@ -902,7 +902,7 @@ const CreatejobTemp = ({
           formik.setFieldError('salaryCurrency', !formik.values.salaryCurrency ? 'Salary Currency is required' : '');
           formik.setFieldError('jobType', !formik.values.jobType ? 'JobType is required' : '');
           formik.setFieldError('education', !formik.values.education ? 'Education is required' : '');
-          formik.setFieldError('jobDescription', !content ? 'jobDescription is required' : '')
+          formik.setFieldError('jobDescription', !content ? 'Description is required' : '');
           return; // Exit early if any field is empty
          
         }
@@ -1090,7 +1090,7 @@ const CreatejobTemp = ({
                         <div className="grid grid-cols-3 gap-6 ">
                           <Dropdown
                             title={t("Choose Template")}
-                            placeholder={t("Select")}
+                            placeholder={t("Choose Template")}
                           // required={true}
                           />
 
