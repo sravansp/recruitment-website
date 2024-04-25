@@ -898,7 +898,7 @@ const CreatejobTemp = ({
           formik.setFieldError('salaryCurrency', !formik.values.salaryCurrency ? 'Salary Currency is required' : '');
           formik.setFieldError('jobType', !formik.values.jobType ? 'JobType is required' : '');
           formik.setFieldError('education', !formik.values.education ? 'Education is required' : '');
-          formik.setFieldError('jobDescription', !content ? 'jobDescription is required' : '')
+          formik.setFieldError('jobDescription', !content ? 'Description is required' : '')
           return; // Exit early if any field is empty
         }
         if (jobcodelength === 0) {
@@ -1457,10 +1457,7 @@ const CreatejobTemp = ({
                       <Card>
                         <p className="pb-2">Description</p>
                         <TextEditor
-                          placeholder={t(
-                            "Enter Description "
-                          )}
-
+                          placeholder={t("Enter Description ")}
                           hideBorder={true}
                           initialValue={content}
                           //  change={(e)=>{
