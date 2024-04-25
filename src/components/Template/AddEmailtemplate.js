@@ -86,7 +86,7 @@
 
         // Check if subject is empty
         if (!subject) {
-            setSubjectError('Please enter a subject.');
+          setSubjectError('Subject is required.');
             hasError = true; // Set flag to true if there's an error
         } else {
             setSubjectError('');
@@ -231,7 +231,7 @@
           }}
           header={[
             !updateId ? t("Create Email Template") : t("Update Email Template"),
-            t("Lorem ipsum dummy text doret solo."),
+            !updateId ? t("Create Email Template") : t("Update Email Template"),
           ]}
           //  headerRight={
           //    <div className="flex items-center gap-10">
