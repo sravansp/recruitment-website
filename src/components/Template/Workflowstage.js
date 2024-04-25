@@ -423,7 +423,7 @@ const Workflowstage = ({ open = "", close = () => { }, inputshow = false, isUpda
             <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
               <FormInput
                 title={"Template Name"}
-                placeholder={"Enter Template Name..."}
+                placeholder={"Enter Template Name"}
                 className="!text-[#344054] "
                 change={(e) => {
                   formik.setFieldValue('workFlowName', e)
