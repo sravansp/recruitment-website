@@ -1085,7 +1085,7 @@ const CreatejobTemp = ({
                         <div className="grid grid-cols-3 gap-6 ">
                           <Dropdown
                             title={t("Choose Template")}
-                            placeholder={t("Select")}
+                            placeholder={t("Choose Template")}
                           // required={true}
                           />
 

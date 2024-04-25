@@ -446,7 +446,7 @@ const
               <div className='grid grid-cols-2'>
                 <FormInput
                   title={"Template Name"}
-                  placeholder={"Enter Template Name..."}
+                  placeholder={"Enter Template Name"}
                   value={formik.values.questionnaireTemplateName}
                   change={(e) => {
                     formik.setFieldValue('questionnaireTemplateName', e)
@@ -458,7 +458,7 @@ const
               <div className='grid grid-cols-2'>
                 <TextArea
                   title={"Decription"}
-                  placeholder={"Enter Decription..."}
+                  placeholder={"Enter Decription"}
                   value={formik.values.description}
                   change={(e) => {
                     formik.setFieldValue('description', e)

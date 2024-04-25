@@ -280,7 +280,7 @@
               <div className="grid grid-cols-2 ">
                 <FormInput
                   title={"Template Name"}
-                  placeholder={"Enter Template Name..."}
+                  placeholder={"Enter Template Name"}
                   value={templateName}
                   change={(e)=>{
                     setTemplateName(e)
@@ -293,7 +293,7 @@
               <div>
               <FormInput
                   title={"Subject"}
-                  placeholder={"Enter Subject..."}
+                  placeholder={"Enter Subject"}
                   value={subject}
                   change={(e)=>{setsubject(e)
                    handleSubject(e)
@@ -305,7 +305,7 @@
               </div>
 
               <TextEditor
-                placeholder={"Start typing your email..."}
+                placeholder={"Start typing your email"}
                 initialValue={content}
                 onChange={handleEditorChange}
                 minheight="250px"
