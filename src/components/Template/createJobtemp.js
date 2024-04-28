@@ -125,7 +125,7 @@ const CreatejobTemp = ({
   const [coverLetter, setCoverletter] = useState(1)
   const [errors, setErrors] = useState([]);
   const [jobTitle, setJobTitle] = useState("")
-  const[html,setstateHTML] =useState("")
+  const [html, setstateHTML] = useState("")
 
   // console.log(updateId);
   useEffect(() => {
@@ -512,14 +512,14 @@ const CreatejobTemp = ({
     getJobtemById();
     console.log(jobdata);
   }, [updateId]);
-  const [departmentList, setDepartmentList] = useState();
+  const [departmentList, setDepartmentList] = useState([]);
   const [company, setCompany] = useState([]);
   const getDepartmentList = async () => {
     try {
       const result = await axios.post(
         API.HOST + API.GET_DEPARTMENT + "/" + companyId
       );
-
+      // console.log(result,"result")
       setDepartmentList(
         result.data.tbl_department.map((each) => ({
           label: each.department,
@@ -887,7 +887,6 @@ const CreatejobTemp = ({
           !formik.values.salaryRangeFrom ||
           !formik.values.salaryRangeTo ||
           !formik.values.salaryCurrency ||
-          !formik.values.jobType ||
           !content
         ) {
           formik.setFieldError('jobTitle', !formik.values.jobTitle ? 'Job Title is required' : '');
@@ -904,7 +903,7 @@ const CreatejobTemp = ({
           formik.setFieldError('education', !formik.values.education ? 'Education is required' : '');
           formik.setFieldError('jobDescription', !content ? 'Description is required' : '');
           return; // Exit early if any field is empty
-         
+
         }
         if (jobcodelength === 0) {
 
@@ -1424,7 +1423,7 @@ const CreatejobTemp = ({
                         </div>
                       </div>
                     </Accordion>
-                     
+
                     <Accordion
                       title={"Job Description"}
                       className="Text_area"
@@ -1492,13 +1491,13 @@ const CreatejobTemp = ({
                           loader={loader}
                         /> */}
                         <TextEditorcopy
-                        onChange={handleEditorChange}
-                        initialValue={content}
-                        error={formik.errors.jobDescription}
+                          onChange={handleEditorChange}
+                          initialValue={content}
+                          error={formik.errors.jobDescription}
                         />
-                        
-                        </div>
-                        {/* <TextArea
+
+                      </div>
+                      {/* <TextArea
                                              title={t("Requirement")}
                                              placeholder={t("Enter the job requirements here; from soft skills to the specific qualifications needed to perform the role.")}
                                              required={true}
@@ -1522,9 +1521,9 @@ const CreatejobTemp = ({
                                             //  value={formik.values.description || selectedAccordionItem?.description || fetchedData.description}
                                             //  error={formik.errors.description}
                                              /> */}
-                     
+
                     </Accordion>
-                    
+
                   </FlexCol>
                 </>
               ) : activeBtnValue === "ApplicationForm" ? (
@@ -1890,7 +1889,7 @@ icondropDown={true}
                                       }}
                                       value={condition.answerMetaData[0]?.key}
                                       icondropDown={true}
-                                      error={condition.answer_type ? '':errorMessages[index] || ''}
+                                      error={condition.answer_type ? '' : errorMessages[index] || ''}
                                       placeholder={"Choose Options"}
                                     />
                                   </div>
@@ -1949,7 +1948,7 @@ icondropDown={true}
                                               title={`Options ${fieldIndex + 1}`}
                                               placeholder={"Enter value"}
                                               value={field.value}
-                                              change={(e) =>{
+                                              change={(e) => {
                                                 setPresentage(1.8)
                                                 setEvaluation((prevEvaluation) =>
                                                   prevEvaluation.map(
@@ -2097,7 +2096,8 @@ icondropDown={true}
 
                             <Radio
                               value={each.workFlowId || selectedWorkFlowId}
-                            ></Radio>
+                            >
+                            </Radio>
                           </div>
                         </div>
                       ))}
