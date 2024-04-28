@@ -678,7 +678,7 @@ const Workflowstage = ({
             wrapClassName="vertical-center-modal"
             isOpen={isModalVisible}
             onClose={closeModal}
-            handleSubmit={handleAddStageClick}
+            buttonSubmit={handleAddStageClick}
           >
             <div className="flex flex-col items-center justify-center w-full h-full gap-5">
               <div className="flex flex-col items-center gap-2 text-center">
