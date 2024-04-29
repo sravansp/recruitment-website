@@ -1027,7 +1027,8 @@ const TableAnt = ({
             {/* Render all title-value pairs */}
             {modalData.title.map((titleItem, index) => (
               <div className="flex items-center gap-3" key={index}>
-                <h4 className="font-bold">{titleItem.title + " :"}</h4>
+                <h4 className="font-bold">{titleItem.title}</h4>
+                <h4 className="font-bold">{" :"}</h4>
                 {/* Render corresponding value for the title */}
                 {titleItem.value === "isActive" ? (
                   <div

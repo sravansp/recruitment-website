@@ -123,7 +123,7 @@ const Template = ({
       Job: [
         {
           id: 1,
-          title: t("Name"),
+          title: t("Template Name"),
           value: "jobTitle",
         },
         {
@@ -147,7 +147,7 @@ const Template = ({
       Job_Description: [
         {
           id: 1,
-          title: t("Name"),
+          title: t("Template Name"),
           value: "descriptionTemplateName",
         },
         {
@@ -171,7 +171,7 @@ const Template = ({
       Workflow: [
         {
           id: 1,
-          title: t("Name"),
+          title: t("Template Name"),
           value: "workFlowName",
         },
         {
@@ -195,7 +195,7 @@ const Template = ({
       Email: [
         {
           id: 1,
-          title: t("Name"),
+          title: t("Template Name"),
           value: "title",
         },
         {
@@ -219,7 +219,7 @@ const Template = ({
       Evaluation: [
         {
           id: 1,
-          title: t("Name"),
+          title: t("Template Name"),
           value: "evaluationTemplateName",
         },
         {
@@ -243,7 +243,7 @@ const Template = ({
       Questionnaire: [
         {
           id: 1,
-          title: t("Name"),
+          title: t("Template Name"),
           value: "questionnaireTemplateName",
         },
         {
@@ -267,7 +267,7 @@ const Template = ({
       Letter: [
         {
           id: 1,
-          title: t("Name"),
+          title: t("Template Name"),
           value: "title",
         },
         {
@@ -296,7 +296,7 @@ const Template = ({
       Job: [
         {
           id: 1,
-          title: "Name",
+          title: "Template Name",
           value: "jobTitle",
         },
         {
@@ -310,36 +310,35 @@ const Template = ({
           value: "jobType",
 
         },
-        {
-          id: 4,
-          title: "Modified By",
-          value: "modifiedBy",
+        // {
+        //   id: 4,
+        //   title: "Modified By",
+        //   value: "modifiedBy",
 
-        },
+        // },
       ],
       Job_Description: [
         {
           id: 1,
-          title: "Name",
-          value: "workFlowName",
+          title: "Template Name",
+          value: "descriptionTemplateName",
         },
         {
           id: 2,
-          title: "Modified By",
-          value: "modifiedBy",
+          title: t("Description"),
+          value: "descriptionTemplate",
         },
-        {
-          id: 3,
-          title: "Work Flow Id",
-          value: "workFlowId",
+        // {
+        //   id: 3,
+        //   title: "Work Flow Id",
+        //   value: "workFlowId",
 
-        },
-
+        // },
       ],
       Workflow: [
         {
           id: 1,
-          title: "Name",
+          title: "Template Name",
           value: "workFlowName",
         },
         {
@@ -347,23 +346,23 @@ const Template = ({
           title: "Description",
           value: "description",
         },
-        {
-          id: 3,
-          title: "Status",
-          value: "",
-          actionToggle: true,
-        },
-        {
-          id: 4,
-          title: "Status",
-          value: "Status",
-          action: true,
-        },
+        // {
+        //   id: 3,
+        //   title: "Status",
+        //   value: "",
+        //   actionToggle: true,
+        // },
+        // {
+        //   id: 4,
+        //   title: "Status",
+        //   value: "Status",
+        //   action: true,
+        // },
       ],
       Email: [
         {
           id: 1,
-          title: "Name",
+          title: "Template Name",
           value: "title",
         },
         {
@@ -371,37 +370,35 @@ const Template = ({
           title: "Description",
           value: "value",
         },
-        {
-          id: 3,
-          title: "Status",
-          value: "",
-          actionToggle: true,
-        },
-        {
-          id: 4,
-          title: "Status",
-          value: "Status",
-          action: true,
-        },
+        // {
+        //   id: 3,
+        //   title: "Status",
+        //   value: "",
+        //   actionToggle: true,
+        // },
+        // {
+        //   id: 4,
+        //   title: "Status",
+        //   value: "Status",
+        //   action: true,
+        // },
       ],
       Evaluation: [
         {
           id: 1,
-          title: "Name",
+          title: "Template Name",
           value: "evaluationTemplateName",
         },
         {
           id: 2,
-          title: "Modified By",
-          value: "modifiedBy",
+          title: t("Description"),
+          value: "description",
         },
-
-
       ],
       Questionnaire: [
         {
           id: 1,
-          title: t("Name"),
+          title: t("Template Name"),
           value: "questionnaireTemplateName",
         },
         {
@@ -409,42 +406,42 @@ const Template = ({
           title: t("Description"),
           value: "description",
         },
-        {
-          id: 3,
-          title: t("Status"),
-          value: "Status",
-          actionToggle: true,
-        },
-        {
-          id: 4,
-          title: "",
-          value: "actions",
-          action: true,
-        },
+        // {
+        //   id: 3,
+        //   title: t("Status"),
+        //   value: "Status",
+        //   actionToggle: true,
+        // },
+        // {
+        //   id: 4,
+        //   title: "",
+        //   value: "actions",
+        //   action: true,
+        // },
       ],
       Letter: [
         {
           id: 1,
-          title: t("Name"),
+          title: t("Template Name"),
           value: "title",
         },
         {
           id: 2,
-          title: t("Description"),
+          title: t("Subject"),
           value: "value",
         },
-        {
-          id: 3,
-          title: t("Status"),
-          value: "",
-          actionToggle: true,
-        },
-        {
-          id: 4,
-          title: "",
-          value: "actions",
-          action: true,
-        },
+        // {
+        //   id: 3,
+        //   title: t("Status"),
+        //   value: "",
+        //   actionToggle: true,
+        // },
+        // {
+        //   id: 4,
+        //   title: "",
+        //   value: "actions",
+        //   action: true,
+        // },
       ]
 
 
