@@ -668,7 +668,7 @@ const Workflowstage = ({
                     className="object-cover object-center w-full h-full"
                   />
                 </div>
-                <h2 className="h2">Add Stages</h2>
+                <h2 className="h2">Add Stage</h2>
                 <p className=" w-96 para !font-normal ">
                   Set rules for Late Entry, Early Exit, Breaks & Overtime based
                   on punch-in and punch-out time.
