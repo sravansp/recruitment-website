@@ -479,8 +479,8 @@ const Workflowstage = ({ open = "", close = () => { }, inputshow = false, isUpda
                     <foreignObject x="30" y="0" width="545" height="55">
                       <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', width: '100%', height: '100%' }}>
                         <span>{stage.stageName}</span>
-                        <img src={Automate} alt='' className='w-6 h-6 ml-auto pr-1' />
-                        <MdOutlineLock className='mr-12 text-gray-400' size={25} />
+                        {/* <img src={Automate} alt='' className='w-6 h-6 ml-auto pr-1' />
+                        <MdOutlineLock className='mr-12 text-gray-400' size={25} /> */}
                       </div>
                     </foreignObject >
                   </svg>
