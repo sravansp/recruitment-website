@@ -82,9 +82,9 @@ const Workflowstage = ({ open = "", close = () => { }, inputshow = false, isUpda
     }
   };
 
-  const handleCopy = (stageIndex) => {
-    copy(stageIndex);
-  }
+  // const handleCopy = (stageIndex) => {
+  //   copy(stageIndex);
+  // }
 
   useEffect(() => {
     console.log(stages)
@@ -498,7 +498,7 @@ const Workflowstage = ({ open = "", close = () => { }, inputshow = false, isUpda
                           <PiCopySimple className='text-gray-500' size={16} />
                         </Tooltip>
                       </div> */}
-                      
+
                       <Tooltip placement="top" color={"red"} title={"Delete"} >
                         <div className='p-2 hover:bg-slate-300 rounded-md' onClick={() => handleDeleteStage(stage.id)}>
                           <RiDeleteBinLine className="cursor-pointer text-red-500" size={16} />
