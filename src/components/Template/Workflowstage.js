@@ -487,21 +487,23 @@ const Workflowstage = ({ open = "", close = () => { }, inputshow = false, isUpda
 
                   <div className='flex  gap-5'>
                     <div className='flex items-center gap-5'>
-                      <div className='p-2 hover:bg-slate-300 rounded-md' onClick={() => handleEditStage(stage.stageName)}>
-                        <Tooltip placement="top" title={"Edit"} >
+                      <Tooltip placement="top" title={"Edit"} >
+                        <div className='p-2 hover:bg-slate-300 rounded-md' onClick={() => handleEditStage(stage.stageName)}>
                           <PiPencilSimpleLineThin className='text-gray-500' size={16} />
-                        </Tooltip>
-                      </div>
-                      <div className='p-2 hover:bg-slate-300 rounded-md' onClick={() => handleCopy(stage.stageName)} >
-                        {/* <Tooltip placement="top" title={"Copy"} >
+                        </div>
+                      </Tooltip>
+
+                      {/* <div className='p-2 hover:bg-slate-300 rounded-md' onClick={() => handleCopy(stage.stageName)} >
+                        <Tooltip placement="top" title={"Copy"} >
                           <PiCopySimple className='text-gray-500' size={16} />
-                        </Tooltip> */}
-                      </div>
-                      <div className='p-2 hover:bg-slate-300 rounded-md' onClick={() => handleDeleteStage(stage.id)}>
-                        <Tooltip placement="top" color={"red"} title={"Delete"} >
-                          <RiDeleteBinLine className="cursor-pointer text-red-500" size={16} />
                         </Tooltip>
-                      </div>
+                      </div> */}
+                      
+                      <Tooltip placement="top" color={"red"} title={"Delete"} >
+                        <div className='p-2 hover:bg-slate-300 rounded-md' onClick={() => handleDeleteStage(stage.id)}>
+                          <RiDeleteBinLine className="cursor-pointer text-red-500" size={16} />
+                        </div>
+                      </Tooltip>
 
                     </div>
                   </div>
