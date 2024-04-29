@@ -64,18 +64,18 @@ const Company = () => {
           title: "Description",
           value: "description",
         },
-         {
-          id:3,
-          title:"status",
-          value:"status",
-          actionToggle:true,
-         },
-         {
-          id:4,
-          title:"actions",
-          value:"actions",
-          action:true,
-         },
+        //  {
+        //   id:3,
+        //   title:"status",
+        //   value:"status",
+        //   actionToggle:true,
+        //  },
+        //  {
+        //   id:4,
+        //   title:"actions",
+        //   value:"actions",
+        //   action:true,
+        //  },
       ]
 
 
@@ -214,7 +214,7 @@ const Company = () => {
           <p className='para font-medium'>{t("Main_Description")}</p>
         </div>
         <div className="flex flex-col gap-6 sm:flex-row">
-          <ButtonClick
+          {/* <ButtonClick
             handleSubmit={
               () => {
                 // console.log("show");
@@ -241,7 +241,7 @@ const Company = () => {
             buttonName={`Create ${navigationPath.replace(/_/g, ' ')}`}// Set the button name
             className="your-custom-styles" // Add any additional class names for styling
             BtnType="Add" // Specify the button type (Add or Update)
-          />
+          /> */}
         </div>
       </div>
       <Tabs

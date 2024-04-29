@@ -39,7 +39,7 @@ export default function TextArea({
             {title}
           </label>
           
-        }        {required && <FaAsterisk className="text-[7px] text-rose-600" />}
+        }        {required && <FaAsterisk className="text-[6px] text-rose-600" />}
       </div>
       <div style={{ position: "relative" }}>
         <TextArea

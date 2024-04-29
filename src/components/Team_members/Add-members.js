@@ -234,9 +234,7 @@ const Addmembers = ({
       }}
       header={[
         !updateId ? t("Add Team Members") : t("Update Team Members"),
-        !updateId
-          ? t("lorem ipusm")
-          : t("Update_Team Members"),
+        !updateId ? t("Add Team Members") : t("Update Team Members"),
 
       ]}
       footerBtn={[

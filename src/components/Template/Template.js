@@ -129,7 +129,7 @@ const Template = ({
         {
           id: 2,
           title: t("Description"),
-          value: "Job_Description",
+          value: "jobDescription",
         },
         {
           id: 3,
@@ -474,11 +474,12 @@ const Template = ({
   //  console.log("header",Header)
 
   const [TemplateList, setTemplateList] = useState([])
+  console.log(TemplateList,'this is template');
 
   const gettemaplate = async () => {
     try {
 
-      const response = await getAllRecruitmentJobTemplates();
+      const response = await getAllRecruitmentJobTemplates({});
 
       setTemplateList(response.result);
       // const newData = {};

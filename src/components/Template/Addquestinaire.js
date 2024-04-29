@@ -68,6 +68,7 @@ const
     //   });
     // }, [insertedId]);
     const handleAddCondition = () => {
+      if(!updateId){
       setEvaluation((prevEvaluation) => [
         ...prevEvaluation,
         {
@@ -80,6 +81,25 @@ const
           createdBy: 493
         },
       ]);
+    }else{
+      
+      const nextId = evaluation[evaluation.length - 1].questionnaireTemplateDetailsId + 1 || 1;
+// Update the state with the new id
+
+
+// Add a new condition with the calculated nextId
+setEvaluation(prevEvaluation => [
+  ...prevEvaluation,
+  {
+    companyId: companyId, // Replace companyId with your actual value
+    evaluationTemplateId: "",
+    questionnaireTemplateDetailsId:nextId, // Set the calculated nextId
+    question: "",
+    answerMetaData: '[]',
+    description: "hihihihi",
+  },
+]);
+    }
     };
 
     const handleDeleteCondition = (index) => {
@@ -160,10 +180,12 @@ const
 
 
 
-
+    const[Questionerror,setQuestionError] = useState('')
+    const[answerError,setAnswerError] = useState('')
+    const[OptionError,setoptionserror] = useState('')
 
     // const[insertedId,setinsertedId] =useState(null)
-
+    
     const formik = useFormik({
       initialValues: {
         companyId: "",
@@ -187,35 +209,42 @@ const
             createdBy: null,
           });
           if (
-            !formik.values.questionnaireTemplateName || !formik.values.description){
-              formik.setFieldError('questionnaireTemplateName', !formik.values.questionnaireTemplateName ? 'QuestionAre is required' : '');
-              formik.setFieldError('description', !formik.values.description ? 'Description is required' : '');
-            }
+            !formik.values.questionnaireTemplateName || !formik.values.description) {
+            formik.setFieldError('questionnaireTemplateName', !formik.values.questionnaireTemplateName ? 'Template name is required' : '');
+            formik.setFieldError('description', !formik.values.description ? 'Description is required' : '');
+          }
 
-          const newErrorMessages = evaluation.map((condition) => {
-            let errorMessage = '';
-          
+          let hasError = false;
+          evaluation.forEach((condition) => {
             if (!condition.question) {
-              errorMessage = 'Please enter a question.';
-            } else if (!condition.answerMetaData || !condition.answerMetaData[0]?.key) {
-              errorMessage = 'Please choose an answer type.';
-            } else if (
+              setQuestionError('Question is Required.');
+              hasError = true;
+   
+            }
+         
+            if (!condition.answerMetaData || !condition.answerMetaData[0]?.key) {
+              setAnswerError('Please choose an answer type.');
+              hasError = true;
+            }
+            if (
               ["Drop-down", "MultipleChoice", "Checkboxes"].includes(condition.answerMetaData[0]?.key) &&
               (condition.answerMetaData.some((field) => !field.value) ||
                 (!condition.answerMetaData[0]?.value && condition.answerMetaData[0]?.key))
             ) {
-              errorMessage = 'Please enter values for all options.';
-            }
-          
-            return errorMessage;
+              setoptionserror('Please enter values for all options.');
+              hasError = true;
+            } 
           });
-          
-          setErrorMessages(newErrorMessages);
-          const hasErrors = newErrorMessages.some(errorMessage => errorMessage !== '');
-          if (hasErrors) {
-            // Don't proceed if there are errors
+          if (hasError) {
             return;
-          }
+        }
+
+          // setErrorMessages(newErrorMessages);
+          // const hasErrors = newErrorMessages.some(errorMessage => errorMessage !== '');
+          // if (hasErrors) {
+          //   // Don't proceed if there are errors
+          //   return;
+          // }
 
           // Make the first API call
           if (updateId) {
@@ -226,7 +255,7 @@ const
               answerMetaData: item.answerMetaData,
               description: item.description,
               createdBy: item.createdBy,
-              questionnaireTemplateDetailsId: evaluationTemplateDetailsIds[index],
+              questionnaireTemplateDetailsId: item.questionnaireTemplateDetailsId,
 
               modifiedBy: null
             }));
@@ -244,7 +273,7 @@ const
             })
             console.log(response)
             if (response.status == 200) {
-              openNotification("success", "Successful", response.message);
+              openNotification("success", "Success", response.message);
               setSuccessNotificationVisible(true);
               setTimeout(() => {
                 handleClose();
@@ -288,7 +317,7 @@ const
               console.log(insertedId);
 
               if (response2.status === 200) {
-                openNotification("success", "Successful", response2.message);
+                openNotification("success", "Success", response2.message);
                 setSuccessNotificationVisible(true);
                 setTimeout(() => {
                   handleClose();
@@ -296,7 +325,7 @@ const
 
                 }, 1500);
               } else if (response2.status === 500) {
-                openNotification("error", "error", response2.message);
+                openNotification("error", "Error", response2.message);
               }
             } else if (response.status === 500) {
               openNotification("error", "Error", response.message);
@@ -306,7 +335,7 @@ const
           console.error("Error during form submission:", error);
           openNotification(
             "error",
-            "Error saving category",
+            "Error...",
             "Qestionnare Template name already exist."
           );
         }
@@ -333,9 +362,9 @@ const
           return item.questionaireTemplateDetailData.map(detail => ({
             companyId: detail.companyId,
             question: detail.question,
-            evaluationTemplateDetailsId: detail.questionnaireTemplateDetailsId,
+            questionnaireTemplateDetailsId: detail.questionnaireTemplateDetailsId,
             description: detail.description,
-            evaluationTemplateId: detail.questionnaireTemplateId,
+            questionnaireTemplateId: detail.questionnaireTemplateId,
             isActive: detail.isActive,
             modifiedBy: null,
             modifiedOn: detail.modifiedOn,
@@ -345,8 +374,8 @@ const
             }))
           }));
         });
-        const ids = response.result.map(item => item.questionaireTemplateDetailData.map(detail => detail.questionnaireTemplateDetailsId)).flat();
-        setEvaluationTemplateDetailsIds(ids);
+        // const ids = response.result.map(item => item.questionaireTemplateDetailData.map(detail => detail.questionnaireTemplateDetailsId)).flat();
+        // setEvaluationTemplateDetailsIds(ids);
         setEvaluation(evaluationData);
         console.log(evaluationData)
         const firstEvaluation = response.result[0];
@@ -360,7 +389,7 @@ const
     useEffect(() => {
       getevaluationtem()
 
-    }, [])
+    }, [updateId])
     return (
       <div>
 
@@ -446,7 +475,7 @@ const
               <div className='grid grid-cols-2'>
                 <FormInput
                   title={"Template Name"}
-                  placeholder={"Type here..."}
+                  placeholder={"Enter Template Name"}
                   value={formik.values.questionnaireTemplateName}
                   change={(e) => {
                     formik.setFieldValue('questionnaireTemplateName', e)
@@ -458,7 +487,7 @@ const
               <div className='grid grid-cols-2'>
                 <TextArea
                   title={"Decription"}
-                  placeholder={"Type here..."}
+                  placeholder={"Enter Decription"}
                   value={formik.values.description}
                   change={(e) => {
                     formik.setFieldValue('description', e)
@@ -468,13 +497,13 @@ const
 
                 />
               </div>
-
+              <div className="flex flex-col gap-4 overflow-hidden">
               {evaluation.map((condition, index) => (
                 <><div className="flex items-center justify-between">
                   <FormInput
                     // showValueParagraph={true}
                     title={`Question ${index + 1}`}
-                    placeholder={'Type question here'}
+                    placeholder={`Enter Question ${index + 1}`}
                     value={condition.question}
                     change={(e) => {
                       setEvaluation((prevEvaluation) => prevEvaluation.map((prevCondition, i) => i === index
@@ -484,10 +513,10 @@ const
                       console.log(e)
 
                     }}
-                    error={condition.question ? '' : errorMessages[index] || ''}
-                     required={true}
-                     
-                     />
+                    error={condition.question ? '' : Questionerror || ''}
+                    required={true}
+
+                  />
 
                   <div className="flex items-center gap-5">
                     <div className="flex-shrink-0"> {/* Add this container for the dropdown and icons */}
@@ -510,18 +539,21 @@ const
                           ))
                           handleAddField(e)
                         }}
-                        value={condition.answerMetaData[0]?.key }
+                        value={condition.answerMetaData[0]?.key}
                         icondropDown={true}
-                        error={condition.answerMetaData[0]?.key ? '' : errorMessages[index] || ''}
+                        error={condition.answerMetaData[0]?.key ? '' : answerError || ''}
                         required={true}
+                        placeholder={"Choose Options"}
                       />
                     </div>
                     {/* Additional dynamic input fields based on the selected value in the dropdown */}
                     {/* Add your logic here */}
 
-                    <div style={{ display: 'flex', alignItems: 'center', gap: '15px' }}>
-                      <p>Mandatory</p>
-                      <ToggleBtn />
+                    <div>
+                      <Tooltip placement="topRight" title={"Active / Inactive"} className="flex items-center gap-2">
+                        <p>Mandatory</p>
+                        <ToggleBtn />
+                      </Tooltip>
                     </div>
 
                     <div style={{ display: 'flex', alignItems: 'center', gap: '15px' }}>
@@ -556,30 +588,36 @@ const
                                 }
                                 : prevCondition
                               )
-                              )} 
-                              error={field.value ? '' : errorMessages[index] || ''}
-                              />
+                              )}
+                              error={field.value ? '' : OptionError || ''}
+                            />
                           )}
 
                           {['Drop-down', 'MultipleChoice', 'Checkboxes'].includes(field.key) && (
                             <div className="ml-2">
-                              <MdDelete
-                                onClick={() => handleDeleteField(index, fieldIndex)}
-                                className="cursor-pointer text-red-500" />
+                              <Tooltip placement="top" title={"Delete"}>
+                                <MdDelete
+                                  onClick={() => handleDeleteField(index, fieldIndex)}
+                                  className="cursor-pointer text-red-500"
+                                />
+                              </Tooltip>
                             </div>
                           )}
                         </div>
                       ))}
 
-                      <div className="mt-2">
+                    
                         {['Drop-down', 'MultipleChoice', 'Checkboxes'].includes(
                           condition.answerMetaData[0]?.key
                         ) && (
-                            <CgAdd
-                              onClick={() => handleAddField(index, condition.answerMetaData[0]?.key)}
-                              style={{ width: '18px', height: '18px', cursor: 'pointer' }} />
+                            <Tooltip placement="top" title={"Add new"}>
+                              <CgAdd
+                                onClick={() => handleAddField(index, condition.answerMetaData[0]?.key)}
+                                style={{ width: '18px', height: '18px', cursor: 'pointer' }}
+                              />
+                            </Tooltip>
                           )}
-                      </div>
+                      
                     </>
                   )}
 
@@ -590,6 +628,7 @@ const
               <div className="flex items-center gap-2">
                 <AddMore name="Add New Question" className="!text-black" change={(e) => { handleAddCondition() }} />
 
+              </div>
               </div>
               {contextHolder}
             </Accordion>

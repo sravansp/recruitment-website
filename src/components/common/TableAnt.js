@@ -224,7 +224,7 @@ const TableAnt = ({
         // getRecords()
         // window.location.reload();
         openNotification("success", "Success", response.message);
-      } else {
+      } else if(response.result===500){
         openNotification("error", "Failed", "Unable to update status.");
       }
     } catch (error) {
@@ -256,6 +256,8 @@ const TableAnt = ({
       // Handle success response
       openNotification("success", "Success", result?.message);
       refresh(true);
+    }else if(result.status === 500){
+      openNotification("error","error",result?.message)
     }
 
   };

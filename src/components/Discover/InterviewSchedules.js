@@ -76,7 +76,7 @@ export default function InterviewSchedules() {
     const convertedEvents = response.result.map(event => ({
       title: event.eventName,
       date: event.eventDetails.eventDate,
-      time: `${event.eventDetails.eventTime} - ${calculateEndTime(event.eventDetails.eventTime, event.eventDetails.duration)}`,
+      time: event.eventDetails.eventTime,
       meetingType: event.eventDetails.eventType === "offline" ? "Offline" : "Google Meet",
       assignees: event.attendees.map(attendee => `https://images.unsplash.com/photo-1580489944761-15a19d654956?ixlib=rb-4.0.3&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=580&q=80`),
   }));

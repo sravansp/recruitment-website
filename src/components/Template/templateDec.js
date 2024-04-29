@@ -13,6 +13,7 @@ import ButtonClick from '../common/Button'
 import { RxQuestionMarkCircled } from 'react-icons/rx'
 import { IoClose } from 'react-icons/io5'
 import AI_Text from '../../assets/images/AI_Text.jpg';
+import { FaAsterisk } from 'react-icons/fa'
 
 const TemplateDec = ({ open = "", close = () => { }, inputshow = false, isUpdate = {}, updateId, refresh }) => {
 
@@ -50,7 +51,7 @@ const TemplateDec = ({ open = "", close = () => { }, inputshow = false, isUpdate
   };
   const [loader, setloader] = useState(false)
   const handleGenerateWithAI = async () => {
-    setloader(true); 
+    setloader(true);
     try {
       const requestBody = {
         val: templateName,
@@ -76,9 +77,25 @@ const TemplateDec = ({ open = "", close = () => { }, inputshow = false, isUpdate
       }
     } catch (error) {
       console.error('Error:', error);
-    }finally {
+    } finally {
       setloader(false); // Hide loader after response is received
     }
+  };
+
+  const handleTemplateNameChange = (value) => {
+    if (!value) {
+      setTemplateNameError('Template Name is required.');
+    } else {
+      setTemplateNameError('');
+    }
+  };
+  
+  const handleContentChange = (value) => {
+    if (value) {
+      setContentError('');
+    } 
+     
+    
   };
 
   const handlesubmit = async (e) => {
@@ -86,25 +103,24 @@ const TemplateDec = ({ open = "", close = () => { }, inputshow = false, isUpdate
       console.log(content)
 
       let hasError = false; 
-      if (templateName=== undefined) {
+      if (!templateName) {
         setTemplateNameError('Template Name is required.');
         hasError = true;
       } else {
         setTemplateNameError('');
       }
-
+      
       // Check if content is empty
-      if (content=== undefined) {
+      if (!content) {
         setContentError('Description is required.');
         hasError = true;
-
-        
       } else {
         setContentError('');
       }
+      
       if (hasError) {
         return;
-    }
+      }
       if (!updateId) {
         const response = await saveRecruitmentJobDescriptionTemplate({
           companyId: companyId,
@@ -118,7 +134,7 @@ const TemplateDec = ({ open = "", close = () => { }, inputshow = false, isUpdate
 
           openNotification(
             "success",
-            "Successful",
+            "Success",
             response.message.replace(/<br\/>/g, '\n')
           );
           setTimeout(() => {
@@ -127,8 +143,10 @@ const TemplateDec = ({ open = "", close = () => { }, inputshow = false, isUpdate
           }, 2000);
 
         } else if (response.status === 500) {
-          openNotification("error", "input field is empty..", response.message.replace(/<br\/>/g, '\n'));
+          openNotification("Error", "Error..", response.message);
         }
+
+        
       } else {
         const id = updateId
         const response = await updateRecruitmentJobDescriptionTemplate({
@@ -144,7 +162,7 @@ const TemplateDec = ({ open = "", close = () => { }, inputshow = false, isUpdate
 
           openNotification(
             "success",
-            "Successful",
+            "Success",
             response.message
           );
           setTimeout(() => {
@@ -153,12 +171,12 @@ const TemplateDec = ({ open = "", close = () => { }, inputshow = false, isUpdate
           }, 2000);
 
         } else if (response.status === 500) {
-          openNotification("error", "input field is empty..", response.message);
+          openNotification("Error", "Error..", response.message);
         }
 
       }
     } catch (error) {
-      openNotification("error", "input field is empty..", "Template name already exist");
+      openNotification("error", "Error..", "Template name already exist");
     }
 
   }
@@ -185,6 +203,10 @@ const TemplateDec = ({ open = "", close = () => { }, inputshow = false, isUpdate
   //   setContent(content);
   // };
   return (
+    
+    
+    
+    
     <DrawerPop
 
       open={show}
@@ -235,7 +257,7 @@ const TemplateDec = ({ open = "", close = () => { }, inputshow = false, isUpdate
 
       ]}
       className="widthFull"
-      handleSubmit={(e)=>{handlesubmit(e)}}
+      handleSubmit={(e) => { handlesubmit(e) }}
     //  buttonClickCancel={(e) => {
     //    if (activeBtn > 0) {
     //      setActiveBtn(activeBtn - 1);
@@ -252,6 +274,7 @@ const TemplateDec = ({ open = "", close = () => { }, inputshow = false, isUpdate
 
 
     >
+     
       <div className="relative max-w-[1070px]  w-full mx-auto">
         <Accordion
           title={"Job Description"}
@@ -263,31 +286,35 @@ const TemplateDec = ({ open = "", close = () => { }, inputshow = false, isUpdate
           }}
           initialExpanded={true}
         >
+           <div class="flex flex-col gap-4 overflow-hidden">
           <div className="grid grid-cols-2 ">
             <FormInput
               title={"Template Name"}
-              placeholder={"type here"}
+              placeholder={"Enter Template Name"}
               value={templateName}
-              change={setTemplateName}
+              change={(e) => {
+                setTemplateName(e);
+                handleTemplateNameChange(e); // Trigger validation on change
+              }}
               error={templateNameError}
               required={true}
             />
           </div>
           <div className="border rounded-md bg-primaryalpha/5">
-                        <div className="flex items-center px-1.5  ">
-                          <img src={AI_Text} alt=''className="border rounded-md"></img>
-                          <div className="flex flex-col gap-1 p-1.5">
-                            <div className="flex items-center justify-between ">
-                              <p className="font-bold">Generate personalized job descriptions based on pas account data.
-                              </p>
-                              {/* <p className="text-primary"><IoClose /></p> */}
-                            </div>
-                            <p className="text-gray-400">When you generate with Al, we look for similar jobs you've created in the past and use he data to create content that's
-                              impactful, accurate, and personalized to your company
-                            </p>
-                          </div>
-                        </div>
-                        </div>
+            <div className="flex items-center px-1.5  ">
+              <img src={AI_Text} alt='' className="border rounded-md"></img>
+              <div className="flex flex-col gap-1 p-1.5">
+                <div className="flex items-center justify-between ">
+                  <p className="font-bold">Generate personalized job descriptions based on pas account data.
+                  </p>
+                  {/* <p className="text-primary"><IoClose /></p> */}
+                </div>
+                <p className="text-gray-400">When you generate with Al, we look for similar jobs you've created in the past and use he data to create content that's
+                  impactful, accurate, and personalized to your company
+                </p>
+              </div>
+            </div>
+          </div>
           <div style={{ display: 'flex', justifyContent: 'flex-end', gap: '16px' }}>
             {/* <Button>
         <Space>
@@ -299,18 +326,21 @@ const TemplateDec = ({ open = "", close = () => { }, inputshow = false, isUpdate
             <ButtonClick handleSubmit={handleGenerateWithAI} BtnType="primary" icon={<img src={image} alt="image" style={{ height: '20px', width: '20px', alignItems: "center" }} />} buttonName={"Generate with AI"} />
           </div>
 
-          <div className='font-bold'>About the role</div>
-          <div className='border rounded-2xl p-5'>
+          {/* <div className='font-bold'>About the role</div> */}
+          {/* <div className='border rounded-2xl p-5'> */}
             {/* <TextArea
               title={"Description"}
               placeholder={"Enter the job description here, include key areas of resposibility on what the candidate might do on a typical day."}
             /> */}
             <div className='pt-5'>
+            <div className="flex gap-1.5">
+                        <p className="pb-2">Description</p>
+                        <FaAsterisk className="text-[6px] text-rose-600" />
+                        </div>
               <TextEditor
-                title={"Description"}
-                onChange={(e)=>{
+                onChange={(e) => {
                   setContent(e)
-                  console.log(e)
+                  handleContentChange(e);
                 }}
                 initialValue={content}
                 placeholder={"Enter the job description here, include key areas of resposibility on what the candidate might do on a typical day."}
@@ -318,12 +348,15 @@ const TemplateDec = ({ open = "", close = () => { }, inputshow = false, isUpdate
                 loader={loader}
               />
             </div>
+          {/* </div> */}
           </div>
 
         </Accordion>
       </div>
+      
       {contextHolder}
     </DrawerPop>
+   
   )
 }
 

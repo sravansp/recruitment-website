@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { EditorState, convertToRaw, ContentState, convertFromHTML, AtomicBlockUtils } from 'draft-js';
+import { EditorState, convertToRaw, ContentState, convertFromHTML} from 'draft-js';
 import { Editor } from 'react-draft-wysiwyg';
 import { FaAsterisk } from "react-icons/fa";
 import 'react-draft-wysiwyg/dist/react-draft-wysiwyg.css';
@@ -34,7 +34,7 @@ const TextEditor = ({
       return EditorState.createEmpty();
     }
   });
-  console.log(error)
+  // console.log(error)
   useEffect(() => {
     // Check if initialValue exists and if it's different from the current editor content
     if (
@@ -59,22 +59,18 @@ const TextEditor = ({
 
       onChange(plainText);
       changetoHtml(htmlContent);
+      console.log(htmlContent)
       console.log(plainText);
       // Ensure onChange is called with plainText, which is a string
     }
   };
-  console.log(initialValue);
+  // console.log(initialValue);
   
   const uploadImageCallBack = (file) => {
     return new Promise((resolve, reject) => {
       const reader = new FileReader();
       reader.onload = (event) => {
-        const fileType = getFileType(file.type);
-        const data = {
-          link: event.target.result,
-          fileType: fileType,
-        };
-        resolve({ data: data });
+        resolve({ data: { link: event.target.result } });
       };
       reader.onerror = (error) => {
         reject(error);
@@ -82,27 +78,10 @@ const TextEditor = ({
       reader.readAsDataURL(file);
     });
   };
-  
-  const getFileType = (fileType) => {
-    if (fileType.startsWith('image')) {
-      return 'image';
-    } else if (fileType === 'application/pdf') {
-      return 'pdf';
-    } else {
-      return 'unknown';
-    }
-  };
 
-  const handleDroppedImage = (selection, data) => {
-    const { files } = data;
-    const file = files[0];
-    if (file) {
-      const src = URL.createObjectURL(file);
-      const entityKey = editorState.getCurrentContent().createEntity('IMAGE', 'MUTABLE', { src });
-      const newEditorState = AtomicBlockUtils.insertAtomicBlock(editorState, entityKey, ' ');
-      setEditorState(newEditorState);
-    }
-  };
+  
+
+ 
   return (
     <div
       className={`relative p-4 border border-black rounded-md border-opacity-10 dark:border-secondaryDark mb-14 ${className} ${
@@ -152,8 +131,21 @@ const TextEditor = ({
 
             },
             image: {
+              
+              className: undefined,
+              component: undefined,
+              popupClassName: undefined,
+              urlEnabled: true,
+              uploadEnabled: true,
+              alignmentEnabled: true,
               uploadCallback: uploadImageCallBack,
+              previewImage: true,
+              inputAccept: 'image/gif,image/jpeg,image/jpg,image/png,image/svg',
               alt: { present: true, mandatory: false },
+              defaultSize: {
+                height: 'auto',
+                width: 'auto',
+              },
             },
           }}
           toolbarStyle={{

@@ -40,7 +40,7 @@ import { useNavigate } from 'react-router-dom';
 
 export default function Createcandidatelist({ open = "", close = () => { }, fileUpdateId, refresh, ConfigurationAction, updateId = null, }) {
   const [show, setShow] = useState(open);
-  const [activeBtnValue, setActiveBtnValue] = useState("Personel");//Review//Questions//Work//Personel
+  const [activeBtnValue, setActiveBtnValue] = useState("Personel");//Review//Questions//Work//Personel//Educational
   const [nextStep, setNextStep] = useState(0);
   const [applicableData, setApplicableData] = useState([]);
   const [isUpdate, setIsUpdate] = useState();
@@ -259,7 +259,13 @@ export default function Createcandidatelist({ open = "", close = () => { }, file
   useEffect(() => {
     console.log(FormData, "form data")
   }, [])
-
+  const safeWorkMap = (list) =>
+  (list ?? []).flatMap((each) =>
+    (each.field ?? []).map((field) => [
+      field.inputFeild,
+      yup.string().required(`${field.title} is required`),
+    ])
+  );
   const formik3 = useFormik({
     initialValues: {
       ...personWorkExp,
@@ -270,7 +276,14 @@ export default function Createcandidatelist({ open = "", close = () => { }, file
     enableReinitialize: true,
     validateOnChange: false,
     validationSchema: yup.object({
-      companyName: yup.string().required("Company Name is required"),
+      // jobTitle: yup.string().required("Job Title is required"),
+      // location: yup.string().required("Location is required"),
+      // companyName: yup.string().required("Company Name is required"),      
+      // fromDate: yup.string().required("Date is required"),
+      // employmentType: yup.string().required("Employment Type is required"),
+      ...Object.fromEntries(
+        safeWorkMap(workexp))
+
     }),
 
     onSubmit: async (values, { setSubmitting }) => {
@@ -338,7 +351,19 @@ export default function Createcandidatelist({ open = "", close = () => { }, file
     }
   });
 
-
+  
+  // const validationSchema = yup.object().shape({
+  //   institute: yup.string().required('School or University is required'),
+  //   courseType: yup.string().required('Degree is required'),
+  //   courseName: yup.string().required('Field of Study is required'),
+  // });
+  const safeFlatMap = (list) =>
+    (list ?? []).flatMap((each) =>
+      (each.field ?? []).map((field) => [
+        field.inputName,
+        yup.string().required(`${field.title} is required`),
+      ])
+    );
   const formik = useFormik({
     initialValues: {
       ...personalInfo,
@@ -347,9 +372,17 @@ export default function Createcandidatelist({ open = "", close = () => { }, file
     },
     enableReinitialize: true,
     validateOnChange: false,
-    validationSchema: yup.object({
-      courseName: yup.string().required("First Name is required"),
+    validationSchema: yup.object().shape({
+      // institute: yup.string().required('School or University is required'),
+      // courseType: yup.string().required('Degree is required'),
+      // courseName: yup.string().required('Field of Study is required'),     
+      // yearOfStudy: yup.string().required('Year is required'),
+      // location: yup.string().required('Location is required'),
+
+      ...Object.fromEntries(
+        safeFlatMap(education))
     }),
+    
 
     onSubmit: async (values) => {
       try {
@@ -412,6 +445,9 @@ export default function Createcandidatelist({ open = "", close = () => { }, file
     validateOnChange: false,
     validationSchema: yup.object({
       firstName: yup.string().required("First Name is required"),
+      candidateEmail: yup.string().required("Email is required"),
+      candidateLocation:  yup.string().required("Location is required"),
+      candidateContact : yup.string().required("Phone Number is required"),
     }),
     onSubmit: async (values) => {
       try {
@@ -800,7 +836,7 @@ export default function Createcandidatelist({ open = "", close = () => { }, file
 
                         value={Formik2.values.firstName}
 
-                        error={Formik2.errors.firstName}
+                        error={Formik2.values.firstName ? "" : Formik2.errors.firstName}
                         required={true}
 
                       />
@@ -813,7 +849,7 @@ export default function Createcandidatelist({ open = "", close = () => { }, file
                         }}
 
                         value={Formik2.values.lastName}
-
+                        
                       />
                       <FormInput
                         title={t("Email")}
@@ -824,6 +860,9 @@ export default function Createcandidatelist({ open = "", close = () => { }, file
 
                         value={Formik2.values.candidateEmail
                         }
+                        error={Formik2.values.candidateEmail ? "" : Formik2.errors.candidateEmail}
+                        required={true}
+
 
                       />
                       <FormInput
@@ -833,6 +872,8 @@ export default function Createcandidatelist({ open = "", close = () => { }, file
                           Formik2.setFieldValue("candidateContact", e);
                         }}
                         value={Formik2.values.candidateContact}
+                        error={Formik2.values.candidateContact ? "" : Formik2.errors.candidateContact}
+                        required={true}
                       />
 
                     </div>
@@ -858,7 +899,8 @@ export default function Createcandidatelist({ open = "", close = () => { }, file
                           Formik2.setFieldValue("candidateLocation", e);
                         }}
                         value={Formik2.values.candidateLocation}
-
+                        error={Formik2.values.candidateLocation ? "" : Formik2.errors.candidateLocation}
+                        required={true}
                       />
 
                       <FormInput
@@ -916,7 +958,11 @@ export default function Createcandidatelist({ open = "", close = () => { }, file
                               change={(e) => {
                                 formik.setFieldValue(each.inputName, e);
                               }}
+                              required={true}                            
                               value={formik.values[each.inputName]}
+                              error={ formik.errors[each.inputName] }
+                              // error={formik.values[each.field[0].inputName] ? "" : formik.errors.institute}
+                              // required={true}
 
                             />
                               :
@@ -924,10 +970,12 @@ export default function Createcandidatelist({ open = "", close = () => { }, file
                                 title={each.title}
                                 placeholder="Degree"
                                 options={Degree}
+                                required={true}
                                 change={(e) => {
                                   formik.setFieldValue(each.inputName, e);
                                 }}
                                 value={formik.values[each.inputName]}
+                                error={formik.values[each.inputName] ? "" :  formik.errors[each.inputName]}
                               />)}
 
 
@@ -978,9 +1026,10 @@ export default function Createcandidatelist({ open = "", close = () => { }, file
                               change={(e) => {
                                 formik3.setFieldValue(each.inputFeild, e);
                               }}
+                              required={true}
                               value={formik3.values[each.inputFeild]}
-
-
+                              error={formik3.errors[each.inputFeild]}
+                            
 
                             /> : each.type === "dropdown" ?
 
@@ -991,8 +1040,9 @@ export default function Createcandidatelist({ open = "", close = () => { }, file
                                 change={(e) => {
                                   formik3.setFieldValue(each.inputFeild, e);
                                 }}
+                                required={true}                            
                                 value={formik3.values[each.inputFeild]}
-
+                                error={formik3.errors[each.inputFeild]}
 
 
                               /> :
@@ -1000,7 +1050,9 @@ export default function Createcandidatelist({ open = "", close = () => { }, file
                                 change={(e) => {
                                   formik3.setFieldValue(each.inputFeild, e);
                                 }}
+                                required={true}
                                 value={formik3.values[each.inputFeild]}
+                                error={formik3.errors[each.inputFeild]}
                               />
                           )}
                           {/* <FormInput

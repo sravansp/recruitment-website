@@ -776,7 +776,7 @@ const CardItem = ({ data, index, color, jobId }) => {
                   key={color}
                 ></Tooltip>
 
-                <Dropdown
+                {/* <Dropdown
                   menu={{
                     items,
                   }}
@@ -788,7 +788,7 @@ const CardItem = ({ data, index, color, jobId }) => {
                   >
                     <PiDotsThreeOutlineVerticalFill className="text-xl" />
                   </a>
-                </Dropdown>
+                </Dropdown> */}
               </div>
             </div>
           </div>
