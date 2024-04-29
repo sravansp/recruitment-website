@@ -108,9 +108,9 @@ const Workflowstage = ({
     setStageName("");
     setSelectedStageName("");
   };
-  const handleCopy = (stageIndex) => {
-    copy(stageIndex);
-  };
+  // const handleCopy = (stageIndex) => {
+  //   copy(stageIndex);
+  // };
 
   useEffect(() => {
     console.log(stages);
@@ -206,17 +206,16 @@ const Workflowstage = ({
     // }),
     onSubmit: async (values, { setSubmitting }) => {
       try {
-        if (!formik.values.workFlowName || !formik.values.description) {
-          formik.setFieldError(
-            "workFlowName",
-            !formik.values.workFlowName ? "WorkFlow Name is required" : ""
-          );
-          formik.setFieldError(
-            "description",
-            !formik.values.description ? "Description  is required" : ""
-          );
-          return;
+        const alphanumericRegex = /^[a-zA-Z0-9 ]+$/; // Regex to allow only letters, numbers, and spaces
+
+        if (!values.workFlowName || !alphanumericRegex.test(values.workFlowName)) {
+          formik.setFieldError('workFlowName', !values.workFlowName ? 'Workflow Name is required' : 'Please enter only letters and numbers');
         }
+
+        if (!values.description) {
+          formik.setFieldError('description', 'Description is required');
+        }
+
 
         if (stages.length === 0) {
           setIsModalVisible(true);
@@ -614,51 +613,32 @@ const Workflowstage = ({
                         }}
                       >
                         <span>{stage.stageName}</span>
-                        <img
-                          src={Automate}
-                          alt=""
-                          className="w-6 h-6 ml-auto pr-1"
-                        />
-                        <MdOutlineLock
-                          className="mr-12 text-gray-400"
-                          size={25}
-                        />
+                        {/* <img src={Automate} alt='' className='w-6 h-6 ml-auto pr-1' />
+                        <MdOutlineLock className='mr-12 text-gray-400' size={25} /> */}
                       </div>
                     </foreignObject>
                   </svg>
 
-                  <div className="flex  gap-5">
-                    <div className="flex items-center gap-5">
-                      <div
-                        className="p-2 hover:bg-slate-300 rounded-md"
-                        onClick={() => handleEditStage(stage.stageName)}
-                      >
-                        <Tooltip placement="top" title={"Edit"}>
-                          <PiPencilSimpleLineThin
-                            className="text-gray-500"
-                            size={16}
-                          />
-                        </Tooltip>
-                      </div>
-                      <div
-                        className="p-2 hover:bg-slate-300 rounded-md"
-                        onClick={() => handleCopy(stage.stageName)}
-                      >
-                        {/* <Tooltip placement="top" title={"Copy"} >
+                  <div className='flex  gap-5'>
+                    <div className='flex items-center gap-5'>
+                      <Tooltip placement="top" title={"Edit"} >
+                        <div className='p-2 hover:bg-slate-300 rounded-md' onClick={() => handleEditStage(stage.stageName)}>
+                          <PiPencilSimpleLineThin className='text-gray-500' size={16} />
+                        </div>
+                      </Tooltip>
+
+                      {/* <div className='p-2 hover:bg-slate-300 rounded-md' onClick={() => handleCopy(stage.stageName)} >
+                        <Tooltip placement="top" title={"Copy"} >
                           <PiCopySimple className='text-gray-500' size={16} />
-                        </Tooltip> */}
-                      </div>
-                      <div
-                        className="p-2 hover:bg-slate-300 rounded-md"
-                        onClick={() => handleDeleteStage(stage.id)}
-                      >
-                        <Tooltip placement="top" color={"red"} title={"Delete"}>
-                          <RiDeleteBinLine
-                            className="cursor-pointer text-red-500"
-                            size={16}
-                          />
                         </Tooltip>
-                      </div>
+                      </div> */}
+
+                      <Tooltip placement="top" color={"red"} title={"Delete"} >
+                        <div className='p-2 hover:bg-slate-300 rounded-md' onClick={() => handleDeleteStage(stage.id)}>
+                          <RiDeleteBinLine className="cursor-pointer text-red-500" size={16} />
+                        </div>
+                      </Tooltip>
+
                     </div>
                   </div>
                 </div>
