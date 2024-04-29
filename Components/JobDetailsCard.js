@@ -128,7 +128,11 @@ console.log(selectedJob);
         visible={drawerVisible}
         width="100%" // Adjust the width as needed
         height="100%"
+        wrapperBodyStyle={{ backgroundColor: "#F8FAFC" }}
+        
+        
       >
+        
         <Web closeDrawer={closeDrawer} selectedJobId={selectedJobIdForApply} selectedJob />
       </Drawer>
         </div>

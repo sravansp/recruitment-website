@@ -12,11 +12,15 @@ import { useMediaQuery } from "react-responsive";
 import { useRouter } from "next/navigation";
 import Link from "next/link";
 import { jobs } from "@/Components/Data";
-import { getAllRecruitmentJobs, getCompanyById, getRecruitmentJobById } from "@/Components/Api";
+import {
+  getAllRecruitmentJobs,
+  getCompanyById,
+  getRecruitmentJobById,
+} from "@/Components/Api";
 import { Drawer } from "antd";
 import Web from "./Form/page";
 import Navbar from "@/Components/Navbar";
-
+import CustomDropdown from "@/Components/Filter";
 
 const Home = () => {
   const [selectedJobId, setSelectedJobId] = useState(1);
@@ -32,10 +36,9 @@ const Home = () => {
   const [selectedJobIdForApply, setSelectedJobIdForApply] = useState(null);
   const [clearInput, setClearInput] = useState(false); // State to toggle clearing input
   const [sortOrder, setSortOrder] = useState("dsc"); // "asc" or "desc"
-  const [company,setCompany]=useState([])
+  const [company, setCompany] = useState([]);
   const [isSearchClicked, setIsSearchClicked] = useState(false);
-
-  
+  const [selectedFilters, setSelectedFilters] = useState({});
 
   const router = useRouter();
   console.log(setSearchJobTitle);
@@ -62,7 +65,7 @@ const Home = () => {
   };
   const handleJobSelect = (jobId) => {
     setSelectedJobId(jobId);
-    console.log(selectedJobId,"selected job :");
+    console.log(selectedJobId, "selected job :");
     if (isSmallScreen) {
       router.push(`/job-details/${jobId}`, undefined, { shallow: true });
     } else {
@@ -74,11 +77,12 @@ const Home = () => {
     const callapi = async () => {
       try {
         const response = await getAllRecruitmentJobs();
-        const openJobs = response.result.filter(job => job.jobStatus === "Open");
-      setJobList(openJobs);
-      console.log(openJobs, "filtered joblist data");
-      setFilteredJobs(openJobs);
-       
+        const openJobs = response.result.filter(
+          (job) => job.jobStatus === "Open"
+        );
+        setJobList(openJobs);
+        console.log(openJobs, "filtered joblist data");
+        setFilteredJobs(openJobs);
       } catch (error) {
         console.error(error);
       }
@@ -126,7 +130,7 @@ const Home = () => {
   //   setSearchJobLocation(""); // Clear the searchJobLocation state
   //   setClearInput(prevState => !prevState);
   // };
-  
+
   // useEffect(() => {
   //   // Check if both search terms are empty
   //   if (!searchJobTitle && !searchJobLocation) {
@@ -143,9 +147,6 @@ const Home = () => {
   //   setFilteredJobs(newFilteredJobs);
   // }, [searchJobTitle, searchJobLocation]);
 
-
-
-
   // Function to handle search when the search button is clicked
   // const handleSearch = () => {
   //   // Clear the search input fields
@@ -153,7 +154,7 @@ const Home = () => {
   //   setSearchJobLocation("");
   //   setClearInput(prevState => !prevState);
   // };
-  
+
   // console.log("Search title:", searchJobTitle);
   useEffect(() => {
     try {
@@ -173,7 +174,7 @@ const Home = () => {
     setSearchJobTitle(""); // Clear the searchJobTitle state
     setSearchJobLocation(""); // Clear the searchJobLocation state
     setFilteredJobs(JobsList); // Reset filtered jobs to the original JobsList
-    setClearInput(prevState => !prevState);
+    setClearInput((prevState) => !prevState);
   };
   const openDrawer = () => {
     setDrawerVisible(true);
@@ -212,38 +213,33 @@ const Home = () => {
     }
   }, [isSearchClicked]);
 
-
-
-
   useEffect(() => {
     const handleSearch = () => {
       if (!searchJobTitle && !searchJobLocation) {
         setFilteredJobs(JobsList); // Reset to all jobs when both search inputs are empty
         return;
       }
-  
+
       let newFilteredJobs = JobsList.filter(
         (job) =>
-          job.jobTitle.toLowerCase().includes(searchJobTitle.toLowerCase()) 
-          // &&
-          // job.location.toLowerCase().includes(searchJobLocation.toLowerCase())
+          job.jobTitle.toLowerCase().includes(searchJobTitle.toLowerCase())
+        // &&
+        // job.location.toLowerCase().includes(searchJobLocation.toLowerCase())
       );
-  
+
       setFilteredJobs(newFilteredJobs);
     };
-  
+
     handleSearch();
   }, [searchJobTitle, searchJobLocation]);
-  
+
   const handleSearch = () => {
-    let newFilteredJobs = filteredJobs.filter(
-      (job) =>
-        job.location.toLowerCase().includes(searchJobLocation.toLowerCase())
+    let newFilteredJobs = filteredJobs.filter((job) =>
+      job.location.toLowerCase().includes(searchJobLocation.toLowerCase())
     );
-  
+
     setFilteredJobs(newFilteredJobs);
   };
-
 
   const handleSortChange = (key) => {
     let sortedJobs = [...filteredJobs];
@@ -252,28 +248,33 @@ const Home = () => {
         // Handle Relevance sorting
         break;
       case "2":
-        sortedJobs.sort((a, b) => new Date(b.createdOn).getTime() - new Date(a.createdOn).getTime()); // Newest
+        sortedJobs.sort(
+          (a, b) =>
+            new Date(b.createdOn).getTime() - new Date(a.createdOn).getTime()
+        ); // Newest
         break;
       case "3":
-  
-        sortedJobs.sort((a, b) => new Date(a.createdOn).getTime() - new Date(b.createdOn).getTime()); // Oldest
+        sortedJobs.sort(
+          (a, b) =>
+            new Date(a.createdOn).getTime() - new Date(b.createdOn).getTime()
+        ); // Oldest
         break;
-        case "4":
-          const tenDaysAgo = new Date();
-          tenDaysAgo.setDate(tenDaysAgo.getDate() - 5);
-          const tenDaysAgoTimestamp = tenDaysAgo.getTime();
-          sortedJobs = sortedJobs.filter(
-            (job) => new Date(job.createdOn).getTime() >= tenDaysAgoTimestamp
-          );
-          break;
-        case "5":
-          const twentyDaysAgo = new Date();
-          twentyDaysAgo.setDate(twentyDaysAgo.getDate() - 20);
-          const twentyDaysAgoTimestamp = twentyDaysAgo.getTime();
-          sortedJobs = sortedJobs.filter(
-            (job) => new Date(job.createdOn).getTime() >= twentyDaysAgoTimestamp
-          );
-          break;
+      case "4":
+        const tenDaysAgo = new Date();
+        tenDaysAgo.setDate(tenDaysAgo.getDate() - 5);
+        const tenDaysAgoTimestamp = tenDaysAgo.getTime();
+        sortedJobs = sortedJobs.filter(
+          (job) => new Date(job.createdOn).getTime() >= tenDaysAgoTimestamp
+        );
+        break;
+      case "5":
+        const twentyDaysAgo = new Date();
+        twentyDaysAgo.setDate(twentyDaysAgo.getDate() - 20);
+        const twentyDaysAgoTimestamp = twentyDaysAgo.getTime();
+        sortedJobs = sortedJobs.filter(
+          (job) => new Date(job.createdOn).getTime() >= twentyDaysAgoTimestamp
+        );
+        break;
       default:
         break;
     }
@@ -295,125 +296,143 @@ const Home = () => {
   //   setFilteredJobs(sortedJobs);
   // }, [sortOrder, filteredJobs])
 
-useEffect(() => {
-  const fetchdata = async () => {
-    try {
-      const response = await getCompanyById(6);
-      console.log(response.result);
-      setCompany(response.result);
-    } catch (error) {
-      console.error(error, "error");
-    }
+  useEffect(() => {
+    const fetchdata = async () => {
+      try {
+        const response = await getCompanyById(6);
+        console.log(response.result);
+        setCompany(response.result);
+      } catch (error) {
+        console.error(error, "error");
+      }
+    };
+
+    fetchdata();
+  }, []);
+
+
+
+  useEffect(() => {
+    // Apply filtering based on selected filters
+    const filtered = JobsList.filter((job) => {
+      // Check if job type matches selected type filter
+      return (
+        !Object.keys(selectedFilters).length ||
+        Object.entries(selectedFilters).every(([section, filters]) =>
+          Object.entries(filters).some(([filter, isChecked]) =>
+            isChecked ? jobType === filter : true
+          )
+        )
+      );
+    });
+    setFilteredJobs(filtered);
+  }, [JobsList, selectedFilters]);
+
+  const handleFilterChange = (filters) => {
+    setSelectedFilters(filters);
+    console.log("filter");
   };
-
-  fetchdata();
-}, []);
-
- 
 
   return (
     <>
-    <Navbar company={company}/>
-    <main className="flex flex-col justify-center gap-6 pb-10 scroll-smooth">
-      <div className="md:h-[288px] xl:h-[300px] h-full w-full bg-TopSection py-5">
-        <div className="flex flex-col gap-3 px-5 pt-16 md:pt-24 container-wrapper">
-          <div>
-            <h6 className="h6 text-primary">Careers</h6>
-            <h1 className=" text-3xl 2xl:text-5xl font-semibold leading-[140%] text-black dark:text-white">
-              Jobs
-            </h1>
-            <p className="para text-[#656565]">
-              lorem ipsum dolar sit dummy text dolar sit lerom.
-            </p>
-          </div>
-          <div className="searchJob rounded-[10px] bg-white dark:bg-secondaryDark w-full lg:h-full p-3 flex gap-3 justify-between items-center flex-col md:flex-row md:divide-x divide-y md:divide-y-0">
-            <SearchBox
-              placeholder="Job title or keyword"
-              // value={searchJobTitle !== undefined ? searchJobTitle : ""} 
-              value={searchJobTitle} 
-              // items={[...new Set(JobsList.map((job) => job.jobTitle))]} // Convert the job titles to a Set to remove duplicates
-              icon={<PiMagnifyingGlass className="text-2xl " />}
-              clearInput={clearInput}
-              onItemSelected={setSearchJobTitle}
-              onChange={(value) => {
-                setSearchJobTitle(value);
-                // handleSearch();
-              }}
-              
-             
-            />
-            <SearchBox
-              placeholder="Location or Timezone"
-              // value={searchJobLocation}
-              value={searchJobLocation}
-              className="pt-3 md:pl-6 md:pt-0"
-              // items={[...new Set(JobsList.map((job) => job.location))]} // Convert the locations to a Set to remove duplicates
-              icon={<PiNavigationArrow className="text-2xl " />}
-              onItemSelected={setSearchJobLocation}
-              onChange={(value) => setSearchJobLocation(value)}
-              onSearch={() => setIsSearchClicked(true)}
-              clearInput={clearInput}
-             
-              
-            />
-            <div className="flex items-center w-full gap-4 pt-3 md:w-auto md:pl-6 md:pt-0">
-              <p
-                className="para text-[#656565] hidden md:block cursor-pointer "
-                onClick={() => handleClear()}
-              >
-                Clear
+      <Navbar company={company} />
+      <main className="flex flex-col justify-center gap-6 pb-10 scroll-smooth">
+        <div className="md:h-[288px] xl:h-[300px] h-full w-full bg-TopSection py-5">
+          <div className="flex flex-col gap-3 px-5 pt-16 md:pt-24 container-wrapper">
+            <div>
+              <h6 className="h6 text-primary">Careers</h6>
+              <h1 className=" text-3xl 2xl:text-5xl font-semibold leading-[140%] text-black dark:text-white">
+                Jobs
+              </h1>
+              <p className="para text-[#656565]">
+                lorem ipsum dolar sit dummy text dolar sit lerom.
               </p>
-              <ButtonClick
-                buttonName="Search"
-                BtnType="primary"
-                className="w-full md:w-auto"
-                handleSubmit={handleSearch}
+            </div>
+            <div className="searchJob rounded-[10px] bg-white dark:bg-secondaryDark w-full lg:h-full p-3 flex gap-3 justify-between items-center flex-col md:flex-row md:divide-x divide-y md:divide-y-0">
+              <SearchBox
+                placeholder="Job title or keyword"
+                // value={searchJobTitle !== undefined ? searchJobTitle : ""}
+                value={searchJobTitle}
+                // items={[...new Set(JobsList.map((job) => job.jobTitle))]} // Convert the job titles to a Set to remove duplicates
+                icon={<PiMagnifyingGlass className="text-2xl " />}
+                clearInput={clearInput}
+                onItemSelected={setSearchJobTitle}
+                onChange={(value) => {
+                  setSearchJobTitle(value);
+                  // handleSearch();
+                }}
               />
+              <SearchBox
+                placeholder="Location or Timezone"
+                // value={searchJobLocation}
+                value={searchJobLocation}
+                className="pt-3 md:pl-6 md:pt-0"
+                // items={[...new Set(JobsList.map((job) => job.location))]} // Convert the locations to a Set to remove duplicates
+                icon={<PiNavigationArrow className="text-2xl " />}
+                onItemSelected={setSearchJobLocation}
+                onChange={(value) => setSearchJobLocation(value)}
+                onSearch={() => setIsSearchClicked(true)}
+                clearInput={clearInput}
+              />
+              <div className="flex items-center w-full gap-4 pt-3 md:w-auto md:pl-6 md:pt-0">
+                <p
+                  className="para text-[#656565] hidden md:block cursor-pointer "
+                  onClick={() => handleClear()}
+                >
+                  Clear
+                </p>
+                <ButtonClick
+                  buttonName="Search"
+                  BtnType="primary"
+                  className="w-full md:w-auto"
+                  handleSubmit={handleSearch}
+                />
+              </div>
             </div>
           </div>
         </div>
-      </div>
-      <div className="grid items-center w-full grid-cols-12 container-wrapper">
-        <div className="col-span-6 md:col-span-3">
-          <Filter  />
-        </div>
-        <div className="col-span-6 md:col-span-9">
-          <div className="flex gap-1">
-            <p className="para text-[#656565]"> Sort by</p>
-            <Sorting onSortChange={handleSortChange} />
+
+        <div className="grid items-center w-full grid-cols-12 container-wrapper">
+          <div className="col-span-6 md:col-span-3">
+            <CustomDropdown onFilterChange={handleFilterChange} />
+          </div>
+          <div className="col-span-6 md:col-span-9">
+            <div className="flex gap-1">
+              <p className="para text-[#656565]"> Sort by</p>
+              <Sorting onSortChange={handleSortChange} />
+            </div>
           </div>
         </div>
-      </div>
-      <motion.div
-        initial={{ opacity: 0 }}
-        animate={{ opacity: 1 }}
-        exit={{ opacity: 0 }}
-        className="grid w-full grid-cols-12 gap-6 container-wrapper"
-      >
-        <div className="flex flex-col w-full col-span-12 md:col-span-5 gap-2.5 md:pr-2.5">
-          {filteredJobs.length > 0 ? (
-            filteredJobs.map((job) => (
-              <JobCard
-                key={job.jobId}
-                id={job.jobId}
-                {...job}
-                onSelect={() => handleJobSelect(job.jobId)}
-                selected={selectedJob && selectedJob.jobId === job.jobId}
-              />
-            ))
-          ) : (
-            <p>No jobs found</p>
-          )}
-        </div>
-        <div className="sticky top-[1rem] hidden w-full h-[96vh] overflow-auto md:col-span-7 md:block p-3 rounded-lg borderb">
-          <JobDetailsCard
-            selectedJob={selectedJob}
-            jobDetailsAnimation={jobDetailsAnimation}
-            handleApply={handleApply}
-          />
-        </div>
-      </motion.div>
-      {/* <Drawer
+        <motion.div
+          initial={{ opacity: 0 }}
+          animate={{ opacity: 1 }}
+          exit={{ opacity: 0 }}
+          className="grid w-full grid-cols-12 gap-6 container-wrapper"
+        >
+          <div className="flex flex-col w-full col-span-12 md:col-span-5 gap-2.5 md:pr-2.5">
+            {filteredJobs.length > 0 ? (
+              filteredJobs.map((job) => (
+                <JobCard
+                  key={job.jobId}
+                  id={job.jobId}
+                  {...job}
+                  onSelect={() => handleJobSelect(job.jobId)}
+                  selected={selectedJob && selectedJob.jobId === job.jobId}
+                />
+              ))
+            ) : (
+              <p>No jobs found</p>
+            )}
+          </div>
+          <div className="sticky top-[1rem] hidden w-full h-[96vh] overflow-auto md:col-span-7 md:block p-3 rounded-lg borderb">
+            <JobDetailsCard
+              selectedJob={selectedJob}
+              jobDetailsAnimation={jobDetailsAnimation}
+              handleApply={handleApply}
+            />
+          </div>
+        </motion.div>
+        {/* <Drawer
         placement="right"
         closable={false}
         onClose={closeDrawer}
@@ -423,7 +442,7 @@ useEffect(() => {
       >
         <Web closeDrawer={closeDrawer} selectedJobId={selectedJobIdForApply} selectedJob />
       </Drawer> */}
-    </main>
+      </main>
     </>
   );
 };

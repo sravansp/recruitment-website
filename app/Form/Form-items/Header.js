@@ -34,7 +34,7 @@ useEffect(() => {
 }, [job]);
 
   return (
-    <div>
+    <div >
     <div className="bg-white flex items-center     dark:bg-black dark:text-white h-[65px] w-full">
       <div className="flex mt-3 ml-5 float-end ">
       <button onClick={closeDrawer} className="rounded-full  size-9 borderb vhcenter text-primary">

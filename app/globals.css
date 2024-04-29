@@ -138,3 +138,6 @@
 .borderb {
   @apply border border-black dark:border-white border-opacity-10 dark:border-opacity-20;
 }
+
+
+

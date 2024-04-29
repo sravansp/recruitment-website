@@ -1,24 +1,39 @@
+import React, { useState } from "react";
 import { DatePicker } from "antd";
 import { FiAlertCircle } from "react-icons/fi";
 import { HiMiniStar } from "react-icons/hi2";
-import { useMediaQuery } from "react-responsive";
-import React from "react";
 
-export default function DateSelect({
+const { RangePicker } = DatePicker;
+
+export default function RangeDatePicker({
   change = () => {},
   className,
   picker = "",
-  dateFormat = "YYYY-MM-DD", // Default date format
+  dateFormat = "",
   value = "",
   title = "",
   description = "",
   error = "",
   required = false,
-  placeholder = "",
-  minDate = null,
 }) {
-  const isSmallScreen = useMediaQuery({ maxWidth: 1439 });
-
+  const [dates, setDates] = useState(null);
+  const [values, setValues] = useState(null);
+  const disabledDate = (current) => {
+    if (!dates) {
+      return false;
+    }
+    const tooLate = dates[0] && current.diff(dates[0], "days") >= 61;
+    const tooEarly = dates[1] && dates[1].diff(current, "days") >= 61;
+    return !!tooEarly || !!tooLate;
+  };
+  const onOpenChange = (open) => {
+    console.log(open);
+    if (open) {
+      setDates([null, null]);
+    } else {
+      setDates(null);
+    }
+  };
   return (
     <div className={`${className} flex flex-col gap-2 relative`}>
       <div className="flex">
@@ -33,17 +48,20 @@ export default function DateSelect({
         {required && <HiMiniStar className="text-[10px] text-rose-600" />}
       </div>
 
-      <DatePicker
-        format={dateFormat} // Pass the provided date format
-        onChange={(date, dateString) => {
-          console.log(dateString);
-          change(dateString);
+      <RangePicker
+        value={dates || values}
+        disabledDate={disabledDate}
+        onCalendarChange={(val) => {
+          setDates(val);
         }}
-        status={error && "error"}
-        size={isSmallScreen ? "default" : "large"}
-        placeholder={placeholder}
-        disabledDate={(current) => minDate ? current && current < minDate : false}              />
-
+        onChange={(val, date) => {
+          console.log(val);
+          setValues(val);
+          change(date);
+        }}
+        onOpenChange={onOpenChange}
+        changeOnBlur
+      />
       {error && (
         <FiAlertCircle className="absolute top-3.5 mt-6 right-8 -mr-1 transform -translate-y-2/5 text-red-400" />
       )}

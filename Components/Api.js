@@ -219,3 +219,7 @@ export const getAllRecruitmentJobs = async () => {
     const kwargs = {  resumeId: id }; 
     return await apiRequest(action, method, kwargs);
   }
+
+
+
+

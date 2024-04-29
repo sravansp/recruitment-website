@@ -92,11 +92,21 @@ function Web({ closeDrawer, selectedJobId, onClick }) {
   const [questionAnswers, setQuestionAnswers] = useState([]);
   const [coverLetter, setCoverletter] = useState("");
   const [questionfield, setQuestionfield] = useState("");
+  
   //
-const [instituteerror,setInstituteerror]=useState("");
-const [coursetype,setCoursetype]=useState("");
-const [coursename,setCoursename]=useState("");
-const [yearofstudy,setYearofstudy]=useState("")
+  const [instituteerror, setInstituteerror] = useState("");
+  const [coursetype, setCoursetype] = useState("");
+  const [coursename, setCoursename] = useState("");
+  const [yearofstudy, setYearofstudy] = useState("");
+
+  const [jobtitle, setjobtitle] = useState("");
+  const [employmenttype, setemploymenttype] = useState("");
+  const [companyname, setcompanyname] = useState("");
+  const [location, setlocation] = useState("");
+  const [fromdate, setfromdate] = useState("");
+  const [todate, settodate] = useState("");
+
+  const [exp, setExp] = useState("");
 
   const [dropdownvalue, Setdopdownvalue] = useState(null);
   const [textAreaValue, setTextAreavalue] = useState(null);
@@ -105,6 +115,8 @@ const [yearofstudy,setYearofstudy]=useState("")
   const [fetchedAnswers, setfetchedAnswers] = useState([]);
   const [quesData, setQuesData] = useState(null);
   // const [isModalOpen, setIsModalOpen] = useState(false);
+  const [formvalidation, setFormvalidation] = useState([]);
+
   const [showModal, setShowModal] = useState(false);
   const [additionalExperienceCount, setAdditionalExperienceCount] = useState(1);
   const [
@@ -217,6 +229,51 @@ const [yearofstudy,setYearofstudy]=useState("")
       data: "review",
     },
   ]);
+
+  // const [steps, setSteps] = useState(() => {
+  //   const baseSteps = [
+  //     {
+  //       id: 1,
+  //       value: 0,
+  //       title: "Personal Details",
+  //       data: "personaldetails",
+  //     },
+  //     {
+  //       id: 2,
+  //       value: 1,
+  //       title: "Educational Details",
+  //       data: "educationaldetails",
+  //     },
+  //     {
+  //       id: 3,
+  //       value: 2,
+  //       title: "Work Experience",
+  //       data: "workexperience",
+  //     },
+  //     {
+  //       id: 4,
+  //       value: 3,
+  //       title: "Questions",
+  //       data: "questions",
+  //     },
+  //     {
+  //       id: 5,
+  //       value: 4,
+  //       title: "Review",
+  //       data: "review",
+  //     },
+  //   ];
+
+  //   // Check if formvalidation and its first item exist and if experience is 0
+  //   if (exp == 0) {
+  //     // Filter out the "Work Experience" step from baseSteps
+  //     const newSteps = baseSteps.filter(step => step.id !== 3);
+  //     return newSteps;
+  //   }
+
+  //   return baseSteps;
+  // });
+
   // const userInfo = [
   //   {
   //     personal: [
@@ -410,6 +467,30 @@ const [yearofstudy,setYearofstudy]=useState("")
   //     };
   //     fetchdata();
   //   }, [questid]);
+
+  const fetchdata1 = async () => {
+    try {
+      const response = await getAllRecruitmentJobApplicationFormSettings(jobid);
+      console.log(response.result, "validation api response");
+      setFormvalidation(response.result);
+      setExp(response.result[0].experience, "expppppp");
+
+      console.log(formvalidation, "validation");
+    } catch (error) {
+      console.error(error, "api error");
+    }
+  };
+  useEffect(() => {
+    fetchdata1();
+  }, []);
+
+  useEffect(() => {
+    console.log(formvalidation, "validation api");
+  }, [formvalidation]);
+
+  useEffect(() => {
+    console.log(exp, "expppppp");
+  }, [exp]);
 
   const fetchdata = async () => {
     try {
@@ -621,7 +702,7 @@ const [yearofstudy,setYearofstudy]=useState("")
       namePrefix: "",
       firstName: "",
       lastName: "",
-      dob: "1998-09-23",
+      dob: "",
       cityOrTown: "",
       postalCode: "",
       addressLine: "",
@@ -632,80 +713,156 @@ const [yearofstudy,setYearofstudy]=useState("")
       jobId: selectedJobId,
       createdBy: "154",
     },
-    enableReinitialize: true,
-    validateOnChange: false,
-    validationSchema: Yup.object().shape({
-      firstName: Yup.string().required("First name is required"),
-      lastName: Yup.string().required("Last name is required"),
-      candidateEmail: Yup.string()
-        .email("Invalid email address")
-        .required("Email is required"),
-      candidateContact: Yup.number().required("Phone number is required"),
-      candidateLocation: Yup.string().required("Location is required"),
-      city: Yup.string().required("City is required"),
-      address: Yup.string().required("Address is required"),
-      postalCode: Yup.number().required("Postal code is required"),
-    }),
+    // enableReinitialize: true,
+    // validateOnChange: false,
+    // validationSchema: Yup.object().shape({
+    //   firstName: Yup.string().required("First name is required"),
+    //   lastName: Yup.string().required("Last name is required"),
+    //   candidateEmail: Yup.string()
+    //     .email("Invalid email address")
+    //     .required("Email is required"),
+    //   candidateContact: Yup.number().required("Phone number is required"),
+    //   candidateLocation: Yup.string().required("Location is required"),
+    //   city: Yup.string().required("City is required"),
+    //   address: Yup.string().required("Address is required"),
+    //   postalCode: Yup.number().required("Postal code is required"),
+    // }),
     onSubmit: async (values) => {
-      try {
-        console.log(values, "gggg");
+      let isValid = true;
 
-        // Make your API call here
-        values.candidateName =
-          `${values.namePrefix} ${values.firstName} ${values.lastName}`.trim();
-        if (insertedid1) {
-          console.log(values, "gggg");
-          const update = await updateRecruitmentResume({
-            id: insertedid1,
-            ...values,
-          });
-          console.log(update);
-          if (update.status === 200) {
-            openNotification("success", "Successful", "success");
-            setActiveBtn(activeBtn + 1);
-
-            setCurrentStep(currentStep + 1);
-            setPresentage(presentage + 1);
-          } else if (response.status === 500) {
-            openNotification(
-              "error",
-              "input field is empty..",
-              "enter the field"
-            );
-          }
-        } else {
-          const response = await saveRecruitmentResume(values);
-          console.log("API Response:", response);
-          console.log(response.result.insertedId, "inserted id responsee");
-          Fileuplaod(response.result.insertedId);
-
-          setinsertedId1(response.result.insertedId);
-          console.log(insertedid1, "insertede i");
-          if (response.status === 200) {
-            openNotification("success", "Successful", response.message);
-            setActiveBtn(activeBtn + 1);
-
-            setCurrentStep(currentStep + 1);
-            setPresentage(presentage + 1);
-          } else if (response.status === 500) {
-            openNotification(
-              "error",
-              "input field is empty..",
-              response.message
-            );
-          }
-        }
-        console.log(insertedid1);
-      } catch (error) {
-        console.error("Error during form submission:", error);
-        openNotification(
-          "error",
-          "input field is empty..",
-          "input field is empty.."
+      if (formvalidation[0].name == 1) {
+        formik.setFieldError(
+          "firstName",
+          !formik.values.firstName ? "first Name  is required" : ""
         );
+        if (!formik.values.firstName) isValid = false;
+      }
+      // if (formvalidation[0].email == 1) {
+      //   formik.setFieldError(
+      //     "candidateEmail",
+      //     !formik.values.candidateEmail ? "email  is required" : ""
+      //   );
+      //   if (!formik.values.candidateEmail) isValid = false;
+      // }
+      if (formvalidation[0].email == 1) {
+        if (!formik.values.candidateEmail) {
+          formik.setFieldError("candidateEmail", "Email is required");
+          isValid = false;
+        } else if (!formik.values.candidateEmail.endsWith("@gmail.com")) {
+          formik.setFieldError("candidateEmail", "Please use a valid email address");
+          isValid = false;
+        }
+      }
+      // if (formvalidation[0].phone == 1) {
+      //   formik.setFieldError(
+      //     "candidateContact",
+      //     !formik.values.candidateContact ? "Phone number  is required" : ""
+      //   );
+      //   if (!formik.values.candidateContact) isValid = false;
+      // }
+      if (formvalidation[0].phone == 1) {
+      
+        const candidateContact = formik.values.candidateContact;
+        const numberPattern = /^\d+$/;
+        if (!numberPattern.test(candidateContact)) {
+          formik.setFieldError("candidateContact", "Only numbers are allowed");
+          isValid = false;
+        } else if (!candidateContact) {
+          formik.setFieldError("candidateContact", "Phone number is required");
+          isValid = false;
+        }
+      }
+      if (formvalidation[0].address == 1) {
+        formik.setFieldError(
+          "address",
+          !formik.values.address ? "address is required" : ""
+        );
+        if (!formik.values.address) isValid = false;
+      }
+      if (formvalidation[0].country == 1) {
+        formik.setFieldError(
+          "candidateLocation",
+          !formik.values.candidateLocation ? "Location  is required" : ""
+        );
+        if (!formik.values.candidateLocation) isValid = false;
+      }
+
+      if (formvalidation[0].lastname == 1) {
+        formik.setFieldError(
+          "lastName",
+          !formik.values.lastName ? "last name  is required" : ""
+        );
+      }
+      if (formvalidation[0].dob == 1) {
+        formik.setFieldError(
+          "candidateContact",
+          !formik.values.dob ? "date of birth  is required" : ""
+        );
+        if (!formik.values.dob) isValid = false;
+      }
+
+      if (isValid) {
+        try {
+          console.log(values, "gggg");
+
+          // Make your API call here
+          values.candidateName =
+            `${values.namePrefix} ${values.firstName} ${values.lastName}`.trim();
+          if (insertedid1) {
+            console.log(values, "gggg");
+            const update = await updateRecruitmentResume({
+              id: insertedid1,
+              ...values,
+            });
+            console.log(update);
+            if (update.status === 200) {
+              openNotification("success", "Successful", "success");
+              setActiveBtn(activeBtn + 1);
+
+              setCurrentStep(currentStep + 1);
+              setPresentage(presentage + 1);
+            } else if (response.status === 500) {
+              openNotification(
+                "error",
+                "input field is empty..",
+                "enter the field"
+              );
+            }
+          } else {
+            const response = await saveRecruitmentResume(values);
+            console.log("API Response:", response);
+            console.log(response.result.insertedId, "inserted id responsee");
+            Fileuplaod(response.result.insertedId);
+
+            setinsertedId1(response.result.insertedId);
+            console.log(insertedid1, "insertede i");
+            if (response.status === 200) {
+              openNotification("success", "Successful", response.message);
+              setActiveBtn(activeBtn + 1);
+
+              setCurrentStep(currentStep + 1);
+              setPresentage(presentage + 1);
+            } else if (response.status === 500) {
+              openNotification(
+                "error",
+                "input field is empty..",
+                response.message
+              );
+            }
+          }
+          console.log(insertedid1);
+        } catch (error) {
+          console.error("Error during form submission:", error);
+          openNotification(
+            "error",
+            "input field is empty..",
+            "input field is empty.."
+          );
+        }
       }
     },
   });
+
   const Fileuplaod = async (e) => {
     console.log(e, "hhhhhhhhhhhhhh");
     try {
@@ -768,89 +925,97 @@ const [yearofstudy,setYearofstudy]=useState("")
 
     onSubmit: async (values, { setSubmitting }) => {
       console.log(values, "submiteddd valuess");
-      setInstituteerror('');
-    setCoursetype('');
-    setCoursename('');
-    setYearofstudy('');
+      setInstituteerror("");
+      setCoursetype("");
+      setCoursename("");
+      setYearofstudy("");
 
-    const additionalDetailsErrors = values.additionalEducationalDetails.map((detail, index) => {
-      let errors = {};
-      
-      if (!detail.institute) {
-        setInstituteerror("School or University is required");
-        errors.institute = "School or University is required";
-      }
-      
-      if (!detail.courseType) {
-        setCoursetype("Degree is required");
-        errors.courseType = "Degree is required";
-      }
-      
-      if (!detail.courseName) {
-        setCoursename("Field of Study is required");
-        errors.courseName = "Field of Study is required";
-      }
-      
-      if (!detail.yearOfStudy) {
-        setYearofstudy("Year is required");
-        errors.yearOfStudy = "Year is required";
-      }
+      const additionalDetailsErrors = values.additionalEducationalDetails.map(
+        (detail, index) => {
+          let errors = {};
 
-      return errors;
-    });
+          if (!detail.institute) {
+            setInstituteerror("School or University is required");
+            errors.institute = "School or University is required";
+          }
 
-    // Check if any error exists
-    const hasErrors = additionalDetailsErrors.some((error) => Object.keys(error).length > 0);
+          if (!detail.courseType) {
+            setCoursetype("Degree is required");
+            errors.courseType = "Degree is required";
+          }
 
-    if (hasErrors) {
-      formik1.setErrors({
-        additionalEducationalDetails: additionalDetailsErrors,
-      });
-    } else {
-        try {
-        // const transformedData = Object.values(additionalEducationalDetails);
+          if (!detail.courseName) {
+            setCoursename("Field of Study is required");
+            errors.courseName = "Field of Study is required";
+          }
 
-        // const response = await saveRecruitmentResumeEducationalDetailBatch(Object.entries(additionalEducationalDetails).map(([_, value]) => value));
-        const formattedData = additionalEducationalDetails.map((item) => ({
-          resumeId: insertedid1,
-          institute: item.institute,
-          courseType: item.courseType,
-          courseName: item.courseName,
-          yearOfStudy: item.yearOfStudy,
-          location: "jnvkjdn",
-        }));
-        // if (eduinsertedid) {
-        //   console.log(values,"gggg");
-        //   const update = await updateRecruitmentResumeEducationalDetail({id:eduinsertedid, ...values});
-        //   console.log(update);
-        //   setActiveBtn(activeBtn + 1);
+          if (!detail.yearOfStudy) {
+            setYearofstudy("Year is required");
+            errors.yearOfStudy = "Year is required";
+          }
 
-        //   setCurrentStep(currentStep + 1);
-        //   setPresentage(presentage + 1);
-        // } else {
-        const response = await saveRecruitmentResumeEducationalDetailBatch(
-          formattedData
-        );
-        console.log("API Response:", response);
-        console.log(response.result, "result edu");
-        seteduinsertedid(response.result.resumeEducationalDetailsId);
-        console.log(eduinsertedid);
-        // setinsertedId1(response.result.insertedId);
-        if (response.status === 200) {
-          openNotification("success", "Successful", response.message);
-          setActiveBtn(activeBtn + 1);
-          setCurrentStep(currentStep + 1);
-          setPresentage(presentage + 1);
-        } else if (response.status === 500) {
-          openNotification("error", "input field is empty..", response.message);
+          return errors;
         }
-      } catch (error) {
-        console.error("API Error:", error);
-      } finally {
-        setSubmitting(false);
-        // setIsFormSubmitted(true);
+      );
+
+      // Check if any error exists
+      const hasErrors = additionalDetailsErrors.some(
+        (error) => Object.keys(error).length > 0
+      );
+
+      if (hasErrors) {
+        formik1.setErrors({
+          additionalEducationalDetails: additionalDetailsErrors,
+        });
+      } else {
+        try {
+          // const transformedData = Object.values(additionalEducationalDetails);
+
+          // const response = await saveRecruitmentResumeEducationalDetailBatch(Object.entries(additionalEducationalDetails).map(([_, value]) => value));
+          const formattedData = additionalEducationalDetails.map((item) => ({
+            resumeId: insertedid1,
+            institute: item.institute,
+            courseType: item.courseType,
+            courseName: item.courseName,
+            yearOfStudy: item.yearOfStudy,
+            location: "jnvkjdn",
+          }));
+          // if (eduinsertedid) {
+          //   console.log(values,"gggg");
+          //   const update = await updateRecruitmentResumeEducationalDetail({id:eduinsertedid, ...values});
+          //   console.log(update);
+          //   setActiveBtn(activeBtn + 1);
+
+          //   setCurrentStep(currentStep + 1);
+          //   setPresentage(presentage + 1);
+          // } else {
+          const response = await saveRecruitmentResumeEducationalDetailBatch(
+            formattedData
+          );
+          console.log("API Response:", response);
+          console.log(response.result, "result edu");
+          seteduinsertedid(response.result.resumeEducationalDetailsId);
+          console.log(eduinsertedid);
+          // setinsertedId1(response.result.insertedId);
+          if (response.status === 200) {
+            openNotification("success", "Successful", response.message);
+            setActiveBtn(activeBtn + 1);
+            setCurrentStep(currentStep + 1);
+            setPresentage(presentage + 1);
+          } else if (response.status === 500) {
+            openNotification(
+              "error",
+              "input field is empty..",
+              response.message
+            );
+          }
+        } catch (error) {
+          console.error("API Error:", error);
+        } finally {
+          setSubmitting(false);
+          // setIsFormSubmitted(true);
+        }
       }
-    }
     },
   });
   // const validationSchema2 = Yup.object().shape({
@@ -875,23 +1040,52 @@ const [yearofstudy,setYearofstudy]=useState("")
       toDate: "",
     },
 
-    enableReinitialize: true,
-    validateOnChange: false,
-    validationSchema2: Yup.object().shape({
-      // ...existing validations
-      additionalExperiences: Yup.array().of(
-        Yup.object().shape({
-          jobTitle: Yup.string().required("Job Title is required"),
-          employmentType: Yup.string().required("Employment Type is required"),
-          companyName: Yup.string().required("Company Name is required"),
-          location: Yup.string().required("Location is required"),
-          fromDate: Yup.string().required("From Date is required"),
-          toDate: Yup.string().required("To Date is required"),
-        })
-      ),
-    }),
+    // enableReinitialize: true,
+    // validateOnChange: false,
+    // validationSchema2: Yup.object().shape({
+    //   // ...existing validations
+    //   additionalExperiences: Yup.array().of(
+    //     Yup.object().shape({
+    //       jobTitle: Yup.string().required("Job Title is required"),
+    //       employmentType: Yup.string().required("Employment Type is required"),
+    //       companyName: Yup.string().required("Company Name is required"),
+    //       location: Yup.string().required("Location is required"),
+    //       fromDate: Yup.string().required("From Date is required"),
+    //       toDate: Yup.string().required("To Date is required"),
+    //     })
+    //   ),
+    // }),
     onSubmit: async (values, { setSubmitting }) => {
       try {
+        // Check validation
+        const errors = {};
+
+        if (values.additionalExperiences) {
+          values.additionalExperiences.map((experience, index) => {
+            if (!experience.jobTitle) {
+              setjobtitle("Job Title is required");
+            }
+            if (!experience.employmentType) {
+              setemploymenttype("Employment Type is required");
+            }
+            if (!experience.companyName) {
+              setcompanyname("Company Name is required");
+            }
+            if (!experience.location) {
+              setlocation("Location is required");
+            }
+            if (!experience.fromDate) {
+              setfromdate("From Date is required");
+            }
+            if (!experience.toDate) {
+              settodate("To Date is required");
+            }
+          });
+        }
+
+        if (Object.keys(errors).length > 0) {
+          throw errors;
+        }
         const formattedData1 = additionalExperiences.map((item) => ({
           resumeId: insertedid1,
           jobTitle: item.jobTitle,
@@ -1194,7 +1388,7 @@ const [yearofstudy,setYearofstudy]=useState("")
                 {
                   id: 3,
                   label: "Date of Birth",
-                  value: "03 September 2000",
+                  value: items.dob,
                   icon: <RiCake2Line />,
                 },
                 {
@@ -1420,14 +1614,29 @@ const [yearofstudy,setYearofstudy]=useState("")
         // formik3.resetForm();
         break;
       case 4:
-        closeDrawer();
         setShowModal(true);
-        // window.location.reload();
+        closeDrawer();
         formik.resetForm();
         formik1.resetForm();
         formik2.resetForm();
         formik3.resetForm();
+        window.location.reload();
 
+        // Close the drawer only when the modal is closed
+
+        //   // window.location.reload();
+        //   formik.resetForm();
+        //   formik1.resetForm();
+        //   formik2.resetForm();
+        //   formik3.resetForm();
+        // }
+        // if(modalIsClosed)
+        //   closeDrawer()
+        // }
+
+        // if (handleCloseModal) {
+        //   modalClosed();
+        // }
         // case 5:
 
         // closeDrawer()
@@ -1437,9 +1646,20 @@ const [yearofstudy,setYearofstudy]=useState("")
       default:
         break;
     }
-    // closeDrawer()
-    //      setShowModal(true);
   };
+  // useEffect(() => {
+  //   if (!showModal) {
+  //     closeDrawer();
+  //     formik.resetForm();
+  //     formik1.resetForm();
+  //     formik2.resetForm();
+  //     formik3.resetForm();
+  //     window.location.reload();
+  //   }
+  // }, [showModal]);
+  // closeDrawer()
+  //      setShowModal(true);
+
   const previous = () => {
     // Exit early if currentStage is 0
     if (currentStep === 0) {
@@ -1459,137 +1679,159 @@ const [yearofstudy,setYearofstudy]=useState("")
   };
 
   return (
-    <div className="flex flex-col gap-6 container-wrapper ">
+    <div>
       <FlexCol />
+
       <Header1 closeDrawer={closeDrawer} jobid={jobid} />
-      <div className="flex flex-col gap-6 max-w-[1070px] w-full mx-auto  ">
-        {steps && (
-          <div className=" sticky -top-6 w-full z-50 px-5  dark:bg-[#1f1f1f] pb-10 ">
-            <Stepper
-              currentStepNumber={activeBtn}
-              presentage={presentage}
-              // direction="left"
-              // labelPlacement="vertical"
-              steps={steps}
-              // className="text-sm font-medium "
-              // style={{
-              //   fontSize: isSmallScreen ? "8px" : "10px",
-              //   fontWeight: 600,
-              // }}
-              // // className="text-[10px]"
-              // size={isSmallScreen ? "default" : "large"}
-            />
-          </div>
-        )}
-      </div>
-      {/* {renderStep()} */}
-      <div className="flex flex-col gap-6">
-        {currentStep === 0 ? (
-          <>
-            <FlexCol />
-            <div className="relative w-full mx-auto rounded-md borderb">
+
+      <div className="flex flex-col gap-6 container-wrapper  ">
+        <FlexCol />
+
+        <div className="flex flex-col gap-6 max-w-[1070px] w-full mx-auto mt-4  ">
+          {steps && (
+            <div className=" sticky -top-6 w-full z-50 px-5  dark:bg-[#1f1f1f] pb-10 ">
+              <Stepper
+                currentStepNumber={activeBtn}
+                presentage={presentage}
+                // direction="left"
+                // labelPlacement="vertical"
+                steps={steps}
+                // className="text-sm font-medium "
+                // style={{
+                //   fontSize: isSmallScreen ? "8px" : "10px",
+                //   fontWeight: 600,
+                // }}
+                // // className="text-[10px]"
+                // size={isSmallScreen ? "default" : "large"}
+              />
+            </div>
+          )}
+        </div>
+        {/* {renderStep()} */}
+        <div className="flex flex-col gap-6">
+          {currentStep === 0 ? (
+            <>
               <FlexCol />
-              <div className="relative flex flex-col gap-12">
-                <div className="p-1 bg-white rounded-[10px] dark:bg-transparent dark:border dark:border-secondaryWhite border-opacity-20 dark:border-opacity-10">
-                  <h2
-                    /* <button
+              <div className="relative w-full mx-auto rounded-md borderb">
+                <FlexCol />
+                <div className="relative flex flex-col gap-12">
+                  <div className="p-1 bg-white rounded-[10px] dark:bg-transparent dark:border dark:border-secondaryWhite border-opacity-20 dark:border-opacity-10">
+                    <h2
+                      /* <button
                       type="button" */
-                    className="flex items-center justify-between w-full px-6 py-4 font-semibold text-left rounded-md"
-                    style={{ backgroundColor: `${primaryColor}10` }}
-                    /* > */
-                  >
-                    <div className="text-left rtl:text-right">
-                      <h1 className="acco-h1">Personal Information </h1>
-                      <p className="para">lorem ipsum dummy text dolar sit.</p>
-                    </div>
-                    {/* </button> */}
-                  </h2>
-                  {/* <form onSubmit={formik.handleSubmit}> */}
-                  <form>
-                    <div
-                      id={`acco-text-item`}
-                      role="region"
-                      aria-labelledby={`acco-title-item`}
-                      className="flex flex-col justify-between w-full gap-6 p-5"
+                      className="flex items-center justify-between w-full px-6 py-4 font-semibold text-left rounded-md"
+                      style={{ backgroundColor: `${primaryColor}10` }}
+                      /* > */
                     >
-                      <div className="grid grid-cols-2 gap-4 sm:grid-cols-6">
-                        <Dropdown
-                          title={"Prefix"}
-                          placeholder="Mr/Miss"
-                          options={[
-                            { label: "Mr", value: "mr" },
-                            { label: "Miss", value: "miss" },
-                          ]}
-                          // className="text-[#344054]"
-                          // onChange={formik.handleChange}
-                          change={(e) => {
-                            formik.setFieldValue("namePrefix", e);
-                            console.log("First Name:", e);
-                          }}
-                          name="namePrefix"
-                          value={formik.values.namePrefix}
-                        />
+                      <div className="text-left rtl:text-right">
+                        <h1 className="acco-h1">Personal Information </h1>
+                        <p className="para">
+                          lorem ipsum dummy text dolar sit.
+                        </p>
                       </div>
-                      <div className="grid grid-cols-1 gap-4 sm:grid-cols-3">
-                        <FormInput
-                          title={"First Name"}
-                          placeholder={"First Name"}
-                          // className="text-[#344054] "
-                          name="firstName"
-                          value={formik.values.firstName}
-                          change={(e) => {
-                            formik.setFieldValue("firstName", e);
-                            console.log("First Name:", e);
-                          }}
-                          required={false}
-                          error={formik.errors.firstName}
-                        />
-                        <FormInput
-                          title={"Last Name"}
-                          placeholder={"Last Name"}
-                          // className="text-[#344054]"
-                          name="lastName"
-                          value={formik.values.lastName}
-                          change={(e) => {
-                            formik.setFieldValue("lastName", e);
-                          }}
-                          required={false}
-                          error={formik.errors.lastName}
-                        />
-                      </div>
-                      <div className="grid grid-cols-1 gap-4 sm:grid-cols-3">
-                        <FormInput
-                          title={"Email"}
-                          placeholder={"Email Address"}
-                          // className="text-[#344054]"
-                          name="candidateEmail"
-                          value={formik.values.candidateEmail}
-                          change={(e) => {
-                            formik.setFieldValue("candidateEmail", e);
-                          }}
-                          required={false}
-                          error={formik.errors.candidateEmail}
-                        />
-                        <FormInput
-                          title={"Phone Number"}
-                          placeholder={"1234656987"}
-                          // className="text-[#344054]"
-                          value={formik.values.candidateContact}
-                          change={(e) => {
-                            formik.setFieldValue("candidateContact", e);
-                          }}
-                          required={false}
-                          error={formik.errors.candidateContact}
-                        />
-                      </div>
-                      {/* <div className="relative max-w-[1070px] sm:w-[492px] w-full borderb rounded-md h-24 bg-[#FAFAFA] dark:bg-black"> */}
-                      {/* <div className="flex min-w-0 pt-5 pl-5 gap-x-4">
+                      {/* </button> */}
+                    </h2>
+                    {/* <form onSubmit={formik.handleSubmit}> */}
+                    <form>
+                      <div
+                        id={`acco-text-item`}
+                        role="region"
+                        aria-labelledby={`acco-title-item`}
+                        className="flex flex-col justify-between w-full gap-6 p-5"
+                      >
+                        <div className="grid grid-cols-2 gap-4 sm:grid-cols-6">
+                          <Dropdown
+                            title={"Prefix"}
+                            placeholder="Mr/Miss"
+                            options={[
+                              { label: "Mr", value: "mr" },
+                              { label: "Miss", value: "miss" },
+                            ]}
+                            // className="text-[#344054]"
+                            // onChange={formik.handleChange}
+                            change={(e) => {
+                              formik.setFieldValue("namePrefix", e);
+                              console.log("First Name:", e);
+                            }}
+                            name="namePrefix"
+                            value={formik.values.namePrefix}
+                          />
+                        </div>
+                        <div className="grid grid-cols-1 gap-4 sm:grid-cols-3">
+                          <FormInput
+                            title={"First Name"}
+                            placeholder={"First Name"}
+                            // className="text-[#344054] "
+                            name="firstName"
+                            value={formik.values.firstName}
+                            change={(e) => {
+                              formik.setFieldValue("firstName", e);
+                              console.log("First Name:", e);
+                            }}
+                            required={false}
+                            error={formik.errors.firstName}
+                          />
+                          <FormInput
+                            title={"Last Name"}
+                            placeholder={"Last Name"}
+                            // className="text-[#344054]"
+                            name="lastName"
+                            value={formik.values.lastName}
+                            change={(e) => {
+                              formik.setFieldValue("lastName", e);
+                            }}
+                            required={false}
+                            error={formik.errors.lastName}
+                          />
+                        </div>
+                        <div className="grid grid-cols-1 gap-4 sm:grid-cols-3">
+                          <FormInput
+                            title={"Email"}
+                            placeholder={"Email Address"}
+                            // className="text-[#344054]"
+                            name="candidateEmail"
+                            value={formik.values.candidateEmail}
+                            change={(e) => {
+                              formik.setFieldValue("candidateEmail", e);
+                            }}
+                            required={false}
+                            error={formik.errors.candidateEmail}
+                          />
+                          <FormInput
+                            title={"Phone Number"}
+                            placeholder={"1234656987"}
+                            // className="text-[#344054]"
+                            value={formik.values.candidateContact}
+                            change={(e) => {
+                              formik.setFieldValue("candidateContact", e);
+                            }}
+                            required={false}
+                            error={formik.errors.candidateContact}
+                          />
+                        </div>
+
+                        <div className="grid grid-cols-1 gap-4 sm:grid-cols-3">
+                          <DateSelect
+                            title={"DOB"}
+                            placeholder={"Date of birth"}
+                            // className="text-[#344054]"
+                            name="dob"
+                            value={formik.values.dob}
+                            change={(e) => {
+                              formik.setFieldValue("dob", e);
+                            }}
+                            required={false}
+                            error={formik.errors.dob}
+                          />
+                          </div>
+                        {/* <div className="relative max-w-[1070px] sm:w-[492px] w-full borderb rounded-md h-24 bg-[#FAFAFA] dark:bg-black"> */}
+                        {/* <div className="flex min-w-0 pt-5 pl-5 gap-x-4">
                           <Image
                             className="flex-none w-12 h-12 rounded-full bg-gray-50"
                             src={uploader}
                             alt=""
                           /> */}
-                      {/* <div className="flex-auto min-w-0">
+                        {/* <div className="flex-auto min-w-0">
                             <label
                               htmlFor="profileImage"
                               className="cursor-pointer"
@@ -1611,254 +1853,266 @@ const [yearofstudy,setYearofstudy]=useState("")
                               accept="image/*"
                             />
                           </div> */}
-                      <div className="w-4/5">
-                        <p>
-                          Photo{" "}
-                          <span className="text-[#C1C1C1]">(Optional)</span>
-                        </p>
-                        <FileUpload
-                          className={
-                            "relative max-w-[1070px] sm:w-[492px] w-full borderb rounded-md h-24 bg-[#FAFAFA] dark:bg-black"
-                          }
-                          change={(e) => {
-                            setfilepdf(e);
-                          }}
-                        />
+                        <div className="w-4/5">
+                          <p>
+                            Photo{" "}
+                            <span className="text-[#C1C1C1]">(Optional)</span>
+                          </p>
+                          <FileUpload
+                            className={
+                              "relative max-w-[1070px] sm:w-[492px] w-full borderb rounded-md h-24 bg-[#FAFAFA] dark:bg-black"
+                            }
+                            change={(e) => {
+                              setfilepdf(e);
+                            }}
+                          />
+                        </div>
+                        {/* </div> */}
+                        {/* </div> */}
+                        <div className="grid grid-cols-1 gap-4 sm:grid-cols-3">
+                          <FormInput
+                            title={"Location"}
+                            placeholder={"Location"}
+                            // className="text-[#344054]"
+                            value={formik.values.candidateLocation}
+                            change={(e) => {
+                              formik.setFieldValue("candidateLocation", e);
+                            }}
+                            required={false}
+                            error={formik.errors.candidateLocation}
+                          />
+                          <FormInput
+                            title={"City or Town"}
+                            placeholder={"Type here..."}
+                            // className="text-[#344054]"
+                            value={formik.values.city}
+                            change={(e) => {
+                              formik.setFieldValue("city", e);
+                            }}
+                            required={false}
+                            error={formik.errors.city}
+                          />
+                        </div>
+                        <div className="grid grid-cols-1 gap-4 sm:grid-cols-3">
+                          <FormInput
+                            title={"Address Line"}
+                            placeholder={"Type here..."}
+                            // className="text-[#344054]"
+                            value={formik.values.address}
+                            change={(e) => {
+                              formik.setFieldValue("address", e);
+                            }}
+                            required={false}
+                            error={formik.errors.address}
+                          />
+                          <FormInput
+                            title={"Postal Code"}
+                            placeholder={"Type here..."}
+                            // className="text-[#344054]"
+                            value={formik.values.postalCode}
+                            change={(e) => {
+                              formik.setFieldValue("postalCode", e);
+                            }}
+                            required={false}
+                            error={formik.errors.postalCode}
+                          />
+                        </div>
                       </div>
-                      {/* </div> */}
-                      {/* </div> */}
-                      <div className="grid grid-cols-1 gap-4 sm:grid-cols-3">
-                        <FormInput
-                          title={"Location"}
-                          placeholder={"United Arab Emirates"}
-                          // className="text-[#344054]"
-                          value={formik.values.candidateLocation}
-                          change={(e) => {
-                            formik.setFieldValue("candidateLocation", e);
-                          }}
-                          required={false}
-                          error={formik.errors.candidateLocation}
-                        />
-                        <FormInput
-                          title={"City or Town"}
-                          placeholder={"Type here..."}
-                          // className="text-[#344054]"
-                          value={formik.values.city}
-                          change={(e) => {
-                            formik.setFieldValue("city", e);
-                          }}
-                          required={false}
-                          error={formik.errors.city}
-                        />
-                      </div>
-                      <div className="grid grid-cols-1 gap-4 sm:grid-cols-3">
-                        <FormInput
-                          title={"Address Line"}
-                          placeholder={"Type here..."}
-                          // className="text-[#344054]"
-                          value={formik.values.address}
-                          change={(e) => {
-                            formik.setFieldValue("address", e);
-                          }}
-                          required={false}
-                          error={formik.errors.address}
-                        />
-                        <FormInput
-                          title={"Postal Code"}
-                          placeholder={"Type here..."}
-                          // className="text-[#344054]"
-                          value={formik.values.postalCode}
-                          change={(e) => {
-                            formik.setFieldValue("postalCode", e);
-                          }}
-                          required={false}
-                          error={formik.errors.postalCode}
-                        />
-                      </div>
-                    </div>
-                  </form>
+                    </form>
+                  </div>
                 </div>
               </div>
-            </div>
-          </>
-        ) : currentStep === 1 ? (
-          <>
-            <FlexCol />
-            <div className="relative w-full mx-auto rounded-md borderb">
+            </>
+          ) : currentStep === 1 ? (
+            <>
               <FlexCol />
-              <div className="relative flex flex-col gap-12">
-                <div className="p-1 bg-white rounded-[10px] dark:bg-transparent dark:border dark:border-secondaryWhite border-opacity-20 dark:border-opacity-10">
-                  <h2
-                    className="flex items-center justify-between w-full px-6 py-4 font-semibold text-left rounded-md"
-                    style={{ backgroundColor: `${primaryColor}10` }}
-                  >
-                    <div className="text-left rtl:text-right">
-                      <h1 className="acco-h1">Educational Details </h1>
-                      <p className="para">lorem ipsum dummy text dolar sit.</p>
-                    </div>
-                  </h2>
-                  <div
-                    id={`acco-text-item`}
-                    role="region"
-                    aria-labelledby={`acco-title-item`}
-                    className="flex flex-col justify-between w-full gap-6 p-5 "
-                  >
-                    {additionalEducationalDetails.map((detail, index) => (
-                      <div
-                        key={index}
-                        className="flex flex-col justify-between w-full gap-6 "
-                      >
-                        <div className="grid grid-cols-1 gap-4 sm:grid-cols-3">
-                          <FormInput
-                            title={"School or University"}
-                            placeholder={"Eg: Boston University"}
-                            className="text-[#344054]"
-                            name={`additionalEducationalDetails[${index}].institute`}
-                            value={detail.institute}
-                            // change={(e) => {
-                            //   const updatedDetails = [
-                            //     ...additionalEducationalDetails,
-                            //   ];
-                            //   updatedDetails[index].institute = e;
-                            //   setAdditionalEducationalDetails(updatedDetails);
-                            // }}
-                            change={(e) => {
-                              const updatedDetails = [
-                                ...additionalEducationalDetails,
-                              ];
-                              updatedDetails[index].institute = e;
-                              setAdditionalEducationalDetails(updatedDetails);
-                              formik1.setFieldValue(
-                                `additionalEducationalDetails[${index}].institute`,
-                                e
-                              );
-                            }}
-                           
-                            
-                            required={true}
-                            // error={
-                            //   isFormSubmitted
-                            //     ? formik1.errors.additionalEducationalDetails?.[
-                            //         index
-                            //       ]?.institute
-                            //     : ""
-                            // }
-                            // error={instituteerror}
-                            error={formik1.errors.additionalEducationalDetails?.[index]?.institute || ""}
-                            
-                           
-                            
-                          />
-                          <FormInput
-                            title={"Degree"}
-                            placeholder={"Eg: Bachelor’s"}
-                            name={`additionalEducationalDetails[${index}].courseType`}
-                            className="text-[#344054]"
-                            value={detail.courseType}
-                            // change={(e) => {
-                            //   const updatedDetails = [
-                            //     ...additionalEducationalDetails,
-                            //   ];
-                            //   updatedDetails[index].courseType = e;
-                            //   setAdditionalEducationalDetails(updatedDetails);
-                            // }}
-                            change={(e) => {
-                              const updatedDetails = [
-                                ...additionalEducationalDetails,
-                              ];
-                              updatedDetails[index].courseType = e;
-                              setAdditionalEducationalDetails(updatedDetails);
-                              formik1.setFieldValue(
-                                `additionalEducationalDetails[${index}].courseType`,
-                                e
-                              );
-                            }}
-                            required={false}
-                            // error={
-                            //   isFormSubmitted
-                            //     ? formik1.errors.additionalEducationalDetails?.[
-                            //         index
-                            //       ]?.courseType
-                            //     : ""
-                            // }
-                            // error={coursetype}
-                            error={formik1.errors.additionalEducationalDetails?.[index]?.courseType || ""}
-                          />
-                        </div>
-                        <div className="grid grid-cols-1 gap-4 sm:grid-cols-3">
-                          <FormInput
-                            title={"Field of Study"}
-                            placeholder={"Eg: Business"}
-                            className="text-[#344054]"
-                            name={`additionalEducationalDetails[${index}].courseName`}
-                            value={detail.courseName}
-                            change={(e) => {
-                              const updatedDetails = [
-                                ...additionalEducationalDetails,
-                              ];
-                              updatedDetails[index].courseName = e;
-                              setAdditionalEducationalDetails(updatedDetails);
-                              formik1.setFieldValue(
-                                `additionalEducationalDetails[${index}].courseName`,
-                                e
-                              );
-                            }}
-                            required={false}
-                            // error={
-                            //   isFormSubmitted
-                            //     ? formik1.errors.additionalEducationalDetails?.[
-                            //         index
-                            //       ]?.courseName
-                            //     : ""
-                            // }
-                            // error={coursename}
-                            error={formik1.errors.additionalEducationalDetails?.[index]?.courseName || ""}
-                          />
-                          <DateSelect
-                            title={"Year"}
-                            className="text-[#344054]"
-                            name={`additionalEducationalDetails[${index}].yearOfStudy`}
-                            picker="year"
-                            placeholder="year"
-                            value={detail.yearOfStudy}
-                            change={(e) => {
-                              const updatedDetails = [
-                                ...additionalEducationalDetails,
-                              ];
-                              updatedDetails[index].yearOfStudy = e;
-                              setAdditionalEducationalDetails(updatedDetails);
-                              formik1.setFieldValue(
-                                `additionalEducationalDetails[${index}].yearOfStudy`,
-                                e
-                              );
-                            }}
-                            required={false}
-                            // error={
-                            //   isFormSubmitted
-                            //     ? formik1.errors.additionalEducationalDetails?.[
-                            //         index
-                            //       ]?.yearOfStudy
-                            //     : ""
-                            // }
-                            // error={yearofstudy}
-                            error={formik1.errors.additionalEducationalDetails?.[index]?.yearOfStudy || ""}
-                          />
-                          <div className="flex items-center justify-end">
-                            <button
-                              onClick={() =>
-                                handleDeleteEducationalDetails(index)
-                              }
-                            >
-                              <RiDeleteBin5Line className="text-gray-500 w-[17px] h-[17px]" />
-                            </button>
-                          </div>
-                        </div>
-                        <div className="divider-h" />
+              <div className="relative w-full mx-auto rounded-md borderb">
+                <FlexCol />
+                <div className="relative flex flex-col gap-12">
+                  <div className="p-1 bg-white rounded-[10px] dark:bg-transparent dark:border dark:border-secondaryWhite border-opacity-20 dark:border-opacity-10">
+                    <h2
+                      className="flex items-center justify-between w-full px-6 py-4 font-semibold text-left rounded-md"
+                      style={{ backgroundColor: `${primaryColor}10` }}
+                    >
+                      <div className="text-left rtl:text-right">
+                        <h1 className="acco-h1">Educational Details </h1>
+                        <p className="para">
+                          lorem ipsum dummy text dolar sit.
+                        </p>
                       </div>
-                      
-                    ))}
+                    </h2>
+                    <div
+                      id={`acco-text-item`}
+                      role="region"
+                      aria-labelledby={`acco-title-item`}
+                      className="flex flex-col justify-between w-full gap-6 p-5 "
+                    >
+                      {additionalEducationalDetails.map((detail, index) => (
+                        <div
+                          key={index}
+                          className="flex flex-col justify-between w-full gap-6 "
+                        >
+                          <div className="grid grid-cols-1 gap-4 sm:grid-cols-3">
+                            <FormInput
+                              title={"School or University"}
+                              placeholder={"Eg: Boston University"}
+                              className="text-[#344054]"
+                              name={`additionalEducationalDetails[${index}].institute`}
+                              value={detail.institute}
+                              // change={(e) => {
+                              //   const updatedDetails = [
+                              //     ...additionalEducationalDetails,
+                              //   ];
+                              //   updatedDetails[index].institute = e;
+                              //   setAdditionalEducationalDetails(updatedDetails);
+                              // }}
+                              change={(e) => {
+                                const updatedDetails = [
+                                  ...additionalEducationalDetails,
+                                ];
+                                updatedDetails[index].institute = e;
+                                setAdditionalEducationalDetails(updatedDetails);
+                                formik1.setFieldValue(
+                                  `additionalEducationalDetails[${index}].institute`,
+                                  e
+                                );
+                              }}
+                              required={true}
+                              // error={
+                              //   isFormSubmitted
+                              //     ? formik1.errors.additionalEducationalDetails?.[
+                              //         index
+                              //       ]?.institute
+                              //     : ""
+                              // }
+                              // error={instituteerror}
+                              error={
+                                formik1.errors.additionalEducationalDetails?.[
+                                  index
+                                ]?.institute || ""
+                              }
+                            />
+                            <FormInput
+                              title={"Degree"}
+                              placeholder={"Eg: Bachelor’s"}
+                              name={`additionalEducationalDetails[${index}].courseType`}
+                              className="text-[#344054]"
+                              value={detail.courseType}
+                              // change={(e) => {
+                              //   const updatedDetails = [
+                              //     ...additionalEducationalDetails,
+                              //   ];
+                              //   updatedDetails[index].courseType = e;
+                              //   setAdditionalEducationalDetails(updatedDetails);
+                              // }}
+                              change={(e) => {
+                                const updatedDetails = [
+                                  ...additionalEducationalDetails,
+                                ];
+                                updatedDetails[index].courseType = e;
+                                setAdditionalEducationalDetails(updatedDetails);
+                                formik1.setFieldValue(
+                                  `additionalEducationalDetails[${index}].courseType`,
+                                  e
+                                );
+                              }}
+                              required={false}
+                              // error={
+                              //   isFormSubmitted
+                              //     ? formik1.errors.additionalEducationalDetails?.[
+                              //         index
+                              //       ]?.courseType
+                              //     : ""
+                              // }
+                              // error={coursetype}
+                              error={
+                                formik1.errors.additionalEducationalDetails?.[
+                                  index
+                                ]?.courseType || ""
+                              }
+                            />
+                          </div>
+                          <div className="grid grid-cols-1 gap-4 sm:grid-cols-3">
+                            <FormInput
+                              title={"Field of Study"}
+                              placeholder={"Eg: Business"}
+                              className="text-[#344054]"
+                              name={`additionalEducationalDetails[${index}].courseName`}
+                              value={detail.courseName}
+                              change={(e) => {
+                                const updatedDetails = [
+                                  ...additionalEducationalDetails,
+                                ];
+                                updatedDetails[index].courseName = e;
+                                setAdditionalEducationalDetails(updatedDetails);
+                                formik1.setFieldValue(
+                                  `additionalEducationalDetails[${index}].courseName`,
+                                  e
+                                );
+                              }}
+                              required={false}
+                              // error={
+                              //   isFormSubmitted
+                              //     ? formik1.errors.additionalEducationalDetails?.[
+                              //         index
+                              //       ]?.courseName
+                              //     : ""
+                              // }
+                              // error={coursename}
+                              error={
+                                formik1.errors.additionalEducationalDetails?.[
+                                  index
+                                ]?.courseName || ""
+                              }
+                            />
+                            <DateSelect
+                              title={"Year"}
+                              className="text-[#344054]"
+                              name={`additionalEducationalDetails[${index}].yearOfStudy`}
+                              // picker={"YYYY"}
+                              placeholder="year"
+                              value={detail.yearOfStudy}
+                              change={(e) => {
+                                const updatedDetails = [
+                                  ...additionalEducationalDetails,
+                                ];
+                                updatedDetails[index].yearOfStudy = e;
+                                setAdditionalEducationalDetails(updatedDetails);
+                                formik1.setFieldValue(
+                                  `additionalEducationalDetails[${index}].yearOfStudy`,
+                                  e
+                                );
+                              }}
+                              required={false}
+                              // error={
+                              //   isFormSubmitted
+                              //     ? formik1.errors.additionalEducationalDetails?.[
+                              //         index
+                              //       ]?.yearOfStudy
+                              //     : ""
+                              // }
+                              // error={yearofstudy}
+                              error={
+                                formik1.errors.additionalEducationalDetails?.[
+                                  index
+                                ]?.yearOfStudy || ""
+                              }
+                            />
+                            <div className="flex items-center justify-end">
+                              <button
+                                onClick={() =>
+                                  handleDeleteEducationalDetails(index)
+                                }
+                              >
+                                <RiDeleteBin5Line className="text-gray-500 w-[17px] h-[17px]" />
+                              </button>
+                            </div>
+                          </div>
+                          <div className="divider-h" />
+                        </div>
+                      ))}
 
-                    {/* <div className="grid grid-cols-1 gap-4 sm:grid-cols-3">
+                      {/* <div className="grid grid-cols-1 gap-4 sm:grid-cols-3">
                   <FormInput
                     title={"School or University"}
                     placeholder={"Eg: Boston University"}
@@ -1916,213 +2170,19 @@ const [yearofstudy,setYearofstudy]=useState("")
                   <RiDeleteBin5Line className="text-gray-500 w-[17px] h-[17px] justify-end " />
                 </div> */}
 
-                    <AddMore
-                      name="Add More Education "
-                      change={handleAddMoreEducationalDetails}
-                    />
-                  </div>
-                </div>
-              </div>
-            </div>
-            
-          </>
-        ) : currentStep === 2 ? (
-          <>
-            <FlexCol />
-            <div className="relative w-full mx-auto rounded-md borderb">
-              <FlexCol />
-              <div className="relative flex flex-col gap-12">
-                <div className="p-1 bg-white rounded-[10px] dark:bg-transparent dark:border dark:border-secondaryWhite border-opacity-20 dark:border-opacity-10">
-                  <h2
-                    className="flex items-center justify-between w-full px-6 py-4 font-semibold text-left rounded-md"
-                    style={{ backgroundColor: `${primaryColor}10` }}
-                  >
-                    <div className="text-left rtl:text-right">
-                      <h1 className="acco-h1">Work Experience Details </h1>
-                      <p className="para">lorem ipsum dummy text dolar sit.</p>
+                      <AddMore
+                        name="Add More Education "
+                        change={handleAddMoreEducationalDetails}
+                      />
                     </div>
-                  </h2>
-                  <div
-                    id={`acco-text-item`}
-                    role="region"
-                    aria-labelledby={`acco-title-item`}
-                    className="flex flex-col justify-between w-full gap-6 p-5"
-                  >
-                    {additionalExperiences.map((experience, index) => (
-                      <div
-                        key={index}
-                        className="flex flex-col justify-between w-full gap-6 "
-                      >
-                        <div className="grid grid-cols-1 gap-4 sm:grid-cols-3">
-                          <FormInput
-                            title={"Job Title"}
-                            placeholder={"Enter Job Title"}
-                            className="text-[#344054]"
-                            name={`additionalExperiences[${index}].jobTitle`}
-                            value={experience.jobTitle}
-                            change={(e) => {
-                              const updatedExperiences = [
-                                ...additionalExperiences,
-                              ];
-                              updatedExperiences[index].jobTitle = e;
-                              setAdditionalExperiences(updatedExperiences);
-                            }}
-                            required={false}
-                            error={
-                              isFormSubmitted
-                                ? formik2.errors.additionalExperiences?.[index]
-                                    ?.jobTitle
-                                : ""
-                            }
-                          />
-                          <Dropdown
-                            title={"Employment Type"}
-                            placeholder="Enter Employment Type"
-                            options={[
-                              { value: "Fulltime", label: "Full-time" },
-                              { value: "Parttime", label: "Part-time" },
-                            ]}
-                            className="text-[#344054]"
-                            name={`additionalExperiences[${index}].employmentType`}
-                            value={experience.employmentType}
-                            change={(e) => {
-                              const updatedExperiences = [
-                                ...additionalExperiences,
-                              ];
-                              updatedExperiences[index].employmentType = e;
-                              setAdditionalExperiences(updatedExperiences);
-                            }}
-                            required={false}
-                            error={
-                              isFormSubmitted
-                                ? formik2.errors.additionalExperiences?.[index]
-                                    ?.employmentType
-                                : ""
-                            }
-                          />
-                        </div>
-                        <div className="grid grid-cols-1 gap-4 sm:grid-cols-3 ">
-                          <FormInput
-                            title={"Company Name"}
-                            placeholder={"Enter Company Name"}
-                            className="text-[#344054]"
-                            name={`additionalExperiences[${index}].companyName`}
-                            value={experience.companyName}
-                            change={(e) => {
-                              const updatedExperiences = [
-                                ...additionalExperiences,
-                              ];
-                              updatedExperiences[index].companyName = e;
-                              setAdditionalExperiences(updatedExperiences);
-                            }}
-                            required={false}
-                            error={
-                              isFormSubmitted
-                                ? formik2.errors.additionalExperiences?.[index]
-                                    ?.companyName
-                                : ""
-                            }
-                          />
-                          <FormInput
-                            title={"Location"}
-                            placeholder={"Enter Location"}
-                            className="text-[#344054]"
-                            name={`additionalExperiences[${index}].location`}
-                            value={experience.location}
-                            change={(e) => {
-                              const updatedExperiences = [
-                                ...additionalExperiences,
-                              ];
-                              updatedExperiences[index].location = e;
-                              setAdditionalExperiences(updatedExperiences);
-                            }}
-                            required={false}
-                            error={
-                              isFormSubmitted
-                                ? formik2.errors.additionalExperiences?.[index]
-                                    ?.location
-                                : ""
-                            }
-                          />
-                        </div>
-                        <div className="grid grid-cols-3 gap-4 sm:grid-cols-6">
-                          <DateSelect
-                            title={"From"}
-                            placeholder={"01/09/2023"}
-                            className="text-[#344054]"
-                            name={`additionalExperiences[${index}].fromDate`}
-                            value={experience.fromDate}
-                            change={(e) => {
-                              const formattedDate = e
-                                .split("/")
-                                .reverse()
-                                .join("-");
-
-                              const updatedExperiences = [
-                                ...additionalExperiences,
-                              ];
-                              updatedExperiences[index].fromDate =
-                                formattedDate;
-
-                              setAdditionalExperiences(updatedExperiences);
-                            }}
-                            required={false}
-                            error={
-                              isFormSubmitted
-                                ? formik2.errors.additionalExperiences?.[index]
-                                    ?.fromDate
-                                : ""
-                            }
-                          />
-                          <DateSelect
-                            title={"To"}
-                            placeholder={"01/09/2024"}
-                            selectpicker="dateandtime"
-                            className="text-[#344054]"
-                            name={`additionalExperiences[${index}].toDate`}
-                            value={experience.toDate}
-                            change={(e) => {
-                              const formattedDate = e
-                                .split("/")
-                                .reverse()
-                                .join("-");
-
-                              const updatedExperiences = [
-                                ...additionalExperiences,
-                              ];
-                              updatedExperiences[index].toDate = formattedDate;
-
-                              setAdditionalExperiences(updatedExperiences);
-                            }}
-                            required={false}
-                            error={
-                              isFormSubmitted
-                                ? formik2.errors.additionalExperiences?.[index]
-                                    ?.toDate
-                                : ""
-                            }
-                          />
-                          <div className="flex items-center justify-end">
-                            <button onClick={() => handleDelete1(index)}>
-                              <RiDeleteBin5Line className="text-gray-500 w-[17px] h-[17px]" />
-                            </button>
-                          </div>
-                        </div>
-                      </div>
-                    ))}
-
-                    <AddMore
-                      name="Add More Experience "
-                      className="text-black"
-                      change={handleAddMoreExperience}
-                    />
                   </div>
                 </div>
               </div>
-            </div>
-            <div className="flex flex-col gap-6">
+            </>
+          ) : currentStep === 2 ? (
+            <>
               <FlexCol />
-              <div className="relative w-full mx-auto rounded-md borderb ">
+              <div className="relative w-full mx-auto rounded-md borderb">
                 <FlexCol />
                 <div className="relative flex flex-col gap-12">
                   <div className="p-1 bg-white rounded-[10px] dark:bg-transparent dark:border dark:border-secondaryWhite border-opacity-20 dark:border-opacity-10">
@@ -2131,7 +2191,7 @@ const [yearofstudy,setYearofstudy]=useState("")
                       style={{ backgroundColor: `${primaryColor}10` }}
                     >
                       <div className="text-left rtl:text-right">
-                        <h1 className="acco-h1">Resume & Cover Letter </h1>
+                        <h1 className="acco-h1">Work Experience Details </h1>
                         <p className="para">
                           lorem ipsum dummy text dolar sit.
                         </p>
@@ -2143,7 +2203,229 @@ const [yearofstudy,setYearofstudy]=useState("")
                       aria-labelledby={`acco-title-item`}
                       className="flex flex-col justify-between w-full gap-6 p-5"
                     >
-                      {/* <div className="relative max-w-[1070px] sm:w-[492px] w-full borderb rounded-md h-24 bg-[#FAFAFA] dark:bg-black">
+                      {additionalExperiences.map((experience, index) => (
+                        <div
+                          key={index}
+                          className="flex flex-col justify-between w-full gap-6 "
+                        >
+                          <div className="grid grid-cols-1 gap-4 sm:grid-cols-3">
+                            <FormInput
+                              title={"Job Title"}
+                              placeholder={"Enter Job Title"}
+                              className="text-[#344054]"
+                              name={`additionalExperiences[${index}].jobTitle`}
+                              value={experience.jobTitle}
+                              change={(e) => {
+                                const updatedExperiences = [
+                                  ...additionalExperiences,
+                                ];
+                                updatedExperiences[index].jobTitle = e;
+                                setAdditionalExperiences(updatedExperiences);
+                              }}
+                              required={false}
+                              // error={
+                              //   isFormSubmitted
+                              //     ? formik2.errors.additionalExperiences?.[index]
+                              //         ?.jobTitle
+                              //     : ""
+                              // }
+                              error={
+                                formik.errors.additionalEducationalDetails?.[
+                                  index
+                                ]?.yearOfStudy || ""
+                              }
+                            />
+                            <Dropdown
+                              title={"Employment Type"}
+                              placeholder="Enter Employment Type"
+                              options={[
+                                { value: "Fulltime", label: "Full-time" },
+                                { value: "Parttime", label: "Part-time" },
+                              ]}
+                              className="text-[#344054]"
+                              name={`additionalExperiences[${index}].employmentType`}
+                              value={experience.employmentType}
+                              change={(e) => {
+                                const updatedExperiences = [
+                                  ...additionalExperiences,
+                                ];
+                                updatedExperiences[index].employmentType = e;
+                                setAdditionalExperiences(updatedExperiences);
+                              }}
+                              required={false}
+                              // error={
+                              //   isFormSubmitted
+                              //     ? formik2.errors.additionalExperiences?.[index]
+                              //         ?.employmentType
+                              //     : ""
+                              // }
+                              error={
+                                formik2.errors.additionalExperiences?.[index]
+                                  ?.employmentType || ""
+                              }
+                            />
+                          </div>
+                          <div className="grid grid-cols-1 gap-4 sm:grid-cols-3 ">
+                            <FormInput
+                              title={"Company Name"}
+                              placeholder={"Enter Company Name"}
+                              className="text-[#344054]"
+                              name={`additionalExperiences[${index}].companyName`}
+                              value={experience.companyName}
+                              change={(e) => {
+                                const updatedExperiences = [
+                                  ...additionalExperiences,
+                                ];
+                                updatedExperiences[index].companyName = e;
+                                setAdditionalExperiences(updatedExperiences);
+                              }}
+                              required={false}
+                              // error={
+                              //   isFormSubmitted
+                              //     ? formik2.errors.additionalExperiences?.[index]
+                              //         ?.companyName
+                              //     : ""
+                              // }
+                              error={
+                                formik2.errors.additionalExperiences?.[index]
+                                  ?.companyName || ""
+                              }
+                            />
+                            <FormInput
+                              title={"Location"}
+                              placeholder={"Enter Location"}
+                              className="text-[#344054]"
+                              name={`additionalExperiences[${index}].location`}
+                              value={experience.location}
+                              change={(e) => {
+                                const updatedExperiences = [
+                                  ...additionalExperiences,
+                                ];
+                                updatedExperiences[index].location = e;
+                                setAdditionalExperiences(updatedExperiences);
+                              }}
+                              required={false}
+                              // error={
+                              //   isFormSubmitted
+                              //     ? formik2.errors.additionalExperiences?.[index]
+                              //         ?.location
+                              //     : ""
+                              // }
+                              error={
+                                formik2.errors.additionalExperiences?.[index]
+                                  ?.location || ""
+                              }
+                            />
+                          </div>
+                          <div className="grid grid-cols-3 gap-4 sm:grid-cols-6">
+                            <DateSelect
+                              title={"From"}
+                              placeholder={"01/09/2023"}
+                              className="text-[#344054]"
+                              name={`additionalExperiences[${index}].fromDate`}
+                              value={experience.fromDate}
+                              change={(e) => {
+                                const formattedDate = e
+                                  .split("/")
+                                  .reverse()
+                                  .join("-");
+
+                                const updatedExperiences = [
+                                  ...additionalExperiences,
+                                ];
+                                updatedExperiences[index].fromDate =
+                                  formattedDate;
+
+                                setAdditionalExperiences(updatedExperiences);
+                              }}
+                              required={false}
+                              // error={
+                              //   isFormSubmitted
+                              //     ? formik2.errors.additionalExperiences?.[index]
+                              //         ?.fromDate
+                              //     : ""
+                              // }
+                              error={
+                                formik2.errors.additionalExperiences?.[index]
+                                  ?.fromDate || ""
+                              }
+                            />
+                            <DateSelect
+                              title={"To"}
+                              placeholder={"01/09/2024"}
+                              selectpicker="dateandtime"
+                              className="text-[#344054]"
+                              name={`additionalExperiences[${index}].toDate`}
+                              value={experience.toDate}
+                              minDate={experience.fromDate}
+                              change={(e) => {
+                                const formattedDate = e
+                                  .split("/")
+                                  .reverse()
+                                  .join("-");
+
+                                const updatedExperiences = [
+                                  ...additionalExperiences,
+                                ];
+                                updatedExperiences[index].toDate =
+                                  formattedDate;
+
+                                setAdditionalExperiences(updatedExperiences);
+                              }}
+                              required={false}
+                              // error={
+                              //   isFormSubmitted
+                              //     ? formik2.errors.additionalExperiences?.[index]
+                              //         ?.toDate
+                              //     : ""
+                              // }
+                              error={
+                                formik2.errors.additionalExperiences?.[index]
+                                  ?.toDate || ""
+                              }
+                            />
+                            <div className="flex items-center justify-end">
+                              <button onClick={() => handleDelete1(index)}>
+                                <RiDeleteBin5Line className="text-gray-500 w-[17px] h-[17px]" />
+                              </button>
+                            </div>
+                          </div>
+                        </div>
+                      ))}
+
+                      <AddMore
+                        name="Add More Experience "
+                        className="text-black"
+                        change={handleAddMoreExperience}
+                      />
+                    </div>
+                  </div>
+                </div>
+              </div>
+              <div className="flex flex-col gap-6">
+                <FlexCol />
+                <div className="relative w-full mx-auto rounded-md borderb ">
+                  <FlexCol />
+                  <div className="relative flex flex-col gap-12">
+                    <div className="p-1 bg-white rounded-[10px] dark:bg-transparent dark:border dark:border-secondaryWhite border-opacity-20 dark:border-opacity-10">
+                      <h2
+                        className="flex items-center justify-between w-full px-6 py-4 font-semibold text-left rounded-md"
+                        style={{ backgroundColor: `${primaryColor}10` }}
+                      >
+                        <div className="text-left rtl:text-right">
+                          <h1 className="acco-h1">Resume & Cover Letter </h1>
+                          <p className="para">
+                            lorem ipsum dummy text dolar sit.
+                          </p>
+                        </div>
+                      </h2>
+                      <div
+                        id={`acco-text-item`}
+                        role="region"
+                        aria-labelledby={`acco-title-item`}
+                        className="flex flex-col justify-between w-full gap-6 p-5"
+                      >
+                        {/* <div className="relative max-w-[1070px] sm:w-[492px] w-full borderb rounded-md h-24 bg-[#FAFAFA] dark:bg-black">
                         <div className="flex min-w-0 pt-5 pl-5 gap-x-4">
                           <Image
                             className="flex-none w-12 h-12 rounded-full bg-gray-50"
@@ -2160,35 +2442,35 @@ const [yearofstudy,setYearofstudy]=useState("")
                           </div>
                         </div>
                       </div> */}
-                      <FileUpload
-                        className={
-                          "relative max-w-[1070px] sm:w-[492px] w-full borderb rounded-md h-24 bg-[#FAFAFA] dark:bg-black"
-                        }
-                        change={(e) => {
-                          setfilepdfresume(e);
-                        }}
-                      />
-                      <TextArea
-                        title="Cover Letter"
-                        placeholder="Type here"
-                        className="!text-[#344054]"
-                        name="coverLetter"
-                        // value={formik2.values.coverLetter}
-                        value={coverLetter}
-                        // change={(e) => {
-                        //   setCoverletter(e);
-                        // }}
-                        change={handleTextChange}
-                        required={false}
-                        // error={formik2.errors.coverLetter}
-                      />
+                        <FileUpload
+                          className={
+                            "relative max-w-[1070px] sm:w-[492px] w-full borderb rounded-md h-24 bg-[#FAFAFA] dark:bg-black"
+                          }
+                          change={(e) => {
+                            setfilepdfresume(e);
+                          }}
+                        />
+                        <TextArea
+                          title="Cover Letter"
+                          placeholder="Type here"
+                          className="!text-[#344054]"
+                          name="coverLetter"
+                          // value={formik2.values.coverLetter}
+                          value={coverLetter}
+                          // change={(e) => {
+                          //   setCoverletter(e);
+                          // }}
+                          change={handleTextChange}
+                          required={false}
+                          // error={formik2.errors.coverLetter}
+                        />
+                      </div>
                     </div>
                   </div>
                 </div>
               </div>
-            </div>
-          </>
-        ) : currentStep === 3 ? (
+            </>
+         ) : currentStep === 3 ? (
           <>
             <FlexCol />
             <div className="relative w-full mx-auto rounded-md borderb">
@@ -2322,71 +2604,72 @@ const [yearofstudy,setYearofstudy]=useState("")
               </div>
             </div>
           </>
-        ) : currentStep === 4 ? (
-          <>
-            <FlexCol />
 
-            <div className="relative w-full mx-auto rounded-md borderb">
-              <Accordion
-                title="Review"
-                description="lorem ipsum dummy text dolar sit."
-                padding={true}
-                className={""}
-                initialExpanded={true}
-              >
-                <div className="flex justify-between ">
-                  <h1 className="acco-h1">Personal Details</h1>
-                  <ButtonClick
-                    buttonName="Edit Details"
-                    className="text-[#6044E5]"
-                    icon={<AiTwotoneEdit />}
-                  />
-                </div>
-                {data.map((item, index) => (
-                  <div
-                    key={index}
-                    className="flex justify-between items-center mt-3"
-                  >
-                    <div className="flex-none">
-                      {item.candidatePhoto ? (
-                        <Image
-                          className="bg-cover rounded-full h-18 w-18 object-cover"
-                          src={item.candidatePhoto}
-                          width={64}
-                          height={64}
-                          alt="profilepic"
-                          style={{
-                            borderRadius: "50%",
-                            height: "4.5rem",
-                            width: "4.5rem",
-                            objectFit: "cover",
-                          }}
-                        />
-                      ) : (
-                        <div
-                          className="rounded-full h-18 w-18"
-                          style={{
-                            borderRadius: "50%",
-                            height: "4.5rem",
-                            width: "4.5rem",
-                          }}
-                        ></div>
-                      )}
-                    </div>
-                    <div className="flex-auto min-w-0 ml-4">
-                      <p className="acco-h1">{item.candidateName}</p>
-                    </div>
-                  </div>
-                ))}
+          ) : currentStep === 4 ? (
+            <>
+              <FlexCol />
 
-                <div>
-                  {userdata.map((user) => (
-                    <UserInfoComponent
-                      key={user.personal[0].id}
-                      personalInfo={user.personal}
+              <div className="relative w-full mx-auto rounded-md borderb">
+                <Accordion
+                  title="Review"
+                  description="lorem ipsum dummy text dolar sit."
+                  padding={true}
+                  className={""}
+                  initialExpanded={true}
+                >
+                  <div className="flex justify-between ">
+                    <h1 className="acco-h1">Personal Details</h1>
+                    <ButtonClick
+                      buttonName="Edit Details"
+                      className="text-[#6044E5]"
+                      icon={<AiTwotoneEdit />}
                     />
+                  </div>
+                  {data.map((item, index) => (
+                    <div
+                      key={index}
+                      className="flex justify-between items-center mt-3"
+                    >
+                      <div className="flex-none">
+                        {item.candidatePhoto ? (
+                          <Image
+                            className="bg-cover rounded-full h-18 w-18 object-cover"
+                            src={item.candidatePhoto}
+                            width={64}
+                            height={64}
+                            alt="profilepic"
+                            style={{
+                              borderRadius: "50%",
+                              height: "4.5rem",
+                              width: "4.5rem",
+                              objectFit: "cover",
+                            }}
+                          />
+                        ) : (
+                          <div
+                            className="rounded-full h-18 w-18"
+                            style={{
+                              borderRadius: "50%",
+                              height: "4.5rem",
+                              width: "4.5rem",
+                            }}
+                          ></div>
+                        )}
+                      </div>
+                      <div className="flex-auto min-w-0 ml-4">
+                        <p className="acco-h1">{item.candidateName}</p>
+                      </div>
+                    </div>
                   ))}
-                  {/* <div className="grid md:grid-cols-2 gap-7">
+
+                  <div>
+                    {userdata.map((user) => (
+                      <UserInfoComponent
+                        key={user.personal[0].id}
+                        personalInfo={user.personal}
+                      />
+                    ))}
+                    {/* <div className="grid md:grid-cols-2 gap-7">
              { data.map((item, index) => (
         <div className="flex items-center gap-2.5">
           <div className="w-8 h-8 iconI vhcenter bg-[#F5F5F5] dark:bg-secondaryDark text-base rounded-lg ">
@@ -2413,10 +2696,10 @@ const [yearofstudy,setYearofstudy]=useState("")
           </div>
         </div>
      ))} */}
-                </div>
+                  </div>
 
-                {/* </div> */}
-                {/* <div>
+                  {/* </div> */}
+                  {/* <div>
                   {educationaldetails.map((user) => (
                     <UserInfoComponent
                       key={user.personal[0].id}
@@ -2424,160 +2707,211 @@ const [yearofstudy,setYearofstudy]=useState("")
                     />
                   ))}
                 </div> */}
-                <div className="v-divider" />
+                  <div className="v-divider" />
 
-                <div className="flex flex-col gap-4 box-wrapper">
-                  <h6 className="h6">Education</h6>
-                  <div className="flex flex-col divide-y">
-                    {educationaldetails.map((edu, index) => (
-                      <div
-                        key={index}
-                        className="flex justify-start gap-5 py-3 2xl:py-6"
-                      >
-                        <img
-                          className="2xl:w-[60px] 2xl:h-[60px] w-11 h-11 rounded-full shadow"
-                          src="https://via.placeholder.com/60x60"
-                        />
-                        <div className="inline-flex flex-col items-start justify-start gap-1">
-                          <div className="gap-2 vhcenter">
-                            <h6 className="h6">{edu.institution}</h6>
-                            {/* <p className="para p-1.5 rounded-md bg-secondaryWhite !leading-none">
+                  <div className="flex flex-col gap-4 box-wrapper">
+                    <h6 className="h6">Education</h6>
+                    <div className="flex flex-col divide-y">
+                      {educationaldetails.map((edu, index) => (
+                        <div
+                          key={index}
+                          className="flex justify-start gap-5 py-3 2xl:py-6"
+                        >
+                          <img
+                            className="2xl:w-[60px] 2xl:h-[60px] w-11 h-11 rounded-full shadow"
+                            src="https://via.placeholder.com/60x60"
+                          />
+                          <div className="inline-flex flex-col items-start justify-start gap-1">
+                            <div className="gap-2 vhcenter">
+                              <h6 className="h6">{edu.institution}</h6>
+                              {/* <p className="para p-1.5 rounded-md bg-secondaryWhite !leading-none">
                         {work.Shift}
                       </p> */}
-                          </div>
+                            </div>
 
-                          <div className="flex flex-col gap-4">
-                            <p className="h6 !font-medium">{edu.degree}</p>
-                            <div className="flex gap-3">
+                            <div className="flex flex-col gap-4">
+                              <p className="h6 !font-medium">{edu.degree}</p>
+                              <div className="flex gap-3">
+                                <p className="para !font-normal text-opacity-70">
+                                  {edu.graduationYear}
+                                </p>
+
+                                <p className="para !font-normal text-opacity-70">
+                                  {edu.location}
+                                </p>
+                              </div>
+                            </div>
+                          </div>
+                        </div>
+                      ))}
+                    </div>
+                  </div>
+                  <div className="flex flex-col gap-4 box-wrapper">
+                    <h6 className="h6">All Experiences</h6>
+                    <div className="flex flex-col divide-y">
+                      {experience.map((work, index) => (
+                        <div
+                          key={index}
+                          className="flex items-center justify-start gap-5 py-3 2xl:py-6"
+                        >
+                          <img
+                            className="2xl:w-[60px] 2xl:h-[60px] w-11 h-11 rounded-full shadow"
+                            src="https://via.placeholder.com/60x60"
+                          />
+                          <div className="inline-flex flex-col items-start justify-start gap-1">
+                            <div className="gap-2 vhcenter">
+                              <h6 className="h6">{work.companyName}</h6>
+                              <p className="para p-1.5 rounded-md bg-secondaryWhite dark:bg-secondaryDark !leading-none">
+                                {work.Shift}
+                              </p>
+                            </div>
+
+                            <div className="inline-flex items-center justify-start gap-4">
+                              <p className="!text-opacity-50 h6">{work.role}</p>
                               <p className="para !font-normal text-opacity-70">
-                                {edu.graduationYear}
+                                {work.experienceDuration}
                               </p>
 
                               <p className="para !font-normal text-opacity-70">
-                                {edu.location}
+                                {work.startDate}, {work.endDate}
                               </p>
                             </div>
                           </div>
                         </div>
-                      </div>
-                    ))}
-                  </div>
-                </div>
-                <div className="flex flex-col gap-4 box-wrapper">
-                  <h6 className="h6">All Experiences</h6>
-                  <div className="flex flex-col divide-y">
-                    {experience.map((work, index) => (
-                      <div
-                        key={index}
-                        className="flex items-center justify-start gap-5 py-3 2xl:py-6"
-                      >
-                        <img
-                          className="2xl:w-[60px] 2xl:h-[60px] w-11 h-11 rounded-full shadow"
-                          src="https://via.placeholder.com/60x60"
-                        />
-                        <div className="inline-flex flex-col items-start justify-start gap-1">
-                          <div className="gap-2 vhcenter">
-                            <h6 className="h6">{work.companyName}</h6>
-                            <p className="para p-1.5 rounded-md bg-secondaryWhite dark:bg-secondaryDark !leading-none">
-                              {work.Shift}
-                            </p>
-                          </div>
-
-                          <div className="inline-flex items-center justify-start gap-4">
-                            <p className="!text-opacity-50 h6">{work.role}</p>
-                            <p className="para !font-normal text-opacity-70">
-                              {work.experienceDuration}
-                            </p>
-
-                            <p className="para !font-normal text-opacity-70">
-                              {work.startDate}, {work.endDate}
-                            </p>
-                          </div>
-                        </div>
-                      </div>
-                    ))}
-                  </div>
-                </div>
-              </Accordion>
-
-              <div className="box-wrapper">
-                <div className="flex flex-col gap-4">
-                  <div className="flex items-center justify-between">
-                    <h6 className="h6 !text-black dark:!text-white">
-                      CV / Resume
-                    </h6>
-                    {/* <ButtonClick buttonName="Add Cover Note" icon={<IoMdAdd />} /> */}
-                  </div>
-                  <div className="flex items-center justify-between">
-                    <div className="flex items-center gap-2.5">
-                      <div className="w-8 h-8 iconI vhcenter bg-[#F5F5F5] dark:bg-secondaryDark text-base rounded-lg ">
-                        <div className="text-black opacity-50 ">
-                          {<RiFileList3Line />}
-                        </div>
-                      </div>
-                      <p className="text-xs font-semibold leading-tight text-black dark:text-white">
-                        Pdfname.pdf
-                      </p>
+                      ))}
                     </div>
-                    <ButtonClick
-                      buttonName="Edit Details"
-                      className="text-[#6044E5]"
-                      icon={<AiTwotoneEdit />}
-                    />
                   </div>
+                </Accordion>
 
-                  <div className="divider-h" />
-                  {/* {data.map((item, index) => (
-                    <PDFViewer pdfUrl={item.resumeFile} />
-                  ))} */}
-                  {data.map((item, index) => (
-                    <iframe
-                      key={index}
-                      src={item.resumeFile}
-                      width="100%"
-                      height="500px"
-                      title={`Resume-${index}`}
-                    />
-                  ))}
-                </div>
-
-                <div className="divider-h mt-9" />
-                <div className="flex flex-col gap-8 mt-8">
-                  <h2 className="h6">Prerequisite</h2>
-                </div>
-                <div className="inline-flex flex-col items-start justify-start pt-4 gap-7">
-                  {customfield?.map((quest) => (
-                    <div className="flex flex-col gap-3">
-                      {/* key={quest.id} */}
-                      <div className="flex">
-                        <div className="w-12 ">
-                          <span className="pblack">Q.</span>
+                <div className="box-wrapper">
+                  <div className="flex flex-col gap-4">
+                    <div className="flex items-center justify-between">
+                      <h6 className="h6 !text-black dark:!text-white">
+                        CV / Resume
+                      </h6>
+                      {/* <ButtonClick buttonName="Add Cover Note" icon={<IoMdAdd />} /> */}
+                    </div>
+                    <div className="flex items-center justify-between">
+                      <div className="flex items-center gap-2.5">
+                        <div className="w-8 h-8 iconI vhcenter bg-[#F5F5F5] dark:bg-secondaryDark text-base rounded-lg ">
+                          <div className="text-black opacity-50 ">
+                            {<RiFileList3Line />}
+                          </div>
                         </div>
-                        <div>
-                          <span className="pblack !text-opacity-80">
-                            {quest.customQuestion}
-                          </span>
-                        </div>
-                      </div>
-                      <div className="flex">
-                        <div className="w-12 ">
-                          <p className="pblack">Ans.</p>
-                        </div>
-                        <p className="pblack !text-opacity-80">
-                          {quest.answer}
+                        <p className="text-xs font-semibold leading-tight text-black dark:text-white">
+                          Pdfname.pdf
                         </p>
                       </div>
+                      <ButtonClick
+                        buttonName="Edit Details"
+                        className="text-[#6044E5]"
+                        icon={<AiTwotoneEdit />}
+                      />
                     </div>
-                  ))}
+
+                    <div className="divider-h" />
+                    {/* {data.map((item, index) => (
+                    <PDFViewer pdfUrl={item.resumeFile} />
+                  ))} */}
+                    {data.map((item, index) => (
+                      <iframe
+                        key={index}
+                        src={item.resumeFile}
+                        width="100%"
+                        height="500px"
+                        title={`Resume-${index}`}
+                      />
+                    ))}
+                  </div>
+
+                  <div className="divider-h mt-9" />
+                  <div className="flex flex-col gap-8 mt-8">
+                    <h2 className="h6">Prerequisite</h2>
+                  </div>
+                  <div className="inline-flex flex-col items-start justify-start pt-4 gap-7">
+                    {customfield?.map((quest) => (
+                      <div className="flex flex-col gap-3">
+                        {/* key={quest.id} */}
+                        <div className="flex">
+                          <div className="w-12 ">
+                            <span className="pblack">Q.</span>
+                          </div>
+                          <div>
+                            <span className="pblack !text-opacity-80">
+                              {quest.customQuestion}
+                            </span>
+                          </div>
+                        </div>
+                        <div className="flex">
+                          <div className="w-12 ">
+                            <p className="pblack">Ans.</p>
+                          </div>
+                          <p className="pblack !text-opacity-80">
+                            {quest.answer}
+                          </p>
+                        </div>
+                      </div>
+                    ))}
+                  </div>
                 </div>
               </div>
-            </div>
-          </>
-        ) : null}
-      </div>
+            </>
+          ) : null}
+        </div>
 
-      <div className="bottom-0 mt-10 divider-h" />
-      <div className="flex justify-between">
+        {/* <>
+        {isModalVisible && (
+        <AntdModal
+          visible={isModalVisible}
+          onCancel={handleCloseModal}
+          footer={[
+            <Button key="close" onClick={handleCloseModal}>
+              Close
+            </Button>,
+          ]}
+        > */}
+
+        {/* </AntdModal>
+      )}
+      </> */}
+
+        {/* <CountdownModal 
+        title="Closing Drawer in 5 seconds..." 
+        duration={5} 
+        modal={modal}
+        openModal={openModal} 
+        contextHolder={contextHolder} 
+      /> */}
+        {/* {currentStep === 4 && isModalOpen && (
+        // <Modal handleOpen={openModal} DialogBody={() => <div>Modal Content</div>} />
+        <Modal1 handleOpen={() => setIsModalOpen(true)} DialogBody={() => <div>Modal Content</div>}/>
+      )} */}
+        {/* <Modal1
+        isOpen={isModalOpen}
+        onClose={handleCloseModal}
+        onConfirm={() => {
+          // Handle confirm action
+          handleCloseModal(); // Close the modal after confirming
+        }}
+        onCancel={() => {
+          // Handle cancel action
+          handleCloseModal(); // Close the modal after canceling
+        }}
+        // buttonLabel="Open Custom Dialog"
+        dialogHeader="Custom Dialog Header"
+        dialogBody="Custom Dialog Body"
+      /> */}
+        <di>
+          <Modal2
+            isOpen={showModal}
+            onClose={handleCloseModal}
+            countDown={handleCloseModal}
+          />
+        </di>
+        {contextHolder}
+      </div>
+      <div className=" mt-10 divider-h  bottom-0" />
+      <div className="flex justify-between mt-4">
         <div>
           <ButtonClick
             buttonName="previous"
@@ -2606,57 +2940,7 @@ const [yearofstudy,setYearofstudy]=useState("")
             }
           />
         </div>
-
-        {/* <>
-        {isModalVisible && (
-        <AntdModal
-          visible={isModalVisible}
-          onCancel={handleCloseModal}
-          footer={[
-            <Button key="close" onClick={handleCloseModal}>
-              Close
-            </Button>,
-          ]}
-        > */}
-
-        {/* </AntdModal>
-      )}
-      </> */}
       </div>
-      {/* <CountdownModal 
-        title="Closing Drawer in 5 seconds..." 
-        duration={5} 
-        modal={modal}
-        openModal={openModal} 
-        contextHolder={contextHolder} 
-      /> */}
-      {/* {currentStep === 4 && isModalOpen && (
-        // <Modal handleOpen={openModal} DialogBody={() => <div>Modal Content</div>} />
-        <Modal1 handleOpen={() => setIsModalOpen(true)} DialogBody={() => <div>Modal Content</div>}/>
-      )} */}
-      {/* <Modal1
-        isOpen={isModalOpen}
-        onClose={handleCloseModal}
-        onConfirm={() => {
-          // Handle confirm action
-          handleCloseModal(); // Close the modal after confirming
-        }}
-        onCancel={() => {
-          // Handle cancel action
-          handleCloseModal(); // Close the modal after canceling
-        }}
-        // buttonLabel="Open Custom Dialog"
-        dialogHeader="Custom Dialog Header"
-        dialogBody="Custom Dialog Body"
-      /> */}
-      <di>
-        <Modal2
-          show={showModal}
-          handleClose={handleCloseModal}
-          countDown={handleCloseModal}
-        />
-      </di>
-      {contextHolder}
     </div>
   );
 }
