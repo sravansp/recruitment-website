@@ -203,15 +203,10 @@ const Workflowstage = ({
     // }),
     onSubmit: async (values, { setSubmitting }) => {
       try {
-        if (!formik.values.workFlowName || !formik.values.description) {
-          formik.setFieldError(
-            "workFlowName",
-            !formik.values.workFlowName ? "WorkFlow Name is required" : ""
-          );
-          formik.setFieldError(
-            "description",
-            !formik.values.description ? "Description  is required" : ""
-          );
+        if (
+          !formik.values.workFlowName || !formik.values.description){
+            formik.setFieldError('workFlowName', !formik.values.workFlowName ? 'Workflow Name is required' : '');
+            formik.setFieldError('description', !formik.values.description ? 'Description  is required' : '');
           return;
         }
 
@@ -452,12 +447,12 @@ const Workflowstage = ({
       }}
       header={[
         !updateId
-          ? t("Create a Workflow Template")
+          ? t("Create Workflow Template")
           : t("Update Workflow stages"),
         !updateId
-          ? t("Create a Workflow Template")
-          : t("Update Workflow stages"),
-      ]}
+          ? t("Create Workflow Template")
+          : t("Update Workflow stages"),]}
+
       //  headerRight={
       //    <div className="flex items-center gap-10">
       //      <p className="text-sm font-medium text-gray-400">
@@ -535,7 +530,7 @@ const Workflowstage = ({
             <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
               <TextArea
                 title={"Description"}
-                placeholder={"Enter Description..."}
+                placeholder={"Enter Description"}
                 className="!text-[#344054]"
                 change={(e) => {
                   formik.setFieldValue("description", e);

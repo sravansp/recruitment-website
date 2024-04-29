@@ -27,6 +27,7 @@ import TextArea from "../common/TextArea";
 import Radiobuttonnew from "../common/Radiobuttonnew";
 import GoogleForm from "../common/GoogleForm";
 import JobCard from "../common/JobCard";
+import DOMPurify from 'dompurify';
 import {
   cardData,
   regularOvertime,
@@ -79,6 +80,7 @@ import { IoClose } from "react-icons/io5";
 import Jobcardcopy from "../common/Jobcardcopy";
 import { RiDeleteBinLine } from "react-icons/ri";
 import { FaAsterisk } from "react-icons/fa";
+import TextEditorcopy from "../common/TextEditor/textEditorCopy";
 
 const CreatejobTemp = ({
   open = "",
@@ -111,9 +113,9 @@ const CreatejobTemp = ({
   const [workFlows, setWorkFlows] = useState([]);
   const [selectedWorkFlowId, setSelectedWorkFlowId] = useState("");
   const [selectedDivs, setSelectedDivs] = useState([]);
-  const [content, setContent] = useState("");
+  const [content, setContent] = useState(null);
   const [JobDescriptionList, setJobDescriptionList] = useState([])
-  const [decriptionId, setDecriptionId] = useState("")
+  const [decriptionId, setDecriptionId] = useState(null)
   const [Phone, setPhone] = useState(1)
   const [Headline, setHeadline] = useState(1)
   const [Address, setAddress] = useState(1)
@@ -374,7 +376,7 @@ const CreatejobTemp = ({
               refresh()
             }, 1500);
           } else if (response.status === 500) {
-            openNotification("error","Error", response.message.replace(/<br\/>/g, '\n'));
+            openNotification("error", "Error", response.message.replace(/<br\/>/g, '\n'));
 
           }
         } else {
@@ -433,7 +435,7 @@ const CreatejobTemp = ({
               refresh()
             }, 1500);
           } else if (response.status === 500) {
-            openNotification("error","Error", response.message);
+            openNotification("error", "Error", response.message);
           }
 
 
@@ -900,8 +902,9 @@ const CreatejobTemp = ({
           formik.setFieldError('salaryCurrency', !formik.values.salaryCurrency ? 'Salary Currency is required' : '');
           formik.setFieldError('jobType', !formik.values.jobType ? 'JobType is required' : '');
           formik.setFieldError('education', !formik.values.education ? 'Education is required' : '');
-          formik.setFieldError('jobDescription', !content ? 'jobDescription is required' : '')
+          formik.setFieldError('jobDescription', !content ? 'Description is required' : '');
           return; // Exit early if any field is empty
+         
         }
         if (jobcodelength === 0) {
 
@@ -909,7 +912,7 @@ const CreatejobTemp = ({
         } else (
           getJobsByJoBecode()
         )
-        
+        console.log(content)
         setPresentage(1)
         break;
 
@@ -1087,7 +1090,7 @@ const CreatejobTemp = ({
                         <div className="grid grid-cols-3 gap-6 ">
                           <Dropdown
                             title={t("Choose Template")}
-                            placeholder={t("Select")}
+                            placeholder={t("Choose Template")}
                           // required={true}
                           />
 
@@ -1355,7 +1358,7 @@ const CreatejobTemp = ({
 
                         <FormInput
                           title={'Salary Range From'}
-                          placeholder={'Enter value'}
+                          placeholder={'Enter Salary Range From'}
                           change={(e) => {
                             formik.setFieldValue('salaryRangeFrom', e);
                             // setFieldValue(e)
@@ -1369,7 +1372,7 @@ const CreatejobTemp = ({
 
                         <FormInput
                           title={'Salary Range To'}
-                          placeholder={'Enter value'}
+                          placeholder={'Enter Salary Range To'}
                           value={formik.values.salaryRangeTo}
                           error={formik.errors.salaryRangeTo}
                           required={true}
@@ -1403,7 +1406,7 @@ const CreatejobTemp = ({
                           required={true}
                           error={formik.errors.salaryCurrency}
                         />
-                        <div className="flex flex-col gap-1">
+                        <div className="flex items-center gap-1">
                           <CheckBoxInput
                             change={(e) => {
                               formik.setFieldValue("isSalaryPublic", e);
@@ -1414,7 +1417,10 @@ const CreatejobTemp = ({
                             titleRight={true}
 
                           />
-                          <p className="text-xs text-gray-500">Given Salary will be visible for public</p>
+                          <div className="flex flex-col gap-1 pt-2">
+                            <p className="text-sm dark:text-white">View Public</p>
+                            <p className="text-xs text-gray-500">Given Salary will be visible for public</p>
+                          </div>
                         </div>
                       </div>
                     </Accordion>
@@ -1456,6 +1462,8 @@ const CreatejobTemp = ({
                           title={''}
                           placeholder={'Choose Job Description'}
                           options={JobDescriptionList}
+                          value={decriptionId}
+                          className={'min-w-40'}
                           change={(e) => {
                             setDecriptionId(e)
                           }}
@@ -1466,7 +1474,7 @@ const CreatejobTemp = ({
                         <p className="pb-2">Description</p>
                         <FaAsterisk className="text-[6px] text-rose-600" />
                         </div>
-                        <TextEditor
+                        {/* <TextEditor
                           placeholder={t(
                             "Enter Description "
                           )}
@@ -1478,10 +1486,15 @@ const CreatejobTemp = ({
                           //  }}
                           onChange={handleEditorChange}
                           error={formik.errors.jobDescription}
-                          changetoHtml={(e)=>{
-                            setstateHTML(e)
-                          }}
+                          // changetoHtml={(e)=>{
+                          //   setstateHTML(e)
+                          // }}
                           loader={loader}
+                        /> */}
+                        <TextEditorcopy
+                        onChange={handleEditorChange}
+                        initialValue={content}
+                        error={formik.errors.jobDescription}
                         />
                         
                         </div>
@@ -1768,18 +1781,18 @@ const CreatejobTemp = ({
                         </div>
                       </Accordion>
                     </div>
-                    
-                      <Accordion
-                        title={"Custom Fields "}
-                        className="Text_area"
-                        padding={true}
-                        toggleBtn={false}
-                        click={() => {
-                          // setPresentage(1.4);
-                        }}
-                        initialExpanded={true}
-                      >
-                        <div className="flex flex-col gap-4 overflow-hidden">
+
+                    <Accordion
+                      title={"Custom Fields "}
+                      className="Text_area"
+                      padding={true}
+                      toggleBtn={false}
+                      click={() => {
+                        // setPresentage(1.4);
+                      }}
+                      initialExpanded={true}
+                    >
+                      <div className="flex flex-col gap-4 overflow-hidden">
                         {evaluation.map((condition, index) => (
                           <>
                             {/* {conditions.map((condition, index) => (
@@ -1850,7 +1863,7 @@ icondropDown={true}
                                   error={condition.question ? '' : errorMessages[index] || ''}
                                 />
                                 <div className="flex items-center gap-5">
-                                <div className="flex-shrink-0">
+                                  <div className="flex-shrink-0">
                                     <Dropdown
                                       options={Form}
                                       dropdownWidth="200px"
@@ -1880,7 +1893,7 @@ icondropDown={true}
                                       error={condition.answer_type ? '':errorMessages[index] || ''}
                                       placeholder={"Choose Options"}
                                     />
-                                </div>
+                                  </div>
                                   {/* Additional dynamic input fields based on the selected value in the dropdown */}
                                   {/* Add your logic here */}
 
@@ -1987,31 +2000,31 @@ icondropDown={true}
                                     )
                                   )}
 
-                                 
-                                    {[
-                                      "Drop-down",
-                                      "MultipleChoice",
-                                      "Checkboxes",
-                                    ].includes(
-                                      condition.answerMetaData[0]?.key
-                                    ) && (
-                                        <Tooltip placement="top" title={"Add new"}>
-                                          <CgAdd
-                                            onClick={() =>
-                                              handleAddField(
-                                                index,
-                                                condition.answerMetaData[0]?.key
-                                              )
-                                            }
-                                            style={{
-                                              width: "18px",
-                                              height: "18px",
-                                              cursor: "pointer",
-                                            }}
-                                          />
-                                        </Tooltip>
-                                      )}
-                                 
+
+                                  {[
+                                    "Drop-down",
+                                    "MultipleChoice",
+                                    "Checkboxes",
+                                  ].includes(
+                                    condition.answerMetaData[0]?.key
+                                  ) && (
+                                      <Tooltip placement="top" title={"Add new"}>
+                                        <CgAdd
+                                          onClick={() =>
+                                            handleAddField(
+                                              index,
+                                              condition.answerMetaData[0]?.key
+                                            )
+                                          }
+                                          style={{
+                                            width: "18px",
+                                            height: "18px",
+                                            cursor: "pointer",
+                                          }}
+                                        />
+                                      </Tooltip>
+                                    )}
+
                                 </>
                               )}
                             </>
@@ -2028,9 +2041,9 @@ icondropDown={true}
                             handleAddCondition();
                           }}
                         />
-                        </div>
-                      </Accordion>
-                    
+                      </div>
+                    </Accordion>
+
                   </FlexCol>
                 </>
               ) : activeBtnValue === "Workflow" ? (

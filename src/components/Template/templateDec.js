@@ -290,7 +290,7 @@ const TemplateDec = ({ open = "", close = () => { }, inputshow = false, isUpdate
           <div className="grid grid-cols-2 ">
             <FormInput
               title={"Template Name"}
-              placeholder={"Enter Template Name..."}
+              placeholder={"Enter Template Name"}
               value={templateName}
               change={(e) => {
                 setTemplateName(e);

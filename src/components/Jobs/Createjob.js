@@ -105,7 +105,7 @@ const Createjob = ({
   const [errors, setErrors] = useState([]);
   const [content, setContent] = useState("");
   // const [isUpdate, setIsUpdate] = useState();
-  const [decriptionId, setDecriptionId] = useState("")
+  const [decriptionId, setDecriptionId] = useState(null)
   const [activeBtn, setActiveBtn] = useState(0);
   const [presentage, setPresentage] = useState(0);
   const [nextStep, setNextStep] = useState(0);
@@ -305,43 +305,43 @@ const Createjob = ({
     try {
       const response = await getRecruitmentJobById({ id });
 
-     
-        const firstJob = response.result[0];
 
-        setDraftJobs(firstJob);
+      const firstJob = response.result[0];
 
-        formik1.setFieldValue("companyId", firstJob.companyId);
-        formik1.setFieldValue("jobTitle", firstJob.jobTitle);
-        formik1.setFieldValue("departmentId", firstJob.departmentId);
-        formik1.setFieldValue("education", firstJob.education);
-        formik1.setFieldValue("isActive", firstJob.isActive);
-        formik1.setFieldValue("isSalaryPublic", firstJob.isSalaryPublic);
-        formik1.setFieldValue("jobCode", firstJob.jobCode);
-        // formik1.setFieldValue("jobDescription", firstJob.jobDescription);
-        setContent(firstJob.jobDescription)
-        formik1.setFieldValue("jobType", firstJob.jobType);
-        formik1.setFieldValue("location", firstJob.location);
-        formik1.setFieldValue("requirementType", firstJob.requirementType);
-        formik1.setFieldValue("salaryCurrency", firstJob.salaryCurrency);
-        formik1.setFieldValue("salaryRangeFrom", firstJob.salaryRangeFrom);
-        formik1.setFieldValue("salaryRangeTo", firstJob.salaryRangeTo);
-        formik1.setFieldValue("searchKeywords", firstJob.searchKeywords);
-        formik1.setFieldValue("experience", firstJob.experience);
+      setDraftJobs(firstJob);
 
-
+      formik1.setFieldValue("companyId", firstJob.companyId);
+      formik1.setFieldValue("jobTitle", firstJob.jobTitle);
+      formik1.setFieldValue("departmentId", firstJob.departmentId);
+      formik1.setFieldValue("education", firstJob.education);
+      formik1.setFieldValue("isActive", firstJob.isActive);
+      formik1.setFieldValue("isSalaryPublic", firstJob.isSalaryPublic);
+      formik1.setFieldValue("jobCode", firstJob.jobCode);
+      // formik1.setFieldValue("jobDescription", firstJob.jobDescription);
+      setContent(firstJob.jobDescription)
+      formik1.setFieldValue("jobType", firstJob.jobType);
+      formik1.setFieldValue("location", firstJob.location);
+      formik1.setFieldValue("requirementType", firstJob.requirementType);
+      formik1.setFieldValue("salaryCurrency", firstJob.salaryCurrency);
+      formik1.setFieldValue("salaryRangeFrom", firstJob.salaryRangeFrom);
+      formik1.setFieldValue("salaryRangeTo", firstJob.salaryRangeTo);
+      formik1.setFieldValue("searchKeywords", firstJob.searchKeywords);
+      formik1.setFieldValue("experience", firstJob.experience);
 
 
 
-        console.log(firstJob.companyId);
-        console.log(response);
-     
+
+
+      console.log(firstJob.companyId);
+      console.log(response);
+
     } catch (error) {
       // console.log(error);
     }
   };
   useEffect(() => {
     getDraftjobs();
-    console.log({"Value":UpdateId});
+    console.log({ "Value": UpdateId });
   }, [UpdateId]);
   const formik1 = useFormik({
     initialValues: {
@@ -367,8 +367,8 @@ const Createjob = ({
       jobStatus: "Draft",
       createdBy: "",
       noOfVaccancies: "",
-      evaluationTemplateId: "",
-      questionnaireTemplateId: "",
+      evaluationTemplateId: null,
+      questionnaireTemplateId: null,
     },
 
     // enableReinitialize: true,
@@ -411,8 +411,8 @@ const Createjob = ({
         !formik1.values.salaryRangeFrom ||
         !formik1.values.salaryRangeTo ||
         !formik1.values.salaryCurrency ||
-        !formik1.values.jobType||
-        !formik1.values.noOfVaccancies||
+        !formik1.values.jobType ||
+        !formik1.values.noOfVaccancies ||
         !content
       ) {
         formik1.setFieldError('companyId', !formik1.values.companyId ? 'Company  is required' : '');
@@ -428,8 +428,8 @@ const Createjob = ({
         formik1.setFieldError('salaryCurrency', !formik1.values.salaryCurrency ? 'Salary Currency is required' : '');
         formik1.setFieldError('jobType', !formik1.values.jobType ? 'JobType is required' : '');
         formik1.setFieldError('education', !formik1.values.education ? 'Education is required' : '');
-        formik1.setFieldError('jobDescription', !content ?'Job description is required' : '')
-        formik1.setFieldError('noOfVaccancies', !formik1.values.noOfVaccancies ?'Number Of Vacancies is required' : '')
+        formik1.setFieldError('jobDescription', !content ? 'Job description is required' : '')
+        formik1.setFieldError('noOfVaccancies', !formik1.values.noOfVaccancies ? 'Number Of Vacancies is required' : '')
         return; // Exit early if any field is empty
       }
       try {
@@ -1070,7 +1070,7 @@ const Createjob = ({
   const getJobtemp = async () => {
     try {
       const response = await getAllRecruitmentJobTemplates({
-        isActive:1
+        isActive: 1
       });
 
       // console.log(response);
@@ -1260,7 +1260,7 @@ const Createjob = ({
       }
     },
   });
-  const [selectedJobId, setSelectedJobId] = useState("");
+  const [selectedJobId, setSelectedJobId] = useState(null);
   const handleValueChange = (e) => {
     setSelectedJobId(e);
     // No need to call getjobById here
@@ -1463,7 +1463,7 @@ const Createjob = ({
                         <div className="grid grid-cols-3 gap-6 ">
                           <Dropdown
                             title={t("Choose Template")}
-                            placeholder={t("Select")}
+                            placeholder={t("Choose Template")}
                             options={jobtemplate}
                             // Replace with the actual value/ID
                             change={(e) => {
@@ -1490,7 +1490,7 @@ const Createjob = ({
                       <div className="grid grid-cols-3 gap-4">
                         <FormInput
                           title={t("Job Title")}
-                          placeholder={t("Example : Marketing Manager")}
+                          placeholder={t("Enter job title")}
                           required={true}
                           change={(e) => {
                             formik1.setFieldValue("jobTitle", e);
@@ -1502,7 +1502,7 @@ const Createjob = ({
 
                         <Dropdown
                           title={t("Department")}
-                          placeholder={t("Select...")}
+                          placeholder={t("Choose department")}
                           required={true}
                           options={departmentList}
                           value={formik1.values.departmentId}
@@ -1514,7 +1514,7 @@ const Createjob = ({
 
                         <FormInput
                           title={t(" Job Code")}
-                          placeholder={t(" Job Code")}
+                          placeholder={t("Enter Job Code")}
                           required={true}
                           change={(e) => {
                             formik1.setFieldValue("jobCode", e);
@@ -1526,7 +1526,7 @@ const Createjob = ({
                       <div className="grid grid-cols-3 gap-4">
                         <Dropdown
                           title={t("Choose Evaluation Template")}
-                          placeholder={t("Select...")}
+                          placeholder={t("Choose Evaluation Template")}
                           options={evalutaionTem}
                           value={formik1.values.evaluationTemplateId}
                           error={formik1.errors.evaluationTemplateId}
@@ -1536,7 +1536,7 @@ const Createjob = ({
                         />
                         <Dropdown
                           title={t("Choose Questionnaire Template")}
-                          placeholder={t("Select...")}
+                          placeholder={t("Choose Questionnaire Template")}
                           options={questionareTem}
                           value={formik1.values.questionnaireTemplateId}
                           error={formik1.errors.questionnaireTemplateId}
@@ -1619,7 +1619,7 @@ const Createjob = ({
                       <div className='grid grid-cols-2 gap-4'>
                         <FormInput
                           title={"Location"}
-                          placeholder={'Example : Dubai'}
+                          placeholder={'Enter Location'}
                           change={(e) => {
                             formik1.setFieldValue('location', e)
 
@@ -1631,7 +1631,7 @@ const Createjob = ({
 
                         <Dropdown
                           title={'Requirement'}
-                          placeholder={'Urgent'}
+                          placeholder={'Choose Requirement'}
                           options={Requirment}
                           value={formik1.values.requirementType
                           }
@@ -1659,7 +1659,7 @@ const Createjob = ({
                       <div className='grid grid-cols-3 gap-4'>
                         <Dropdown
                           title={'Job Type'}
-                          placeholder={'Full-time'}
+                          placeholder={'Choose Job Type'}
                           options={JobType}
                           change={(e) => {
                             formik1.setFieldValue('jobType', e)
@@ -1672,7 +1672,7 @@ const Createjob = ({
                         />
                         <Dropdown
                           title={'Experience'}
-                          placeholder={'Mid-Senior level'}
+                          placeholder={'Choose Experience'}
                           options={experiencelevel}
                           value={formik1.values.experience}
                           error={formik1.errors.experience}
@@ -1683,7 +1683,7 @@ const Createjob = ({
                         />
                         <Dropdown
                           title={'Education'}
-                          placeholder={'Bachelor’s Degree'}
+                          placeholder={'Choose Education'}
                           options={eductaion}
                           value={formik1.values.education}
                           error={formik1.errors.education}
@@ -1697,7 +1697,7 @@ const Createjob = ({
                       <div className='grid grid-cols-3 gap-4'>
                         <FormInput
                           title={'Keywords'}
-                          placeholder={'Example : Dubai'}
+                          placeholder={'Enter Keywords'}
                           change={(e) => {
                             formik1.setFieldValue('searchKeywords', e)
                           }}
@@ -1707,7 +1707,7 @@ const Createjob = ({
                         />
                         <FormInput
                           title={'Number of Opennings'}
-                          placeholder={'Enter Value'}
+                          placeholder={'Enter Number of Opennings'}
                           change={(e) => {
                             formik1.setFieldValue('noOfVaccancies', e)
                           }}
@@ -1721,7 +1721,7 @@ const Createjob = ({
                       <div className='grid grid-cols-4 gap-4'>
                         <FormInput
                           title={'Salary Range From'}
-                          placeholder={'Enter value'}
+                          placeholder={'Enter Salary Range From'}
                           description={'Minimum Annual Salary'}
                           change={(e) => {
                             formik1.setFieldValue('salaryRangeFrom', e);
@@ -1738,7 +1738,7 @@ const Createjob = ({
 
                         <FormInput
                           title={'Salary Range To'}
-                          placeholder={'Enter value'}
+                          placeholder={'Enter Salary Range To'}
                           description={'Maximum Annual Salary'}
                           change={(e) => {
                             formik1.setFieldValue('salaryRangeTo', e);
@@ -1762,7 +1762,7 @@ const Createjob = ({
                         />
                         <Dropdown
                           title={'Salary Currency'}
-                          placeholder={'salary'}
+                          placeholder={'Choose salary currency'}
                           options={saleryCurrency}
                           value={formik1.values.salaryCurrency}
                           error={formik1.errors.salaryCurrency}
@@ -1771,7 +1771,7 @@ const Createjob = ({
                           }}
                           required={true}
                         />
-                        <div className="flex items center gap-2">
+                        <div className="flex items-center gap-2">
                           <CheckBoxInput
                             title={"View Public"}
                             // titleRight={true}
@@ -1825,6 +1825,8 @@ const Createjob = ({
                           title={''}
                           placeholder={'Choose Job Description'}
                           options={JobDescriptionList}
+                          value={decriptionId}
+                          className={'min-w-40'}
                           change={(e) => {
                             setDecriptionId(e)
                           }}
@@ -1851,6 +1853,7 @@ const Createjob = ({
                         <FaAsterisk className="text-[6px] text-rose-600" />
                         </div>
                         <TextEditor
+                          placeholder={"Enter Description"}
                           initialValue={content}
                           onChange={handleEditorChange}
                           minheight="250px"
@@ -1891,19 +1894,19 @@ const Createjob = ({
 
               ) : activeBtnValue === "ApplicationForm" ? (
                 <>
-                  
-                   <FlexCol>
-                      <Accordion
-                        title={"Application Form "}
-                        className="Text_area"
-                        padding={true}
-                        toggleBtn={false}
-                        click={() => {
-                          // setPresentage(1.4);
-                        }}
-                        initialExpanded={true}
-                      >
-                        <div className="flex flex-col gap-4 overflow-hidden">
+
+                  <FlexCol>
+                    <Accordion
+                      title={"Application Form "}
+                      className="Text_area"
+                      padding={true}
+                      toggleBtn={false}
+                      click={() => {
+                        // setPresentage(1.4);
+                      }}
+                      initialExpanded={true}
+                    >
+                      <div className="flex flex-col gap-4 overflow-hidden">
                         <div className="flex items-center justify-between">
                           <div className="w-[53.92px] text-black text-sm font-medium font-['Inter'] leading-tight">
                             Name
@@ -2013,21 +2016,21 @@ const Createjob = ({
                             <Radio.Button value={0}>Off</Radio.Button>
                           </Radiobuttonnew>
                         </div>
-                        </div>
-                      </Accordion>
-                    
-                    
-                      <Accordion
-                        title={"Profile "}
-                        className="Text_area"
-                        padding={true}
-                        toggleBtn={false}
-                        click={() => {
-                          // setPresentage(1.4);
-                        }}
-                        initialExpanded={true}
-                      >
-                        <div className="flex flex-col gap-4 overflow-hidden">
+                      </div>
+                    </Accordion>
+
+
+                    <Accordion
+                      title={"Profile "}
+                      className="Text_area"
+                      padding={true}
+                      toggleBtn={false}
+                      click={() => {
+                        // setPresentage(1.4);
+                      }}
+                      initialExpanded={true}
+                    >
+                      <div className="flex flex-col gap-4 overflow-hidden">
                         <div className="flex items-center justify-between">
                           <div className="w-[53.92px] text-black text-sm font-medium font-['Inter'] leading-tight">
                             Education
@@ -2125,23 +2128,23 @@ const Createjob = ({
                             <Radio.Button value={0}>Off</Radio.Button>
                           </Radiobuttonnew>
                         </div>
-                        </div>
-                      </Accordion>
-                     
-                   
-                      <Accordion
-                        title={"Custom Fields "}
-                        className="Text_area"
-                        padding={true}
-                        toggleBtn={false}
-                        click={() => {
-                          // setPresentage(1.4);
-                        }}
-                        initialExpanded={true}
-                      >
-                        <div className="flex flex-col gap-4 overflow-hidden">
+                      </div>
+                    </Accordion>
 
-                      
+
+                    <Accordion
+                      title={"Custom Fields "}
+                      className="Text_area"
+                      padding={true}
+                      toggleBtn={false}
+                      click={() => {
+                        // setPresentage(1.4);
+                      }}
+                      initialExpanded={true}
+                    >
+                      <div className="flex flex-col gap-4 overflow-hidden">
+
+
                         {evaluation.map((condition, index) => (
                           <>
                             <div className="flex items-center justify-between ">
@@ -2164,7 +2167,7 @@ const Createjob = ({
                                 <Dropdown
                                   options={Form}
                                   dropdownWidth='200px'
-                                  
+
                                   change={(e) => {
                                     setEvaluation((prevEvaluation) => prevEvaluation.map((prevCondition, i) => i === index
                                       ? {
@@ -2186,14 +2189,14 @@ const Createjob = ({
                                   value={condition.answerMetaData[0]?.key}
                                   icon={<MdOutlineShortText />}
                                   icondropDown={true}
-                                  error={condition.answer_type ? '':errorMessages[index] || ''}
+                                  error={condition.answer_type ? '' : errorMessages[index] || ''}
                                   placeholder={"Choose Options"}
 
                                 />
 
                                 <div style={{ display: 'flex', alignItems: 'center', gap: '15px' }}>
                                   <p>Mandatory</p>
-                                    <ToggleBtn />
+                                  <ToggleBtn />
                                 </div>
                                 <div style={{ display: 'flex', alignItems: 'center', gap: '15px' }}>
                                   <Tooltip placement="top" title={"Copy"}>
@@ -2232,7 +2235,7 @@ const Createjob = ({
                                           : prevCondition
                                         )
                                         )}
-                                        error={field.value ? '': errorMessages[index] || ''}
+                                        error={field.value ? '' : errorMessages[index] || ''}
                                       />
                                       <div className="ml-2">
                                         <MdDelete
@@ -2247,10 +2250,12 @@ const Createjob = ({
                                   {['Drop-down', 'MultipleChoice', 'Checkboxes'].includes(
                                     condition.answerMetaData[0]?.key
                                   ) && (
-                                      <CgAdd
-                                        onClick={() => handleAddField(index, condition.answerMetaData[0]?.key)}
-                                        style={{ width: '18px', height: '18px', cursor: 'pointer' }}
-                                      />
+                                      <Tooltip placement="top" title={"Add more"}>
+                                        <CgAdd
+                                          onClick={() => handleAddField(index, condition.answerMetaData[0]?.key)}
+                                          style={{ width: '18px', height: '18px', cursor: 'pointer' }}
+                                        />
+                                      </Tooltip>
                                     )}
                                 </div>
                               </>
@@ -2260,25 +2265,24 @@ const Createjob = ({
                           </>
                         ))}
                         <AddMore name="Add Custom Field " className="!text-black" change={(e) => { handleAddCondition(); }} />
-                        </div>
-                      </Accordion>
-                      </FlexCol>
-                  
+                      </div>
+                    </Accordion>
+                  </FlexCol>
+
                 </>
               ) : activeBtnValue === "Workflow" ? (
                 <FlexCol>
-                  <div className="rounded-md borderb">
-                    <Accordion
-                      title={"Workflow"}
-                      className="Text_area"
-                      padding={true}
-                      toggleBtn={false}
-                      click={() => {
-                        setPresentage(1.4);
-                      }}
-                      initialExpanded={true}
-                    >
-                      {/* {Object.keys(Stages).map(workFlowId => (
+                  <Accordion
+                    title={"Workflow"}
+                    className="Text_area"
+                    padding={true}
+                    toggleBtn={false}
+                    click={() => {
+                      setPresentage(1.4);
+                    }}
+                    initialExpanded={true}
+                  >
+                    {/* {Object.keys(Stages).map(workFlowId => (
         <Card key={workFlowId}>
           {/* <JobCard options={Stages[workFlowId]} /> *
           <JobCard/>
@@ -2290,40 +2294,39 @@ const Createjob = ({
         </Card>
       ))}
                 */}
-                      <Radio.Group
-                        onChange={(e) => {
-                          setSelectedWorkFlowId(e.target.value);
-                          setPresentage(2.4);
-                        }}
-                        value={selectedWorkFlowId}
-                      >
-                        {Stages.map((each) => (
-                          <div key={each.workFlowId} className={`  relative p-2.5  mt-6 border rounded-md ${selectedWorkFlowId === each.workFlowId ? 'bg-[#F2F0FD]  border-[#6A4BFC]' : ''}`}  >
-                            {/* <title={<span className="no-underline">{each.workFlowName}</span>}> */}
-                            {/* <h6 className="h6 mt">{each.workFlowName}</h6> */}
-                            <h6 className="h6 mb-4"> {each.workFlowName}  </h6>
+                    <Radio.Group
+                      onChange={(e) => {
+                        setSelectedWorkFlowId(e.target.value);
+                        setPresentage(2.4);
+                      }}
+                      value={selectedWorkFlowId}
+                    >
+                      {Stages.map((each) => (
+                        <div key={each.workFlowId} className={`  relative p-2.5  mt-6 border rounded-md ${selectedWorkFlowId === each.workFlowId ? 'bg-[#F2F0FD]  border-[#6A4BFC]' : ''}`}  >
+                          {/* <title={<span className="no-underline">{each.workFlowName}</span>}> */}
+                          {/* <h6 className="h6 mt">{each.workFlowName}</h6> */}
+                          <h6 className="h6 mb-4"> {each.workFlowName}  </h6>
 
-                            <div className="">
-                              <Jobcardcopy options={each.stages} selectable={false} firstCardSelectable={false} />
-                            </div>
-                            <div
-                              style={{
-                                position: "absolute",
-                                top: 0,
-                                right: 0,
-                                padding: "8px",
-                              }}
-                            >
-
-                              <Radio
-                                value={each.workFlowId || selectedWorkFlowId}
-                              ></Radio>
-                            </div>
+                          <div className="">
+                            <Jobcardcopy options={each.stages} selectable={false} firstCardSelectable={false} />
                           </div>
-                        ))}
-                      </Radio.Group>
-                    </Accordion>
-                  </div>
+                          <div
+                            style={{
+                              position: "absolute",
+                              top: 0,
+                              right: 0,
+                              padding: "8px",
+                            }}
+                          >
+
+                            <Radio
+                              value={each.workFlowId || selectedWorkFlowId}
+                            ></Radio>
+                          </div>
+                        </div>
+                      ))}
+                    </Radio.Group>
+                  </Accordion>
                 </FlexCol>
               ) : activeBtnValue === "TeamMembers" ? (
                 <FlexCol>
@@ -2495,7 +2498,7 @@ const Createjob = ({
                 <Accordion
                   title={"Publish"}
                   className="Text_area"
-                  description={"lorem ipsum dummy text dolar sit."}
+                  description={"Publish"}
                   padding={true}
                   toggleBtn={false}
                   click={() => {
