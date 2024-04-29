@@ -253,7 +253,7 @@ const TemplateDec = ({ open = "", close = () => { }, inputshow = false, isUpdate
       }
       footerBtn={[
         t("Cancel"),
-        !updateId ? t("Save Template") : t("Update Template"),
+        t("Save"),
 
       ]}
       className="widthFull"

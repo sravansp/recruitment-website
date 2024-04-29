@@ -445,7 +445,7 @@ const
           //  }
           footerBtn={[
             t("Cancel"),
-            !isUpdate ? t("Save Template") : t("Save Template"),
+            t("Save"),
           ]}
           className="widthFull"
           handleSubmit={(e) => handleSubmit(e)}
