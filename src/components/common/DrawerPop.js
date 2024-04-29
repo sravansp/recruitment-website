@@ -91,7 +91,7 @@ export default function DrawerPop({
               className="flex items-center gap-4 px-5 py-2 text-sm font-semibold border rounded-lg dark:text-white"
             >
               <IoIosArrowBack />
-              <p> {t("Previous")}</p>
+              <p title="Previous"> {t("Previous")}</p>
             </motion.button>
           ) : (
             <div className="">
