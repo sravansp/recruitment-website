@@ -506,7 +506,7 @@ const Workflowstage = ({
       //  }
       footerBtn={[
         t("Cancel"),
-        !isUpdate ? t("Save Template") : t("Save Template"),
+        t("Save"),
       ]}
       className="widthFull"
       //  buttonClickCancel={(e) => {

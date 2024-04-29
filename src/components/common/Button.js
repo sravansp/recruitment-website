@@ -56,7 +56,8 @@ export default function ButtonClick({
           ? ` ${className}!bg-white dark:!bg-transparent`
           : ""
       } text-xs 2xl:text-sm font-medium w-fit flex items-center justify-center leading-6 z-50 ${className}`}
-        style={{ backgroundColor }} // Set background color inline style
+      style={{ backgroundColor }} // Set background color inline style
+      title = {buttonName}
     >
       {buttonName}
     </Button>

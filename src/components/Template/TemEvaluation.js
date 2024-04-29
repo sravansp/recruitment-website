@@ -209,7 +209,7 @@ const TemEvaluation = ({ open = "", close = () => { }, inputshow = false, isUpda
         // Make the first API call
         if (
           !formik.values.evaluationTemplateName || !formik.values.description) {
-          formik.setFieldError('evaluationTemplateName', !formik.values.evaluationTemplateName ? 'Evaluation is Required is required' : '');
+          formik.setFieldError('evaluationTemplateName', !formik.values.evaluationTemplateName ? 'Template name is required' : '');
           formik.setFieldError('description', !formik.values.description ? 'Description is required' : '');
         }
         let hasError = false;
@@ -433,7 +433,7 @@ const TemEvaluation = ({ open = "", close = () => { }, inputshow = false, isUpda
         //  }
         footerBtn={[
           t("Cancel"),
-          !isUpdate ? t("Save Template") : t("Save Template"),
+          t("Save"),
         ]}
         className="widthFull"
         handleSubmit={(e) => handleSubmit(e)}
