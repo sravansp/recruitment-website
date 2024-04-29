@@ -37,7 +37,7 @@ import arrow from "../../assets/images/arrow3d 1.png";
 
 const Workflowstage = ({
   open = "",
-  close = () => {},
+  close = () => { },
   inputshow = false,
   isUpdate = {},
   updateId,
@@ -53,16 +53,14 @@ const Workflowstage = ({
       placement: "top",
       // stack: 2,
       style: {
-        background: `${
-          type === "success"
+        background: `${type === "success"
             ? `linear-gradient(180deg, rgba(204, 255, 233, 0.8) 0%, rgba(235, 252, 248, 0.8) 51.08%, rgba(246, 251, 253, 0.8) 100%)`
             : "linear-gradient(180deg, rgba(255, 236, 236, 0.80) 0%, rgba(253, 246, 248, 0.80) 51.13%, rgba(251, 251, 254, 0.80) 100%)"
-        }`,
-        boxShadow: `${
-          type === "success"
+          }`,
+        boxShadow: `${type === "success"
             ? "0px 4.868px 11.358px rgba(62, 255, 93, 0.2)"
             : "0px 22px 60px rgba(134, 92, 144, 0.20)"
-        }`,
+          }`,
       },
       // duration: null,
     });
@@ -355,7 +353,7 @@ const Workflowstage = ({
       label: "Request Evaluation",
       value: "request",
       icon: <MdAlignHorizontalLeft />,
-      det:[ {
+      det: [{
         id: "request_evaluation",
         name: "Request Evaluation",
         option1: [
@@ -370,7 +368,7 @@ const Workflowstage = ({
       label: "Add Note",
       value: "note",
       icon: <CiTextAlignLeft />,
-      det:[ {
+      det: [{
         id: "send_questionnaire",
         name: "Send Questionnaire ",
         option1: [
@@ -384,7 +382,7 @@ const Workflowstage = ({
       label: "Send Email",
       value: "email",
       icon: <IoMdCheckboxOutline />,
-      det:[ {
+      det: [{
         id: "send_email",
         name: "Send Email ",
         option1: [
@@ -398,7 +396,7 @@ const Workflowstage = ({
       label: "Send Questionnaire",
       value: "questionnaire",
       icon: <FaRegCircleDot />,
-      det:[ {
+      det: [{
         id: "send_questionnaire",
         name: "Send Questionnaire ",
         option1: [
@@ -412,7 +410,7 @@ const Workflowstage = ({
       label: "Add Tag",
       value: "tag",
       icon: <IoIosArrowDropdown />,
-      det:[ {
+      det: [{
         id: "add_tag",
         name: "Send Email ",
         option1: [
@@ -452,12 +450,12 @@ const Workflowstage = ({
     setOptionData(demo[0].det)
     setmenuitem(true)
     setMenuVisible(false);
-   
+
   };
-  
+
   console.log(optionData, "0000");
 
-  
+
   const handleDeleteSection = (id) => {
     const updatedOptions = optionData.filter(option => option.id !== id);
     setOptionData(updatedOptions);
@@ -658,8 +656,8 @@ const Workflowstage = ({
             wrapClassName="vertical-center-modal"
             isOpen={isModalVisible}
             onClose={closeModal}
-            buttonSubmit={handleAddStageClick}   
-      
+            buttonSubmit={handleAddStageClick}
+
           >
             <div className="flex flex-col items-center justify-center w-full h-full gap-5">
               <div className="flex flex-col items-center gap-2 text-center">
@@ -698,11 +696,13 @@ const Workflowstage = ({
                 />
               </div>
             </div>
-            {optionData? optionData.map((key, index) => (
+            {optionData ? optionData.map((key, index) => (
               <div key={index} className="flex flex-col gap-3 w-full border border-black-500 ring-1 ring-black ring-opacity-5 shadow-lg rounded-lg p-1" style={{ display: menuitem ? "block" : "none" }}>
                 <div className="w-full m-auto bg-slate-100 h-12 rounded-lg flex justify-between items-center pr-2">
                   <h1 className="mt-3.5 m-3 font-semibold">{key.name}</h1>
-                  <RiDeleteBin5Line className="text-gray-500 2xl:text-base dark:text-white hover:text-red-500" onClick={() => handleDeleteSection(`${optionData[index].id}`)}  />
+                  <Tooltip placement="top" color={'red'}   title={"Delete"}>
+                    < RiDeleteBin5Line className="text-gray-500 2xl:text-base dark:text-white hover:text-red-500" onClick={() => handleDeleteSection(`${optionData[index].id}`)} />
+                  </Tooltip>
                 </div>
                 <div className="flex gap-2 w-full p-1">
                   {key && key.option1 ? key.option1.map((item,ind) => (
@@ -723,7 +723,7 @@ const Workflowstage = ({
                 </div>
               </div>
             )):''}
-              {/* {optionData.map((item) => (
+          {/* {optionData.map((item) => (
               <div  className="flex flex-col gap-3 w-full border border-black-500 ring-1 ring-black ring-opacity-5 shadow-lg rounded-lg p-1" style={{ display: menuitem ? "block" : "none" }}>
                 <div className="w-full m-auto bg-slate-100 h-12 rounded-lg flex justify-between items-center pr-2">
                   <h1 className="mt-3.5 m-3 font-semibold">{item.name}</h1>
@@ -749,15 +749,15 @@ const Workflowstage = ({
               </div>
             ))} */}
 
-            <div className="justify-start">
-              <AddMore
-                name="Add stage rule"
-                className="text-black"
-                change={() => setMenuVisible(true)}
-              />
-            </div>
+          <div className="justify-start">
+            <AddMore
+              name="Add stage rule"
+              className="text-black"
+              change={() => setMenuVisible(true)}
+            />
+          </div>
 
-            {/* <Menu
+          {/* <Menu
               onClick={({ key }) => handleMenuClick(key)}
               style={{ display: menuVisible ? "block" : "none" }}
               className="w-48 border border-black-500 ring-1 ring-black ring-opacity-5 bg-white shadow-lg rounded-lg"
@@ -780,24 +780,24 @@ const Workflowstage = ({
                 );
               })}
             </Menu> */}
-            <Menu
-              onClick={({ key, value }) => handleMenuClick(key, value)}
-              style={{ display: menuVisible ? "block" : "none" }}
-              className="w-48 border border-black-500 ring-1 ring-black ring-opacity-5 bg-white shadow-lg rounded-lg"
-            >
-              {options.map((option) => {
-                return (
-                  <Menu.Item key={option.key}>
-                    <div className="flex justify-start gap-2 items-center">
-                      <span>{option.icon}</span>
-                      <span> {option.label}</span>
-                    </div>
-                  </Menu.Item>
-                );
-              })}
-            </Menu>
-          </WorkflowModal>
-          {/* <Modal
+          <Menu
+            onClick={({ key, value }) => handleMenuClick(key, value)}
+            style={{ display: menuVisible ? "block" : "none" }}
+            className="w-48 border border-black-500 ring-1 ring-black ring-opacity-5 bg-white shadow-lg rounded-lg"
+          >
+            {options.map((option) => {
+              return (
+                <Menu.Item key={option.key}>
+                  <div className="flex justify-start gap-2 items-center">
+                    <span>{option.icon}</span>
+                    <span> {option.label}</span>
+                  </div>
+                </Menu.Item>
+              );
+            })}
+          </Menu>
+        </WorkflowModal>
+        {/* <Modal
             // title="Vertically centered modal dialog"
             wrapClassName="vertical-center-modal"
             open={isModalVisible}
@@ -842,10 +842,10 @@ const Workflowstage = ({
             </div>
  
           </Modal> */}
-        </Accordion>
-        {contextHolder}
-      </div>
-    </DrawerPop>
+      </Accordion>
+      {contextHolder}
+    </div>
+    </DrawerPop >
   );
 };
 
