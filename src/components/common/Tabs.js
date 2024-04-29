@@ -184,7 +184,7 @@ const Tabs = ({
                 activeTab === tab.id
                   ? "relative z-20 text-white"
                   : " text-black dark:text-white group-hover:text-primary"
-              }`}
+              }`} title={tab.title}
             >
               {tab.title}
             </span>
