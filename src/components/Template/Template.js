@@ -535,7 +535,7 @@ const Template = ({
 
       const response = await getAllRecruitmentEmailTemplates();
 
-
+      // console.log(response," Email list is here")
       setEmail(response.result)
       setEmailSubject(response.result.map((email) => ({
         emailTemplateId: email.emailTemplateId,
