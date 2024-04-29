@@ -1495,7 +1495,10 @@ const CreatejobTemp = ({
                           loader={loader}
                         /> */}
                         <TextEditorcopy
-                          Change={handleEditorChange}
+                          Change={(e)=>{
+                            handleEditorChange(e)
+                            console.log(e)
+                          }}
                           initialValue={content}
                           error={formik.errors.jobDescription}
                         />

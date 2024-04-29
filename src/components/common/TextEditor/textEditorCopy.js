@@ -4,6 +4,7 @@ import { Editor } from 'react-draft-wysiwyg';
 import { FaAsterisk } from 'react-icons/fa';
 import { BeatLoader } from 'react-spinners';
 import { convertToHTML } from 'draft-convert';
+import htmlToDraft from 'html-to-draftjs';
 import 'react-draft-wysiwyg/dist/react-draft-wysiwyg.css';
 
 const TextEditorcopy = ({
@@ -18,9 +19,15 @@ const TextEditorcopy = ({
   loader = false,
   error = "",
 }) => {
-    const [editorState, setEditorState] = useState(
-        () => EditorState.createEmpty(),
-      );
+      const [editorState, setEditorState] = useState(() => {
+        if (initialValue) {
+            const blocksFromHTML = convertFromHTML(initialValue);
+            const contentState = ContentState.createFromBlockArray(blocksFromHTML.contentBlocks, blocksFromHTML.entityMap);
+            return EditorState.createWithContent(contentState);
+        } else {
+            return EditorState.createEmpty();
+        }
+    });
      
     useEffect(() => {
         if (initialValue) {
@@ -29,6 +36,10 @@ const TextEditorcopy = ({
                 const contentState = ContentState.createFromBlockArray(blocksFromHTML.contentBlocks, blocksFromHTML.entityMap);
                 const newEditorState = EditorState.createWithContent(contentState);
                 setEditorState(newEditorState);
+                // const Htmldata = editorState.getCurrentContent();
+                // const htmlContent = convertToHTML(Htmldata);
+                //  console.log({"Value":htmlContent})
+                //  Change(htmlContent);
             
          
           
@@ -38,7 +49,12 @@ const TextEditorcopy = ({
         }
          console.log(initialValue)
       }, [initialValue]);
-    
+      
+
+      const handleEditorChange = (editorState) => {
+        setEditorState(editorState);
+      
+    }
     
       useEffect(() => {
        if(Change){
@@ -48,6 +64,7 @@ const TextEditorcopy = ({
         Change(htmlContent);
        }
       }, [Change]);
+
 
    
   
@@ -77,7 +94,11 @@ const TextEditorcopy = ({
       ) : (
         <Editor
           editorState={editorState}
-          onEditorStateChange={setEditorState}
+          onEditorStateChange={(e)=>{
+            console.log(e)
+            handleEditorChange(e)
+          }}
+          
           placeholder={placeholder}
           wrapperStyle={{ height: height }}
           toolbar={{
