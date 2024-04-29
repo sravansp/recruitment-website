@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { EditorState, ContentState, convertFromHTML, convertToRaw } from 'draft-js';
+import { EditorState, ContentState, convertFromHTML } from 'draft-js';
 import { Editor } from 'react-draft-wysiwyg';
 import { FaAsterisk } from 'react-icons/fa';
 import { BeatLoader } from 'react-spinners';
@@ -9,8 +9,8 @@ import 'react-draft-wysiwyg/dist/react-draft-wysiwyg.css';
 const TextEditorcopy = ({
   title = "",
   required = false,
-  initialValue = "",
-  onChange = () => {},
+  initialValue,
+  Change = () => {},
   className,
   minheight = "250px",
   height = "",
@@ -18,31 +18,39 @@ const TextEditorcopy = ({
   loader = false,
   error = "",
 }) => {
-  const [editorState, setEditorState] = useState(() => {
-    if (initialValue) {
-      const blocksFromHTML = convertFromHTML(initialValue);
-      const contentState = ContentState.createFromBlockArray(blocksFromHTML.contentBlocks, blocksFromHTML.entityMap);
-      return EditorState.createWithContent(contentState);
-    } else {
-      return EditorState.createEmpty();
-    }
-  });
+    const [editorState, setEditorState] = useState(
+        () => EditorState.createEmpty(),
+      );
+     
+    useEffect(() => {
+        if (initialValue) {
+        
+                const blocksFromHTML = convertFromHTML(initialValue);
+                const contentState = ContentState.createFromBlockArray(blocksFromHTML.contentBlocks, blocksFromHTML.entityMap);
+                const newEditorState = EditorState.createWithContent(contentState);
+                setEditorState(newEditorState);
+            
+         
+          
+        }else {
+            console.log("No initail values");
+            setEditorState(EditorState.createEmpty())
+        }
+         console.log(initialValue)
+      }, [initialValue]);
+    
+    
+      useEffect(() => {
+       if(Change){
+        const contentState = editorState.getCurrentContent();
+        const htmlContent = convertToHTML(contentState);
+        
+        Change(htmlContent);
+       }
+      }, [Change]);
 
-  useEffect(() => {
-    if (initialValue) {
-      const blocksFromHTML = convertFromHTML(initialValue);
-      const contentState = ContentState.createFromBlockArray(blocksFromHTML.contentBlocks, blocksFromHTML.entityMap);
-      const newEditorState = EditorState.push(editorState, contentState);
-      setEditorState(newEditorState);
-    }
-  }, [initialValue]);
-
-  const handleEditorChange = (newEditorState) => {
-    setEditorState(newEditorState);
-    const contentState = newEditorState.getCurrentContent();
-    const htmlContent = convertToHTML(contentState);
-    onChange(htmlContent);
-  };
+   
+  
 
   return (
     <div
@@ -69,7 +77,7 @@ const TextEditorcopy = ({
       ) : (
         <Editor
           editorState={editorState}
-          onEditorStateChange={handleEditorChange}
+          onEditorStateChange={setEditorState}
           placeholder={placeholder}
           wrapperStyle={{ height: height }}
           toolbar={{

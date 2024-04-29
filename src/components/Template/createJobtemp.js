@@ -81,7 +81,7 @@ import Jobcardcopy from "../common/Jobcardcopy";
 import { RiDeleteBinLine } from "react-icons/ri";
 import { FaAsterisk } from "react-icons/fa";
 import TextEditorcopy from "../common/TextEditor/textEditorCopy";
-
+import { EditorState, ContentState, convertFromHTML } from 'draft-js';
 const CreatejobTemp = ({
   open = "",
   close = () => { },
@@ -471,6 +471,10 @@ const CreatejobTemp = ({
         formik.setFieldValue("isSalaryPublic", firstJob.isSalaryPublic);
         formik.setFieldValue("jobCode", firstJob.jobCode);
         setContent(firstJob.jobDescription)
+          //      const blocksFromHTML = convertFromHTML(firstJob.jobDescription);
+          // const contentState = ContentState.createFromBlockArray(blocksFromHTML.contentBlocks, blocksFromHTML.entityMap);
+          // const newEditorState = EditorState.createWithContent(contentState);
+          // setContent(newEditorState);
         formik.setFieldValue("jobType", firstJob.jobType);
         formik.setFieldValue("location", firstJob.location);
         formik.setFieldValue("requirementType", firstJob.requirementType);
@@ -511,7 +515,7 @@ const CreatejobTemp = ({
   useEffect(() => {
     getJobtemById();
     console.log(jobdata);
-  }, [updateId]);
+  }, []);
   const [departmentList, setDepartmentList] = useState([]);
   const [company, setCompany] = useState([]);
   const getDepartmentList = async () => {
@@ -1435,28 +1439,38 @@ const CreatejobTemp = ({
                       initialExpanded={true}
                     >
                       <div class="flex flex-col gap-4 overflow-hidden">
-                        <div className="border rounded-md bg-primaryalpha/5">
-                          <div className="flex items-center px-1.5  ">
-                            <img src={AI_Text} alt='' className="border rounded-md"></img>
-                            <div className="flex flex-col gap-1 p-1.5">
-                              <div className="flex items-center justify-between ">
-                                <p className="font-bold">Generate personalized job descriptions based on pas account data.
-                                </p>
-                                {/* <p className="text-primary"><IoClose /></p> */}
-                              </div>
-                              <p className="text-gray-400">When you generate with Al, we look for similar jobs you've created in the past and use he data to create content that's
-                                impactful, accurate, and personalized to your company
+                      <div className="border rounded-md bg-primaryalpha/5">
+                        <div className="flex items-center px-1.5  ">
+                          <img src={AI_Text} alt='' className="border rounded-md"></img>
+                          <div className="flex flex-col gap-1 p-1.5">
+                            <div className="flex items-center justify-between ">
+                              <p className="font-bold">Generate personalized job descriptions based on pas account data.
                               </p>
+                              {/* <p className="text-primary"><IoClose /></p> */}
                             </div>
+                            <p className="text-gray-400">When you generate with Al, we look for similar jobs you've created in the past and use he data to create content that's
+                              impactful, accurate, and personalized to your company
+                            </p>
                           </div>
                         </div>
-                        <div
-                          style={{
-                            display: "flex",
-                            justifyContent: "flex-end",
-                            gap: "16px",
+                      </div>
+                      <div
+                        style={{
+                          display: "flex",
+                          justifyContent: "flex-end",
+                          gap: "16px",
+                        }}
+                      >
+                        <Dropdown
+                          title={''}
+                          placeholder={'Choose Job Description'}
+                          options={JobDescriptionList}
+                          value={decriptionId}
+                          className={'min-w-40'}
+                          change={(e) => {
+                            setDecriptionId(e)
                           }}
-                        >
+                        />
                         <ButtonClick handleSubmit={handleGenerateWithAI} BtnType="primary" icon={<img src={image} alt="image" style={{ height: '20px', width: '20px', alignItems: "center" }} />} buttonName={"Generate with AI"} />
                       </div>
                        <div className="flex gap-1.5">
@@ -1481,7 +1495,7 @@ const CreatejobTemp = ({
                           loader={loader}
                         /> */}
                         <TextEditorcopy
-                          onChange={handleEditorChange}
+                          Change={handleEditorChange}
                           initialValue={content}
                           error={formik.errors.jobDescription}
                         />
