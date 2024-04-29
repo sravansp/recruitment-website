@@ -1457,21 +1457,11 @@ const CreatejobTemp = ({
                             gap: "16px",
                           }}
                         >
-                          <Dropdown
-                            title={''}
-                            placeholder={'Choose Job Description'}
-                            options={JobDescriptionList}
-                            value={decriptionId}
-                            className={'min-w-40'}
-                            change={(e) => {
-                              setDecriptionId(e)
-                            }}
-                          />
-                          <ButtonClick handleSubmit={handleGenerateWithAI} BtnType="primary" icon={<img src={image} alt="image" style={{ height: '20px', width: '20px', alignItems: "center" }} />} buttonName={"Generate with AI"} />
-                        </div>
-                        <div className="flex gap-1.5">
-                          <p className="pb-2">Description</p>
-                          <FaAsterisk className="text-[6px] text-rose-600" />
+                        <ButtonClick handleSubmit={handleGenerateWithAI} BtnType="primary" icon={<img src={image} alt="image" style={{ height: '20px', width: '20px', alignItems: "center" }} />} buttonName={"Generate with AI"} />
+                      </div>
+                       <div className="flex gap-1.5">
+                        <p className="pb-2">Description</p>
+                        <FaAsterisk className="text-[6px] text-rose-600" />
                         </div>
                         {/* <TextEditor
                           placeholder={t(
