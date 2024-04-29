@@ -2193,11 +2193,13 @@ const Createjob = ({
                                   placeholder={"Choose Options"}
 
                                 />
+                                <Tooltip placement="topRight" title={"Active / Inactive"}>
+                                  <div style={{ display: 'flex', alignItems: 'center', gap: '15px' }}>
+                                    <p>Mandatory</p>
+                                    <ToggleBtn />
+                                  </div>
+                                </Tooltip>
 
-                                <div style={{ display: 'flex', alignItems: 'center', gap: '15px' }}>
-                                  <p>Mandatory</p>
-                                  <ToggleBtn />
-                                </div>
                                 <div style={{ display: 'flex', alignItems: 'center', gap: '15px' }}>
                                   <Tooltip placement="top" title={"Copy"}>
                                     <MdOutlineFileCopy
