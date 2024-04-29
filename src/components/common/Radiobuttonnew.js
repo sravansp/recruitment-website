@@ -35,7 +35,7 @@ const Radiobuttonnew = ({
             <div className='radioButtons'>
             {options?.map((radio) => (
                 
-              <Radio.Button  value={radio.value}><span className="text-xs 2xl:text-sm dark:text-white">{radio.label}</span></Radio.Button >
+              <Radio.Button  value={radio.value}><span className="text-xs 2xl:text-sm dark:text-white" title={radio.label}>{radio.label}</span></Radio.Button >
               
             ))}
             </div>
