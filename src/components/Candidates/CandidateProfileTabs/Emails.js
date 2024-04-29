@@ -15,7 +15,8 @@ import { saveRecruitmentJobResumesEmailCommunication, getAllRecruitmentJobResume
 import { notification } from 'antd';
 import { getRecruitmentJobResumesNoteById, updateRecruitmentJobResumesNote, getAllRecruitmentJobResumesNotes, saveRecruitmentJobResumesNote } from "../../Api1";
 import { FaRegEdit } from "react-icons/fa";
-import { PiPushPinSlashBold } from "react-icons/pi";
+import { PiBracketsCurly, PiPushPinSlashBold } from "react-icons/pi";
+import Dropdown from "../../common/Dropdown";
 
 
 const tabData = [
@@ -263,6 +264,23 @@ const Emails = ({ Email }) => {
     }
 
   }
+  const dropdown1 = [
+    {
+      id: 1,
+      label: "[candidate]",
+      value: "candidate",
+    },
+    {
+      id: 2,
+      label: "[candidate_first_name]",
+      value: "candidate_first_name",
+    },
+    {
+      id: 3,
+      label: "[company]",
+      value: "company",
+    },
+  ];
 
   return (
     <div className="grid gap-6 lg:grid-cols-12">
@@ -295,6 +313,7 @@ const Emails = ({ Email }) => {
                 className="border-none"
                 height="250px"
               />
+              <Dropdown options={dropdown1} value="Placeholder" placeholder="Placeholder" icon={<PiBracketsCurly />} icondropDown={<PiBracketsCurly />}/>
             </div>
           </div>
           {uploadedFiles.length > 0 && (
