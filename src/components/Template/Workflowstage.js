@@ -33,10 +33,11 @@ import * as Yup from "yup";
 import WorkflowModal from "../common/WorkflowModal";
 import ModalImg from "../../assets/images/Workflowimg.png";
 import Dropdown from "../common/Dropdown";
+import arrow from "../../assets/images/arrow3d 1.png";
 
 const Workflowstage = ({
   open = "",
-  close = () => { },
+  close = () => {},
   inputshow = false,
   isUpdate = {},
   updateId,
@@ -52,14 +53,16 @@ const Workflowstage = ({
       placement: "top",
       // stack: 2,
       style: {
-        background: `${type === "success"
+        background: `${
+          type === "success"
             ? `linear-gradient(180deg, rgba(204, 255, 233, 0.8) 0%, rgba(235, 252, 248, 0.8) 51.08%, rgba(246, 251, 253, 0.8) 100%)`
             : "linear-gradient(180deg, rgba(255, 236, 236, 0.80) 0%, rgba(253, 246, 248, 0.80) 51.13%, rgba(251, 251, 254, 0.80) 100%)"
-          }`,
-        boxShadow: `${type === "success"
+        }`,
+        boxShadow: `${
+          type === "success"
             ? "0px 4.868px 11.358px rgba(62, 255, 93, 0.2)"
             : "0px 22px 60px rgba(134, 92, 144, 0.20)"
-          }`,
+        }`,
       },
       // duration: null,
     });
@@ -102,8 +105,8 @@ const Workflowstage = ({
     // Set the state to false to hide the modal
     setIsModalVisible(false);
     //set the state empty
-    setStageName('')
-    setSelectedStageName('')
+    setStageName("");
+    setSelectedStageName("");
   };
   const handleCopy = (stageIndex) => {
     copy(stageIndex);
@@ -203,10 +206,15 @@ const Workflowstage = ({
     // }),
     onSubmit: async (values, { setSubmitting }) => {
       try {
-        if (
-          !formik.values.workFlowName || !formik.values.description){
-            formik.setFieldError('workFlowName', !formik.values.workFlowName ? 'Workflow Name is required' : '');
-            formik.setFieldError('description', !formik.values.description ? 'Description  is required' : '');
+        if (!formik.values.workFlowName || !formik.values.description) {
+          formik.setFieldError(
+            "workFlowName",
+            !formik.values.workFlowName ? "WorkFlow Name is required" : ""
+          );
+          formik.setFieldError(
+            "description",
+            !formik.values.description ? "Description  is required" : ""
+          );
           return;
         }
 
@@ -342,89 +350,121 @@ const Workflowstage = ({
     console.log(stages);
   }, []);
 
-  //update workflow
-  const options = [
+  const [options, setoptions] = useState([
     {
       key: 1,
       label: "Request Evaluation",
-      value: "option1",
+      value: "request",
       icon: <MdAlignHorizontalLeft />,
+      det:[ {
+        id: "request_evaluation",
+        name: "Request Evaluation",
+        option1: [
+          { id: 1, title: "Email Template" },
+          { id: 2, title: "Email Sender" },
+        ],
+      },]
     },
 
     {
       key: 2,
       label: "Add Note",
-      value: "option3",
+      value: "note",
       icon: <CiTextAlignLeft />,
+      det:[ {
+        id: "send_questionnaire",
+        name: "Send Questionnaire ",
+        option1: [
+          { id: 1, title: "Email Template" },
+          { id: 2, title: "Email Sender" },
+        ],
+      },]
     },
     {
       key: 3,
       label: "Send Email",
-      value: "option4",
+      value: "email",
       icon: <IoMdCheckboxOutline />,
+      det:[ {
+        id: "send_email",
+        name: "Send Email ",
+        option1: [
+          { id: 1, title: "Email Template" },
+          { id: 2, title: "Email Sender" },
+        ],
+      },]
     },
     {
       key: 4,
       label: "Send Questionnaire",
-      value: "option5",
+      value: "questionnaire",
       icon: <FaRegCircleDot />,
+      det:[ {
+        id: "send_questionnaire",
+        name: "Send Questionnaire ",
+        option1: [
+          { id: 1, title: "Email Template" },
+          { id: 2, title: "Email Sender" },
+        ],
+      },]
     },
     {
       key: 5,
       label: "Add Tag",
-      value: "option6",
+      value: "tag",
       icon: <IoIosArrowDropdown />,
+      det:[ {
+        id: "add_tag",
+        name: "Send Email ",
+        option1: [
+          { id: 1, titletag: "Add New Tag" }
+        ],
+      },]
     },
-  ];
-
-  // const emailoption = [
-  //   {
-  //     id: "send_email", name: "Send Email",
-  //     option1: [{ id: 1, title: "Email Template" },
-  //     { id: 2, title: "Email Sender" },]
-  //   }, {
+  ]);
+  // const [emailOptions, setEmailOptions] = useState({
+  //   request: [
+  //     {
+  //       id: "send_email", name: "Send Email",
+  //       option1: [{ id: 1, title: "Email Template" },
+  //       { id: 2, title: "Email Sender" },]
+  //     }
+  //   ]
+  // }, {
+  //   note: [{
   //     id: "send_questionnaire", name: "Send Questionnaire ",
   //     option1: [{ id: 1, title: "Email Template" },
   //     { id: 2, title: "Email Sender" },]
-  //   },{
+  //   },
+  //   ]
+  // }, {
+  //   email: [{
   //     id: "add_tag", name: "Add Tag",
   //     option1: [{ id: 1, titletag: "Add New Tag" },
   //     ]
-  //   }
-  // ];
-  const [emailOptions, setEmailOptions] = useState([
-    {
-      id: "send_email", name: "Send Email",
-      option1: [{ id: 1, title: "Email Template" },
-      { id: 2, title: "Email Sender" },]
-    },
-    {
-      id: "send_questionnaire", name: "Send Questionnaire ",
-      option1: [{ id: 1, title: "Email Template" },
-      { id: 2, title: "Email Sender" },]
-    },
-    {
-      id: "add_tag", name: "Add Tag",
-      option1: [{ id: 1, titletag: "Add New Tag" },
-      ]
-    }
-  ]);
-  
+  //   }]
+  // });
 
- 
-  const handleMenuClick = (option) => {
-    console.log("Selected option:", option);
-    // Handle the selected option here
+  const [optionData, setOptionData] = useState([]);
+  const [sections, setSections] = useState([]);
+
+  const handleMenuClick = (option, value) => {
+    let demo = options.filter(data => data.key == option);
+    setOptionData(demo[0].det)
     setmenuitem(true)
-    setMenuVisible(false); // Close the menu after selection
+    setMenuVisible(false);
+   
   };
+  
+  console.log(optionData, "0000");
+
+  
   const handleDeleteSection = (id) => {
-    const updatedOptions = emailOptions.filter(option => option.id !== id);
-    setEmailOptions(updatedOptions);
+    const updatedOptions = optionData.filter(option => option.id !== id);
+    setOptionData(updatedOptions);
     console.log(`Option with id '${id}' deleted successfully.`);
   };
 
-  
   return (
     <DrawerPop
       open={show}
@@ -447,12 +487,12 @@ const Workflowstage = ({
       }}
       header={[
         !updateId
-          ? t("Create Workflow Template")
+          ? t("Create a Workflow Template")
           : t("Update Workflow stages"),
         !updateId
-          ? t("Create Workflow Template")
-          : t("Update Workflow stages"),]}
-
+          ? t("Create a Workflow Template")
+          : t("Update Workflow stages"),
+      ]}
       //  headerRight={
       //    <div className="flex items-center gap-10">
       //      <p className="text-sm font-medium text-gray-400">
@@ -530,7 +570,7 @@ const Workflowstage = ({
             <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
               <TextArea
                 title={"Description"}
-                placeholder={"Enter Description"}
+                placeholder={"Enter Description..."}
                 className="!text-[#344054]"
                 change={(e) => {
                   formik.setFieldValue("description", e);
@@ -644,7 +684,7 @@ const Workflowstage = ({
               <div className="flex flex-col items-center gap-2 text-center">
                 <div className="p-1 overflow-hidden border-2 border-white rounded-full 2xl:size-14 size-12 bg-primaryalpha/10">
                   <img
-                    src={image}
+                    src={arrow}
                     alt="modalimg"
                     className="object-cover object-center w-full h-full"
                   />
@@ -677,32 +717,56 @@ const Workflowstage = ({
                 />
               </div>
             </div>
-            {emailOptions.map((items,index) => (
-              <div key={items.id} className="flex flex-col gap-3 w-full border border-black-500 ring-1 ring-black ring-opacity-5 shadow-lg rounded-lg p-1" style={{ display: menuitem ? "block" : "none" }}>
+            {optionData? optionData.map((key, index) => (
+              <div key={index} className="flex flex-col gap-3 w-full border border-black-500 ring-1 ring-black ring-opacity-5 shadow-lg rounded-lg p-1" style={{ display: menuitem ? "block" : "none" }}>
                 <div className="w-full m-auto bg-slate-100 h-12 rounded-lg flex justify-between items-center pr-2">
-                  <h1 className="mt-3.5 m-3 font-semibold">{items.name}</h1>
-                  <RiDeleteBin5Line className="text-gray-500 2xl:text-base dark:text-white hover:text-red-500" onClick={() => handleDeleteSection(`${items.id}`)} />
+                  <h1 className="mt-3.5 m-3 font-semibold">{key.name}</h1>
+                  <RiDeleteBin5Line className="text-gray-500 2xl:text-base dark:text-white hover:text-red-500" onClick={() => handleDeleteSection(`${optionData[index].id}`)}  />
+                </div>
+                <div className="flex gap-2 w-full p-1">
+                  {key && key.option1 ? key.option1.map((item,ind) => (
+                    <>
+                      {item.title ?
+                        <div key={ind} className="w-1/2">
+                          <Dropdown title={item.title} />
+
+                        </div>
+                        : ""}
+                      {item.titletag ?
+                        <div className="w-full">
+                          <FormInput title={item.titletag} />
+                        </div>
+                        : ""}
+                   </>
+                  )):""}
+                </div>
+              </div>
+            )):''}
+              {/* {optionData.map((item) => (
+              <div  className="flex flex-col gap-3 w-full border border-black-500 ring-1 ring-black ring-opacity-5 shadow-lg rounded-lg p-1" style={{ display: menuitem ? "block" : "none" }}>
+                <div className="w-full m-auto bg-slate-100 h-12 rounded-lg flex justify-between items-center pr-2">
+                  <h1 className="mt-3.5 m-3 font-semibold">{item.name}</h1>
+                  <RiDeleteBin5Line className="text-gray-500 2xl:text-base dark:text-white hover:text-red-500"  />
                 </div>
                 <div className="flex gap-2  w-full p-1">
-                  {items.option1.map((item) => (
-                    <>
-                       {item.title ?
-                    <div className="w-1/2">
-                    <Dropdown title={item.title} />
-                     
+                  { item.option1.map((item2,ind) => (
+                    <div key={ind}>
+                      {item2.title ?
+                        <div className="w-1/2">
+                          <Dropdown title={item2.title} />
+
+                        </div>
+                        : ""}
+                      {item.titletag ?
+                        <div className="w-full">
+                          <FormInput title={item2.titletag} />
+                        </div>
+                        : ""}
                     </div>
-                    :""}
-                    {item.titletag ?
-                    <div className="w-full">
-                     <FormInput title={item.titletag}/>
-                    </div>
-                    :""}
-                    </>
                   ))}
                 </div>
               </div>
-            ))}
-            
+            ))} */}
 
             <div className="justify-start">
               <AddMore
@@ -712,23 +776,47 @@ const Workflowstage = ({
               />
             </div>
 
-            <Menu
+            {/* <Menu
               onClick={({ key }) => handleMenuClick(key)}
               style={{ display: menuVisible ? "block" : "none" }}
               className="w-48 border border-black-500 ring-1 ring-black ring-opacity-5 bg-white shadow-lg rounded-lg"
             >
-              {options.map((option) => (
-                <Menu.Item key={option.key}>
-                  <div className="flex justify-start gap-2 items-center" >
-                    <span>{option.icon}</span>
-                    <span> {option.label}</span>
-                  </div>
-                </Menu.Item>
-              ))}
+              {options.map(option => {
+                let emailOption;
+                if (option.value === 'request') {
+                  emailOption = emailOptions.result;
+                } else if (option.value === 'note') {
+                  emailOption = emailOptions.note;
+                } else if (option.value === 'email') {
+                  emailOption = emailOptions.email;
+                } (
+                  <Menu.Item key={option.key}>
+                    <div className="flex justify-start gap-2 items-center" >
+                      <span>{option.icon}</span>
+                      <span> {option.label}</span>
+                    </div>
+                  </Menu.Item>
+                );
+              })}
+            </Menu> */}
+            <Menu
+              onClick={({ key, value }) => handleMenuClick(key, value)}
+              style={{ display: menuVisible ? "block" : "none" }}
+              className="w-48 border border-black-500 ring-1 ring-black ring-opacity-5 bg-white shadow-lg rounded-lg"
+            >
+              {options.map((option) => {
+                return (
+                  <Menu.Item key={option.key}>
+                    <div className="flex justify-start gap-2 items-center">
+                      <span>{option.icon}</span>
+                      <span> {option.label}</span>
+                    </div>
+                  </Menu.Item>
+                );
+              })}
             </Menu>
-
           </WorkflowModal>
-            {/* <Modal
+          {/* <Modal
             // title="Vertically centered modal dialog"
             wrapClassName="vertical-center-modal"
             open={isModalVisible}
