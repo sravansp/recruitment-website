@@ -60,7 +60,7 @@ const Workflowstage = ({ open = "", close = () => { }, inputshow = false, isUpda
   const [presentage, setPresentage] = useState(0);
   const [stageName, setStageName] = useState('');
   const [insertedId, setInsertedId] = useState("")
-  const[stageError,setStageError] = useState("")
+  const [stageError, setStageError] = useState("")
   const [stages, setstages] = useState(
     [
 
@@ -91,15 +91,15 @@ const Workflowstage = ({ open = "", close = () => { }, inputshow = false, isUpda
   }, [stages])
 
   const handleAddStageClick = () => {
-   
-    if(!stageName){
+
+    if (!stageName) {
       setStageError('Stage Name is required.')
-    }else{
+    } else {
       setStageError('')
     }
-   
-   
-   
+
+
+
     if (!stageName.trim()) {
       // If stageName is empty or contains only whitespace, return without adding a stage
       return;
@@ -187,14 +187,18 @@ const Workflowstage = ({ open = "", close = () => { }, inputshow = false, isUpda
     // }),
     onSubmit: async (values, { setSubmitting }) => {
       try {
-        if (
-          !formik.values.workFlowName || !formik.values.description){
-            formik.setFieldError('workFlowName', !formik.values.workFlowName ? 'Workflow Name is required' : '');
-            formik.setFieldError('description', !formik.values.description ? 'Description  is required' : '');
-          return;
-          }
-        
-        if (stages.length===0) {
+        const alphanumericRegex = /^[a-zA-Z0-9 ]+$/; // Regex to allow only letters, numbers, and spaces
+
+        if (!values.workFlowName || !alphanumericRegex.test(values.workFlowName)) {
+          formik.setFieldError('workFlowName', !values.workFlowName ? 'Workflow Name is required' : 'Please enter only letters and numbers');
+        }
+
+        if (!values.description) {
+          formik.setFieldError('description', 'Description is required');
+        }
+
+
+        if (stages.length === 0) {
           setIsModalVisible(true);
           return;
         }
@@ -208,7 +212,7 @@ const Workflowstage = ({ open = "", close = () => { }, inputshow = false, isUpda
             workFlowId: updateId,  // Assuming stageRules is available in item
             createdBy: 9,
           }));
-           
+
           const response = await updateWorkFlowWithStages({
             RecruitmentWorkFlow: {
               workFlowId: updateId,
@@ -270,7 +274,7 @@ const Workflowstage = ({ open = "", close = () => { }, inputshow = false, isUpda
             } else if (response2.status === 500) {
               openNotification("Error", "Error", response2.message);
             }
-          }else if (response.status === 500){
+          } else if (response.status === 500) {
             openNotification("Error", "Error", response.message.replace(/<br\/>/g, '\n'));
           }
           else if (response.status === 500) {
@@ -293,7 +297,7 @@ const Workflowstage = ({ open = "", close = () => { }, inputshow = false, isUpda
       const response = await getRecruitmentWorkFlowById({ id })
       console.log(response)
       setworkFlowsatges(response.result)
-      console.log({"stageName":stageName})
+      console.log({ "stageName": stageName })
       if (response.result.length > 0) {
         const firstJob = response.result[0];
 
