@@ -11,7 +11,7 @@ const WorkflowModal = ({
   footer = true,
   title = "",
   buttonClose = "Cancel",
-  buttonSubmit = "Submit",
+  buttonSubmit = "",
   className = "",
   handleSubmit = () => {},
 }) => {
@@ -77,8 +77,8 @@ const WorkflowModal = ({
                   {buttonSubmit && (
                     <ButtonClick
                       BtnType="primary"
-                      buttonName={buttonSubmit}
-                      handleSubmit={onClose}
+                      buttonName="Submit"
+                      handleSubmit={buttonSubmit}
                     />
                   )}
                 </div>

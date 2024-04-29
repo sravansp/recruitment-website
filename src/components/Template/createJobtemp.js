@@ -81,7 +81,7 @@ import Jobcardcopy from "../common/Jobcardcopy";
 import { RiDeleteBinLine } from "react-icons/ri";
 import { FaAsterisk } from "react-icons/fa";
 import TextEditorcopy from "../common/TextEditor/textEditorCopy";
-
+import { EditorState, ContentState, convertFromHTML } from 'draft-js';
 const CreatejobTemp = ({
   open = "",
   close = () => { },
@@ -471,6 +471,10 @@ const CreatejobTemp = ({
         formik.setFieldValue("isSalaryPublic", firstJob.isSalaryPublic);
         formik.setFieldValue("jobCode", firstJob.jobCode);
         setContent(firstJob.jobDescription)
+          //      const blocksFromHTML = convertFromHTML(firstJob.jobDescription);
+          // const contentState = ContentState.createFromBlockArray(blocksFromHTML.contentBlocks, blocksFromHTML.entityMap);
+          // const newEditorState = EditorState.createWithContent(contentState);
+          // setContent(newEditorState);
         formik.setFieldValue("jobType", firstJob.jobType);
         formik.setFieldValue("location", firstJob.location);
         formik.setFieldValue("requirementType", firstJob.requirementType);
@@ -511,7 +515,7 @@ const CreatejobTemp = ({
   useEffect(() => {
     getJobtemById();
     console.log(jobdata);
-  }, [updateId]);
+  }, []);
   const [departmentList, setDepartmentList] = useState([]);
   const [company, setCompany] = useState([]);
   const getDepartmentList = async () => {
@@ -1491,7 +1495,7 @@ const CreatejobTemp = ({
                           loader={loader}
                         /> */}
                         <TextEditorcopy
-                          onChange={handleEditorChange}
+                          Change={handleEditorChange}
                           initialValue={content}
                           error={formik.errors.jobDescription}
                         />
