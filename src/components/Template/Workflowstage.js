@@ -485,10 +485,10 @@ const Workflowstage = ({
       header={[
         !updateId
           ? t("Create a Workflow Template")
-          : t("Update Workflow stages"),
+          : t("Update Workflow Template"),
         !updateId
           ? t("Create a Workflow Template")
-          : t("Update Workflow stages"),
+          : t("Update Workflow Template"),
       ]}
       //  headerRight={
       //    <div className="flex items-center gap-10">
