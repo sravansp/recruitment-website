@@ -1,93 +1,102 @@
-import React, { useState, useRef } from 'react';
-import ReactQuill from 'react-quill';
-import Quill from 'quill';
-import ImageResize from 'quill-image-resize-module-react';
+import React, { useEffect, useRef } from 'react';
+import { ClassicEditor } from '@ckeditor/ckeditor5-editor-classic';
+import Editor from '@ckeditor/ckeditor5-react';
+// import '@ckeditor/ckeditor5-build-classic/build/translations/en';
+import { ClassicEditor } from '@ckeditor/ckeditor5-editor-classic';
 
-Quill.register('modules/imageResize', ImageResize);
+import { Alignment } from '@ckeditor/ckeditor5-alignment';
+import { Autoformat } from '@ckeditor/ckeditor5-autoformat';
+import { Bold, Italic } from '@ckeditor/ckeditor5-basic-styles';
+import { EditorConfig } from '@ckeditor/ckeditor5-core';
+import { Essentials } from '@ckeditor/ckeditor5-essentials';
+import { FontColor, FontFamily, FontSize } from '@ckeditor/ckeditor5-font';
+import { Heading } from '@ckeditor/ckeditor5-heading';
+import { Image, ImageResize, ImageToolbar, ImageUpload } from '@ckeditor/ckeditor5-image';
+import { Indent } from '@ckeditor/ckeditor5-indent';
+import { Link } from '@ckeditor/ckeditor5-link';
+import { List } from '@ckeditor/ckeditor5-list';
+import { Paragraph } from '@ckeditor/ckeditor5-paragraph';
+import { PasteFromOffice } from '@ckeditor/ckeditor5-paste-from-office';
+import { Table, TableToolbar } from '@ckeditor/ckeditor5-table';
+import { TextTransformation } from '@ckeditor/ckeditor5-typing';
+import { Undo } from '@ckeditor/ckeditor5-undo';
 
-const modules = {
-  toolbar: {
-    container: [
-      [{ 'header': [1, 2, 3, 4, 5, 6, false] }],
-      ['bold', 'italic', 'underline', 'strike', 'blockquote'],
-      [{ 'list': 'ordered' }, { 'list': 'bullet' }],
-      [{ 'indent': '-1' }, { 'indent': '+1' }],
-      ['link', 'image', 'video'],
-      ['clean'],
-    ],
-    handlers: {
-      'image': function() {
-        const input = document.createElement('input');
-        input.setAttribute('type', 'file');
-        input.click();
+const CKEditorWrapper = ({ data, onChange }) => {
+    const editorRef = useRef(null);
 
-        input.onchange = () => {
-          const file = input.files[0];
-          const reader = new FileReader();
-          reader.onload = () => {
-            const base64 = reader.result.split(',')[1];
-            this.quill.editor.insertEmbed(this.quill.selection.savedRange.index, 'image', `data:image/png;base64,${base64}`);
-          };
-          reader.readAsDataURL(file);
-        };
-      },
-    },
-  },
-  clipboard: {
-    matchVisual: false,
-  },
-  imageResize: {
-    modules: ['Resize', 'DisplaySize', 'Toolbar'],
-    displaySize: {
-      name: 'imageSize',
-      toolbar: ['imageSize100', 'imageSize50', 'imageSize25'],
-    },
-    toolbar: {
-      imageSize100: {
-        name: 'imageSizeFull',
-        action: 'resizeImage',
-        value: 1,
-      },
-      imageSize50: {
-        name: 'imageSizeHalf',
-        action: 'resizeImage',
-        value: 0.5,
-      },
-      imageSize25: {
-        name: 'imageSizeQuarter',
-        action: 'resizeImage',
-        value: 0.25,
-      },
-    },
-  },
+    useEffect(() => {
+        if (editorRef.current) {
+            editorRef.current.editorInstance.setData(data);
+        }
+    }, [data]);
+
+    return (
+        <Editor
+            editor={ClassicEditor}
+            config={{
+                plugins: [
+                    Alignment,
+                    Autoformat,
+                    Bold,
+                    Essentials,
+                    FontColor,
+                    FontFamily,
+                    FontSize,
+                    Heading,
+                    Image,
+                    ImageResize,
+                    ImageToolbar,
+                    ImageUpload,
+                    Indent,
+                    Italic,
+                    Link,
+                    List,
+                    Paragraph,
+                    PasteFromOffice,
+                    Table,
+                    TableToolbar,
+                    TextTransformation,
+                    Undo
+                ],
+                toolbar: {
+                    items: [
+                        'heading',
+                        'fontSize',
+                        'fontFamily',
+                        'fontColor',
+                        '|',
+                        'bold',
+                        'italic',
+                        'link',
+                        'bulletedList',
+                        'numberedList',
+                        '|',
+                        'alignment',
+                        'outdent',
+                        'indent',
+                        '|',
+                        'imageUpload',
+                        'insertTable',
+                        'undo',
+                        'redo'
+                    ]
+                },
+                language: 'en',
+                image: {
+                    toolbar: ['imageTextAlternative']
+                },
+                table: {
+                    contentToolbar: ['tableColumn', 'tableRow', 'mergeTableCells']
+                }
+            }}
+            data={data}
+            onChange={(event, editor) => {
+                const newData = editor.getData();
+                onChange(newData);
+            }}
+            ref={editorRef}
+        />
+    );
 };
 
-const formats = [
-  'bold', 'italic', 'underline', 'strike', 'blockquote', 'list', 'bullet', 'indent',
-  'link', 'image', 'video', 'header', 'font', 'size',
-];
-
-const Editor = ({ placeholder }) => {
-  const [editorHtml, setEditorHtml] = useState('');
-  const ref = useRef(null);
-
-  const handleChange = (html) => {
-    setEditorHtml(html);
-    console.log(html);
-  };
-
-  return (
-    <ReactQuill
-      ref={ref}
-      theme={null}
-      onChange={handleChange}
-      value={editorHtml}
-      modules={modules}
-      formats={formats}
-      bounds="#root"
-      placeholder={placeholder}
-    />
-  );
-};
-
-export default Editor;
+export default CKEditorWrapper;
