@@ -179,7 +179,7 @@ const Template = ({
           title: t("Description"),
           value: "description",
         },
-        {
+         {
           id: 3,
           title: t("Status"),
           value: "",
@@ -310,12 +310,11 @@ const Template = ({
           value: "jobType",
 
         },
-        // {
-        //   id: 4,
-        //   title: "Modified By",
-        //   value: "modifiedBy",
-
-        // },
+        {
+          id: 3,
+          title: "Status",
+          value: "isActive",
+        },
       ],
       Job_Description: [
         {
@@ -328,12 +327,11 @@ const Template = ({
           title: t("Description"),
           value: "descriptionTemplate",
         },
-        // {
-        //   id: 3,
-        //   title: "Work Flow Id",
-        //   value: "workFlowId",
-
-        // },
+        {
+          id: 3,
+          title: "Status",
+          value: "isActive",
+        },
       ],
       Workflow: [
         {
@@ -346,12 +344,11 @@ const Template = ({
           title: "Description",
           value: "description",
         },
-        // {
-        //   id: 3,
-        //   title: "Status",
-        //   value: "",
-        //   actionToggle: true,
-        // },
+        {
+          id: 3,
+          title: "Status",
+          value: "isActive",
+        },
         // {
         //   id: 4,
         //   title: "Status",
@@ -370,12 +367,11 @@ const Template = ({
           title: "Description",
           value: "value",
         },
-        // {
-        //   id: 3,
-        //   title: "Status",
-        //   value: "",
-        //   actionToggle: true,
-        // },
+        {
+          id: 3,
+          title: "Status",
+          value: "isActive",
+        },
         // {
         //   id: 4,
         //   title: "Status",
@@ -394,6 +390,11 @@ const Template = ({
           title: t("Description"),
           value: "description",
         },
+        {
+          id: 3,
+          title: "Status",
+          value: "isActive",
+        },
       ],
       Questionnaire: [
         {
@@ -406,12 +407,11 @@ const Template = ({
           title: t("Description"),
           value: "description",
         },
-        // {
-        //   id: 3,
-        //   title: t("Status"),
-        //   value: "Status",
-        //   actionToggle: true,
-        // },
+        {
+          id: 3,
+          title: t("Status"),
+          value: "isActive",
+        },
         // {
         //   id: 4,
         //   title: "",
@@ -430,12 +430,11 @@ const Template = ({
           title: t("Subject"),
           value: "value",
         },
-        // {
-        //   id: 3,
-        //   title: t("Status"),
-        //   value: "",
-        //   actionToggle: true,
-        // },
+        {
+          id: 3,
+          title: t("Status"),
+          value: "isActive",
+        },
         // {
         //   id: 4,
         //   title: "",
@@ -501,7 +500,7 @@ const Template = ({
     try {
 
       const response = await getAllRecruitmentWorkFlows();
-
+      console.log(response," work flow list is here")
       setWorkflow(response.result);
       // const newData = {};
       // response.result.forEach((job) => {
@@ -535,7 +534,7 @@ const Template = ({
 
       const response = await getAllRecruitmentEmailTemplates();
 
-      // console.log(response," Email list is here")
+      console.log(response," Email list is here")
       setEmail(response.result)
       setEmailSubject(response.result.map((email) => ({
         emailTemplateId: email.emailTemplateId,
