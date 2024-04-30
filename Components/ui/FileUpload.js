@@ -15,8 +15,8 @@ export default function FileUpload({
   const props = {
     name: "file",
     multiple: true,
-    action: 
-    "https://alpha-jobs-api.loyaltri.com/api/fileHandler",
+    action:
+      "https://alpha-jobs-api.loyaltri.com/api/fileHandler",
     beforeUpload: (file) => {
       const fileExtension = file.name.split(".").pop().toLowerCase();
       const isAllowedFile = allowedFileFormats.includes(fileExtension);
@@ -32,12 +32,14 @@ export default function FileUpload({
   return (
     <div className={`${className}`}>
       <Dragger
+
+        maxCount={1}
         {...props}
         onChange={(info) => {
           const { status, originFileObj } = info.file;
           if (status !== "uploading") {
             console.log(info.fileList);
-            console.log(status,":file upload status");
+            console.log(status, ":file upload status");
             console.log(originFileObj);
           }
           // if (status === "done") {
