@@ -435,7 +435,7 @@ const Createjob = ({
         formik1.setFieldError('salaryCurrency', !formik1.values.salaryCurrency ? 'Salary Currency is required' : '');
         formik1.setFieldError('jobType', !formik1.values.jobType ? 'JobType is required' : '');
         formik1.setFieldError('education', !formik1.values.education ? 'Education is required' : '');
-        formik1.setFieldError('jobDescription', !content ? 'Job description is required' : '')
+        formik1.setFieldError('jobDescription', !content ? 'Job Description is required' : '')
         formik1.setFieldError('noOfVaccancies', !formik1.values.noOfVaccancies ? 'Number Of Openings is required' : '')
         return; // Exit early if any field is empty
       }
