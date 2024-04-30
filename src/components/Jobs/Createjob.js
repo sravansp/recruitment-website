@@ -2386,6 +2386,7 @@ const Createjob = ({
                     <div className="grid grid-cols-2 mt-8">
                       <SearchBox
                         placeholder={"Search Employess"}
+                        value={searchValue}
                         change={(value) => {
                           setSearchValue(value);
                         }}
