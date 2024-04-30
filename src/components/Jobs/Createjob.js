@@ -90,6 +90,7 @@ import Meta from "antd/es/card/Meta";
 import noImg from "../../assets/images/noImg.webp"
 import Jobcardcopy from "../common/Jobcardcopy";
 import { FaAsterisk } from "react-icons/fa";
+import { RiDeleteBin6Fill } from "react-icons/ri";
 
 
 const Createjob = ({
@@ -124,6 +125,8 @@ const Createjob = ({
   const [selectedUserIds, setSelectedUserIds] = useState([])
   const [JobDescriptionList, setJobDescriptionList] = useState([])
   const [jobTitle, setJobTitle] = useState("")
+  const [searchValue, setSearchValue] = useState("");
+
 
   // console.log(updateId)
   const handleSelectCard = (selectedStageId) => {
@@ -399,6 +402,10 @@ const Createjob = ({
 
     // }),
     onSubmit: async (e) => {
+      if (formik1.values.noOfVaccancies && formik1.values.noOfVaccancies <= 0) {
+        formik1.setFieldError('noOfVaccancies', 'Openings should be a positive value');
+        return;
+      }
       if (
         !formik1.values.jobTitle || !formik1.values.departmentId || !formik1.values.jobCode ||
         !formik1.values.companyId ||
@@ -422,14 +429,14 @@ const Createjob = ({
         formik1.setFieldError('location', !formik1.values.location ? 'Location is required' : '');
         formik1.setFieldError('requirementType', !formik1.values.requirementType ? 'Requirment Type is required' : '');
         formik1.setFieldError('experience', !formik1.values.experience ? 'Experience is required' : '');
-        formik1.setFieldError('searchKeywords', !formik1.values.searchKeywords ? 'Search Key Words is required' : '');
-        formik1.setFieldError('salaryRangeFrom', !formik1.values.salaryRangeFrom ? 'Salery Range From is required' : '');
+        formik1.setFieldError('searchKeywords', !formik1.values.searchKeywords ? 'Keywords is required' : '');
+        formik1.setFieldError('salaryRangeFrom', !formik1.values.salaryRangeFrom ? 'Salary Range From is required' : '');
         formik1.setFieldError('salaryRangeTo', !formik1.values.salaryRangeTo ? 'Salary Range To is required' : '');
         formik1.setFieldError('salaryCurrency', !formik1.values.salaryCurrency ? 'Salary Currency is required' : '');
         formik1.setFieldError('jobType', !formik1.values.jobType ? 'JobType is required' : '');
         formik1.setFieldError('education', !formik1.values.education ? 'Education is required' : '');
-        formik1.setFieldError('jobDescription', !content ? 'Job description is required' : '')
-        formik1.setFieldError('noOfVaccancies', !formik1.values.noOfVaccancies ? 'Number Of Vacancies is required' : '')
+        formik1.setFieldError('jobDescription', !content ? 'Job Description is required' : '')
+        formik1.setFieldError('noOfVaccancies', !formik1.values.noOfVaccancies ? 'Number Of Openings is required' : '')
         return; // Exit early if any field is empty
       }
       try {
@@ -1462,7 +1469,7 @@ const Createjob = ({
                       {inputshow && (
                         <div className="grid grid-cols-3 gap-6 ">
                           <Dropdown
-                            title={t("Choose Template")}
+                            title={t("Template")}
                             placeholder={t("Choose Template")}
                             options={jobtemplate}
                             // Replace with the actual value/ID
@@ -1474,7 +1481,7 @@ const Createjob = ({
                           />
 
                           <Dropdown
-                            title={t("Choose Company")}
+                            title={t("Company")}
                             placeholder={t("Choose Company")}
                             options={company}
                             value={formik1.values.companyId}
@@ -1525,7 +1532,7 @@ const Createjob = ({
                       </div>
                       <div className="grid grid-cols-3 gap-4">
                         <Dropdown
-                          title={t("Choose Evaluation Template")}
+                          title={t("Evaluation Template")}
                           placeholder={t("Choose Evaluation Template")}
                           options={evalutaionTem}
                           value={formik1.values.evaluationTemplateId}
@@ -1535,7 +1542,7 @@ const Createjob = ({
                           }}
                         />
                         <Dropdown
-                          title={t("Choose Questionnaire Template")}
+                          title={t("Questionnaire Template")}
                           placeholder={t("Choose Questionnaire Template")}
                           options={questionareTem}
                           value={formik1.values.questionnaireTemplateId}
@@ -1706,8 +1713,8 @@ const Createjob = ({
                           required={true}
                         />
                         <FormInput
-                          title={'Number of Opennings'}
-                          placeholder={'Enter Number of Opennings'}
+                          title={'Number of Openings'}
+                          placeholder={'Enter Number of Openings'}
                           change={(e) => {
                             formik1.setFieldValue('noOfVaccancies', e)
                           }}
@@ -1802,40 +1809,40 @@ const Createjob = ({
                     >
                       {/* <Card className="bg-primaryalpha/5"> */}
                       <div class="flex flex-col gap-4 overflow-hidden">
-                      <div className="border rounded-md bg-primaryalpha/5">
-                        <div className="flex items-center px-1.5  ">
-                          <img src={AI_Text} alt='' className="border rounded-md"></img>
-                          <div className="flex flex-col gap-1 p-1.5">
-                            <div className="flex items-center justify-between ">
-                              <p className="font-bold">Generate personalized job descriptions based on pas account data.
+                        <div className="border rounded-md bg-primaryalpha/5">
+                          <div className="flex items-center px-1.5  ">
+                            <img src={AI_Text} alt='' className="border rounded-md"></img>
+                            <div className="flex flex-col gap-1 p-1.5">
+                              <div className="flex items-center justify-between ">
+                                <p className="font-bold">Generate personalized job descriptions based on pas account data.
+                                </p>
+                                {/* <p className="text-primary"><IoClose /></p> */}
+                              </div>
+                              <p className="text-gray-400">When you generate with Al, we look for similar jobs you've created in the past and use he data to create content that's
+                                impactful, accurate, and personalized to your company
                               </p>
-                              {/* <p className="text-primary"><IoClose /></p> */}
                             </div>
-                            <p className="text-gray-400">When you generate with Al, we look for similar jobs you've created in the past and use he data to create content that's
-                              impactful, accurate, and personalized to your company
-                            </p>
                           </div>
                         </div>
-                      </div>
-                    
-                      {/* </Card> */}
-                      <div style={{ display: 'flex', justifyContent: 'flex-end', gap: '16px' }}>
 
-                        <Dropdown
-                          title={''}
-                          placeholder={'Choose Job Description'}
-                          options={JobDescriptionList}
-                          value={decriptionId}
-                          className={'min-w-40'}
-                          change={(e) => {
-                            setDecriptionId(e)
-                          }}
-                        />
+                        {/* </Card> */}
+                        <div style={{ display: 'flex', justifyContent: 'flex-end', gap: '16px' }}>
 
-                        <ButtonClick handleSubmit={handleGenerateWithAI} BtnType="primary"
-                          icon={<img src={image} alt="image" style={{ height: '20px', width: '20px', alignItems: "center" }} />} buttonName={"Generate with AI"} />
-                      </div>
-                      {/* <div className="pt-4">
+                          <Dropdown
+                            title={''}
+                            placeholder={'Choose Job Description'}
+                            options={JobDescriptionList}
+                            value={decriptionId}
+                            className={'min-w-40'}
+                            change={(e) => {
+                              setDecriptionId(e)
+                            }}
+                          />
+
+                          <ButtonClick handleSubmit={handleGenerateWithAI} BtnType="primary"
+                            icon={<img src={image} alt="image" style={{ height: '20px', width: '20px', alignItems: "center" }} />} buttonName={"Generate with AI"} />
+                        </div>
+                        {/* <div className="pt-4">
                                             <TextEditor
                                              
                                             
@@ -1847,21 +1854,21 @@ const Createjob = ({
                                             onChange={(editorState)=>{ formik1.setFieldValue('jobDescription',editorState)}}
                                              />
                                              </div> */}
-                      <div className="pt-4">
-                      <div className="flex gap-1.5">
-                        <p className="pb-2">Description</p>
-                        <FaAsterisk className="text-[6px] text-rose-600" />
+                        <div className="pt-4">
+                          <div className="flex gap-1.5">
+                            <p className="pb-2">Description</p>
+                            <FaAsterisk className="text-[6px] text-rose-600" />
+                          </div>
+                          <TextEditor
+                            placeholder={"Enter Description"}
+                            initialValue={content}
+                            onChange={handleEditorChange}
+                            minheight="250px"
+                            loader={loader}
+                            error={formik1.errors.jobDescription}
+                          />
                         </div>
-                        <TextEditor
-                          placeholder={"Enter Description"}
-                          initialValue={content}
-                          onChange={handleEditorChange}
-                          minheight="250px"
-                          loader={loader}
-                          error={formik1.errors.jobDescription}
-                        />
-                      </div>
-                      {/* <TextArea
+                        {/* <TextArea
                                              title={t("Requirement")}
                                              placeholder={t("Enter the job requirements here; from soft skills to the specific qualifications needed to perform the role.")}
                                              required={true}
@@ -1886,7 +1893,7 @@ const Createjob = ({
                                             //  error={formik.errors.description}
                                              /> */}
 
-                       </div>
+                      </div>
                     </Accordion>
                   </FlexCol>
                 </>
@@ -2150,7 +2157,7 @@ const Createjob = ({
                             <div className="flex items-center justify-between ">
                               <FormInput
                                 title={`Question ${index + 1}`}
-                                placeholder={'Type question here'}
+                                placeholder={`Enter Question ${index + 1}`}
                                 value={condition.question}
                                 change={(e) => {
                                   setEvaluation((prevEvaluation) => prevEvaluation.map((prevCondition, i) => i === index
@@ -2200,19 +2207,21 @@ const Createjob = ({
                                   </div>
                                 </Tooltip>
 
-                                <div style={{ display: 'flex', alignItems: 'center', gap: '15px' }}>
-                                  <Tooltip placement="top" title={"Copy"}>
+                                {index !== 0 && (
+                                  <div style={{ display: 'flex', alignItems: 'center', gap: '15px' }}>
+                                    {/* <Tooltip placement="top" title={"Copy"}>
                                     <MdOutlineFileCopy
                                       style={{ width: '18px', height: '18px', cursor: 'pointer' }}
                                     />
-                                  </Tooltip>
-                                  <Tooltip placement="top" color={"red"} title={"Delete"}>
-                                    <MdDelete
-                                      style={{ width: '18px', height: '18px', cursor: 'pointer' }}
-                                      onClick={() => handleDeleteCondition(index)}
-                                    />
-                                  </Tooltip>
-                                </div>
+                                  </Tooltip> */}
+                                    <Tooltip placement="top" color={"red"} title={"Delete"}>
+                                      <RiDeleteBin6Fill
+                                        style={{ width: '18px', height: '18px', cursor: 'pointer' }}
+                                        onClick={() => handleDeleteCondition(index)}
+                                      />
+                                    </Tooltip>
+                                  </div>
+                                )}
                               </div>
                             </div>
                             {condition.answerMetaData[0]?.key && (
@@ -2239,12 +2248,14 @@ const Createjob = ({
                                         )}
                                         error={field.value ? '' : errorMessages[index] || ''}
                                       />
-                                      <div className="ml-2">
-                                        <MdDelete
-                                          onClick={() => handleDeleteField(index, fieldIndex)}
-                                          className="cursor-pointer text-red-500"
-                                        />
-                                      </div>
+                                      <Tooltip placement="top" color={"red"} title={"Delete"}>
+                                        <div className="ml-3 mt-4">
+                                          <MdDelete
+                                            onClick={() => handleDeleteField(index, fieldIndex)}
+                                            className="cursor-pointer text-red-500"
+                                          />
+                                        </div>
+                                      </Tooltip>
                                     </div>
                                   ))
                                 )}
@@ -2373,7 +2384,13 @@ const Createjob = ({
   )}</VirtualList>
 </List> */}
                     <div className="grid grid-cols-2 mt-8">
-                      <SearchBox placeholder={"Search Employess"} />
+                      <SearchBox
+                        placeholder={"Search Employess"}
+                        value={searchValue}
+                        change={(value) => {
+                          setSearchValue(value);
+                        }}
+                      />
                     </div>
                     <table>
                       <thead>
