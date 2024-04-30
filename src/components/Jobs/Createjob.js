@@ -402,8 +402,8 @@ const Createjob = ({
 
     // }),
     onSubmit: async (e) => {
-      if (formik1.values.noOfVaccancies !== null && formik1.values.noOfVaccancies <= 0) {
-        formik1.setFieldError('noOfVaccancies', 'Vacancy should be a positive value');
+      if (formik1.values.noOfVaccancies && formik1.values.noOfVaccancies <= 0) {
+        formik1.setFieldError('noOfVaccancies', 'Openings should be a positive value');
         return;
       }
       if (
@@ -429,14 +429,14 @@ const Createjob = ({
         formik1.setFieldError('location', !formik1.values.location ? 'Location is required' : '');
         formik1.setFieldError('requirementType', !formik1.values.requirementType ? 'Requirment Type is required' : '');
         formik1.setFieldError('experience', !formik1.values.experience ? 'Experience is required' : '');
-        formik1.setFieldError('searchKeywords', !formik1.values.searchKeywords ? 'Search Key Words is required' : '');
-        formik1.setFieldError('salaryRangeFrom', !formik1.values.salaryRangeFrom ? 'Salery Range From is required' : '');
+        formik1.setFieldError('searchKeywords', !formik1.values.searchKeywords ? 'Keywords is required' : '');
+        formik1.setFieldError('salaryRangeFrom', !formik1.values.salaryRangeFrom ? 'Salary Range From is required' : '');
         formik1.setFieldError('salaryRangeTo', !formik1.values.salaryRangeTo ? 'Salary Range To is required' : '');
         formik1.setFieldError('salaryCurrency', !formik1.values.salaryCurrency ? 'Salary Currency is required' : '');
         formik1.setFieldError('jobType', !formik1.values.jobType ? 'JobType is required' : '');
         formik1.setFieldError('education', !formik1.values.education ? 'Education is required' : '');
         formik1.setFieldError('jobDescription', !content ? 'Job description is required' : '')
-        formik1.setFieldError('noOfVaccancies', !formik1.values.noOfVaccancies ? 'Number Of Vacancies is required' : '')
+        formik1.setFieldError('noOfVaccancies', !formik1.values.noOfVaccancies ? 'Number Of Openings is required' : '')
         return; // Exit early if any field is empty
       }
       try {
@@ -1713,8 +1713,8 @@ const Createjob = ({
                           required={true}
                         />
                         <FormInput
-                          title={'Number of Opennings'}
-                          placeholder={'Enter Number of Opennings'}
+                          title={'Number of Openings'}
+                          placeholder={'Enter Number of Openings'}
                           change={(e) => {
                             formik1.setFieldValue('noOfVaccancies', e)
                           }}
