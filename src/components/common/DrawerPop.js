@@ -88,7 +88,7 @@ export default function DrawerPop({
               onClick={() => {
                 buttonClickCancel();
               }}
-              className="flex items-center gap-4 px-5 py-2 text-sm font-semibold border rounded-lg dark:text-white"
+              className="flex items-center gap-4 px-5 py-2 text-sm border hover:border-primary rounded-lg dark:text-white hover:text-primary"
             >
               <IoIosArrowBack />
               <p title="Previous"> {t("Previous")}</p>
