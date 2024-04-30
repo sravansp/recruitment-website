@@ -81,7 +81,7 @@ const TemEvaluation = ({ open = "", close = () => { }, inputshow = false, isUpda
        
       ]);
     } else {
-      const nextId = evaluation[evaluation.length - 1].evaluationTemplateDetailsId + 1 || 1;
+      
 
       setEvaluation((prevEvaluation) => [
         ...prevEvaluation,
@@ -89,7 +89,7 @@ const TemEvaluation = ({ open = "", close = () => { }, inputshow = false, isUpda
           
           companyId: companyId, // Replace companyId with your actual value
           evaluationTemplateId: "",
-          evaluationTemplateDetailsId: nextId, // Set the calculated nextId
+          evaluationTemplateDetailsId: null, // Set the calculated nextId
           question: "",
           answerMetaData: '[]',
           description: "hihihihi",

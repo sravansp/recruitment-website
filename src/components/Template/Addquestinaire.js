@@ -83,7 +83,7 @@ const
         ]);
       } else {
 
-        const nextId = evaluation[evaluation.length - 1].questionnaireTemplateDetailsId + 1 || 1;
+       
         // Update the state with the new id
 
 
@@ -93,7 +93,7 @@ const
           {
             companyId: companyId, // Replace companyId with your actual value
             evaluationTemplateId: "",
-            questionnaireTemplateDetailsId: nextId, // Set the calculated nextId
+            questionnaireTemplateDetailsId: null, // Set the calculated nextId
             question: "",
             answerMetaData: '[]',
             description: "hihihihi",

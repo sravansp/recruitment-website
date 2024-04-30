@@ -22,7 +22,9 @@ import {
   saveRecruitmentWorkFlowStageBatch,
   getRecruitmentWorkFlowById,
   updateWorkFlowWithStages,
-  getAllRecruitmentEmailTemplates
+  getAllRecruitmentEmailTemplates,
+  getAllRecruitmentEvaluationTemplates,
+  getAllRecruitmentQuestionnaireTemplates
 } from "../Api1";
 import { PiCopySimple, PiPencilSimpleLineThin } from "react-icons/pi";
 import { Modal, Button, notification, Tooltip, Menu } from "antd";
@@ -89,9 +91,12 @@ const Workflowstage = ({
   const [showEmailDiv, setShowEmailDiv] = useState(false);
   const [selectedMenuLabel, setSelectedMenuLabel] = useState("");
   const [optionData, setOptionData] = useState([]);
-  const [Value,setValue] = useState("")
+  const [evaluationValue,setEvaluationValue] = useState("")
+  const [questionnaire,setQuestionnaire] = useState("")
+  const [Addnote,setAddnote] = useState("")
+  const [Email,setEmail] = useState("")
+  const [AddTag,setAddtag] = useState("")
  
-  const [emailSubject, setEmailSubject] = useState("")
 
 
   const getEmailLsit = async () => {
@@ -141,7 +146,93 @@ const Workflowstage = ({
     getEmailLsit()
   
   },[])
-  console.log(emailSubject)
+  const getEvaluationtem = async () => {
+    try {
+      const response = await getAllRecruitmentEvaluationTemplates();
+      console.log(response);
+      const newEvaluation =
+        response.result.map((each) => ({
+          label: each.evaluationTemplateName,
+          value: each.evaluationTemplateId,
+        }))
+      
+      setoptions(prevOptions => {
+        // Map over the prevOptions and update the option where key matches "request"
+        return prevOptions.map(option => {
+          if (option.key === 1) { // Assuming "request" corresponds to key 1
+            return {
+              ...option,
+              det: option.det.map(detItem => {
+                return {
+                  ...detItem,
+                  option1: detItem.option1.map(option1Item => {
+                    if (option1Item.title === "Choose Evalutaion") {
+                      return {
+                        ...option1Item,
+                        options: newEvaluation,
+                      };
+                    }
+                    return option1Item;
+                  }),
+                };
+              }),
+            };
+          }
+          return option;
+        });
+      });
+
+    } catch (error) {
+      console.log(error);
+    }
+  };
+
+  useEffect(()=>{
+    getEvaluationtem()
+  },[])
+  const getQuestionare = async () => {
+    try {
+      const response = await getAllRecruitmentQuestionnaireTemplates();
+      console.log(response);
+       const questiontionnare= 
+        response.result.map((each) => ({
+          label: each.questionnaireTemplateName,
+          value: each.questionnaireTemplateId,
+        }))
+        setoptions(prevOptions => {
+          // Map over the prevOptions and update the option where key matches "request"
+          return prevOptions.map(option => {
+            if (option.key === 4) { // Assuming "request" corresponds to key 1
+              return {
+                ...option,
+                det: option.det.map(detItem => {
+                  return {
+                    ...detItem,
+                    option1: detItem.option1.map(option1Item => {
+                      if (option1Item.title === "Choose Questionnaire") {
+                        return {
+                          ...option1Item,
+                          options: questiontionnare,
+                        };
+                      }
+                      return option1Item;
+                    }),
+                  };
+                }),
+              };
+            }
+            return option;
+          });
+        });
+  
+    } catch (error) {
+      console.log(error);
+    }
+  };
+  useEffect(() => {
+    getQuestionare();
+   
+  }, []);
    
   const handleEditStage = (stageIndex) => {
     // Find the index of the stage with the given stage name
@@ -174,46 +265,73 @@ const Workflowstage = ({
   const handleAddStageClick = () => {
     if (!stageName) {
       setStageError("Stage Name is required.");
+      return;
     } else {
       setStageError("");
     }
-
+  
     if (!stageName.trim()) {
       // If stageName is empty or contains only whitespace, return without adding a stage
       return;
     }
+  
+    // Create an object to hold the stage rules based on user inputs
+    const stageRules = {};
+  
+    // Set the stage rules based on dropdown selections and input field values
+    if (evaluationValue) {
+      stageRules["evaluation"] = evaluationValue;
+    }
+  
+    if (questionnaire) {
+      stageRules["questionnaire"] = questionnaire;
+    }
+  
+    if (Email) {
+      stageRules["emailTemplate"] = Email;
+    }
+  
+    if (Addnote) {
+      stageRules["note"] = Addnote;
+    }
+  
+    if (AddTag) {
+      stageRules["tag"] = AddTag;
+    }
+  
     if (editStageIndex !== null) {
       // If editStageIndex is not null, it means we're editing an existing stage
-      // Update the corresponding stage name in the stages array
-      setstages((prevStages) =>
+      // Update the corresponding stage name and stage rules in the stages array
+      setstages(prevStages =>
         prevStages.map((stage, index) =>
-          index === editStageIndex ? { ...stage, stageName: stageName } : stage
+          index === editStageIndex ? { ...stage, stageName, stageRules } : stage
         )
       );
     } else {
       // Otherwise, we're adding a new stage
-      // Add the new stage to the stages array
-      setstages((prevEvaluation) => [
-        ...prevEvaluation,
+      // Add the new stage with stage name and stage rules to the stages array
+      setstages(prevStages => [
+        ...prevStages,
         {
           id: stages.length + 1,
           workFlowId: insertedId,
           stageOrder: stages.length + 1,
-          stageName: stageName,
-          stageRules: {
-            id: 1,
-            key1: "",
-            value: "",
-          },
+          stageName,
+          stageRules,
           createdBy: 9,
         },
       ]);
     }
-
+  
     setIsModalVisible(false); // Close the modal
     setEditStageIndex(null); // Clear the editStageIndex
     setStageName("");
     setSelectedStageName("");
+    setEvaluationValue(""); // Clear dropdown selection
+    setQuestionnaire(""); // Clear dropdown selection
+    setEmail(""); // Clear dropdown selection
+    setAddnote(""); // Clear input field value
+    setAddtag(""); // Clear input field value
   };
   const handleDeleteStage = (id) => {
     setstages((prevStages) => prevStages.filter((stage) => stage.id !== id));
@@ -286,7 +404,7 @@ const Workflowstage = ({
             workFlowId: updateId, // Assuming stageRules is available in item
             createdBy: 9,
           }));
-
+              
           const response = await updateWorkFlowWithStages({
             RecruitmentWorkFlow: {
               workFlowId: updateId,
@@ -778,21 +896,54 @@ const Workflowstage = ({
                   {key && key.option1 ? key.option1.map((item,ind) => (
                     <>
                     {console.log(item)}
-                      {item.title ?
+                      {item.title ==="Choose Evalutaion"?(
                         <div key={ind} className="w-1/2">
                           <Dropdown title={item.title} 
                           options={item.options}
                           change={(e)=>{
-                            setValue(e)
+                            setEvaluationValue(e)
                           }}
-                          value={Value}
+                          value={evaluationValue}
                           />
 
                         </div>
-                        : ""}
+                        ): item.title==="Choose Questionnaire" ?(
+                          <div key={ind} className="w-1/2">
+                          <Dropdown title={item.title} 
+                          options={item.options}
+                          change={(e)=>{
+                            setQuestionnaire(e)
+                          }}
+                          value={questionnaire}
+                          />
+                          </div>   
+                        ):item.title==="Choose Email Template" ?(
+                          <div key={ind} className="w-1/2">
+                          <Dropdown title={item.title} 
+                          options={item.options}
+                          change={(e)=>{
+                            setEmail(e)
+                          }}
+                          value={Email}
+                          />
+                          </div>
+                        ):item.title==="Add note" ?(
+                          <FormInput title={item.title} 
+                          change={(e)=>{
+                            setAddnote(e)
+                          }}
+                          value={Addnote}
+                          
+                          />
+
+                        ):""}
                       {item.titletag ?
                         <div className="w-full">
                           <FormInput title={item.titletag} 
+                          change={(e)=>{
+                            setAddtag(e)
+                          }}
+                          value={AddTag}
                           
                           />
                         </div>
