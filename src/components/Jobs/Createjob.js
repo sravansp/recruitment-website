@@ -2157,7 +2157,7 @@ const Createjob = ({
                             <div className="flex items-center justify-between ">
                               <FormInput
                                 title={`Question ${index + 1}`}
-                                placeholder={'Type question here'}
+                                placeholder={`Enter Question ${index + 1}`}
                                 value={condition.question}
                                 change={(e) => {
                                   setEvaluation((prevEvaluation) => prevEvaluation.map((prevCondition, i) => i === index
