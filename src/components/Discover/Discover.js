@@ -118,9 +118,11 @@ const Discover = () => {
       
       
       const IODPercentage = (value.suffix * 100).toFixed(1) + "%";
+      let title = key.replace(/([A-Z])/g, ' $1').trim();
+      title = title.charAt(0).toUpperCase() + title.slice(1);
     
       return {
-        title: key.replace(/([A-Z])/g, ' $1').trim(),
+        title,
         currentValue,
         isIncreasedOrDecreased,
         IODPercentage

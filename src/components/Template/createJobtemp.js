@@ -82,6 +82,8 @@ import { RiDeleteBinLine } from "react-icons/ri";
 import { FaAsterisk } from "react-icons/fa";
 import TextEditorcopy from "../common/TextEditor/textEditorCopy";
 import { EditorState, ContentState, convertFromHTML } from 'draft-js';
+import { convertToHTML } from 'draft-convert';
+
 const CreatejobTemp = ({
   open = "",
   close = () => { },
@@ -242,7 +244,12 @@ const CreatejobTemp = ({
     }
   };
   const handleEditorChange = (content) => {
-    setContent(content);
+        //             const contentState = content.getCurrentContent();
+        //             const htmlContent = convertToHTML(contentState);
+                    
+        //  console.log(content)           
+        //           setContent(htmlContent);
+    setContent(content)
   };
   const [evaluation, setEvaluation] = useState([
     {
@@ -1477,7 +1484,7 @@ const CreatejobTemp = ({
                         <p className="pb-2">Description</p>
                         <FaAsterisk className="text-[6px] text-rose-600" />
                         </div>
-                        {/* <TextEditor
+                        <TextEditor
                           placeholder={t(
                             "Enter Description "
                           )}
@@ -1493,15 +1500,15 @@ const CreatejobTemp = ({
                           //   setstateHTML(e)
                           // }}
                           loader={loader}
-                        /> */}
-                        <TextEditorcopy
+                        />
+                        {/* <TextEditorcopy
                           Change={(e)=>{
                             handleEditorChange(e)
                             console.log(e)
                           }}
                           initialValue={content}
                           error={formik.errors.jobDescription}
-                        />
+                        /> */}
 
                       </div>
                       {/* <TextArea

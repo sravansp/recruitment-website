@@ -19,51 +19,51 @@ const TextEditorcopy = ({
   loader = false,
   error = "",
 }) => {
-      const [editorState, setEditorState] = useState(() => {
-        if (initialValue) {
-            const blocksFromHTML = convertFromHTML(initialValue);
-            const contentState = ContentState.createFromBlockArray(blocksFromHTML.contentBlocks, blocksFromHTML.entityMap);
-            return EditorState.createWithContent(contentState);
-        } else {
-            return EditorState.createEmpty();
-        }
-    });
+
+    console.log(initialValue)
+      const [editorState, setEditorState] = useState("");
      
-    useEffect(() => {
-        if (initialValue) {
+    // useEffect(() => {
+    //     if (initialValue) {
         
-                const blocksFromHTML = convertFromHTML(initialValue);
-                const contentState = ContentState.createFromBlockArray(blocksFromHTML.contentBlocks, blocksFromHTML.entityMap);
-                const newEditorState = EditorState.createWithContent(contentState);
-                setEditorState(newEditorState);
-                // const Htmldata = editorState.getCurrentContent();
-                // const htmlContent = convertToHTML(Htmldata);
-                //  console.log({"Value":htmlContent})
-                //  Change(htmlContent);
-            
-         
+    //             // const blocksFromHTML = convertFromHTML(initialValue);
+    //             // const contentState = ContentState.createFromBlockArray(blocksFromHTML.contentBlocks, blocksFromHTML.entityMap);
+    //             // const newEditorState = EditorState.createWithContent(contentState);
+    //             // setEditorState(newEditorState);
+    //             // const Htmldata = editorState.getCurrentContent();
+    //             // const htmlContent = convertToHTML(Htmldata);
+    //             //  console.log({"Value":htmlContent})
+    //             //  Change(htmlContent);
+               
+    //         setEditorState(initialValue)
           
-        }else {
-            console.log("No initail values");
-            setEditorState(EditorState.createEmpty())
-        }
-         console.log(initialValue)
-      }, [initialValue]);
+    //     }else {
+    //         console.log("No initail values");
+    //         setEditorState(EditorState.createEmpty())
+    //     }
+    //      console.log(initialValue)
+    //   }, [initialValue]);
       
 
       const handleEditorChange = (editorState) => {
-        setEditorState(editorState);
+        //  setEditorState(editorState)
+        if(Change){
+            const contentState = editorState.getCurrentContent();
+            const htmlContent = convertToHTML(contentState);
+            
+            Change(htmlContent);
+           }
       
     }
     
-      useEffect(() => {
-       if(Change){
-        const contentState = editorState.getCurrentContent();
-        const htmlContent = convertToHTML(contentState);
-        
-        Change(htmlContent);
-       }
-      }, [Change]);
+    //   useEffect(() => {
+    //     if(Change){
+    //                 const contentState = editorState.getCurrentContent();
+    //                 const htmlContent = convertToHTML(contentState);
+                    
+    //                 Change(htmlContent);
+    //                }
+    //   }, [initialValue]);
 
 
    
@@ -93,11 +93,13 @@ const TextEditorcopy = ({
         <BeatLoader color="#6A4BFC" />
       ) : (
         <Editor
-          editorState={editorState}
-          onEditorStateChange={(e)=>{
-            console.log(e)
-            handleEditorChange(e)
-          }}
+          editorState={initialValue}
+          onEditorStateChange={(e)=> {
+           console.log(e)
+        //    handleEditorChange(e)
+        Change(e)
+        
+        }}
           
           placeholder={placeholder}
           wrapperStyle={{ height: height }}

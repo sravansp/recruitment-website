@@ -22,6 +22,7 @@ import {
   saveRecruitmentWorkFlowStageBatch,
   getRecruitmentWorkFlowById,
   updateWorkFlowWithStages,
+  getAllRecruitmentEmailTemplates
 } from "../Api1";
 import { PiCopySimple, PiPencilSimpleLineThin } from "react-icons/pi";
 import { Modal, Button, notification, Tooltip, Menu } from "antd";
@@ -34,6 +35,7 @@ import WorkflowModal from "../common/WorkflowModal";
 import ModalImg from "../../assets/images/Workflowimg.png";
 import Dropdown from "../common/Dropdown";
 import arrow from "../../assets/images/arrow3d 1.png";
+import Emailtemplate from "./AddEmailtemplate";
 
 const Workflowstage = ({
   open = "",
@@ -86,6 +88,61 @@ const Workflowstage = ({
   const [selectedOption, setSelectedOption] = useState(null);
   const [showEmailDiv, setShowEmailDiv] = useState(false);
   const [selectedMenuLabel, setSelectedMenuLabel] = useState("");
+  const [optionData, setOptionData] = useState([]);
+  const [Value,setValue] = useState("")
+ 
+  const [emailSubject, setEmailSubject] = useState("")
+
+
+  const getEmailLsit = async () => {
+    try {
+      const response = await getAllRecruitmentEmailTemplates();
+  
+      // Extract emailSubject array from the response and set it to state
+      const newEmailSubject = response.result.map(email => ({
+        label: email.emailTemplateName,
+        value: email.emailTemplateId,
+      }));
+  
+    
+      setoptions(prevOptions => {
+        // Map over the prevOptions and update the option where key matches "request"
+        return prevOptions.map(option => {
+          if (option.key === 3) { // Assuming "request" corresponds to key 1
+            return {
+              ...option,
+              det: option.det.map(detItem => {
+                return {
+                  ...detItem,
+                  option1: detItem.option1.map(option1Item => {
+                    if (option1Item.title === "Choose Email Template") {
+                      return {
+                        ...option1Item,
+                        options: newEmailSubject,
+                      };
+                    }
+                    return option1Item;
+                  }),
+                };
+              }),
+            };
+          }
+          return option;
+        });
+      });
+
+  
+      console.log(newEmailSubject);
+    } catch (error) {
+      console.error(error); // Handle errors
+    }
+  };
+  useEffect(()=>{
+    getEmailLsit()
+  
+  },[])
+  console.log(emailSubject)
+   
   const handleEditStage = (stageIndex) => {
     // Find the index of the stage with the given stage name
     const index = stages.findIndex((stage) => stage.stageName === stageIndex);
@@ -356,10 +413,18 @@ const Workflowstage = ({
       det: [{
         id: "request_evaluation",
         name: "Request Evaluation",
+        
         option1: [
-          { id: 1, title: "Email Template" },
-          { id: 2, title: "Email Sender" },
+          { id: 1, 
+            title: "Choose Evalutaion", 
+            
+
+            
+          },
+          
+          // { id: 2, title: "Email Sender" },
         ],
+       
       },]
     },
 
@@ -369,11 +434,11 @@ const Workflowstage = ({
       value: "note",
       icon: <CiTextAlignLeft />,
       det: [{
-        id: "send_questionnaire",
-        name: "Send Questionnaire ",
+        id: "Add note",
+        name: "Add note ",
         option1: [
-          { id: 1, title: "Email Template" },
-          { id: 2, title: "Email Sender" },
+          { id: 1, title: "Add note" },
+          // { id: 2, title: "Email Sender" },
         ],
       },]
     },
@@ -386,8 +451,8 @@ const Workflowstage = ({
         id: "send_email",
         name: "Send Email ",
         option1: [
-          { id: 1, title: "Email Template" },
-          { id: 2, title: "Email Sender" },
+          { id: 1, title: "Choose Email Template" },
+          // { id: 2, title: "Email Sender" },
         ],
       },]
     },
@@ -400,8 +465,8 @@ const Workflowstage = ({
         id: "send_questionnaire",
         name: "Send Questionnaire ",
         option1: [
-          { id: 1, title: "Email Template" },
-          { id: 2, title: "Email Sender" },
+          { id: 1, title: "Choose Questionnaire" },
+          // { id: 2, title: "Email Sender" },
         ],
       },]
     },
@@ -442,26 +507,31 @@ const Workflowstage = ({
   //   }]
   // });
 
-  const [optionData, setOptionData] = useState([]);
+ 
   const [sections, setSections] = useState([]);
 
   const handleMenuClick = (option, value) => {
     let demo = options.filter(data => data.key == option);
-    setOptionData(demo[0].det)
-    setmenuitem(true)
+
+    console.log(options)
+    let detObject = demo.length > 0 ? demo[0].det : {};
+  
+    // Add the selected detObject to the existing optionData array as an object
+    setOptionData(prevOptionData => [...prevOptionData, ...detObject]);
+  
+    setmenuitem(true);
     setMenuVisible(false);
-
   };
-
   console.log(optionData, "0000");
-
+   
 
   const handleDeleteSection = (id) => {
     const updatedOptions = optionData.filter(option => option.id !== id);
     setOptionData(updatedOptions);
     console.log(`Option with id '${id}' deleted successfully.`);
   };
-
+ 
+  
   return (
     <DrawerPop
       open={show}
@@ -707,15 +777,24 @@ const Workflowstage = ({
                 <div className="flex gap-2 w-full p-1">
                   {key && key.option1 ? key.option1.map((item,ind) => (
                     <>
+                    {console.log(item)}
                       {item.title ?
                         <div key={ind} className="w-1/2">
-                          <Dropdown title={item.title} />
+                          <Dropdown title={item.title} 
+                          options={item.options}
+                          change={(e)=>{
+                            setValue(e)
+                          }}
+                          value={Value}
+                          />
 
                         </div>
                         : ""}
                       {item.titletag ?
                         <div className="w-full">
-                          <FormInput title={item.titletag} />
+                          <FormInput title={item.titletag} 
+                          
+                          />
                         </div>
                         : ""}
                    </>
