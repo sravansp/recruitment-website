@@ -1469,7 +1469,7 @@ const Createjob = ({
                       {inputshow && (
                         <div className="grid grid-cols-3 gap-6 ">
                           <Dropdown
-                            title={t("Choose Template")}
+                            title={t("Template")}
                             placeholder={t("Choose Template")}
                             options={jobtemplate}
                             // Replace with the actual value/ID
@@ -1481,7 +1481,7 @@ const Createjob = ({
                           />
 
                           <Dropdown
-                            title={t("Choose Company")}
+                            title={t("Company")}
                             placeholder={t("Choose Company")}
                             options={company}
                             value={formik1.values.companyId}
@@ -1532,7 +1532,7 @@ const Createjob = ({
                       </div>
                       <div className="grid grid-cols-3 gap-4">
                         <Dropdown
-                          title={t("Choose Evaluation Template")}
+                          title={t("Evaluation Template")}
                           placeholder={t("Choose Evaluation Template")}
                           options={evalutaionTem}
                           value={formik1.values.evaluationTemplateId}
@@ -1542,7 +1542,7 @@ const Createjob = ({
                           }}
                         />
                         <Dropdown
-                          title={t("Choose Questionnaire Template")}
+                          title={t("Questionnaire Template")}
                           placeholder={t("Choose Questionnaire Template")}
                           options={questionareTem}
                           value={formik1.values.questionnaireTemplateId}
