@@ -125,6 +125,8 @@ const Createjob = ({
   const [selectedUserIds, setSelectedUserIds] = useState([])
   const [JobDescriptionList, setJobDescriptionList] = useState([])
   const [jobTitle, setJobTitle] = useState("")
+  const [searchValue, setSearchValue] = useState("");
+
 
   // console.log(updateId)
   const handleSelectCard = (selectedStageId) => {
@@ -2382,7 +2384,12 @@ const Createjob = ({
   )}</VirtualList>
 </List> */}
                     <div className="grid grid-cols-2 mt-8">
-                      <SearchBox placeholder={"Search Employess"} />
+                      <SearchBox
+                        placeholder={"Search Employess"}
+                        change={(value) => {
+                          setSearchValue(value);
+                        }}
+                      />
                     </div>
                     <table>
                       <thead>
