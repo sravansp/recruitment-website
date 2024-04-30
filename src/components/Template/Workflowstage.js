@@ -237,11 +237,37 @@ const Workflowstage = ({
   const handleEditStage = (stageIndex) => {
     // Find the index of the stage with the given stage name
     const index = stages.findIndex((stage) => stage.stageName === stageIndex);
-
+  
     if (index !== -1) {
       // Check if the stage name exists in the stages array
       setSelectedStageName(stages[index].stageName);
       setEditStageIndex(index);
+      
+      // Set the values of input fields based on the stage rules of the selected stage
+      const stageRules = stages[index].stageRules;
+  
+      if (stageRules) {
+        if (stageRules.evaluation) {
+          setEvaluationValue(stageRules.evaluation);
+        }
+  
+        if (stageRules.questionnaire) {
+          setQuestionnaire(stageRules.questionnaire);
+        }
+  
+        if (stageRules.emailTemplate) {
+          setEmail(stageRules.emailTemplate);
+        }
+  
+        if (stageRules.note) {
+          setAddnote(stageRules.note);
+        }
+  
+        if (stageRules.tag) {
+          setAddtag(stageRules.tag);
+        }
+      }
+  
       setIsModalVisible(true);
     } else {
       console.error("Invalid stage name:", stageIndex);
@@ -307,6 +333,7 @@ const Workflowstage = ({
           index === editStageIndex ? { ...stage, stageName, stageRules } : stage
         )
       );
+      
     } else {
       // Otherwise, we're adding a new stage
       // Add the new stage with stage name and stage rules to the stages array
