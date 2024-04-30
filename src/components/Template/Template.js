@@ -500,7 +500,7 @@ const Template = ({
     try {
 
       const response = await getAllRecruitmentWorkFlows();
-      console.log(response," work flow list is here")
+      // console.log(response," work flow list is here")
       setWorkflow(response.result);
       // const newData = {};
       // response.result.forEach((job) => {
@@ -534,12 +534,13 @@ const Template = ({
 
       const response = await getAllRecruitmentEmailTemplates();
 
-      console.log(response," Email list is here")
+      // console.log(response," Email list is here")
       setEmail(response.result)
       setEmailSubject(response.result.map((email) => ({
         emailTemplateId: email.emailTemplateId,
         title: email.emailTemplateName,
         value: email.emailTemplate.subject, // Use the subject as the description value
+        isActive:email.isActive,
         actionToggle: true,
         action: true,
       }))
@@ -585,6 +586,7 @@ const Template = ({
         letterTemplateId: Letter.letterTemplateId,
         title: Letter.letterTemplateName,
         value: Letter.letterTemplate.subject, // Use the subject as the description value
+        isActive:Letter.isActive,
         actionToggle: true,
         action: true,
       })))
