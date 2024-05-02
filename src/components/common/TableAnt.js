@@ -441,9 +441,10 @@ const TableAnt = ({
                 <Tooltip title="View details" color={primaryColor}>
                   <button
                     className={`w-8 h-8 2xl:w-10 2xl:h-10 rounded-full vhcenter hover:bg-primaryalpha/20 dark:hover:bg-primaryalpha/30 text-accent transition-all duration-300`}
-                  // onClick={() => {
-                  //   handleModalOpen(text, drawerH[0]?.[tabValue || path]);
-                  // }}
+                    onClick={() => {
+                      !viewOutside &&
+                        handleModalOpen(text, drawerH[0]?.[tabValue || path]);
+                    }}
                   >
                     <PiEye className="text-xs 2xl:text-sm" />
                   </button>
