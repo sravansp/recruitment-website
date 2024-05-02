@@ -237,15 +237,16 @@ const Workflowstage = ({
   const handleEditStage = (stageIndex) => {
     // Find the index of the stage with the given stage name
     const index = stages.findIndex((stage) => stage.stageName === stageIndex);
-  
+    
     if (index !== -1) {
       // Check if the stage name exists in the stages array
       setSelectedStageName(stages[index].stageName);
       setEditStageIndex(index);
-      
-      // Set the values of input fields based on the stage rules of the selected stage
+  
+      // Parse the stage rules string into a JavaScript object
       const stageRules = stages[index].stageRules;
   
+      // Set the values of input fields based on the stage rules of the selected stage
       if (stageRules) {
         if (stageRules.evaluation) {
           setEvaluationValue(stageRules.evaluation);
@@ -334,7 +335,7 @@ const Workflowstage = ({
         )
       );
       
-    } else {
+    } else if(!updateId) {
       // Otherwise, we're adding a new stage
       // Add the new stage with stage name and stage rules to the stages array
       setstages(prevStages => [
@@ -348,9 +349,21 @@ const Workflowstage = ({
           createdBy: 9,
         },
       ]);
+    }else{
+      setstages(prevStages => [
+        ...prevStages,
+        {
+          id: null,
+          workFlowId: insertedId,
+          stageOrder: stages.length + 1,
+          stageName,
+          stageRules,
+          createdBy: 9,
+        },
+      ]);
     }
   
-    setIsModalVisible(false); // Close the modal
+    closeModal() // Close the modal
     setEditStageIndex(null); // Clear the editStageIndex
     setStageName("");
     setSelectedStageName("");
@@ -358,7 +371,8 @@ const Workflowstage = ({
     setQuestionnaire(""); // Clear dropdown selection
     setEmail(""); // Clear dropdown selection
     setAddnote(""); // Clear input field value
-    setAddtag(""); // Clear input field value
+    setAddtag("");
+            
   };
   const handleDeleteStage = (id) => {
     setstages((prevStages) => prevStages.filter((stage) => stage.id !== id));
@@ -376,6 +390,8 @@ const Workflowstage = ({
 
   const closeModal = () => {
     setIsModalVisible(false);
+   
+
   };
   const formik1 = useFormik({});
 
@@ -427,7 +443,7 @@ const Workflowstage = ({
             stageId: item.id, // Add stageId property
             stageOrder: item.stageOrder,
             stageName: item.stageName,
-            stageRules: JSON.stringify(item.stageRules),
+            stageRules: item.stageRules,
             workFlowId: updateId, // Assuming stageRules is available in item
             createdBy: 9,
           }));
@@ -537,6 +553,7 @@ const Workflowstage = ({
           stageName: stage.stageName,
           stageRules: stage.stageRules,
         }));
+        console.log(stagesData)
         setstages(stagesData);
         console.log(stagesData); // Check here
       }
