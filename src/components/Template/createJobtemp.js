@@ -83,6 +83,7 @@ import { FaAsterisk } from "react-icons/fa";
 import TextEditorcopy from "../common/TextEditor/textEditorCopy";
 import { EditorState, ContentState, convertFromHTML } from 'draft-js';
 import { convertToHTML } from 'draft-convert';
+// import Editor from "../common/TextEditor/textEditorCopy";
 
 const CreatejobTemp = ({
   open = "",
@@ -1509,6 +1510,7 @@ const CreatejobTemp = ({
                           initialValue={content}
                           error={formik.errors.jobDescription}
                         /> */}
+                        {/* <Editor/> */}
 
                       </div>
                       {/* <TextArea

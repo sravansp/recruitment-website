@@ -179,12 +179,12 @@ function AllJobs() {
           title: t("Date"),
           value: "createdOn",
         },
-        {
-          id: 8,
-          title: t("View"),
-          value: "viewData",
-          status: "viewData",
-        },
+        // {
+        //   id: 8,
+        //   title: t("View"),
+        //   value: "viewData",
+        //   status: "viewData",
+        // },
         // {
         //   id: 8,
         //   title: "",
@@ -323,7 +323,7 @@ function AllJobs() {
   const getcreatedBy = async () => {
     const createdBy = userid;
     try {
-      const response = await getAllRecruitmentJobs({ companyId, createdBy });
+      const response = await getAllRecruitmentJobs({ companyId, createdBy, jobStatus: 'Open' });
       setFilteredJobList(response.result);
       console.log(response);
     } catch (error) {

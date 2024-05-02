@@ -231,7 +231,7 @@ const TemEvaluation = ({ open = "", close = () => { }, inputshow = false, isUpda
           ) {
             setoptionserror('Please enter values for all options.');
             hasError = true;
-          } 
+          }
         });
         if (hasError) {
           return;
