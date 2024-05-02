@@ -98,6 +98,7 @@ function AllJobs() {
           id: 1,
           title: t("Name"),
           value: "jobTitle",
+          bold: true,
         },
         {
           id: 2,
@@ -143,6 +144,7 @@ function AllJobs() {
           id: 1,
           title: t("Name"),
           value: "jobTitle",
+          bold: true,
         },
         {
           id: 2,
@@ -195,6 +197,7 @@ function AllJobs() {
           id: 1,
           title: t("Name"),
           value: "jobTitle",
+          bold: true,
         },
         {
           id: 2,
@@ -241,6 +244,7 @@ function AllJobs() {
           id: 1,
           title: t("Name"),
           value: "jobTitle",
+          bold: true,
         },
         {
           id: 2,

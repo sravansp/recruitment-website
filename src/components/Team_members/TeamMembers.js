@@ -39,6 +39,7 @@ const TeamMembers = ({
           id: 1,
           title: t("Name"),
           value: "userName",
+          bold: true,
         },
         {
           id: 2,
