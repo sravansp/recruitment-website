@@ -503,7 +503,7 @@ const TableAnt = ({
                     } text-xs 2xl:text-sm dark:text-white font-medium`}
                   onClick={() => {
                     !viewOutside &&
-                      handleRowClick(text, header[0]?.[tabValue || path]);
+                    handleModalOpen(text, drawerH[0]?.[tabValue || path]);
                   }}
                   style={{ width: each.width }}
                 >
@@ -533,7 +533,7 @@ const TableAnt = ({
                   className={`text-[#667085] text-xs 2xl:text-sm dark:text-white font-medium`}
                   onClick={() => {
                     !viewOutside &&
-                      handleRowClick(text, header[0]?.[tabValue || path]);
+                    handleModalOpen(text, drawerH[0]?.[tabValue || path]);
                   }}
                   style={{ width: each.width }}
                 >
