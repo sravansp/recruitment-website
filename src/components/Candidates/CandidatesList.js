@@ -28,6 +28,7 @@ const CandidatesList = () => {
           id: 1,
           title: t("Name"),
           value: "candidateName",
+          bold: true,
         },
         {
           id: 2,
