@@ -39,6 +39,7 @@ const CandidatesList = () => {
           id: 3,
           title: t("Job"),
           value: "jobTitle",
+          titleCaseSensitive: true,
         },
 
         {
