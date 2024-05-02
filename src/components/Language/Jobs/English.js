@@ -48,7 +48,7 @@ const appearanceLanguage = {
        Job_Details:"Job Details",
   Application_Form:"Application Form",
           Workflow:"Workflow",
-      Team_Members:"Team Members",
+      Team_Member:"Team Member",
            Publish:"Publish",
 
 

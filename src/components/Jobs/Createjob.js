@@ -826,7 +826,7 @@ const Createjob = ({
     {
       id: 4,
       value: 3,
-      title: t("Team_Members"),
+      title: t("Team_Member"),
       data: "TeamMembers",
     },
     {
@@ -2348,7 +2348,7 @@ const Createjob = ({
               ) : activeBtnValue === "TeamMembers" ? (
                 <FlexCol>
                   <Accordion
-                    title={"TeamMembers"}
+                    title={"Team Member"}
                     className="Text_area"
                     padding={true}
                     toggleBtn={false}
@@ -2389,7 +2389,7 @@ const Createjob = ({
 </List> */}
                     <div className="grid grid-cols-2 mt-8">
                       <SearchBox
-                        placeholder={"Search Employess"}
+                        placeholder={"Search Team Member"}
                         value={searchValue}
                         change={(value) => {
                           setSearchValue(value);
