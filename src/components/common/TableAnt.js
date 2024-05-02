@@ -528,12 +528,9 @@ const TableAnt = ({
                           : record}
                   </p>
                 </div>
-              ) : each.bold === true ? (
+              ) : each.titleCaseSensitive === true ? (
                 <div
-                  className={` ${each.bold === true
-                    ? "font-semibold text-black"
-                    : "text-[#667085]"
-                    } text-xs 2xl:text-sm dark:text-white font-medium`}
+                  className={`text-[#667085] text-xs 2xl:text-sm dark:text-white font-medium`}
                   onClick={() => {
                     !viewOutside &&
                       handleRowClick(text, header[0]?.[tabValue || path]);
