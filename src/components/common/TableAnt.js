@@ -495,6 +495,69 @@ const TableAnt = ({
                   )}
                 </div>
 
+              ) : each.bold === true ? (
+                <div
+                  className={` ${each.bold === true
+                    ? "font-semibold text-black"
+                    : "text-[#667085]"
+                    } text-xs 2xl:text-sm dark:text-white font-medium`}
+                  onClick={() => {
+                    !viewOutside &&
+                      handleRowClick(text, header[0]?.[tabValue || path]);
+                  }}
+                  style={{ width: each.width }}
+                >
+                  <p>
+                    {typeof record === "string"
+                      ? record.charAt(0).toUpperCase() +
+                      record.slice(1).split("_").join(" ") || "--"
+                      : Array.isArray(record)
+                        ? record.map((approver, index) => {
+                          // Construct the display name for each approver
+                          const displayName =
+                            `${approver.firstName} ${approver.lastName}`.trim();
+                          return (
+                            <span key={index}>
+                              {displayName}
+                              {index < record.length - 1 ? ", " : ""}
+                            </span>
+                          );
+                        })
+                        : !record
+                          ? "--"
+                          : record}
+                  </p>
+                </div>
+              ) : each.titleCaseSensitive === true ? (
+                <div
+                  className={`text-[#667085] text-xs 2xl:text-sm dark:text-white font-medium`}
+                  onClick={() => {
+                    !viewOutside &&
+                      handleRowClick(text, header[0]?.[tabValue || path]);
+                  }}
+                  style={{ width: each.width }}
+                >
+                  <p>
+                    {typeof record === "string"
+                      ? record.charAt(0).toUpperCase() +
+                      record.slice(1).split("_").join(" ") || "--"
+                      : Array.isArray(record)
+                        ? record.map((approver, index) => {
+                          // Construct the display name for each approver
+                          const displayName =
+                            `${approver.firstName} ${approver.lastName}`.trim();
+                          return (
+                            <span key={index}>
+                              {displayName}
+                              {index < record.length - 1 ? ", " : ""}
+                            </span>
+                          );
+                        })
+                        : !record
+                          ? "--"
+                          : record}
+                  </p>
+                </div>
               ) : (
                 // </Popover>
                 <div onClick={() => {
@@ -554,6 +617,7 @@ const TableAnt = ({
       }))
     );
   }, []);
+
   useEffect(() => {
     setListData([...searchFilter]);
 

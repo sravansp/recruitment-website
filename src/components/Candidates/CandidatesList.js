@@ -28,6 +28,7 @@ const CandidatesList = () => {
           id: 1,
           title: t("Name"),
           value: "candidateName",
+          bold: true,
         },
         {
           id: 2,
@@ -38,6 +39,7 @@ const CandidatesList = () => {
           id: 3,
           title: t("Job"),
           value: "jobTitle",
+          titleCaseSensitive: true,
         },
 
         {
@@ -129,7 +131,7 @@ const CandidatesList = () => {
            <div className="flex gap-4">
           {" "}
           <Link onClick={handleNavigate} className="flex gap-2 mt-2">
-            <span className="!text-primary para">View career page</span>{" "}
+            <span className="!text-primary para">View Career Page</span>{" "}
             <PiArrowSquareOut size={15} className="dark:text-white" />
           </Link>
           <ButtonClick buttonName={t("Add_Candidates")}

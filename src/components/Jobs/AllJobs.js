@@ -98,6 +98,7 @@ function AllJobs() {
           id: 1,
           title: t("Name"),
           value: "jobTitle",
+          bold: true,
         },
         {
           id: 2,
@@ -143,6 +144,7 @@ function AllJobs() {
           id: 1,
           title: t("Name"),
           value: "jobTitle",
+          bold: true,
         },
         {
           id: 2,
@@ -195,6 +197,7 @@ function AllJobs() {
           id: 1,
           title: t("Name"),
           value: "jobTitle",
+          bold: true,
         },
         {
           id: 2,
@@ -241,6 +244,7 @@ function AllJobs() {
           id: 1,
           title: t("Name"),
           value: "jobTitle",
+          bold: true,
         },
         {
           id: 2,
@@ -494,7 +498,7 @@ function AllJobs() {
         <div className="flex items-center gap-4">
           {" "}
           <Link onClick={handleNavigate} className="flex items-center gap-2">
-            <span className="!text-primary para">View career page</span>{" "}
+            <span className="!text-primary para">View Career Page</span>{" "}
             <PiArrowSquareOut size={20} className="dark:text-white" />
           </Link>
           <ButtonClick
