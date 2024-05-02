@@ -179,12 +179,6 @@ function AllJobs() {
           title: t("Date"),
           value: "createdOn",
         },
-        {
-          id: 8,
-          title: t("View"),
-          value: "viewData",
-          status: "viewData",
-        },
         // {
         //   id: 8,
         //   title: "",
