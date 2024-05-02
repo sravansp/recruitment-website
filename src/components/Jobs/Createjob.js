@@ -1366,6 +1366,9 @@ const Createjob = ({
   // useEffect(()=>{
   //   fillFormWithJobData()
   // },[])
+  useEffect(() => {
+    activeBtn > 3 ? setBtnName("Save") : setBtnName("");
+  }, [activeBtn])
 
   return (
     <div>
@@ -1422,6 +1425,7 @@ const Createjob = ({
           }
           setBtnName("");
         }}
+        btnName={btnName}
         nextStep={nextStep}
         activeBtn={activeBtn}
         saveAndContinue={true}
