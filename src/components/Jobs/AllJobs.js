@@ -117,7 +117,6 @@ function AllJobs() {
         },
         {
           id: 5,
-
           title: t("Status"),
           value: "isActive",
           actionToggle: true,
@@ -177,6 +176,12 @@ function AllJobs() {
           id: 7,
           title: t("Date"),
           value: "createdOn",
+        },
+        {
+          id: 8,
+          title: t("View"),
+          value: "viewData",
+          status: "viewData",
         },
         // {
         //   id: 8,

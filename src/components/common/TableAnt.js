@@ -37,6 +37,7 @@ import { setSelectedDataId } from "../../Redux/action";
 import { useNavigate } from 'react-router-dom';
 import ModalPop from "./ModalPop";
 import TabsNew from "./TabsNew";
+import { PiEye } from "react-icons/pi";
 
 
 // Filter Dropdown
@@ -224,7 +225,7 @@ const TableAnt = ({
         // getRecords()
         // window.location.reload();
         openNotification("success", "Success", response.message);
-      } else if(response.result===500){
+      } else if (response.result === 500) {
         openNotification("error", "Failed", "Unable to update status.");
       }
     } catch (error) {
@@ -256,8 +257,8 @@ const TableAnt = ({
       // Handle success response
       openNotification("success", "Success", result?.message);
       refresh(true);
-    }else if(result.status === 500){
-      openNotification("error","error",result?.message)
+    } else if (result.status === 500) {
+      openNotification("error", "error", result?.message)
     }
 
   };
@@ -436,6 +437,17 @@ const TableAnt = ({
                     size={isSmallScreen ? "small" : "default"}
                   />
                 </Tooltip>
+              ) : each.value === "viewData" ? (
+                <Tooltip title="View details" color={primaryColor}>
+                  <button
+                    className={`w-8 h-8 2xl:w-10 2xl:h-10 rounded-full vhcenter hover:bg-primaryalpha/20 dark:hover:bg-primaryalpha/30 text-accent transition-all duration-300`}
+                  // onClick={() => {
+                  //   handleModalOpen(text, drawerH[0]?.[tabValue || path]);
+                  // }}
+                  >
+                    <PiEye className="text-xs 2xl:text-sm" />
+                  </button>
+                </Tooltip>
               ) : each.action ? (
                 <div className="flex items-center justify-start gap-4">
                   <Tooltip title="Edit" color={primaryColor}>
@@ -492,47 +504,49 @@ const TableAnt = ({
                 </div>
               )}
             </div>
-            {each.dotsVertical && (
-              <Popover
-                content={
-                  <div>
-                    <p
-                      onClick={() => {
-                        buttonClick(text[actionID], "edit"); //"8"
-                        clickDrawer(true);
-                        // console.log(text[actionID]);
+            {
+              each.dotsVertical && (
+                <Popover
+                  content={
+                    <div>
+                      <p
+                        onClick={() => {
+                          buttonClick(text[actionID], "edit"); //"8"
+                          clickDrawer(true);
+                          // console.log(text[actionID]);
 
-                        // console.log(actionID);
-                        // console.log(text[actionID], "ddddddddsfsd");
-                      }}
-                      className="text-md font-semibold p-2 cursor-pointer"
-                    >
-                      Update
-                    </p>
-                    <Popconfirm
-                      placement="top"
-                      title={"Confirm To Delete"}
-                      description={"Are you sure to delete this row?"}
-                      okText="Confirm"
-                      cancelText="No"
-                      onConfirm={() => {
-                        // console.log("hh");
-                        deleteRecord(text[actionID]);
-                      }}
-                      // className="activeBtn"
-                      style={{}}
-                    >
-                      <p className="text-md font-semibold p-2  cursor-pointer">
-                        Delete
+                          // console.log(actionID);
+                          // console.log(text[actionID], "ddddddddsfsd");
+                        }}
+                        className="text-md font-semibold p-2 cursor-pointer"
+                      >
+                        Update
                       </p>
-                    </Popconfirm>
-                  </div>
-                }
-              // title="Start Action"
-              >
-                <BsThreeDotsVertical className=" opacity-50 cursor-pointer" />
-              </Popover>
-            )}
+                      <Popconfirm
+                        placement="top"
+                        title={"Confirm To Delete"}
+                        description={"Are you sure to delete this row?"}
+                        okText="Confirm"
+                        cancelText="No"
+                        onConfirm={() => {
+                          // console.log("hh");
+                          deleteRecord(text[actionID]);
+                        }}
+                        // className="activeBtn"
+                        style={{}}
+                      >
+                        <p className="text-md font-semibold p-2  cursor-pointer">
+                          Delete
+                        </p>
+                      </Popconfirm>
+                    </div>
+                  }
+                // title="Start Action"
+                >
+                  <BsThreeDotsVertical className=" opacity-50 cursor-pointer" />
+                </Popover>
+              )
+            }
           </>
         ),
         // responsive: ["sm"],
@@ -846,7 +860,7 @@ const TableAnt = ({
             ) : (
               showsearch && (
                 <div className="flex items-center gap-3">
-               
+
                   <SearchBox
                     data={data}
                     placeholder={t("Search_placeholder")}
