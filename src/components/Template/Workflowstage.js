@@ -96,6 +96,7 @@ const Workflowstage = ({
   const [Addnote,setAddnote] = useState("")
   const [Email,setEmail] = useState("")
   const [AddTag,setAddtag] = useState("")
+  
  
 
 
@@ -146,6 +147,20 @@ const Workflowstage = ({
     getEmailLsit()
   
   },[])
+
+  const handleMenuClick = (option, value) => {
+    let demo = options.filter(data => data.key == option);
+
+    console.log(options)
+    let detObject = demo.length > 0 ? demo[0].det : {};
+  
+    // Add the selected detObject to the existing optionData array as an object
+    setOptionData(prevOptionData => [...prevOptionData, ...detObject]);
+    
+    setmenuitem(true);
+    setMenuVisible(false);
+  };
+  console.log(optionData, "0000");
   const getEvaluationtem = async () => {
     try {
       const response = await getAllRecruitmentEvaluationTemplates();
@@ -270,6 +285,7 @@ const Workflowstage = ({
       }
   
       setIsModalVisible(true);
+      
     } else {
       console.error("Invalid stage name:", stageIndex);
     }
@@ -291,79 +307,82 @@ const Workflowstage = ({
 
   const handleAddStageClick = () => {
     if (!stageName) {
-      setStageError("Stage Name is required.");
-      return;
+        setStageError("Stage Name is required.");
+        return;
     } else {
-      setStageError("");
+        setStageError("");
     }
-  
+
     if (!stageName.trim()) {
-      // If stageName is empty or contains only whitespace, return without adding a stage
-      return;
+        // If stageName is empty or contains only whitespace, return without adding a stage
+        return;
     }
-  
+
     // Create an object to hold the stage rules based on user inputs
     const stageRules = {};
-  
+
     // Set the stage rules based on dropdown selections and input field values
     if (evaluationValue) {
-      stageRules["evaluation"] = evaluationValue;
+        stageRules["evaluation"] = evaluationValue;
     }
-  
+
     if (questionnaire) {
-      stageRules["questionnaire"] = questionnaire;
+        stageRules["questionnaire"] = questionnaire;
     }
-  
+
     if (Email) {
-      stageRules["emailTemplate"] = Email;
+        stageRules["emailTemplate"] = Email;
     }
-  
+
     if (Addnote) {
-      stageRules["note"] = Addnote;
+        stageRules["note"] = Addnote;
     }
-  
+
     if (AddTag) {
-      stageRules["tag"] = AddTag;
+        stageRules["tag"] = AddTag;
     }
-  
+
+    let newStageOrder = stages.length + 1;
+
     if (editStageIndex !== null) {
-      // If editStageIndex is not null, it means we're editing an existing stage
-      // Update the corresponding stage name and stage rules in the stages array
-      setstages(prevStages =>
-        prevStages.map((stage, index) =>
-          index === editStageIndex ? { ...stage, stageName, stageRules } : stage
-        )
-      );
-      
-    } else if(!updateId) {
-      // Otherwise, we're adding a new stage
-      // Add the new stage with stage name and stage rules to the stages array
-      setstages(prevStages => [
-        ...prevStages,
-        {
-          id: stages.length + 1,
-          workFlowId: insertedId,
-          stageOrder: stages.length + 1,
-          stageName,
-          stageRules,
-          createdBy: 9,
-        },
-      ]);
-    }else{
-      setstages(prevStages => [
-        ...prevStages,
-        {
-          id: null,
-          workFlowId: insertedId,
-          stageOrder: stages.length + 1,
-          stageName,
-          stageRules,
-          createdBy: 9,
-        },
-      ]);
+        // If editStageIndex is not null, it means we're editing an existing stage
+        // Update the corresponding stage name and stage rules in the stages array
+        setstages(prevStages =>
+            prevStages.map((stage, index) =>
+                index === editStageIndex ? { ...stage, stageName, stageRules } : stage
+            )
+        );
+    } else if (!updateId) {
+        // Otherwise, we're adding a new stage
+        // Add the new stage with stage name and stage rules to the stages array
+        setstages(prevStages => [
+            ...prevStages,
+            {
+                id: stages.length + 1,
+                workFlowId: insertedId,
+                stageOrder: newStageOrder,
+                stageName,
+                stageRules,
+                createdBy: 9,
+                optionData: optionData.map(option => ({ ...option }))
+            },
+        ]);
+    } else {
+        setstages(prevStages => [
+            ...prevStages,
+            {
+                id: null,
+                workFlowId: insertedId,
+                stageOrder: newStageOrder,
+                stageName,
+                stageRules,
+                createdBy: 9,
+                optionData: optionData.map(option => ({ ...option }))
+            },
+        ]);
     }
-  
-    closeModal() // Close the modal
+
+    closeModal(); // Close the modal
     setEditStageIndex(null); // Clear the editStageIndex
     setStageName("");
     setSelectedStageName("");
@@ -372,8 +391,8 @@ const Workflowstage = ({
     setEmail(""); // Clear dropdown selection
     setAddnote(""); // Clear input field value
     setAddtag("");
-            
-  };
+};
+
   const handleDeleteStage = (id) => {
     setstages((prevStages) => prevStages.filter((stage) => stage.id !== id));
   };
@@ -672,19 +691,7 @@ const Workflowstage = ({
  
   const [sections, setSections] = useState([]);
 
-  const handleMenuClick = (option, value) => {
-    let demo = options.filter(data => data.key == option);
-
-    console.log(options)
-    let detObject = demo.length > 0 ? demo[0].det : {};
-  
-    // Add the selected detObject to the existing optionData array as an object
-    setOptionData(prevOptionData => [...prevOptionData, ...detObject]);
-  
-    setmenuitem(true);
-    setMenuVisible(false);
-  };
-  console.log(optionData, "0000");
+ 
    
 
   const handleDeleteSection = (id) => {
@@ -872,6 +879,8 @@ const Workflowstage = ({
                     </div>
                   </div>
                 </div>
+                
+              
               ))}
             </div>
           </div>
