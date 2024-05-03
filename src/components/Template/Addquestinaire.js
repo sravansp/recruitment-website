@@ -21,8 +21,7 @@ import { RiDeleteBinLine } from 'react-icons/ri'
 import * as Yup from "yup";
 
 
-const
-  QuestionAire = ({
+const QuestionAire = ({
     open = "",
     close = () => { },
     inputshow = false,
@@ -31,6 +30,7 @@ const
     refresh
   }) => {
     const [companyId, setCompanyId] = useState(localStorage.getItem("companyId"));
+    const primaryColor = localStorage.getItem("mainColor");
     const [insertedId, setinsertedId] = useState("")
     console.log(companyId)
     console.log(insertedId)
@@ -554,7 +554,7 @@ const
                       {/* Add your logic here */}
 
                       <div>
-                        <Tooltip placement="topRight" title={"Active / Inactive"} className="flex items-center gap-2">
+                        <Tooltip placement="topRight" color={primaryColor} title={"Mandatory / Optional"} className="flex items-center gap-2">
                           <p>Mandatory</p>
                           <ToggleBtn />
                         </Tooltip>
