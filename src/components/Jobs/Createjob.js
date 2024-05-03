@@ -110,7 +110,7 @@ const Createjob = ({
   const [activeBtn, setActiveBtn] = useState(0);
   const [presentage, setPresentage] = useState(0);
   const [nextStep, setNextStep] = useState(0);
-  const [activeBtnValue, setActiveBtnValue] = useState("Jobdetails"); //Publish//TeamMembers//LeaveType//ApplicationForm//Jobdetails////Workflow
+  const [activeBtnValue, setActiveBtnValue] = useState("TeamMembers"); //Publish//TeamMembers//LeaveType//ApplicationForm//Jobdetails////Workflow
   const [btnName, setBtnName] = useState();
   const [customRate, setCustomRate] = useState(1);
   const [savedContent, setSavedContent] = useState([]);
@@ -126,9 +126,9 @@ const Createjob = ({
   const [JobDescriptionList, setJobDescriptionList] = useState([])
   const [jobTitle, setJobTitle] = useState("")
   const [searchValue, setSearchValue] = useState("");
-  const [searchFilter, setSearchFilter] = useState("");
   const [CheckboxValue, setCheckboxValue] = useState(false);
   const [link, setLink] = useState("");
+
 
 
   // console.log(updateId)
@@ -1205,7 +1205,36 @@ const Createjob = ({
   //Teammebers
 
   const [employeeList, setemployeeList] = useState([]);
+  const [searchFilter, setSearchFilter] = useState(
+    employeeList.map((each) => ({
+      key: each.username,
+      ...each,
+    }))
+  );
+  
+  useEffect(() => {
+    if(searchValue){
+    setemployeeList([...searchFilter]);
+  }else{
+    AllRecruitmentJobTeamMembers()
+  }
 
+    // console.log(searchFilter);
+    // setListData(listData?.filter((each)=>{
+    // }))
+    // console.log(Object.values(Object.keys({ ...listData })));
+    // setListData(
+    // listData?.filter((each) => {
+    //   if (Object.values(Object.values(each)).includes(searchFilter)) {
+    //     return each;
+    //   }
+    //   Object.values(Object.values(each)).filter((filterdata) => {
+    //     if (filterdata !== null && filterdata !== " ") return filterdata;
+    //     // console.log(filterdata.includes("d"));
+    //   });
+    // });
+    // );
+  }, [searchFilter]);
   const AllRecruitmentJobTeamMembers = async () => {
     // const jobId=1;
     try {
@@ -2390,21 +2419,20 @@ const Createjob = ({
   )}</VirtualList>
 </List> */}
                     <div className="flex mt-8 items-center justify-between">
-                      <div>
-                        <SearchBox
-                          data={employeeList.map((item) => item.username)}
-                          placeholder={"Search Team Member"}
-                          value={searchValue}
-                          change={(value) => {
-                            setSearchValue(value);
-                          }}
-                          onSearch={(value) => {
-                            setSearchFilter(value);
-                          }}
-                        />
-                      </div>
-
-                      <div className="flex items-center gap-2">
+                      <SearchBox
+                        placeholder={"Search Employess"}
+                        data={employeeList}
+                        value={searchValue}
+                        change={(value) => {
+                          setSearchValue(value);
+                        }}
+                        onSearch={(value) => {
+                          // console.log(value);
+                          setSearchFilter(value);
+                        }}
+                      />
+                    </div>
+                    <div className="flex items-center gap-2">
                         <CheckBoxInput
                           change={(e) => {
                             setCheckboxValue(!CheckboxValue)
@@ -2415,7 +2443,6 @@ const Createjob = ({
                           <p className="text-sm dark:text-white">Check All</p>
                         </div>
                       </div>
-                    </div>
                     <table>
                       <thead>
                         <tr>

@@ -27,7 +27,7 @@ import TextArea from "../common/TextArea";
 import Radiobuttonnew from "../common/Radiobuttonnew";
 import GoogleForm from "../common/GoogleForm";
 import JobCard from "../common/JobCard";
-import DOMPurify from 'dompurify';
+// import DOMPurify from 'dompurify';
 import {
   cardData,
   regularOvertime,
@@ -82,7 +82,7 @@ import { RiDeleteBinLine } from "react-icons/ri";
 import { FaAsterisk } from "react-icons/fa";
 import TextEditorcopy from "../common/TextEditor/textEditorCopy";
 import { EditorState, ContentState, convertFromHTML } from 'draft-js';
-import { convertToHTML } from 'draft-convert';
+// import { convertToHTML } from 'draft-convert';
 // import Editor from "../common/TextEditor/textEditorCopy";
 
 const CreatejobTemp = ({
