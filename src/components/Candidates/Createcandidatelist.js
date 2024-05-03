@@ -825,7 +825,7 @@ export default function Createcandidatelist({ open = "", close = () => { }, file
                       change={(e) => {
                         Formik2.setFieldValue("namePrefix", e);
                       }}
-
+                      required={true}
                       value={Formik2.values.namePrefix}
                       error={Formik2.values.namePrefix ? "" : Formik2.errors.namePrefix}
                     />
