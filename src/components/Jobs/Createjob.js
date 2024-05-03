@@ -110,7 +110,7 @@ const Createjob = ({
   const [activeBtn, setActiveBtn] = useState(0);
   const [presentage, setPresentage] = useState(0);
   const [nextStep, setNextStep] = useState(0);
-  const [activeBtnValue, setActiveBtnValue] = useState("TeamMembers"); //Publish//TeamMembers//LeaveType//ApplicationForm//Jobdetails////Workflow
+  const [activeBtnValue, setActiveBtnValue] = useState("Jobdetails"); //Publish//TeamMembers//LeaveType//ApplicationForm//Jobdetails////Workflow
   const [btnName, setBtnName] = useState();
   const [customRate, setCustomRate] = useState(1);
   const [savedContent, setSavedContent] = useState([]);
@@ -1211,13 +1211,13 @@ const Createjob = ({
       ...each,
     }))
   );
-  
+
   useEffect(() => {
-    if(searchValue){
-    setemployeeList([...searchFilter]);
-  }else{
-    AllRecruitmentJobTeamMembers()
-  }
+    if (searchValue) {
+      setemployeeList([...searchFilter]);
+    } else {
+      AllRecruitmentJobTeamMembers()
+    }
 
     // console.log(searchFilter);
     // setListData(listData?.filter((each)=>{
@@ -2384,7 +2384,7 @@ const Createjob = ({
                     padding={true}
                     toggleBtn={false}
                     click={() => {
-                      setPresentage(4.1);
+                      setPresentage(4);
                     }}
                     tableshow={true}
                     initialExpanded={true}
@@ -2431,8 +2431,7 @@ const Createjob = ({
                           setSearchFilter(value);
                         }}
                       />
-                    </div>
-                    <div className="flex items-center gap-2">
+                      <div className="flex items-center gap-2">
                         <CheckBoxInput
                           change={(e) => {
                             setCheckboxValue(!CheckboxValue)
@@ -2443,6 +2442,7 @@ const Createjob = ({
                           <p className="text-sm dark:text-white">Check All</p>
                         </div>
                       </div>
+                    </div>
                     <table>
                       <thead>
                         <tr>
