@@ -13,6 +13,7 @@ import ButtonClick from '../common/Button'
 import { RxQuestionMarkCircled } from 'react-icons/rx'
 import { IoClose } from 'react-icons/io5'
 import AI_Text from '../../assets/images/AI_Text.jpg';
+import { FaAsterisk } from 'react-icons/fa'
 
 const TemplateDec = ({ open = "", close = () => { }, inputshow = false, isUpdate = {}, updateId, refresh }) => {
 
@@ -133,7 +134,7 @@ const TemplateDec = ({ open = "", close = () => { }, inputshow = false, isUpdate
 
           openNotification(
             "success",
-            "success",
+            "Success",
             response.message.replace(/<br\/>/g, '\n')
           );
           setTimeout(() => {
@@ -161,7 +162,7 @@ const TemplateDec = ({ open = "", close = () => { }, inputshow = false, isUpdate
 
           openNotification(
             "success",
-            "Successful",
+            "Success",
             response.message
           );
           setTimeout(() => {
@@ -202,6 +203,10 @@ const TemplateDec = ({ open = "", close = () => { }, inputshow = false, isUpdate
   //   setContent(content);
   // };
   return (
+    
+    
+    
+    
     <DrawerPop
 
       open={show}
@@ -248,7 +253,7 @@ const TemplateDec = ({ open = "", close = () => { }, inputshow = false, isUpdate
       }
       footerBtn={[
         t("Cancel"),
-        !updateId ? t("Save Template") : t("Update Template"),
+        t("Save"),
 
       ]}
       className="widthFull"
@@ -269,6 +274,7 @@ const TemplateDec = ({ open = "", close = () => { }, inputshow = false, isUpdate
 
 
     >
+     
       <div className="relative max-w-[1070px]  w-full mx-auto">
         <Accordion
           title={"Job Description"}
@@ -280,10 +286,11 @@ const TemplateDec = ({ open = "", close = () => { }, inputshow = false, isUpdate
           }}
           initialExpanded={true}
         >
+           <div class="flex flex-col gap-4 overflow-hidden">
           <div className="grid grid-cols-2 ">
             <FormInput
               title={"Template Name"}
-              placeholder={"Enter Template Name..."}
+              placeholder={"Enter Template Name"}
               value={templateName}
               change={(e) => {
                 setTemplateName(e);
@@ -319,14 +326,17 @@ const TemplateDec = ({ open = "", close = () => { }, inputshow = false, isUpdate
             <ButtonClick handleSubmit={handleGenerateWithAI} BtnType="primary" icon={<img src={image} alt="image" style={{ height: '20px', width: '20px', alignItems: "center" }} />} buttonName={"Generate with AI"} />
           </div>
 
-          <div className='font-bold'>About the role</div>
-          <div className='border rounded-2xl p-5'>
+          {/* <div className='font-bold'>About the role</div> */}
+          {/* <div className='border rounded-2xl p-5'> */}
             {/* <TextArea
               title={"Description"}
               placeholder={"Enter the job description here, include key areas of resposibility on what the candidate might do on a typical day."}
             /> */}
             <div className='pt-5'>
-              <p className='pb-2'>Description</p>
+            <div className="flex gap-1.5">
+                        <p className="pb-2">Description</p>
+                        <FaAsterisk className="text-[6px] text-rose-600" />
+                        </div>
               <TextEditor
                 onChange={(e) => {
                   setContent(e)
@@ -338,12 +348,15 @@ const TemplateDec = ({ open = "", close = () => { }, inputshow = false, isUpdate
                 loader={loader}
               />
             </div>
+          {/* </div> */}
           </div>
 
         </Accordion>
       </div>
+      
       {contextHolder}
     </DrawerPop>
+   
   )
 }
 

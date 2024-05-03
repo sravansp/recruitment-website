@@ -2,6 +2,7 @@ import axios from "axios";
 
 // const apiUrl = 'http://192.168.29.185/loyaltri-recruitment-server/api/v1';
 const apiUrl = 'https://alpha-jobs-api.loyaltri.com/api/v1';
+// const apiUrl = 'https://web-jobs-api.loyaltri.com/api/v1';
 // const apiUrl = 'https://demo-jobs-api.loyaltri.com/api/v1'
 
 
@@ -39,7 +40,7 @@ export const getAllRecruitmentJobs = async (Data) => {
   const method = "POST";
 
   const kwargs = Data;
-
+   console.log(Data)
   return await apiRequest(action, method, kwargs);
 };
 
@@ -1227,6 +1228,7 @@ export { action };
 // file handling url
 const urlFileHandler = "https://alpha-jobs-api.loyaltri.com/api/fileHandler";
 // const urlFileHandler = "https://demo-jobs-api.loyaltri.com/api/fileHandler";
+// const urlFileHandler = "https://web-jobs-api.loyaltri.com/api/fileHandler";
 const fileAction = async (formData) => {
   try {
     const result = await axios.post(urlFileHandler, formData, {

@@ -1,6 +1,8 @@
 import axios from "axios";
 
 const apiUrl="https://alpha-api.loyaltri.com/api/main"
+// const apiUrl="https://web-api.loyaltri.com/api/main"
+// const apiUrl="https://demo-api.loyaltri.com/api/main"
 const API = {
   // HOST: "http://192.168.29.111/loyaltri-server",
   // HOST: "http://192.168.0.37/ci-news",

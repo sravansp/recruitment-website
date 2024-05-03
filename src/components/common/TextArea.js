@@ -1,5 +1,5 @@
 import { Input } from "antd";
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import { FaAsterisk } from "react-icons/fa";
 import { FiAlertCircle } from 'react-icons/fi';
 import { HiMiniStar } from "react-icons/hi2";
@@ -16,7 +16,7 @@ export default function TextArea({
   required = false,
   rows = "",
   hideBorder = false,
-  maxLength=250,
+  maxLength = 250,
 }) {
   const isSmallScreen = useMediaQuery({ maxWidth: 1439 });
   const { TextArea } = Input;
@@ -30,7 +30,12 @@ export default function TextArea({
     setLetterCount(inputValue.length);
     change(inputValue);
   };
-  
+
+  useEffect(() => {
+    let inputValue = value;
+    setLetterCount(inputValue.length);
+  }, [value])
+
   return (
     <div className={` ${className}  relative flex flex-col gap-1`}>
       <div className="flex gap-1.5">
@@ -38,7 +43,7 @@ export default function TextArea({
           <label className="text-xs font-medium 2xl:text-sm dark:text-white">
             {title}
           </label>
-          
+
         }        {required && <FaAsterisk className="text-[6px] text-rose-600" />}
       </div>
       <div style={{ position: "relative" }}>
@@ -48,7 +53,7 @@ export default function TextArea({
           id=""
           placeholder={placeholder}
           value={value}
-          onChange={handleChange} 
+          onChange={handleChange}
           size={isSmallScreen ? "default" : "large"}
           className={`w-full ${hideBorder ? "border-none" : "border"} rounded-lg text-sm mt-[6px] dark:bg-black`}
           style={{
@@ -69,7 +74,7 @@ export default function TextArea({
           <span className="text-[10px] pl-1">{error}</span>
         </p>
       )}
-       <p className="text-xs text-gray-500">{letterCount}/{maxLength}</p>
+      <p className="text-xs text-gray-500">{letterCount}/{maxLength}</p>
     </div>
   );
 }

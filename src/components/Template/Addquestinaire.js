@@ -68,18 +68,38 @@ const
     //   });
     // }, [insertedId]);
     const handleAddCondition = () => {
-      setEvaluation((prevEvaluation) => [
-        ...prevEvaluation,
-        {
-          id: prevEvaluation.length + 1,
-          companyId: companyId, // Replace companyId with your actual value
-          questionnaireTemplateId: "", // Replace insertedId with your actual value
-          question: "",
-          answerMetaData: '[]',
-          description: "hihihihi",
-          createdBy: 493
-        },
-      ]);
+      if (!updateId) {
+        setEvaluation((prevEvaluation) => [
+          ...prevEvaluation,
+          {
+            id: prevEvaluation.length + 1,
+            companyId: companyId, // Replace companyId with your actual value
+            questionnaireTemplateId: "", // Replace insertedId with your actual value
+            question: "",
+            answerMetaData: '[]',
+            description: "hihihihi",
+            createdBy: 493
+          },
+        ]);
+      } else {
+
+       
+        // Update the state with the new id
+
+
+        // Add a new condition with the calculated nextId
+        setEvaluation(prevEvaluation => [
+          ...prevEvaluation,
+          {
+            companyId: companyId, // Replace companyId with your actual value
+            evaluationTemplateId: "",
+            questionnaireTemplateDetailsId: null, // Set the calculated nextId
+            question: "",
+            answerMetaData: '[]',
+            description: "hihihihi",
+          },
+        ]);
+      }
     };
 
     const handleDeleteCondition = (index) => {
@@ -160,7 +180,9 @@ const
 
 
 
-
+    const [Questionerror, setQuestionError] = useState('')
+    const [answerError, setAnswerError] = useState('')
+    const [OptionError, setoptionserror] = useState('')
 
     // const[insertedId,setinsertedId] =useState(null)
 
@@ -186,36 +208,47 @@ const
             description: values.description,
             createdBy: null,
           });
-          if (
-            !formik.values.questionnaireTemplateName || !formik.values.description) {
-            formik.setFieldError('questionnaireTemplateName', !formik.values.questionnaireTemplateName ? 'Template name is required' : '');
-            formik.setFieldError('description', !formik.values.description ? 'Description is required' : '');
+          const alphanumericRegex = /^[a-zA-Z0-9 ]+$/; // Regex to allow only letters, numbers, and spaces
+
+          if (!values.questionnaireTemplateName || !alphanumericRegex.test(values.questionnaireTemplateName)) {
+            formik.setFieldError('questionnaireTemplateName', !values.questionnaireTemplateName ? 'Template name is required' : 'Please enter only letters and numbers');
           }
 
-          const newErrorMessages = evaluation.map((condition) => {
-            let errorMessage = '';
+          if (!values.description) {
+            formik.setFieldError('description', 'Description is required');
+          }
 
+          let hasError = false;
+          evaluation.forEach((condition) => {
             if (!condition.question) {
-              errorMessage = 'Question is Required.';
-            } else if (!condition.answerMetaData || !condition.answerMetaData[0]?.key) {
-              errorMessage = 'Please choose an answer type.';
-            } else if (
+              setQuestionError('Question is Required.');
+              hasError = true;
+
+            }
+
+            if (!condition.answerMetaData || !condition.answerMetaData[0]?.key) {
+              setAnswerError('Please choose an answer type.');
+              hasError = true;
+            }
+            if (
               ["Drop-down", "MultipleChoice", "Checkboxes"].includes(condition.answerMetaData[0]?.key) &&
               (condition.answerMetaData.some((field) => !field.value) ||
                 (!condition.answerMetaData[0]?.value && condition.answerMetaData[0]?.key))
             ) {
-              errorMessage = 'Please enter values for all options.';
+              setoptionserror('Please enter values for all options.');
+              hasError = true;
             }
-
-            return errorMessage;
           });
-
-          setErrorMessages(newErrorMessages);
-          const hasErrors = newErrorMessages.some(errorMessage => errorMessage !== '');
-          if (hasErrors) {
-            // Don't proceed if there are errors
+          if (hasError) {
             return;
           }
+
+          // setErrorMessages(newErrorMessages);
+          // const hasErrors = newErrorMessages.some(errorMessage => errorMessage !== '');
+          // if (hasErrors) {
+          //   // Don't proceed if there are errors
+          //   return;
+          // }
 
           // Make the first API call
           if (updateId) {
@@ -226,7 +259,7 @@ const
               answerMetaData: item.answerMetaData,
               description: item.description,
               createdBy: item.createdBy,
-              questionnaireTemplateDetailsId: evaluationTemplateDetailsIds[index],
+              questionnaireTemplateDetailsId: item.questionnaireTemplateDetailsId,
 
               modifiedBy: null
             }));
@@ -244,7 +277,7 @@ const
             })
             console.log(response)
             if (response.status == 200) {
-              openNotification("success", "success", response.message);
+              openNotification("success", "Success", response.message);
               setSuccessNotificationVisible(true);
               setTimeout(() => {
                 handleClose();
@@ -288,7 +321,7 @@ const
               console.log(insertedId);
 
               if (response2.status === 200) {
-                openNotification("success", "success", response2.message);
+                openNotification("success", "Success", response2.message);
                 setSuccessNotificationVisible(true);
                 setTimeout(() => {
                   handleClose();
@@ -333,9 +366,9 @@ const
           return item.questionaireTemplateDetailData.map(detail => ({
             companyId: detail.companyId,
             question: detail.question,
-            evaluationTemplateDetailsId: detail.questionnaireTemplateDetailsId,
+            questionnaireTemplateDetailsId: detail.questionnaireTemplateDetailsId,
             description: detail.description,
-            evaluationTemplateId: detail.questionnaireTemplateId,
+            questionnaireTemplateId: detail.questionnaireTemplateId,
             isActive: detail.isActive,
             modifiedBy: null,
             modifiedOn: detail.modifiedOn,
@@ -345,8 +378,8 @@ const
             }))
           }));
         });
-        const ids = response.result.map(item => item.questionaireTemplateDetailData.map(detail => detail.questionnaireTemplateDetailsId)).flat();
-        setEvaluationTemplateDetailsIds(ids);
+        // const ids = response.result.map(item => item.questionaireTemplateDetailData.map(detail => detail.questionnaireTemplateDetailsId)).flat();
+        // setEvaluationTemplateDetailsIds(ids);
         setEvaluation(evaluationData);
         console.log(evaluationData)
         const firstEvaluation = response.result[0];
@@ -360,7 +393,7 @@ const
     useEffect(() => {
       getevaluationtem()
 
-    }, [])
+    }, [updateId])
     return (
       <div>
 
@@ -412,7 +445,7 @@ const
           //  }
           footerBtn={[
             t("Cancel"),
-            !isUpdate ? t("Save Template") : t("Save Template"),
+            t("Save"),
           ]}
           className="widthFull"
           handleSubmit={(e) => handleSubmit(e)}
@@ -446,7 +479,7 @@ const
               <div className='grid grid-cols-2'>
                 <FormInput
                   title={"Template Name"}
-                  placeholder={"Enter Template Name..."}
+                  placeholder={"Enter Template Name"}
                   value={formik.values.questionnaireTemplateName}
                   change={(e) => {
                     formik.setFieldValue('questionnaireTemplateName', e)
@@ -458,7 +491,7 @@ const
               <div className='grid grid-cols-2'>
                 <TextArea
                   title={"Decription"}
-                  placeholder={"Enter Decription..."}
+                  placeholder={"Enter Decription"}
                   value={formik.values.description}
                   change={(e) => {
                     formik.setFieldValue('description', e)
@@ -469,115 +502,115 @@ const
                 />
               </div>
               <div className="flex flex-col gap-4 overflow-hidden">
-              {evaluation.map((condition, index) => (
-                <><div className="flex items-center justify-between">
-                  <FormInput
-                    // showValueParagraph={true}
-                    title={`Question ${index + 1}`}
-                    placeholder={`Enter Question ${index + 1}`}
-                    value={condition.question}
-                    change={(e) => {
-                      setEvaluation((prevEvaluation) => prevEvaluation.map((prevCondition, i) => i === index
-                        ? { ...prevCondition, question: e }
-                        : prevCondition
-                      ))
-                      console.log(e)
+                {evaluation.map((condition, index) => (
+                  <><div className="flex items-center justify-between">
+                    <FormInput
+                      // showValueParagraph={true}
+                      title={`Question ${index + 1}`}
+                      placeholder={`Enter Question ${index + 1}`}
+                      value={condition.question}
+                      change={(e) => {
+                        setEvaluation((prevEvaluation) => prevEvaluation.map((prevCondition, i) => i === index
+                          ? { ...prevCondition, question: e }
+                          : prevCondition
+                        ))
+                        console.log(e)
 
-                    }}
-                    error={condition.question ? '' : errorMessages[index] || ''}
-                    required={true}
+                      }}
+                      error={condition.question ? '' : Questionerror || ''}
+                      required={true}
 
-                  />
+                    />
 
-                  <div className="flex items-center gap-5">
-                    <div className="flex-shrink-0"> {/* Add this container for the dropdown and icons */}
-                      <Dropdown
-                        options={Form}
-                        dropdownWidth='200px'
-                        change={(e) => {
-                          setEvaluation((prevEvaluation) => prevEvaluation.map((prevCondition, i) => i === index
-                            ? {
-                              ...prevCondition,
-                              answerMetaData: [
-                                {
-                                  id: 1,
-                                  key: e,
-                                  value: e === condition.answerMetaData[0]?.key ? condition.answerMetaData[0]?.value : '',
-                                }
-                              ],
-                            }
-                            : prevCondition
-                          ))
-                          handleAddField(e)
-                        }}
-                        value={condition.answerMetaData[0]?.key}
-                        icondropDown={true}
-                        error={condition.answerMetaData[0]?.key ? '' : errorMessages[index] || ''}
-                        required={true}
-                        placeholder={"Choose Options"}
-                      />
-                    </div>
-                    {/* Additional dynamic input fields based on the selected value in the dropdown */}
-                    {/* Add your logic here */}
+                    <div className="flex items-center gap-5">
+                      <div className="flex-shrink-0"> {/* Add this container for the dropdown and icons */}
+                        <Dropdown
+                          options={Form}
+                          dropdownWidth='200px'
+                          change={(e) => {
+                            setEvaluation((prevEvaluation) => prevEvaluation.map((prevCondition, i) => i === index
+                              ? {
+                                ...prevCondition,
+                                answerMetaData: [
+                                  {
+                                    id: 1,
+                                    key: e,
+                                    value: e === condition.answerMetaData[0]?.key ? condition.answerMetaData[0]?.value : '',
+                                  }
+                                ],
+                              }
+                              : prevCondition
+                            ))
+                            handleAddField(e)
+                          }}
+                          value={condition.answerMetaData[0]?.key}
+                          icondropDown={true}
+                          error={condition.answerMetaData[0]?.key ? '' : answerError || ''}
+                          required={true}
+                          placeholder={"Choose Options"}
+                        />
+                      </div>
+                      {/* Additional dynamic input fields based on the selected value in the dropdown */}
+                      {/* Add your logic here */}
 
-                    <div>
-                      <Tooltip placement="topRight" title={"Active / Inactive"} className="flex items-center gap-2">
-                        <p>Mandatory</p>
-                        <ToggleBtn />
-                      </Tooltip>
-                    </div>
+                      <div>
+                        <Tooltip placement="topRight" title={"Active / Inactive"} className="flex items-center gap-2">
+                          <p>Mandatory</p>
+                          <ToggleBtn />
+                        </Tooltip>
+                      </div>
 
-                    <div style={{ display: 'flex', alignItems: 'center', gap: '15px' }}>
-                      {/* <Tooltip placement="top" title={"Copy"}>
+                      <div style={{ display: 'flex', alignItems: 'center', gap: '15px' }}>
+                        {/* <Tooltip placement="top" title={"Copy"}>
                         <IoIosCopy className="text-gray-500" style={{ width: '18px', height: '18px', cursor: 'pointer' }} />
                       </Tooltip> */}
-                      <Tooltip placement="top" color={"red"} title={"Delete"}>
-                        <RiDeleteBinLine className="text-gray-500" style={{ width: '18px', height: '18px', cursor: 'pointer' }} onClick={() => handleDeleteCondition(index)} />
-                      </Tooltip>
+                        <Tooltip placement="top" color={"red"} title={"Delete"}>
+                          <RiDeleteBinLine className="text-gray-500" style={{ width: '18px', height: '18px', cursor: 'pointer' }} onClick={() => handleDeleteCondition(index)} />
+                        </Tooltip>
+                      </div>
+
                     </div>
-
                   </div>
-                </div>
-                  {condition.answerMetaData[0]?.key && (
-                    <>
-                      {/* Render existing FormInput components */}
-                      {condition.answerMetaData.map((field, fieldIndex) => (
-                        <div key={fieldIndex} className="flex items-center">
-                          {['Drop-down', 'MultipleChoice', 'Checkboxes'].includes(field.key) && (
-                            <FormInput
-                              title={`Options ${fieldIndex + 1}`}
-                              placeholder={'Enter value'}
-                              value={field.value}
-                              change={(e) => setEvaluation((prevEvaluation) => prevEvaluation.map((prevCondition, i) => i === index
-                                ? {
-                                  ...prevCondition,
-                                  answerMetaData: prevCondition.answerMetaData.map(
-                                    (f, j) => j === fieldIndex
-                                      ? { ...f, value: String(e) }
-                                      : f
-                                  ),
-                                }
-                                : prevCondition
-                              )
-                              )}
-                              error={field.value ? '' : errorMessages[index] || ''}
-                            />
-                          )}
+                    {condition.answerMetaData[0]?.key && (
+                      <>
+                        {/* Render existing FormInput components */}
+                        {condition.answerMetaData.map((field, fieldIndex) => (
+                          <div key={fieldIndex} className="flex items-center">
+                            {['Drop-down', 'MultipleChoice', 'Checkboxes'].includes(field.key) && (
+                              <FormInput
+                                title={`Options ${fieldIndex + 1}`}
+                                placeholder={'Enter value'}
+                                value={field.value}
+                                change={(e) => setEvaluation((prevEvaluation) => prevEvaluation.map((prevCondition, i) => i === index
+                                  ? {
+                                    ...prevCondition,
+                                    answerMetaData: prevCondition.answerMetaData.map(
+                                      (f, j) => j === fieldIndex
+                                        ? { ...f, value: String(e) }
+                                        : f
+                                    ),
+                                  }
+                                  : prevCondition
+                                )
+                                )}
+                                error={field.value ? '' : OptionError || ''}
+                              />
+                            )}
 
-                          {['Drop-down', 'MultipleChoice', 'Checkboxes'].includes(field.key) && (
-                            <div className="ml-2">
-                              <Tooltip placement="top" title={"Delete"}>
-                                <MdDelete
-                                  onClick={() => handleDeleteField(index, fieldIndex)}
-                                  className="cursor-pointer text-red-500"
-                                />
-                              </Tooltip>
-                            </div>
-                          )}
-                        </div>
-                      ))}
+                            {['Drop-down', 'MultipleChoice', 'Checkboxes'].includes(field.key) && (
+                              <div className="ml-2">
+                                <Tooltip placement="top" title={"Delete"}>
+                                  <MdDelete
+                                    onClick={() => handleDeleteField(index, fieldIndex)}
+                                    className="cursor-pointer text-red-500"
+                                  />
+                                </Tooltip>
+                              </div>
+                            )}
+                          </div>
+                        ))}
 
-                    
+
                         {['Drop-down', 'MultipleChoice', 'Checkboxes'].includes(
                           condition.answerMetaData[0]?.key
                         ) && (
@@ -588,18 +621,18 @@ const
                               />
                             </Tooltip>
                           )}
-                      
-                    </>
-                  )}
+
+                      </>
+                    )}
 
 
-                  <div className="v-divider"></div></>
-              ))}
+                    <div className="v-divider"></div></>
+                ))}
 
-              <div className="flex items-center gap-2">
-                <AddMore name="Add New Question" className="!text-black" change={(e) => { handleAddCondition() }} />
+                <div className="flex items-center gap-2">
+                  <AddMore name="Add New Question" className="!text-black" change={(e) => { handleAddCondition() }} />
 
-              </div>
+                </div>
               </div>
               {contextHolder}
             </Accordion>

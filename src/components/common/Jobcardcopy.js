@@ -1,4 +1,4 @@
-import { Card } from "antd";
+import { Card, Tooltip } from "antd";
 import React, { useRef, useState,useEffect } from "react";
 import { BsFillLightningFill, BsThreeDotsVertical } from "react-icons/bs";
 
@@ -56,7 +56,7 @@ function Jobcardcopy({
     
     
     <div className="flex ">
-      <div className="flex    overflow-x-auto " ref={containerRef}>
+      <div className="flex overflow-x-auto " ref={containerRef}>
         {options.map((each, index) => (
           <div key={index} className="flex items-center ">
              
@@ -199,22 +199,24 @@ function Jobcardcopy({
       </div>
       {options.length >= 4 && (
         <div className="float-end flex">
-          <button
-            className="w-10 border-2 border-#FDFDFD bg-white text-primary"
-            onClick={slidemover}
-          >
-            <span className="inset-0 flex items-center justify-center rounded-md bg-white">
-              <span className="flex items-center justify-center w-6 h-6 rounded-full border-2 border-blue-700 bg-violet-100">
-                <MdArrowForwardIos
-                  style={{
-                    width: "10.69px",
-                    height: "17.37",
-                    color: "black",
-                  }}
-                />
+          <Tooltip placement="top" title={"Seek"}>
+            <button
+              className="w-10 border-2 border-#FDFDFD bg-white text-primary"
+              onClick={slidemover}
+            >
+              <span className="inset-0 flex items-center justify-center rounded-md bg-white">
+                <span className="flex items-center justify-center w-6 h-6 rounded-full border-2 border-blue-700 bg-violet-100">
+                  <MdArrowForwardIos
+                    style={{
+                      width: "10.69px",
+                      height: "17.37",
+                      color: "black",
+                    }}
+                  />
+                </span>
               </span>
-            </span>
-          </button>
+            </button>
+          </Tooltip>
         </div>
       )}
     </div>

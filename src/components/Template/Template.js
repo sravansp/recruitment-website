@@ -123,7 +123,7 @@ const Template = ({
       Job: [
         {
           id: 1,
-          title: t("Name"),
+          title: t("Template Name"),
           value: "jobTitle",
         },
         {
@@ -147,7 +147,7 @@ const Template = ({
       Job_Description: [
         {
           id: 1,
-          title: t("Name"),
+          title: t("Template Name"),
           value: "descriptionTemplateName",
         },
         {
@@ -171,7 +171,7 @@ const Template = ({
       Workflow: [
         {
           id: 1,
-          title: t("Name"),
+          title: t("Template Name"),
           value: "workFlowName",
         },
         {
@@ -179,7 +179,7 @@ const Template = ({
           title: t("Description"),
           value: "description",
         },
-        {
+         {
           id: 3,
           title: t("Status"),
           value: "",
@@ -195,7 +195,7 @@ const Template = ({
       Email: [
         {
           id: 1,
-          title: t("Name"),
+          title: t("Template Name"),
           value: "title",
         },
         {
@@ -219,7 +219,7 @@ const Template = ({
       Evaluation: [
         {
           id: 1,
-          title: t("Name"),
+          title: t("Template Name"),
           value: "evaluationTemplateName",
         },
         {
@@ -243,7 +243,7 @@ const Template = ({
       Questionnaire: [
         {
           id: 1,
-          title: t("Name"),
+          title: t("Template Name"),
           value: "questionnaireTemplateName",
         },
         {
@@ -267,7 +267,7 @@ const Template = ({
       Letter: [
         {
           id: 1,
-          title: t("Name"),
+          title: t("Template Name"),
           value: "title",
         },
         {
@@ -296,7 +296,7 @@ const Template = ({
       Job: [
         {
           id: 1,
-          title: "Name",
+          title: "Template Name",
           value: "jobTitle",
         },
         {
@@ -311,35 +311,32 @@ const Template = ({
 
         },
         {
-          id: 4,
-          title: "Modified By",
-          value: "modifiedBy",
-
+          id: 3,
+          title: "Status",
+          value: "isActive",
         },
       ],
       Job_Description: [
         {
           id: 1,
-          title: "Name",
-          value: "workFlowName",
+          title: "Template Name",
+          value: "descriptionTemplateName",
         },
         {
           id: 2,
-          title: "Modified By",
-          value: "modifiedBy",
+          title: t("Description"),
+          value: "descriptionTemplate",
         },
         {
           id: 3,
-          title: "Work Flow Id",
-          value: "workFlowId",
-
+          title: "Status",
+          value: "isActive",
         },
-
       ],
       Workflow: [
         {
           id: 1,
-          title: "Name",
+          title: "Template Name",
           value: "workFlowName",
         },
         {
@@ -350,20 +347,19 @@ const Template = ({
         {
           id: 3,
           title: "Status",
-          value: "",
-          actionToggle: true,
+          value: "isActive",
         },
-        {
-          id: 4,
-          title: "Status",
-          value: "Status",
-          action: true,
-        },
+        // {
+        //   id: 4,
+        //   title: "Status",
+        //   value: "Status",
+        //   action: true,
+        // },
       ],
       Email: [
         {
           id: 1,
-          title: "Name",
+          title: "Template Name",
           value: "title",
         },
         {
@@ -374,34 +370,36 @@ const Template = ({
         {
           id: 3,
           title: "Status",
-          value: "",
-          actionToggle: true,
+          value: "isActive",
         },
-        {
-          id: 4,
-          title: "Status",
-          value: "Status",
-          action: true,
-        },
+        // {
+        //   id: 4,
+        //   title: "Status",
+        //   value: "Status",
+        //   action: true,
+        // },
       ],
       Evaluation: [
         {
           id: 1,
-          title: "Name",
+          title: "Template Name",
           value: "evaluationTemplateName",
         },
         {
           id: 2,
-          title: "Modified By",
-          value: "modifiedBy",
+          title: t("Description"),
+          value: "description",
         },
-
-
+        {
+          id: 3,
+          title: "Status",
+          value: "isActive",
+        },
       ],
       Questionnaire: [
         {
           id: 1,
-          title: t("Name"),
+          title: t("Template Name"),
           value: "questionnaireTemplateName",
         },
         {
@@ -412,39 +410,37 @@ const Template = ({
         {
           id: 3,
           title: t("Status"),
-          value: "Status",
-          actionToggle: true,
+          value: "isActive",
         },
-        {
-          id: 4,
-          title: "",
-          value: "actions",
-          action: true,
-        },
+        // {
+        //   id: 4,
+        //   title: "",
+        //   value: "actions",
+        //   action: true,
+        // },
       ],
       Letter: [
         {
           id: 1,
-          title: t("Name"),
+          title: t("Template Name"),
           value: "title",
         },
         {
           id: 2,
-          title: t("Description"),
+          title: t("Subject"),
           value: "value",
         },
         {
           id: 3,
           title: t("Status"),
-          value: "",
-          actionToggle: true,
+          value: "isActive",
         },
-        {
-          id: 4,
-          title: "",
-          value: "actions",
-          action: true,
-        },
+        // {
+        //   id: 4,
+        //   title: "",
+        //   value: "actions",
+        //   action: true,
+        // },
       ]
 
 
@@ -504,7 +500,7 @@ const Template = ({
     try {
 
       const response = await getAllRecruitmentWorkFlows();
-
+      // console.log(response," work flow list is here")
       setWorkflow(response.result);
       // const newData = {};
       // response.result.forEach((job) => {
@@ -538,12 +534,13 @@ const Template = ({
 
       const response = await getAllRecruitmentEmailTemplates();
 
-
+      // console.log(response," Email list is here")
       setEmail(response.result)
       setEmailSubject(response.result.map((email) => ({
         emailTemplateId: email.emailTemplateId,
         title: email.emailTemplateName,
         value: email.emailTemplate.subject, // Use the subject as the description value
+        isActive:email.isActive,
         actionToggle: true,
         action: true,
       }))
@@ -589,6 +586,7 @@ const Template = ({
         letterTemplateId: Letter.letterTemplateId,
         title: Letter.letterTemplateName,
         value: Letter.letterTemplate.subject, // Use the subject as the description value
+        isActive:Letter.isActive,
         actionToggle: true,
         action: true,
       })))
