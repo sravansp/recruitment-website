@@ -126,6 +126,9 @@ const Createjob = ({
   const [JobDescriptionList, setJobDescriptionList] = useState([])
   const [jobTitle, setJobTitle] = useState("")
   const [searchValue, setSearchValue] = useState("");
+  const [searchFilter, setSearchFilter] = useState("");
+  const [CheckboxValue, setCheckboxValue] = useState(false);
+
 
 
   // console.log(updateId)
@@ -1370,6 +1373,8 @@ const Createjob = ({
     activeBtn > 3 ? setBtnName("Save") : setBtnName("");
   }, [activeBtn])
 
+
+  console.log(employeeList, "employeeList")
   return (
     <div>
       <DrawerPop
@@ -1784,11 +1789,8 @@ const Createjob = ({
                         />
                         <div className="flex items-center gap-2">
                           <CheckBoxInput
-                            title={"View Public"}
-                            // titleRight={true}
                             change={(e) => {
                               formik1.setFieldValue('isSalaryPublic', e)
-                              // console.log(e)
                             }}
                             value={formik1.values.isSalaryPublic}
                           />
@@ -2387,14 +2389,31 @@ const Createjob = ({
     </List.Item>
   )}</VirtualList>
 </List> */}
-                    <div className="grid grid-cols-2 mt-8">
-                      <SearchBox
-                        placeholder={"Search Team Member"}
-                        value={searchValue}
-                        change={(value) => {
-                          setSearchValue(value);
-                        }}
-                      />
+                    <div className="flex mt-8 items-center justify-between">
+                      <div>
+                        <SearchBox
+                          data={employeeList.map((item) => item.username)}
+                          placeholder={"Search Team Member"}
+                          value={searchValue}
+                          change={(value) => {
+                            setSearchValue(value);
+                          }}
+                          onSearch={(value) => {
+                            setSearchFilter(value);
+                          }}
+                        />
+                      </div>
+                      <div className="flex items-center gap-2">
+                        <CheckBoxInput
+                          change={(e) => {
+                            setCheckboxValue(!CheckboxValue)
+                          }}
+                          value={CheckboxValue}
+                        />
+                        <div>
+                          <p className="text-sm dark:text-white">Check All</p>
+                        </div>
+                      </div>
                     </div>
                     <table>
                       <thead>
@@ -2441,7 +2460,7 @@ const Createjob = ({
                                       );
                                     }
                                   }}
-                                  value={selectedUserIds.includes(
+                                  value={CheckboxValue || selectedUserIds.includes(
                                     employee.userId
                                   )}
                                   actionId={employee.userId}
@@ -2603,8 +2622,8 @@ const Createjob = ({
             </div>
           </FlexCol>
         </div>
-      </DrawerPop>
-    </div>
+      </DrawerPop >
+    </div >
   );
 };
 
