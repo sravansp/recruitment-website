@@ -81,10 +81,13 @@ const Emailtemplate = ({
       } else if (!/^[a-zA-Z\s]+$/.test(templateName)) {
         setTemplateNameError('Template Name should only contain letters.');
         hasError = true; // Set flag to true if there's an error
+      } else if (templateName.length < 3) {
+        setTemplateNameError('Template Name should have at least 3 letters.');
+        hasError = true; // Set flag to true if there's an error
       } else {
         setTemplateNameError('');
       }
-      
+
 
       // Check if subject is empty
       if (!subject) {

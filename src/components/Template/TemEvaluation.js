@@ -220,6 +220,9 @@ const TemEvaluation = ({
           formik.setFieldError('evaluationTemplateName', !formik.values.evaluationTemplateName ? 'Template name is required' : '');
           formik.setFieldError('description', !formik.values.description ? 'Description is required' : '');
         }
+        if (formik.values.evaluationTemplateName.length < 3) {
+          formik.setFieldError('evaluationTemplateName', 'Template Name should have at least 3 letters.');
+        }
         let hasError = false;
         evaluation.forEach((condition) => {
           if (!condition.question) {
@@ -233,7 +236,7 @@ const TemEvaluation = ({
             hasError = true;
           }
           if (
-            ["Drop-down", "MultipleChoice", "Checkboxes"].includes(condition.answerMetaData[0]?.key) &&
+            ["Drop-down", "Multiple Choice", "Checkboxes"].includes(condition.answerMetaData[0]?.key) &&
             (condition.answerMetaData.some((field) => !field.value) ||
               (!condition.answerMetaData[0]?.value && condition.answerMetaData[0]?.key))
           ) {
@@ -571,7 +574,7 @@ const TemEvaluation = ({
                       {/* Render existing FormInput components */}
                       {condition.answerMetaData.map((field, fieldIndex) => (
                         <div key={fieldIndex} className="flex items-center">
-                          {['Drop-down', 'MultipleChoice', 'Checkboxes'].includes(field.key) && (
+                          {['Drop-down', 'Multiple Choice', 'Checkboxes'].includes(field.key) && (
                             <FormInput
                               title={`Options ${fieldIndex + 1}`}
                               placeholder={'Enter value'}
@@ -592,7 +595,7 @@ const TemEvaluation = ({
                             />
                           )}
 
-                          {['Drop-down', 'MultipleChoice', 'Checkboxes'].includes(field.key) && (
+                          {['Drop-down', 'Multiple Choice', 'Checkboxes'].includes(field.key) && (
                             <div className="ml-2">
                               <Tooltip placement="top" title={"Delete"}>
                                 <MdDelete
@@ -606,7 +609,7 @@ const TemEvaluation = ({
                       ))}
 
 
-                      {['Drop-down', 'MultipleChoice', 'Checkboxes'].includes(
+                      {['Drop-down', 'Multiple Choice', 'Checkboxes'].includes(
                         condition.answerMetaData[0]?.key
                       ) && (
                           <Tooltip placement="top" title={"Add new"}>

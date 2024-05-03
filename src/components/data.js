@@ -1062,14 +1062,14 @@ const Form = [
   {
     id: 1,
     label: "Multiple Choice",
-    value: "MultipleChoice",
+    value: "Multiple Choice",
     icon: <FaRegDotCircle />
 
   },
   {
     id: 2,
     label: "Short Answer",
-    value: "ShortAnswer",
+    value: "Short Answer",
     icon: <MdOutlineShortText />
   },
   {

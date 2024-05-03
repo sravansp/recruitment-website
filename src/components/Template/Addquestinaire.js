@@ -231,7 +231,7 @@ const QuestionAire = ({
               hasError = true;
             }
             if (
-              ["Drop-down", "MultipleChoice", "Checkboxes"].includes(condition.answerMetaData[0]?.key) &&
+              ["Drop-down", "Multiple Choice", "Checkboxes"].includes(condition.answerMetaData[0]?.key) &&
               (condition.answerMetaData.some((field) => !field.value) ||
                 (!condition.answerMetaData[0]?.value && condition.answerMetaData[0]?.key))
             ) {
@@ -576,7 +576,7 @@ const QuestionAire = ({
                         {/* Render existing FormInput components */}
                         {condition.answerMetaData.map((field, fieldIndex) => (
                           <div key={fieldIndex} className="flex items-center">
-                            {['Drop-down', 'MultipleChoice', 'Checkboxes'].includes(field.key) && (
+                            {['Drop-down', 'Multiple Choice', 'Checkboxes'].includes(field.key) && (
                               <FormInput
                                 title={`Options ${fieldIndex + 1}`}
                                 placeholder={'Enter value'}
@@ -597,7 +597,7 @@ const QuestionAire = ({
                               />
                             )}
 
-                            {['Drop-down', 'MultipleChoice', 'Checkboxes'].includes(field.key) && (
+                            {['Drop-down', 'Multiple Choice', 'Checkboxes'].includes(field.key) && (
                               <div className="ml-2">
                                 <Tooltip placement="top" title={"Delete"}>
                                   <MdDelete
@@ -611,7 +611,7 @@ const QuestionAire = ({
                         ))}
 
 
-                        {['Drop-down', 'MultipleChoice', 'Checkboxes'].includes(
+                        {['Drop-down', 'Multiple Choice', 'Checkboxes'].includes(
                           condition.answerMetaData[0]?.key
                         ) && (
                             <Tooltip placement="top" title={"Add new"}>
