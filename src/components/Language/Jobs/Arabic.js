@@ -49,7 +49,7 @@ const appearanceLanguageArabic = {
   Job_Details: "تفاصيل الوظيفة",
   Application_Form: "نموذج التقديم",
   Workflow: "سير العمل",
-  Team_Members: "أعضاء الفريق",
+  Team_Member: "أعضاء الفريق",
   Publish: "نشر",
 
 };

@@ -126,6 +126,8 @@ const Createjob = ({
   const [JobDescriptionList, setJobDescriptionList] = useState([])
   const [jobTitle, setJobTitle] = useState("")
   const [searchValue, setSearchValue] = useState("");
+  const [CheckboxValue, setCheckboxValue] = useState(false);
+  const [link, setLink] = useState("");
 
 
 
@@ -827,7 +829,7 @@ const Createjob = ({
     {
       id: 4,
       value: 3,
-      title: t("Team_Members"),
+      title: t("Team_Member"),
       data: "TeamMembers",
     },
     {
@@ -1400,6 +1402,8 @@ const Createjob = ({
     activeBtn > 3 ? setBtnName("Save") : setBtnName("");
   }, [activeBtn])
 
+
+  console.log(employeeList, "employeeList")
   return (
     <div>
       <DrawerPop
@@ -1814,11 +1818,8 @@ const Createjob = ({
                         />
                         <div className="flex items-center gap-2">
                           <CheckBoxInput
-                            title={"View Public"}
-                            // titleRight={true}
                             change={(e) => {
                               formik1.setFieldValue('isSalaryPublic', e)
-                              // console.log(e)
                             }}
                             value={formik1.values.isSalaryPublic}
                           />
@@ -2378,7 +2379,7 @@ const Createjob = ({
               ) : activeBtnValue === "TeamMembers" ? (
                 <FlexCol>
                   <Accordion
-                    title={"TeamMembers"}
+                    title={"Team Member"}
                     className="Text_area"
                     padding={true}
                     toggleBtn={false}
@@ -2476,7 +2477,7 @@ const Createjob = ({
                                       );
                                     }
                                   }}
-                                  value={selectedUserIds.includes(
+                                  value={CheckboxValue || selectedUserIds.includes(
                                     employee.userId
                                   )}
                                   actionId={employee.userId}
@@ -2629,6 +2630,10 @@ const Createjob = ({
                         placeholder="loyaltri.com/jkjskl3lsjlfsdf"
                         icon={<MdContentCopy />}
                         description={"Share this link to anywhere"}
+                        value={link}
+                        change={(e) => {
+                          setLink(e);
+                        }}
                       />
                     </div>
                   </div>
@@ -2638,8 +2643,8 @@ const Createjob = ({
             </div>
           </FlexCol>
         </div>
-      </DrawerPop>
-    </div>
+      </DrawerPop >
+    </div >
   );
 };
 
