@@ -2403,6 +2403,7 @@ const Createjob = ({
                           }}
                         />
                       </div>
+
                       <div className="flex items-center gap-2">
                         <CheckBoxInput
                           change={(e) => {
