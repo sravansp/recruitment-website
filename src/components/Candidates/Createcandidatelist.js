@@ -85,7 +85,7 @@ export default function Createcandidatelist({ open = "", close = () => { }, file
           inputFeild: "location",
           type: "input"
         }, {
-          title: " from Date",
+          title: "Date",
           inputFeild: "fromDate",
           type: "date"
 
@@ -971,7 +971,7 @@ export default function Createcandidatelist({ open = "", close = () => { }, file
                               :
                               <Dropdown
                                 title={each.title}
-                                placeholder="Enter Degree"
+                                placeholder={t("Choose" + each.title)}
                                 options={Degree}
                                 required={true}
                                 change={(e) => {
@@ -1039,7 +1039,7 @@ export default function Createcandidatelist({ open = "", close = () => { }, file
                               <Dropdown
                                 title={each.title}
                                 options={Jobtype}
-                                placeholder={t("Enter " + each.title)}
+                                placeholder={t("Choose" + each.title)}
                                 change={(e) => {
                                   formik3.setFieldValue(each.inputFeild, e);
                                 }}
