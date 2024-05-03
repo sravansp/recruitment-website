@@ -235,7 +235,7 @@ const QuestionAire = ({
               (condition.answerMetaData.some((field) => !field.value) ||
                 (!condition.answerMetaData[0]?.value && condition.answerMetaData[0]?.key))
             ) {
-              setoptionserror('Please enter values for all options.');
+              setoptionserror('Option is required.');
               hasError = true;
             }
           });
@@ -579,7 +579,7 @@ const QuestionAire = ({
                             {['Drop-down', 'Multiple Choice', 'Checkboxes'].includes(field.key) && (
                               <FormInput
                                 title={`Options ${fieldIndex + 1}`}
-                                placeholder={'Enter value'}
+                                placeholder={'Enter option'}
                                 value={field.value}
                                 change={(e) => setEvaluation((prevEvaluation) => prevEvaluation.map((prevCondition, i) => i === index
                                   ? {
