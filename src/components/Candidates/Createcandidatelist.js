@@ -697,8 +697,8 @@ export default function Createcandidatelist({ open = "", close = () => { }, file
               ? t("Add Candidate")
               : t("Update Candidate"),
             !isUpdate
-              ? t("Add Candidate")
-              : t("Update Candidate"),
+              ? t("Add New Candidate")
+              : t("Update Selected Candidate"),
           ]}
           headerRight={
             <div className="flex md:gap-10 items-center">
