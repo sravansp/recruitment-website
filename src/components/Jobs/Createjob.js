@@ -110,7 +110,7 @@ const Createjob = ({
   const [activeBtn, setActiveBtn] = useState(0);
   const [presentage, setPresentage] = useState(0);
   const [nextStep, setNextStep] = useState(0);
-  const [activeBtnValue, setActiveBtnValue] = useState("Jobdetails"); //Publish//TeamMembers//LeaveType//ApplicationForm//Jobdetails////Workflow
+  const [activeBtnValue, setActiveBtnValue] = useState("Publish"); //Publish//TeamMembers//LeaveType//ApplicationForm//Jobdetails////Workflow
   const [btnName, setBtnName] = useState();
   const [customRate, setCustomRate] = useState(1);
   const [savedContent, setSavedContent] = useState([]);
@@ -128,7 +128,7 @@ const Createjob = ({
   const [searchValue, setSearchValue] = useState("");
   const [searchFilter, setSearchFilter] = useState("");
   const [CheckboxValue, setCheckboxValue] = useState(false);
-
+  const [link, setLink] = useState("");
 
 
   // console.log(updateId)
@@ -2613,6 +2613,10 @@ const Createjob = ({
                         placeholder="loyaltri.com/jkjskl3lsjlfsdf"
                         icon={<MdContentCopy />}
                         description={"Share this link to anywhere"}
+                        value={link}
+                        change={(e) => {
+                          setLink(e);
+                        }}
                       />
                     </div>
                   </div>
