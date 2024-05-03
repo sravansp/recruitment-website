@@ -1456,8 +1456,8 @@ const CreatejobTemp = ({
                               </p>
                               {/* <p className="text-primary"><IoClose /></p> */}
                             </div>
-                            <p className="text-gray-400">When you generate with Al, we look for similar jobs you've created in the past and use he data to create content that's
-                              impactful, accurate, and personalized to your company
+                            <p className="text-gray-400">When you generate with Al, we look for similar jobs you've created in the past and use the data to create content that's
+                              impactful, accurate and personalized to your company.
                             </p>
                           </div>
                         </div>
