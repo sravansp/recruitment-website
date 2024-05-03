@@ -2432,6 +2432,17 @@ const Createjob = ({
                         }}
                       />
                     </div>
+                    <div className="flex items-center gap-2">
+                        <CheckBoxInput
+                          change={(e) => {
+                            setCheckboxValue(!CheckboxValue)
+                          }}
+                          value={CheckboxValue}
+                        />
+                        <div>
+                          <p className="text-sm dark:text-white">Check All</p>
+                        </div>
+                      </div>
                     <table>
                       <thead>
                         <tr>
