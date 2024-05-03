@@ -139,7 +139,7 @@ const Emailtemplate = ({
           }, 1500);
 
         } else if (response.status === 500) {
-          openNotification("error", "Error", response.message.replace(/<br\/>/g, '\n'));
+          openNotification("error", "Failed", response.message.replace(/<br\/>/g, '\n'));
         }
 
       }
@@ -170,7 +170,7 @@ const Emailtemplate = ({
           }, 1500);
 
         } else if (response.status === 500) {
-          openNotification("error", "Error", response.message);
+          openNotification("error", "Failed", response.message);
         }
       }
     }
