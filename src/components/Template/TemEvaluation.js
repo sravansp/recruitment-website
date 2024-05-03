@@ -156,8 +156,9 @@ const TemEvaluation = ({ open = "", close = () => { }, inputshow = false, isUpda
     });
   };
 
-
-
+   const[Questionerror,setQuestionError] = useState('')
+   const[answerError,setAnswerError] = useState('')
+   const[OptionError,setoptionserror] = useState('')
 
 
   // const[insertedId,setinsertedId] =useState(null)
@@ -192,30 +193,40 @@ const TemEvaluation = ({ open = "", close = () => { }, inputshow = false, isUpda
           formik.setFieldError('evaluationTemplateName', !formik.values.evaluationTemplateName ? 'Evaluation is Required is required' : '');
           formik.setFieldError('description', !formik.values.description ? 'Description is required' : '');
         }
-        const newErrorMessages = evaluation.map((condition) => {
-          let errorMessage = '';
-
+        let hasError = false;
+        evaluation.forEach((condition) => {
           if (!condition.question) {
-            errorMessage = 'Question is required.';
-          } else if (!condition.answerMetaData || !condition.answerMetaData[0]?.key) {
-            errorMessage = 'Please choose an answer type.';
-          } else if (
+            setQuestionError('Question is Required.');
+            hasError = true;
+
+          } else {
+            setQuestionError('');
+          }
+        
+          if (!condition.answerMetaData || !condition.answerMetaData[0]?.key) {
+            setAnswerError('Please choose an answer type.');
+            hasError = true;
+          } else {
+            setAnswerError('');
+          }
+        
+          if (
             ["Drop-down", "MultipleChoice", "Checkboxes"].includes(condition.answerMetaData[0]?.key) &&
             (condition.answerMetaData.some((field) => !field.value) ||
               (!condition.answerMetaData[0]?.value && condition.answerMetaData[0]?.key))
           ) {
-            errorMessage = 'Please enter values for all options.';
+            setoptionserror('Please enter values for all options.');
+            hasError = true;
+          } else {
+            setoptionserror('');
           }
-
-          return errorMessage;
         });
-
-        setErrorMessages(newErrorMessages);
-        const hasErrors = newErrorMessages.some(errorMessage => errorMessage !== '');
-        if (hasErrors) {
-          // Don't proceed if there are errors
+        if (hasError) {
           return;
-        }
+      }
+        // Now you have updated all error states synchronously
+        // Check if there are any errors
+       
         if (updateId) {
           const formattedData = evaluation.map((item, index) => ({
             companyId: companyId,
@@ -480,7 +491,7 @@ const TemEvaluation = ({ open = "", close = () => { }, inputshow = false, isUpda
                       ))
                       // console.log(e)
                     }}
-                    error={condition.question ? '' : errorMessages[index] || ''}
+                    error={condition.question ? '' : Questionerror || ''}
                     required={true}
                   />
 
@@ -508,7 +519,7 @@ const TemEvaluation = ({ open = "", close = () => { }, inputshow = false, isUpda
                         value={condition.answerMetaData[0]?.key }
                         icondropDown={true}
                         required={true}
-                        error={condition.answerMetaData[0]?.key ? '' : errorMessages[index] || ''}
+                        error={condition.answerMetaData[0]?.key ? '' : answerError || ''}
                         placeholder={"Choose Options"}
                       />
                     </div>
@@ -555,7 +566,7 @@ const TemEvaluation = ({ open = "", close = () => { }, inputshow = false, isUpda
                               : prevCondition
                             )
                             )}
-                            error={field.value ? '' : errorMessages[index] || ''}
+                            error={field.value ? '' : OptionError || ''}
                           />
                         )}
 
