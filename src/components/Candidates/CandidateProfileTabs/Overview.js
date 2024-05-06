@@ -134,18 +134,18 @@ const Overview = ({ onEmailSelect }) => {
             value: items.candidateContact,
             icon: <RiSmartphoneLine />,
           },
-          {
-            id: 3,
-            label: "Date of Birth",
-            value: "03 September 2000",
-            icon: <RiCake2Line />,
-          },
-          {
-            id: 4,
-            label: "Salary Expectation",
-            value: "AED 25000",
-            icon: <RiMoneyDollarBoxLine />,
-          },
+          // {
+          //   id: 3,
+          //   label: "Date of Birth",
+          //   value: "03 September 2000",
+          //   icon: <RiCake2Line />,
+          // },
+          // {
+          //   id: 4,
+          //   label: "Salary Expectation",
+          //   value: "AED 25000",
+          //   icon: <RiMoneyDollarBoxLine />,
+          // },
         ],
         other: [
           {
@@ -154,12 +154,12 @@ const Overview = ({ onEmailSelect }) => {
             value: items.candidateLocation,
             icon: <RiMapPin2Line />,
           },
-          {
-            id: 6,
-            label: "Work Type",
-            value: "Work Type",
-            icon: <RiMouseLine />,
-          },
+          // {
+          //   id: 6,
+          //   label: "Work Type",
+          //   value: "Work Type",
+          //   icon: <RiMouseLine />,
+          // },
         ]
       })))
       setPdFViewer(response.result[0].resumeFile)
