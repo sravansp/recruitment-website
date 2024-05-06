@@ -117,7 +117,7 @@ export default function Createcandidatelist({ open = "", close = () => { }, file
         }, {
           title: "Year",
           inputName: "yearOfStudy",
-          type: "input"
+          type: "number"
         }, {
           title: "Location",
           inputName: "location",
@@ -606,7 +606,7 @@ export default function Createcandidatelist({ open = "", close = () => { }, file
         { id: 3, Image: Frame2, title: "DOB", text: response.result[0].dob || "Not Available" },
         { id: 4, Image: Frame4, title: "Location", text: `${response.result[0].addressLine}, ${response.result[0].cityOrTown}, ${response.result[0].postalCode}` }
       ];
-      console.log(personelDetails,"personelDetails")
+      console.log(personelDetails, "personelDetails")
       setcandidate(personelDetails);
       setImage(response.result[0].candidatePhoto)
       setcandidateName(response.result[0].candidateName)
@@ -870,6 +870,7 @@ export default function Createcandidatelist({ open = "", close = () => { }, file
                       />
                       <FormInput
                         title={t("Phone_number")}
+                        type = {"number"}
                         placeholder={t("Enter Phone number")}
                         change={(e) => {
                           Formik2.setFieldValue("candidateContact", e);
@@ -954,32 +955,43 @@ export default function Createcandidatelist({ open = "", close = () => { }, file
                       <div className='flex items-end'>
                         <div className="grid grid-cols-2 gap-4 w-4/5">
                           {condition.field.map((each) =>
-                            each.type === "input" ? <FormInput
-                              key={each.id}
-                              title={each.title}
-                              placeholder={`Enter ${each.title}`}
-                              change={(e) => {
-                                formik.setFieldValue(each.inputName, e);
-                              }}
-                              required={true}
-                              value={formik.values[each.inputName]}
-                              error={formik.errors[each.inputName]}
-                            // error={formik.values[each.field[0].inputName] ? "" : formik.errors.institute}
-                            // required={true}
-
-                            />
-                              :
-                              <Dropdown
+                            each.type === "input" ?
+                              <FormInput
+                                key={each.id}
                                 title={each.title}
-                                placeholder={t("Choose" + each.title)}
-                                options={Degree}
-                                required={true}
+                                placeholder={`Enter ${each.title}`}
                                 change={(e) => {
                                   formik.setFieldValue(each.inputName, e);
                                 }}
+                                required={true}
                                 value={formik.values[each.inputName]}
-                                error={formik.values[each.inputName] ? "" : formik.errors[each.inputName]}
-                              />)}
+                                error={formik.errors[each.inputName]}
+                              // error={formik.values[each.field[0].inputName] ? "" : formik.errors.institute}
+                              // required={true}
+
+                              /> : each.type === "number" ?
+                                <FormInput
+                                  key={each.id}
+                                  title={each.title}
+                                  type={"number"}
+                                  placeholder={`Enter ${each.title}`}
+                                  change={(e) => {
+                                    formik.setFieldValue(each.inputName, e);
+                                  }}
+                                  required={true}
+                                  value={formik.values[each.inputName]}
+                                  error={formik.errors[each.inputName]}
+                                /> : <Dropdown
+                                  title={each.title}
+                                  placeholder={t("Choose" + each.title)}
+                                  options={Degree}
+                                  required={true}
+                                  change={(e) => {
+                                    formik.setFieldValue(each.inputName, e);
+                                  }}
+                                  value={formik.values[each.inputName]}
+                                  error={formik.values[each.inputName] ? "" : formik.errors[each.inputName]}
+                                />)}
 
 
 
