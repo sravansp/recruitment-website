@@ -80,21 +80,18 @@ export default function Createcandidatelist({ open = "", close = () => { }, file
           title: "Company Name",
           inputFeild: "companyName",
           type: "input"
-        }, {
+        },
+        {
           title: "Location  ",
           inputFeild: "location",
           type: "input"
-        }, {
+        },
+        {
           title: "Date",
           inputFeild: "fromDate",
           type: "date"
-
-
-
         },],
-
     }
-
   ])
 
   const [education, setEducation] = useState([
@@ -221,17 +218,18 @@ export default function Createcandidatelist({ open = "", close = () => { }, file
             title: "Company Name",
             inputFeild: "companyName" + i,
             type: "input"
-          }, {
+          },
+          {
             title: "Location  ",
             inputFeild: "location" + i,
             type: "input"
-          }, {
+          },
+          {
             title: "Date",
             inputFeild: "fromDate" + i,
             type: "date"
-
-
-          },],
+          },
+        ],
       }
     ]);
   };
@@ -259,6 +257,7 @@ export default function Createcandidatelist({ open = "", close = () => { }, file
   useEffect(() => {
     console.log(FormData, "form data")
   }, [])
+
   const safeWorkMap = (list) =>
     (list ?? []).flatMap((each) =>
       (each.field ?? []).map((field) => [
@@ -291,8 +290,9 @@ export default function Createcandidatelist({ open = "", close = () => { }, file
         const response = await saveRecruitmentResumesExperienceDetailBatch(
           workexp.map((each) => {
             const fromDate = values[each.field[4].inputFeild][0]; // Extracting start date from range picker
+            console.log(fromDate, "fromDate")
             const toDate = values[each.field[4].inputFeild][1]; // Extracting end date from range picker
-
+            console.log(toDate, "toDate")
             return {
               resumeId: resumeId,
               jobTitle: values[each.field[0].inputFeild],
@@ -1049,7 +1049,9 @@ export default function Createcandidatelist({ open = "", close = () => { }, file
 
 
                               /> :
-                              <RangeDatePicker dateFormat="YYYY-MM-DD" title={each.title}
+                              <RangeDatePicker
+                                dateFormat="YYYY-MM-DD"
+                                title={each.title}
                                 change={(e) => {
                                   formik3.setFieldValue(each.inputFeild, e);
                                 }}
@@ -1323,7 +1325,17 @@ export default function Createcandidatelist({ open = "", close = () => { }, file
                             <CVResume
                               showTextEditor={false}
                               pdfUrl={PdFViewer}
+                            />
+                          </div>
 
+                          <div>
+                            <TextArea
+                              title={'Cover Letter'}
+                              // placeholder={"Enter Cover Letter"}
+                              // change={(e) => {
+                              //   Formik2.setFieldValue("coverLetter", e);
+                              // }}
+                              value={Formik2.values.coverLetter}
                             />
                           </div>
 
