@@ -174,15 +174,11 @@ const Overview = ({ onEmailSelect }) => {
   };
 
   useEffect(() => {
-
     getCandidatesById()
     console.log(id)
-    console.log(userdata)
-
-
-
-
   }, []);
+  console.log(userdata, "userdata is here.")
+
 
   useEffect(() => {
     if (candidateEmail) {
