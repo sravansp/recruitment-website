@@ -200,11 +200,11 @@ const CVResume = ({ showTextEditor, pdfUrl }) => {
                   Pdfname.pdf
                 </p>
               </div>
-              <ButtonClick
+              {/* <ButtonClick
                 buttonName="Download"
                 BtnType="primary"
                 icon={<RiArrowDownLine />}
-              />
+              /> */}
             </div>
           }
           {PdFViewer &&
