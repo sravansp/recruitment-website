@@ -82,6 +82,8 @@ import { RiDeleteBinLine } from "react-icons/ri";
 import { FaAsterisk } from "react-icons/fa";
 import TextEditorcopy from "../common/TextEditor/textEditorCopy";
 import { EditorState, ContentState, convertFromHTML } from 'draft-js';
+// import Editor from "../common/TextEditor/textEditorCopy";
+// import Editor1 from "../common/TextEditor/textEditorCopy";
 // import { convertToHTML } from 'draft-convert';
 // import Editor from "../common/TextEditor/textEditorCopy";
 
@@ -1510,7 +1512,7 @@ const CreatejobTemp = ({
                           initialValue={content}
                           error={formik.errors.jobDescription}
                         /> */}
-                        {/* <Editor/> */}
+                        {/* <Editor1/> */}
 
                       </div>
                       {/* <TextArea

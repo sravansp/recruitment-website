@@ -158,9 +158,10 @@ const Workflowstage = ({
     setOptionData(prevOptionData => [...prevOptionData, ...detObject]);
     
     setmenuitem(true);
-    setMenuVisible(false);
+    setMenuVisible(false)
   };
   console.log(optionData, "0000");
+ 
   const getEvaluationtem = async () => {
     try {
       const response = await getAllRecruitmentEvaluationTemplates();
@@ -264,6 +265,7 @@ const Workflowstage = ({
       // Set the values of input fields based on the stage rules of the selected stage
       if (stageRules) {
         if (stageRules.evaluation) {
+          console.log(stageRules.evaluation,"haaa")
           setEvaluationValue(stageRules.evaluation);
         }
   
@@ -290,13 +292,13 @@ const Workflowstage = ({
       console.error("Invalid stage name:", stageIndex);
     }
   };
-  const handleModalClose = () => {
-    // Set the state to false to hide the modal
-    setIsModalVisible(false);
-    //set the state empty
-    setStageName("");
-    setSelectedStageName("");
-  };
+  // const handleModalClose = () => {
+  //   // Set the state to false to hide the modal
+  //   setIsModalVisible(false);
+  //   //set the state empty
+  //   setStageName("");
+  //   setSelectedStageName("");
+  // };
   // const handleCopy = (stageIndex) => {
   //   copy(stageIndex);
   // };
@@ -349,7 +351,7 @@ const Workflowstage = ({
         // Update the corresponding stage name and stage rules in the stages array
         setstages(prevStages =>
             prevStages.map((stage, index) =>
-                index === editStageIndex ? { ...stage, stageName, stageRules } : stage
+                index === editStageIndex ? { ...stage, stageName, stageRules, optionData: [...optionData] } : stage
             )
         );
     } else if (!updateId) {
@@ -364,7 +366,7 @@ const Workflowstage = ({
                 stageName,
                 stageRules,
                 createdBy: 9,
-                optionData: optionData.map(option => ({ ...option }))
+                optionData: [...optionData] // Create a new array for optionData
             },
         ]);
     } else {
@@ -377,7 +379,7 @@ const Workflowstage = ({
                 stageName,
                 stageRules,
                 createdBy: 9,
-                optionData: optionData.map(option => ({ ...option }))
+                optionData: [...optionData] // Create a new array for optionData
             },
         ]);
     }
@@ -700,7 +702,7 @@ const Workflowstage = ({
     console.log(`Option with id '${id}' deleted successfully.`);
   };
  
-  
+  console.log(stages,"stages")
   return (
     <DrawerPop
       open={show}
