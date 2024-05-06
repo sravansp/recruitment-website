@@ -280,8 +280,8 @@ export default function Createcandidatelist({ open = "", close = () => { }, file
       // companyName: yup.string().required("Company Name is required"),      
       // fromDate: yup.string().required("Date is required"),
       // employmentType: yup.string().required("Employment Type is required"),
-      ...Object.fromEntries(
-        safeWorkMap(workexp))
+      // ...Object.fromEntries(
+      //   safeWorkMap(workexp))
 
     }),
 
