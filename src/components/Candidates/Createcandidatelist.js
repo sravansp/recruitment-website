@@ -218,17 +218,18 @@ export default function Createcandidatelist({ open = "", close = () => { }, file
             title: "Company Name",
             inputFeild: "companyName" + i,
             type: "input"
-          }, {
+          },
+          {
             title: "Location  ",
             inputFeild: "location" + i,
             type: "input"
-          }, {
+          },
+          {
             title: "Date",
             inputFeild: "fromDate" + i,
             type: "date"
-
-
-          },],
+          },
+        ],
       }
     ]);
   };
@@ -285,8 +286,6 @@ export default function Createcandidatelist({ open = "", close = () => { }, file
     }),
 
     onSubmit: async (values, { setSubmitting }) => {
-      setFromDate(values[each.field[4].inputFeild][0])
-      setToDate(values[each.field[4].inputFeild][1])
       try {
         const response = await saveRecruitmentResumesExperienceDetailBatch(
           workexp.map((each) => {
