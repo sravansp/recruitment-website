@@ -252,7 +252,7 @@ const CVResume = ({ showTextEditor, pdfUrl }) => {
       <div className="lg:col-span-4">
         {showTextEditor ? (
           <><div className="rounded-lg bg-white dark:bg-secondaryDark p-1.5 ">
-            <TabsNew tabs={tabData} onTabChange={onTabChange} initialTab={1} />
+            <TabsNew tabs={tabData} onTabChange={onTabChange} initialTab={9} />
 
             <TextEditor
               initialValue={formik.values.notes}
