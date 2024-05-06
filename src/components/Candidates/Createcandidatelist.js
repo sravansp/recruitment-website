@@ -280,8 +280,8 @@ export default function Createcandidatelist({ open = "", close = () => { }, file
       // companyName: yup.string().required("Company Name is required"),      
       // fromDate: yup.string().required("Date is required"),
       // employmentType: yup.string().required("Employment Type is required"),
-      // ...Object.fromEntries(
-      //   safeWorkMap(workexp))
+      ...Object.fromEntries(
+        safeWorkMap(workexp))
 
     }),
 
@@ -606,7 +606,7 @@ export default function Createcandidatelist({ open = "", close = () => { }, file
         { id: 3, Image: Frame2, title: "DOB", text: response.result[0].dob || "Not Available" },
         { id: 4, Image: Frame4, title: "Location", text: `${response.result[0].addressLine}, ${response.result[0].cityOrTown}, ${response.result[0].postalCode}` }
       ];
-      console.log(personelDetails)
+      console.log(personelDetails,"personelDetails")
       setcandidate(personelDetails);
       setImage(response.result[0].candidatePhoto)
       setcandidateName(response.result[0].candidateName)
