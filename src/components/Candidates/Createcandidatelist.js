@@ -1325,7 +1325,17 @@ export default function Createcandidatelist({ open = "", close = () => { }, file
                             <CVResume
                               showTextEditor={false}
                               pdfUrl={PdFViewer}
+                            />
+                          </div>
 
+                          <div>
+                            <TextArea
+                              title={'Cover Letter'}
+                              // placeholder={"Enter Cover Letter"}
+                              // change={(e) => {
+                              //   Formik2.setFieldValue("coverLetter", e);
+                              // }}
+                              value={Formik2.values.coverLetter}
                             />
                           </div>
 
