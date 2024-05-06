@@ -117,7 +117,7 @@ const Overview = ({ onEmailSelect }) => {
   const getCandidatesById = async () => {
     try {
       const response = await getRecruitmentResumeById(id);
-
+      console.log(response, "getRecruitmentResumeById")
       setcandidate(response.result)
       setCandidateEmail(response.result[0].candidateEmail)
       setuserdata(response.result.map((items) => ({
@@ -357,33 +357,33 @@ const Overview = ({ onEmailSelect }) => {
         </Accordion>
 
         <div className="box-wrapper h-full">
-          <div className="flex flex-col gap-4">
-            <div className="flex items-center justify-between">
-              <h6 className="h6 !text-black dark:!text-white">CV / Resume</h6>
-              {/* <ButtonClick buttonName="Add Cover Note" icon={<IoMdAdd />} /> */}
-            </div>
-            <div className="flex items-center justify-between">
-              <div className="flex items-center gap-2.5">
-                <div className="w-8 h-8 iconI vhcenter bg-[#F5F5F5] dark:bg-secondaryDark text-base rounded-lg ">
-                  <div className="text-black opacity-50 ">
-                    {<RiFileList3Line />}
-                  </div>
-                </div>
-                <p className="text-xs font-semibold leading-tight text-black dark:text-white">
-                  Pdfname.pdf
-                </p>
+          {PdFViewer &&
+            <div className="flex flex-col gap-4">
+              <div className="flex items-center justify-between">
+                <h6 className="h6 !text-black dark:!text-white">CV / Resume</h6>
+                {/* <ButtonClick buttonName="Add Cover Note" icon={<IoMdAdd />} /> */}
               </div>
-              <ButtonClick
-                buttonName="View Resume"
-                BtnType="primary"
-                icon={<RiArrowDownLine />}
-                handleSubmit={handleViewResume}
-
-              />
+              <div className="flex items-center justify-between">
+                <div className="flex items-center gap-2.5">
+                  <div className="w-8 h-8 iconI vhcenter bg-[#F5F5F5] dark:bg-secondaryDark text-base rounded-lg ">
+                    <div className="text-black opacity-50 ">
+                      {<RiFileList3Line />}
+                    </div>
+                  </div>
+                  <p className="text-xs font-semibold leading-tight text-black dark:text-white">
+                    Pdfname.pdf
+                  </p>
+                </div>
+                <ButtonClick
+                  buttonName="View Resume"
+                  BtnType="primary"
+                  icon={<RiArrowDownLine />}
+                  handleSubmit={handleViewResume}
+                />
+              </div>
+              <div className="divider-h" />
             </div>
-            <div className="divider-h" />
-
-          </div>
+          }
         </div>
         {/* WORK EXPERIENCE  */}
         <div className="flex flex-col gap-4 box-wrapper">
