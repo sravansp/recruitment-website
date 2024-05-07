@@ -125,6 +125,7 @@ const Template = ({
           id: 1,
           title: t("Template Name"),
           value: "jobTitle",
+          bold: true,
         },
         {
           id: 2,
@@ -149,6 +150,7 @@ const Template = ({
           id: 1,
           title: t("Template Name"),
           value: "descriptionTemplateName",
+          bold: true,
         },
         {
           id: 2,
@@ -173,6 +175,7 @@ const Template = ({
           id: 1,
           title: t("Template Name"),
           value: "workFlowName",
+          bold: true,
         },
         {
           id: 2,
@@ -197,6 +200,7 @@ const Template = ({
           id: 1,
           title: t("Template Name"),
           value: "title",
+          bold: true,
         },
         {
           id: 2,
@@ -221,6 +225,7 @@ const Template = ({
           id: 1,
           title: t("Template Name"),
           value: "evaluationTemplateName",
+          bold: true,
         },
         {
           id: 2,
@@ -245,6 +250,7 @@ const Template = ({
           id: 1,
           title: t("Template Name"),
           value: "questionnaireTemplateName",
+          bold: true,
         },
         {
           id: 2,
@@ -269,6 +275,7 @@ const Template = ({
           id: 1,
           title: t("Template Name"),
           value: "title",
+          bold: true,
         },
         {
           id: 2,
