@@ -175,7 +175,7 @@ const Createjob = ({
   };
   const getAllJobdescription = async () => {
     try {
-      const data = await getAllRecruitmentJobDescriptionTemplates()
+      const data = await getAllRecruitmentJobDescriptionTemplates({})
       // console.log(data)
       // 
       setJobDescriptionList(data.result.map((each) => ({
@@ -971,7 +971,7 @@ const Createjob = ({
 
   const fetchData = async () => {
     try {
-      const response = await getAllRecruitmentWorkFlows();
+      const response = await getAllRecruitmentWorkFlows({companyId:companyId});
       // console.log("Response:", response);
 
       const stagesByWorkflowId = response.result.map((item) => ({
@@ -1099,7 +1099,7 @@ const Createjob = ({
   const [evalutaionTem, setEvalutaionTem] = useState([]);
   const getEvaluationtem = async () => {
     try {
-      const response = await getAllRecruitmentEvaluationTemplates();
+      const response = await getAllRecruitmentEvaluationTemplates({});
       // console.log(response);
       setEvalutaionTem(
         response.result.map((each) => ({
@@ -1119,7 +1119,7 @@ const Createjob = ({
   const [questionareTem, setQuestionare] = useState([]);
   const getQuestionare = async () => {
     try {
-      const response = await getAllRecruitmentQuestionnaireTemplates();
+      const response = await getAllRecruitmentQuestionnaireTemplates({});
       // console.log(response);
       setQuestionare(
         response.result.map((each) => ({

@@ -156,7 +156,7 @@ const Questionaries = () => {
   const [Allqestionare,setAllqestionare] =useState([])
   const getAllQesutionare = async () =>{
     try{
-      const response = await getAllRecruitmentQuestionnaireTemplates()
+      const response = await getAllRecruitmentQuestionnaireTemplates({})
       setAllqestionare(response.result.map((each)=>({
         label : each.questionnaireTemplateName,
         values:each.questionnaireTemplateId

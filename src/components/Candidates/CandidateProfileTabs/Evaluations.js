@@ -23,7 +23,8 @@ import { PiPushPinSlashBold } from "react-icons/pi";
 
 
 
-const Evaluations = () => {
+const Evaluations = ({EvaluationID,stageId}) => {
+  console.log(EvaluationID)
   const primaryColor = localStorage.getItem("mainColor");
   const [evaluationList, setevaluationList] = useState([])
   const { state } = useLocation();
@@ -97,8 +98,9 @@ const Evaluations = () => {
   const getresumeEvalutionId = async () => {
     try {
       const response = await getAllRecruitmentJobResumesEvaluations({
-        jobId: jobId,
-        resumeId: resumeId
+        jobId: localStorage.getItem('jobid'),
+        resumeId: resumeId,
+        stageId:stageId
       });
       console.log(response);
       setfetchedAnswers(response.result);
@@ -113,7 +115,7 @@ const Evaluations = () => {
   };
   useEffect(() => {
     getresumeEvalutionId()
-  }, [jobId])
+  }, [stageId])
 
 
 
@@ -152,7 +154,7 @@ const Evaluations = () => {
 
             jobId: jobId,
             resumeId: resumeId,
-            evaluationTemplateId: evalutaionId,
+            evaluationTemplateId: evalutaionId||EvaluationID,
             evaluationTemplateDetailsId: detailsId,
             evaluationAnswer: answer ? answer.evaluationAnswer : evaluationAnswer,
             createdBy: null
@@ -217,7 +219,7 @@ const Evaluations = () => {
   const getEvtempId = async () => {
     const response = await getRecruitmentJobById({ id: jobId })
     setEvaluationId(response.result[0].evaluationTemplateId)
-
+    
     console.log(response)
 
   }
@@ -308,7 +310,7 @@ const Evaluations = () => {
   const getevaluation = async () => {
     try {
 
-      const response = await getRecruitmentEvaluationTemplateById({ id: parseInt(evalutaionId) })
+      const response = await getRecruitmentEvaluationTemplateById({ id: parseInt(evalutaionId||EvaluationID) })
       console.log(response)
       const evaluationData = response.result.flatMap(item => {
         return item.evaluationTemplateDetailData.map(detail => ({
@@ -327,14 +329,14 @@ const Evaluations = () => {
     }
   }
   useEffect(() => {
-    if (evalutaionId) {
+    if (evalutaionId||EvaluationID) {
       getevaluation();
       console.log(evaluationList)
 
     }
 
 
-  }, [evalutaionId])
+  }, [evalutaionId||EvaluationID])
   useEffect(() => {
     fetchedAnswers.forEach(answer => {
       const { evaluationTemplateDetailsId, evaluationAnswer } = answer;

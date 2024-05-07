@@ -37,9 +37,13 @@ const Template = ({
   const handleShow = () => setShow(true);
   const [show, setShow] = useState(open);
   const [openPop, setOpenPop] = useState("");
+  const [companyId, setCompanyId] = useState(localStorage.getItem("companyId"));
 
   const [emailSubject, setEmailSubject] = useState("")
   const [navigationPath, setNavigationPath] = useState("Job");
+  useEffect(() => {
+    setCompanyId(localStorage.getItem("companyId"));
+  }, []);
   const breadcrumbItems = [
     //{ label: t("Templates"), url: "/" },
     // { label: navigationPath.charAt(0).toUpperCase() + navigationPath.slice(1) },
@@ -475,7 +479,7 @@ const Template = ({
   const gettemaplate = async () => {
     try {
 
-      const response = await getAllRecruitmentJobTemplates({});
+      const response = await getAllRecruitmentJobTemplates({companyId:companyId});
 
       setTemplateList(response.result);
       // const newData = {};
@@ -499,7 +503,7 @@ const Template = ({
   const getWorkflows = async () => {
     try {
 
-      const response = await getAllRecruitmentWorkFlows();
+      const response = await getAllRecruitmentWorkFlows({companyId:companyId});
       // console.log(response," work flow list is here")
       setWorkflow(response.result);
       // const newData = {};
@@ -532,7 +536,7 @@ const Template = ({
   const getEmailLsit = async () => {
     try {
 
-      const response = await getAllRecruitmentEmailTemplates();
+      const response = await getAllRecruitmentEmailTemplates({companyId:companyId});
 
       // console.log(response," Email list is here")
       setEmail(response.result)
@@ -561,7 +565,7 @@ const Template = ({
   };
   const getallquestionaire = async () => {
     try {
-      const data = await getAllRecruitmentQuestionnaireTemplates()
+      const data = await getAllRecruitmentQuestionnaireTemplates({companyId:companyId})
       setQuestionaire(data.result)
       // console.log(data)
     } catch (error) {
@@ -571,7 +575,7 @@ const Template = ({
   }
   const getallevaluation = async () => {
     try {
-      const data = await getAllRecruitmentEvaluationTemplates()
+      const data = await getAllRecruitmentEvaluationTemplates({companyId:companyId})
       setEvaluation(data.result)
       // console.log(data)
     } catch (error) {
@@ -581,7 +585,7 @@ const Template = ({
   }
   const getallLetter = async () => {
     try {
-      const data = await getAllRecruitmentLetterTemplates()
+      const data = await getAllRecruitmentLetterTemplates({companyId:companyId})
       setLetter(data.result.map((Letter) => ({
         letterTemplateId: Letter.letterTemplateId,
         title: Letter.letterTemplateName,
@@ -598,7 +602,7 @@ const Template = ({
   }
   const getAllJobdescription = async () => {
     try {
-      const data = await getAllRecruitmentJobDescriptionTemplates()
+      const data = await getAllRecruitmentJobDescriptionTemplates({companyId:companyId})
       //  console.log(data)
       // 
       setJobDescriptionList(data.result)
