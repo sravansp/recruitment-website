@@ -891,14 +891,13 @@ export default function Createcandidatelist({ open = "", close = () => { }, file
 
                     <div className='w-4/5'>
                       <p>Photo (Optional)</p>
-                      <FileUpload change={(e) => {
-                        if (e) {
-
-                          setFile(e)
-
-                        }
-                        console.log(e)
-                      }} />
+                      <ImageUpload
+                        change={(e) => {
+                          if (e) {
+                            setFile(e)
+                          }
+                          console.log(e)
+                        }} />
                     </div>
 
 
