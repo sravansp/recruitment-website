@@ -23,7 +23,7 @@ const appearanceLanguage = {
   Applied_Date: "Applied Date",
 
 
-  Add_Candidates: "Add Candidates",
+  Add_Candidate: "Add Candidate",
   Personal_Details: "Personal_Details",
   Educational_Details: "Educational_Details",
   Work_Experience: "Work_Experience",

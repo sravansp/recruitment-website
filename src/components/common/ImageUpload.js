@@ -6,15 +6,28 @@ import { AiOutlineCloudUpload } from "react-icons/ai";
 const { Dragger } = Upload;
 
 export default function ImageUpload({
-  change = () => {},
+  change = () => { },
   className,
   flex = true,
 }) {
   const { t } = useTranslation();
+  const allowedImageFormats = ["jpg", "png", "jpeg", "svg", "webp"];
+  const imageFormatsString = allowedImageFormats.join(", ");
   const props = {
     name: "file",
     multiple: true,
     action: "https://run.mocky.io/v3/435e224c-44fb-4773-9faf-380c5e6a2188",
+    beforeUpload: (file) => {
+      const fileExtension = file.name.split(".").pop().toLowerCase();
+      const isAllowedFile = allowedImageFormats.includes(fileExtension);
+      if (!isAllowedFile) {
+        message.error(`${file.name} file format is not supported.`);
+        return false;
+      }
+      else {
+        return isAllowedFile;
+      }
+    },
   };
   return (
     <div className={`${className}`}>
@@ -41,11 +54,11 @@ export default function ImageUpload({
           //   console.log("Dropped files", e.dataTransfer.files);
           // }
         }
-        // style={{
-        //   paddingTop: 0,
-        //   paddingBottom: 0,
-        // }}
-        // className="py-0"
+      // style={{
+      //   paddingTop: 0,
+      //   paddingBottom: 0,
+      // }}
+      // className="py-0"
       >
         {flex === true ? (
           // <div className={`flex justify-evenly `}>
@@ -60,8 +73,8 @@ export default function ImageUpload({
           <div className="flex gap-2">
             <AiOutlineCloudUpload className="text-3xl text-primary " />
             <div className="flex flex-col">
-              <h2 className="acco-subhead"> {t("Click_to_upload")}</h2>
-              <p className="para">{t("Format")}</p>
+              <h2 className="acco-subhead"> {t("Click to upload")}</h2>
+              <p className="para px-5">{t("Allowed formats")}: {imageFormatsString}</p>
             </div>
           </div>
         ) : (

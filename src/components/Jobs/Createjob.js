@@ -1950,8 +1950,8 @@ const Createjob = ({
                     >
                       <div className="flex flex-col gap-4 overflow-hidden">
                         <div className="flex items-center justify-between">
-                          <div className="w-[53.92px] text-black text-sm font-medium font-['Inter'] leading-tight">
-                            Name
+                          <div className="w-[73.92px] text-black text-sm font-medium font-['Inter'] leading-tight">
+                            First Name
                           </div>
 
                           <Radiobuttonnew
@@ -2003,8 +2003,8 @@ const Createjob = ({
                         </div>
                         <div className="v-divider" />
                         <div className="flex items-center justify-between">
-                          <div className="w-[53.92px] text-black text-sm font-medium font-['Inter'] leading-tight">
-                            Phone
+                          <div className="w-[99.92px] text-black text-sm font-medium font-['Inter'] leading-tight">
+                            Phone Number
                           </div>
 
                           <Radiobuttonnew
@@ -2022,8 +2022,8 @@ const Createjob = ({
                         </div>
                         <div className="v-divider" />
                         <div className="flex items-center justify-between">
-                          <div className="w-[53.92px] text-black text-sm font-medium font-['Inter'] leading-tight">
-                            Address
+                          <div className="w-[93.92px] text-black text-sm font-medium font-['Inter'] leading-tight">
+                            Address Line
                           </div>
 
                           <Radiobuttonnew
@@ -2153,7 +2153,7 @@ const Createjob = ({
 
                         <div className="v-divider" />
                         <div className="flex items-center justify-between">
-                          <div className="w-[53.92px] text-black text-sm font-medium font-['Inter'] leading-tight">
+                          <div className="w-[83.92px] text-black text-sm font-medium font-['Inter'] leading-tight">
                             Cover Letter
                           </div>
 

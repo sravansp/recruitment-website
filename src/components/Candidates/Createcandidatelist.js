@@ -87,10 +87,16 @@ export default function Createcandidatelist({ open = "", close = () => { }, file
           type: "input"
         },
         {
-          title: "Date",
+          title: "From Date",
           inputFeild: "fromDate",
           type: "date"
-        },],
+        },
+        {
+          title: "To Date",
+          inputFeild: "toDate",
+          type: "date"
+        },
+      ],
     }
   ])
 
@@ -117,7 +123,7 @@ export default function Createcandidatelist({ open = "", close = () => { }, file
         }, {
           title: "Year",
           inputName: "yearOfStudy",
-          type: "input"
+          type: "number"
         }, {
           title: "Location",
           inputName: "location",
@@ -187,7 +193,7 @@ export default function Createcandidatelist({ open = "", close = () => { }, file
           }, {
             title: "Year",
             inputName: "yearOfStudy" + i,
-            type: "input"
+            type: "number"
           }, {
             title: "Location",
             inputName: "location" + i,
@@ -225,8 +231,13 @@ export default function Createcandidatelist({ open = "", close = () => { }, file
             type: "input"
           },
           {
-            title: "Date",
+            title: "From Date",
             inputFeild: "fromDate" + i,
+            type: "date"
+          },
+          {
+            title: "To Date",
+            inputFeild: "toDate" + i,
             type: "date"
           },
         ],
@@ -289,18 +300,14 @@ export default function Createcandidatelist({ open = "", close = () => { }, file
       try {
         const response = await saveRecruitmentResumesExperienceDetailBatch(
           workexp.map((each) => {
-            const fromDate = values[each.field[4].inputFeild][0]; // Extracting start date from range picker
-            console.log(fromDate, "fromDate")
-            const toDate = values[each.field[4].inputFeild][1]; // Extracting end date from range picker
-            console.log(toDate, "toDate")
             return {
               resumeId: resumeId,
               jobTitle: values[each.field[0].inputFeild],
               employmentType: values[each.field[1].inputFeild],
               companyName: values[each.field[2].inputFeild],
               location: values[each.field[3].inputFeild],
-              fromDate: fromDate,
-              toDate: toDate,
+              fromDate: values[each.field[4].inputFeild],
+              toDate: values[each.field[5].inputFeild],
               createdBy: localStorage.getItem('employeeId')
             };
           })
@@ -420,7 +427,7 @@ export default function Createcandidatelist({ open = "", close = () => { }, file
   });
 
 
-  const Degree = [{ id: 1, title: "Bachelors", value: "Bachelors" }, { id: 2, title: "other", value: "other" }
+  const Degree = [{ id: 1, title: "Bachelors", value: "Bachelors" },{ id: 1, title: "Masters", value: "Masters" }, { id: 3, title: "other", value: "other" }
   ];
   const scrollRef = useRef();
 
@@ -590,7 +597,7 @@ export default function Createcandidatelist({ open = "", close = () => { }, file
   }, [nextStep]);
 
   const genderoption = [{ id: 1, title: "Mr", value: "Mr" }, { id: 2, title: "Mrs", value: "Mrs" }];
-  const Jobtype = [{ id: 1, title: "Full Time", value: "fulltime" }, { id: 2, title: "Part Time", value: "parttime" }]
+  const Jobtype = [{ id: 1, title: "Full Time", value: "Full Time" }, { id: 2, title: "Part Time", value: "Part Time" }]
 
   console.log(resumeId, "resumeid");
 
@@ -606,7 +613,7 @@ export default function Createcandidatelist({ open = "", close = () => { }, file
         { id: 3, Image: Frame2, title: "DOB", text: response.result[0].dob || "Not Available" },
         { id: 4, Image: Frame4, title: "Location", text: `${response.result[0].addressLine}, ${response.result[0].cityOrTown}, ${response.result[0].postalCode}` }
       ];
-      console.log(personelDetails)
+      console.log(personelDetails, "personelDetails")
       setcandidate(personelDetails);
       setImage(response.result[0].candidatePhoto)
       setcandidateName(response.result[0].candidateName)
@@ -870,6 +877,7 @@ export default function Createcandidatelist({ open = "", close = () => { }, file
                       />
                       <FormInput
                         title={t("Phone_number")}
+                        type={"number"}
                         placeholder={t("Enter Phone number")}
                         change={(e) => {
                           Formik2.setFieldValue("candidateContact", e);
@@ -883,14 +891,13 @@ export default function Createcandidatelist({ open = "", close = () => { }, file
 
                     <div className='w-4/5'>
                       <p>Photo (Optional)</p>
-                      <FileUpload change={(e) => {
-                        if (e) {
-
-                          setFile(e)
-
-                        }
-                        console.log(e)
-                      }} />
+                      <ImageUpload
+                        change={(e) => {
+                          if (e) {
+                            setFile(e)
+                          }
+                          console.log(e)
+                        }} />
                     </div>
 
 
@@ -954,40 +961,50 @@ export default function Createcandidatelist({ open = "", close = () => { }, file
                       <div className='flex items-end'>
                         <div className="grid grid-cols-2 gap-4 w-4/5">
                           {condition.field.map((each) =>
-                            each.type === "input" ? <FormInput
-                              key={each.id}
-                              title={each.title}
-                              placeholder={`Enter ${each.title}`}
-                              change={(e) => {
-                                formik.setFieldValue(each.inputName, e);
-                              }}
-                              required={true}
-                              value={formik.values[each.inputName]}
-                              error={formik.errors[each.inputName]}
-                            // error={formik.values[each.field[0].inputName] ? "" : formik.errors.institute}
-                            // required={true}
-
-                            />
-                              :
-                              <Dropdown
+                            each.type === "input" ?
+                              <FormInput
+                                key={each.id}
                                 title={each.title}
-                                placeholder={t("Choose" + each.title)}
-                                options={Degree}
-                                required={true}
+                                placeholder={`Enter ${each.title}`}
                                 change={(e) => {
                                   formik.setFieldValue(each.inputName, e);
                                 }}
+                                required={true}
                                 value={formik.values[each.inputName]}
-                                error={formik.values[each.inputName] ? "" : formik.errors[each.inputName]}
-                              />)}
+                                error={formik.errors[each.inputName]}
+                              // error={formik.values[each.field[0].inputName] ? "" : formik.errors.institute}
+                              // required={true}
 
-
-
+                              /> : each.type === "number" ?
+                                <FormInput
+                                  key={each.id}
+                                  title={each.title}
+                                  type={"number"}
+                                  placeholder={`Enter ${each.title}`}
+                                  change={(e) => {
+                                    formik.setFieldValue(each.inputName, e);
+                                  }}
+                                  required={true}
+                                  value={formik.values[each.inputName]}
+                                  error={formik.errors[each.inputName]}
+                                /> : <Dropdown
+                                  title={each.title}
+                                  placeholder={t("Choose" + each.title)}
+                                  options={Degree}
+                                  required={true}
+                                  change={(e) => {
+                                    formik.setFieldValue(each.inputName, e);
+                                  }}
+                                  value={formik.values[each.inputName]}
+                                  error={formik.values[each.inputName] ? "" : formik.errors[each.inputName]}
+                                />)}
                         </div>
                         <div className='ml-auto '>
-                          {index !== 0 && (
-                            <RiDeleteBin6Line className='h-6 w-6' onClick={() => handleDeleteCondition(index)} />
-                          )}
+                          <Tooltip placement="top" title={"Delete"}>
+                            {index !== 0 && (
+                              <RiDeleteBin6Line className='size-4 text-slate-500 hover:text-red-500' onClick={() => handleDeleteCondition(index)} />
+                            )}
+                          </Tooltip>
                         </div>
                       </div>
                     ))}
@@ -1039,7 +1056,7 @@ export default function Createcandidatelist({ open = "", close = () => { }, file
                               <Dropdown
                                 title={each.title}
                                 options={Jobtype}
-                                placeholder={t("Choose" + each.title)}
+                                placeholder={t("Choose " + each.title)}
                                 change={(e) => {
                                   formik3.setFieldValue(each.inputFeild, e);
                                 }}
@@ -1049,8 +1066,7 @@ export default function Createcandidatelist({ open = "", close = () => { }, file
 
 
                               /> :
-                              <RangeDatePicker
-                                dateFormat="YYYY-MM-DD"
+                              <DateSelect
                                 title={each.title}
                                 change={(e) => {
                                   formik3.setFieldValue(each.inputFeild, e);
