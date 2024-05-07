@@ -23,7 +23,7 @@ const Company = () => {
   const handleShow = () => setShow(true);
   const dispatch = useDispatch();
   const [statusToggle, setStatusToggle] = useState(true);
-  
+
   const tabs = [
     {
       id: 1,
@@ -58,6 +58,7 @@ const Company = () => {
           id: 1,
           title: t("Name"),
           value: "location",
+          bold: true,
         },
         {
           id: 2,
