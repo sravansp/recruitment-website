@@ -193,7 +193,7 @@ export default function Createcandidatelist({ open = "", close = () => { }, file
           }, {
             title: "Year",
             inputName: "yearOfStudy" + i,
-            type: "input"
+            type: "number"
           }, {
             title: "Location",
             inputName: "location" + i,
