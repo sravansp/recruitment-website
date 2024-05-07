@@ -62,7 +62,7 @@ export default function ImageUpload({
           <div className="flex gap-2">
             <AiOutlineCloudUpload className="text-3xl text-primary " />
             <div className="flex flex-col">
-              <h2 className="acco-subhead"> {t("Click_to_upload")}</h2>
+              <h2 className="acco-subhead"> {t("Click to upload")}</h2>
               <p className="para px-5">{t("Allowed formats")}: {imageFormatsString}</p>
             </div>
           </div>
