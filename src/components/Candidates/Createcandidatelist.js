@@ -427,7 +427,7 @@ export default function Createcandidatelist({ open = "", close = () => { }, file
   });
 
 
-  const Degree = [{ id: 1, title: "Bachelors", value: "Bachelors" }, { id: 2, title: "other", value: "other" }
+  const Degree = [{ id: 1, title: "Bachelors", value: "Bachelors" },{ id: 1, title: "Masters", value: "Masters" }, { id: 3, title: "other", value: "other" }
   ];
   const scrollRef = useRef();
 
