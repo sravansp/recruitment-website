@@ -4,6 +4,7 @@ import {
   getRecruitmentJobById,
   getAllCandidatesByjobId,
   saveRecruitmentJobResumesStage,
+  AutomateResumesInStage
 } from "../Api1";
 // import BoardData from "../../data/board.json";
 import { DragDropContext, Droppable, Draggable } from "react-beautiful-dnd";
@@ -68,6 +69,7 @@ const JobDetails = () => {
   const { jobId } = useParams();
   const [jobTitle, setjobTitle] = useState("");
   const [Jobdetails, setJobdetails] = useState([]);
+  const[jobstatus,setjobStatus] = useState("")
   // Initial view type
   const breadcrumbItems = [
     { label: "Jobs", url: "/AllJobs" },
@@ -100,7 +102,7 @@ const JobDetails = () => {
 
       setjobTitle(response.result[0].jobTitle);
       setJobdetails(response.result[0]); // Access jobTitle from the first object in the array
-
+      setjobStatus(response.result[0].jobStatus)
       // Update the breadcrumb label to include the job title
       breadcrumbItems[breadcrumbItems.length - 1].label = jobTitle;
     } catch (error) {
@@ -237,7 +239,9 @@ const JobDetails = () => {
       {/* MAIN CONTENT BASED ON DRAG VIEW AND LIST VIEW */}
       {viewType === "grid" ? (
         // Render grid view components
-        <DragView />
+        <DragView 
+        jobStatus={jobstatus}
+        />
       ) : (
         // Render list view components
         <ListView />
@@ -246,7 +250,7 @@ const JobDetails = () => {
   );
 };
 
-const DragView = () => {
+const DragView = ({jobStatus}) => {
   const [candidatelist, setcandidatelist] = useState([]);
   const [Workflow, setWorkflow] = useState([]);
   // const selectedDataId = useSelector((state) => state.dataId.selectedDataId);
@@ -438,22 +442,35 @@ const DragView = () => {
       key: "0",
       icon: <FcEngineering size={20} />,
     },
-    {
-      label: "Message",
-      key: "1",
-      icon: <FcMms size={20} />,
-      children: [
-        {
-          key: "1-1",
-          label: "SMS",
-        },
-        {
-          key: "1-2",
-          label: "Email",
-        },
-      ],
-    },
+    // {
+    //   label: "Message",
+    //   key: "1",
+    //   icon: <FcMms size={20} />,
+    //   children: [
+    //     {
+    //       key: "1-1",
+    //       label: "SMS",
+    //     },
+    //     {
+    //       key: "1-2",
+    //       label: "Email",
+    //     },
+    //   ],
+    // },
   ];
+
+  const handleClick = async (stageId)=>{
+    console.log(stageId,"stageId")
+    try{
+    const response = await AutomateResumesInStage({
+      jobId: jobId,
+      stageId: stageId
+    })
+    console.log(response)
+    }catch(error){
+      console.log(error)
+    }
+  }
 
   return (
     <div className="flex flex-col gap-5">
@@ -508,6 +525,7 @@ const DragView = () => {
         {ready && (
           <DragDropContext onDragEnd={onDragEnd}>
             <div className="flex w-full h-full gap-3">
+              {console.log(boardData,"BoardData")}
               {boardData.map((board, bIndex) => (
                 <div key={board.name} className="flex flex-col gap-5">
                   <div className="flex items-center justify-between gap-2 p-3 bg-white border rounded-md w-[270px] 2xl:w-[303px] border-borderlight dark:border-borderdark dark:bg-[#0c101c] dark:text-white">
@@ -533,12 +551,22 @@ const DragView = () => {
                       </div>
                       <Dropdown
                         menu={{
-                          items,
+                          items: [
+                            {
+                              label: "Automate",
+                              key: "0",
+                              icon: <FcEngineering size={20} />,
+                              onClick: () => handleClick(board.id), // Pass board.id to handleClick
+                            },
+                          ],
                         }}
                         placement="bottomRight"
+                        
                       >
                         <a
-                          onClick={(e) => e.preventDefault()}
+                          onClick={(e) => {e.preventDefault()
+                          
+                          }}
                           className="p-1 border border-transparent rounded cursor-pointer text-primary hover:border-primary"
                         >
                           <PiDotsThreeOutlineFill className="text-xl" />
@@ -569,6 +597,7 @@ const DragView = () => {
                               data={item}
                               index={iIndex}
                               color={colors[bIndex]}
+                              jobStatus={jobStatus}
                               className="m-3"
                             />
                           ))}
@@ -596,9 +625,10 @@ const DragView = () => {
   );
 };
 
-const CardItem = ({ data, index, color, jobId }) => {
+const CardItem = ({ data, index, color, jobId,jobStatus }) => {
   const [bookmarkState, setBookmarkState] = useState({});
   const navigate = useNavigate();
+  console.log(jobStatus,"hiiii")
 
   const toggleBookmark = (cardId) => {
     setBookmarkState((prevState) => ({
@@ -668,7 +698,8 @@ const CardItem = ({ data, index, color, jobId }) => {
     <Draggable
       index={index}
       draggableId={data.id.toString()}
-      isDragDisabled={parseInt(data.currentStatus) !== 0}
+      isDragDisabled={ jobStatus === 'Closed' || parseInt(data.currentStatus) !== 0}
+
     >
       {(provided, snapshot) => (
         <div
