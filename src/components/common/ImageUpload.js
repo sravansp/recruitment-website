@@ -6,7 +6,7 @@ import { AiOutlineCloudUpload } from "react-icons/ai";
 const { Dragger } = Upload;
 
 export default function ImageUpload({
-  change = () => {},
+  change = () => { },
   className,
   flex = true,
 }) {
@@ -17,6 +17,17 @@ export default function ImageUpload({
     name: "file",
     multiple: true,
     action: "https://run.mocky.io/v3/435e224c-44fb-4773-9faf-380c5e6a2188",
+    beforeUpload: (file) => {
+      const fileExtension = file.name.split(".").pop().toLowerCase();
+      const isAllowedFile = allowedImageFormats.includes(fileExtension);
+      if (!isAllowedFile) {
+        message.error(`${file.name} file format is not supported.`);
+        return false;
+      }
+      else {
+        return isAllowedFile;
+      }
+    },
   };
   return (
     <div className={`${className}`}>
@@ -43,11 +54,11 @@ export default function ImageUpload({
           //   console.log("Dropped files", e.dataTransfer.files);
           // }
         }
-        // style={{
-        //   paddingTop: 0,
-        //   paddingBottom: 0,
-        // }}
-        // className="py-0"
+      // style={{
+      //   paddingTop: 0,
+      //   paddingBottom: 0,
+      // }}
+      // className="py-0"
       >
         {flex === true ? (
           // <div className={`flex justify-evenly `}>
