@@ -87,10 +87,16 @@ export default function Createcandidatelist({ open = "", close = () => { }, file
           type: "input"
         },
         {
-          title: "Date",
+          title: "From Date",
           inputFeild: "fromDate",
           type: "date"
-        },],
+        },
+        {
+          title: "To Date",
+          inputFeild: "toDate",
+          type: "date"
+        },
+      ],
     }
   ])
 
@@ -225,8 +231,13 @@ export default function Createcandidatelist({ open = "", close = () => { }, file
             type: "input"
           },
           {
-            title: "Date",
+            title: "From Date",
             inputFeild: "fromDate" + i,
+            type: "date"
+          },
+          {
+            title: "To Date",
+            inputFeild: "toDate" + i,
             type: "date"
           },
         ],
@@ -289,18 +300,14 @@ export default function Createcandidatelist({ open = "", close = () => { }, file
       try {
         const response = await saveRecruitmentResumesExperienceDetailBatch(
           workexp.map((each) => {
-            const fromDate = values[each.field[4].inputFeild][0]; // Extracting start date from range picker
-            console.log(fromDate, "fromDate")
-            const toDate = values[each.field[4].inputFeild][1]; // Extracting end date from range picker
-            console.log(toDate, "toDate")
             return {
               resumeId: resumeId,
               jobTitle: values[each.field[0].inputFeild],
               employmentType: values[each.field[1].inputFeild],
               companyName: values[each.field[2].inputFeild],
               location: values[each.field[3].inputFeild],
-              fromDate: fromDate,
-              toDate: toDate,
+              fromDate: values[each.field[4].inputFeild],
+              toDate: values[each.field[5].inputFeild],
               createdBy: localStorage.getItem('employeeId')
             };
           })
@@ -870,7 +877,7 @@ export default function Createcandidatelist({ open = "", close = () => { }, file
                       />
                       <FormInput
                         title={t("Phone_number")}
-                        type = {"number"}
+                        type={"number"}
                         placeholder={t("Enter Phone number")}
                         change={(e) => {
                           Formik2.setFieldValue("candidateContact", e);
@@ -992,14 +999,13 @@ export default function Createcandidatelist({ open = "", close = () => { }, file
                                   value={formik.values[each.inputName]}
                                   error={formik.values[each.inputName] ? "" : formik.errors[each.inputName]}
                                 />)}
-
-
-
                         </div>
                         <div className='ml-auto '>
-                          {index !== 0 && (
-                            <RiDeleteBin6Line className='h-6 w-6' onClick={() => handleDeleteCondition(index)} />
-                          )}
+                          <Tooltip placement="top" title={"Delete"}>
+                            {index !== 0 && (
+                              <RiDeleteBin6Line className='size-4 text-slate-500 hover:text-red-500' onClick={() => handleDeleteCondition(index)} />
+                            )}
+                          </Tooltip>
                         </div>
                       </div>
                     ))}
@@ -1061,8 +1067,7 @@ export default function Createcandidatelist({ open = "", close = () => { }, file
 
 
                               /> :
-                              <RangeDatePicker
-                                dateFormat="YYYY-MM-DD"
+                              <DateSelect
                                 title={each.title}
                                 change={(e) => {
                                   formik3.setFieldValue(each.inputFeild, e);
