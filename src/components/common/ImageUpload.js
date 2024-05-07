@@ -11,6 +11,8 @@ export default function ImageUpload({
   flex = true,
 }) {
   const { t } = useTranslation();
+  const allowedImageFormats = ["jpg", "png", "jpeg", "svg", "webp"];
+  const imageFormatsString = allowedImageFormats.join(", ");
   const props = {
     name: "file",
     multiple: true,
@@ -61,7 +63,7 @@ export default function ImageUpload({
             <AiOutlineCloudUpload className="text-3xl text-primary " />
             <div className="flex flex-col">
               <h2 className="acco-subhead"> {t("Click_to_upload")}</h2>
-              <p className="para">{t("Format")}</p>
+              <p className="para px-5">{t("Allowed formats")}: {imageFormatsString}</p>
             </div>
           </div>
         ) : (
