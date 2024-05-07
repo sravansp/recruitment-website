@@ -40,7 +40,7 @@ import { useNavigate } from 'react-router-dom';
 
 export default function Createcandidatelist({ open = "", close = () => { }, fileUpdateId, refresh, ConfigurationAction, updateId = null, }) {
   const [show, setShow] = useState(open);
-  const [activeBtnValue, setActiveBtnValue] = useState("Personel");//Review//Questions//Work//Personel//Educational
+  const [activeBtnValue, setActiveBtnValue] = useState("Work");//Review//Questions//Work//Personel//Educational
   const [nextStep, setNextStep] = useState(0);
   const [applicableData, setApplicableData] = useState([]);
   const [isUpdate, setIsUpdate] = useState();
@@ -597,7 +597,7 @@ export default function Createcandidatelist({ open = "", close = () => { }, file
   }, [nextStep]);
 
   const genderoption = [{ id: 1, title: "Mr", value: "Mr" }, { id: 2, title: "Mrs", value: "Mrs" }];
-  const Jobtype = [{ id: 1, title: "Full Time", value: "fulltime" }, { id: 2, title: "Part Time", value: "parttime" }]
+  const Jobtype = [{ id: 1, title: "Full Time", value: "Full Time" }, { id: 2, title: "Part Time", value: "Part Time" }]
 
   console.log(resumeId, "resumeid");
 
@@ -1056,7 +1056,7 @@ export default function Createcandidatelist({ open = "", close = () => { }, file
                               <Dropdown
                                 title={each.title}
                                 options={Jobtype}
-                                placeholder={t("Choose" + each.title)}
+                                placeholder={t("Choose " + each.title)}
                                 change={(e) => {
                                   formik3.setFieldValue(each.inputFeild, e);
                                 }}
