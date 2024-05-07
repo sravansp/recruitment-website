@@ -23,6 +23,7 @@ const Company = () => {
   const handleShow = () => setShow(true);
   const dispatch = useDispatch();
   const [statusToggle, setStatusToggle] = useState(true);
+  
   const tabs = [
     {
       id: 1,
@@ -41,23 +42,22 @@ const Company = () => {
     {
       Departments: [
         {
-         id:1,
-         title:t("Name"),
-         value:"department",
+          id: 1,
+          title: t("Name"),
+          value: "department",
+          bold: true,
         },
         {
-            id:2,
-            title:t("Description"),
-            value:"description",
-           },
-           
-
-    ],
-    Locations:[
+          id: 2,
+          title: t("Description"),
+          value: "description",
+        },
+      ],
+      Locations: [
         {
-         id:1,
-         title:t("Name"),
-         value:"location",
+          id: 1,
+          title: t("Name"),
+          value: "location",
         },
         {
           id: 2,
@@ -77,18 +77,11 @@ const Company = () => {
         //   action:true,
         //  },
       ]
-
-
     }
-
   ]
 
 
-
-
-
-
-  const drawerheadre = [
+  const drawerheader = [
     {
       Departments: [
         {
@@ -129,10 +122,7 @@ const Company = () => {
         //  },
 
       ]
-
-
     }
-
   ]
   const [locationList, setLocationList] = useState();
   const [departmentList, setDepartmentList] = useState();
@@ -247,7 +237,7 @@ const Company = () => {
       <Tabs
         tabs={tabs}
         header={header}
-        drawerH={drawerheadre}
+        drawerH={drawerheader}
         All={true}
         clickDrawer={(e) => {
           handleShow();
