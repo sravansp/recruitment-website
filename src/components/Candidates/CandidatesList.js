@@ -134,7 +134,7 @@ const CandidatesList = () => {
             <span className="!text-primary para">View Career Page</span>{" "}
             <PiArrowSquareOut size={15} className="dark:text-white" />
           </Link>
-          <ButtonClick buttonName={t("Add_Candidates")}
+          <ButtonClick buttonName={t("Add_Candidate")}
            handleSubmit={() => {
             setShow(true);
             console.log(true);
