@@ -410,7 +410,7 @@ export default function Createcandidatelist({ open = "", close = () => { }, file
         if (result.status === 200) {
           setNextStep(nextStep + 1);
           setPresentage(1);
-          openNotification("success", "Success...", result.message);
+          openNotification("success", "Successful", result.message);
 
         } else if (result.status === 500) {
           openNotification("error", "Failed..", result.message);
@@ -482,6 +482,7 @@ export default function Createcandidatelist({ open = "", close = () => { }, file
           setNextStep(nextStep + 1);
           setPresentage(1);
           setResumeId(result.result.insertedId);
+          openNotification("success", "Successful", result.message);
         } else if (result.status === 500) {
           openNotification("error", "Failed..", result.message);
         }
@@ -814,7 +815,7 @@ export default function Createcandidatelist({ open = "", close = () => { }, file
               <>
                 <FlexCol justify="center" align="center" className="w-5/6 m-auto mt-10">
                   <Accordion
-                    title={t("Personal_Information")}
+                    title={t("Personal_Details")}
                     className="Text_area"
                     padding={true}
                     toggleBtn={false}
