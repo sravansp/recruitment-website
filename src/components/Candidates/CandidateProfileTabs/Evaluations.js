@@ -114,8 +114,10 @@ const Evaluations = ({EvaluationID,stageId}) => {
     }
   };
   useEffect(() => {
+    if(stageId||EvaluationID||evalutaionId){
     getresumeEvalutionId()
-  }, [stageId])
+    }
+  }, [stageId||EvaluationID||evalutaionId])
 
 
 
@@ -154,6 +156,7 @@ const Evaluations = ({EvaluationID,stageId}) => {
 
             jobId: jobId,
             resumeId: resumeId,
+            stageId:stageId,
             evaluationTemplateId: evalutaionId||EvaluationID,
             evaluationTemplateDetailsId: detailsId,
             evaluationAnswer: answer ? answer.evaluationAnswer : evaluationAnswer,
@@ -336,8 +339,9 @@ const Evaluations = ({EvaluationID,stageId}) => {
     }
 
 
-  }, [evalutaionId||EvaluationID])
+  }, [evalutaionId||EvaluationID||stageId])
   useEffect(() => {
+    console.log(fetchedAnswers)
     fetchedAnswers.forEach(answer => {
       const { evaluationTemplateDetailsId, evaluationAnswer } = answer;
       const matchedCondition = evaluationList.find(condition => condition.evaluationTemplateDetailsId === evaluationTemplateDetailsId);
@@ -375,7 +379,7 @@ const Evaluations = ({EvaluationID,stageId}) => {
         }
       }
     });
-  }, [evaluationList, evaluationAnswers]);
+  }, [fetchedAnswers]);
 
   const onChange = (e) => { };
 

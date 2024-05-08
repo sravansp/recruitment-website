@@ -146,6 +146,7 @@ const CandidateProfile = () => {
   const [userid, setuserid] = useState("");
   const [priority, setPriority] = useState("2");
   const[EvalutaionId,setEvaluationId] = useState("")
+  const[QuestionareId,setQuestionareId] = useState("")
 
   useEffect(() => {
     // Retrieve the login data JSON string from local storage
@@ -261,7 +262,10 @@ const CandidateProfile = () => {
       id: 7,
       title: t("Questionaries"),
       value: "questionaries",
-      content: <Questionaries />,
+      content: <Questionaries
+            QuestionareId={QuestionareId}
+            stageId={stageId}
+      />,
       icon: <RiQuestionnaireLine className="text-base" />,
     },
     {
@@ -354,7 +358,7 @@ const CandidateProfile = () => {
   };
   useEffect(() => {
     getstagename();
-    getResumeJob();
+    
     console.log(getstatus);
   }, [jobId]);
 
@@ -366,6 +370,9 @@ const CandidateProfile = () => {
         resumeId: parseInt(resumeId),
       });
       console.log(response);
+      if(response.status===200){
+        getResumeJob()
+      }
     } catch (error) {
       console.log(error);
     }
@@ -382,6 +389,9 @@ const CandidateProfile = () => {
     ).label;
     setSelectedItemLabel(selectedItemLabel);
     setstageId(e.key);
+    
+   
+   
   };
   const handleMenuClick1 = async (e) => {
     try {
@@ -502,6 +512,7 @@ const CandidateProfile = () => {
       const response = await getResumeJobDetails({
         jobId: jobId,
         resumeId: resumeId,
+      
       });
       console.log(response);
 
@@ -509,7 +520,10 @@ const CandidateProfile = () => {
       setjobResumeMapping(response.result.jobResumeMappingId);
       setgetstatus(response.result.currentStatus);
       setEvaluationId(response.result.stageRules.evaluation)
+      setQuestionareId(response.result.stageRules.questionnaire)
       setstageId(response.result.stageId)
+      console.log(response.result.stageRules.questionnaire);
+      
     } catch (error) {
       console.log(error);
     }
@@ -517,7 +531,7 @@ const CandidateProfile = () => {
   useEffect(() => {
     getResumeJob();
     console.log(getstatus)
-  }, [setstageId]);
+  }, [jobId]);
   // useEffect(() => {
   //   console.log(getstatus);
   // }, [getstatus]);

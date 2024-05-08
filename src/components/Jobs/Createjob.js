@@ -1750,61 +1750,80 @@ const Createjob = ({
                           error={formik1.errors.searchKeywords}
                           required={true}
                         />
-                        <FormInput
-                          title={'Number of Openings'}
-                          placeholder={'Enter Number of Openings'}
-                          change={(e) => {
-                            formik1.setFieldValue('noOfVaccancies', e)
-                          }}
-                          value={formik1.values.noOfVaccancies}
-                          error={formik1.errors.noOfVaccancies}
-                          type={"number"}
-                          required={true}
-                        />
+<FormInput
+  title={'Number of Openings'}
+  placeholder={'Enter Number of Openings'}
+  change={(e) => {
+    const value = parseInt(e);
+    if (isNaN(value)) {
+      formik1.setFieldValue('noOfVaccancies', ''); // Clear the field value for empty input
+      formik1.setFieldError('noOfVaccancies', ''); // Clear any previous error
+    } else if (value <= 0) {
+      // Show error message for negative or zero value
+      formik1.setFieldError('noOfVaccancies', 'Number of Openings must be greater than zero');
+    } else {
+      // Set the field value and clear any previous error
+      formik1.setFieldValue('noOfVaccancies', value);
+      formik1.setFieldError('noOfVaccancies', '');
+    }
+  }}
+  value={formik1.values.noOfVaccancies}
+  error={formik1.errors.noOfVaccancies}
+  type={"number"}
+  required={true}
+/>
 
                       </div>
                       <div className='grid grid-cols-4 gap-4'>
-                        <FormInput
-                          title={'Salary Range From'}
-                          placeholder={'Enter Salary Range From'}
-                          description={'Minimum Annual Salary'}
-                          change={(e) => {
-                            formik1.setFieldValue('salaryRangeFrom', e);
-                            // Validate Salary Range To when Salary Range From changes
-                            // console.log(e)
+                      <FormInput
+  title={'Salary Range From'}
+  placeholder={'Enter Salary Range From'}
+  description={'Minimum Annual Salary'}
+  change={(e) => {
+    const value = parseFloat(e);
+    if (value <= 0 ) {
+      formik1.setFieldError('salaryRangeFrom', 'Salary Range From must be a positive number');
+    } else {
+      formik1.setFieldValue('salaryRangeFrom', value);
+      // Clear the error message only if the input is non-empty or greater than 0
+      if (value > 0||value=="") {
+        formik1.setFieldError('salaryRangeFrom', '');
+      }
+    }
+  }}
+  value={formik1.values.salaryRangeFrom}
+  type={"number"}
+  error={formik1.errors.salaryRangeFrom}
+  required={true}
+  maxLength={15}
+/>
 
-                          }}
-                          value={formik1.values.salaryRangeFrom}
-                          type={"number"}
-                          error={formik1.errors.salaryRangeFrom}
-                          required={true}
-                          maxLength={15}
-                        />
-
-                        <FormInput
-                          title={'Salary Range To'}
-                          placeholder={'Enter Salary Range To'}
-                          description={'Maximum Annual Salary'}
-                          change={(e) => {
-                            formik1.setFieldValue('salaryRangeTo', e);
-                            // Validate Salary Range To
-                            const salaryRangeTo = parseFloat(e); // Convert input to a number
-                            const salaryRangeFrom = parseFloat(formik1.values.salaryRangeFrom); // Convert Salary Range From to a number
-
-                            if (salaryRangeTo <= salaryRangeFrom) {
-                              formik1.setFieldError('salaryRangeTo', 'Salary Range To cannot be less than or equal to Salary Range From');
-                            } else {
-                              // Clear the error message when the condition is met
-                              formik1.setFieldError('salaryRangeTo', '');
-
-                            }
-                          }}
-                          value={formik1.values.salaryRangeTo}
-                          error={formik1.errors.salaryRangeTo}
-                          required={true}
-                          type={"number"}
-                          maxLength={15}
-                        />
+<FormInput
+  title={'Salary Range To'}
+  placeholder={'Enter Salary Range To'}
+  description={'Maximum Annual Salary'}
+  change={(e) => {
+    const value = parseFloat(e);
+    const salaryRangeFrom = parseFloat(formik1.values.salaryRangeFrom); // Convert Salary Range From to a number
+    if (value <= 0 ) {
+      formik1.setFieldError('salaryRangeTo', 'Salary Range To must be a positive number');
+    } else if (value <= salaryRangeFrom) {
+      formik1.setFieldError('salaryRangeTo', 'Salary Range To cannot be less than or equal to Salary Range From');
+    } else {
+      formik1.setFieldValue('salaryRangeTo', value);
+      // Clear the error message only if the input is non-empty or greater than 0
+      if (value > 0||value=="") {
+        
+        formik1.setFieldError('salaryRangeTo', '');
+      }
+    }
+  }}
+  value={formik1.values.salaryRangeTo}
+  error={formik1.errors.salaryRangeTo}
+  required={true}
+  type={"number"}
+  maxLength={15}
+/>
                         <Dropdown
                           title={'Salary Currency'}
                           placeholder={'Choose salary currency'}

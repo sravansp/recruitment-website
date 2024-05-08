@@ -251,7 +251,7 @@ const CreatejobTemp = ({
         //             const htmlContent = convertToHTML(contentState);
                     
         //  console.log(content)           
-        //           setContent(htmlContent);
+                  // setContent(htmlContent);
     setContent(content)
   };
   const [evaluation, setEvaluation] = useState([
@@ -482,7 +482,7 @@ const CreatejobTemp = ({
         formik.setFieldValue("isSalaryPublic", firstJob.isSalaryPublic);
         formik.setFieldValue("jobCode", firstJob.jobCode);
         setContent(firstJob.jobDescription)
-          //      const blocksFromHTML = convertFromHTML(firstJob.jobDescription);
+          // const blocksFromHTML = convertFromHTML(firstJob.jobDescription);
           // const contentState = ContentState.createFromBlockArray(blocksFromHTML.contentBlocks, blocksFromHTML.entityMap);
           // const newEditorState = EditorState.createWithContent(contentState);
           // setContent(newEditorState);
@@ -1472,7 +1472,7 @@ const CreatejobTemp = ({
                         <p className="pb-2">Description</p>
                         <FaAsterisk className="text-[6px] text-rose-600" />
                         </div>
-                        <TextEditor
+                        {/* <TextEditor
                           placeholder={t(
                             "Enter Description "
                           )}
@@ -1488,15 +1488,15 @@ const CreatejobTemp = ({
                           //   setstateHTML(e)
                           // }}
                           loader={loader}
-                        />
-                        {/* <TextEditorcopy
+                        /> */}
+                        <TextEditorcopy
                           Change={(e)=>{
                             handleEditorChange(e)
                             console.log(e)
                           }}
                           initialValue={content}
                           error={formik.errors.jobDescription}
-                        /> */}
+                        />
                         {/* <Editor1/> */}
 
                       </div>
