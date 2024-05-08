@@ -247,11 +247,11 @@ const CreatejobTemp = ({
     }
   };
   const handleEditorChange = (content) => {
-        //             const contentState = content.getCurrentContent();
-        //             const htmlContent = convertToHTML(contentState);
-                    
-        //  console.log(content)           
-        //           setContent(htmlContent);
+    //             const contentState = content.getCurrentContent();
+    //             const htmlContent = convertToHTML(contentState);
+
+    //  console.log(content)           
+    //           setContent(htmlContent);
     setContent(content)
   };
   const [evaluation, setEvaluation] = useState([
@@ -378,7 +378,7 @@ const CreatejobTemp = ({
             openNotification(
               "success",
               "Success",
-              response.message
+              response.message.replace(/<br\/>/g, '\n')
             );
             setPresentage(2);
             setTimeout(() => {
@@ -436,8 +436,7 @@ const CreatejobTemp = ({
             openNotification(
               "success",
               "Success",
-
-              response.message
+              response.message.replace(/<br\/>/g, '\n')
             );
             setPresentage(2);
             setTimeout(() => {
@@ -445,7 +444,7 @@ const CreatejobTemp = ({
               refresh()
             }, 1500);
           } else if (response.status === 500) {
-            openNotification("error", "Error", response.message);
+            openNotification("error", "Error", response.message.replace(/<br\/>/g, '\n'));
           }
 
 
@@ -482,10 +481,10 @@ const CreatejobTemp = ({
         formik.setFieldValue("isSalaryPublic", firstJob.isSalaryPublic);
         formik.setFieldValue("jobCode", firstJob.jobCode);
         setContent(firstJob.jobDescription)
-          //      const blocksFromHTML = convertFromHTML(firstJob.jobDescription);
-          // const contentState = ContentState.createFromBlockArray(blocksFromHTML.contentBlocks, blocksFromHTML.entityMap);
-          // const newEditorState = EditorState.createWithContent(contentState);
-          // setContent(newEditorState);
+        //      const blocksFromHTML = convertFromHTML(firstJob.jobDescription);
+        // const contentState = ContentState.createFromBlockArray(blocksFromHTML.contentBlocks, blocksFromHTML.entityMap);
+        // const newEditorState = EditorState.createWithContent(contentState);
+        // setContent(newEditorState);
         formik.setFieldValue("jobType", firstJob.jobType);
         formik.setFieldValue("location", firstJob.location);
         formik.setFieldValue("requirementType", firstJob.requirementType);
@@ -891,6 +890,10 @@ const CreatejobTemp = ({
           formik.setFieldError('salaryRangeTo', '"Salary Range To" must be greater than "Salary Range From"');
           return;
         }
+        if (formik.values.jobTitle && formik.values.jobTitle.length < 3) {
+          formik.setFieldError('jobTitle', 'Job Title should have at least 3 letters.');
+          return;
+        }
         if (
           !formik.values.jobTitle || !formik.values.departmentId || !formik.values.jobCode ||
           !formik.values.location ||
@@ -920,6 +923,7 @@ const CreatejobTemp = ({
           return; // Exit early if any field is empty
 
         }
+
         if (jobcodelength === 0) {
 
           setNextStep(nextStep + 1);
@@ -1176,45 +1180,45 @@ const CreatejobTemp = ({
                       // } }
                       initialExpanded={true}
                     >
-                    <div className="md:grid grid-cols-12 flex flex-col gap-6 dark:text-white">
-  {regularOvertime?.map((each, i) => (
-    <div
-      key={i}
-      className={`col-span-4 p-1.5 border rounded-2xl  cursor-pointer showDelay dark:bg-dark  ${(!formik.values.workLocationType && each.value === "Onsite") || (formik.values.workLocationType === each.value) ? "border-primary" : ""}`}
-      onClick={() => {
-        setCustomRate(each.id);
-        formik.setFieldValue("workLocationType", each.value);
-        setPresentage(.4);
-      }}
-    >
-      <div className="flex justify-between items-start">
-        <div className="flex gap-2">
-          <img
-            className={`${(!formik.values.workLocationType && each.value === "Onsite") || (formik.values.workLocationType === each.value) ? "text-primary" : ""} p-2 border rounded-md w-[66px] bg-[#F8FAFC]`}
-            src={each.image}
-            alt=""
-          >
-          </img>
-          <div>
-            <h3 className=" text-sm font-semibold mt-[10px]">
-              {each.title}
-            </h3>
-            <p className=" text-xs font-medium text-[#667085] ">
-              {each.description}
-            </p>
-          </div>
-        </div>
-        <div
-          className={`${(!formik.values.workLocationType && each.value === "Onsite") || (formik.values.workLocationType === each.value) ? "border-primary" : ""} border  rounded-full`}
-        >
-          <div
-            className={`font-semibold text-base w-4 h-4 border-2 border-white   rounded-full ${(!formik.values.workLocationType && each.value === "Onsite") || (formik.values.workLocationType === each.value) ? "text-primary bg-primary" : ""}`}
-          ></div>
-        </div>
-      </div>
-    </div>
-  ))}
-</div>
+                      <div className="md:grid grid-cols-12 flex flex-col gap-6 dark:text-white">
+                        {regularOvertime?.map((each, i) => (
+                          <div
+                            key={i}
+                            className={`col-span-4 p-1.5 border rounded-2xl  cursor-pointer showDelay dark:bg-dark  ${(!formik.values.workLocationType && each.value === "Onsite") || (formik.values.workLocationType === each.value) ? "border-primary" : ""}`}
+                            onClick={() => {
+                              setCustomRate(each.id);
+                              formik.setFieldValue("workLocationType", each.value);
+                              setPresentage(.4);
+                            }}
+                          >
+                            <div className="flex justify-between items-start">
+                              <div className="flex gap-2">
+                                <img
+                                  className={`${(!formik.values.workLocationType && each.value === "Onsite") || (formik.values.workLocationType === each.value) ? "text-primary" : ""} p-2 border rounded-md w-[66px] bg-[#F8FAFC]`}
+                                  src={each.image}
+                                  alt=""
+                                >
+                                </img>
+                                <div>
+                                  <h3 className=" text-sm font-semibold mt-[10px]">
+                                    {each.title}
+                                  </h3>
+                                  <p className=" text-xs font-medium text-[#667085] ">
+                                    {each.description}
+                                  </p>
+                                </div>
+                              </div>
+                              <div
+                                className={`${(!formik.values.workLocationType && each.value === "Onsite") || (formik.values.workLocationType === each.value) ? "border-primary" : ""} border  rounded-full`}
+                              >
+                                <div
+                                  className={`font-semibold text-base w-4 h-4 border-2 border-white   rounded-full ${(!formik.values.workLocationType && each.value === "Onsite") || (formik.values.workLocationType === each.value) ? "text-primary bg-primary" : ""}`}
+                                ></div>
+                              </div>
+                            </div>
+                          </div>
+                        ))}
+                      </div>
 
                       <div className="grid grid-cols-2 gap-4">
                         <FormInput
@@ -1434,43 +1438,43 @@ const CreatejobTemp = ({
                       initialExpanded={true}
                     >
                       <div class="flex flex-col gap-4 overflow-hidden">
-                      <div className="border rounded-md bg-primaryalpha/5">
-                        <div className="flex items-center px-1.5  ">
-                          <img src={AI_Text} alt='' className="border rounded-md"></img>
-                          <div className="flex flex-col gap-1 p-1.5">
-                            <div className="flex items-center justify-between ">
-                              <p className="font-bold">Generate personalized job descriptions based on pas account data.
+                        <div className="border rounded-md bg-primaryalpha/5">
+                          <div className="flex items-center px-1.5  ">
+                            <img src={AI_Text} alt='' className="border rounded-md"></img>
+                            <div className="flex flex-col gap-1 p-1.5">
+                              <div className="flex items-center justify-between ">
+                                <p className="font-bold">Generate personalized job descriptions based on pas account data.
+                                </p>
+                                {/* <p className="text-primary"><IoClose /></p> */}
+                              </div>
+                              <p className="text-gray-400">When you generate with Al, we look for similar jobs you've created in the past and use the data to create content that's
+                                impactful, accurate and personalized to your company.
                               </p>
-                              {/* <p className="text-primary"><IoClose /></p> */}
                             </div>
-                            <p className="text-gray-400">When you generate with Al, we look for similar jobs you've created in the past and use the data to create content that's
-                              impactful, accurate and personalized to your company.
-                            </p>
                           </div>
                         </div>
-                      </div>
-                      <div
-                        style={{
-                          display: "flex",
-                          justifyContent: "flex-end",
-                          gap: "16px",
-                        }}
-                      >
-                        <Dropdown
-                          title={''}
-                          placeholder={'Choose Job Description'}
-                          options={JobDescriptionList}
-                          value={decriptionId}
-                          className={'min-w-40'}
-                          change={(e) => {
-                            setDecriptionId(e)
+                        <div
+                          style={{
+                            display: "flex",
+                            justifyContent: "flex-end",
+                            gap: "16px",
                           }}
-                        />
-                        <ButtonClick handleSubmit={handleGenerateWithAI} BtnType="primary" icon={<img src={image} alt="image" style={{ height: '20px', width: '20px', alignItems: "center" }} />} buttonName={"Generate with AI"} />
-                      </div>
-                       <div className="flex gap-1.5">
-                        <p className="pb-2">Description</p>
-                        <FaAsterisk className="text-[6px] text-rose-600" />
+                        >
+                          <Dropdown
+                            title={''}
+                            placeholder={'Choose Job Description'}
+                            options={JobDescriptionList}
+                            value={decriptionId}
+                            className={'min-w-40'}
+                            change={(e) => {
+                              setDecriptionId(e)
+                            }}
+                          />
+                          <ButtonClick handleSubmit={handleGenerateWithAI} BtnType="primary" icon={<img src={image} alt="image" style={{ height: '20px', width: '20px', alignItems: "center" }} />} buttonName={"Generate with AI"} />
+                        </div>
+                        <div className="flex gap-1.5">
+                          <p className="pb-2">Description</p>
+                          <FaAsterisk className="text-[6px] text-rose-600" />
                         </div>
                         <TextEditor
                           placeholder={t(
