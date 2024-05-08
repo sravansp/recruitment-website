@@ -1,4 +1,4 @@
-import React, { useState,useEffect } from "react";
+import React, { useState, useEffect } from "react";
 import DrawerPop from "../common/DrawerPop";
 import Accordion from "../common/Accordion";
 import { useTranslation } from "react-i18next";
@@ -10,10 +10,10 @@ import TextEditor from "../common/TextEditor/TextEditor";
 import FormInput from "../common/FormInput";
 import image from "../../assets/images/attachment-2.svg";
 import image2 from "../../assets/images/emoji-sticker-line.svg";
-import {getRecruitmentLetterTemplateById, saveRecruitmentLetterTemplate,updateRecruitmentLetterTemplate } from "../Api1";
+import { getRecruitmentLetterTemplateById, saveRecruitmentLetterTemplate, updateRecruitmentLetterTemplate } from "../Api1";
 const AddLetter = ({
   open = "",
-  close = () => {},
+  close = () => { },
   inputshow = false,
   isUpdate = {},
   updateId,
@@ -22,10 +22,10 @@ const AddLetter = ({
   const [companyId, setCompanyId] = useState(localStorage.getItem("companyId"));
   const [templateName, setTemplateName] = useState("");
   const [show, setShow] = useState(open);
-  const [subject,setsubject] = useState("")
+  const [subject, setsubject] = useState("")
   const { t } = useTranslation();
   const [templateNameError, setTemplateNameError] = useState('');
-  const [ subjectError,setSubjectError] = useState('')
+  const [subjectError, setSubjectError] = useState('')
   const [contentError, setContentError] = useState('');
   const handleClose = () => {
     close(false);
@@ -39,35 +39,33 @@ const AddLetter = ({
       placement: "top",
       // stack: 2,
       style: {
-        background: `${
-          type === "success"
+        background: `${type === "success"
             ? `linear-gradient(180deg, rgba(204, 255, 233, 0.8) 0%, rgba(235, 252, 248, 0.8) 51.08%, rgba(246, 251, 253, 0.8) 100%)`
             : "linear-gradient(180deg, rgba(255, 236, 236, 0.80) 0%, rgba(253, 246, 248, 0.80) 51.13%, rgba(251, 251, 254, 0.80) 100%)"
-        }`,
-        boxShadow: `${
-          type === "success"
+          }`,
+        boxShadow: `${type === "success"
             ? "0px 4.868px 11.358px rgba(62, 255, 93, 0.2)"
             : "0px 22px 60px rgba(134, 92, 144, 0.20)"
-        }`,
+          }`,
       },
       // duration: null,
     });
   };
   console.log(updateId)
 
-  const handletemplateName =(Value) =>{
+  const handletemplateName = (Value) => {
     if (!Value) {
       setTemplateNameError('Template Name is required.');
       // Set flag to true if there's an error
-  } else {
+    } else {
       setTemplateNameError('');
+    }
   }
-  }
-  const handleSubject = (value) =>{
+  const handleSubject = (value) => {
     if (value) {
       setSubjectError('');
-       // Set flag to true if there's an error
-  } 
+      // Set flag to true if there's an error
+    }
   }
   const handleSubmit = async () => {
     try {
@@ -75,128 +73,128 @@ const AddLetter = ({
 
       let hasError = false; // Flag to track if any error occurred
 
-        // Check if templateName is empty
-        if (!templateName) {
-            setTemplateNameError('Template Name is required.');
-            hasError = true; // Set flag to true if there's an error
-        } else {
-            setTemplateNameError('');
-        }
+      // Check if templateName is empty
+      if (!templateName) {
+        setTemplateNameError('Template Name is required.');
+        hasError = true; // Set flag to true if there's an error
+      } else {
+        setTemplateNameError('');
+      }
 
-        // Check if subject is empty
-        if (!subject) {
-            setSubjectError('Please enter a subject.');
-            hasError = true; // Set flag to true if there's an error
-        } else {
-            setSubjectError('');
-        }
-        if (!content) {
-          setContentError('Content is required.');
-          hasError = true;
-  
-          
-        } else {
-          setContentError('');
-        }
-        // If any error occurred, return early
-        if (hasError) {
-            return;
-        }
-  
-      if(updateId){
+      // Check if subject is empty
+      if (!subject) {
+        setSubjectError('Subject is required.');
+        hasError = true; // Set flag to true if there's an error
+      } else {
+        setSubjectError('');
+      }
+      if (!content) {
+        setContentError('Content is required.');
+        hasError = true;
+
+
+      } else {
+        setContentError('');
+      }
+      // If any error occurred, return early
+      if (hasError) {
+        return;
+      }
+
+      if (updateId) {
         const id = updateId
-       const response = await updateRecruitmentLetterTemplate(
-       
-        {
-            id:id,
+        const response = await updateRecruitmentLetterTemplate(
+
+          {
+            id: id,
             companyId: companyId,
             letterTemplateName: templateName,
-            letterTemplate:{
+            letterTemplate: {
               subject: subject,
-                body: content, 
+              body: content,
             },
-            modifiedBy:null
+            modifiedBy: null
+          }
+        )
+        console.log(response)
+        if (response.status === 200) {
+
+
+          openNotification(
+            "success",
+            "Success",
+            response.message
+          );
+          setTimeout(() => {
+            handleClose();
+            refresh()
+          }, 1500);
+
+        } else if (response.status === 500) {
+          openNotification("error", "Error..", response.message.replace(/<br\/>/g, '\n'));
         }
-       )
-       console.log(response)
-       if (response.status === 200) {
-        
-        
-        openNotification(
-          "success",
-          "Success",
-          response.message
-        );
-        setTimeout(() => {
-          handleClose();
-          refresh()
-        }, 1500);
-      
-      }else if (response.status === 500) {
-        openNotification("error", "Error..", response.message.replace(/<br\/>/g, '\n'));
       }
-      }
-      else{
+      else {
         const response = await saveRecruitmentLetterTemplate({
-        companyId: companyId,
+          companyId: companyId,
 
-        letterTemplateName: templateName,
-        letterTemplate: {
-          subject: subject,
-          body: content,
-        },
-        createdBy: null,
-      });
+          letterTemplateName: templateName,
+          letterTemplate: {
+            subject: subject,
+            body: content,
+          },
+          createdBy: null,
+        });
 
-      // Handle API response
-      console.log(response);
-      if (response.status === 200) {
-        openNotification(
-          "success",
-          "Success",
-          response.message
-        );
-        setTimeout(() => {
-          handleClose();
-          refresh()
-        }, 1500);
-      } else {
-        openNotification("error", "Error..", response.message);
+        // Handle API response
+        console.log(response);
+        if (response.status === 200) {
+          openNotification(
+            "success",
+            "Success",
+            response.message
+          );
+          setTimeout(() => {
+            handleClose();
+            refresh()
+          }, 1500);
+        } else {
+          openNotification("error", "Error..", response.message);
+        }
       }
-    }
     } catch (error) {
       console.error("Error saving email template:", error);
       openNotification("error", "Error..", error);
     }
   };
-  const getLetterById= async()=>{
+  const getLetterById = async () => {
     const id = updateId
-    try{
-    const response = await getRecruitmentLetterTemplateById({id})
-    console.log(response)
-    setTemplateName(response.result[0].letterTemplateName );
-    setContent(response.result[0].letterTemplate.body );
-    setsubject(response.result[0].letterTemplate.subject)
-    
-    }catch(error){
-    console.log(error)
+    try {
+      const response = await getRecruitmentLetterTemplateById({ id })
+      console.log(response)
+      setTemplateName(response.result[0].letterTemplateName);
+      setContent(response.result[0].letterTemplate.body);
+      setsubject(response.result[0].letterTemplate.subject)
+
+    } catch (error) {
+      console.log(error)
     }
   }
-  useEffect(()=>{
+  useEffect(() => {
     getLetterById()
     console.log(templateName)
-    console.log(content)  
-  },[])
+    console.log(content)
+  }, [])
 
-  
+
 
   const handleEditorChange = (content) => {
     setContent(content);
     if (content) {
       setContentError('');
-      
-      
-    } 
+
+
+    }
   };
   return (
     <div>
@@ -236,24 +234,24 @@ const AddLetter = ({
         //  }
         footerBtn={[
           t("Cancel"),
-          !isUpdate ? t("Save Template") : t("Save Template"),
+          t("Save"),
         ]}
         className="widthFull"
         handleSubmit={handleSubmit}
 
-        //  buttonClickCancel={(e) => {
-        //    if (activeBtn > 0) {
-        //      setActiveBtn(activeBtn - 1);
-        //      setNextStep(nextStep - 1);
-        //      setActiveBtnValue(steps?.[activeBtn - 1].data);
-        //      console.log(activeBtn - 1);
-        //    }
-        //    setBtnName("");
-        //  }}
-        //  nextStep={nextStep}
-        //  activeBtn={activeBtn}
-        //  saveAndContinue={true}
-        //  stepsData={steps}
+      //  buttonClickCancel={(e) => {
+      //    if (activeBtn > 0) {
+      //      setActiveBtn(activeBtn - 1);
+      //      setNextStep(nextStep - 1);
+      //      setActiveBtnValue(steps?.[activeBtn - 1].data);
+      //      console.log(activeBtn - 1);
+      //    }
+      //    setBtnName("");
+      //  }}
+      //  nextStep={nextStep}
+      //  activeBtn={activeBtn}
+      //  saveAndContinue={true}
+      //  stepsData={steps}
       >
         {" "}
         <div className="relative max-w-[1070px]  w-full mx-auto">
@@ -270,9 +268,9 @@ const AddLetter = ({
             <div className="grid grid-cols-2 ">
               <FormInput
                 title={"Template Name"}
-                placeholder={"Enter Letter Template Name"}
+                placeholder={"Enter Template Name"}
                 value={templateName}
-                change={(e)=>{
+                change={(e) => {
                   setTemplateName(e)
                   handletemplateName(e)
                 }}
@@ -281,22 +279,26 @@ const AddLetter = ({
               />
             </div>
             <FormInput
-                title={"Subject"}
-                placeholder={"Enter Subject"}
-                value={subject}
-                change={(e)=>{setsubject(e)
-                  handleSubject(e)
-                 }}
-                error={subjectError}
-                required={true}
-              />
-
-            <TextEditor
-              initialValue={content}
-              onChange={handleEditorChange}
-              minheight="250px"
-              error={contentError}
+              title={"Subject"}
+              placeholder={"Enter Subject"}
+              value={subject}
+              change={(e) => {
+                setsubject(e)
+                handleSubject(e)
+              }}
+              error={subjectError}
+              required={true}
             />
+            <div>
+              <p className="pb-2">Letter</p>
+              <TextEditor
+                initialValue={content}
+                placeholder={"Start typing your Letter"}
+                onChange={handleEditorChange}
+                minheight="250px"
+                error={contentError}
+              />
+            </div>
             <div class="relative max-w-[1070px]  w-full mx-auto h-[49.72px] bg-purple-50 rounded-lg">
               <div className="flex justify-start items-center m-3 gap-3">
                 {/* <img src={image}></img>

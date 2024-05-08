@@ -24,7 +24,7 @@ const appearanceLanguageArabic = {
   Applied_Date: "تاريخ التقديم",
 
 
-  Add_Candidates: "إضافة المرشحين",
+  Add_Candidate: "إضافة المرشحين",
   Personal_Details: "التفاصيل الشخصية",
   Educational_Details: "التفاصيل التعليمية",
   Work_Experience: "الخبرة العملية",
@@ -49,7 +49,7 @@ const appearanceLanguageArabic = {
   Job_Details: "تفاصيل الوظيفة",
   Application_Form: "نموذج التقديم",
   Workflow: "سير العمل",
-  Team_Members: "أعضاء الفريق",
+  Team_Member: "أعضاء الفريق",
   Publish: "نشر",
 
 };

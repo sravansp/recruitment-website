@@ -78,9 +78,16 @@ const Emailtemplate = ({
       if (!templateName) {
         setTemplateNameError('Template Name is required.');
         hasError = true; // Set flag to true if there's an error
+      } else if (!/^[a-zA-Z\s]+$/.test(templateName)) {
+        setTemplateNameError('Template Name should only contain letters.');
+        hasError = true; // Set flag to true if there's an error
+      } else if (templateName.length < 3) {
+        setTemplateNameError('Template Name should have at least 3 letters.');
+        hasError = true; // Set flag to true if there's an error
       } else {
         setTemplateNameError('');
       }
+
 
       // Check if subject is empty
       if (!subject) {
@@ -135,7 +142,7 @@ const Emailtemplate = ({
           }, 1500);
 
         } else if (response.status === 500) {
-          openNotification("error", "Error", response.message.replace(/<br\/>/g, '\n'));
+          openNotification("error", "Failed", response.message.replace(/<br\/>/g, '\n'));
         }
 
       }
@@ -166,7 +173,7 @@ const Emailtemplate = ({
           }, 1500);
 
         } else if (response.status === 500) {
-          openNotification("error", "Error", response.message);
+          openNotification("error", "Failed", response.message);
         }
       }
     }
@@ -244,7 +251,7 @@ const Emailtemplate = ({
         //  }
         footerBtn={[
           t("Cancel"),
-          !isUpdate ? t("Save Template") : t("Save Template"),
+          t("Save"),
         ]}
         className="widthFull"
         handleSubmit={handleSubmit}

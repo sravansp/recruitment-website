@@ -15,8 +15,9 @@ import { IoIosArrowDown } from "react-icons/io";
 
 
 
-const Questionaries = () => {
+const Questionaries = ({QuestionareId,stageId}) => {
   const primaryColor = localStorage.getItem("mainColor");
+  console.log(QuestionareId)
   const onTabChange = (tabId) => {
     // Do something when the tab changes if needed
     console.log(`Tab changed to ${tabId}`);
@@ -156,7 +157,7 @@ const Questionaries = () => {
   const [Allqestionare,setAllqestionare] =useState([])
   const getAllQesutionare = async () =>{
     try{
-      const response = await getAllRecruitmentQuestionnaireTemplates()
+      const response = await getAllRecruitmentQuestionnaireTemplates({})
       setAllqestionare(response.result.map((each)=>({
         label : each.questionnaireTemplateName,
         values:each.questionnaireTemplateId
@@ -174,7 +175,7 @@ const Questionaries = () => {
 
       const response = await getRecruitmentQuestionnaireTemplateById({
 
-        id: parseInt(questionareId)
+        id: parseInt(questionareId||QuestionareId)
 
       })
       setquestionnaireData(response.result)
@@ -186,11 +187,11 @@ const Questionaries = () => {
 
   }
   useEffect(() => {
-    if (questionareId) {
+    if (questionareId||QuestionareId) {
       getQuestionare()
     }
 
-  }, [questionareId])
+  }, [questionareId||QuestionareId||stageId])
 
 
   const options = [

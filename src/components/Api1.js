@@ -2,6 +2,7 @@ import axios from "axios";
 
 // const apiUrl = 'http://192.168.29.185/loyaltri-recruitment-server/api/v1';
 const apiUrl = 'https://alpha-jobs-api.loyaltri.com/api/v1';
+// const apiUrl = 'https://web-jobs-api.loyaltri.com/api/v1';
 // const apiUrl = 'https://demo-jobs-api.loyaltri.com/api/v1'
 
 
@@ -124,13 +125,13 @@ export const getAllRecruitmentUserRoleMappings = async () => {
   return await apiRequest(action, method, kwargs);
 };
 
-export const getAllRecruitmentWorkFlows = async () => {
+export const getAllRecruitmentWorkFlows = async (data) => {
   const action = "getAllRecruitmentWorkFlows";
 
   const method = "POST";
 
 
-  const kwargs = {};
+  const kwargs = data;
 
   return await apiRequest(action, method, kwargs);
 };
@@ -179,7 +180,7 @@ export const getAllRecruitmentJobTemplates = async (data) => {
 
   return await apiRequest(action, method, kwargs);
 };
-export const getAllRecruitmentEmailTemplates = async () => {
+export const getAllRecruitmentEmailTemplates = async (data) => {
   const action = "getAllRecruitmentEmailTemplates";
 
   const method = "POST";
@@ -188,7 +189,7 @@ export const getAllRecruitmentEmailTemplates = async () => {
   //   jobId: jobId,
   // };
 
-  const kwargs = {};
+  const kwargs = data;
 
   return await apiRequest(action, method, kwargs);
 };
@@ -205,17 +206,17 @@ export const getAllRecruitmentEmailTemplates = async () => {
 
 //   return await apiRequest(action, method, kwargs);
 // };
-export const getAllRecruitmentLetterTemplates = async () => {
+export const getAllRecruitmentLetterTemplates = async (data) => {
   const action = "getAllRecruitmentLetterTemplates";
 
   const method = "POST";
 
 
-  const kwargs = {};
+  const kwargs = data;
 
   return await apiRequest(action, method, kwargs);
 };
-export const getAllRecruitmentQuestionnaireTemplates = async () => {
+export const getAllRecruitmentQuestionnaireTemplates = async (data) => {
   const action = "getAllRecruitmentQuestionnaireTemplates";
 
   const method = "POST";
@@ -224,7 +225,7 @@ export const getAllRecruitmentQuestionnaireTemplates = async () => {
   //   jobId: jobId,
   // };
 
-  const kwargs = {};
+  const kwargs = data;
 
   return await apiRequest(action, method, kwargs);
 };
@@ -522,12 +523,12 @@ export const saveRecruitmentJobTemplate = async (e) => {
     throw error; // Re-throw the error to handle it where the function is called.
   }
 };
-export const getAllRecruitmentEvaluationTemplates = async () => {
+export const getAllRecruitmentEvaluationTemplates = async (data) => {
   const action = "getAllRecruitmentEvaluationTemplates";
 
   const method = "POST";
 
-  const kwargs = {};
+  const kwargs = data;
 
   return await apiRequest(action, method, kwargs);
 };
@@ -960,12 +961,12 @@ export const saveRecruitmentJobDescriptionTemplate = async (Data) => {
 
   return await apiRequest(action, method, kwargs);
 };
-export const getAllRecruitmentJobDescriptionTemplates = async () => {
+export const getAllRecruitmentJobDescriptionTemplates = async (data) => {
   const action = "getAllRecruitmentJobDescriptionTemplates";
 
   const method = "POST";
 
-  const kwargs = {};
+  const kwargs = data;
   // console.log("API Request Data:", { action, method, kwargs })
 
   return await apiRequest(action, method, kwargs);
@@ -1170,6 +1171,16 @@ export const updateRecruitmentResume = async (data) => {
 
   return await apiRequest(action, method, kwargs);
 };
+export const AutomateResumesInStage = async (data) => {
+  const action = "AutomateResumesInStage";
+
+  const method = "POST";
+
+  const kwargs = data;
+  console.log("API Request Data:", { action, method, kwargs })
+
+  return await apiRequest(action, method, kwargs);
+};
 const API = {
   UPDATE_Job_Templates: "toggleRecruitmentJobTemplateStatus",
   UPDATE_Job_Description: "toggleRecruitmentJobDescriptionTemplateStatus",
@@ -1227,6 +1238,7 @@ export { action };
 // file handling url
 const urlFileHandler = "https://alpha-jobs-api.loyaltri.com/api/fileHandler";
 // const urlFileHandler = "https://demo-jobs-api.loyaltri.com/api/fileHandler";
+// const urlFileHandler = "https://web-jobs-api.loyaltri.com/api/fileHandler";
 const fileAction = async (formData) => {
   try {
     const result = await axios.post(urlFileHandler, formData, {

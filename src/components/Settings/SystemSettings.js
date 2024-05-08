@@ -74,7 +74,7 @@ function SystemSettings() {
           <SearchBox
             // title="Search"
 
-            placeholder={t("Search_placeholder")}
+            placeholder={t("Search")}
 
             icon={<CiSearch className=" dark:text-white" />}
             className="mt-0 w-ful md:w-auto  "

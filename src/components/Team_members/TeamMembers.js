@@ -39,6 +39,7 @@ const TeamMembers = ({
           id: 1,
           title: t("Name"),
           value: "userName",
+          bold: true,
         },
         {
           id: 2,
@@ -98,7 +99,7 @@ const TeamMembers = ({
         </div>
         <div className="flex flex-col gap-6 sm:flex-row">
           <Link onClick={handleNavigate} className="flex gap-2 mt-2">
-            <span className="!text-primary para">View career page</span>{" "}
+            <span className="!text-primary para">View Career Page</span>{" "}
             <PiArrowSquareOut size={15} className="dark:text-white" />
           </Link>
           <ButtonClick

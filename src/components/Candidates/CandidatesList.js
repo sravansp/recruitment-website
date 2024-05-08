@@ -26,43 +26,45 @@ const CandidatesList = () => {
       Candidate_Profile: [
         {
           id: 1,
-          title: t("Name"),
+          title: t("NAME"),
           value: "candidateName",
+          bold: true,
         },
         {
           id: 2,
-          title: t("Contact"),
+          title: t("CONTACT"),
           value: "candidateContact",
         },
         {
           id: 3,
-          title: t("Job"),
+          title: t("JOB"),
           value: "jobTitle",
+          titleCaseSensitive: true,
         },
 
         {
           id: 4,
-          title: t("Stage"),
+          title: t("STAGE"),
           value: "stageName",
          
         },
         {
           id: 5,
 
-          title: t("Source"),
+          title: t("SOURCE"),
           value: "candidateSource",
          
         },
         {
           id: 6,
 
-          title: t("Status"),
+          title: t("STATUS"),
           value: "currentStatus",
          
         },
         {
           id: 7,
-          title: t("Applied_Date"),
+          title: t("APPLIED DATE"),
           value: "createdOn",
         },
         
@@ -129,10 +131,10 @@ const CandidatesList = () => {
            <div className="flex gap-4">
           {" "}
           <Link onClick={handleNavigate} className="flex gap-2 mt-2">
-            <span className="!text-primary para">View career page</span>{" "}
+            <span className="!text-primary para">View Career Page</span>{" "}
             <PiArrowSquareOut size={15} className="dark:text-white" />
           </Link>
-          <ButtonClick buttonName={t("Add_Candidates")}
+          <ButtonClick buttonName={t("Add_Candidate")}
            handleSubmit={() => {
             setShow(true);
             console.log(true);

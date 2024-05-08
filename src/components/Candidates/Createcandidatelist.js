@@ -59,7 +59,7 @@ export default function Createcandidatelist({ open = "", close = () => { }, file
   const [educationExperiences, seteducationExperiences] = useState([])
   const navigate = useNavigate();
   const [PdFViewer, setPdFViewer] = useState("")
-  const[candidateImage,setcandidateImage] =useState("")
+  const [candidateImage, setcandidateImage] = useState("")
   const [workexp, setWorkexp] = useState([
     {
       id: 1,
@@ -80,21 +80,24 @@ export default function Createcandidatelist({ open = "", close = () => { }, file
           title: "Company Name",
           inputFeild: "companyName",
           type: "input"
-        }, {
+        },
+        {
           title: "Location  ",
           inputFeild: "location",
           type: "input"
-        }, {
-          title: " from Date",
+        },
+        {
+          title: "From Date",
           inputFeild: "fromDate",
           type: "date"
-
-
-
-        },],
-
+        },
+        {
+          title: "To Date",
+          inputFeild: "toDate",
+          type: "date"
+        },
+      ],
     }
-
   ])
 
   const [education, setEducation] = useState([
@@ -120,7 +123,7 @@ export default function Createcandidatelist({ open = "", close = () => { }, file
         }, {
           title: "Year",
           inputName: "yearOfStudy",
-          type: "input"
+          type: "number"
         }, {
           title: "Location",
           inputName: "location",
@@ -190,7 +193,7 @@ export default function Createcandidatelist({ open = "", close = () => { }, file
           }, {
             title: "Year",
             inputName: "yearOfStudy" + i,
-            type: "input"
+            type: "number"
           }, {
             title: "Location",
             inputName: "location" + i,
@@ -221,17 +224,23 @@ export default function Createcandidatelist({ open = "", close = () => { }, file
             title: "Company Name",
             inputFeild: "companyName" + i,
             type: "input"
-          }, {
+          },
+          {
             title: "Location  ",
             inputFeild: "location" + i,
             type: "input"
-          }, {
-            title: "Date",
+          },
+          {
+            title: "From Date",
             inputFeild: "fromDate" + i,
             type: "date"
-
-
-          },],
+          },
+          {
+            title: "To Date",
+            inputFeild: "toDate" + i,
+            type: "date"
+          },
+        ],
       }
     ]);
   };
@@ -259,13 +268,14 @@ export default function Createcandidatelist({ open = "", close = () => { }, file
   useEffect(() => {
     console.log(FormData, "form data")
   }, [])
+
   const safeWorkMap = (list) =>
-  (list ?? []).flatMap((each) =>
-    (each.field ?? []).map((field) => [
-      field.inputFeild,
-      yup.string().required(`${field.title} is required`),
-    ])
-  );
+    (list ?? []).flatMap((each) =>
+      (each.field ?? []).map((field) => [
+        field.inputFeild,
+        yup.string().required(`${field.title} is required`),
+      ])
+    );
   const formik3 = useFormik({
     initialValues: {
       ...personWorkExp,
@@ -290,17 +300,14 @@ export default function Createcandidatelist({ open = "", close = () => { }, file
       try {
         const response = await saveRecruitmentResumesExperienceDetailBatch(
           workexp.map((each) => {
-            const fromDate = values[each.field[4].inputFeild][0]; // Extracting start date from range picker
-            const toDate = values[each.field[4].inputFeild][1]; // Extracting end date from range picker
-
             return {
               resumeId: resumeId,
               jobTitle: values[each.field[0].inputFeild],
               employmentType: values[each.field[1].inputFeild],
               companyName: values[each.field[2].inputFeild],
               location: values[each.field[3].inputFeild],
-              fromDate: fromDate,
-              toDate: toDate,
+              fromDate: values[each.field[4].inputFeild],
+              toDate: values[each.field[5].inputFeild],
               createdBy: localStorage.getItem('employeeId')
             };
           })
@@ -351,7 +358,7 @@ export default function Createcandidatelist({ open = "", close = () => { }, file
     }
   });
 
-  
+
   // const validationSchema = yup.object().shape({
   //   institute: yup.string().required('School or University is required'),
   //   courseType: yup.string().required('Degree is required'),
@@ -382,7 +389,7 @@ export default function Createcandidatelist({ open = "", close = () => { }, file
       ...Object.fromEntries(
         safeFlatMap(education))
     }),
-    
+
 
     onSubmit: async (values) => {
       try {
@@ -420,7 +427,7 @@ export default function Createcandidatelist({ open = "", close = () => { }, file
   });
 
 
-  const Degree = [{ id: 1, title: "Bachelors", value: "Bachelors" }, { id: 2, title: "other", value: "other" }
+  const Degree = [{ id: 1, title: "Bachelors", value: "Bachelors" },{ id: 1, title: "Masters", value: "Masters" }, { id: 3, title: "other", value: "other" }
   ];
   const scrollRef = useRef();
 
@@ -444,10 +451,11 @@ export default function Createcandidatelist({ open = "", close = () => { }, file
     enableReinitialize: true,
     validateOnChange: false,
     validationSchema: yup.object({
+      namePrefix: yup.string().required("Prefix is required"),
       firstName: yup.string().required("First Name is required"),
       candidateEmail: yup.string().required("Email is required"),
-      candidateLocation:  yup.string().required("Location is required"),
-      candidateContact : yup.string().required("Phone Number is required"),
+      candidateLocation: yup.string().required("Location is required"),
+      candidateContact: yup.string().required("Phone Number is required"),
     }),
     onSubmit: async (values) => {
       try {
@@ -535,19 +543,19 @@ export default function Createcandidatelist({ open = "", close = () => { }, file
     {
       id: 1,
       value: 0,
-      title: t("Personal_Details"),
+      title: t("Personal Details"),
       data: "Personel",
     },
     {
       id: 2,
       value: 1,
-      title: t("Educational_Details"),
+      title: t("Educational Details"),
       data: "Educational",
     },
     {
       id: 3,
       value: 2,
-      title: t("Work_Experience"),
+      title: t("Work Experience"),
       data: "Work",
     },
     // {
@@ -588,9 +596,8 @@ export default function Createcandidatelist({ open = "", close = () => { }, file
     }
   }, [nextStep]);
 
-  const genderoption = [{ id: 1, title: "Mr", value: "Mr" }, { id: 2, title: "Mrs", value: "Mrs" }
-  ];
-  const Jobtype = [{ id: 1, title: "Full Time", value: "fulltime" }, { id: 2, title: "Part Time", value: "parttime" }]
+  const genderoption = [{ id: 1, title: "Mr", value: "Mr" }, { id: 2, title: "Mrs", value: "Mrs" }];
+  const Jobtype = [{ id: 1, title: "Full Time", value: "Full Time" }, { id: 2, title: "Part Time", value: "Part Time" }]
 
   console.log(resumeId, "resumeid");
 
@@ -606,7 +613,7 @@ export default function Createcandidatelist({ open = "", close = () => { }, file
         { id: 3, Image: Frame2, title: "DOB", text: response.result[0].dob || "Not Available" },
         { id: 4, Image: Frame4, title: "Location", text: `${response.result[0].addressLine}, ${response.result[0].cityOrTown}, ${response.result[0].postalCode}` }
       ];
-      console.log(personelDetails)
+      console.log(personelDetails, "personelDetails")
       setcandidate(personelDetails);
       setImage(response.result[0].candidatePhoto)
       setcandidateName(response.result[0].candidateName)
@@ -622,7 +629,7 @@ export default function Createcandidatelist({ open = "", close = () => { }, file
   useEffect(() => {
 
     getCandidatesById()
-  }, [resumeId,PdFViewer]);
+  }, [resumeId, PdFViewer]);
 
   const getEducationDetails = async () => {
     try {
@@ -694,9 +701,11 @@ export default function Createcandidatelist({ open = "", close = () => { }, file
           }}
           header={[
             !isUpdate
-              ? t("Head_Of_Director")
-              : t("Update_Employee_Onboarding"),
-            t("at Dubai, United Arab Emirates"),
+              ? t("Add Candidate")
+              : t("Update Candidate"),
+            !isUpdate
+              ? t("Add New Candidate")
+              : t("Update Selected Candidate"),
           ]}
           headerRight={
             <div className="flex md:gap-10 items-center">
@@ -705,7 +714,7 @@ export default function Createcandidatelist({ open = "", close = () => { }, file
               </p>
               <div className="flex items-center gap-2.5">
                 <p className="xl:text-sm text-xs font-medium text-gray-400">
-                {t("help")}
+                  {t("help")}
                 </p>
                 <RxQuestionMarkCircled className=" xl:text-2xl text-sm font-medium text-gray-400" />
               </div>
@@ -823,13 +832,14 @@ export default function Createcandidatelist({ open = "", close = () => { }, file
                       change={(e) => {
                         Formik2.setFieldValue("namePrefix", e);
                       }}
-
-                      value={Formik2.values.namePrefix} />
-
+                      required={true}
+                      value={Formik2.values.namePrefix}
+                      error={Formik2.values.namePrefix ? "" : Formik2.errors.namePrefix}
+                    />
                     <div className="grid grid-cols-2 gap-4 w-4/5">
                       <FormInput
                         title={t("First_Name")}
-                        placeholder={t("First_Name")}
+                        placeholder={t("Enter First Name")}
                         change={(e) => {
                           Formik2.setFieldValue("firstName", e);
                         }}
@@ -843,17 +853,17 @@ export default function Createcandidatelist({ open = "", close = () => { }, file
 
                       <FormInput
                         title={t("Last_Name")}
-                        placeholder={t("Last_Name")}
+                        placeholder={t("Enter Last Name")}
                         change={(e) => {
                           Formik2.setFieldValue("lastName", e);
                         }}
 
                         value={Formik2.values.lastName}
-                        
+
                       />
                       <FormInput
                         title={t("Email")}
-                        placeholder={t("Email")}
+                        placeholder={t("Enter Email")}
                         change={(e) => {
                           Formik2.setFieldValue("candidateEmail", e);
                         }}
@@ -867,7 +877,8 @@ export default function Createcandidatelist({ open = "", close = () => { }, file
                       />
                       <FormInput
                         title={t("Phone_number")}
-                        placeholder={t("Phone_number")}
+                        type={"number"}
+                        placeholder={t("Enter Phone number")}
                         change={(e) => {
                           Formik2.setFieldValue("candidateContact", e);
                         }}
@@ -880,21 +891,20 @@ export default function Createcandidatelist({ open = "", close = () => { }, file
 
                     <div className='w-4/5'>
                       <p>Photo (Optional)</p>
-                      <FileUpload change={(e) => {
-                        if (e) {
-
-                          setFile(e)
-
-                        }
-                        console.log(e)
-                      }} />
+                      <ImageUpload
+                        change={(e) => {
+                          if (e) {
+                            setFile(e)
+                          }
+                          console.log(e)
+                        }} />
                     </div>
 
 
                     <div className="grid grid-cols-2 gap-4 w-4/5">
                       <FormInput
                         title={t("Location")}
-                        placeholder={t("Location")}
+                        placeholder={t("Enter Location")}
                         change={(e) => {
                           Formik2.setFieldValue("candidateLocation", e);
                         }}
@@ -905,7 +915,7 @@ export default function Createcandidatelist({ open = "", close = () => { }, file
 
                       <FormInput
                         title={t("City_Or_Town")}
-                        placeholder={t("City_Or_Town")}
+                        placeholder={t("Enter City Or Town")}
                         change={(e) => {
                           Formik2.setFieldValue("cityOrTown", e);
                         }}
@@ -913,7 +923,7 @@ export default function Createcandidatelist({ open = "", close = () => { }, file
                       />
                       <FormInput
                         title={t("Address_Line")}
-                        placeholder={t("Address_Line")}
+                        placeholder={t("Enter Address Line")}
                         change={(e) => {
                           Formik2.setFieldValue("addressLine", e);
                         }}
@@ -921,7 +931,7 @@ export default function Createcandidatelist({ open = "", close = () => { }, file
                       />
                       <FormInput
                         title={t("Postal_Code")}
-                        placeholder={t("Postal_Code")}
+                        placeholder={t("Enter Postal Code")}
                         change={(e) => {
                           Formik2.setFieldValue("postalCode", e);
                         }}
@@ -951,40 +961,50 @@ export default function Createcandidatelist({ open = "", close = () => { }, file
                       <div className='flex items-end'>
                         <div className="grid grid-cols-2 gap-4 w-4/5">
                           {condition.field.map((each) =>
-                            each.type === "input" ? <FormInput
-                              key={each.id}
-                              title={each.title}
-                              placeholder={t("School or University")}
-                              change={(e) => {
-                                formik.setFieldValue(each.inputName, e);
-                              }}
-                              required={true}                            
-                              value={formik.values[each.inputName]}
-                              error={ formik.errors[each.inputName] }
-                              // error={formik.values[each.field[0].inputName] ? "" : formik.errors.institute}
-                              // required={true}
-
-                            />
-                              :
-                              <Dropdown
+                            each.type === "input" ?
+                              <FormInput
+                                key={each.id}
                                 title={each.title}
-                                placeholder="Degree"
-                                options={Degree}
-                                required={true}
+                                placeholder={`Enter ${each.title}`}
                                 change={(e) => {
                                   formik.setFieldValue(each.inputName, e);
                                 }}
+                                required={true}
                                 value={formik.values[each.inputName]}
-                                error={formik.values[each.inputName] ? "" :  formik.errors[each.inputName]}
-                              />)}
+                                error={formik.errors[each.inputName]}
+                              // error={formik.values[each.field[0].inputName] ? "" : formik.errors.institute}
+                              // required={true}
 
-
-
+                              /> : each.type === "number" ?
+                                <FormInput
+                                  key={each.id}
+                                  title={each.title}
+                                  type={"number"}
+                                  placeholder={`Enter ${each.title}`}
+                                  change={(e) => {
+                                    formik.setFieldValue(each.inputName, e);
+                                  }}
+                                  required={true}
+                                  value={formik.values[each.inputName]}
+                                  error={formik.errors[each.inputName]}
+                                /> : <Dropdown
+                                  title={each.title}
+                                  placeholder={t("Choose" + each.title)}
+                                  options={Degree}
+                                  required={true}
+                                  change={(e) => {
+                                    formik.setFieldValue(each.inputName, e);
+                                  }}
+                                  value={formik.values[each.inputName]}
+                                  error={formik.values[each.inputName] ? "" : formik.errors[each.inputName]}
+                                />)}
                         </div>
                         <div className='ml-auto '>
-                          {index !== 0 && (
-                            <RiDeleteBin6Line className='h-6 w-6' onClick={() => handleDeleteCondition(index)} />
-                          )}
+                          <Tooltip placement="top" title={"Delete"}>
+                            {index !== 0 && (
+                              <RiDeleteBin6Line className='size-4 text-slate-500 hover:text-red-500' onClick={() => handleDeleteCondition(index)} />
+                            )}
+                          </Tooltip>
                         </div>
                       </div>
                     ))}
@@ -1029,24 +1049,25 @@ export default function Createcandidatelist({ open = "", close = () => { }, file
                               required={true}
                               value={formik3.values[each.inputFeild]}
                               error={formik3.errors[each.inputFeild]}
-                            
+
 
                             /> : each.type === "dropdown" ?
 
                               <Dropdown
                                 title={each.title}
                                 options={Jobtype}
-                                placeholder={t("Enter " + each.title)}
+                                placeholder={t("Choose " + each.title)}
                                 change={(e) => {
                                   formik3.setFieldValue(each.inputFeild, e);
                                 }}
-                                required={true}                            
+                                required={true}
                                 value={formik3.values[each.inputFeild]}
                                 error={formik3.errors[each.inputFeild]}
 
 
                               /> :
-                              <RangeDatePicker dateFormat="YYYY-MM-DD" title={each.title}
+                              <DateSelect
+                                title={each.title}
                                 change={(e) => {
                                   formik3.setFieldValue(each.inputFeild, e);
                                 }}
@@ -1320,7 +1341,17 @@ export default function Createcandidatelist({ open = "", close = () => { }, file
                             <CVResume
                               showTextEditor={false}
                               pdfUrl={PdFViewer}
+                            />
+                          </div>
 
+                          <div>
+                            <TextArea
+                              title={'Cover Letter'}
+                              // placeholder={"Enter Cover Letter"}
+                              // change={(e) => {
+                              //   Formik2.setFieldValue("coverLetter", e);
+                              // }}
+                              value={Formik2.values.coverLetter}
                             />
                           </div>
 

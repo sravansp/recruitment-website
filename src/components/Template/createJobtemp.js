@@ -27,7 +27,7 @@ import TextArea from "../common/TextArea";
 import Radiobuttonnew from "../common/Radiobuttonnew";
 import GoogleForm from "../common/GoogleForm";
 import JobCard from "../common/JobCard";
-import DOMPurify from 'dompurify';
+// import DOMPurify from 'dompurify';
 import {
   cardData,
   regularOvertime,
@@ -81,6 +81,11 @@ import Jobcardcopy from "../common/Jobcardcopy";
 import { RiDeleteBinLine } from "react-icons/ri";
 import { FaAsterisk } from "react-icons/fa";
 import TextEditorcopy from "../common/TextEditor/textEditorCopy";
+import { EditorState, ContentState, convertFromHTML } from 'draft-js';
+// import Editor from "../common/TextEditor/textEditorCopy";
+// import Editor1 from "../common/TextEditor/textEditorCopy";
+// import { convertToHTML } from 'draft-convert';
+// import Editor from "../common/TextEditor/textEditorCopy";
 
 const CreatejobTemp = ({
   open = "",
@@ -148,7 +153,7 @@ const CreatejobTemp = ({
 
   const getAllJobdescription = async () => {
     try {
-      const data = await getAllRecruitmentJobDescriptionTemplates()
+      const data = await getAllRecruitmentJobDescriptionTemplates({})
       console.log(data)
       // 
       setJobDescriptionList(data.result.map((each) => ({
@@ -242,7 +247,12 @@ const CreatejobTemp = ({
     }
   };
   const handleEditorChange = (content) => {
-    setContent(content);
+        //             const contentState = content.getCurrentContent();
+        //             const htmlContent = convertToHTML(contentState);
+                    
+        //  console.log(content)           
+                  // setContent(htmlContent);
+    setContent(content)
   };
   const [evaluation, setEvaluation] = useState([
     {
@@ -467,10 +477,15 @@ const CreatejobTemp = ({
         formik.setFieldValue("jobTitle", firstJob.jobTitle);
         formik.setFieldValue("departmentId", firstJob.departmentId);
         formik.setFieldValue("education", firstJob.education);
+        formik.setFieldValue("workLocationType", firstJob.workLocationType);
         formik.setFieldValue("isActive", firstJob.isActive);
         formik.setFieldValue("isSalaryPublic", firstJob.isSalaryPublic);
         formik.setFieldValue("jobCode", firstJob.jobCode);
         setContent(firstJob.jobDescription)
+          // const blocksFromHTML = convertFromHTML(firstJob.jobDescription);
+          // const contentState = ContentState.createFromBlockArray(blocksFromHTML.contentBlocks, blocksFromHTML.entityMap);
+          // const newEditorState = EditorState.createWithContent(contentState);
+          // setContent(newEditorState);
         formik.setFieldValue("jobType", firstJob.jobType);
         formik.setFieldValue("location", firstJob.location);
         formik.setFieldValue("requirementType", firstJob.requirementType);
@@ -511,7 +526,7 @@ const CreatejobTemp = ({
   useEffect(() => {
     getJobtemById();
     console.log(jobdata);
-  }, [updateId]);
+  }, []);
   const [departmentList, setDepartmentList] = useState([]);
   const [company, setCompany] = useState([]);
   const getDepartmentList = async () => {
@@ -775,7 +790,7 @@ const CreatejobTemp = ({
 
   const fetchData = async () => {
     try {
-      const response = await getAllRecruitmentWorkFlows();
+      const response = await getAllRecruitmentWorkFlows({});
       console.log("Response:", response);
 
       const stagesByWorkflowId = response.result.map((item) => ({
@@ -1161,62 +1176,46 @@ const CreatejobTemp = ({
                       // } }
                       initialExpanded={true}
                     >
-                      <div className="md:grid grid-cols-12 flex flex-col gap-6 dark:text-white">
-                        {regularOvertime?.map((each, i) => (
-                          <div
-                            key={i}
-                            className={`col-span-4 p-1.5 border rounded-2xl  cursor-pointer showDelay dark:bg-dark  ${customRate === each.id && "border-primary "
-                              } `}
-                            onClick={() => {
-                              setCustomRate(each.id);
-                              formik.setFieldValue("workLocationType", each.value);
-                              setPresentage(.4)
-                            }}
+                    <div className="md:grid grid-cols-12 flex flex-col gap-6 dark:text-white">
+  {regularOvertime?.map((each, i) => (
+    <div
+      key={i}
+      className={`col-span-4 p-1.5 border rounded-2xl  cursor-pointer showDelay dark:bg-dark  ${(!formik.values.workLocationType && each.value === "Onsite") || (formik.values.workLocationType === each.value) ? "border-primary" : ""}`}
+      onClick={() => {
+        setCustomRate(each.id);
+        formik.setFieldValue("workLocationType", each.value);
+        setPresentage(.4);
+      }}
+    >
+      <div className="flex justify-between items-start">
+        <div className="flex gap-2">
+          <img
+            className={`${(!formik.values.workLocationType && each.value === "Onsite") || (formik.values.workLocationType === each.value) ? "text-primary" : ""} p-2 border rounded-md w-[66px] bg-[#F8FAFC]`}
+            src={each.image}
+            alt=""
+          >
+          </img>
+          <div>
+            <h3 className=" text-sm font-semibold mt-[10px]">
+              {each.title}
+            </h3>
+            <p className=" text-xs font-medium text-[#667085] ">
+              {each.description}
+            </p>
+          </div>
+        </div>
+        <div
+          className={`${(!formik.values.workLocationType && each.value === "Onsite") || (formik.values.workLocationType === each.value) ? "border-primary" : ""} border  rounded-full`}
+        >
+          <div
+            className={`font-semibold text-base w-4 h-4 border-2 border-white   rounded-full ${(!formik.values.workLocationType && each.value === "Onsite") || (formik.values.workLocationType === each.value) ? "text-primary bg-primary" : ""}`}
+          ></div>
+        </div>
+      </div>
+    </div>
+  ))}
+</div>
 
-                          >
-                            <div className="flex justify-between items-start">
-                              <div className=" flex  gap-2">
-                                {/* <GiReceiveMoney
-                                className={`${
-                                  customRate === each.id && "text-primary"
-                                } `}
-                              /> */}
-                                <img
-                                  className={`${customRate === each.id &&
-                                    " text-primary  "
-                                    } p-2 border rounded-md w-[66px] bg-[#F8FAFC]`}
-                                  src={each.image}
-                                  alt=""
-                                >
-                                </img>
-                                {/* <img
-                                  src={customRate === each.id ? cash : cashGray}
-                                  alt=""
-                                  className=" w-6 h-6"
-                                /> */}
-                                <div>
-                                  <h3 className=" text-sm font-semibold mt-[10px]">
-                                    {each.title}
-                                  </h3>
-                                  <p className=" text-xs font-medium text-[#667085] ">
-                                    {each.description}
-                                  </p>
-                                </div>
-                              </div>
-                              <div
-                                className={`${customRate === each.id && "border-primary"
-                                  } border  rounded-full`}
-                              >
-                                <div
-                                  className={`font-semibold text-base w-4 h-4 border-2 border-white   rounded-full ${customRate === each.id &&
-                                    "text-primary bg-primary"
-                                    } `}
-                                ></div>
-                              </div>
-                            </div>
-                          </div>
-                        ))}
-                      </div>
                       <div className="grid grid-cols-2 gap-4">
                         <FormInput
                           title={"Location"}
@@ -1444,8 +1443,8 @@ const CreatejobTemp = ({
                               </p>
                               {/* <p className="text-primary"><IoClose /></p> */}
                             </div>
-                            <p className="text-gray-400">When you generate with Al, we look for similar jobs you've created in the past and use he data to create content that's
-                              impactful, accurate, and personalized to your company
+                            <p className="text-gray-400">When you generate with Al, we look for similar jobs you've created in the past and use the data to create content that's
+                              impactful, accurate and personalized to your company.
                             </p>
                           </div>
                         </div>
@@ -1491,10 +1490,14 @@ const CreatejobTemp = ({
                           loader={loader}
                         /> */}
                         <TextEditorcopy
-                          onChange={handleEditorChange}
+                          Change={(e)=>{
+                            handleEditorChange(e)
+                            console.log(e)
+                          }}
                           initialValue={content}
                           error={formik.errors.jobDescription}
                         />
+                        {/* <Editor1/> */}
 
                       </div>
                       {/* <TextArea

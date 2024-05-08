@@ -50,7 +50,7 @@ const QA = [
     answer: "Remote",
   },
 ];
-const CVResume = ({ showTextEditor,pdfUrl}) => {
+const CVResume = ({ showTextEditor, pdfUrl }) => {
   const [content, setContent] = useState("");
   const primaryColor = localStorage.getItem("mainColor");
   const { resumeId } = useParams()
@@ -59,13 +59,14 @@ const CVResume = ({ showTextEditor,pdfUrl}) => {
   const [selectedNoteId, setSelectedNoteId] = useState(null);
   const [isPinned, setIsPinned] = useState(0);
   const [PdFViewer, setPdFViewer] = useState("");
-    useEffect(() => {
+  useEffect(() => {
     if (pdfUrl) {
       setPdFViewer(pdfUrl);
     }
   }, [pdfUrl]);
 
-  
+  console.log(PdFViewer, "PdFViewer data")
+
   const handleEditClick = (jobResumeNoteId) => {
     setSelectedNoteId(jobResumeNoteId);
     getnotesbyId(jobResumeNoteId)
@@ -187,27 +188,36 @@ const CVResume = ({ showTextEditor,pdfUrl}) => {
             <h6 className="h6 !text-black dark:!text-white">CV / Resume</h6>
             {/* <ButtonClick buttonName="Add Cover Note" icon={<IoMdAdd />} /> */}
           </div>
-          <div className="flex items-center justify-between">
-            <div className="flex items-center gap-2.5">
-              <div className="w-8 h-8 iconI vhcenter bg-[#F5F5F5] dark:bg-secondaryDark text-base rounded-lg ">
-                <div className="text-black opacity-50 ">
-                  {<RiFileList3Line />}
+          {PdFViewer &&
+            <div className="flex items-center justify-between">
+              <div className="flex items-center gap-2.5">
+                <div className="w-8 h-8 iconI vhcenter bg-[#F5F5F5] dark:bg-secondaryDark text-base rounded-lg ">
+                  <div className="text-black opacity-50 ">
+                    {<RiFileList3Line />}
+                  </div>
                 </div>
+                <p className="text-xs font-semibold leading-tight text-black dark:text-white">
+                  Pdfname.pdf
+                </p>
               </div>
-              <p className="text-xs font-semibold leading-tight text-black dark:text-white">
-                Pdfname.pdf
-              </p>
+              {/* <ButtonClick
+                buttonName="Download"
+                BtnType="primary"
+                icon={<RiArrowDownLine />}
+              /> */}
             </div>
-            <ButtonClick
-              buttonName="Download"
-              BtnType="primary"
-              icon={<RiArrowDownLine />}
-            />
-          </div>
-          <div className="divider-h" />
-          <PDFViewer pdfUrl={PdFViewer} />
+          }
+          {PdFViewer &&
+            <div className="divider-h" />
+          }
+          {PdFViewer &&
+            <PDFViewer pdfUrl={PdFViewer} />
+          }
+          {!PdFViewer &&
+            <div className="flex items-center pt-5">No Resume found</div>
+          }
         </div>
-{/* 
+        {/* 
         <div className="flex flex-col gap-5 divide-y box-wrapper">
           <div className="flex items-center justify-between">
             <h6 className="h6">Question</h6>
@@ -240,15 +250,15 @@ const CVResume = ({ showTextEditor,pdfUrl}) => {
 
       {/* RIGHT COLUMN  */}
       <div className="lg:col-span-4">
-      {showTextEditor ? (
-        <><div className="rounded-lg bg-white dark:bg-secondaryDark p-1.5 ">
-            <TabsNew tabs={tabData} onTabChange={onTabChange} initialTab={1} />
+        {showTextEditor ? (
+          <><div className="rounded-lg bg-white dark:bg-secondaryDark p-1.5 ">
+            <TabsNew tabs={tabData} onTabChange={onTabChange} initialTab={9} />
 
             <TextEditor
               initialValue={formik.values.notes}
               onChange={(e) => {
                 formik.setFieldValue('notes', e);
-              } }
+              }}
               minheight="250px" />
 
             <div
@@ -279,7 +289,7 @@ const CVResume = ({ showTextEditor,pdfUrl}) => {
                 </div>
               ))}
             </div></>
-) : null}
+        ) : null}
       </div>
     </div>
   );
