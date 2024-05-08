@@ -330,11 +330,11 @@ export default function Createcandidatelist({ open = "", close = () => { }, file
           }
           setNextStep(nextStep + 1);
           setPresentage(3);
-          openNotification("success", "Successful", response.message);
+          openNotification("success", "Successful", response.message.replace(/<br\/>/g, '\n'));
 
         } else {
           console.log("file upload failed")
-          openNotification("error", "Failed..", response.message);
+          openNotification("error", "Failed..", response.message.replace(/<br\/>/g, '\n'));
         }
 
         // File upload
@@ -350,7 +350,7 @@ export default function Createcandidatelist({ open = "", close = () => { }, file
         // console.log(result);
         // console.log(result.errors);
       } catch (error) {
-        openNotification("error", "Failed..", error.message);
+        openNotification("error", "Failed..", error.message.replace(/<br\/>/g, '\n'));
       }
       // finally {
       //   setSubmitting(false);
@@ -413,14 +413,14 @@ export default function Createcandidatelist({ open = "", close = () => { }, file
           openNotification("success", "Successful", "Educational Details has been saved");
 
         } else if (result.status === 500) {
-          openNotification("error", "Failed..", result.message);
+          openNotification("error", "Failed..", result.message.replace(/<br\/>/g, '\n'));
         }
         console.log(result);
         console.log(result.errors);
 
       }
       catch (error) {
-        openNotification("error", "Failed..", error.message);
+        openNotification("error", "Failed..", error.message.replace(/<br\/>/g, '\n'));
         console.log(error);
       }
     }
@@ -483,7 +483,7 @@ export default function Createcandidatelist({ open = "", close = () => { }, file
           setPresentage(1);
           setResumeId(result.result.insertedId);
         } else if (result.status === 500) {
-          openNotification("error", "Failed..", result.message);
+          openNotification("error", "Failed..", result.message.replace(/<br\/>/g, '\n'));
         }
         console.log(result);
         console.log(result.errors);
@@ -507,7 +507,7 @@ export default function Createcandidatelist({ open = "", close = () => { }, file
         //   }
         // }
       } catch (error) {
-        openNotification("error", "Failed..", error.message);
+        openNotification("error", "Failed..", error.message.replace(/<br\/>/g, '\n'));
         console.log(error);
       }
     }
@@ -528,10 +528,10 @@ export default function Createcandidatelist({ open = "", close = () => { }, file
 
             openNotification("success", "Successful", "Personal Details has been saved");
           } else {
-            openNotification("error", "Failed..", response.message);
+            openNotification("error", "Failed..", response.message.replace(/<br\/>/g, '\n'));
           }
         } catch (error) {
-          openNotification("error", "Failed..", error.message);
+          openNotification("error", "Failed..", error.message.replace(/<br\/>/g, '\n'));
           console.log(error);
         }
       }
