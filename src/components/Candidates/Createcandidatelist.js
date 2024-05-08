@@ -329,7 +329,7 @@ export default function Createcandidatelist({ open = "", close = () => { }, file
             console.log(FileUpload, "fileUploadResult")
           }
           setNextStep(nextStep + 1);
-          setPresentage(1);
+          setPresentage(3);
           openNotification("success", "Success...", response.message);
 
         } else {
@@ -409,7 +409,7 @@ export default function Createcandidatelist({ open = "", close = () => { }, file
         );
         if (result.status === 200) {
           setNextStep(nextStep + 1);
-          setPresentage(1);
+          setPresentage(2);
           openNotification("success", "Successful", result.message);
 
         } else if (result.status === 500) {
@@ -482,7 +482,6 @@ export default function Createcandidatelist({ open = "", close = () => { }, file
           setNextStep(nextStep + 1);
           setPresentage(1);
           setResumeId(result.result.insertedId);
-          openNotification("success", "Successful", result.message);
         } else if (result.status === 500) {
           openNotification("error", "Failed..", result.message);
         }
