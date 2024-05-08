@@ -330,7 +330,7 @@ export default function Createcandidatelist({ open = "", close = () => { }, file
           }
           setNextStep(nextStep + 1);
           setPresentage(3);
-          openNotification("success", "Success...", response.message);
+          openNotification("success", "Successful", response.message);
 
         } else {
           console.log("file upload failed")
@@ -410,7 +410,7 @@ export default function Createcandidatelist({ open = "", close = () => { }, file
         if (result.status === 200) {
           setNextStep(nextStep + 1);
           setPresentage(2);
-          openNotification("success", "Successful", result.message);
+          openNotification("success", "Successful", "Educational Details has been saved");
 
         } else if (result.status === 500) {
           openNotification("error", "Failed..", result.message);
@@ -526,7 +526,7 @@ export default function Createcandidatelist({ open = "", close = () => { }, file
           console.log(response, "fileUploadResult");
           if (response.status === 200) {
 
-            openNotification("success", "Success...", response.message);
+            openNotification("success", "Successful", "Personal Details has been saved");
           } else {
             openNotification("error", "Failed..", response.message);
           }
