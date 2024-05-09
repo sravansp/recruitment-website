@@ -6,6 +6,7 @@ import { BeatLoader } from 'react-spinners';
 import  draftToHtml  from 'draftjs-to-html'; // Update import statement
 import 'react-draft-wysiwyg/dist/react-draft-wysiwyg.css';
 
+
 const TextEditorcopy = ({
     title = "",
     required = false,
@@ -18,19 +19,27 @@ const TextEditorcopy = ({
     loader = false,
     error = "",
 }) => {
-    const [editorState, setEditorState] = useState(
-        () => EditorState.createEmpty(),
-      );
+    // const [editorState, setEditorState] = useState(
+    //     () => EditorState.createEmpty(),
+    //   );
 
-  
+    //   useEffect(() => {
+    //     if (initialValue) {
+    //         const blocksFromHTML = convertFromHTML(initialValue);
+    //         const contentState = ContentState.createFromBlockArray(blocksFromHTML.contentBlocks, blocksFromHTML.entityMap);
+    //         setEditorState(EditorState.createWithContent(contentState));
+    //     }
+    // }, []);
     
     const handleEditorChange =(editorState) => {
-        setEditorState(editorState);
+       
         const htmlContent = draftToHtml(convertToRaw(editorState.getCurrentContent()));
         Change(htmlContent); // Pass HTML content to the parent component
       };
     
-
+    // useEffect(()=>{
+    //     handleEditorChange()
+    // },[initialValue])
 
     return (
         <div
@@ -56,7 +65,7 @@ const TextEditorcopy = ({
                 <BeatLoader color="#6A4BFC" />
             ) : (
                 <Editor
-                    editorState={editorState}
+                    editorState={initialValue}
                     onEditorStateChange={handleEditorChange}
                     placeholder={placeholder}
                     wrapperStyle={{ height: height }}

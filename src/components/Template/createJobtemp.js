@@ -252,7 +252,10 @@ const CreatejobTemp = ({
                     
         //  console.log(content)           
                   // setContent(htmlContent);
-    setContent(content)
+                  const blocksFromHTML = convertFromHTML(content);
+                  const contentState = ContentState.createFromBlockArray(blocksFromHTML.contentBlocks, blocksFromHTML.entityMap);
+                         
+                  setContent(EditorState.createWithContent(contentState))
   };
   const [evaluation, setEvaluation] = useState([
     {
@@ -481,11 +484,11 @@ const CreatejobTemp = ({
         formik.setFieldValue("isActive", firstJob.isActive);
         formik.setFieldValue("isSalaryPublic", firstJob.isSalaryPublic);
         formik.setFieldValue("jobCode", firstJob.jobCode);
-        setContent(firstJob.jobDescription)
-          // const blocksFromHTML = convertFromHTML(firstJob.jobDescription);
-          // const contentState = ContentState.createFromBlockArray(blocksFromHTML.contentBlocks, blocksFromHTML.entityMap);
-          // const newEditorState = EditorState.createWithContent(contentState);
-          // setContent(newEditorState);
+        // setContent(firstJob.jobDescription)
+          const blocksFromHTML = convertFromHTML(firstJob.jobDescription);
+          const contentState = ContentState.createFromBlockArray(blocksFromHTML.contentBlocks, blocksFromHTML.entityMap);
+          const newEditorState = EditorState.createWithContent(contentState);
+          setContent(newEditorState);
         formik.setFieldValue("jobType", firstJob.jobType);
         formik.setFieldValue("location", firstJob.location);
         formik.setFieldValue("requirementType", firstJob.requirementType);
