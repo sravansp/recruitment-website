@@ -329,12 +329,12 @@ export default function Createcandidatelist({ open = "", close = () => { }, file
             console.log(FileUpload, "fileUploadResult")
           }
           setNextStep(nextStep + 1);
-          setPresentage(1);
-          openNotification("success", "Success...", response.message);
+          setPresentage(3);
+          openNotification("success", "Successful", response.message.replace(/<br\/>/g, '\n'));
 
         } else {
           console.log("file upload failed")
-          openNotification("error", "Failed..", response.message);
+          openNotification("error", "Failed..", response.message.replace(/<br\/>/g, '\n'));
         }
 
         // File upload
@@ -350,7 +350,7 @@ export default function Createcandidatelist({ open = "", close = () => { }, file
         // console.log(result);
         // console.log(result.errors);
       } catch (error) {
-        openNotification("error", "Failed..", error.message);
+        openNotification("error", "Failed..", error.message.replace(/<br\/>/g, '\n'));
       }
       // finally {
       //   setSubmitting(false);
@@ -409,25 +409,25 @@ export default function Createcandidatelist({ open = "", close = () => { }, file
         );
         if (result.status === 200) {
           setNextStep(nextStep + 1);
-          setPresentage(1);
-          openNotification("success", "Success...", result.message);
+          setPresentage(2);
+          openNotification("success", "Successful", "Educational Details has been saved");
 
         } else if (result.status === 500) {
-          openNotification("error", "Failed..", result.message);
+          openNotification("error", "Failed..", result.message.replace(/<br\/>/g, '\n'));
         }
         console.log(result);
         console.log(result.errors);
 
       }
       catch (error) {
-        openNotification("error", "Failed..", error.message);
+        openNotification("error", "Failed..", error.message.replace(/<br\/>/g, '\n'));
         console.log(error);
       }
     }
   });
 
 
-  const Degree = [{ id: 1, title: "Bachelors", value: "Bachelors" },{ id: 1, title: "Masters", value: "Masters" }, { id: 3, title: "other", value: "other" }
+  const Degree = [{ id: 1, title: "Bachelors", value: "Bachelors" }, { id: 1, title: "Masters", value: "Masters" }, { id: 3, title: "other", value: "other" }
   ];
   const scrollRef = useRef();
 
@@ -483,7 +483,7 @@ export default function Createcandidatelist({ open = "", close = () => { }, file
           setPresentage(1);
           setResumeId(result.result.insertedId);
         } else if (result.status === 500) {
-          openNotification("error", "Failed..", result.message);
+          openNotification("error", "Failed..", result.message.replace(/<br\/>/g, '\n'));
         }
         console.log(result);
         console.log(result.errors);
@@ -507,7 +507,7 @@ export default function Createcandidatelist({ open = "", close = () => { }, file
         //   }
         // }
       } catch (error) {
-        openNotification("error", "Failed..", error.message);
+        openNotification("error", "Failed..", error.message.replace(/<br\/>/g, '\n'));
         console.log(error);
       }
     }
@@ -526,12 +526,12 @@ export default function Createcandidatelist({ open = "", close = () => { }, file
           console.log(response, "fileUploadResult");
           if (response.status === 200) {
 
-            openNotification("success", "Success...", response.message);
+            openNotification("success", "Successful", "Personal Details has been saved");
           } else {
-            openNotification("error", "Failed..", response.message);
+            openNotification("error", "Failed..", response.message.replace(/<br\/>/g, '\n'));
           }
         } catch (error) {
-          openNotification("error", "Failed..", error.message);
+          openNotification("error", "Failed..", error.message.replace(/<br\/>/g, '\n'));
           console.log(error);
         }
       }
@@ -814,7 +814,7 @@ export default function Createcandidatelist({ open = "", close = () => { }, file
               <>
                 <FlexCol justify="center" align="center" className="w-5/6 m-auto mt-10">
                   <Accordion
-                    title={t("Personal_Information")}
+                    title={t("Personal_Details")}
                     className="Text_area"
                     padding={true}
                     toggleBtn={false}
@@ -931,6 +931,7 @@ export default function Createcandidatelist({ open = "", close = () => { }, file
                       />
                       <FormInput
                         title={t("Postal_Code")}
+                        type={"number"}
                         placeholder={t("Enter Postal Code")}
                         change={(e) => {
                           Formik2.setFieldValue("postalCode", e);

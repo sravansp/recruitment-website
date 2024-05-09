@@ -223,7 +223,7 @@ const Evaluations = ({EvaluationID,stageId}) => {
     const response = await getRecruitmentJobById({ id: jobId })
     setEvaluationId(response.result[0].evaluationTemplateId)
     
-    console.log(response)
+    console.log(response.result[0].evaluationTemplateId)
 
   }
 
@@ -313,7 +313,7 @@ const Evaluations = ({EvaluationID,stageId}) => {
   const getevaluation = async () => {
     try {
 
-      const response = await getRecruitmentEvaluationTemplateById({ id: parseInt(evalutaionId||EvaluationID) })
+      const response = await getRecruitmentEvaluationTemplateById({ id: parseInt(evalutaionId) })
       console.log(response)
       const evaluationData = response.result.flatMap(item => {
         return item.evaluationTemplateDetailData.map(detail => ({
@@ -325,6 +325,7 @@ const Evaluations = ({EvaluationID,stageId}) => {
           }))
         }));
       });
+      
       setevaluationList(evaluationData)
 
     } catch (error) {
@@ -494,7 +495,8 @@ const Evaluations = ({EvaluationID,stageId}) => {
             </div> */}
             {evaluationList.length > 0 ? (
               evaluationList.map((condition, index) => (
-                <><div key={index}>
+                <>
+                <div key={index}>
                   <h4>{condition.question}</h4>
                   {condition.answerMetaData.map((metadata, idx) => (
                     <div key={idx}>
@@ -548,13 +550,15 @@ const Evaluations = ({EvaluationID,stageId}) => {
                     </div>
                   ))}
                 </div>
-                <div
+                   <div
                     className="flex items-center justify-end gap-2.5 p-1.5 mt-[18.88px] rounded-lg"
                   >
                     <ButtonClick handleSubmit={handleSubmit} buttonName="save" BtnType="primary" />
                   </div>
                 </>
+
               ))
+              
             ) : (
               <div className="h-full gap-4 vhcenter box-wrapper borderb">
                 <div className="flex flex-col items-center gap-4">
