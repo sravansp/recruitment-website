@@ -1760,7 +1760,7 @@ function Web({ closeDrawer, selectedJobId, onClick }) {
                         <div className="grid grid-cols-2 gap-4 sm:grid-cols-6">
                           <Dropdown
                             title={"Prefix"}
-                            placeholder="Enter Prefix"
+                            placeholder="Choose Prefix"
                             options={[
                               { label: "Mr", value: "mr" },
                               { label: "Miss", value: "miss" },
@@ -2260,7 +2260,7 @@ function Web({ closeDrawer, selectedJobId, onClick }) {
                             />
                             <Dropdown
                               title={"Employment Type"}
-                              placeholder="Enter Employment Type"
+                              placeholder="Choose Employment Type"
                               options={[
                                 { value: "Fulltime", label: "Full-time" },
                                 { value: "Parttime", label: "Part-time" },
