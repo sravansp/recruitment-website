@@ -57,7 +57,7 @@ import candidate from "@/public/Frame 427319140.png";
 import uploader from "@/public/image 339.png";
 import pdfFile from "@/public/sample.pdf";
 import { useRouter } from "next/router";
-import { Button, DatePicker, AntdModal, Modal, notification } from "antd";
+import { Button, DatePicker, AntdModal, Modal, notification, Tooltip } from "antd";
 import DateSelect from "@/Components/ui/DateSelect";
 import Modal2 from "@/Components/ui/Modal";
 import { IoIosArrowBack } from "react-icons/io";
@@ -1968,7 +1968,7 @@ function Web({ closeDrawer, selectedJobId, onClick }) {
                           <div className="grid grid-cols-1 gap-4 sm:grid-cols-3">
                             <FormInput
                               title={"School or University"}
-                              placeholder={"Eg: Boston University"}
+                              placeholder={"Enter School or University"}
                               className="text-[#344054]"
                               name={`additionalEducationalDetails[${index}].institute`}
                               value={detail.institute}
@@ -2007,7 +2007,7 @@ function Web({ closeDrawer, selectedJobId, onClick }) {
                             />
                             <FormInput
                               title={"Degree"}
-                              placeholder={"Eg: Bachelor’s"}
+                              placeholder={"Enter Degree"}
                               name={`additionalEducationalDetails[${index}].courseType`}
                               className="text-[#344054]"
                               value={detail.courseType}
@@ -2029,7 +2029,7 @@ function Web({ closeDrawer, selectedJobId, onClick }) {
                                   e
                                 );
                               }}
-                              required={false}
+                              required={true}
                               // error={
                               //   isFormSubmitted
                               //     ? formik1.errors.additionalEducationalDetails?.[
@@ -2048,7 +2048,7 @@ function Web({ closeDrawer, selectedJobId, onClick }) {
                           <div className="grid grid-cols-1 gap-4 sm:grid-cols-3">
                             <FormInput
                               title={"Field of Study"}
-                              placeholder={"Eg: Business"}
+                              placeholder={"Enter Field of Study"}
                               className="text-[#344054]"
                               name={`additionalEducationalDetails[${index}].courseName`}
                               value={detail.courseName}
@@ -2063,7 +2063,7 @@ function Web({ closeDrawer, selectedJobId, onClick }) {
                                   e
                                 );
                               }}
-                              required={false}
+                              required={true}
                               // error={
                               //   isFormSubmitted
                               //     ? formik1.errors.additionalEducationalDetails?.[
@@ -2079,11 +2079,11 @@ function Web({ closeDrawer, selectedJobId, onClick }) {
                               }
                             />
                             <DateSelect
-                              title={"Year"}
+                              title={"Passout year"}
                               className="text-[#344054]"
                               name={`additionalEducationalDetails[${index}].yearOfStudy`}
                               // picker={"YYYY"}
-                              placeholder="year"
+                              placeholder="Enter passout year"
                               value={detail.yearOfStudy}
                               change={(e) => {
                                 const updatedDetails = [
@@ -2096,7 +2096,7 @@ function Web({ closeDrawer, selectedJobId, onClick }) {
                                   e
                                 );
                               }}
-                              required={false}
+                              required={true}
                               // error={
                               //   isFormSubmitted
                               //     ? formik1.errors.additionalEducationalDetails?.[
@@ -2112,13 +2112,15 @@ function Web({ closeDrawer, selectedJobId, onClick }) {
                               }
                             />
                             <div className="flex items-center justify-end">
-                              <button
-                                onClick={() =>
-                                  handleDeleteEducationalDetails(index)
-                                }
-                              >
-                                <RiDeleteBin5Line className="text-gray-500 w-[17px] h-[17px]" />
-                              </button>
+                              <Tooltip placement="top" title={"Delete"}>
+                                <button
+                                  onClick={() =>
+                                    handleDeleteEducationalDetails(index)
+                                  }
+                                >
+                                  <RiDeleteBin5Line className="text-gray-500 w-[17px] h-[17px]" />
+                                </button>
+                              </Tooltip>
                             </div>
                           </div>
                           <div className="divider-h" />
