@@ -344,16 +344,14 @@ function Web({ closeDrawer, selectedJobId, onClick }) {
       placement: "top",
       // stack: 2,
       style: {
-        background: `${
-          type === "success"
+        background: `${type === "success"
             ? `linear-gradient(180deg, rgba(204, 255, 233, 0.8) 0%, rgba(235, 252, 248, 0.8) 51.08%, rgba(246, 251, 253, 0.8) 100%)`
             : "linear-gradient(180deg, rgba(255, 236, 236, 0.80) 0%, rgba(253, 246, 248, 0.80) 51.13%, rgba(251, 251, 254, 0.80) 100%)"
-        }`,
-        boxShadow: `${
-          type === "success"
+          }`,
+        boxShadow: `${type === "success"
             ? "0px 4.868px 11.358px rgba(62, 255, 93, 0.2)"
             : "0px 22px 60px rgba(134, 92, 144, 0.20)"
-        }`,
+          }`,
       },
       // duration: null,
     });
@@ -761,7 +759,7 @@ function Web({ closeDrawer, selectedJobId, onClick }) {
       //   if (!formik.values.candidateContact) isValid = false;
       // }
       if (formvalidation[0].phone == 1) {
-      
+
         const candidateContact = formik.values.candidateContact;
         const numberPattern = /^\d+$/;
         if (!numberPattern.test(candidateContact)) {
@@ -1696,13 +1694,13 @@ function Web({ closeDrawer, selectedJobId, onClick }) {
                 // direction="left"
                 // labelPlacement="vertical"
                 steps={steps}
-                // className="text-sm font-medium "
-                // style={{
-                //   fontSize: isSmallScreen ? "8px" : "10px",
-                //   fontWeight: 600,
-                // }}
-                // // className="text-[10px]"
-                // size={isSmallScreen ? "default" : "large"}
+              // className="text-sm font-medium "
+              // style={{
+              //   fontSize: isSmallScreen ? "8px" : "10px",
+              //   fontWeight: 600,
+              // }}
+              // // className="text-[10px]"
+              // size={isSmallScreen ? "default" : "large"}
               />
             </div>
           )}
@@ -1721,7 +1719,7 @@ function Web({ closeDrawer, selectedJobId, onClick }) {
                       type="button" */
                       className="flex items-center justify-between w-full px-6 py-4 font-semibold text-left rounded-md"
                       style={{ backgroundColor: `${primaryColor}10` }}
-                      /* > */
+                    /* > */
                     >
                       <div className="text-left rtl:text-right">
                         <h1 className="acco-h1">Personal Details </h1>
@@ -1800,7 +1798,7 @@ function Web({ closeDrawer, selectedJobId, onClick }) {
                           <FormInput
                             title={"Phone Number"}
                             placeholder={"Enter Phone Number"}
-                            maxLength = {"12"}
+                            maxLength={"12"}
                             // className="text-[#344054]"
                             value={formik.values.candidateContact}
                             change={(e) => {
@@ -1824,7 +1822,7 @@ function Web({ closeDrawer, selectedJobId, onClick }) {
                             required={false}
                             error={formik.errors.dob}
                           />
-                          </div>
+                        </div>
                         {/* <div className="relative max-w-[1070px] sm:w-[492px] w-full borderb rounded-md h-24 bg-[#FAFAFA] dark:bg-black"> */}
                         {/* <div className="flex min-w-0 pt-5 pl-5 gap-x-4">
                           <Image
@@ -1938,7 +1936,7 @@ function Web({ closeDrawer, selectedJobId, onClick }) {
                       <div className="text-left rtl:text-right">
                         <h1 className="acco-h1">Educational Details </h1>
                         <p className="para">
-                          Fill your educational details. 
+                          Fill your educational details.
                         </p>
                       </div>
                     </h2>
@@ -2463,7 +2461,7 @@ function Web({ closeDrawer, selectedJobId, onClick }) {
                           // }}
                           change={handleTextChange}
                           required={false}
-                          // error={formik2.errors.coverLetter}
+                        // error={formik2.errors.coverLetter}
                         />
                       </div>
                     </div>
@@ -2471,30 +2469,30 @@ function Web({ closeDrawer, selectedJobId, onClick }) {
                 </div>
               </div>
             </>
-         ) : currentStep === 3 ? (
-          <>
-            <FlexCol />
-            <div className="relative w-full mx-auto rounded-md borderb">
+          ) : currentStep === 3 ? (
+            <>
               <FlexCol />
-              <div className="relative flex flex-col gap-12">
-                <div className="p-1 bg-white rounded-[10px] dark:bg-transparent dark:border dark:border-secondaryWhite border-opacity-20 dark:border-opacity-10">
-                  <h2
-                    className="flex items-center justify-between w-full px-6 py-4 font-semibold text-left rounded-md"
-                    style={{ backgroundColor: `${primaryColor}10` }}
-                  >
-                    <div className="text-left rtl:text-right">
-                      <h1 className="acco-h1">Questions </h1>
-                      <p className="para">lorem ipsum dummy text dolar sit.</p>
-                    </div>
-                  </h2>
-                  <div
-                    id={`acco-text-item`}
-                    role="region"
-                    aria-labelledby={`acco-title-item`}
-                    className="flex flex-col justify-between w-full gap-6 p-5"
-                  >
-                    <div>
-                      {/* {questtemp.length > 0 ? (
+              <div className="relative w-full mx-auto rounded-md borderb">
+                <FlexCol />
+                <div className="relative flex flex-col gap-12">
+                  <div className="p-1 bg-white rounded-[10px] dark:bg-transparent dark:border dark:border-secondaryWhite border-opacity-20 dark:border-opacity-10">
+                    <h2
+                      className="flex items-center justify-between w-full px-6 py-4 font-semibold text-left rounded-md"
+                      style={{ backgroundColor: `${primaryColor}10` }}
+                    >
+                      <div className="text-left rtl:text-right">
+                        <h1 className="acco-h1">Questions </h1>
+                        <p className="para">lorem ipsum dummy text dolar sit.</p>
+                      </div>
+                    </h2>
+                    <div
+                      id={`acco-text-item`}
+                      role="region"
+                      aria-labelledby={`acco-title-item`}
+                      className="flex flex-col justify-between w-full gap-6 p-5"
+                    >
+                      <div>
+                        {/* {questtemp.length > 0 ? (
         questtemp.map((condition, index) => (
           <div key={index}>
             <h4>{condition.question}</h4>
@@ -2569,42 +2567,42 @@ function Web({ closeDrawer, selectedJobId, onClick }) {
           </div>
         ))
                       ) : ( */}
-                      <div className="grid grid-cols-1 gap-4 sm:grid-cols-2 ">
-                        <FormInput
-                          title={
-                            "Are you legally eligible to work in the country?"
-                          }
-                          placeholder={"Answer here.."}
-                          className="text-[#344054]"
-                          // name="customQuestion"
-                          // value={questionfield}
-                          // change={(e) => {
-                          //   formik3.setFieldValue("customQuestion", e);
-                          // }}
-                          // change={(e) => {
-                          //   setQuestionfield(e);
-                          // }}
-                          name="answer"
-                          value={formik3.values.answer}
-                          // change={formik3.handleChange}
-                          change={(e) => {
-                            formik3.setFieldValue("answer", e);
-                          }}
-                          // onBlur={formik3.handleBlur}
-                          required={false}
-                          error={formik3.errors.answer}
+                        <div className="grid grid-cols-1 gap-4 sm:grid-cols-2 ">
+                          <FormInput
+                            title={
+                              "Are you legally eligible to work in the country?"
+                            }
+                            placeholder={"Answer here.."}
+                            className="text-[#344054]"
+                            // name="customQuestion"
+                            // value={questionfield}
+                            // change={(e) => {
+                            //   formik3.setFieldValue("customQuestion", e);
+                            // }}
+                            // change={(e) => {
+                            //   setQuestionfield(e);
+                            // }}
+                            name="answer"
+                            value={formik3.values.answer}
+                            // change={formik3.handleChange}
+                            change={(e) => {
+                              formik3.setFieldValue("answer", e);
+                            }}
+                            // onBlur={formik3.handleBlur}
+                            required={false}
+                            error={formik3.errors.answer}
                           // required={false}
                           // error={formik3.errors.customQuestion}
-                        />
-                        {/* Additional FormInput components can be added here */}
+                          />
+                          {/* Additional FormInput components can be added here */}
+                        </div>
+                        {/* )} */}
                       </div>
-                      {/* )} */}
                     </div>
                   </div>
                 </div>
               </div>
-            </div>
-          </>
+            </>
 
           ) : currentStep === 4 ? (
             <>
@@ -2914,13 +2912,15 @@ function Web({ closeDrawer, selectedJobId, onClick }) {
       <div className=" mt-10 divider-h  bottom-0" />
       <div className="flex justify-between mt-4">
         <div>
-          <ButtonClick
-            buttonName="previous"
-            BtnType="secondary"
-            icon={<IoIosArrowBack />}
-            handleSubmit={previous}
-            disabled={currentStage === 0}
-          />
+          {activeBtn !== 0 &&
+            <ButtonClick
+              buttonName="previous"
+              BtnType="secondary"
+              icon={<IoIosArrowBack />}
+              handleSubmit={previous}
+              disabled={currentStage === 0}
+            />
+          }
         </div>
         <div className="flex gap-2.5 p-1.5 justify-end">
           <ButtonClick
