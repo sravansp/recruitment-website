@@ -699,7 +699,7 @@ function Web({ closeDrawer, selectedJobId, onClick }) {
     initialValues: {
       resumeCode: null,
       candidateName: "",
-      namePrefix: "",
+      namePrefix: null,
       firstName: "",
       lastName: "",
       dob: "",
@@ -1724,9 +1724,9 @@ function Web({ closeDrawer, selectedJobId, onClick }) {
                       /* > */
                     >
                       <div className="text-left rtl:text-right">
-                        <h1 className="acco-h1">Personal Information </h1>
+                        <h1 className="acco-h1">Personal Details </h1>
                         <p className="para">
-                          lorem ipsum dummy text dolar sit.
+                          Fill your personal Details.
                         </p>
                       </div>
                       {/* </button> */}
@@ -1742,7 +1742,7 @@ function Web({ closeDrawer, selectedJobId, onClick }) {
                         <div className="grid grid-cols-2 gap-4 sm:grid-cols-6">
                           <Dropdown
                             title={"Prefix"}
-                            placeholder="Mr/Miss"
+                            placeholder="Enter Prefix"
                             options={[
                               { label: "Mr", value: "mr" },
                               { label: "Miss", value: "miss" },
