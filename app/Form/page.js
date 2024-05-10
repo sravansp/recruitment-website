@@ -3,6 +3,8 @@ import Image from "next/image";
 import React, { useEffect, useRef, useState } from "react";
 import EducationalDetails from "./Form-items/EducationalDetails";
 import PersonalDetails from "./Form-items/PersonalDetails";
+import { TfiLocationPin } from "react-icons/tfi";
+import { LiaAddressCard } from "react-icons/lia";
 import Questions from "./Form-items/Questions";
 import ButtonClick from "@components/ui/Button";
 import Stepper from "@components/ui/Stepper";
@@ -1397,15 +1399,21 @@ function Web({ closeDrawer, selectedJobId, onClick }) {
                 },
                 {
                   id: 3,
-                  label: "Date of Birth",
-                  value: items.dob,
-                  icon: <RiCake2Line />,
+                  label: "Location",
+                  value: items.candidateLocation,
+                  icon: <TfiLocationPin />,
                 },
                 {
                   id: 4,
-                  label: "Salary Expectation",
-                  value: "AED 25000",
-                  icon: <RiMoneyDollarBoxLine />,
+                  label: "Address",
+                  value: items.addressLine,
+                  icon: <LiaAddressCard />,
+                },
+                {
+                  id: 5,
+                  label: "Date of Birth",
+                  value: items.dob,
+                  icon: <RiCake2Line />,
                 },
               ],
               other: [
@@ -2669,19 +2677,18 @@ function Web({ closeDrawer, selectedJobId, onClick }) {
                               objectFit: "cover",
                             }}
                           />
-                        ) : (
-                          <div
-                            className="rounded-full h-18 w-18"
-                            style={{
-                              borderRadius: "50%",
-                              height: "4.5rem",
-                              width: "4.5rem",
-                            }}
-                          ></div>
-                        )}
+                        ) : " "
+                        }
                       </div>
                       <div className="flex-auto min-w-0 ml-4">
-                        <p className="acco-h1">{item.candidateName}</p>
+                        {item && item.candidateName && (
+                          <p className="acco-h1">
+                            {item.candidateName
+                              .split(' ')
+                              .map(word => word.charAt(0).toUpperCase() + word.slice(1))
+                              .join(' ')}
+                          </p>
+                        )}
                       </div>
                     </div>
                   ))}
@@ -2976,16 +2983,22 @@ const UserInfoComponent = ({ personalInfo }) => {
     <div className="grid md:grid-cols-2 gap-7">
       {personalInfo.map((info) => (
         <div className="flex items-center gap-2.5">
-          <div className="w-8 h-8 iconI vhcenter bg-[#F5F5F5] dark:bg-secondaryDark text-base rounded-lg ">
-            <div className="text-black opacity-50 ">{info.icon}</div>
-          </div>
+          {info.value && (
+            <div className="w-8 h-8 iconI vhcenter bg-[#F5F5F5] dark:bg-secondaryDark text-base rounded-lg ">
+              <div className="text-black opacity-50">{info.icon}</div>
+            </div>
+          )}
           <div className="inline-flex flex-col items-start justify-start ">
-            <p className="text-xs font-normal leading-none text-black opacity-50 dark:text-white">
-              {info.label}
-            </p>
-            <p className="text-xs font-semibold leading-tight text-black dark:text-white">
-              {info.value}
-            </p>
+            {info.value && (
+              <p className="text-xs font-normal leading-none text-black opacity-50 dark:text-white">
+                {info.label}
+              </p>
+            )}
+            {info.value && (
+              <p className="text-xs font-semibold leading-tight text-black dark:text-white">
+                {info.value}
+              </p>
+            )}
           </div>
         </div>
       ))}
