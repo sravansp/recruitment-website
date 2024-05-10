@@ -332,7 +332,7 @@ const Home = () => {
     setSelectedFilters(filters);
     console.log("filter");
   };
-
+  console.log(filteredJobs,"filteredJobs")
   return (
     <>
       <Navbar company={company} />

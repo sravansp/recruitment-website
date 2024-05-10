@@ -9,6 +9,7 @@ const JobCard = ({
   jobTitle,
   category,
   location,
+  experience,
   salaryRangeFrom,
   salaryRangeTo,
   jobType,
@@ -43,7 +44,7 @@ const JobCard = ({
         <h1 className="text-2xl font-semibold text-black h2">{jobTitle}</h1>
         <div className="grid grid-cols-2 gap-2">
           <div className="flex items-center gap-2 truncate">
-            <PiFoldersLight className="text-xl text-black dark:text-white text-opacity-20"/> <p className="pblack !font-normal">{category}</p>
+            <PiFoldersLight className="text-xl text-black dark:text-white text-opacity-20"/> <p className="pblack !font-normal">{experience}</p>
           </div>
           <div className="flex items-center gap-2 truncate">
             <PiClock className="text-xl text-black dark:text-white text-opacity-20"/> <p className="pblack !font-normal">{jobType}</p>
