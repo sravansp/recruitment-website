@@ -2208,7 +2208,7 @@ function Web({ closeDrawer, selectedJobId, onClick }) {
                       <div className="text-left rtl:text-right">
                         <h1 className="acco-h1">Work Experience Details </h1>
                         <p className="para">
-                          lorem ipsum dummy text dolar sit.
+                          Fill your work experience details.
                         </p>
                       </div>
                     </h2>
@@ -2439,7 +2439,7 @@ function Web({ closeDrawer, selectedJobId, onClick }) {
                         <div className="text-left rtl:text-right">
                           <h1 className="acco-h1">Resume & Cover Letter </h1>
                           <p className="para">
-                            lorem ipsum dummy text dolar sit.
+                            Add your resume and cover letter.
                           </p>
                         </div>
                       </h2>
@@ -2507,7 +2507,7 @@ function Web({ closeDrawer, selectedJobId, onClick }) {
                     >
                       <div className="text-left rtl:text-right">
                         <h1 className="acco-h1">Questions </h1>
-                        <p className="para">lorem ipsum dummy text dolar sit.</p>
+                        <p className="para">Questions for you.</p>
                       </div>
                     </h2>
                     <div
@@ -2636,7 +2636,7 @@ function Web({ closeDrawer, selectedJobId, onClick }) {
               <div className="relative w-full mx-auto rounded-md borderb">
                 <Accordion
                   title="Review"
-                  description="lorem ipsum dummy text dolar sit."
+                  description="Review your details."
                   padding={true}
                   className={""}
                   initialExpanded={true}
