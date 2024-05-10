@@ -64,7 +64,7 @@ console.log(selectedJob);
                 <p className="!font-normal !text-opacity-50 capitalize pblack col-span-1">
                   Role
                 </p>
-                <p className="col-span-5 pblack">{selectedJob.role}</p>
+                <p className="col-span-5 pblack">{selectedJob.jobTitle}</p>
               </div>
               <div className="grid grid-cols-6">
                 <p className="!font-normal !text-opacity-50 capitalize pblack col-span-1">
@@ -74,9 +74,9 @@ console.log(selectedJob);
               </div>
               <div className="grid grid-cols-6">
                 <p className="!font-normal !text-opacity-50 capitalize pblack col-span-1">
-                  salary
+                  salary range
                 </p>
-                <p className="col-span-4 pblack">{selectedJob.salaryRangeFrom}</p>
+                <p className="col-span-4 pblack">{selectedJob.salaryCurrency+" "}{selectedJob.salaryRangeFrom}-{selectedJob.salaryRangeTo}</p>
               </div>
               <div className="grid grid-cols-6">
                 <p className="!font-normal !text-opacity-50 capitalize pblack col-span-1">
