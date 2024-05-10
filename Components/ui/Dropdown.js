@@ -12,12 +12,12 @@ export default function Dropdown({
   title = "",
   formik,
   value = null,
-  change = () => {},
+  change = () => { },
   options = [],
   error = "",
   placeholder = "",
   className = "",
-  onSearch = () => {},
+  onSearch = () => { },
   styles,
   description,
   required = false,
@@ -28,7 +28,7 @@ export default function Dropdown({
   icon = false,
   image = false,
 }) {
-  console.log(options,"hi");
+  console.log(options, "hi");
   const isSmallScreen = useMediaQuery({ maxWidth: 1439 });
   const filterOption = (input, option) =>
     (option?.label ?? "").toLowerCase().includes(input.toLowerCase());
@@ -43,7 +43,7 @@ export default function Dropdown({
               {title}
             </label>
 
-            {required && <FaAsterisk className="text-[10px] text-rose-600" />}
+            {required && <FaAsterisk className="text-[8px] text-rose-600" />}
           </div>
           {descriptionTop && (
             <p className="text-xs font-medium opacity-50 dark:text-white">
@@ -86,7 +86,7 @@ export default function Dropdown({
             <Option key={i} value={each.value}>
               <div className="flex flex-col gap-1 country-option">
                 <div className="flex items-center gap-2">
-                {each.icon}
+                  {each.icon}
                   {/* {image && (
                     <img
                       src={each.image}
@@ -96,9 +96,9 @@ export default function Dropdown({
                   )} */}
                   {/* <FlagIcon code={91} className="w-5 h-5 rounded-full" />
                     <span>mkck</span> */}
-                    <span>{each.label}</span>
+                  <span>{each.label}</span>
                 </div>
-                
+
                 <p class="text-gray-500 text-xs font-medium font-['Inter'] leading-none">
                   {each.description}
                 </p>
@@ -134,9 +134,9 @@ export default function Dropdown({
           size={isSmallScreen ? "default" : "large"}
         />
       )}
-      {error && (
+      {/* {error && (
         <FiAlertCircle className="absolute top-2.7 right-8 -mr-1 transform -translate-y-2/5 text-red-400" />
-      )}
+      )} */}
       {rightIcon && (
         <Popover
           content={PopoverContent}
@@ -154,7 +154,7 @@ export default function Dropdown({
         </p>
       )}
       {error && (
-        <p className="flex justify-start items-center my-1 mb-0 text-[10px] text-red-500">
+        <p className="flex justify-start items-center mb-0 text-[10px] text-red-500">
           <span className="text-[10px] pl-1">{error}</span>
         </p>
       )}

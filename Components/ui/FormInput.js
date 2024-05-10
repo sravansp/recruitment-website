@@ -1,5 +1,6 @@
 import { Input } from "antd";
 import React, { useRef, useState } from "react";
+import { FaAsterisk } from "react-icons/fa";
 import { FiAlertCircle } from "react-icons/fi";
 import { HiMiniStar } from "react-icons/hi2";
 import { useMediaQuery } from "react-responsive";
@@ -38,7 +39,7 @@ export default function FormInput({
         <p className={`text-xs font-medium 2xl:text-sm dark:text-white ${className}`}>
           {title}
         </p>
-        {required && <HiMiniStar className="text-[10px] text-rose-600" />}
+        {required && <FaAsterisk className="text-[8px] text-rose-600" />}
       </div>
       {websiteLink ? (
         <span className="relative w-full ">
