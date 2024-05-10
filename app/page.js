@@ -345,7 +345,7 @@ const Home = () => {
                 Jobs
               </h1>
               <p className="para text-[#656565]">
-                lorem ipsum dolar sit dummy text dolar sit lerom.
+                Discover a wide range of job openings and kickstart your journey towards professional fulfillment today.
               </p>
             </div>
             <div className="searchJob rounded-[10px] bg-white dark:bg-secondaryDark w-full lg:h-full p-3 flex gap-3 justify-between items-center flex-col md:flex-row md:divide-x divide-y md:divide-y-0">
