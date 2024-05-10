@@ -92,7 +92,7 @@ function Web({ closeDrawer, selectedJobId, onClick }) {
   const [questionAnswers, setQuestionAnswers] = useState([]);
   const [coverLetter, setCoverletter] = useState("");
   const [questionfield, setQuestionfield] = useState("");
-  
+
   //
   const [instituteerror, setInstituteerror] = useState("");
   const [coursetype, setCoursetype] = useState("");
@@ -345,12 +345,12 @@ function Web({ closeDrawer, selectedJobId, onClick }) {
       // stack: 2,
       style: {
         background: `${type === "success"
-            ? `linear-gradient(180deg, rgba(204, 255, 233, 0.8) 0%, rgba(235, 252, 248, 0.8) 51.08%, rgba(246, 251, 253, 0.8) 100%)`
-            : "linear-gradient(180deg, rgba(255, 236, 236, 0.80) 0%, rgba(253, 246, 248, 0.80) 51.13%, rgba(251, 251, 254, 0.80) 100%)"
+          ? `linear-gradient(180deg, rgba(204, 255, 233, 0.8) 0%, rgba(235, 252, 248, 0.8) 51.08%, rgba(246, 251, 253, 0.8) 100%)`
+          : "linear-gradient(180deg, rgba(255, 236, 236, 0.80) 0%, rgba(253, 246, 248, 0.80) 51.13%, rgba(251, 251, 254, 0.80) 100%)"
           }`,
         boxShadow: `${type === "success"
-            ? "0px 4.868px 11.358px rgba(62, 255, 93, 0.2)"
-            : "0px 22px 60px rgba(134, 92, 144, 0.20)"
+          ? "0px 4.868px 11.358px rgba(62, 255, 93, 0.2)"
+          : "0px 22px 60px rgba(134, 92, 144, 0.20)"
           }`,
       },
       // duration: null,
@@ -797,6 +797,18 @@ function Web({ closeDrawer, selectedJobId, onClick }) {
           !formik.values.dob ? "date of birth  is required" : ""
         );
         if (!formik.values.dob) isValid = false;
+      }
+      if (!formik.values.candidateLocation) {
+        formik.setFieldError(
+          "candidateLocation", "Location  is required"
+        );
+        isValid = false;
+      }
+      if (!formik.values.namePrefix) {
+        formik.setFieldError(
+          "namePrefix", "Prefix  is required"
+        );
+        isValid = false;
       }
 
       if (isValid) {
@@ -1753,6 +1765,8 @@ function Web({ closeDrawer, selectedJobId, onClick }) {
                             }}
                             name="namePrefix"
                             value={formik.values.namePrefix}
+                            error={formik.errors.namePrefix}
+                            required={true}
                           />
                         </div>
                         <div className="grid grid-cols-1 gap-4 sm:grid-cols-3">
