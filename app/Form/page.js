@@ -1766,7 +1766,7 @@ function Web({ closeDrawer, selectedJobId, onClick }) {
                               formik.setFieldValue("firstName", e);
                               console.log("First Name:", e);
                             }}
-                            required={false}
+                            required={true}
                             error={formik.errors.firstName}
                           />
                           <FormInput
@@ -1792,7 +1792,7 @@ function Web({ closeDrawer, selectedJobId, onClick }) {
                             change={(e) => {
                               formik.setFieldValue("candidateEmail", e);
                             }}
-                            required={false}
+                            required={true}
                             error={formik.errors.candidateEmail}
                           />
                           <FormInput
@@ -1804,7 +1804,7 @@ function Web({ closeDrawer, selectedJobId, onClick }) {
                             change={(e) => {
                               formik.setFieldValue("candidateContact", e);
                             }}
-                            required={false}
+                            required={true}
                             error={formik.errors.candidateContact}
                           />
                         </div>
@@ -1877,7 +1877,7 @@ function Web({ closeDrawer, selectedJobId, onClick }) {
                             change={(e) => {
                               formik.setFieldValue("candidateLocation", e);
                             }}
-                            required={false}
+                            required={true}
                             error={formik.errors.candidateLocation}
                           />
                           <FormInput
@@ -1901,7 +1901,7 @@ function Web({ closeDrawer, selectedJobId, onClick }) {
                             change={(e) => {
                               formik.setFieldValue("address", e);
                             }}
-                            required={false}
+                            required={true}
                             error={formik.errors.address}
                           />
                           <FormInput
