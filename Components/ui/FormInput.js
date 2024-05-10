@@ -13,15 +13,25 @@ export default function FormInput({
   className = "",
   phoneNumber,
   websiteLink,
-  change = () => {},
+  change = () => { },
   error = "",
   width = "full",
   description,
   required = false,
+  maxLength = 30,
 }) {
   const isSmallScreen = useMediaQuery({ maxWidth: 1439 });
   const [show, setShow] = useState(false);
   const target = useRef(null);
+
+  const handleChange = (e) => {
+    let inputValue = e.target.value;
+    if (inputValue.length > maxLength) {
+      inputValue = inputValue.slice(0, maxLength);
+    }
+    change(inputValue);
+  };
+
   return (
     <div className={`flex flex-col ${title ? "gap-2" : "gap-0 items-center "} `}>
       <div className="flex">
@@ -38,9 +48,8 @@ export default function FormInput({
             placeholder={placeholder}
             value={value}
             onChange={(e) => change(e.target.value)}
-            className={`rounded-lg w-full pl-0 text-sm relative ${className}  ${
-              error ? "border-rose-400" : ""
-            }`}
+            className={`rounded-lg w-full pl-0 text-sm relative ${className}  ${error ? "border-rose-400" : ""
+              }`}
             status={error ? "error" : ""}
             size={isSmallScreen ? "default" : "large"}
             style={
@@ -67,7 +76,7 @@ export default function FormInput({
             type={type}
             placeholder={placeholder}
             value={value}
-            onChange={(e) => change(e.target.value)}
+            onChange={handleChange}
             className={`w-full relative dark:text-white ${className} 
             } ${error ? "border-rose-400" : ""}`}
             status={error ? "error" : ""}
