@@ -1800,6 +1800,7 @@ function Web({ closeDrawer, selectedJobId, onClick }) {
                           <FormInput
                             title={"Phone Number"}
                             placeholder={"Enter Phone Number"}
+                            maxLength = {"12"}
                             // className="text-[#344054]"
                             value={formik.values.candidateContact}
                             change={(e) => {
