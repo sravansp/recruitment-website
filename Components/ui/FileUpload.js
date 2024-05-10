@@ -12,6 +12,7 @@ export default function FileUpload({
 }) {
   const { t } = useTranslation();
   const allowedFileFormats = ["jpg", "png", "jpeg", "svg", "webp", "pdf", "doc", "docx", "pptx"];
+  const fileFormatsString = allowedFileFormats.join(", ");
   const props = {
     name: "file",
     multiple: true,
@@ -55,11 +56,11 @@ export default function FileUpload({
         }}
       >
         {flex === true ? (
-          <div className="flex gap-2">
+          <div className="flex items-center gap-2">
             <AiOutlineCloudUpload className="text-3xl text-primary " />
             <div className="flex flex-col">
-              <h2 className="acco-subhead"> {t("Click_to_upload")}</h2>
-              <p className="para">{t("Format")}</p>
+              <h2 className="acco-subhead"> {t("Click to upload")}</h2>
+              <p className="para px-2">{t("Allowed formats")}: {fileFormatsString}</p>
             </div>
           </div>
         ) : (
