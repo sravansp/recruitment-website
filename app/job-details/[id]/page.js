@@ -76,7 +76,7 @@ console.log(selectedJob);
               Job Details
             </h1>
             <p className="para text-[#656565]">
-              lorem ipsum dolar sit dummy text dolar sit lerom.
+            We are looking for a talented and experienced software engineer to join our team. If you are passionate about technology and innovation, and have experience with full-stack web development, we want to hear from you! In this role, you will be responsible for developing, testing, and maintaining high-quality software solutions. Apply now and be a part of our dynamic team!
             </p>
           </div>
         </div>
