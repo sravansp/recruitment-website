@@ -2823,35 +2823,43 @@ function Web({ closeDrawer, selectedJobId, onClick }) {
                       {/* <ButtonClick buttonName="Add Cover Note" icon={<IoMdAdd />} /> */}
                     </div>
                     <div className="flex items-center justify-between">
-                      <div className="flex items-center gap-2.5">
-                        <div className="w-8 h-8 iconI vhcenter bg-[#F5F5F5] dark:bg-secondaryDark text-base rounded-lg ">
-                          <div className="text-black opacity-50 ">
-                            {<RiFileList3Line />}
+                      {filePdfresume ? (
+                        <div className="flex items-center gap-2.5">
+                          <div className="w-8 h-8 iconI vhcenter bg-[#F5F5F5] dark:bg-secondaryDark text-base rounded-lg ">
+                            <div className="text-black opacity-50 ">
+                              {<RiFileList3Line />}
+                            </div>
                           </div>
+                          <p className="text-xs font-semibold leading-tight text-black dark:text-white">
+                            Resume.pdf
+                          </p>
                         </div>
-                        <p className="text-xs font-semibold leading-tight text-black dark:text-white">
-                          Pdfname.pdf
-                        </p>
-                      </div>
+                      ) : "Resume not uploaded"
+                      }
                       <ButtonClick
                         buttonName="Edit Details"
                         className="text-[#6044E5]"
                         icon={<AiTwotoneEdit />}
                       />
                     </div>
-
-                    <div className="divider-h" />
+                    {filePdfresume && (
+                      <div className="divider-h" />
+                    )}
                     {/* {data.map((item, index) => (
                     <PDFViewer pdfUrl={item.resumeFile} />
-                  ))} */}
+                    ))} */}
                     {data.map((item, index) => (
-                      <iframe
-                        key={index}
-                        src={item.resumeFile}
-                        width="100%"
-                        height="500px"
-                        title={`Resume-${index}`}
-                      />
+                      <>
+                        {filePdfresume ? (
+                          <iframe
+                            key={index}
+                            src={item.resumeFile}
+                            width="100%"
+                            height="500px"
+                            title={`Resume-${index}`}
+                          />
+                        ) : ""}
+                      </>
                     ))}
                   </div>
 
@@ -2982,25 +2990,23 @@ const UserInfoComponent = ({ personalInfo }) => {
   return (
     <div className="grid md:grid-cols-2 gap-7">
       {personalInfo.map((info) => (
-        <div className="flex items-center gap-2.5">
+        <>
           {info.value && (
-            <div className="w-8 h-8 iconI vhcenter bg-[#F5F5F5] dark:bg-secondaryDark text-base rounded-lg ">
-              <div className="text-black opacity-50">{info.icon}</div>
+            <div className="flex items-center gap-2.5">
+              <div className="w-8 h-8 iconI vhcenter bg-[#F5F5F5] dark:bg-secondaryDark text-base rounded-lg ">
+                <div className="text-black opacity-50">{info.icon}</div>
+              </div>
+              <div className="inline-flex flex-col items-start justify-start ">
+                <p className="text-xs font-normal leading-none text-black opacity-50 dark:text-white">
+                  {info.label}
+                </p>
+                <p className="text-xs font-semibold leading-tight text-black dark:text-white">
+                  {info.value}
+                </p>
+              </div>
             </div>
           )}
-          <div className="inline-flex flex-col items-start justify-start ">
-            {info.value && (
-              <p className="text-xs font-normal leading-none text-black opacity-50 dark:text-white">
-                {info.label}
-              </p>
-            )}
-            {info.value && (
-              <p className="text-xs font-semibold leading-tight text-black dark:text-white">
-                {info.value}
-              </p>
-            )}
-          </div>
-        </div>
+        </>
       ))}
     </div>
   );
