@@ -1,6 +1,7 @@
 import { DatePicker } from "antd";
 import { FiAlertCircle } from "react-icons/fi";
 import { HiMiniStar } from "react-icons/hi2";
+import { FaAsterisk } from "react-icons/fa";
 import { useMediaQuery } from "react-responsive";
 import React from "react";
 
@@ -30,7 +31,7 @@ export default function DateSelect({
             {title}
           </label>
         )}
-        {required && <HiMiniStar className="text-[10px] text-rose-600" />}
+        {required && <FaAsterisk className="text-[10px] text-rose-600" />}
       </div>
 
       <DatePicker
