@@ -856,7 +856,7 @@ function Web({ closeDrawer, selectedJobId, onClick }) {
               openNotification(
                 "error",
                 "input field is empty..",
-                response.message
+                response.message.replace(/<br\/>/g, '\n')
               );
             }
           }
@@ -1016,7 +1016,7 @@ function Web({ closeDrawer, selectedJobId, onClick }) {
             openNotification(
               "error",
               "input field is empty..",
-              response.message
+              response.message.replace(/<br\/>/g, '\n')
             );
           }
         } catch (error) {
@@ -1118,7 +1118,7 @@ function Web({ closeDrawer, selectedJobId, onClick }) {
           setCurrentStep(currentStep + 1);
           setPresentage(presentage + 1);
         } else if (response.status === 500) {
-          openNotification("error", "input field is empty..", response.message);
+          openNotification("error", "input field is empty..", response.message.replace(/<br\/>/g, '\n'));
         }
       } catch (error) {
         console.error("Error saving work experience details:", error);
@@ -1244,7 +1244,7 @@ function Web({ closeDrawer, selectedJobId, onClick }) {
           setCurrentStep(currentStep + 1);
           setPresentage(presentage + 1);
         } else if (response.status === 500) {
-          openNotification("error", "input field is empty..", response.message);
+          openNotification("error", "input field is empty..", response.message.replace(/<br\/>/g, '\n'));
         }
         // Handle success response if needed
       } catch (error) {
@@ -2118,7 +2118,7 @@ function Web({ closeDrawer, selectedJobId, onClick }) {
                                     handleDeleteEducationalDetails(index)
                                   }
                                 >
-                                  <RiDeleteBin5Line className="text-gray-500 w-[17px] h-[17px]" />
+                                  <RiDeleteBin5Line className="text-gray-500 w-[17px] h-[17px] hover:text-red-600" />
                                 </button>
                               </Tooltip>
                             </div>
@@ -2237,7 +2237,7 @@ function Web({ closeDrawer, selectedJobId, onClick }) {
                                 updatedExperiences[index].jobTitle = e;
                                 setAdditionalExperiences(updatedExperiences);
                               }}
-                              required={false}
+                              required={true}
                               // error={
                               //   isFormSubmitted
                               //     ? formik2.errors.additionalExperiences?.[index]
@@ -2267,7 +2267,7 @@ function Web({ closeDrawer, selectedJobId, onClick }) {
                                 updatedExperiences[index].employmentType = e;
                                 setAdditionalExperiences(updatedExperiences);
                               }}
-                              required={false}
+                              required={true}
                               // error={
                               //   isFormSubmitted
                               //     ? formik2.errors.additionalExperiences?.[index]
@@ -2294,7 +2294,7 @@ function Web({ closeDrawer, selectedJobId, onClick }) {
                                 updatedExperiences[index].companyName = e;
                                 setAdditionalExperiences(updatedExperiences);
                               }}
-                              required={false}
+                              required={true}
                               // error={
                               //   isFormSubmitted
                               //     ? formik2.errors.additionalExperiences?.[index]
@@ -2319,7 +2319,7 @@ function Web({ closeDrawer, selectedJobId, onClick }) {
                                 updatedExperiences[index].location = e;
                                 setAdditionalExperiences(updatedExperiences);
                               }}
-                              required={false}
+                              required={true}
                               // error={
                               //   isFormSubmitted
                               //     ? formik2.errors.additionalExperiences?.[index]
@@ -2353,7 +2353,7 @@ function Web({ closeDrawer, selectedJobId, onClick }) {
 
                                 setAdditionalExperiences(updatedExperiences);
                               }}
-                              required={false}
+                              required={true}
                               // error={
                               //   isFormSubmitted
                               //     ? formik2.errors.additionalExperiences?.[index]
@@ -2387,7 +2387,7 @@ function Web({ closeDrawer, selectedJobId, onClick }) {
 
                                 setAdditionalExperiences(updatedExperiences);
                               }}
-                              required={false}
+                              required={true}
                               // error={
                               //   isFormSubmitted
                               //     ? formik2.errors.additionalExperiences?.[index]
@@ -2399,11 +2399,20 @@ function Web({ closeDrawer, selectedJobId, onClick }) {
                                   ?.toDate || ""
                               }
                             />
-                            <div className="flex items-center justify-end">
+                            {/* <div className="flex items-center justify-end">
+                              <Tooltip placement="top" title={"Delete"}>
+                                <button onClick={() => handleDelete1(index)}>
+                                  <RiDeleteBin5Line className="text-gray-500 w-[17px] h-[17px]" />
+                                </button>
+                              </Tooltip>
+                            </div> */}
+                          </div>
+                          <div className="flex items-center justify-end">
+                            <Tooltip placement="top" title={"Delete"}>
                               <button onClick={() => handleDelete1(index)}>
-                                <RiDeleteBin5Line className="text-gray-500 w-[17px] h-[17px]" />
+                                <RiDeleteBin5Line className="text-gray-500 w-[17px] h-[17px] hover:text-red-600" />
                               </button>
-                            </div>
+                            </Tooltip>
                           </div>
                         </div>
                       ))}
