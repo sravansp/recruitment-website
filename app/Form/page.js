@@ -1760,7 +1760,7 @@ function Web({ closeDrawer, selectedJobId, onClick }) {
                         <div className="grid grid-cols-1 gap-4 sm:grid-cols-3">
                           <FormInput
                             title={"First Name"}
-                            placeholder={"First Name"}
+                            placeholder={"Enter First Name"}
                             // className="text-[#344054] "
                             name="firstName"
                             value={formik.values.firstName}
@@ -1773,7 +1773,7 @@ function Web({ closeDrawer, selectedJobId, onClick }) {
                           />
                           <FormInput
                             title={"Last Name"}
-                            placeholder={"Last Name"}
+                            placeholder={"Enter Last Name"}
                             // className="text-[#344054]"
                             name="lastName"
                             value={formik.values.lastName}
@@ -1787,7 +1787,7 @@ function Web({ closeDrawer, selectedJobId, onClick }) {
                         <div className="grid grid-cols-1 gap-4 sm:grid-cols-3">
                           <FormInput
                             title={"Email"}
-                            placeholder={"Email Address"}
+                            placeholder={"Enter Email"}
                             // className="text-[#344054]"
                             name="candidateEmail"
                             value={formik.values.candidateEmail}
@@ -1799,7 +1799,7 @@ function Web({ closeDrawer, selectedJobId, onClick }) {
                           />
                           <FormInput
                             title={"Phone Number"}
-                            placeholder={"1234656987"}
+                            placeholder={"Enter Phone Number"}
                             // className="text-[#344054]"
                             value={formik.values.candidateContact}
                             change={(e) => {
@@ -1813,7 +1813,7 @@ function Web({ closeDrawer, selectedJobId, onClick }) {
                         <div className="grid grid-cols-1 gap-4 sm:grid-cols-3">
                           <DateSelect
                             title={"DOB"}
-                            placeholder={"Date of birth"}
+                            placeholder={"Enter Date of birth"}
                             // className="text-[#344054]"
                             name="dob"
                             value={formik.values.dob}
@@ -1872,7 +1872,7 @@ function Web({ closeDrawer, selectedJobId, onClick }) {
                         <div className="grid grid-cols-1 gap-4 sm:grid-cols-3">
                           <FormInput
                             title={"Location"}
-                            placeholder={"Location"}
+                            placeholder={"Enter Location"}
                             // className="text-[#344054]"
                             value={formik.values.candidateLocation}
                             change={(e) => {
@@ -1883,7 +1883,7 @@ function Web({ closeDrawer, selectedJobId, onClick }) {
                           />
                           <FormInput
                             title={"City or Town"}
-                            placeholder={"Type here..."}
+                            placeholder={"Enter City or Town"}
                             // className="text-[#344054]"
                             value={formik.values.city}
                             change={(e) => {
@@ -1895,8 +1895,8 @@ function Web({ closeDrawer, selectedJobId, onClick }) {
                         </div>
                         <div className="grid grid-cols-1 gap-4 sm:grid-cols-3">
                           <FormInput
-                            title={"Address Line"}
-                            placeholder={"Type here..."}
+                            title={"Address"}
+                            placeholder={"Enter Address"}
                             // className="text-[#344054]"
                             value={formik.values.address}
                             change={(e) => {
@@ -1907,7 +1907,7 @@ function Web({ closeDrawer, selectedJobId, onClick }) {
                           />
                           <FormInput
                             title={"Postal Code"}
-                            placeholder={"Type here..."}
+                            placeholder={"Enter Postal Code"}
                             // className="text-[#344054]"
                             value={formik.values.postalCode}
                             change={(e) => {
@@ -1937,7 +1937,7 @@ function Web({ closeDrawer, selectedJobId, onClick }) {
                       <div className="text-left rtl:text-right">
                         <h1 className="acco-h1">Educational Details </h1>
                         <p className="para">
-                          lorem ipsum dummy text dolar sit.
+                          Fill your educational details. 
                         </p>
                       </div>
                     </h2>
