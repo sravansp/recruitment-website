@@ -127,8 +127,8 @@ const Modal2 = ({
   className = "",
   handleSubmit = () => {},
 }) => {
-  const primaryColor = localStorage.getItem("mainColor");
-  const mode = localStorage.getItem("theme");
+  // const primaryColor = localStorage.getItem("mainColor");
+  // const mode = localStorage.getItem("theme");
   const [timer, setTimer] = useState(null); 
 
   useEffect(() => {
