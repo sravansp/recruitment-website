@@ -159,7 +159,7 @@ const Modal2 = ({
     };
   }, [isOpen, onClose]);
  
-  const lighterColor = lightenColor(primaryColor, 0.9);
+  // const lighterColor = lightenColor(primaryColor, 0.9);
  
   return (
     <AnimatePresence>
