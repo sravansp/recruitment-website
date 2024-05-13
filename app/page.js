@@ -29,6 +29,7 @@ const Home = () => {
   const [searchJobTitle, setSearchJobTitle] = useState("");
   const [searchJobLocation, setSearchJobLocation] = useState("");
   const [filteredJobs, setFilteredJobs] = useState([]);
+  const [searchKeywords,setSearchKeywords]=useState("")
 
   const jobDetailsAnimation = useAnimation();
   const isSmallScreen = useMediaQuery({ maxWidth: 767 });
@@ -222,10 +223,13 @@ const Home = () => {
 
       let newFilteredJobs = JobsList.filter(
         (job) =>
-          job.jobTitle.toLowerCase().includes(searchJobTitle.toLowerCase())
+          job.jobTitle.toLowerCase().includes(searchJobTitle.toLowerCase()) ||
+          job.searchKeywords.
+           toLowerCase().includes(searchJobTitle.toLowerCase())
+          )
         // &&
         // job.location.toLowerCase().includes(searchJobLocation.toLowerCase())
-      );
+
 
       setFilteredJobs(newFilteredJobs);
     };

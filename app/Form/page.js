@@ -65,6 +65,7 @@ import Modal2 from "@/Components/ui/Modal";
 import { IoIosArrowBack } from "react-icons/io";
 import { fileAction } from "@/Components/Api1";
 import FileUpload from "@/Components/ui/FileUpload";
+import noImg from "@/public/noImg.webp";
 
 function Web({ closeDrawer, selectedJobId, onClick }) {
   const questidRef = useRef(null);
@@ -1244,7 +1245,7 @@ function Web({ closeDrawer, selectedJobId, onClick }) {
         const response = await saveRecruitmentJobResumesCustomField(values);
         console.log("question Details API Response:", response);
         if (response.status === 200) {
-          openNotification("success", "Successful", response.message);
+          openNotification("success", "Successful", "Answers has been saved");
           setActiveBtn(activeBtn + 1);
           setCurrentStep(currentStep + 1);
           setPresentage(presentage + 1);
@@ -1884,7 +1885,7 @@ function Web({ closeDrawer, selectedJobId, onClick }) {
                           </p>
                           <FileUpload
                             className={
-                              "relative max-w-[1070px] sm:w-[492px] w-full borderb rounded-md h-24 bg-[#FAFAFA] dark:bg-black"
+                              "relative max-w-[1070px] sm:w-[492px] w-full borderb rounded-md h-24 bg-[#FAFAFA] dark:bg-black mt-2 mb-2"
                             }
                             change={(e) => {
                               setfilepdf(e);
@@ -2684,8 +2685,22 @@ function Web({ closeDrawer, selectedJobId, onClick }) {
                               objectFit: "cover",
                             }}
                           />
-                        ) : " "
-                        }
+                        ) : ( 
+                        <Image
+                        className="bg-cover rounded-full h-18 w-18 object-cover"
+                        src= {noImg}
+                        width={64}
+                        height={64}
+                        alt="Default Profile"
+                        style={{
+                          borderRadius: "50%",
+                          height: "4.5rem",
+                          width: "4.5rem",
+                          objectFit: "cover",
+                        }}
+                      />
+                    )}
+                        
                       </div>
                       <div className="flex-auto min-w-0 ml-4">
                         {item && item.candidateName && (
