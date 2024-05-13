@@ -131,6 +131,9 @@ const CreatejobTemp = ({
   const [errors, setErrors] = useState([]);
   const [jobTitle, setJobTitle] = useState("")
   const [html, setstateHTML] = useState("")
+  const [Questionerror, setQuestionError] = useState('')
+  const [answerError, setAnswerError] = useState('')
+  const [OptionError, setoptionserror] = useState('')
 
   // console.log(updateId);
   useEffect(() => {
@@ -280,7 +283,7 @@ const CreatejobTemp = ({
       jobTitle: "",
       departmentId: "",
       jobCode: "",
-      workLocationType: "Onsite",
+      workLocationType:"",
       location: "",
       requirementType: "",
       jobType: "",
@@ -346,7 +349,7 @@ const CreatejobTemp = ({
             jobTitle: e.jobTitle,
             departmentId: e.departmentId,
             jobCode: e.jobCode,
-            workLocationType: e.workLocationType,
+            workLocationType: e.workLocationType||"Onsite",
             location: e.location,
             requirementType: e.requirementType,
             jobType: e.jobType,
@@ -402,7 +405,7 @@ const CreatejobTemp = ({
             jobTitle: e.jobTitle,
             departmentId: e.departmentId,
             jobCode: e.jobCode,
-            workLocationType: e.workLocationType,
+            workLocationType: e.workLocationType||"Onsite",
             location: e.location,
             requirementType: e.requirementType,
             jobType: e.jobType,
@@ -929,6 +932,11 @@ const CreatejobTemp = ({
 
         }
 
+   
+        if(content && content.length < 3){
+          formik.setFieldError('jobDescription','JobDescription should have at least 3 letters.');
+          return; 
+        }
         if (jobcodelength === 0) {
 
           setNextStep(nextStep + 1);
@@ -943,28 +951,33 @@ const CreatejobTemp = ({
         // Handle submission for Applicability
         // Your logic for Applicability form submission...
         // Move to the next step if applicable
+        let hasError = false;
         const newErrorMessages = evaluation.map((condition) => {
-          let errorMessage = '';
+          
 
           if (!condition.question) {
-            errorMessage = 'Please enter a question.';
-          } else if (!condition.answer_type) {
-            errorMessage = 'Please choose an answer type.';
-          } else if (
-            ["Drop-down", "MultipleChoice", "Checkboxes"].includes(condition.answer_type) &&
+            setQuestionError('Please enter a question.');
+            hasError=true
+          } 
+           if (!condition.answer_type) {
+            setAnswerError('Please choose an answer type.');
+            hasError=true
+          } 
+           if (
+            ["Drop-down", "Multiple Choice", "Checkboxes"].includes(condition.answer_type) &&
             (condition.answerMetaData.some((field) => !field.value) ||
               (!condition.answerMetaData[0]?.value && condition.answerMetaData[0]?.key !== "ShortAnswer"))
           ) {
-            errorMessage = 'Please enter values for all options.';
+            setoptionserror('Option is required');
+            hasError=true
           }
 
-          return errorMessage;
+         
         });
 
         // Update errorMessages state with new error messages
-        setErrorMessages(newErrorMessages);
-        const hasErrors = newErrorMessages.some(errorMessage => errorMessage !== '');
-        if (hasErrors) {
+
+        if (hasError) {
           // Don't proceed if there are errors
           return;
         }
@@ -1187,15 +1200,22 @@ const CreatejobTemp = ({
                     >
                       <div className="md:grid grid-cols-12 flex flex-col gap-6 dark:text-white">
                         {regularOvertime?.map((each, i) => (
-                          <div
-                            key={i}
-                            className={`col-span-4 p-1.5 border rounded-2xl  cursor-pointer showDelay dark:bg-dark  ${(!formik.values.workLocationType && each.value === "Onsite") || (formik.values.workLocationType === each.value) ? "border-primary" : ""}`}
-                            onClick={() => {
-                              setCustomRate(each.id);
-                              formik.setFieldValue("workLocationType", each.value);
-                              setPresentage(.4);
-                            }}
-                          >
+                        <div
+                        key={i}
+                        className={`col-span-4 p-1.5 border rounded-2xl  cursor-pointer showDelay dark:bg-dark  ${
+                            (!formik.values.workLocationType && each.value === "Onsite") || 
+                            (formik.values.workLocationType === each.value) ? "border-primary" : ""
+                        }`}
+                        onClick={() => {
+                            setCustomRate(each.id);
+                            if (!formik.values.workLocationType) {
+                                formik.setFieldValue("workLocationType", "Onsite");
+                            } else {
+                                formik.setFieldValue("workLocationType", each.value);
+                            }
+                            setPresentage(.4);
+                        }}
+                    >
                             <div className="flex justify-between items-start">
                               <div className="flex gap-2">
                                 <img
@@ -1481,7 +1501,7 @@ const CreatejobTemp = ({
                           <p className="pb-2">Description</p>
                           <FaAsterisk className="text-[6px] text-rose-600" />
                         </div>
-                        {/* <TextEditor
+                        <TextEditor
                           placeholder={t(
                             "Enter Description "
                           )}
@@ -1497,8 +1517,8 @@ const CreatejobTemp = ({
                           //   setstateHTML(e)
                           // }}
                           loader={loader}
-                        /> */}
-                        <TextEditorcopy
+                        />
+                        {/* <TextEditorcopy
                           Change={(e)=>{
                             handleEditorChange(e)
                             console.log(e)
@@ -1506,7 +1526,7 @@ const CreatejobTemp = ({
                           initialValue={content}
                           error={formik.errors.jobDescription}
                           
-                        />
+                        /> */}
                         {/* <Editor1/> */}
 
                       </div>
@@ -1872,7 +1892,7 @@ icondropDown={true}
                                     );
                                     console.log(e);
                                   }}
-                                  error={condition.question ? '' : errorMessages[index] || ''}
+                                  error={condition.question ? '' : Questionerror || ''}
                                 />
                                 <div className="flex items-center gap-5">
                                   <div className="flex-shrink-0">
@@ -1902,7 +1922,7 @@ icondropDown={true}
                                       }}
                                       value={condition.answerMetaData[0]?.key}
                                       icondropDown={true}
-                                      error={condition.answer_type ? '' : errorMessages[index] || ''}
+                                      error={condition.answerMetaData[0]?.key ? '' : answerError || ''}
                                       placeholder={"Choose Options"}
                                     />
                                   </div>
@@ -1954,7 +1974,7 @@ icondropDown={true}
                                       >
                                         {[
                                           "Drop-down",
-                                          "MultipleChoice",
+                                          "Multiple Choice",
                                           "Checkboxes",
                                         ].includes(field.key) && (
                                             <FormInput
@@ -1985,13 +2005,13 @@ icondropDown={true}
                                                   )
                                                 )
                                               }}
-                                              error={field.value ? '' : errorMessages[index] || ''}
+                                              error={field.value ? '' : OptionError || ''}
                                             />
                                           )}
 
                                         {[
                                           "Drop-down",
-                                          "MultipleChoice",
+                                          "Multiple Choice",
                                           "Checkboxes",
                                         ].includes(field.key) && (
                                             <Tooltip placement="top" title={"Delete"}>
@@ -2015,7 +2035,7 @@ icondropDown={true}
 
                                   {[
                                     "Drop-down",
-                                    "MultipleChoice",
+                                    "Multiple Choice",
                                     "Checkboxes",
                                   ].includes(
                                     condition.answerMetaData[0]?.key

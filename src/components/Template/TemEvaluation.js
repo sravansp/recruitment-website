@@ -215,15 +215,18 @@ const TemEvaluation = ({
         // });
 
         // Make the first API call
+        let hasError = false;
         if (
           !formik.values.evaluationTemplateName || !formik.values.description) {
           formik.setFieldError('evaluationTemplateName', !formik.values.evaluationTemplateName ? 'Template name is required' : '');
           formik.setFieldError('description', !formik.values.description ? 'Description is required' : '');
+          hasError = true;
         }
-        if (formik.values.evaluationTemplateName.length < 3) {
+        if (formik.values.evaluationTemplateName && formik.values.evaluationTemplateName.length < 3) {
           formik.setFieldError('evaluationTemplateName', 'Template Name should have at least 3 letters.');
-        }
-        let hasError = false;
+          hasError = true;        
+      }
+       
         evaluation.forEach((condition) => {
           if (!condition.question) {
             setQuestionError('Question is Required.');
@@ -232,7 +235,7 @@ const TemEvaluation = ({
           }
 
           if (!condition.answerMetaData || !condition.answerMetaData[0]?.key) {
-            setAnswerError('Please choose an answer type.');
+            setAnswerError('Answertype is required');
             hasError = true;
           }
           if (
@@ -465,8 +468,8 @@ const TemEvaluation = ({
 
       > <div className="relative max-w-[1070px]  w-full mx-auto">
           <Accordion
-            title={"New Evaluation Template"}
-            description={"New Evaluation Template"}
+            title={"Evaluation Template"}
+            description={"Evaluation Template"}
             className="Text_area"
             padding={true}
 
@@ -545,7 +548,7 @@ const TemEvaluation = ({
                           icondropDown={true}
                           required={true}
                           error={condition.answerMetaData[0]?.key ? '' : answerError || ''}
-                          placeholder={"Choose Options"}
+                          placeholder={"Choose Answertype"}
                         />
                       </div>
                       {/* Additional dynamic input fields based on the selected value in the dropdown */}

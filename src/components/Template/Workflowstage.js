@@ -39,6 +39,7 @@ import Dropdown from "../common/Dropdown";
 import arrow from "../../assets/images/arrow3d 1.png";
 import Emailtemplate from "./AddEmailtemplate";
 import { title } from "process";
+import MenuItems from "../DropDown";
 
 const Workflowstage = ({
   open = "",
@@ -100,7 +101,8 @@ const Workflowstage = ({
   const[evaluation,setEvaluation] = useState([])
   const[questionareTemp,setQuestionareTemp] = useState([])
   const [emailTemp,setEmailTemp] = useState([])
-  
+  const [showDiv, setShowDiv] = useState(false);
+  const primaryColor = localStorage.getItem('mainColor')
   
  
 
@@ -164,7 +166,8 @@ const Workflowstage = ({
     
     setmenuitem(true);
     setMenuVisible(false)
-  };
+    setShowDiv(true);
+  };  
   console.log(optionData, "0000");
  
   const getEvaluationtem = async () => {
@@ -396,11 +399,11 @@ const Workflowstage = ({
     
     
     
-    if (!stageName) {
-        setStageError("Stage Name is required.");
-        return;
+    if (!stageName && !selectedStageName) {
+      setStageError("Stage Name is required.");
+      return;
     } else {
-        setStageError("");
+      setStageError("");
     }
 
     if (!stageName.trim()) {
@@ -1001,7 +1004,8 @@ const Workflowstage = ({
             buttonSubmit={handleAddStageClick}
 
           >
-            <div className="flex flex-col items-center justify-center w-full h-full gap-5">
+            {/* <div className="h-[500px] overflow-auto"> */}
+            <div className=" flex flex-col items-center justify-center w-full h-full gap-5">
               <div className="flex flex-col items-center gap-2 text-center">
                 <div className="p-1 overflow-hidden border-2 border-white rounded-full 2xl:size-14 size-12 bg-primaryalpha/10">
                   <img
@@ -1038,15 +1042,18 @@ const Workflowstage = ({
                 />
               </div>
             </div>
+           
+            <div className="h-auto max-h-[370px] overflow-auto gap-5 flex flex-col">
             {optionData.map((key, index) => (
-  <div key={index} className="flex flex-col gap-3 w-full border border-black-500 ring-1 ring-black ring-opacity-5 shadow-lg rounded-lg p-1">
-    <div className="w-full m-auto bg-slate-100 h-12 rounded-lg flex justify-between items-center pr-2">
-      <h1 className="mt-3.5 m-3 font-semibold">{key.name}</h1>
+  <div key={index} className="flex flex-col gap-3 w-full borderb rounded-[10px] p-1 "
+  >
+    <div className="w-full m-auto h-12 rounded-md flex justify-between items-center pr-2"   style={{backgroundColor: `${primaryColor}10`}}>
+      <h1 className="mt-3.5 m-3 font-semibold dark:text-white">{key.name}</h1>
       <Tooltip placement="top" color={'red'} title={"Delete"}>
         <RiDeleteBin5Line className="text-gray-500 2xl:text-base dark:text-white hover:text-red-500" onClick={() => handleDeleteSection(key.id)} />
       </Tooltip>
     </div>
-    <div className="flex gap-2 w-full p-1">
+    <div className="flex gap-2 w-full px-5 py-4">
       {key && key.option1 && key.option1.map((item, ind) => (
         <>
           {console.log(item)}
@@ -1129,13 +1136,7 @@ const Workflowstage = ({
               </div>
             ))} */}
 
-          <div className="justify-start">
-            <AddMore
-              name="Add stage rule"
-              className="text-black"
-              change={() => setMenuVisible(true)}
-            />
-          </div>
+        
 
           {/* <Menu
               onClick={({ key }) => handleMenuClick(key)}
@@ -1160,6 +1161,15 @@ const Workflowstage = ({
                 );
               })}
             </Menu> */}
+            </div>
+           
+            {/* <div className="justify-start">
+            <AddMore
+              name="Add stage rule"
+              className="text-black"
+              change={() => setMenuVisible(true)}
+            />
+          </div>
           <Menu
             onClick={({ key, value }) => handleMenuClick(key, value)}
             style={{ display: menuVisible ? "block" : "none" }}
@@ -1175,7 +1185,16 @@ const Workflowstage = ({
                 </Menu.Item>
               );
             })}
-          </Menu>
+          </Menu> */}
+          <MenuItems
+          Items ={options}
+          handleItemClick={(Key)=>{
+            handleMenuClick(Key)
+          }}
+          
+          />
+          
+          {/* </div> */}
         </WorkflowModal>
         {/* <Modal
             // title="Vertically centered modal dialog"

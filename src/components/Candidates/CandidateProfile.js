@@ -431,6 +431,7 @@ const CandidateProfile = () => {
       {stageName.map((item) => (
         <Menu.Item key={item.key}>{item.label}</Menu.Item>
       ))}
+        
     </Menu>
   );
 

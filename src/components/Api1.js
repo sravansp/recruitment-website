@@ -1189,6 +1189,7 @@ const API = {
   UPDATE_EvaluationS: "toggleRecruitmentEvaluationTemplateStatus",
   UPDATE_Questionaire: "toggleRecruitmentQuestionnaireTemplateStatus",
   UPDATE_Letter: "toggleRecruitmentLetterTemplateStatus",
+  UpDate_jobs:"toggleRecruitmentJobStatus",
 
   //delete API
   DELETE_Job_Templates: "deleteRecruitmentJobTemplateById",

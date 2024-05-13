@@ -8,6 +8,7 @@
     "@ckeditor/ckeditor5-build-classic": "^41.3.1",
     "@ckeditor/ckeditor5-editor-classic": "^41.3.1",
     "@ckeditor/ckeditor5-font": "^41.3.1",
+    "@ckeditor/ckeditor5-inspector": "^4.1.0",
     "@ckeditor/ckeditor5-react": "^6.3.0",
     "@emotion/react": "^11.11.3",
     "@emotion/styled": "^11.11.0",

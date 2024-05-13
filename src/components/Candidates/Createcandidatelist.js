@@ -40,7 +40,7 @@ import { useNavigate } from 'react-router-dom';
 
 export default function Createcandidatelist({ open = "", close = () => { }, fileUpdateId, refresh, ConfigurationAction, updateId = null, }) {
   const [show, setShow] = useState(open);
-  const [activeBtnValue, setActiveBtnValue] = useState("Personel");//Review//Questions//Work//Personel//Educational
+  const [activeBtnValue, setActiveBtnValue] = useState("Personel");//Personel//Questions//Work//Personel//Educational
   const [nextStep, setNextStep] = useState(0);
   const [applicableData, setApplicableData] = useState([]);
   const [isUpdate, setIsUpdate] = useState();
@@ -168,37 +168,78 @@ export default function Createcandidatelist({ open = "", close = () => { }, file
     close(false);
   };
 
-  const handleAddCondition = (e, i) => {
-    setEducation((prevEvaluation) => [
-      ...prevEvaluation,
+  // const handleAddCondition = (e, i) => {
+  //   setEducation((prevEvaluation) => [
+  //     ...prevEvaluation,
+  //     {
+  //       id: 2,
+  //       row: "two" + i,
+  //       field: [
+  //         {
+  //           title: "School Or University",
+  //           inputName: "institute" + i,
+  //           type: "input"
+  //         },
+  //         {
+  //           title: "Degree",
+  //           inputName: "courseType" + i,
+  //           type: "dropdown"
+
+  //         },
+  //         {
+  //           title: "Field of Study",
+  //           inputName: "courseName" + i,
+  //           type: "input"
+  //         }, {
+  //           title: "Year",
+  //           inputName: "yearOfStudy" + i,
+  //           type: "number"
+  //         }, {
+  //           title: "Location",
+  //           inputName: "location" + i,
+  //           type: "input"
+  //         }]
+  //     }
+  //   ]);
+  // };
+  const handleAddCondition = () => {
+    setEducation(prevEducation => [
+      ...prevEducation,
       {
-        id: 2,
-        row: "two" + i,
+        id: prevEducation.length + 1,
+        row: "two" + (prevEducation.length + 1),
         field: [
           {
             title: "School Or University",
-            inputName: "institute" + i,
-            type: "input"
+            inputName: "institute" + (prevEducation.length + 1),
+            type: "input",
+            value: "" // Initialize with an empty string
           },
           {
             title: "Degree",
-            inputName: "courseType" + i,
-            type: "dropdown"
-
+            inputName: "courseType" + (prevEducation.length + 1),
+            type: "dropdown",
+            value: "" // Initialize with an empty string
           },
           {
             title: "Field of Study",
-            inputName: "courseName" + i,
-            type: "input"
-          }, {
+            inputName: "courseName" + (prevEducation.length + 1),
+            type: "input",
+            value: "" // Initialize with an empty string
+          },
+          {
             title: "Year",
-            inputName: "yearOfStudy" + i,
-            type: "number"
-          }, {
+            inputName: "yearOfStudy" + (prevEducation.length + 1),
+            type: "number",
+            value: "" // Initialize with an empty string
+          },
+          {
             title: "Location",
-            inputName: "location" + i,
-            type: "input"
-          }]
+            inputName: "location" + (prevEducation.length + 1),
+            type: "input",
+            value: "" // Initialize with an empty string
+          }
+        ]
       }
     ]);
   };
@@ -211,33 +252,33 @@ export default function Createcandidatelist({ open = "", close = () => { }, file
         field: [
           {
             title: "Job Title",
-            inputFeild: "jobTitle" + i,
+            inputFeild: "jobTitle" + ( prevWorkexp.length + 1),
             type: "input"
           },
           {
             title: "Employment Type",
-            inputFeild: "employmentType" + i,
+            inputFeild: "employmentType" + ( prevWorkexp.length + 1),
             type: "dropdown"
 
           },
           {
             title: "Company Name",
-            inputFeild: "companyName" + i,
+            inputFeild: "companyName" + ( prevWorkexp.length + 1),
             type: "input"
           },
           {
             title: "Location  ",
-            inputFeild: "location" + i,
+            inputFeild: "location" + ( prevWorkexp.length + 1),
             type: "input"
           },
           {
             title: "From Date",
-            inputFeild: "fromDate" + i,
+            inputFeild: "fromDate" + ( prevWorkexp.length + 1),
             type: "date"
           },
           {
             title: "To Date",
-            inputFeild: "toDate" + i,
+            inputFeild: "toDate" + ( prevWorkexp.length + 1),
             type: "date"
           },
         ],
@@ -393,8 +434,9 @@ export default function Createcandidatelist({ open = "", close = () => { }, file
 
     onSubmit: async (values) => {
       try {
+        console.log(values)
         const result = await saveRecruitmentResumeEducationalDetailBatch(
-
+           
           education.map((each) => ({
             resumeId: resumeId,
             institute: values[each.field[0].inputName],
@@ -629,7 +671,7 @@ export default function Createcandidatelist({ open = "", close = () => { }, file
   useEffect(() => {
 
     getCandidatesById()
-  }, [resumeId, PdFViewer]);
+  }, []);
 
   const getEducationDetails = async () => {
     try {
@@ -896,8 +938,13 @@ export default function Createcandidatelist({ open = "", close = () => { }, file
                           if (e) {
                             setFile(e)
                           }
+                          
+
                           console.log(e)
-                        }} />
+                        }} 
+                        file={file}
+                        
+                        />
                     </div>
 
 
@@ -959,56 +1006,65 @@ export default function Createcandidatelist({ open = "", close = () => { }, file
                     initialExpanded={true}
                   >
                     {education.map((condition, index) => (
-                      <div className='flex items-end'>
-                        <div className="grid grid-cols-2 gap-4 w-4/5">
-                          {condition.field.map((each) =>
-                            each.type === "input" ?
-                              <FormInput
-                                key={each.id}
-                                title={each.title}
-                                placeholder={`Enter ${each.title}`}
-                                change={(e) => {
-                                  formik.setFieldValue(each.inputName, e);
-                                }}
-                                required={true}
-                                value={formik.values[each.inputName]}
-                                error={formik.errors[each.inputName]}
-                              // error={formik.values[each.field[0].inputName] ? "" : formik.errors.institute}
-                              // required={true}
-
-                              /> : each.type === "number" ?
-                                <FormInput
-                                  key={each.id}
-                                  title={each.title}
-                                  type={"number"}
-                                  placeholder={`Enter ${each.title}`}
-                                  change={(e) => {
-                                    formik.setFieldValue(each.inputName, e);
-                                  }}
-                                  required={true}
-                                  value={formik.values[each.inputName]}
-                                  error={formik.errors[each.inputName]}
-                                /> : <Dropdown
-                                  title={each.title}
-                                  placeholder={t("Choose" + each.title)}
-                                  options={Degree}
-                                  required={true}
-                                  change={(e) => {
-                                    formik.setFieldValue(each.inputName, e);
-                                  }}
-                                  value={formik.values[each.inputName]}
-                                  error={formik.values[each.inputName] ? "" : formik.errors[each.inputName]}
-                                />)}
-                        </div>
-                        <div className='ml-auto '>
-                          <Tooltip placement="top" title={"Delete"}>
-                            {index !== 0 && (
-                              <RiDeleteBin6Line className='size-4 text-slate-500 hover:text-red-500' onClick={() => handleDeleteCondition(index)} />
-                            )}
-                          </Tooltip>
-                        </div>
-                      </div>
-                    ))}
+  <div className='flex items-end' key={index}>
+    <div className="grid grid-cols-2 gap-4 w-4/5">
+      {condition.field.map((eachField, fieldIndex) =>
+        eachField.type === "input" ? (
+          <FormInput
+            key={fieldIndex}
+            title={eachField.title}
+            placeholder={`Enter ${eachField.title}`}
+            change={(e) => {
+              formik.setFieldValue(eachField.inputName, e);
+            }}
+            required={true}
+            value={formik.values[eachField.inputName] || eachField.value}
+            error={formik.errors[eachField.inputName]}
+          />
+        ) : eachField.type === "number" ? (
+          <FormInput
+            key={fieldIndex}
+            title={eachField.title}
+            type={"number"}
+            placeholder={`Enter ${eachField.title}`}
+            change={(e) => {
+              formik.setFieldValue(eachField.inputName, e);
+            }}
+            required={true}
+            value={formik.values[eachField.inputName]}
+            error={formik.errors[eachField.inputName]}
+          />
+        ) : (
+          <Dropdown
+            title={eachField.title}
+            placeholder={t("Choose" + eachField.title)}
+            options={Degree}
+            required={true}
+            change={(e) => {
+              formik.setFieldValue(eachField.inputName, e);
+            }}
+            value={formik.values[eachField.inputName]}
+            error={
+              formik.values[eachField.inputName]
+                ? ""
+                : formik.errors[eachField.inputName]
+            }
+          />
+        )
+      )}
+    </div>
+    <div className='ml-auto '>
+      <Tooltip placement="top" title={"Delete"}>
+        {index !== 0 && (
+          <RiDeleteBin6Line
+            className='size-4 text-slate-500 hover:text-red-500'
+            onClick={() => handleDeleteCondition(index)}
+          />
+        )}
+      </Tooltip>
+    </div>
+  </div>
+))}
                     <AddMore
                       name="Add Custom Field "
                       className="!text-black"

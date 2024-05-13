@@ -29,6 +29,10 @@ const CandidatesList = () => {
           title: t("NAME"),
           value: "candidateName",
           bold: true,
+          showSorterTooltip: { target: 'full-header' },
+          onFilter: (value, record) => record.candidateName.indexOf(value) === 0,
+          sorter: (a, b) => a.candidateName.length - b.candidateName.length,
+          sortDirections: ['descend'],
         },
         {
           id: 2,

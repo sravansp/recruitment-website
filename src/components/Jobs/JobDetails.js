@@ -160,18 +160,22 @@ const JobDetails = () => {
       {/* FILTER SECTON AND DETAILS  */}
       <div className="flex flex-col items-baseline justify-between gap-4 lg:items-center lg:gap-0 lg:flex-row">
         <div className="flex flex-wrap items-center gap-7">
-          <div
-            className={`px-2.5 py-1 ${
-              Jobdetails.jobStatus === "Open"
-                ? "bg-emerald-500 bg-opacity-10 dark:bg-opacity-50"
-                : "bg-rose-500 bg-opacity-10 dark:bg-opacity-50"
-            } rounded-[18px] gap-[7px] vhcenter`}
-          >
-            <div className="w-2.5 h-2.5 relative bg-emerald-500 rounded-[5px] border border-white shrink-0" />
-            <p className="para dark:text-white !font-normal">
-              {Jobdetails.jobStatus}
-            </p>
-          </div>
+        <div
+  className={`px-2.5 py-1 ${
+    Jobdetails.jobStatus === "Open"
+      ? "bg-emerald-500 bg-opacity-10 dark:bg-opacity-50"
+      : "bg-red-500 bg-opacity-10 dark:bg-opacity-50"
+  } rounded-[18px] gap-[7px] vhcenter`}
+>
+<div className="w-2.5 h-2.5 relative rounded-[5px] border border-white shrink-0"
+    style={{
+      backgroundColor: Jobdetails.jobStatus === "Open" ? "#10B981" : "#EF4444",
+    }}
+  />
+  <p className="para dark:text-white !font-normal">
+    {Jobdetails.jobStatus}
+  </p>
+</div>
           <div className="gap-2 vhcenter">
             <PiUsersThreeFill size={20} className="text-[#DFDFDF]" />
             <p className="para !text-black dark:!text-white !font-normal">
@@ -716,7 +720,7 @@ const CardItem = ({ data, index, color, jobId,jobStatus }) => {
             snapshot.isDragging &&
             "shadow-dragShadow dark:shadow-dragShadowDark"
           } p-3 mb-1.5 bg-white border rounded-md ${
-            parseInt(data.currentStatus) !== 0
+            parseInt(data.currentStatus) !== 0 || jobStatus === 'Closed'
               ? " cursor-default"
               : "cursor-grab"
           }  border-borderlight dark:border-borderdark dark:bg-[#0c101c] dark:text-white`}

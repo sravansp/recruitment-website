@@ -209,16 +209,24 @@ const QuestionAire = ({
             createdBy: null,
           });
           const alphanumericRegex = /^[a-zA-Z0-9 ]+$/; // Regex to allow only letters, numbers, and spaces
-
+          let hasError = false;
           if (!values.questionnaireTemplateName || !alphanumericRegex.test(values.questionnaireTemplateName)) {
-            formik.setFieldError('questionnaireTemplateName', !values.questionnaireTemplateName ? 'Template name is required' : 'Please enter only letters and numbers');
-          }
+            formik.setFieldError('questionnaireTemplateName', 
+                !values.questionnaireTemplateName ? 'Template name is required' : 
+                'Please enter only letters and numbers');
+            hasError = true;
+        } else if (values.questionnaireTemplateName.length < 3) {
+            formik.setFieldError('questionnaireTemplateName', 'Template name should have at least 3 characters');
+            hasError = true;
+        }
 
           if (!values.description) {
             formik.setFieldError('description', 'Description is required');
+             hasError = true;
           }
+         
 
-          let hasError = false;
+          
           evaluation.forEach((condition) => {
             if (!condition.question) {
               setQuestionError('Question is Required.');
@@ -227,7 +235,7 @@ const QuestionAire = ({
             }
 
             if (!condition.answerMetaData || !condition.answerMetaData[0]?.key) {
-              setAnswerError('Please choose an answer type.');
+              setAnswerError('Answertype is required');
               hasError = true;
             }
             if (
@@ -466,8 +474,8 @@ const QuestionAire = ({
 
         > <div className="relative max-w-[1070px]  w-full mx-auto">
             <Accordion
-              title={"New Questionnaire Templates"}
-              description={"New Questionnaire  Templates"}
+              title={"Questionnaire Templates"}
+              description={"Questionnaire  Templates"}
               className="Text_area"
               padding={true}
 
@@ -547,7 +555,7 @@ const QuestionAire = ({
                           icondropDown={true}
                           error={condition.answerMetaData[0]?.key ? '' : answerError || ''}
                           required={true}
-                          placeholder={"Choose Options"}
+                          placeholder={"Choose Answertype"}
                         />
                       </div>
                       {/* Additional dynamic input fields based on the selected value in the dropdown */}

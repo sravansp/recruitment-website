@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useState } from "react";
 import { InboxOutlined } from "@ant-design/icons";
 import { message, Upload } from "antd";
 import { useTranslation } from "react-i18next";
@@ -13,9 +13,11 @@ export default function FileUpload({
   const { t } = useTranslation();
   const allowedFileFormats = ["jpg", "png", "jpeg", "svg", "webp", "pdf", "doc", "docx", "pptx"];
   const fileFormatsString = allowedFileFormats.join(", ");
+  const [selectedFile, setSelectedFile] = useState(null);
+
   const props = {
     name: "file",
-    multiple: true,
+    multiple: false, // Allow only one file to be selected
     action: "https://run.mocky.io/v3/435e224c-44fb-4773-9faf-380c5e6a2188",
     beforeUpload: (file) => {
       const fileExtension = file.name.split(".").pop().toLowerCase();
@@ -29,28 +31,33 @@ export default function FileUpload({
       }
     },
   };
+
+  const handleChange = (info) => {
+    const { status, originFileObj } = info.file;
+    if (status !== "uploading") {
+      console.log(info.fileList);
+      console.log(status, ":file upload status");
+      console.log(originFileObj);
+    }
+    // Ensure only one file is selected
+    if (originFileObj) {
+      setSelectedFile(originFileObj);
+      change(originFileObj);
+    }
+  };
+
   return (
     <div className={`${className}`}>
       <Dragger
         {...props}
-        onChange={(info) => {
-          const { status, originFileObj } = info.file;
-          if (status !== "uploading") {
-            console.log(info.fileList);
-            console.log(status,":file upload status");
-            console.log(originFileObj);
-          }
-          // if (status === "done") {
-          //   message.success(`${info.file.name} file uploaded successfully.`);
-          // } else if (status === "error") {
-          //   message.error(`${info.file.name} file upload failed.`);
-          // }
-          change(originFileObj);
-        }}
+        onChange={handleChange}
         onDrop={(e) => {
           console.log(e.dataTransfer.files[0]);
+          setSelectedFile(e.dataTransfer.files[0]);
           change(e.dataTransfer.files[0]);
+
         }}
+        maxCount={1}
       >
         {flex === true ? (
           <div className="flex gap-2">
@@ -75,6 +82,10 @@ export default function FileUpload({
           </div>
         )}
       </Dragger>
+      {/* Display the selected file */}
+      {/* {selectedFile && (
+        <p>Selected file: {selectedFile.name}</p>
+      )} */}
     </div>
   );
 }
