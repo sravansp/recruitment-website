@@ -182,13 +182,13 @@ const Modal2 = ({
           >
             <div
               className="flex flex-col w-full h-full gap-4 p-4 overflow-hidden rounded-xl borderb"
-              style={{
-                background: `${
-                  mode === "dark"
-                    ? "linear-gradient(rgb(29 27 36) 0%, rgb(48 45 54) 30.42%, rgba(255, 255, 255, 0) 99.67%)"
-                    : `linear-gradient(180deg, ${lighterColor} 0%, rgba(255, 255, 255, 0.82) 30.42%, rgba(255, 255, 255, 0.00) 99.67%)`
-                } `,
-              }}
+              // style={{
+              //   background: `${
+              //     mode === "dark"
+              //       ? "linear-gradient(rgb(29 27 36) 0%, rgb(48 45 54) 30.42%, rgba(255, 255, 255, 0) 99.67%)"
+              //       : `linear-gradient(180deg, ${lighterColor} 0%, rgba(255, 255, 255, 0.82) 30.42%, rgba(255, 255, 255, 0.00) 99.67%)`
+              //   } `,
+              // }}
             >
               <div className="justify-center">
  <div style={{alignItems:"center",marginLeft:"209px",marginTop:"20px"}} className={`flex items-center justify-center rounded-full 2xl:h-11 2xl:w-11 h-10 w-10 shadow-stepShadowInset place-items-center bg-[#E3DFFB] border-[0.5px] border-[${primaryColor}] border-opacity-10`}>

@@ -1738,7 +1738,7 @@ function Web({ closeDrawer, selectedJobId, onClick }) {
                       /* <button
                       type="button" */
                       className="flex items-center justify-between w-full px-6 py-4 font-semibold text-left rounded-md"
-                      style={{ backgroundColor: `${primaryColor}10` }}
+                      // style={{ backgroundColor: `${primaryColor}10` }}
                     /* > */
                     >
                       <div className="text-left rtl:text-right">
