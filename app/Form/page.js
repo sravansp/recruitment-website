@@ -2119,17 +2119,19 @@ function Web({ closeDrawer, selectedJobId, onClick }) {
                                 ]?.yearOfStudy || ""
                               }
                             />
-                            <div className="flex items-center justify-end">
-                              <Tooltip placement="top" title={"Delete"}>
-                                <button
-                                  onClick={() =>
-                                    handleDeleteEducationalDetails(index)
-                                  }
-                                >
-                                  <RiDeleteBin5Line className="text-gray-500 w-[17px] h-[17px] hover:text-red-600" />
-                                </button>
-                              </Tooltip>
-                            </div>
+                            {index !== 0 &&
+                              <div className="flex items-center justify-end">
+                                <Tooltip placement="top" title={"Delete"}>
+                                  <button
+                                    onClick={() =>
+                                      handleDeleteEducationalDetails(index)
+                                    }
+                                  >
+                                    <RiDeleteBin5Line className="text-gray-500 w-[17px] h-[17px] hover:text-red-600" />
+                                  </button>
+                                </Tooltip>
+                              </div>
+                            }
                           </div>
                           <div className="divider-h" />
                         </div>
@@ -2415,13 +2417,15 @@ function Web({ closeDrawer, selectedJobId, onClick }) {
                               </Tooltip>
                             </div> */}
                           </div>
-                          <div className="flex items-center justify-end">
-                            <Tooltip placement="top" title={"Delete"}>
-                              <button onClick={() => handleDelete1(index)}>
-                                <RiDeleteBin5Line className="text-gray-500 w-[17px] h-[17px] hover:text-red-600" />
-                              </button>
-                            </Tooltip>
-                          </div>
+                          {index !== 0 &&
+                            <div className="flex items-center justify-end">
+                              <Tooltip placement="top" title={"Delete"}>
+                                <button onClick={() => handleDelete1(index)}>
+                                  <RiDeleteBin5Line className="text-gray-500 w-[17px] h-[17px] hover:text-red-600" />
+                                </button>
+                              </Tooltip>
+                            </div>
+                          }
                         </div>
                       ))}
 
