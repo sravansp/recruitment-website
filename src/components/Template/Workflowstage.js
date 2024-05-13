@@ -268,8 +268,10 @@ const Workflowstage = ({
     
     if (index !== -1) {
         // Set the selected stage name and edit stage index
-        setSelectedStageName(stages[index].stageName);
+        setStageName(stages[index].stageName);
+
         setEditStageIndex(index);
+       
 
         // Parse the stage rules string into a JavaScript object
         const stageRules = stages[index].stageRules;
@@ -399,11 +401,12 @@ const Workflowstage = ({
     
     
     
-    if (!stageName && !selectedStageName) {
+    if (!stageName ) {
       setStageError("Stage Name is required.");
       return;
     } else {
       setStageError("");
+      
     }
 
     if (!stageName.trim()) {
@@ -413,7 +416,7 @@ const Workflowstage = ({
 
     // Create an object to hold the stage rules based on user inputs
     const stageRules = {};
-
+    
     // Set the stage rules based on dropdown selections and input field values
     if (evaluationValue) {
         stageRules["evaluation"] = evaluationValue;
@@ -1032,7 +1035,7 @@ const Workflowstage = ({
                 <FormInput
                   title={"Stage Name"}
                   placeholder={"Enter Stage Name"}
-                  value={selectedStageName}
+                  value={stageName}
                   change={(e) => {
                     setStageName(e);
                     setSelectedStageName(e);
