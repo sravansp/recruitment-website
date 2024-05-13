@@ -31,7 +31,7 @@ export default function DateSelect({
             {title}
           </label>
         )}
-        {required && <FaAsterisk className="text-[10px] text-rose-600" />}
+        {required && <FaAsterisk className="text-[8px] text-rose-600" />}
       </div>
 
       <DatePicker
