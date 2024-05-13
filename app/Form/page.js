@@ -191,10 +191,13 @@ function Web({ closeDrawer, selectedJobId, onClick }) {
       },
     ]);
 
-  const handleDeleteEducationalDetails = (index) => {
-    const updatedDetails = [{ ...additionalEducationalDetails }];
-    updatedDetails.splice(index, 1);
-    setAdditionalEducationalDetails(updatedDetails);
+  const handleDeleteEducationalDetails = (indexToRemove) => {
+    // const updatedDetails = [{ ...additionalEducationalDetails }];
+    // updatedDetails.splice(index, 1);
+    // setAdditionalEducationalDetails(updatedDetails);
+    setAdditionalEducationalDetails((additionalEducationalDetails) =>
+      additionalEducationalDetails.filter((_, index) => index !== indexToRemove)
+    );
   };
 
   const [steps, setSteps] = useState([
