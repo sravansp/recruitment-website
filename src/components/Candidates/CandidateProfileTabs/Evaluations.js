@@ -23,7 +23,8 @@ import { PiPushPinSlashBold } from "react-icons/pi";
 
 
 
-const Evaluations = () => {
+const Evaluations = ({EvaluationID,stageId}) => {
+  console.log(EvaluationID)
   const primaryColor = localStorage.getItem("mainColor");
   const [evaluationList, setevaluationList] = useState([])
   const { state } = useLocation();
@@ -97,8 +98,9 @@ const Evaluations = () => {
   const getresumeEvalutionId = async () => {
     try {
       const response = await getAllRecruitmentJobResumesEvaluations({
-        jobId: jobId,
-        resumeId: resumeId
+        jobId: localStorage.getItem('jobid'),
+        resumeId: resumeId,
+        stageId:stageId
       });
       console.log(response);
       setfetchedAnswers(response.result);
@@ -112,8 +114,10 @@ const Evaluations = () => {
     }
   };
   useEffect(() => {
+    if(stageId||EvaluationID||evalutaionId){
     getresumeEvalutionId()
-  }, [jobId])
+    }
+  }, [stageId||EvaluationID||evalutaionId])
 
 
 
@@ -152,7 +156,8 @@ const Evaluations = () => {
 
             jobId: jobId,
             resumeId: resumeId,
-            evaluationTemplateId: evalutaionId,
+            stageId:stageId,
+            evaluationTemplateId: evalutaionId||EvaluationID,
             evaluationTemplateDetailsId: detailsId,
             evaluationAnswer: answer ? answer.evaluationAnswer : evaluationAnswer,
             createdBy: null
@@ -217,8 +222,8 @@ const Evaluations = () => {
   const getEvtempId = async () => {
     const response = await getRecruitmentJobById({ id: jobId })
     setEvaluationId(response.result[0].evaluationTemplateId)
-
-    console.log(response)
+    
+    console.log(response.result[0].evaluationTemplateId)
 
   }
 
@@ -320,6 +325,7 @@ const Evaluations = () => {
           }))
         }));
       });
+      
       setevaluationList(evaluationData)
 
     } catch (error) {
@@ -327,15 +333,16 @@ const Evaluations = () => {
     }
   }
   useEffect(() => {
-    if (evalutaionId) {
+    if (evalutaionId||EvaluationID) {
       getevaluation();
       console.log(evaluationList)
 
     }
 
 
-  }, [evalutaionId])
+  }, [evalutaionId||EvaluationID||stageId])
   useEffect(() => {
+    console.log(fetchedAnswers)
     fetchedAnswers.forEach(answer => {
       const { evaluationTemplateDetailsId, evaluationAnswer } = answer;
       const matchedCondition = evaluationList.find(condition => condition.evaluationTemplateDetailsId === evaluationTemplateDetailsId);
@@ -373,7 +380,7 @@ const Evaluations = () => {
         }
       }
     });
-  }, [evaluationList, evaluationAnswers]);
+  }, [fetchedAnswers]);
 
   const onChange = (e) => { };
 
@@ -488,7 +495,8 @@ const Evaluations = () => {
             </div> */}
             {evaluationList.length > 0 ? (
               evaluationList.map((condition, index) => (
-                <><div key={index}>
+                <>
+                <div key={index}>
                   <h4>{condition.question}</h4>
                   {condition.answerMetaData.map((metadata, idx) => (
                     <div key={idx}>
@@ -542,13 +550,15 @@ const Evaluations = () => {
                     </div>
                   ))}
                 </div>
-                <div
+                   <div
                     className="flex items-center justify-end gap-2.5 p-1.5 mt-[18.88px] rounded-lg"
                   >
                     <ButtonClick handleSubmit={handleSubmit} buttonName="save" BtnType="primary" />
                   </div>
                 </>
+
               ))
+              
             ) : (
               <div className="h-full gap-4 vhcenter box-wrapper borderb">
                 <div className="flex flex-col items-center gap-4">

@@ -38,6 +38,8 @@ import ModalImg from "../../assets/images/Workflowimg.png";
 import Dropdown from "../common/Dropdown";
 import arrow from "../../assets/images/arrow3d 1.png";
 import Emailtemplate from "./AddEmailtemplate";
+import { title } from "process";
+import MenuItems from "../DropDown";
 
 const Workflowstage = ({
   open = "",
@@ -96,13 +98,18 @@ const Workflowstage = ({
   const [Addnote,setAddnote] = useState("")
   const [Email,setEmail] = useState("")
   const [AddTag,setAddtag] = useState("")
+  const[evaluation,setEvaluation] = useState([])
+  const[questionareTemp,setQuestionareTemp] = useState([])
+  const [emailTemp,setEmailTemp] = useState([])
+  const [showDiv, setShowDiv] = useState(false);
+  const primaryColor = localStorage.getItem('mainColor')
   
  
 
 
   const getEmailLsit = async () => {
     try {
-      const response = await getAllRecruitmentEmailTemplates();
+      const response = await getAllRecruitmentEmailTemplates({});
   
       // Extract emailSubject array from the response and set it to state
       const newEmailSubject = response.result.map(email => ({
@@ -110,7 +117,7 @@ const Workflowstage = ({
         value: email.emailTemplateId,
       }));
   
-    
+      setEmailTemp(newEmailSubject) 
       setoptions(prevOptions => {
         // Map over the prevOptions and update the option where key matches "request"
         return prevOptions.map(option => {
@@ -151,25 +158,28 @@ const Workflowstage = ({
   const handleMenuClick = (option, value) => {
     let demo = options.filter(data => data.key == option);
 
-    console.log(options)
+   
     let detObject = demo.length > 0 ? demo[0].det : {};
   
     // Add the selected detObject to the existing optionData array as an object
     setOptionData(prevOptionData => [...prevOptionData, ...detObject]);
     
     setmenuitem(true);
-    setMenuVisible(false);
-  };
+    setMenuVisible(false)
+    setShowDiv(true);
+  };  
   console.log(optionData, "0000");
+ 
   const getEvaluationtem = async () => {
     try {
-      const response = await getAllRecruitmentEvaluationTemplates();
+      const response = await getAllRecruitmentEvaluationTemplates({});
       console.log(response);
       const newEvaluation =
         response.result.map((each) => ({
           label: each.evaluationTemplateName,
           value: each.evaluationTemplateId,
         }))
+        setEvaluation(newEvaluation)
       
       setoptions(prevOptions => {
         // Map over the prevOptions and update the option where key matches "request"
@@ -181,7 +191,7 @@ const Workflowstage = ({
                 return {
                   ...detItem,
                   option1: detItem.option1.map(option1Item => {
-                    if (option1Item.title === "Choose Evalutaion") {
+                    if (option1Item.title === "Choose Evaluation") {
                       return {
                         ...option1Item,
                         options: newEvaluation,
@@ -207,13 +217,15 @@ const Workflowstage = ({
   },[])
   const getQuestionare = async () => {
     try {
-      const response = await getAllRecruitmentQuestionnaireTemplates();
+      const response = await getAllRecruitmentQuestionnaireTemplates({});
       console.log(response);
        const questiontionnare= 
         response.result.map((each) => ({
           label: each.questionnaireTemplateName,
           value: each.questionnaireTemplateId,
         }))
+
+        setQuestionareTemp(questiontionnare)
         setoptions(prevOptions => {
           // Map over the prevOptions and update the option where key matches "request"
           return prevOptions.map(option => {
@@ -251,52 +263,129 @@ const Workflowstage = ({
    
   const handleEditStage = (stageIndex) => {
     // Find the index of the stage with the given stage name
+   
     const index = stages.findIndex((stage) => stage.stageName === stageIndex);
     
     if (index !== -1) {
-      // Check if the stage name exists in the stages array
-      setSelectedStageName(stages[index].stageName);
-      setEditStageIndex(index);
-  
-      // Parse the stage rules string into a JavaScript object
-      const stageRules = stages[index].stageRules;
-  
-      // Set the values of input fields based on the stage rules of the selected stage
-      if (stageRules) {
+        // Set the selected stage name and edit stage index
+        setSelectedStageName(stages[index].stageName);
+        setEditStageIndex(index);
+
+        // Parse the stage rules string into a JavaScript object
+        const stageRules = stages[index].stageRules;
+
+        // Construct the optionData array based on the stage rules
+        const optionData = [];
+
         if (stageRules.evaluation) {
-          setEvaluationValue(stageRules.evaluation);
+            
+        
+          optionData.push({
+                id: "request_evaluation",
+                name: "Request Evaluation",
+                option1: [
+                    {// Evaluation options here...
+                        id:1,
+                        title:"Choose Evaluation",
+                        options: evaluation
+                    }
+                ]
+            });
         }
-  
+
         if (stageRules.questionnaire) {
-          setQuestionnaire(stageRules.questionnaire);
+            optionData.push({
+                id: "send_questionnaire",
+                name: "Send Questionnaire ",
+                option1: [
+                    // Questionnaire options here...
+                    {id:1, 
+                    title:"Choose Questionnaire", 
+                    options:questionareTemp
+                  }
+                ]
+            });
         }
-  
-        if (stageRules.emailTemplate) {
-          setEmail(stageRules.emailTemplate);
-        }
-  
+
         if (stageRules.note) {
-          setAddnote(stageRules.note);
+            optionData.push({
+                id: "Add note",
+                name: "Add note ",
+                option1: [
+                    // Questionnaire options here...
+                    {id:1, title:"Add note"}
+                ]
+            });
         }
-  
+
         if (stageRules.tag) {
-          setAddtag(stageRules.tag);
+            optionData.push({
+                id: "add_tag",
+                name: "add_tag",
+                option1: [
+                    // Questionnaire options here...
+                    {id:1, titletag:"Add New Tag"}
+                ]
+            });
         }
-      }
-  
-      setIsModalVisible(true);
-      
+
+        if (stageRules.emailTemplate) {
+            optionData.push({
+                id: "send_email",
+                name: "Send Email",
+                option1: [
+                    // Questionnaire options here...
+                    {
+                    id:1, 
+                    title:"Choose Email Template", 
+                    options:emailTemp
+                  }
+                ]
+            });
+        }
+
+        // Update the optionData state
+        setOptionData(optionData);
+
+        // Set the values of input fields based on the stage rules of the selected stage
+        if (stageRules) {
+            if (stageRules.evaluation) {
+                console.log(stageRules.evaluation,"haaa")
+                setEvaluationValue(stageRules.evaluation);
+            }
+
+            if (stageRules.questionnaire) {
+                setQuestionnaire(stageRules.questionnaire);
+            }
+
+            if (stageRules.emailTemplate) {
+                setEmail(stageRules.emailTemplate);
+            }
+
+            if (stageRules.note) {
+                setAddnote(stageRules.note);
+            }
+
+            if (stageRules.tag) {
+                setAddtag(stageRules.tag);
+            }
+        }
+
+        // Show the modal
+        setIsModalVisible(true);
+        
     } else {
-      console.error("Invalid stage name:", stageIndex);
+        console.error("Invalid stage name:", stageIndex);
     }
-  };
-  const handleModalClose = () => {
-    // Set the state to false to hide the modal
-    setIsModalVisible(false);
-    //set the state empty
-    setStageName("");
-    setSelectedStageName("");
-  };
+};
+
+  // const handleModalClose = () => {
+  //   // Set the state to false to hide the modal
+  //   setIsModalVisible(false);
+  //   //set the state empty
+  //   setStageName("");
+  //   setSelectedStageName("");
+  // };
   // const handleCopy = (stageIndex) => {
   //   copy(stageIndex);
   // };
@@ -306,11 +395,15 @@ const Workflowstage = ({
   }, [stages]);
 
   const handleAddStageClick = () => {
-    if (!stageName) {
-        setStageError("Stage Name is required.");
-        return;
+  
+    
+    
+    
+    if (!stageName && !selectedStageName) {
+      setStageError("Stage Name is required.");
+      return;
     } else {
-        setStageError("");
+      setStageError("");
     }
 
     if (!stageName.trim()) {
@@ -349,7 +442,7 @@ const Workflowstage = ({
         // Update the corresponding stage name and stage rules in the stages array
         setstages(prevStages =>
             prevStages.map((stage, index) =>
-                index === editStageIndex ? { ...stage, stageName, stageRules } : stage
+                index === editStageIndex ? { ...stage, stageName, stageRules, optionData: [...optionData] } : stage
             )
         );
     } else if (!updateId) {
@@ -364,7 +457,7 @@ const Workflowstage = ({
                 stageName,
                 stageRules,
                 createdBy: 9,
-                optionData: optionData.map(option => ({ ...option }))
+                optionData: [...optionData] // Create a new array for optionData
             },
         ]);
     } else {
@@ -377,20 +470,21 @@ const Workflowstage = ({
                 stageName,
                 stageRules,
                 createdBy: 9,
-                optionData: optionData.map(option => ({ ...option }))
+                optionData: [...optionData] // Create a new array for optionData
             },
         ]);
     }
 
-    closeModal(); // Close the modal
-    setEditStageIndex(null); // Clear the editStageIndex
-    setStageName("");
-    setSelectedStageName("");
-    setEvaluationValue(""); // Clear dropdown selection
-    setQuestionnaire(""); // Clear dropdown selection
-    setEmail(""); // Clear dropdown selection
-    setAddnote(""); // Clear input field value
-    setAddtag("");
+     // Close the modal
+     closeModal()
+    // setEditStageIndex(null); // Clear the editStageIndex
+    // setStageName("");
+    // setSelectedStageName("");
+    // setEvaluationValue(""); // Clear dropdown selection
+    // setQuestionnaire(""); // Clear dropdown selection
+    // setEmail(""); // Clear dropdown selection
+    // setAddnote(""); // Clear input field value
+    // setAddtag("");
 };
 
   const handleDeleteStage = (id) => {
@@ -409,6 +503,16 @@ const Workflowstage = ({
 
   const closeModal = () => {
     setIsModalVisible(false);
+    setEditStageIndex(null); // Clear the editStageIndex
+    setStageName("");
+    setSelectedStageName("");
+    setEvaluationValue(""); // Clear dropdown selection
+    setQuestionnaire(""); // Clear dropdown selection
+    setEmail(""); // Clear dropdown selection
+    setAddnote(""); // Clear input field value
+    setAddtag("");
+    setOptionData([])
+
    
 
   };
@@ -597,7 +701,7 @@ const Workflowstage = ({
         
         option1: [
           { id: 1, 
-            title: "Choose Evalutaion", 
+            title: "Choose Evaluation", 
             
 
             
@@ -658,7 +762,7 @@ const Workflowstage = ({
       icon: <IoIosArrowDropdown />,
       det: [{
         id: "add_tag",
-        name: "Send Email ",
+        name: "add_tag",
         option1: [
           { id: 1, titletag: "Add New Tag" }
         ],
@@ -700,7 +804,7 @@ const Workflowstage = ({
     console.log(`Option with id '${id}' deleted successfully.`);
   };
  
-  
+  console.log(stages,"stages")
   return (
     <DrawerPop
       open={show}
@@ -900,7 +1004,8 @@ const Workflowstage = ({
             buttonSubmit={handleAddStageClick}
 
           >
-            <div className="flex flex-col items-center justify-center w-full h-full gap-5">
+            {/* <div className="h-[500px] overflow-auto"> */}
+            <div className=" flex flex-col items-center justify-center w-full h-full gap-5">
               <div className="flex flex-col items-center gap-2 text-center">
                 <div className="p-1 overflow-hidden border-2 border-white rounded-full 2xl:size-14 size-12 bg-primaryalpha/10">
                   <img
@@ -937,75 +1042,74 @@ const Workflowstage = ({
                 />
               </div>
             </div>
-            {optionData ? optionData.map((key, index) => (
-              <div key={index} className="flex flex-col gap-3 w-full border border-black-500 ring-1 ring-black ring-opacity-5 shadow-lg rounded-lg p-1" style={{ display: menuitem ? "block" : "none" }}>
-                <div className="w-full m-auto bg-slate-100 h-12 rounded-lg flex justify-between items-center pr-2">
-                  <h1 className="mt-3.5 m-3 font-semibold">{key.name}</h1>
-                  <Tooltip placement="top" color={'red'}   title={"Delete"}>
-                    < RiDeleteBin5Line className="text-gray-500 2xl:text-base dark:text-white hover:text-red-500" onClick={() => handleDeleteSection(`${optionData[index].id}`)} />
-                  </Tooltip>
-                </div>
-                <div className="flex gap-2 w-full p-1">
-                  {key && key.option1 ? key.option1.map((item,ind) => (
-                    <>
-                    {console.log(item)}
-                      {item.title ==="Choose Evalutaion"?(
-                        <div key={ind} className="w-1/2">
-                          <Dropdown title={item.title} 
-                          options={item.options}
-                          change={(e)=>{
-                            setEvaluationValue(e)
-                          }}
-                          value={evaluationValue}
-                          />
-
-                        </div>
-                        ): item.title==="Choose Questionnaire" ?(
-                          <div key={ind} className="w-1/2">
-                          <Dropdown title={item.title} 
-                          options={item.options}
-                          change={(e)=>{
-                            setQuestionnaire(e)
-                          }}
-                          value={questionnaire}
-                          />
-                          </div>   
-                        ):item.title==="Choose Email Template" ?(
-                          <div key={ind} className="w-1/2">
-                          <Dropdown title={item.title} 
-                          options={item.options}
-                          change={(e)=>{
-                            setEmail(e)
-                          }}
-                          value={Email}
-                          />
-                          </div>
-                        ):item.title==="Add note" ?(
-                          <FormInput title={item.title} 
-                          change={(e)=>{
-                            setAddnote(e)
-                          }}
-                          value={Addnote}
-                          
-                          />
-
-                        ):""}
-                      {item.titletag ?
-                        <div className="w-full">
-                          <FormInput title={item.titletag} 
-                          change={(e)=>{
-                            setAddtag(e)
-                          }}
-                          value={AddTag}
-                          
-                          />
-                        </div>
-                        : ""}
-                   </>
-                  )):""}
-                </div>
-              </div>
-            )):''}
+           
+            <div className="h-auto max-h-[370px] overflow-auto gap-5 flex flex-col">
+            {optionData.map((key, index) => (
+  <div key={index} className="flex flex-col gap-3 w-full borderb rounded-[10px] p-1 "
+  >
+    <div className="w-full m-auto h-12 rounded-md flex justify-between items-center pr-2"   style={{backgroundColor: `${primaryColor}10`}}>
+      <h1 className="mt-3.5 m-3 font-semibold dark:text-white">{key.name}</h1>
+      <Tooltip placement="top" color={'red'} title={"Delete"}>
+        <RiDeleteBin5Line className="text-gray-500 2xl:text-base dark:text-white hover:text-red-500" onClick={() => handleDeleteSection(key.id)} />
+      </Tooltip>
+    </div>
+    <div className="flex gap-2 w-full px-5 py-4">
+      {key && key.option1 && key.option1.map((item, ind) => (
+        <>
+          {console.log(item)}
+          {item.title === "Choose Evaluation" ? (
+            <div key={ind} className="w-1/2">
+              <Dropdown title={item.title}
+                options={item.options}
+                change={(e) => {
+                  setEvaluationValue(e)
+                }}
+                value={evaluationValue}
+              />
+            </div>
+          ) : item.title === "Choose Questionnaire" ? (
+            <div key={ind} className="w-1/2">
+              <Dropdown title={item.title}
+                options={item.options}
+                change={(e) => {
+                  setQuestionnaire(e)
+                }}
+                value={questionnaire}
+              />
+            </div>
+          ) : item.title === "Choose Email Template" ? (
+            <div key={ind} className="w-1/2">
+              <Dropdown title={item.title}
+                options={item.options}
+                change={(e) => {
+                  setEmail(e)
+                }}
+                value={Email}
+              />
+            </div>
+          ) : item.title === "Add note" ? (
+            <FormInput title={item.title}
+              change={(e) => {
+                setAddnote(e)
+              }}
+              value={Addnote}
+            />
+          ) : ""}
+          {item.titletag &&
+            <div className="w-full">
+              <FormInput title={item.titletag}
+                change={(e) => {
+                  setAddtag(e)
+                }}
+                value={AddTag}
+              />
+            </div>
+          }
+        </>
+      ))}
+    </div>
+  </div>
+))}
           {/* {optionData.map((item) => (
               <div  className="flex flex-col gap-3 w-full border border-black-500 ring-1 ring-black ring-opacity-5 shadow-lg rounded-lg p-1" style={{ display: menuitem ? "block" : "none" }}>
                 <div className="w-full m-auto bg-slate-100 h-12 rounded-lg flex justify-between items-center pr-2">
@@ -1032,13 +1136,7 @@ const Workflowstage = ({
               </div>
             ))} */}
 
-          <div className="justify-start">
-            <AddMore
-              name="Add stage rule"
-              className="text-black"
-              change={() => setMenuVisible(true)}
-            />
-          </div>
+        
 
           {/* <Menu
               onClick={({ key }) => handleMenuClick(key)}
@@ -1063,6 +1161,15 @@ const Workflowstage = ({
                 );
               })}
             </Menu> */}
+            </div>
+           
+            {/* <div className="justify-start">
+            <AddMore
+              name="Add stage rule"
+              className="text-black"
+              change={() => setMenuVisible(true)}
+            />
+          </div>
           <Menu
             onClick={({ key, value }) => handleMenuClick(key, value)}
             style={{ display: menuVisible ? "block" : "none" }}
@@ -1078,7 +1185,16 @@ const Workflowstage = ({
                 </Menu.Item>
               );
             })}
-          </Menu>
+          </Menu> */}
+          <MenuItems
+          Items ={options}
+          handleItemClick={(Key)=>{
+            handleMenuClick(Key)
+          }}
+          
+          />
+          
+          {/* </div> */}
         </WorkflowModal>
         {/* <Modal
             // title="Vertically centered modal dialog"

@@ -24,7 +24,7 @@ const appearanceLanguageArabic = {
   Applied_Date: "تاريخ التقديم",
 
 
-  Add_Candidates: "إضافة المرشحين",
+  Add_Candidate: "إضافة المرشحين",
   Personal_Details: "التفاصيل الشخصية",
   Educational_Details: "التفاصيل التعليمية",
   Work_Experience: "الخبرة العملية",
@@ -34,7 +34,7 @@ const appearanceLanguageArabic = {
   Head_Of_Director: "رئيس المدير",
   Head_of_director: "رئيس المدير",
   help: "مساعدة",
-  Personal_Information: "المعلومات الشخصية",
+  Personal_Details: "تفاصيل شخصية",
   Prefix: "البادئة",
   First_Name: "الاسم الأول",
   Last_Name: "الاسم الأخير",

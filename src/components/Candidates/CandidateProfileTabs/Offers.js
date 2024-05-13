@@ -279,7 +279,7 @@ const openNotification = (type, message, description) => {
   }
   const getLetterTemplate = async () => {
     try {
-      const response = await getAllRecruitmentLetterTemplates()
+      const response = await getAllRecruitmentLetterTemplates({})
       console.log(response)
       setLetterTemplate(response.result.map((each) => ({
         label: each.letterTemplateName,

@@ -128,6 +128,9 @@ const Createjob = ({
   const [searchValue, setSearchValue] = useState("");
   const [CheckboxValue, setCheckboxValue] = useState(false);
   const [link, setLink] = useState("");
+  const [Questionerror, setQuestionError] = useState('')
+  const [answerError, setAnswerError] = useState('')
+  const [OptionError, setoptionserror] = useState('')
 
 
 
@@ -175,7 +178,7 @@ const Createjob = ({
   };
   const getAllJobdescription = async () => {
     try {
-      const data = await getAllRecruitmentJobDescriptionTemplates()
+      const data = await getAllRecruitmentJobDescriptionTemplates({})
       // console.log(data)
       // 
       setJobDescriptionList(data.result.map((each) => ({
@@ -268,9 +271,10 @@ const Createjob = ({
   const [errorMessages, setErrorMessages] = useState("");  //useState("") //useState(Array(evaluation.length).fill(''))
   const [dropdownOptions, setDropdownOptions] = useState([]);
   const [jobId, setJobId] = useState(null);
-  const [UpdateId, setupdateId] = useState(null);
+  const [UpdateId, setupdateId] = useState("");
   useEffect(() => {
     setupdateId(updateId);
+     console.log("Id",updateId)
   }, [updateId]);
 
   //job applying
@@ -320,6 +324,7 @@ const Createjob = ({
       formik1.setFieldValue("jobTitle", firstJob.jobTitle);
       formik1.setFieldValue("departmentId", firstJob.departmentId);
       formik1.setFieldValue("education", firstJob.education);
+      formik1.setFieldValue("workLocationType", firstJob.workLocationType);
       formik1.setFieldValue("isActive", firstJob.isActive);
       formik1.setFieldValue("isSalaryPublic", firstJob.isSalaryPublic);
       formik1.setFieldValue("jobCode", firstJob.jobCode);
@@ -454,7 +459,7 @@ const Createjob = ({
             jobTitle: e.jobTitle,
             departmentId: e.departmentId,
             jobCode: e.jobCode,
-            workLocationType: e.workLocationType,
+            workLocationType: e.workLocationType||"Onsite",
             location: e.location,
             requirementType: e.requirementType,
             jobType: e.jobType,
@@ -502,7 +507,7 @@ const Createjob = ({
             jobTitle: e.jobTitle,
             departmentId: e.departmentId,
             jobCode: e.jobCode,
-            workLocationType: e.workLocationType,
+            workLocationType: e.workLocationType||"Onsite",
             location: e.location,
             requirementType: e.requirementType,
             jobType: e.jobType,
@@ -629,28 +634,33 @@ const Createjob = ({
         //   );
         //   return;
         // }
+        let hasError = false;
         const newErrorMessages = evaluation.map((condition) => {
-          let errorMessage = '';
+          
 
           if (!condition.question) {
-            errorMessage = 'Please enter a question.';
-          } else if (!condition.answer_type) {
-            errorMessage = 'Please choose an answer type.';
-          } else if (
-            ["Drop-down", "MultipleChoice", "Checkboxes"].includes(condition.answer_type) &&
+            setQuestionError('Please enter a question.');
+            hasError=true
+          } 
+           if (!condition.answer_type) {
+            setAnswerError('Please choose an answer type.');
+            hasError=true
+          } 
+           if (
+            ["Drop-down", "Multiple Choice", "Checkboxes"].includes(condition.answer_type) &&
             (condition.answerMetaData.some((field) => !field.value) ||
               (!condition.answerMetaData[0]?.value && condition.answerMetaData[0]?.key !== "ShortAnswer"))
           ) {
-            errorMessage = 'Please enter values for all options.';
+            setoptionserror('Option is required');
+            hasError=true
           }
 
-          return errorMessage;
+         
         });
 
         // Update errorMessages state with new error messages
-        setErrorMessages(newErrorMessages);
-        const hasErrors = newErrorMessages.some(errorMessage => errorMessage !== '');
-        if (hasErrors) {
+
+        if (hasError) {
           // Don't proceed if there are errors
           return;
         }
@@ -971,7 +981,7 @@ const Createjob = ({
 
   const fetchData = async () => {
     try {
-      const response = await getAllRecruitmentWorkFlows();
+      const response = await getAllRecruitmentWorkFlows({companyId:companyId});
       // console.log("Response:", response);
 
       const stagesByWorkflowId = response.result.map((item) => ({
@@ -1099,7 +1109,7 @@ const Createjob = ({
   const [evalutaionTem, setEvalutaionTem] = useState([]);
   const getEvaluationtem = async () => {
     try {
-      const response = await getAllRecruitmentEvaluationTemplates();
+      const response = await getAllRecruitmentEvaluationTemplates({});
       // console.log(response);
       setEvalutaionTem(
         response.result.map((each) => ({
@@ -1119,7 +1129,7 @@ const Createjob = ({
   const [questionareTem, setQuestionare] = useState([]);
   const getQuestionare = async () => {
     try {
-      const response = await getAllRecruitmentQuestionnaireTemplates();
+      const response = await getAllRecruitmentQuestionnaireTemplates({});
       // console.log(response);
       setQuestionare(
         response.result.map((each) => ({
@@ -1142,6 +1152,10 @@ const Createjob = ({
         // Handle submission for Configuration
 
         // console.log("valuegtgggggggggggg");
+        if(content && content.length < 3){
+          formik1.setFieldError('jobDescription','JobDescription should have at least 3 letters.');
+          return; 
+        }
         formik1.handleSubmit();
 
         break;
@@ -1211,13 +1225,13 @@ const Createjob = ({
       ...each,
     }))
   );
-  
+
   useEffect(() => {
-    if(searchValue){
-    setemployeeList([...searchFilter]);
-  }else{
-    AllRecruitmentJobTeamMembers()
-  }
+    if (searchValue) {
+      setemployeeList([...searchFilter]);
+    } else {
+      AllRecruitmentJobTeamMembers()
+    }
 
     // console.log(searchFilter);
     // setListData(listData?.filter((each)=>{
@@ -1609,15 +1623,21 @@ const Createjob = ({
                       <div className="md:grid grid-cols-12 flex flex-col gap-6 dark:text-white">
                         {regularOvertime?.map((each, i) => (
                           <div
-                            key={i}
-                            className={`col-span-4 p-1.5 border rounded-2xl  cursor-pointer showDelay dark:bg-dark  ${customRate === each.id && "border-primary "
-                              } `}
-                            onClick={() => {
+                          key={i}
+                          className={`col-span-4 p-1.5 border rounded-2xl  cursor-pointer showDelay dark:bg-dark  ${
+                              (!formik1.values.workLocationType && each.value === "Onsite") || 
+                              (formik1.values.workLocationType === each.value) ? "border-primary" : ""
+                          }`}
+                          onClick={() => {
                               setCustomRate(each.id);
-                              formik1.setFieldValue("workLocationType", each.value);
-                            }}
-
-                          >
+                              if (!formik1.values.workLocationType) {
+                                  formik1.setFieldValue("workLocationType", "Onsite");
+                              } else {
+                                  formik1.setFieldValue("workLocationType", each.value);
+                              }
+                              
+                          }}
+                      >
                             <div className="flex justify-between items-start">
                               <div className=" flex  gap-2">
                                 {/* <GiReceiveMoney
@@ -1625,10 +1645,8 @@ const Createjob = ({
                                   customRate === each.id && "text-primary"
                                 } `}
                               /> */}
-                                <img
-                                  className={`${customRate === each.id &&
-                                    " text-primary  "
-                                    } p-2 border rounded-md w-[66px] bg-[#F8FAFC]`}
+                                 <img
+                                  className={`${(!formik1.values.workLocationType && each.value === "Onsite") || (formik.values.workLocationType === each.value) ? "text-primary" : ""} p-2 border rounded-md w-[66px] bg-[#F8FAFC]`}
                                   src={each.image}
                                   alt=""
                                 >
@@ -1750,61 +1768,80 @@ const Createjob = ({
                           error={formik1.errors.searchKeywords}
                           required={true}
                         />
-                        <FormInput
-                          title={'Number of Openings'}
-                          placeholder={'Enter Number of Openings'}
-                          change={(e) => {
-                            formik1.setFieldValue('noOfVaccancies', e)
-                          }}
-                          value={formik1.values.noOfVaccancies}
-                          error={formik1.errors.noOfVaccancies}
-                          type={"number"}
-                          required={true}
-                        />
+<FormInput
+  title={'Number of Openings'}
+  placeholder={'Enter Number of Openings'}
+  change={(e) => {
+    const value = parseInt(e);
+    if (isNaN(value)) {
+      formik1.setFieldValue('noOfVaccancies', ''); // Clear the field value for empty input
+      formik1.setFieldError('noOfVaccancies', ''); // Clear any previous error
+    } else if (value <= 0) {
+      // Show error message for negative or zero value
+      formik1.setFieldError('noOfVaccancies', 'Number of Openings must be greater than zero');
+    } else {
+      // Set the field value and clear any previous error
+      formik1.setFieldValue('noOfVaccancies', value);
+      formik1.setFieldError('noOfVaccancies', '');
+    }
+  }}
+  value={formik1.values.noOfVaccancies}
+  error={formik1.errors.noOfVaccancies}
+  type={"number"}
+  required={true}
+/>
 
                       </div>
                       <div className='grid grid-cols-4 gap-4'>
-                        <FormInput
-                          title={'Salary Range From'}
-                          placeholder={'Enter Salary Range From'}
-                          description={'Minimum Annual Salary'}
-                          change={(e) => {
-                            formik1.setFieldValue('salaryRangeFrom', e);
-                            // Validate Salary Range To when Salary Range From changes
-                            // console.log(e)
+                      <FormInput
+  title={'Salary Range From'}
+  placeholder={'Enter Salary Range From'}
+  description={'Minimum Annual Salary'}
+  change={(e) => {
+    const value = parseFloat(e);
+    if (value <= 0 ) {
+      formik1.setFieldError('salaryRangeFrom', 'Salary Range From must be a positive number');
+    } else {
+      formik1.setFieldValue('salaryRangeFrom', value);
+      // Clear the error message only if the input is non-empty or greater than 0
+      if (value > 0||value=="") {
+        formik1.setFieldError('salaryRangeFrom', '');
+      }
+    }
+  }}
+  value={formik1.values.salaryRangeFrom}
+  type={"number"}
+  error={formik1.errors.salaryRangeFrom}
+  required={true}
+  maxLength={15}
+/>
 
-                          }}
-                          value={formik1.values.salaryRangeFrom}
-                          type={"number"}
-                          error={formik1.errors.salaryRangeFrom}
-                          required={true}
-                          maxLength={15}
-                        />
-
-                        <FormInput
-                          title={'Salary Range To'}
-                          placeholder={'Enter Salary Range To'}
-                          description={'Maximum Annual Salary'}
-                          change={(e) => {
-                            formik1.setFieldValue('salaryRangeTo', e);
-                            // Validate Salary Range To
-                            const salaryRangeTo = parseFloat(e); // Convert input to a number
-                            const salaryRangeFrom = parseFloat(formik1.values.salaryRangeFrom); // Convert Salary Range From to a number
-
-                            if (salaryRangeTo <= salaryRangeFrom) {
-                              formik1.setFieldError('salaryRangeTo', 'Salary Range To cannot be less than or equal to Salary Range From');
-                            } else {
-                              // Clear the error message when the condition is met
-                              formik1.setFieldError('salaryRangeTo', '');
-
-                            }
-                          }}
-                          value={formik1.values.salaryRangeTo}
-                          error={formik1.errors.salaryRangeTo}
-                          required={true}
-                          type={"number"}
-                          maxLength={15}
-                        />
+<FormInput
+  title={'Salary Range To'}
+  placeholder={'Enter Salary Range To'}
+  description={'Maximum Annual Salary'}
+  change={(e) => {
+    const value = parseFloat(e);
+    const salaryRangeFrom = parseFloat(formik1.values.salaryRangeFrom); // Convert Salary Range From to a number
+    if (value <= 0 ) {
+      formik1.setFieldError('salaryRangeTo', 'Salary Range To must be a positive number');
+    } else if (value <= salaryRangeFrom) {
+      formik1.setFieldError('salaryRangeTo', 'Salary Range To cannot be less than or equal to Salary Range From');
+    } else {
+      formik1.setFieldValue('salaryRangeTo', value);
+      // Clear the error message only if the input is non-empty or greater than 0
+      if (value > 0||value=="") {
+        
+        formik1.setFieldError('salaryRangeTo', '');
+      }
+    }
+  }}
+  value={formik1.values.salaryRangeTo}
+  error={formik1.errors.salaryRangeTo}
+  required={true}
+  type={"number"}
+  maxLength={15}
+/>
                         <Dropdown
                           title={'Salary Currency'}
                           placeholder={'Choose salary currency'}
@@ -1950,8 +1987,8 @@ const Createjob = ({
                     >
                       <div className="flex flex-col gap-4 overflow-hidden">
                         <div className="flex items-center justify-between">
-                          <div className="w-[53.92px] text-black text-sm font-medium font-['Inter'] leading-tight">
-                            Name
+                          <div className="w-[73.92px] text-black text-sm font-medium font-['Inter'] leading-tight">
+                            First Name
                           </div>
 
                           <Radiobuttonnew
@@ -2003,8 +2040,8 @@ const Createjob = ({
                         </div>
                         <div className="v-divider" />
                         <div className="flex items-center justify-between">
-                          <div className="w-[53.92px] text-black text-sm font-medium font-['Inter'] leading-tight">
-                            Phone
+                          <div className="w-[99.92px] text-black text-sm font-medium font-['Inter'] leading-tight">
+                            Phone Number
                           </div>
 
                           <Radiobuttonnew
@@ -2022,8 +2059,8 @@ const Createjob = ({
                         </div>
                         <div className="v-divider" />
                         <div className="flex items-center justify-between">
-                          <div className="w-[53.92px] text-black text-sm font-medium font-['Inter'] leading-tight">
-                            Address
+                          <div className="w-[93.92px] text-black text-sm font-medium font-['Inter'] leading-tight">
+                            Address Line
                           </div>
 
                           <Radiobuttonnew
@@ -2153,7 +2190,7 @@ const Createjob = ({
 
                         <div className="v-divider" />
                         <div className="flex items-center justify-between">
-                          <div className="w-[53.92px] text-black text-sm font-medium font-['Inter'] leading-tight">
+                          <div className="w-[83.92px] text-black text-sm font-medium font-['Inter'] leading-tight">
                             Cover Letter
                           </div>
 
@@ -2202,7 +2239,7 @@ const Createjob = ({
                                   );
                                   // console.log(e);
                                 }}
-                                error={condition.question ? '' : errorMessages[index] || ''}
+                                error={condition.question ? '' : Questionerror || ''}
                               />
                               <div className="flex items-center gap-5">
 
@@ -2231,7 +2268,7 @@ const Createjob = ({
                                   value={condition.answerMetaData[0]?.key}
                                   icon={<MdOutlineShortText />}
                                   icondropDown={true}
-                                  error={condition.answer_type ? '' : errorMessages[index] || ''}
+                                  error={condition.answerMetaData[0]?.key ? '' : answerError || ''}
                                   placeholder={"Choose Options"}
 
                                 />
@@ -2261,7 +2298,7 @@ const Createjob = ({
                             </div>
                             {condition.answerMetaData[0]?.key && (
                               <>
-                                {['Drop-down', 'MultipleChoice', 'Checkboxes'].includes(condition.answerMetaData[0]?.key) && (
+                                {['Drop-down', 'Multiple Choice', 'Checkboxes'].includes(condition.answerMetaData[0]?.key) && (
                                   // Render existing FormInput components for these options
                                   condition.answerMetaData.map((field, fieldIndex) => (
                                     <div key={fieldIndex} className="flex items-center">
@@ -2281,7 +2318,7 @@ const Createjob = ({
                                           : prevCondition
                                         )
                                         )}
-                                        error={field.value ? '' : errorMessages[index] || ''}
+                                        error={field.value ? '' : OptionError || ''}
                                       />
                                       <Tooltip placement="top" color={"red"} title={"Delete"}>
                                         <div className="ml-3 mt-4">
@@ -2295,7 +2332,7 @@ const Createjob = ({
                                   ))
                                 )}
                                 <div>
-                                  {['Drop-down', 'MultipleChoice', 'Checkboxes'].includes(
+                                  {['Drop-down', 'Multiple Choice', 'Checkboxes'].includes(
                                     condition.answerMetaData[0]?.key
                                   ) && (
                                       <Tooltip placement="top" title={"Add more"}>
@@ -2384,7 +2421,7 @@ const Createjob = ({
                     padding={true}
                     toggleBtn={false}
                     click={() => {
-                      setPresentage(4.1);
+                      setPresentage(4);
                     }}
                     tableshow={true}
                     initialExpanded={true}
@@ -2418,7 +2455,7 @@ const Createjob = ({
     </List.Item>
   )}</VirtualList>
 </List> */}
-                    <div className="grid grid-cols-2 mt-8">
+                    <div className="flex mt-8 items-center justify-between">
                       <SearchBox
                         placeholder={"Search Employess"}
                         data={employeeList}
@@ -2431,8 +2468,7 @@ const Createjob = ({
                           setSearchFilter(value);
                         }}
                       />
-                    </div>
-                    <div className="flex items-center gap-2">
+                      <div className="flex items-center gap-2">
                         <CheckBoxInput
                           change={(e) => {
                             setCheckboxValue(!CheckboxValue)
@@ -2443,6 +2479,7 @@ const Createjob = ({
                           <p className="text-sm dark:text-white">Check All</p>
                         </div>
                       </div>
+                    </div>
                     <table>
                       <thead>
                         <tr>

@@ -93,6 +93,7 @@ export default function Privileges() {
             id: 1,
             title: t("Roles"),
             value: "roleName",
+            bold: true,
           },
          
           {

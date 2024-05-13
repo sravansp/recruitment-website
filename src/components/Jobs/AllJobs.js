@@ -4,9 +4,9 @@ import TableAnt from "../common/TableAnt";
 import axios from "axios";
 import JobTabs from "../common/JobTabs";
 import { Add } from "@mui/icons-material";
-import API from "../Api";
+// import API from "../Api";
 import Table from "../common/Table";
-import { getAllRecruitmentJobs, getJobStatics } from "../Api1";
+import API,{ getAllRecruitmentJobs, getJobStatics } from "../Api1";
 import CustomTable from "../common/Table";
 import App1 from "../common/Table";
 import TableAnt1 from "../common/Table";
@@ -21,6 +21,7 @@ import { motion } from "framer-motion";
 import JobListCopy from "../common/JobListCopy";
 import { RiRuler2Fill } from "react-icons/ri";
 import JobDetails from "./JobDetails";
+// import API, { action, getJobStatics } from "../Api1";
 
 function AllJobs() {
   const { t } = useTranslation();
@@ -119,7 +120,7 @@ function AllJobs() {
         {
           id: 5,
           title: t("Status"),
-          value: "isActive",
+          value: "",
           actionToggle: true,
         },
         {
@@ -132,12 +133,12 @@ function AllJobs() {
           title: t("Date"),
           value: "createdOn",
         },
-        // {
-        //   id: 8,
-        //   title: "",
-        //   value: "action",
-        //   dotsVertical: true,
-        // },
+        {
+          id: 8,
+          title: t("View"),
+          value: "viewData",
+          status: "viewData",
+        },
       ],
       MyOpenJobs: [
         {
@@ -166,7 +167,7 @@ function AllJobs() {
           id: 5,
 
           title: t("Status"),
-          value: "isActive",
+          value: "",
           actionToggle: true,
         },
         {
@@ -179,12 +180,12 @@ function AllJobs() {
           title: t("Date"),
           value: "createdOn",
         },
-        // {
-        //   id: 8,
-        //   title: t("View"),
-        //   value: "viewData",
-        //   status: "viewData",
-        // },
+        {
+          id: 8,
+          title: t("View"),
+          value: "viewData",
+          status: "viewData",
+        },
         // {
         //   id: 8,
         //   title: "",
@@ -219,7 +220,7 @@ function AllJobs() {
           id: 5,
 
           title: t("Status"),
-          value: "isActive",
+          value: "",
           actionToggle: true,
         },
         {
@@ -232,12 +233,12 @@ function AllJobs() {
           title: t("Date"),
           value: "createdOn",
         },
-        // {
-        //   id: 8,
-        //   title: "",
-        //   value: "action",
-        //   dotsVertical: true,
-        // },
+        {
+          id: 8,
+          title: t("View"),
+          value: "viewData",
+          status: "viewData",
+        },
       ],
       Draft: [
         {
@@ -266,7 +267,7 @@ function AllJobs() {
           id: 5,
 
           title: t("Status"),
-          value: "isActive",
+          value: "",
           actionToggle: true,
         },
         {
@@ -281,9 +282,15 @@ function AllJobs() {
         },
         {
           id: 8,
-          title: "",
+          title: "Action",
           value: "action",
           dotsVertical: true,
+        },
+        {
+          id: 9,
+          title: t("View"),
+          value: "viewData",
+          status: "viewData",
         },
       ],
     },
@@ -292,6 +299,15 @@ function AllJobs() {
   //   setCreatedBy(1);
 
   // }, []);
+  const updateApi = [
+    {
+      AllJobs:{id:1,api:API. UpDate_jobs},
+      MyOpenJobs:{id:2,api:API. UpDate_jobs},
+      Open:{id:3,api:API. UpDate_jobs},
+      Draft:{id:3,api:API. UpDate_jobs},
+
+    },
+  ];
   useEffect(() => {
     setCompanyId(localStorage.getItem("companyId"));
 
@@ -587,7 +603,11 @@ function AllJobs() {
 
             }
           }}
-
+          updateApi={
+            Object.keys(updateApi[0]).includes(navigationPath)
+              ? updateApi[0]?.[navigationPath].api
+              : null
+          }
 
         />
       </div>

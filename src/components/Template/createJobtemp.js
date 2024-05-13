@@ -82,6 +82,8 @@ import { RiDeleteBinLine } from "react-icons/ri";
 import { FaAsterisk } from "react-icons/fa";
 import TextEditorcopy from "../common/TextEditor/textEditorCopy";
 import { EditorState, ContentState, convertFromHTML } from 'draft-js';
+// import Editor from "../common/TextEditor/textEditorCopy";
+// import Editor1 from "../common/TextEditor/textEditorCopy";
 // import { convertToHTML } from 'draft-convert';
 // import Editor from "../common/TextEditor/textEditorCopy";
 
@@ -116,7 +118,7 @@ const CreatejobTemp = ({
   const [workFlows, setWorkFlows] = useState([]);
   const [selectedWorkFlowId, setSelectedWorkFlowId] = useState("");
   const [selectedDivs, setSelectedDivs] = useState([]);
-  const [content, setContent] = useState(null);
+  const [content, setContent] = useState("");
   const [JobDescriptionList, setJobDescriptionList] = useState([])
   const [decriptionId, setDecriptionId] = useState(null)
   const [Phone, setPhone] = useState(1)
@@ -129,6 +131,9 @@ const CreatejobTemp = ({
   const [errors, setErrors] = useState([]);
   const [jobTitle, setJobTitle] = useState("")
   const [html, setstateHTML] = useState("")
+  const [Questionerror, setQuestionError] = useState('')
+  const [answerError, setAnswerError] = useState('')
+  const [OptionError, setoptionserror] = useState('')
 
   // console.log(updateId);
   useEffect(() => {
@@ -151,7 +156,7 @@ const CreatejobTemp = ({
 
   const getAllJobdescription = async () => {
     try {
-      const data = await getAllRecruitmentJobDescriptionTemplates()
+      const data = await getAllRecruitmentJobDescriptionTemplates({})
       console.log(data)
       // 
       setJobDescriptionList(data.result.map((each) => ({
@@ -249,8 +254,13 @@ const CreatejobTemp = ({
         //             const htmlContent = convertToHTML(contentState);
                     
         //  console.log(content)           
-        //           setContent(htmlContent);
-    setContent(content)
+                  // setContent(htmlContent);
+                  // const blocksFromHTML = convertFromHTML(content);
+                  // const contentState = ContentState.createFromBlockArray(blocksFromHTML.contentBlocks, blocksFromHTML.entityMap);
+                           
+                  // setContent(EditorState.createWithContent(contentState))
+                  setContent(content)
+                  // console.log(contentState);
   };
   const [evaluation, setEvaluation] = useState([
     {
@@ -273,7 +283,7 @@ const CreatejobTemp = ({
       jobTitle: "",
       departmentId: "",
       jobCode: "",
-      workLocationType: "Onsite",
+      workLocationType:"",
       location: "",
       requirementType: "",
       jobType: "",
@@ -339,7 +349,7 @@ const CreatejobTemp = ({
             jobTitle: e.jobTitle,
             departmentId: e.departmentId,
             jobCode: e.jobCode,
-            workLocationType: e.workLocationType,
+            workLocationType: e.workLocationType||"Onsite",
             location: e.location,
             requirementType: e.requirementType,
             jobType: e.jobType,
@@ -376,7 +386,7 @@ const CreatejobTemp = ({
             openNotification(
               "success",
               "Success",
-              response.message
+              response.message.replace(/<br\/>/g, '\n')
             );
             setPresentage(2);
             setTimeout(() => {
@@ -395,7 +405,7 @@ const CreatejobTemp = ({
             jobTitle: e.jobTitle,
             departmentId: e.departmentId,
             jobCode: e.jobCode,
-            workLocationType: e.workLocationType,
+            workLocationType: e.workLocationType||"Onsite",
             location: e.location,
             requirementType: e.requirementType,
             jobType: e.jobType,
@@ -434,8 +444,7 @@ const CreatejobTemp = ({
             openNotification(
               "success",
               "Success",
-
-              response.message
+              response.message.replace(/<br\/>/g, '\n')
             );
             setPresentage(2);
             setTimeout(() => {
@@ -443,7 +452,7 @@ const CreatejobTemp = ({
               refresh()
             }, 1500);
           } else if (response.status === 500) {
-            openNotification("error", "Error", response.message);
+            openNotification("error", "Error", response.message.replace(/<br\/>/g, '\n'));
           }
 
 
@@ -475,11 +484,12 @@ const CreatejobTemp = ({
         formik.setFieldValue("jobTitle", firstJob.jobTitle);
         formik.setFieldValue("departmentId", firstJob.departmentId);
         formik.setFieldValue("education", firstJob.education);
+        formik.setFieldValue("workLocationType", firstJob.workLocationType);
         formik.setFieldValue("isActive", firstJob.isActive);
         formik.setFieldValue("isSalaryPublic", firstJob.isSalaryPublic);
         formik.setFieldValue("jobCode", firstJob.jobCode);
         setContent(firstJob.jobDescription)
-          //      const blocksFromHTML = convertFromHTML(firstJob.jobDescription);
+          // const blocksFromHTML = convertFromHTML(firstJob.jobDescription);
           // const contentState = ContentState.createFromBlockArray(blocksFromHTML.contentBlocks, blocksFromHTML.entityMap);
           // const newEditorState = EditorState.createWithContent(contentState);
           // setContent(newEditorState);
@@ -787,7 +797,7 @@ const CreatejobTemp = ({
 
   const fetchData = async () => {
     try {
-      const response = await getAllRecruitmentWorkFlows();
+      const response = await getAllRecruitmentWorkFlows({});
       console.log("Response:", response);
 
       const stagesByWorkflowId = response.result.map((item) => ({
@@ -888,6 +898,10 @@ const CreatejobTemp = ({
           formik.setFieldError('salaryRangeTo', '"Salary Range To" must be greater than "Salary Range From"');
           return;
         }
+        if (formik.values.jobTitle && formik.values.jobTitle.length < 3) {
+          formik.setFieldError('jobTitle', 'Job Title should have at least 3 letters.');
+          return;
+        }
         if (
           !formik.values.jobTitle || !formik.values.departmentId || !formik.values.jobCode ||
           !formik.values.location ||
@@ -917,6 +931,12 @@ const CreatejobTemp = ({
           return; // Exit early if any field is empty
 
         }
+
+   
+        if(content && content.length < 3){
+          formik.setFieldError('jobDescription','JobDescription should have at least 3 letters.');
+          return; 
+        }
         if (jobcodelength === 0) {
 
           setNextStep(nextStep + 1);
@@ -931,28 +951,33 @@ const CreatejobTemp = ({
         // Handle submission for Applicability
         // Your logic for Applicability form submission...
         // Move to the next step if applicable
+        let hasError = false;
         const newErrorMessages = evaluation.map((condition) => {
-          let errorMessage = '';
+          
 
           if (!condition.question) {
-            errorMessage = 'Please enter a question.';
-          } else if (!condition.answer_type) {
-            errorMessage = 'Please choose an answer type.';
-          } else if (
-            ["Drop-down", "MultipleChoice", "Checkboxes"].includes(condition.answer_type) &&
+            setQuestionError('Please enter a question.');
+            hasError=true
+          } 
+           if (!condition.answer_type) {
+            setAnswerError('Please choose an answer type.');
+            hasError=true
+          } 
+           if (
+            ["Drop-down", "Multiple Choice", "Checkboxes"].includes(condition.answer_type) &&
             (condition.answerMetaData.some((field) => !field.value) ||
               (!condition.answerMetaData[0]?.value && condition.answerMetaData[0]?.key !== "ShortAnswer"))
           ) {
-            errorMessage = 'Please enter values for all options.';
+            setoptionserror('Option is required');
+            hasError=true
           }
 
-          return errorMessage;
+         
         });
 
         // Update errorMessages state with new error messages
-        setErrorMessages(newErrorMessages);
-        const hasErrors = newErrorMessages.some(errorMessage => errorMessage !== '');
-        if (hasErrors) {
+
+        if (hasError) {
           // Don't proceed if there are errors
           return;
         }
@@ -1175,37 +1200,30 @@ const CreatejobTemp = ({
                     >
                       <div className="md:grid grid-cols-12 flex flex-col gap-6 dark:text-white">
                         {regularOvertime?.map((each, i) => (
-                          <div
-                            key={i}
-                            className={`col-span-4 p-1.5 border rounded-2xl  cursor-pointer showDelay dark:bg-dark  ${customRate === each.id && "border-primary "
-                              } `}
-                            onClick={() => {
-                              setCustomRate(each.id);
-                              formik.setFieldValue("workLocationType", each.value);
-                              setPresentage(.4)
-                            }}
-
-                          >
+                        <div
+                        key={i}
+                        className={`col-span-4 p-1.5 border rounded-2xl  cursor-pointer showDelay dark:bg-dark  ${
+                            (!formik.values.workLocationType && each.value === "Onsite") || 
+                            (formik.values.workLocationType === each.value) ? "border-primary" : ""
+                        }`}
+                        onClick={() => {
+                            setCustomRate(each.id);
+                            if (!formik.values.workLocationType) {
+                                formik.setFieldValue("workLocationType", "Onsite");
+                            } else {
+                                formik.setFieldValue("workLocationType", each.value);
+                            }
+                            setPresentage(.4);
+                        }}
+                    >
                             <div className="flex justify-between items-start">
-                              <div className=" flex  gap-2">
-                                {/* <GiReceiveMoney
-                                className={`${
-                                  customRate === each.id && "text-primary"
-                                } `}
-                              /> */}
+                              <div className="flex gap-2">
                                 <img
-                                  className={`${customRate === each.id &&
-                                    " text-primary  "
-                                    } p-2 border rounded-md w-[66px] bg-[#F8FAFC]`}
+                                  className={`${(!formik.values.workLocationType && each.value === "Onsite") || (formik.values.workLocationType === each.value) ? "text-primary" : ""} p-2 border rounded-md w-[66px] bg-[#F8FAFC]`}
                                   src={each.image}
                                   alt=""
                                 >
                                 </img>
-                                {/* <img
-                                  src={customRate === each.id ? cash : cashGray}
-                                  alt=""
-                                  className=" w-6 h-6"
-                                /> */}
                                 <div>
                                   <h3 className=" text-sm font-semibold mt-[10px]">
                                     {each.title}
@@ -1216,19 +1234,17 @@ const CreatejobTemp = ({
                                 </div>
                               </div>
                               <div
-                                className={`${customRate === each.id && "border-primary"
-                                  } border  rounded-full`}
+                                className={`${(!formik.values.workLocationType && each.value === "Onsite") || (formik.values.workLocationType === each.value) ? "border-primary" : ""} border  rounded-full`}
                               >
                                 <div
-                                  className={`font-semibold text-base w-4 h-4 border-2 border-white   rounded-full ${customRate === each.id &&
-                                    "text-primary bg-primary"
-                                    } `}
+                                  className={`font-semibold text-base w-4 h-4 border-2 border-white   rounded-full ${(!formik.values.workLocationType && each.value === "Onsite") || (formik.values.workLocationType === each.value) ? "text-primary bg-primary" : ""}`}
                                 ></div>
                               </div>
                             </div>
                           </div>
                         ))}
                       </div>
+
                       <div className="grid grid-cols-2 gap-4">
                         <FormInput
                           title={"Location"}
@@ -1447,43 +1463,43 @@ const CreatejobTemp = ({
                       initialExpanded={true}
                     >
                       <div class="flex flex-col gap-4 overflow-hidden">
-                      <div className="border rounded-md bg-primaryalpha/5">
-                        <div className="flex items-center px-1.5  ">
-                          <img src={AI_Text} alt='' className="border rounded-md"></img>
-                          <div className="flex flex-col gap-1 p-1.5">
-                            <div className="flex items-center justify-between ">
-                              <p className="font-bold">Generate personalized job descriptions based on pas account data.
+                        <div className="border rounded-md bg-primaryalpha/5">
+                          <div className="flex items-center px-1.5  ">
+                            <img src={AI_Text} alt='' className="border rounded-md"></img>
+                            <div className="flex flex-col gap-1 p-1.5">
+                              <div className="flex items-center justify-between ">
+                                <p className="font-bold">Generate personalized job descriptions based on pas account data.
+                                </p>
+                                {/* <p className="text-primary"><IoClose /></p> */}
+                              </div>
+                              <p className="text-gray-400">When you generate with Al, we look for similar jobs you've created in the past and use the data to create content that's
+                                impactful, accurate and personalized to your company.
                               </p>
-                              {/* <p className="text-primary"><IoClose /></p> */}
                             </div>
-                            <p className="text-gray-400">When you generate with Al, we look for similar jobs you've created in the past and use he data to create content that's
-                              impactful, accurate, and personalized to your company
-                            </p>
                           </div>
                         </div>
-                      </div>
-                      <div
-                        style={{
-                          display: "flex",
-                          justifyContent: "flex-end",
-                          gap: "16px",
-                        }}
-                      >
-                        <Dropdown
-                          title={''}
-                          placeholder={'Choose Job Description'}
-                          options={JobDescriptionList}
-                          value={decriptionId}
-                          className={'min-w-40'}
-                          change={(e) => {
-                            setDecriptionId(e)
+                        <div
+                          style={{
+                            display: "flex",
+                            justifyContent: "flex-end",
+                            gap: "16px",
                           }}
-                        />
-                        <ButtonClick handleSubmit={handleGenerateWithAI} BtnType="primary" icon={<img src={image} alt="image" style={{ height: '20px', width: '20px', alignItems: "center" }} />} buttonName={"Generate with AI"} />
-                      </div>
-                       <div className="flex gap-1.5">
-                        <p className="pb-2">Description</p>
-                        <FaAsterisk className="text-[6px] text-rose-600" />
+                        >
+                          <Dropdown
+                            title={''}
+                            placeholder={'Choose Job Description'}
+                            options={JobDescriptionList}
+                            value={decriptionId}
+                            className={'min-w-40'}
+                            change={(e) => {
+                              setDecriptionId(e)
+                            }}
+                          />
+                          <ButtonClick handleSubmit={handleGenerateWithAI} BtnType="primary" icon={<img src={image} alt="image" style={{ height: '20px', width: '20px', alignItems: "center" }} />} buttonName={"Generate with AI"} />
+                        </div>
+                        <div className="flex gap-1.5">
+                          <p className="pb-2">Description</p>
+                          <FaAsterisk className="text-[6px] text-rose-600" />
                         </div>
                         <TextEditor
                           placeholder={t(
@@ -1509,8 +1525,9 @@ const CreatejobTemp = ({
                           }}
                           initialValue={content}
                           error={formik.errors.jobDescription}
+                          
                         /> */}
-                        {/* <Editor/> */}
+                        {/* <Editor1/> */}
 
                       </div>
                       {/* <TextArea
@@ -1875,7 +1892,7 @@ icondropDown={true}
                                     );
                                     console.log(e);
                                   }}
-                                  error={condition.question ? '' : errorMessages[index] || ''}
+                                  error={condition.question ? '' : Questionerror || ''}
                                 />
                                 <div className="flex items-center gap-5">
                                   <div className="flex-shrink-0">
@@ -1905,7 +1922,7 @@ icondropDown={true}
                                       }}
                                       value={condition.answerMetaData[0]?.key}
                                       icondropDown={true}
-                                      error={condition.answer_type ? '' : errorMessages[index] || ''}
+                                      error={condition.answerMetaData[0]?.key ? '' : answerError || ''}
                                       placeholder={"Choose Options"}
                                     />
                                   </div>
@@ -1957,7 +1974,7 @@ icondropDown={true}
                                       >
                                         {[
                                           "Drop-down",
-                                          "MultipleChoice",
+                                          "Multiple Choice",
                                           "Checkboxes",
                                         ].includes(field.key) && (
                                             <FormInput
@@ -1988,13 +2005,13 @@ icondropDown={true}
                                                   )
                                                 )
                                               }}
-                                              error={field.value ? '' : errorMessages[index] || ''}
+                                              error={field.value ? '' : OptionError || ''}
                                             />
                                           )}
 
                                         {[
                                           "Drop-down",
-                                          "MultipleChoice",
+                                          "Multiple Choice",
                                           "Checkboxes",
                                         ].includes(field.key) && (
                                             <Tooltip placement="top" title={"Delete"}>
@@ -2018,7 +2035,7 @@ icondropDown={true}
 
                                   {[
                                     "Drop-down",
-                                    "MultipleChoice",
+                                    "Multiple Choice",
                                     "Checkboxes",
                                   ].includes(
                                     condition.answerMetaData[0]?.key

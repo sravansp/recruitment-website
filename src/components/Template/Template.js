@@ -37,9 +37,13 @@ const Template = ({
   const handleShow = () => setShow(true);
   const [show, setShow] = useState(open);
   const [openPop, setOpenPop] = useState("");
+  const [companyId, setCompanyId] = useState(localStorage.getItem("companyId"));
 
   const [emailSubject, setEmailSubject] = useState("")
   const [navigationPath, setNavigationPath] = useState("Job");
+  useEffect(() => {
+    setCompanyId(localStorage.getItem("companyId"));
+  }, []);
   const breadcrumbItems = [
     //{ label: t("Templates"), url: "/" },
     // { label: navigationPath.charAt(0).toUpperCase() + navigationPath.slice(1) },
@@ -125,6 +129,7 @@ const Template = ({
           id: 1,
           title: t("Template Name"),
           value: "jobTitle",
+          bold: true,
         },
         {
           id: 2,
@@ -149,6 +154,7 @@ const Template = ({
           id: 1,
           title: t("Template Name"),
           value: "descriptionTemplateName",
+          bold: true,
         },
         {
           id: 2,
@@ -173,13 +179,14 @@ const Template = ({
           id: 1,
           title: t("Template Name"),
           value: "workFlowName",
+          bold: true,
         },
         {
           id: 2,
           title: t("Description"),
           value: "description",
         },
-         {
+        {
           id: 3,
           title: t("Status"),
           value: "",
@@ -197,6 +204,7 @@ const Template = ({
           id: 1,
           title: t("Template Name"),
           value: "title",
+          bold: true,
         },
         {
           id: 2,
@@ -221,6 +229,7 @@ const Template = ({
           id: 1,
           title: t("Template Name"),
           value: "evaluationTemplateName",
+          bold: true,
         },
         {
           id: 2,
@@ -245,6 +254,7 @@ const Template = ({
           id: 1,
           title: t("Template Name"),
           value: "questionnaireTemplateName",
+          bold: true,
         },
         {
           id: 2,
@@ -269,6 +279,7 @@ const Template = ({
           id: 1,
           title: t("Template Name"),
           value: "title",
+          bold: true,
         },
         {
           id: 2,
@@ -306,12 +317,71 @@ const Template = ({
         },
         {
           id: 3,
-          title: "JobType",
+          title: "Job Type",
           value: "jobType",
 
         },
         {
-          id: 3,
+          id: 4,
+          title: "Job Code",
+          value: "jobCode",
+
+        },
+        {
+          id: 5,
+          title: "createdOn",
+          value: "createdOn",
+
+        },{
+          id: 6,
+          title: "Education",
+          value: "education",
+
+        },
+        {
+          id: 7,
+          title: "Experience",
+          value: "experience",
+
+        },
+        {
+          id: 8,
+          title: "Job Description",
+          value: "jobDescription",
+
+        },
+        {
+          id: 9,
+          title: "Requirement Type",
+          value: "requirementType",
+
+        },
+        {
+          id: 10,
+          title: "Salary Currency",
+          value: "salaryCurrency",
+
+        },
+        {
+          id: 11,
+          title: "WorkLocation Type",
+          value: "workLocationType",
+
+        },
+        {
+          id: 12,
+          title: "Salary Range From",
+          value: "salaryRangeFrom",
+
+        },
+        {
+          id: 13,
+          title: "Salary Range To",
+          value: "salaryRangeTo",
+
+        },
+        {
+          id: 14,
           title: "Status",
           value: "isActive",
         },
@@ -470,12 +540,12 @@ const Template = ({
   //  console.log("header",Header)
 
   const [TemplateList, setTemplateList] = useState([])
-  console.log(TemplateList,'this is template');
+  console.log(TemplateList, 'this is template');
 
   const gettemaplate = async () => {
     try {
 
-      const response = await getAllRecruitmentJobTemplates({});
+      const response = await getAllRecruitmentJobTemplates({ companyId: companyId });
 
       setTemplateList(response.result);
       // const newData = {};
@@ -485,7 +555,7 @@ const Template = ({
 
       // setTableData(response.data);
       // console.log(response.data); // Access response data
-      //  console.log(response);
+      // console.log(response, "job template data");
     } catch (error) {
       console.error(error); // Handle errors
     }
@@ -499,7 +569,7 @@ const Template = ({
   const getWorkflows = async () => {
     try {
 
-      const response = await getAllRecruitmentWorkFlows();
+      const response = await getAllRecruitmentWorkFlows({ companyId: companyId });
       // console.log(response," work flow list is here")
       setWorkflow(response.result);
       // const newData = {};
@@ -532,7 +602,7 @@ const Template = ({
   const getEmailLsit = async () => {
     try {
 
-      const response = await getAllRecruitmentEmailTemplates();
+      const response = await getAllRecruitmentEmailTemplates({ companyId: companyId });
 
       // console.log(response," Email list is here")
       setEmail(response.result)
@@ -540,7 +610,7 @@ const Template = ({
         emailTemplateId: email.emailTemplateId,
         title: email.emailTemplateName,
         value: email.emailTemplate.subject, // Use the subject as the description value
-        isActive:email.isActive,
+        isActive: email.isActive,
         actionToggle: true,
         action: true,
       }))
@@ -561,7 +631,7 @@ const Template = ({
   };
   const getallquestionaire = async () => {
     try {
-      const data = await getAllRecruitmentQuestionnaireTemplates()
+      const data = await getAllRecruitmentQuestionnaireTemplates({ companyId: companyId })
       setQuestionaire(data.result)
       // console.log(data)
     } catch (error) {
@@ -571,7 +641,7 @@ const Template = ({
   }
   const getallevaluation = async () => {
     try {
-      const data = await getAllRecruitmentEvaluationTemplates()
+      const data = await getAllRecruitmentEvaluationTemplates({ companyId: companyId })
       setEvaluation(data.result)
       // console.log(data)
     } catch (error) {
@@ -581,12 +651,12 @@ const Template = ({
   }
   const getallLetter = async () => {
     try {
-      const data = await getAllRecruitmentLetterTemplates()
+      const data = await getAllRecruitmentLetterTemplates({ companyId: companyId })
       setLetter(data.result.map((Letter) => ({
         letterTemplateId: Letter.letterTemplateId,
         title: Letter.letterTemplateName,
         value: Letter.letterTemplate.subject, // Use the subject as the description value
-        isActive:Letter.isActive,
+        isActive: Letter.isActive,
         actionToggle: true,
         action: true,
       })))
@@ -598,7 +668,7 @@ const Template = ({
   }
   const getAllJobdescription = async () => {
     try {
-      const data = await getAllRecruitmentJobDescriptionTemplates()
+      const data = await getAllRecruitmentJobDescriptionTemplates({ companyId: companyId })
       //  console.log(data)
       // 
       setJobDescriptionList(data.result)

@@ -6,7 +6,7 @@ import { HiMiniStar } from "react-icons/hi2";
 const { RangePicker } = DatePicker;
 
 export default function RangeDatePicker({
-  change = () => {},
+  change = () => { },
   className,
   picker = "",
   dateFormat = "",
@@ -61,9 +61,16 @@ export default function RangeDatePicker({
         }}
         onOpenChange={onOpenChange}
         changeOnBlur
+        className={`${error ? "border-rose-400" : ""}`}
+        style={
+          error && {
+            boxShadow:
+              "0px 0px 0px 4px #FEE4E2, 0px 2px 4px 0px rgba(16, 24, 40, 0.05)",
+          }
+        }
       />
       {error && (
-        <FiAlertCircle className="absolute top-3.5 mt-6 right-8 -mr-1 transform -translate-y-2/5 text-red-400" />
+        <FiAlertCircle className="absolute top-2.5 mt-6 right-8 -mr-1 transform -translate-y-2/5 text-red-400" />
       )}
 
       {description && (

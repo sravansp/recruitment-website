@@ -1,10 +1,16 @@
-import React, { useState, useEffect } from 'react';
-import { EditorState, convertToRaw, ContentState, convertFromHTML} from 'draft-js';
-import { Editor } from 'react-draft-wysiwyg';
+import React, { useState, useEffect } from "react";
+import {
+  EditorState,
+  convertToRaw,
+  ContentState,
+  convertFromHTML,
+} from "draft-js";
+import { Editor } from "react-draft-wysiwyg";
 import { FaAsterisk } from "react-icons/fa";
-import 'react-draft-wysiwyg/dist/react-draft-wysiwyg.css';
-import { stateToHTML } from 'draft-js-export-html';
-import { BeatLoader } from 'react-spinners';
+import "react-draft-wysiwyg/dist/react-draft-wysiwyg.css";
+import { stateToHTML } from "draft-js-export-html";
+import { BeatLoader } from "react-spinners";
+import { FiAlertCircle } from "react-icons/fi";
 
 const TextEditor = ({
   title = "",
@@ -34,7 +40,7 @@ const TextEditor = ({
       return EditorState.createEmpty();
     }
   });
-  // console.log(error)
+
   useEffect(() => {
     // Check if initialValue exists and if it's different from the current editor content
     if (
@@ -59,29 +65,11 @@ const TextEditor = ({
 
       onChange(plainText);
       changetoHtml(htmlContent);
-      console.log(htmlContent)
       console.log(plainText);
       // Ensure onChange is called with plainText, which is a string
     }
   };
-  // console.log(initialValue);
-  
-  const uploadImageCallBack = (file) => {
-    return new Promise((resolve, reject) => {
-      const reader = new FileReader();
-      reader.onload = (event) => {
-        resolve({ data: { link: event.target.result } });
-      };
-      reader.onerror = (error) => {
-        reject(error);
-      };
-      reader.readAsDataURL(file);
-    });
-  };
-
-  
-
- 
+  console.log(initialValue);
   return (
     <div
       className={`relative p-4 border border-black rounded-md border-opacity-10 dark:border-secondaryDark mb-14 ${className} ${
@@ -96,11 +84,6 @@ const TextEditor = ({
         minHeight: `${minheight}`,
       }}
     >
-      {error && (
-            <p className="flex justify-start items-center mt-2 my-1 mb-0 text-[10px] text-red-600">
-              <span className="text-[10px] pl-1">{error}</span>
-            </p>
-          )}
       <div className="flex">
         <p
           className={`text-xs font-medium 2xl:text-sm dark:text-white ${className}`}
@@ -128,24 +111,6 @@ const TextEditor = ({
             },
             textAlign: {
               options: ["left", "center", "right", "justify"],
-
-            },
-            image: {
-              
-              className: undefined,
-              component: undefined,
-              popupClassName: undefined,
-              urlEnabled: true,
-              uploadEnabled: true,
-              alignmentEnabled: true,
-              uploadCallback: uploadImageCallBack,
-              previewImage: true,
-              inputAccept: 'image/gif,image/jpeg,image/jpg,image/png,image/svg',
-              alt: { present: true, mandatory: false },
-              defaultSize: {
-                height: 'auto',
-                width: 'auto',
-              },
             },
           }}
           toolbarStyle={{
@@ -157,9 +122,16 @@ const TextEditor = ({
           toolbarClassName=" bg-black"
           editorClassName="h-full"
         />
-          
-        
       )}
+       {error && (
+            <FiAlertCircle className="absolute top-2.5 right-2 mr-3 transform -translate-y-1/5 text-red-400" />
+          )}
+          {error && (
+            <p className="flex justify-start items-center mt-2 my-1 mb-0 text-[10px] text-red-600">
+              <span className="text-[10px] pl-1">{error}</span>
+            </p>
+          )}
+        
      
     </div>
   );

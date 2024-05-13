@@ -145,6 +145,8 @@ const CandidateProfile = () => {
   const location = useLocation();
   const [userid, setuserid] = useState("");
   const [priority, setPriority] = useState("2");
+  const[EvalutaionId,setEvaluationId] = useState("")
+  const[QuestionareId,setQuestionareId] = useState("")
 
   useEffect(() => {
     // Retrieve the login data JSON string from local storage
@@ -250,14 +252,20 @@ const CandidateProfile = () => {
       id: 6,
       title: t("Evaluations"),
       value: "evaluations",
-      content: <Evaluations />,
+      content: <Evaluations 
+      EvaluationID={EvalutaionId}
+      stageId={stageId}                     
+      />,
       icon: <RiSurveyLine className="text-base" />,
     },
     {
       id: 7,
       title: t("Questionaries"),
       value: "questionaries",
-      content: <Questionaries />,
+      content: <Questionaries
+            QuestionareId={QuestionareId}
+            stageId={stageId}
+      />,
       icon: <RiQuestionnaireLine className="text-base" />,
     },
     {
@@ -350,7 +358,7 @@ const CandidateProfile = () => {
   };
   useEffect(() => {
     getstagename();
-    getResumeJob();
+    
     console.log(getstatus);
   }, [jobId]);
 
@@ -362,6 +370,9 @@ const CandidateProfile = () => {
         resumeId: parseInt(resumeId),
       });
       console.log(response);
+      if(response.status===200){
+        getResumeJob()
+      }
     } catch (error) {
       console.log(error);
     }
@@ -378,6 +389,9 @@ const CandidateProfile = () => {
     ).label;
     setSelectedItemLabel(selectedItemLabel);
     setstageId(e.key);
+    
+   
+   
   };
   const handleMenuClick1 = async (e) => {
     try {
@@ -417,6 +431,7 @@ const CandidateProfile = () => {
       {stageName.map((item) => (
         <Menu.Item key={item.key}>{item.label}</Menu.Item>
       ))}
+        
     </Menu>
   );
 
@@ -498,12 +513,18 @@ const CandidateProfile = () => {
       const response = await getResumeJobDetails({
         jobId: jobId,
         resumeId: resumeId,
+      
       });
       console.log(response);
 
       setSelectedItemLabel(response.result.stageName);
       setjobResumeMapping(response.result.jobResumeMappingId);
       setgetstatus(response.result.currentStatus);
+      setEvaluationId(response.result.stageRules.evaluation)
+      setQuestionareId(response.result.stageRules.questionnaire)
+      setstageId(response.result.stageId)
+      console.log(response.result.stageRules.questionnaire);
+      
     } catch (error) {
       console.log(error);
     }
@@ -511,7 +532,7 @@ const CandidateProfile = () => {
   useEffect(() => {
     getResumeJob();
     console.log(getstatus)
-  }, [getstatus, selectedItemLabel]);
+  }, [jobId]);
   // useEffect(() => {
   //   console.log(getstatus);
   // }, [getstatus]);
@@ -573,7 +594,7 @@ const CandidateProfile = () => {
   }, []);
 
   const jobs = (
-    <Menu onClick={handleMenuClick1}>
+    <Menu onClick={handleMenuClick1} className="h-[300px] overflow-auto">
       {allJob.map((item) => (
         <Menu.Item key={item.key}>{item.label}</Menu.Item>
       ))}
@@ -679,6 +700,7 @@ const CandidateProfile = () => {
             }}
             placement="bottomRight"
             trigger={["click"]}
+            
           >
             <Button
               size={isSmallScreen ? "default" : "large"}
@@ -751,6 +773,7 @@ const CandidateProfile = () => {
                           <DownOutlined />
                         </Space>
                       </a>
+                      
                     </Dropdown>
                   ) : null}
                   {
