@@ -187,7 +187,7 @@ function Web({ closeDrawer, selectedJobId, onClick }) {
         courseType: "",
         courseName: "",
         yearOfStudy: "",
-        location: "jnvkjdn",
+        // location: "jnvkjdn",
       },
     ]);
 
@@ -2255,9 +2255,8 @@ function Web({ closeDrawer, selectedJobId, onClick }) {
                               //     : ""
                               // }
                               error={
-                                formik.errors.additionalEducationalDetails?.[
-                                  index
-                                ]?.yearOfStudy || ""
+                                formik2.errors.additionalExperiences?.[index]
+                                  ?.jobTitle || ""
                               }
                             />
                             <Dropdown
@@ -2426,6 +2425,7 @@ function Web({ closeDrawer, selectedJobId, onClick }) {
                               </Tooltip>
                             </div>
                           }
+                          <div className="divider-h" />
                         </div>
                       ))}
 
