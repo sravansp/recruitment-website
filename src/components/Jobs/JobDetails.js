@@ -8,7 +8,7 @@ import {
 } from "../Api1";
 // import BoardData from "../../data/board.json";
 import { DragDropContext, Droppable, Draggable } from "react-beautiful-dnd";
-import { Dropdown, Tooltip, Radio, Alert } from "antd";
+import { Dropdown, Tooltip, Radio, Alert, notification } from "antd";
 import Breadcrumbs from "../common/BreadCrumbs";
 import { motion } from "framer-motion";
 import { useMediaQuery } from "react-responsive";
@@ -70,6 +70,7 @@ const JobDetails = () => {
   const [jobTitle, setjobTitle] = useState("");
   const [Jobdetails, setJobdetails] = useState([]);
   const[jobstatus,setjobStatus] = useState("")
+  
   // Initial view type
   const breadcrumbItems = [
     { label: "Jobs", url: "/AllJobs" },
@@ -259,6 +260,28 @@ const DragView = ({jobStatus}) => {
   const [Workflow, setWorkflow] = useState([]);
   // const selectedDataId = useSelector((state) => state.dataId.selectedDataId);
   const selectedDataId = localStorage.getItem("selectedDataId");
+  const [api, contextHolder] = notification.useNotification();
+  const openNotification = (type, message, description, callback) => {
+    api[type]({
+      message: message,
+      description: description,
+      placement: "top",
+      onClose: callback,
+
+      // stack: 2,
+      style: {
+        background: `${type === "success"
+          ? `linear-gradient(180deg, rgba(204, 255, 233, 0.8) 0%, rgba(235, 252, 248, 0.8) 51.08%, rgba(246, 251, 253, 0.8) 100%)`
+          : "linear-gradient(180deg, rgba(255, 236, 236, 0.80) 0%, rgba(253, 246, 248, 0.80) 51.13%, rgba(251, 251, 254, 0.80) 100%)"
+          }`,
+        boxShadow: `${type === "success"
+          ? "0px 4.868px 11.358px rgba(62, 255, 93, 0.2)"
+          : "0px 22px 60px rgba(134, 92, 144, 0.20)"
+          }`,
+      },
+      // duration: null,
+    });
+  };
   const { jobId } = useParams();
   useEffect(() => {
     localStorage.setItem("jobid", jobId);
@@ -471,6 +494,15 @@ const DragView = ({jobStatus}) => {
       stageId: stageId
     })
     console.log(response)
+    if (response.status === 200) {
+      // handleClose();
+      // setFunctionRender(!functionRender);
+      // getRecords()
+      // window.location.reload();
+      openNotification("success", "Success", response.message);
+    } else if (response.result === 500) {
+      openNotification("error", "Failed", response.message);
+    }
     }catch(error){
       console.log(error)
     }
@@ -625,6 +657,7 @@ const DragView = ({jobStatus}) => {
           </div>
         )}
       </div>
+      {contextHolder}
     </div>
   );
 };

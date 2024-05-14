@@ -576,7 +576,7 @@ const CandidateProfile = () => {
 
   const getAlljobs = async () => {
     try {
-      const response = await getAllRecruitmentJobs({ companyId: companyId });
+      const response = await getAllRecruitmentJobs({ companyId: companyId,jobStatus: "Open" });
       console.log(response);
       const jobs = response.result.map((jobs) => ({
         label: jobs.jobTitle,

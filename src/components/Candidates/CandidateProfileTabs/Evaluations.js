@@ -32,6 +32,7 @@ const Evaluations = ({EvaluationID,stageId}) => {
   const { resumeId } = useParams()
   const [selectedNoteId, setSelectedNoteId] = useState(null);
   const [isPinned, setIsPinned] = useState(0);
+  const [evalutaionId, setEvaluationId] = useState("")
   const handleEditClick = (jobResumeNoteId) => {
     setSelectedNoteId(jobResumeNoteId);
     getnotesbyId(jobResumeNoteId)
@@ -217,7 +218,7 @@ const Evaluations = ({EvaluationID,stageId}) => {
     newSelectedValues[index] = e.target.value;
     setSelectedValues(newSelectedValues);
   };
-  const [evalutaionId, setEvaluationId] = useState("")
+  
 
   const getEvtempId = async () => {
     const response = await getRecruitmentJobById({ id: jobId })
@@ -312,8 +313,16 @@ const Evaluations = ({EvaluationID,stageId}) => {
 
   const getevaluation = async () => {
     try {
+      let idToUse;
+    if (EvaluationID) {
+      idToUse = parseInt(EvaluationID);
+    } else if (evalutaionId) {
+      idToUse = parseInt(evalutaionId);
+    } else {
+      throw new Error("Neither evaluationId nor EvaluationID is present.");
+    }
 
-      const response = await getRecruitmentEvaluationTemplateById({ id: parseInt(evalutaionId) })
+      const response = await getRecruitmentEvaluationTemplateById({ id: idToUse })
       console.log(response)
       const evaluationData = response.result.flatMap(item => {
         return item.evaluationTemplateDetailData.map(detail => ({
@@ -528,12 +537,12 @@ const Evaluations = ({EvaluationID,stageId}) => {
                           ))}
                         </div>
                       )}
-                      {metadata.key === 'ShortAnswer' && (
+                      {metadata.key === 'Short Answer' && (
                         <FormInput
                           change={setForminputValue}
                           value={forminputvalue} />
                       )}
-                      {metadata.key === 'MultipleChoice' && (
+                      {metadata.key === 'Multiple Choice' && (
                         <div>
                           <Radio.Group
                             onChange={e => handleRadioChange(e, index)}
