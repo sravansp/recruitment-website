@@ -106,8 +106,12 @@ const TextEditor = ({
             inline: {
               options: ["bold", "italic", "underline", "strikethrough"],
             },
+            fontSize: {
+              inDropdown: true,
+              options: [8, 9, 10, 11, 12, 14, 16, 18, 24, 30, 36, 48, 60, 72, 96],
+            },
             list: {
-              options: ["unordered", "ordered", "indent"],
+              options: ["unordered", "ordered"], /* "indent" */
             },
             textAlign: {
               options: ["left", "center", "right", "justify"],
