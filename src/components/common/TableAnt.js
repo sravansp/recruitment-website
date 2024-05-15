@@ -81,7 +81,8 @@ const TableAnt = ({
   viewOutside = false,
   refresh = () => { },
   recordId = "",
-  jobId = ""
+  jobId = "",
+  handlesort = () => { },
 
 }) => {
   const { t } = useTranslation();
@@ -303,30 +304,35 @@ const TableAnt = ({
   //   const record
   //   console.log(record.jobId)
   // })
+
   useEffect(() => {
-    // console.log(header, "header");
+    console.log(header, "header");
     setTableData(
       (header[0]?.[tabValue || path || ''] || []).map((each, i) => ({
         title: (
           <span
             key={i}
+            
             className="text-[10px] 2xl:text-xs text-[#667085] dark:text-white font-medium capitalize"
           >
             {each.title}
           </span>
         ),
         dataIndex: each.value,
+        sorter: each.sorter, 
+        
         // dataIndex: "firstName",
         render: (record, text) => (
           <>
             <div
-              className=" cursor-pointer"
+             className={`${each.width} cursor-pointer`}
               // onClick={() => {
               //   navigate(`/${path}/${text[actionID]}`);
               //   // Store the clicked data ID in local storage only when the path is present and not an empty array
               //   localStorage.setItem('selectedDataId', text[actionID]);
               //   localStorage.setItem('jobid', text[jobId]);
               // }}
+
               
             >
               {each.value === "isActive" ? (
@@ -618,7 +624,7 @@ const TableAnt = ({
                 </div>
                ) 
     }
-            </div>
+            
             {
               each.dotsVertical && (
                 <Popover
@@ -662,8 +668,11 @@ const TableAnt = ({
                 </Popover>
               )
             }
+         </div>
           </>
         ),
+        // fixed: each.fixed,
+        width: each.width,
         // responsive: ["sm"],
       }))
     );
@@ -1101,12 +1110,14 @@ const TableAnt = ({
       </div>
       <div className="border rounded-lg border-[#E7E7E7] dark:border-secondary relative overflow-auto">
         {/* {console.log(data)} */}
+        {console.log(tableData)}
         {data && (
+          
           <Table
             //rowSelection={{ ...rowSelection }}
             columns={tableData}
-           
-            onChange={handleSortFunction}
+            onChange={(pagination, filters, sorter) => handlesort(pagination, filters, sorter)}
+             
 
             // dataSource={data.filter(
             //   (item) =>

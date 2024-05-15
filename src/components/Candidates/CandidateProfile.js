@@ -147,6 +147,7 @@ const CandidateProfile = () => {
   const [priority, setPriority] = useState("2");
   const[EvalutaionId,setEvaluationId] = useState("")
   const[QuestionareId,setQuestionareId] = useState("")
+  const[jobstatus,setJobstatus] = useState("")
 
   useEffect(() => {
     // Retrieve the login data JSON string from local storage
@@ -189,16 +190,17 @@ const CandidateProfile = () => {
   ];
 
   useEffect(() => {
-    if (state && state.jobID) {
-      setJobId(state.jobID);
-      console.log(state.jobID);
-    } else {
-      const storedJobId = localStorage.getItem("jobid");
-      if (storedJobId) {
-        setJobId(storedJobId);
-      }
-    }
-  }, [state]);
+    // if (state && state.jobID) {
+    //   setJobId(state.jobID);
+    //   console.log(state.jobID);
+    // } else {
+    //   const storedJobId = localStorage.getItem("jobid");
+    //   if (storedJobId) {
+    //     setJobId(storedJobId);
+    //   }
+    // }
+    setJobId(localStorage.getItem('jobid'));
+  }, []);
   const [selectedEmail, setSelectedEmail] = useState(""); // State to store selected email
 
   // Function to update selectedEmail state
@@ -511,7 +513,7 @@ const CandidateProfile = () => {
 
     try {
       const response = await getResumeJobDetails({
-        jobId: jobId,
+        jobId: localStorage.getItem('jobid'),
         resumeId: resumeId,
       
       });
@@ -520,11 +522,18 @@ const CandidateProfile = () => {
       setSelectedItemLabel(response.result.stageName);
       setjobResumeMapping(response.result.jobResumeMappingId);
       setgetstatus(response.result.currentStatus);
-      setEvaluationId(response.result.stageRules.evaluation)
-      setQuestionareId(response.result.stageRules.questionnaire)
       setstageId(response.result.stageId)
-      console.log(response.result.stageRules.questionnaire);
+      const stageRules = JSON.parse(response.result.stageRules);
+
+
+     const evaluation = stageRules.evaluation; 
+     const QuestionAire =stageRules.questionnaire
       
+     setEvaluationId(evaluation || '');
+     setQuestionareId(QuestionAire || '')
+      
+      console.log(QuestionAire);
+      console.log(evaluation)
     } catch (error) {
       console.log(error);
     }
@@ -532,7 +541,9 @@ const CandidateProfile = () => {
   useEffect(() => {
     getResumeJob();
     console.log(getstatus)
-  }, [jobId]);
+    console.log(stageId)
+    console.log(EvalutaionId)
+  }, []);
   // useEffect(() => {
   //   console.log(getstatus);
   // }, [getstatus]);
@@ -565,6 +576,7 @@ const CandidateProfile = () => {
         const response = await getRecruitmentJobById({ id: jobId });
         console.log(response);
         setJobName(response.result[0].jobTitle);
+        setJobstatus(response.result[0].jobStatus)
       }
     } catch (error) {
       console.log(error);
@@ -668,31 +680,28 @@ const CandidateProfile = () => {
         </Link>
         <div className="gap-2 vhcenter">
           {console.log(getstatus)}
-          {getstatus !== null && ( // Check if getstatus is not null
-            <>
-              <ButtonClick
-                buttonName="UnderProcess"
-                icon={<FcProcess className="text-white" />}
-                handleSubmit={() => handleButtonClick(0)}
-                BtnType={getstatus === "0" ? "primary" : ""}
-              // backgroundColor={getstatus === "0" ? "yellow" : "inherit"}
-              />
-              <ButtonClick
-                buttonName="Disqualify"
-                icon={<FcHighPriority />}
-                handleSubmit={() => handleButtonClick(2)}
-                // backgroundColor={getstatus === "2" ? "text-rose-600" : "inherit"}
-                BtnType={getstatus === "2" ? "primary" : ""}
-              />
-              <ButtonClick
-                buttonName="Hire"
-                icon={<FcCheckmark />}
-                handleSubmit={() => handleButtonClick(1)}
-                // backgroundColor={getstatus === "1" ? "green" : "inherit"}
-                BtnType={getstatus === "1" ? "primary" : ""}
-              />
-            </>
-          )}
+          {getstatus !== null && jobstatus === "Open" && (
+    <>
+        <ButtonClick
+            buttonName="UnderProcess"
+            icon={<FcProcess className="text-white" />}
+            handleSubmit={() => handleButtonClick(0)}
+            BtnType={getstatus === "0" ? "primary" : ""}
+        />
+        <ButtonClick
+            buttonName="Disqualify"
+            icon={<FcHighPriority />}
+            handleSubmit={() => handleButtonClick(2)}
+            BtnType={getstatus === "2" ? "primary" : ""}
+        />
+        <ButtonClick
+            buttonName="Hire"
+            icon={<FcCheckmark />}
+            handleSubmit={() => handleButtonClick(1)}
+            BtnType={getstatus === "1" ? "primary" : ""}
+        />
+    </>
+)}
           <ButtonClick buttonName="Share" icon={<FcShare />} />
           <Dropdown
             menu={{

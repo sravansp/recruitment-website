@@ -43,6 +43,7 @@ const Tabs = ({
   All=false,
   recordId="",
   drawerH=[],
+  handlesort=()=>{} 
  
 }) => {
   const [activeTab, setActiveTab] = useState(tabs[0].id);
@@ -291,6 +292,7 @@ const Tabs = ({
                     clickDrawer={clickDrawer}
                     path={path}
                     drawerH={drawerH}
+                    handlesort={handlesort}
                     // companyList = true,
                     // navigationClick = () => {},
                     // tablechange = false,

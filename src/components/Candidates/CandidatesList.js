@@ -19,7 +19,13 @@ const CandidatesList = () => {
   const [openPop, setOpenPop] = useState("");
   const [updateId, setUpdateId] = useState("");
   const[jobId,setJobId]=useState(null)
+  const [sortedInfo, setSortedInfo] = useState({});
   const { t } = useTranslation();
+  const handleChange = (pagination, filters, sorter) => {
+    console.log('Various parameters', pagination, filters, sorter);
+   
+    setSortedInfo(sorter || {});
+  };
 
   const header = [
     {
@@ -29,47 +35,82 @@ const CandidatesList = () => {
           title: t("NAME"),
           value: "candidateName",
           bold: true,
-          showSorterTooltip: { target: 'full-header' },
-          onFilter: (value, record) => record.candidateName.indexOf(value) === 0,
+          key:"candidateName",
           sorter: (a, b) => a.candidateName.length - b.candidateName.length,
-          sortDirections: ['descend'],
+          sortOrder: sortedInfo?.columnKey === 'candidateName' ? sortedInfo.order : null,
+         
+         
         },
         {
           id: 2,
           title: t("CONTACT"),
           value: "candidateContact",
+          key:"candidateContact",
+          sorter: (a, b) => a.candidateContact - b.candidateContact,
+          sortOrder: sortedInfo.columnKey === 'candidateContact' ? sortedInfo.order : null,
         },
         {
           id: 3,
           title: t("JOB"),
           value: "jobTitle",
           titleCaseSensitive: true,
-        },
+          key: "jobTitle",
+          sorter: (a, b) => {
+              // Handle cases where jobTitle is null or undefined
+              const titleA = a.jobTitle || '';
+              const titleB = b.jobTitle || '';
+              return titleA.length - titleB.length;
+          },
+          sortOrder: sortedInfo.columnKey === 'jobTitle' ? sortedInfo.order : null,
+      },
 
-        {
-          id: 4,
-          title: t("STAGE"),
-          value: "stageName",
-         
+      {
+        id: 4,
+        title: t("STAGE"),
+        value: "stageName",
+        key: "stageName",
+        sorter: (a, b) => {
+            // Handle cases where stageName is null or undefined
+            const nameA = a.stageName || '';
+            const nameB = b.stageName || '';
+            return nameA.length - nameB.length;
         },
-        {
-          id: 5,
-
-          title: t("SOURCE"),
-          value: "candidateSource",
-         
-        },
+        sortOrder: sortedInfo.columnKey === 'stageName' ? sortedInfo.order : null,
+    },
+    {
+      id: 5,
+      title: t("SOURCE"),
+      value: "candidateSource",
+      key: "candidateSource",
+      sorter: (a, b) => {
+          // Handle cases where candidateSource is null or undefined
+          const sourceA = a.candidateSource || '';
+          const sourceB = b.candidateSource || '';
+          return sourceA.length - sourceB.length;
+      },
+      sortOrder: sortedInfo.columnKey === 'candidateSource' ? sortedInfo.order : null,
+  },
         {
           id: 6,
-
           title: t("STATUS"),
           value: "currentStatus",
-         
-        },
+          key: "currentStatus",
+          sorter: (a, b) => {
+              // Handle cases where currentStatus is null or undefined
+              const statusA = a.currentStatus || '';
+              const statusB = b.currentStatus || '';
+              return statusA.length - statusB.length;
+          },
+          sortOrder: sortedInfo.columnKey === 'currentStatus' ? sortedInfo.order : null,
+      },
         {
           id: 7,
           title: t("APPLIED DATE"),
           value: "createdOn",
+          key:"createdOn",
+          sorter: (a, b) => a.createdOn - b.createdOn,
+          sortOrder: sortedInfo.columnKey === 'createdOn' ? sortedInfo.order : null
+
         },
         
         // {
@@ -148,7 +189,18 @@ const CandidatesList = () => {
       <JobListCopy data={jobstatic}/>
       <div className=''>
         {/* <TableCopy data={jobList} header={header} path='CandidateProfile'/> */}
-        <TableAnt All={true} data={jobList} header={header} path='Candidate_Profile' actionID="resumeId" jobId="jobId"/>
+        <TableAnt
+        All={true} 
+        data={jobList} 
+        header={header} 
+        path='Candidate_Profile' 
+        actionID="resumeId" 
+        jobId="jobId"
+        handlesort={(e)=>{
+          handleChange(e)
+
+        }}
+        />
       </div>
       {show && (
          <motion.div initial="hidden" animate="visible" >

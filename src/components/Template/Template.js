@@ -135,6 +135,7 @@ const Template = ({
           id: 2,
           title: t("Description"),
           value: "jobDescription",
+          width:"600px",
         },
         {
           id: 3,
@@ -160,6 +161,7 @@ const Template = ({
           id: 2,
           title: t("Description"),
           value: "descriptionTemplate",
+          width:"600px",
         },
         {
           id: 3,
@@ -185,6 +187,7 @@ const Template = ({
           id: 2,
           title: t("Description"),
           value: "description",
+          width:"600px",
         },
         {
           id: 3,
@@ -210,6 +213,7 @@ const Template = ({
           id: 2,
           title: t("Description"),
           value: "value",
+          width:"600px",
         },
         {
           id: 3,
@@ -235,6 +239,7 @@ const Template = ({
           id: 2,
           title: t("Description"),
           value: "description",
+          width:"600px",
         },
         {
           id: 3,
@@ -260,6 +265,7 @@ const Template = ({
           id: 2,
           title: t("Description"),
           value: "description",
+          width:"600px",
         },
         {
           id: 3,
@@ -285,6 +291,7 @@ const Template = ({
           id: 2,
           title: "Subject",
           value: "value",
+          width:"600px",
         },
         {
           id: 3,

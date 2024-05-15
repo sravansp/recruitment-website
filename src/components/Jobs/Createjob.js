@@ -1799,13 +1799,18 @@ const Createjob = ({
   description={'Minimum Annual Salary'}
   change={(e) => {
     const value = parseFloat(e);
-    if (value <= 0 ) {
+    if (value <= 0) {
       formik1.setFieldError('salaryRangeFrom', 'Salary Range From must be a positive number');
     } else {
       formik1.setFieldValue('salaryRangeFrom', value);
       // Clear the error message only if the input is non-empty or greater than 0
-      if (value > 0||value=="") {
+      if (value > 0 || value === "") {
         formik1.setFieldError('salaryRangeFrom', '');
+      }
+      // Check if Salary Range To is less than Salary Range From and clear the error message
+      const salaryRangeTo = parseFloat(formik1.values.salaryRangeTo);
+      if (salaryRangeTo > 0 && salaryRangeTo <= value) {
+        formik1.setFieldError('salaryRangeTo', '');
       }
     }
   }}
@@ -1823,15 +1828,14 @@ const Createjob = ({
   change={(e) => {
     const value = parseFloat(e);
     const salaryRangeFrom = parseFloat(formik1.values.salaryRangeFrom); // Convert Salary Range From to a number
-    if (value <= 0 ) {
+    if (value <= 0) {
       formik1.setFieldError('salaryRangeTo', 'Salary Range To must be a positive number');
     } else if (value <= salaryRangeFrom) {
       formik1.setFieldError('salaryRangeTo', 'Salary Range To cannot be less than or equal to Salary Range From');
     } else {
       formik1.setFieldValue('salaryRangeTo', value);
       // Clear the error message only if the input is non-empty or greater than 0
-      if (value > 0||value=="") {
-        
+      if (value > 0 || value === "") {
         formik1.setFieldError('salaryRangeTo', '');
       }
     }

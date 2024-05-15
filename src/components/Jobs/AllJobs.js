@@ -47,6 +47,7 @@ function AllJobs() {
   const [createdBy, setCreatedBy] = useState("");
   const [DraftJObs, setDraftJObs] = useState([])
   const [openPop, setOpenPop] = useState("");
+  const [sortedInfo, setSortedInfo] = useState({});
   const record = ""
 
 
@@ -67,6 +68,11 @@ function AllJobs() {
       console.error('Login data not found in local storage.');
     }
   }, []);
+  const handleChange = (pagination, filters, sorter) => {
+    console.log('Various parameters', pagination, filters, sorter);
+   
+    setSortedInfo(sorter || {});
+  };
   console.log(updateId)
   const tabs = [
     {
@@ -100,22 +106,35 @@ function AllJobs() {
           title: t("Name"),
           value: "jobTitle",
           bold: true,
+          key:"jobTitle",
+          sorter: (a, b) => a.jobTitle.length - b.jobTitle.length,
+          sortOrder: sortedInfo?.columnKey === 'jobTitle' ? sortedInfo.order : null,
         },
         {
           id: 2,
           title: t("Applied"),
           value: "noOfApplicants",
+          key:"noOfApplicants",
+          sorter: (a, b) => a.noOfApplicants - b.noOfApplicants,
+          sortOrder: sortedInfo?.columnKey === 'noOfApplicants' ? sortedInfo.order : null,
         },
         {
           id: 3,
           title: t("Type"),
           value: "workLocationType",
+          key:"workLocationType",
+          sorter: (a, b) => a.workLocationType.length - b.workLocationType.length,
+          sortOrder: sortedInfo?.columnKey === 'workLocationType' ? sortedInfo.order : null,
         },
 
         {
           id: 4,
           title: t("Location"),
           value: "location",
+          key:"location",
+          sorter: (a, b) => a.location.length - b.location.length,
+          sortOrder: sortedInfo?.columnKey === 'location'
+
         },
         {
           id: 5,
@@ -127,11 +146,17 @@ function AllJobs() {
           id: 6,
           title: t("Posted_By"),
           value: "jobCreatedBy",
+          key:"jobCreatedBy",
+          sorter: (a, b) => a.jobCreatedBy.length - b.jobCreatedBy.length,
+          sortOrder: sortedInfo?.columnKey === 'jobCreatedBy'
         },
         {
           id: 7,
           title: t("Date"),
           value: "createdOn",
+          key:"createdOn",
+          sorter: (a, b) => a.createdOn - b.createdOn,
+          sortOrder: sortedInfo?.columnKey === 'createdOn' ? sortedInfo.order : null,
         },
         {
           id: 8,
@@ -146,26 +171,38 @@ function AllJobs() {
           title: t("Name"),
           value: "jobTitle",
           bold: true,
+          key:"jobTitle",
+          sorter: (a, b) => a.jobTitle.length - b.jobTitle.length,
+          sortOrder: sortedInfo?.columnKey === 'jobTitle' ? sortedInfo.order : null,
         },
         {
           id: 2,
           title: t("Applied"),
           value: "noOfApplicants",
+          key:"noOfApplicants",
+          sorter: (a, b) => a.noOfApplicants - b.noOfApplicants,
+          sortOrder: sortedInfo?.columnKey === 'noOfApplicants' ? sortedInfo.order : null,
         },
         {
           id: 3,
           title: t("Type"),
           value: "workLocationType",
+          key:"workLocationType",
+          sorter: (a, b) => a.workLocationType.length - b.workLocationType.length,
+          sortOrder: sortedInfo?.columnKey === 'workLocationType' ? sortedInfo.order : null,
         },
 
         {
           id: 4,
           title: t("Location"),
           value: "location",
+          key:"location",
+          sorter: (a, b) => a.location.length - b.location.length,
+          sortOrder: sortedInfo?.columnKey === 'location'
+
         },
         {
           id: 5,
-
           title: t("Status"),
           value: "",
           actionToggle: true,
@@ -174,11 +211,17 @@ function AllJobs() {
           id: 6,
           title: t("Posted_By"),
           value: "jobCreatedBy",
+          key:"jobCreatedBy",
+          sorter: (a, b) => a.jobCreatedBy.length - b.jobCreatedBy.length,
+          sortOrder: sortedInfo?.columnKey === 'jobCreatedBy'
         },
         {
           id: 7,
           title: t("Date"),
           value: "createdOn",
+          key:"createdOn",
+          sorter: (a, b) => a.createdOn - b.createdOn,
+          sortOrder: sortedInfo?.columnKey === 'createdOn' ? sortedInfo.order : null,
         },
         {
           id: 8,
@@ -186,12 +229,6 @@ function AllJobs() {
           value: "viewData",
           status: "viewData",
         },
-        // {
-        //   id: 8,
-        //   title: "",
-        //   value: "action",
-        //   dotsVertical: true,
-        // },
       ],
       Open: [
         {
@@ -199,26 +236,38 @@ function AllJobs() {
           title: t("Name"),
           value: "jobTitle",
           bold: true,
+          key:"jobTitle",
+          sorter: (a, b) => a.jobTitle.length - b.jobTitle.length,
+          sortOrder: sortedInfo?.columnKey === 'jobTitle' ? sortedInfo.order : null,
         },
         {
           id: 2,
           title: t("Applied"),
           value: "noOfApplicants",
+          key:"noOfApplicants",
+          sorter: (a, b) => a.noOfApplicants - b.noOfApplicants,
+          sortOrder: sortedInfo?.columnKey === 'noOfApplicants' ? sortedInfo.order : null,
         },
         {
           id: 3,
           title: t("Type"),
           value: "workLocationType",
+          key:"workLocationType",
+          sorter: (a, b) => a.workLocationType.length - b.workLocationType.length,
+          sortOrder: sortedInfo?.columnKey === 'workLocationType' ? sortedInfo.order : null,
         },
 
         {
           id: 4,
           title: t("Location"),
           value: "location",
+          key:"location",
+          sorter: (a, b) => a.location.length - b.location.length,
+          sortOrder: sortedInfo?.columnKey === 'location'
+
         },
         {
           id: 5,
-
           title: t("Status"),
           value: "",
           actionToggle: true,
@@ -227,11 +276,17 @@ function AllJobs() {
           id: 6,
           title: t("Posted_By"),
           value: "jobCreatedBy",
+          key:"jobCreatedBy",
+          sorter: (a, b) => a.jobCreatedBy.length - b.jobCreatedBy.length,
+          sortOrder: sortedInfo?.columnKey === 'jobCreatedBy'
         },
         {
           id: 7,
           title: t("Date"),
           value: "createdOn",
+          key:"createdOn",
+          sorter: (a, b) => a.createdOn - b.createdOn,
+          sortOrder: sortedInfo?.columnKey === 'createdOn' ? sortedInfo.order : null,
         },
         {
           id: 8,
@@ -246,48 +301,66 @@ function AllJobs() {
           title: t("Name"),
           value: "jobTitle",
           bold: true,
+          key:"jobTitle",
+          sorter: (a, b) => a.jobTitle.length - b.jobTitle.length,
+          sortOrder: sortedInfo?.columnKey === 'jobTitle' ? sortedInfo.order : null,
         },
         {
           id: 2,
           title: t("Applied"),
           value: "noOfApplicants",
+          key:"noOfApplicants",
+          sorter: (a, b) => a.noOfApplicants - b.noOfApplicants,
+          sortOrder: sortedInfo?.columnKey === 'noOfApplicants' ? sortedInfo.order : null,
         },
         {
           id: 3,
           title: t("Type"),
           value: "workLocationType",
+          key:"workLocationType",
+          sorter: (a, b) => a.workLocationType.length - b.workLocationType.length,
+          sortOrder: sortedInfo?.columnKey === 'workLocationType' ? sortedInfo.order : null,
         },
 
         {
           id: 4,
           title: t("Location"),
           value: "location",
+          key:"location",
+          sorter: (a, b) => a.location.length - b.location.length,
+          sortOrder: sortedInfo?.columnKey === 'location'
         },
+        // {
+        //   id: 5,
+
+        //   title: t("Status"),
+        //   value: "",
+        //   actionToggle: true,
+        // },
         {
           id: 5,
-
-          title: t("Status"),
-          value: "",
-          actionToggle: true,
+          title: t("Posted_By"),
+          value: "jobCreatedBy",
+          key:"jobCreatedBy",
+          sorter: (a, b) => a.jobCreatedBy.length - b.jobCreatedBy.length,
+          sortOrder: sortedInfo?.columnKey === 'jobCreatedBy'
         },
         {
           id: 6,
-          title: t("Posted_By"),
-          value: "jobCreatedBy",
+          title: t("Date"),
+          value: "createdOn",
+          key:"createdOn",
+          sorter: (a, b) => a.createdOn - b.createdOn,
+          sortOrder: sortedInfo?.columnKey === 'createdOn' ? sortedInfo.order : null,
         },
         {
           id: 7,
-          title: t("Date"),
-          value: "createdOn",
-        },
-        {
-          id: 8,
           title: "Action",
           value: "action",
           dotsVertical: true,
         },
         {
-          id: 9,
+          id: 8,
           title: t("View"),
           value: "viewData",
           status: "viewData",
@@ -389,11 +462,30 @@ function AllJobs() {
   }, []);
 
   useEffect(() => {
+    switch(navigationPath){
+    case"AllJobs":
+    
     callapi();
+    break;
+    case"MyOpenJobs":
     getcreatedBy();
+    break;
+    case"Open":
     getOpenjobs();
+    break
+    case"Draft":
     getDraftjobs();
-  }, [companyId, userid]);
+    break
+    default:
+      break
+   
+  
+  }
+  }, [navigationPath]);
+  useEffect(()=>{
+    getcreatedBy();
+    
+  },[userid])
 
 
 
@@ -498,6 +590,88 @@ function AllJobs() {
         },
 
       ],
+      Open: [
+        {
+          id: 1,
+          title: t("Name"),
+          value: "jobTitle",
+        },
+        {
+          id: 2,
+          title: "Created By",
+          value: "createdBy",
+        },
+        {
+          id: 3,
+          title: "Experience",
+          value: "experience",
+        },
+
+        {
+          id: 4,
+          title: "Job Created By",
+          value: "jobCreatedBy",
+        },
+        {
+          id: 5,
+
+          title: "JobTitle",
+          value: "jobTitle",
+
+        },
+        {
+          id: 6,
+          title: "JobType",
+          value: "jobType",
+        },
+        {
+          id: 7,
+          title: "Requirement Type",
+          value: "requirementType",
+        },
+
+      ],
+      AllJobs: [
+        {
+          id: 1,
+          title: t("Name"),
+          value: "jobTitle",
+        },
+        {
+          id: 2,
+          title: "Created By",
+          value: "createdBy",
+        },
+        {
+          id: 3,
+          title: "Experience",
+          value: "experience",
+        },
+
+        {
+          id: 4,
+          title: "Job Created By",
+          value: "jobCreatedBy",
+        },
+        {
+          id: 5,
+
+          title: "JobTitle",
+          value: "jobTitle",
+
+        },
+        {
+          id: 6,
+          title: "JobType",
+          value: "jobType",
+        },
+        {
+          id: 7,
+          title: "Requirement Type",
+          value: "requirementType",
+        },
+
+      ],
     },
   ];
   const handleNavigate = () => {
@@ -560,6 +734,7 @@ function AllJobs() {
         {/* <TableAnt1 data={JobsList} header={header} path="AllJobs" /> */}
         <Tabs
           path="JobDetails"
+          handlesort={(e)=>handleChange(e)}
           tabs={tabs}
           header={header}
           drawerH={Drawerheader}
