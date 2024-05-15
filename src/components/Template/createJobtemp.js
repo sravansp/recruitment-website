@@ -134,6 +134,8 @@ const CreatejobTemp = ({
   const [Questionerror, setQuestionError] = useState('')
   const [answerError, setAnswerError] = useState('')
   const [OptionError, setoptionserror] = useState('')
+  const[salaryRangeToError,setsalaryRangeToError] = useState("")
+  const[salaryRangeFromError,setsalaryRangeFromError] = useState("")
 
   // console.log(updateId);
   useEffect(() => {
@@ -1383,45 +1385,66 @@ const CreatejobTemp = ({
   type={"number"}
 />  */}
 
-                        <FormInput
-                          title={'Salary Range From'}
-                          placeholder={'Enter Salary Range From'}
-                          change={(e) => {
-                            formik.setFieldValue('salaryRangeFrom', e);
-                            // setFieldValue(e)
-                            // Validate Salary Range To when Salary Range From changes
-                          }}
-                          value={formik.values.salaryRangeFrom}
-                          type={"number"}
-                          error={formik.errors.salaryRangeFrom}
-                          required={true}
-                        />
+<FormInput
+  title={'Salary Range From'}
+  placeholder={'Enter Salary Range From'}
+  description={'Minimum Annual Salary'}
+  change={(e) => {
+    const value = parseFloat(e);
+    const salaryRangeTo = parseFloat(formik.values.salaryRangeTo); 
+    const salaryRangeFrom = parseFloat(e);
+    if (value <= 0) {
+      formik.setFieldError('salaryRangeFrom', 'Salary Range From must be a positive number');
+    } else {
+      formik.setFieldValue('salaryRangeFrom', value);
+      // Clear the error message only if the input is non-empty or greater than 0
+      if (value > 0 ) {
+        formik.setFieldError('salaryRangeFrom', '');
+      }
+      if(salaryRangeTo<=salaryRangeFrom){
+        // formik1.setFieldError('salaryRangeFrom', 'Salary Range From should be less than Salary Range To ');
+        setsalaryRangeFromError('Salary Range From should be less than Salary Range To ')
+        formik.setFieldValue('salaryRangeFrom', value);
+        console.log("ttt")
+      }else{
+        setsalaryRangeFromError("")
+      }
+     
+    }
+  }}
+  value={formik.values.salaryRangeFrom}
+  type={"number"}
+  error={formik.errors.salaryRangeFrom||salaryRangeFromError}
+  required={true}
+  maxLength={15}
+/>
 
-                        <FormInput
-                          title={'Salary Range To'}
-                          placeholder={'Enter Salary Range To'}
-                          value={formik.values.salaryRangeTo}
-                          error={formik.errors.salaryRangeTo}
-                          required={true}
-                          type={"number"}
-                          change={(e) => {
-                            formik.setFieldValue('salaryRangeTo', e);
-                            // const salaryRangeTo = parseFloat(e); // Convert input to a number
-                            // const salaryRangeFrom = parseFloat(formik.values.salaryRangeFrom);
+<FormInput
+  title={'Salary Range To'}
+  placeholder={'Enter value'}
+  description={'Maximum Annual Salary'}
+  change={(e) => {
+    // Validate Salary Range To
+    const salaryRangeTo = parseFloat(e); // Convert input to a number
+    const salaryRangeFrom = parseFloat(formik.values.salaryRangeFrom); // Convert Salary Range From to a number
 
-                            // if (salaryRangeTo <= salaryRangeFrom) {
-                            //   formik.setFieldError('salaryRangeTo', 'Salary Range To must be greater than Salary Range From');
-                            //   console.log("it is less: ", salaryRangeTo);
-                            // } else {
-                            //   // Clear the error message when the condition is met
-                            //   formik.setFieldError('salaryRangeTo', '');
-                            //   console.log("it is greater: ", salaryRangeTo);
-                            // }
-                            // // Manually trigger validation after setting field value
-                            // formik.validateForm();
-                          }}
-                        />
-
+    if (salaryRangeTo <= salaryRangeFrom) {
+      setsalaryRangeToError("Salary Range To should be greater than the Salary from");
+      formik.setFieldValue('salaryRangeTo', e);
+    } else if (salaryRangeTo <= 0) {
+      setsalaryRangeToError("Salary Range To must be a positive number");
+      console.log("gg")
+    } else {
+      // Clear the error message when the conditions are met
+      setsalaryRangeToError("");
+      formik.setFieldValue('salaryRangeTo', e);
+    }
+  }}
+  value={formik.values.salaryRangeTo}
+  error={formik.errors.salaryRangeTo || salaryRangeToError}
+  required={true}
+  type={"number"}
+/>
                         <Dropdown
                           title={"Salary Currency"}
                           placeholder={"Enter Salary Currency"}

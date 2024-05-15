@@ -154,8 +154,15 @@ function AllJobs() {
           id: 7,
           title: t("Date"),
           value: "createdOn",
-          key:"createdOn",
-          sorter: (a, b) => a.createdOn - b.createdOn,
+          key: "createdOn",
+          sorter: (a, b) => {
+            // Parse the dates
+            const dateA = new Date(a.createdOn);
+            const dateB = new Date(b.createdOn);
+        
+            // Compare the dates
+            return dateA - dateB;
+          },
           sortOrder: sortedInfo?.columnKey === 'createdOn' ? sortedInfo.order : null,
         },
         {
@@ -219,8 +226,15 @@ function AllJobs() {
           id: 7,
           title: t("Date"),
           value: "createdOn",
-          key:"createdOn",
-          sorter: (a, b) => a.createdOn - b.createdOn,
+          key: "createdOn",
+          sorter: (a, b) => {
+            // Parse the dates
+            const dateA = new Date(a.createdOn);
+            const dateB = new Date(b.createdOn);
+        
+            // Compare the dates
+            return dateA - dateB;
+          },
           sortOrder: sortedInfo?.columnKey === 'createdOn' ? sortedInfo.order : null,
         },
         {
@@ -284,8 +298,15 @@ function AllJobs() {
           id: 7,
           title: t("Date"),
           value: "createdOn",
-          key:"createdOn",
-          sorter: (a, b) => a.createdOn - b.createdOn,
+          key: "createdOn",
+          sorter: (a, b) => {
+            // Parse the dates
+            const dateA = new Date(a.createdOn);
+            const dateB = new Date(b.createdOn);
+        
+            // Compare the dates
+            return dateA - dateB;
+          },
           sortOrder: sortedInfo?.columnKey === 'createdOn' ? sortedInfo.order : null,
         },
         {
@@ -350,7 +371,14 @@ function AllJobs() {
           title: t("Date"),
           value: "createdOn",
           key:"createdOn",
-          sorter: (a, b) => a.createdOn - b.createdOn,
+          sorter: (a, b) => {
+            // Parse the dates
+            const dateA = new Date(a.createdOn);
+            const dateB = new Date(b.createdOn);
+        
+            // Compare the dates
+            return dateA - dateB;
+          },
           sortOrder: sortedInfo?.columnKey === 'createdOn' ? sortedInfo.order : null,
         },
         {

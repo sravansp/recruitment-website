@@ -131,7 +131,8 @@ const Createjob = ({
   const [Questionerror, setQuestionError] = useState('')
   const [answerError, setAnswerError] = useState('')
   const [OptionError, setoptionserror] = useState('')
-
+  const[salaryRangeToError,setsalaryRangeToError] = useState("")
+ const[salaryRangeFromError,setsalaryRangeFromError] = useState("")
 
 
   // console.log(updateId)
@@ -382,33 +383,7 @@ const Createjob = ({
       questionnaireTemplateId: null,
     },
 
-    // enableReinitialize: true,
-    // validateOnChange: false,
-    // validationSchema: Yup.object().shape({
-    //   companyId: Yup.string().required('Company is required'),
-    //   jobTitle: Yup.string().required('Job Title is required'),
-    //   departmentId: Yup.string().required('Department ID is required'),
-    //   jobCode: Yup.string().required('Job Code is required'),
-    //   workLocationType: Yup.string().required('Work Location Type is required'),
-
-    //   location: Yup.string().required('Location is required'),
-    //   requirementType: Yup.string().required('Requirement Type is required'),
-    //   jobType: Yup.string().required('Job Type is required'),
-    //   experience: Yup.string().required('Experience is required'),
-    //   education: Yup.string().required('Education is required'),
-    //   searchKeywords: Yup.string().required('Search Keywords is required'),
-    //   salaryRangeFrom: Yup.number()
-    //     .typeError('Salary Range From must be a number')
-    //     .required('Salary Range From is required'),
-    //   salaryRangeTo: Yup.number()
-    //     .typeError('Salary Range To must be a number')
-    //     .required('Salary Range To is required'),
-    //   salaryCurrency: Yup.string().required('Salary Currency is required'),
-    //   noOfVaccancies: Yup.number()
-    //     .typeError('Number Of Vaccancies must be a number')
-    //     .required('Number Of Vaccancies is required'),
-
-    // }),
+    
     onSubmit: async (e) => {
       if (formik1.values.noOfVaccancies && formik1.values.noOfVaccancies <= 0) {
         formik1.setFieldError('noOfVaccancies', 'Openings should be a positive value');
@@ -1799,6 +1774,8 @@ const Createjob = ({
   description={'Minimum Annual Salary'}
   change={(e) => {
     const value = parseFloat(e);
+    const salaryRangeTo = parseFloat(formik1.values.salaryRangeTo); 
+    const salaryRangeFrom = parseFloat(e);
     if (value <= 0) {
       formik1.setFieldError('salaryRangeFrom', 'Salary Range From must be a positive number');
     } else {
@@ -1807,41 +1784,49 @@ const Createjob = ({
       if (value > 0 ) {
         formik1.setFieldError('salaryRangeFrom', '');
       }
-      
+      if(salaryRangeTo<=salaryRangeFrom){
+        // formik1.setFieldError('salaryRangeFrom', 'Salary Range From should be less than Salary Range To ');
+        setsalaryRangeFromError('Salary Range From should be less than Salary Range To ')
+        formik1.setFieldValue('salaryRangeFrom', value);
+        console.log("ttt")
+      }else{
+        setsalaryRangeFromError("")
+      }
      
     }
   }}
   value={formik1.values.salaryRangeFrom}
   type={"number"}
-  error={formik1.errors.salaryRangeFrom}
+  error={formik1.errors.salaryRangeFrom||salaryRangeFromError}
   required={true}
   maxLength={15}
 />
 
 <FormInput
   title={'Salary Range To'}
-  placeholder={'Enter Salary Range To'}
+  placeholder={'Enter value'}
   description={'Maximum Annual Salary'}
   change={(e) => {
-    const value = parseFloat(e);
-   
-    if (value <= formik1.values.salaryRangeFrom) {
-      formik1.setFieldError('salaryRangeTo', 'Salary Range To must be Greater than Salary Range From');
-      console.log("Error: Salary Range To must be Greater than Salary Range From");
+    // Validate Salary Range To
+    const salaryRangeTo = parseFloat(e); // Convert input to a number
+    const salaryRangeFrom = parseFloat(formik1.values.salaryRangeFrom); // Convert Salary Range From to a number
+
+    if (salaryRangeTo <= salaryRangeFrom) {
+      setsalaryRangeToError("Salary Range To should be greater than the Salary from");
+      formik1.setFieldValue('salaryRangeTo', e);
+    } else if (salaryRangeTo <= 0) {
+      setsalaryRangeToError("Salary Range To must be a positive number");
+      console.log("gg")
     } else {
-      // Clear the error message and set the field value
-      formik1.setFieldError('salaryRangeTo', '');
+      // Clear the error message when the conditions are met
+      setsalaryRangeToError("");
+      formik1.setFieldValue('salaryRangeTo', e);
     }
-    
-    // Always update the field value
-    formik1.setFieldValue('salaryRangeTo', e); // Set field value regardless of error
-    
   }}
   value={formik1.values.salaryRangeTo}
-  error={formik1.errors.salaryRangeTo}
+  error={formik1.errors.salaryRangeTo || salaryRangeToError}
   required={true}
   type={"number"}
-  maxLength={15}
 />
                         <Dropdown
                           title={'Salary Currency'}
