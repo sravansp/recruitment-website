@@ -323,7 +323,7 @@ const Workflowstage = ({
         if (stageRules.tag) {
             optionData.push({
                 id: "add_tag",
-                name: "add_tag",
+                name: "Add Tag",
                 option1: [
                     // Questionnaire options here...
                     {id:1, titletag:"Add New Tag"}
@@ -766,7 +766,7 @@ const Workflowstage = ({
       icon: <IoIosArrowDropdown />,
       det: [{
         id: "add_tag",
-        name: "add_tag",
+        name: "Add Tag",
         option1: [
           { id: 1, titletag: "Add New Tag" }
         ],

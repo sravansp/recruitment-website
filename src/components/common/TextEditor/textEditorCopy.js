@@ -23,19 +23,24 @@ const TextEditorcopy = ({
         () => EditorState.createEmpty(),
       );
 
+   
       useEffect(() => {
         if (initialValue) {
             const blocksFromHTML = convertFromHTML(initialValue);
-            const contentState = ContentState.createFromBlockArray(blocksFromHTML.contentBlocks, blocksFromHTML.entityMap);
-            setEditorState(EditorState.createWithContent(contentState));
+            const content = ContentState.createFromBlockArray(
+                blocksFromHTML.contentBlocks,
+                blocksFromHTML.entityMap
+            );
+            setEditorState(EditorState.createWithContent(content));
         }
+        
     }, [initialValue]);
-    
     const handleEditorChange =(editorState) => {
        
         const htmlContent = draftToHtml(convertToRaw(editorState.getCurrentContent()));
+        setEditorState(editorState)
         Change(htmlContent);
-        console.log(htmlContent) // Pass HTML content to the parent component
+        console.log(htmlContent) 
       };
     
     // useEffect(()=>{

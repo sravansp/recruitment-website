@@ -792,6 +792,7 @@ const CandidateProfile = () => {
                   }
 
                 </div>
+                {jobstatus ==="Open"&&(
                 <div className="flex flex-col gap-3">
                   <Dropdown overlay={menu} trigger={["click"]}>
                     <a className="pblack" onClick={(e) => e.preventDefault()}>
@@ -805,6 +806,7 @@ const CandidateProfile = () => {
                     {selectedItemLabel ? selectedItemLabel : "Choose Stage"}
                   </div>
                 </div>
+                )}
 
                 <Divider type="vertical" className="hidden h-auto lg:block" />
                 <div className="flex flex-col gap-3">

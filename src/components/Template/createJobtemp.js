@@ -1429,7 +1429,7 @@ const CreatejobTemp = ({
     const salaryRangeFrom = parseFloat(formik.values.salaryRangeFrom); // Convert Salary Range From to a number
 
     if (salaryRangeTo <= salaryRangeFrom) {
-      setsalaryRangeToError("Salary Range To should be greater than the Salary from");
+      setsalaryRangeToError("Salary Range To should be greater than the Salary Range from");
       formik.setFieldValue('salaryRangeTo', e);
     } else if (salaryRangeTo <= 0) {
       setsalaryRangeToError("Salary Range To must be a positive number");
@@ -1524,7 +1524,7 @@ const CreatejobTemp = ({
                           <p className="pb-2">Description</p>
                           <FaAsterisk className="text-[6px] text-rose-600" />
                         </div>
-                        <TextEditor
+                        {/* <TextEditor
                           placeholder={t(
                             "Enter Description "
                           )}
@@ -1540,8 +1540,8 @@ const CreatejobTemp = ({
                           //   setstateHTML(e)
                           // }}
                           loader={loader}
-                        />
-                        {/* <TextEditorcopy
+                        /> */}
+                        <TextEditorcopy
                           Change={(e)=>{
                             handleEditorChange(e)
                             console.log(e)
@@ -1549,7 +1549,7 @@ const CreatejobTemp = ({
                           initialValue={content}
                           error={formik.errors.jobDescription}
                           
-                        /> */}
+                        />
                         {/* <Editor1/> */}
 
                       </div>

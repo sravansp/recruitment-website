@@ -1812,7 +1812,7 @@ const Createjob = ({
     const salaryRangeFrom = parseFloat(formik1.values.salaryRangeFrom); // Convert Salary Range From to a number
 
     if (salaryRangeTo <= salaryRangeFrom) {
-      setsalaryRangeToError("Salary Range To should be greater than the Salary from");
+      setsalaryRangeToError("Salary Range To should be greater than the Salary Range from");
       formik1.setFieldValue('salaryRangeTo', e);
     } else if (salaryRangeTo <= 0) {
       setsalaryRangeToError("Salary Range To must be a positive number");

@@ -530,8 +530,8 @@ const QuestionAire = ({
 
                     />
 
-                    <div className="flex items-center gap-5">
-                      <div className="flex-shrink-0"> {/* Add this container for the dropdown and icons */}
+                    <div className="flex items-center gap-5 mt-4">
+                      <div className="flex-shrink-0 "> 
                         <Dropdown
                           options={Form}
                           dropdownWidth='200px'

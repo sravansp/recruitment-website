@@ -122,8 +122,11 @@ function AllJobs() {
           id: 3,
           title: t("Type"),
           value: "workLocationType",
-          key:"workLocationType",
-          sorter: (a, b) => a.workLocationType.length - b.workLocationType.length,
+          key: "workLocationType",
+          sorter: (a, b) => {
+            // Compare the workLocationType strings alphabetically
+            return a.workLocationType.localeCompare(b.workLocationType);
+          },
           sortOrder: sortedInfo?.columnKey === 'workLocationType' ? sortedInfo.order : null,
         },
 
@@ -195,7 +198,10 @@ function AllJobs() {
           title: t("Type"),
           value: "workLocationType",
           key:"workLocationType",
-          sorter: (a, b) => a.workLocationType.length - b.workLocationType.length,
+          sorter: (a, b) => {
+            
+            return a.workLocationType.localeCompare(b.workLocationType);
+          },
           sortOrder: sortedInfo?.columnKey === 'workLocationType' ? sortedInfo.order : null,
         },
 
@@ -267,7 +273,10 @@ function AllJobs() {
           title: t("Type"),
           value: "workLocationType",
           key:"workLocationType",
-          sorter: (a, b) => a.workLocationType.length - b.workLocationType.length,
+          sorter: (a, b) => {
+            
+            return a.workLocationType.localeCompare(b.workLocationType);
+          },
           sortOrder: sortedInfo?.columnKey === 'workLocationType' ? sortedInfo.order : null,
         },
 
@@ -339,7 +348,10 @@ function AllJobs() {
           title: t("Type"),
           value: "workLocationType",
           key:"workLocationType",
-          sorter: (a, b) => a.workLocationType.length - b.workLocationType.length,
+          sorter: (a, b) => {
+            
+            return a.workLocationType.localeCompare(b.workLocationType);
+          },
           sortOrder: sortedInfo?.columnKey === 'workLocationType' ? sortedInfo.order : null,
         },
 
