@@ -37,14 +37,12 @@ function Integration() {
   return (
     <div className="flex flex-col gap-[25px]">
       <div className="flex justify-between">
-        <div>
-          <Breadcrumbs
-            items={breadcrumbItems}
-            description={
-              t("Main_Description")
-            }
-          />
+
+        <div className='flex flex-col'>
+          <p className='font-bold text-lg'>{t("Integration")}</p>
+          <p className='para font-medium'>{t("Main_Description")}</p>
         </div>
+
         <ButtonClick
           buttonName={`Add Integration `} // Set the button name
           className="your-custom-styles" // Add any additional class names for styling
@@ -58,14 +56,13 @@ function Integration() {
             {data.map((item, index) => (
               <div
                 key={index}
-                className={`bg-white dark:bg-[#0c101c] rounded-lg border p-2 max-w-[300px] relative ${
-                  selectedItems.includes(index)
+                className={`bg-white dark:bg-[#0c101c] rounded-lg border p-2 max-w-[300px] relative ${selectedItems.includes(index)
                     ? "border-primary"
                     : "border-black/10 dark:border-white/10"
-                }`}
+                  }`}
               >
                 <div className="flex flex-col items-center lg:flex-row">
-                  <div className="rounded-md borderb size-12 2xl:size-[58px] overflow-hidden"> 
+                  <div className="rounded-md borderb size-12 2xl:size-[58px] overflow-hidden">
                     <img
                       src={item.image}
                       alt="Logo"
@@ -76,7 +73,7 @@ function Integration() {
                     <h3 className="h6 ">{item.title}</h3>
                     <p className="para">abcd@gmail</p>
                   </div>
-                
+
                   <div className="absolute top-2 right-2">
                     <CheckBoxInput
                       value={selectedItems.includes(index)}
