@@ -221,16 +221,13 @@ const Home = () => {
         return;
       }
 
-      let newFilteredJobs = JobsList.filter(
-        (job) =>
-          job.jobTitle.toLowerCase().includes(searchJobTitle.toLowerCase()) ||
-          job.searchKeywords.
-           toLowerCase().includes(searchJobTitle.toLowerCase())
-          )
-        // &&
-        // job.location.toLowerCase().includes(searchJobLocation.toLowerCase())
-
-
+      let newFilteredJobs = JobsList.filter((job) => {
+        const titleMatch = job.jobTitle.toLowerCase().includes(searchJobTitle.toLowerCase()) ||
+                          job.searchKeywords.toLowerCase().includes(searchJobTitle.toLowerCase());
+        const locationMatch = job.location.toLowerCase().includes(searchJobLocation.toLowerCase());
+        
+        return titleMatch && locationMatch;
+      });
       setFilteredJobs(newFilteredJobs);
     };
 
@@ -317,26 +314,29 @@ const Home = () => {
 
 
   useEffect(() => {
-    // Apply filtering based on selected filters
-    const filtered = JobsList.filter((job) => {
-      // Check if job type matches selected type filter
-      return (
-        !Object.keys(selectedFilters).length ||
-        Object.entries(selectedFilters).every(([section, filters]) =>
-          Object.entries(filters).some(([filter, isChecked]) =>
-            isChecked ? jobType === filter : true
-          )
-        )
-      );
-    });
-    setFilteredJobs(filtered);
-  }, [JobsList, selectedFilters]);
+    const filterJobs = () => {
+      let filtered = filteredJobs;
 
+      // Check if "Full Time" job type is selected
+      if (selectedFilters["Job Types"] && selectedFilters["Job Types"]["Full Time"]) {
+        // Filter jobs to include only "Full Time" jobs
+        filtered = filtered.filter((job) => job.jobType === "Full Time");
+      }
+
+      // Update filtered jobs state
+      setFilteredJobs(filtered);
+      console.log(selectedFilters,"selected filter option");
+    };
+
+    filterJobs();
+  }, [selectedFilters]);
+
+  // Handle filter change from CustomDropdown
   const handleFilterChange = (filters) => {
     setSelectedFilters(filters);
-    console.log("filter");
   };
 
+ 
   return (
     <>
       <Navbar company={company} />
@@ -362,9 +362,10 @@ const Home = () => {
                 clearInput={clearInput}
                 onItemSelected={setSearchJobTitle}
                 onChange={(value) => {
+                  if (value.length <= 30) {
                   setSearchJobTitle(value);
                   // handleSearch();
-                }}
+                 } }}
               />
               <SearchBox
                 placeholder="Location or Timezone"
@@ -374,7 +375,9 @@ const Home = () => {
                 // items={[...new Set(JobsList.map((job) => job.location))]} // Convert the locations to a Set to remove duplicates
                 icon={<PiNavigationArrow className="text-2xl " />}
                 onItemSelected={setSearchJobLocation}
-                onChange={(value) => setSearchJobLocation(value)}
+                onChange={(value) => {
+                  if (value.length <= 30) {
+                  setSearchJobLocation(value)}}}
                 onSearch={() => setIsSearchClicked(true)}
                 clearInput={clearInput}
               />
@@ -402,7 +405,7 @@ const Home = () => {
           </div>
           <div className="col-span-6 md:col-span-9">
             <div className="flex gap-1">
-              <p className="para text-[#656565]"> Sort by</p>
+              {/* <p className="para text-[#656565]"> Sort by</p> */}
               <Sorting onSortChange={handleSortChange} />
             </div>
           </div>

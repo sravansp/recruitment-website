@@ -9,7 +9,7 @@ const Navbar = ({ company }) => {
     <div className="absolute top-0 z-[999] w-full bg-transparent">
       <header className="text-gray-600 body-font container-wrapper">
         <div className="flex flex-row items-center justify-between py-5 ">
-          <a className="flex items-center font-medium text-gray-900 cursor-pointer title-font md:mb-0 gap-4">
+          <a className="flex items-center font-medium text-gray-900  title-font md:mb-0 gap-4">
             {/* {company?.logo&&<Image src={"company?.logo"} alt="logo" width={50} height={50} />} */}
             <div className="overflow-hidden border-2 border-white rounded-full shadow-md 2xl:size-16 size-14 shrink-0">
               <img

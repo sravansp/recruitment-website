@@ -7,10 +7,10 @@ const items = [
   {
     title: "Job Types",
     checkboxes: [
-      { label: "Full-time", value: "fulltime" },
+      { label: "Full-time", value: "Full Time" },
       { label: "Part-time", value: "parttime" },
       { label: "Temporary", value: "temporary" },
-      { label: "Intern", value: "inter" }
+      { label: "Intern", value: "intern" }
     ],
   },
   // Add more sections as needed

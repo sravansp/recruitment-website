@@ -76,8 +76,12 @@ const JobDetailsCard = ({ selectedJob, jobDetailsAnimation }) => {
                 <p className="!font-normal !text-opacity-50 capitalize pblack col-span-1">
                   salary range
                 </p>
+                {selectedJob.isSalaryPublic=="t"? (
                 <p className="col-span-4 pblack">{selectedJob.salaryCurrency + " "}{selectedJob.salaryRangeFrom}-{selectedJob.salaryRangeTo}</p>
-              </div>
+                ):(
+                  <p className="col-span-4 pblack">N/L</p>
+                )}
+                </div>
               <div className="grid grid-cols-6">
                 <p className="!font-normal !text-opacity-50 capitalize pblack col-span-1">
                   experience

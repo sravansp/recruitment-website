@@ -797,6 +797,13 @@ function Web({ closeDrawer, selectedJobId, onClick }) {
           !formik.values.lastName ? "last name  is required" : ""
         );
       }
+      if (formvalidation[0].address == 1) {
+        formik.setFieldError(
+          "postalCode",
+          !formik.values.postalCode ? "postal code  is required" : ""
+        );
+      }
+
       if (formvalidation[0].dob == 1) {
         formik.setFieldError(
           "candidateContact",
@@ -804,12 +811,19 @@ function Web({ closeDrawer, selectedJobId, onClick }) {
         );
         if (!formik.values.dob) isValid = false;
       }
-      if (!formik.values.candidateLocation) {
+      // if (!formik.values.candidateLocation) {
+      //   formik.setFieldError(
+      //     "candidateLocation", "Location  is required"
+      //   );
+      //   isValid = false;
+      // }
+      if (formvalidation[0].address == 1) {
         formik.setFieldError(
-          "candidateLocation", "Location  is required"
+          "cityOrTown",
+          !formik.values.cityOrTown ? "City or Town  is required" : ""
         );
-        isValid = false;
       }
+
       if (!formik.values.namePrefix) {
         formik.setFieldError(
           "namePrefix", "Prefix  is required"
@@ -853,7 +867,7 @@ function Web({ closeDrawer, selectedJobId, onClick }) {
             setinsertedId1(response.result.insertedId);
             console.log(insertedid1, "insertede i");
             if (response.status === 200) {
-              openNotification("success", "Successful", response.message);
+              openNotification("success", "Successful", "Personal Details has been saved");
               setActiveBtn(activeBtn + 1);
 
               setCurrentStep(currentStep + 1);
@@ -1014,7 +1028,7 @@ function Web({ closeDrawer, selectedJobId, onClick }) {
           console.log(eduinsertedid);
           // setinsertedId1(response.result.insertedId);
           if (response.status === 200) {
-            openNotification("success", "Successful", response.message);
+            openNotification("success", "Successful", "Educational Details has been saved");
             setActiveBtn(activeBtn + 1);
             setCurrentStep(currentStep + 1);
             setPresentage(presentage + 1);
@@ -1119,7 +1133,7 @@ function Web({ closeDrawer, selectedJobId, onClick }) {
 
         console.log(response.result.insertedId1);
         if (response.status === 200) {
-          openNotification("success", "Successful", response.message);
+          openNotification("success", "Successful", "Work Experience has been saved");
           setActiveBtn(activeBtn + 1);
           setCurrentStep(currentStep + 1);
           setPresentage(presentage + 1);
@@ -1700,6 +1714,32 @@ function Web({ closeDrawer, selectedJobId, onClick }) {
     setCoverletter(value);
   };
 
+  
+const editdetails=()=>{
+  if (currentStep !== 0) {
+    setCurrentStep(0);
+  }
+  if (activeBtn !==0) {
+    setActiveBtn(0)
+  }
+  if (presentage !==0) {
+    setPresentage(0)
+  }
+}
+
+const editcv=()=>{
+  if (currentStep !== 2) {
+    setCurrentStep(2);
+  }
+  if (activeBtn !==2) {
+    setActiveBtn(2)
+  }
+  if (presentage !==2) {
+    setPresentage(2)
+  }
+}
+
+
   return (
     <div>
       <FlexCol />
@@ -1761,26 +1801,27 @@ function Web({ closeDrawer, selectedJobId, onClick }) {
                         aria-labelledby={`acco-title-item`}
                         className="flex flex-col justify-between w-full gap-6 p-5"
                       >
+                        
                         <div className="grid grid-cols-2 gap-4 sm:grid-cols-6">
-                          <Dropdown
-                            title={"Prefix"}
-                            placeholder="Choose Prefix"
-                            options={[
-                              { label: "Mr", value: "mr" },
-                              { label: "Miss", value: "miss" },
-                            ]}
-                            // className="text-[#344054]"
-                            // onChange={formik.handleChange}
-                            change={(e) => {
-                              formik.setFieldValue("namePrefix", e);
-                              console.log("First Name:", e);
-                            }}
-                            name="namePrefix"
-                            value={formik.values.namePrefix}
-                            error={formik.errors.namePrefix}
-                            required={true}
-                          />
-                        </div>
+                        {formvalidation.length > 0 && formvalidation[0].education === 0 ? null : (
+    <Dropdown
+      title={"Prefix"}
+      placeholder="Choose Prefix"
+      options={[
+        { label: "Mr", value: "mr" },
+        { label: "Miss", value: "miss" },
+      ]}
+      change={(e) => {
+        formik.setFieldValue("namePrefix", e);
+        console.log("First Name:", e);
+      }}
+      name="namePrefix"
+      value={formik.values.namePrefix}
+      error={formik.errors.namePrefix}
+      required={true}
+    />
+  )}
+</div>
                         <div className="grid grid-cols-1 gap-4 sm:grid-cols-3">
                           <FormInput
                             title={"First Name"}
@@ -1910,12 +1951,12 @@ function Web({ closeDrawer, selectedJobId, onClick }) {
                             title={"City or Town"}
                             placeholder={"Enter City or Town"}
                             // className="text-[#344054]"
-                            value={formik.values.city}
+                            value={formik.values.cityOrTown}
                             change={(e) => {
-                              formik.setFieldValue("city", e);
+                              formik.setFieldValue("cityOrTown", e);
                             }}
-                            required={false}
-                            error={formik.errors.city}
+                            required={true}
+                            error={formik.errors.cityOrTown}
                           />
                         </div>
                         <div className="grid grid-cols-1 gap-4 sm:grid-cols-3">
@@ -1938,7 +1979,7 @@ function Web({ closeDrawer, selectedJobId, onClick }) {
                             change={(e) => {
                               formik.setFieldValue("postalCode", e);
                             }}
-                            required={false}
+                            required={true}
                             error={formik.errors.postalCode}
                           />
                         </div>
@@ -2663,6 +2704,7 @@ function Web({ closeDrawer, selectedJobId, onClick }) {
                       buttonName="Edit Details"
                       className="text-[#6044E5]"
                       icon={<AiTwotoneEdit />}
+                      handleSubmit={editdetails}
                     />
                   </div>
                   {data.map((item, index) => (
@@ -2862,6 +2904,7 @@ function Web({ closeDrawer, selectedJobId, onClick }) {
                         buttonName="Edit Details"
                         className="text-[#6044E5]"
                         icon={<AiTwotoneEdit />}
+                        handleSubmit={editcv}
                       />
                     </div>
                     {filePdfresume && (

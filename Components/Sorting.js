@@ -28,7 +28,7 @@ const Sorting = ({onSortChange}) => (
     menu={{
       items,
       selectable: true,
-      defaultSelectedKeys: ["2"],
+      // defaultSelectedKeys: ["2"],
       onClick: ({ key }) => onSortChange(key)
     }}
   >
@@ -42,7 +42,7 @@ const Sorting = ({onSortChange}) => (
       className="ant-dropdown-link para text-[#656565] cursor-pointer"
     //   onClick={(e) => e.preventDefault()}
     >
-      Selectable
+   Sort by Selectable
       <DownOutlined />
     </a>
   </Dropdown>

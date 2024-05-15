@@ -40,10 +40,11 @@ export default function DateSelect({
           console.log(dateString);
           change(dateString);
         }}
+        
         status={error && "error"}
         size={isSmallScreen ? "default" : "large"}
         placeholder={placeholder}
-        disabledDate={(current) => minDate ? current && current < minDate : false}              />
+        disabledDate={(current) => current && new Date(current) > new Date()}  />
 
       {error && (
         <FiAlertCircle className="absolute top-3.5 mt-6 right-8 -mr-1 transform -translate-y-2/5 text-red-400" />

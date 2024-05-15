@@ -17,6 +17,7 @@ const JobCard = ({
   onSelect,
   selected,
   index,
+  isSalaryPublic,
   jobId // Pass the index of the card as a prop
 }) => {
   const cardVariants = {
@@ -53,7 +54,12 @@ const JobCard = ({
             <PiMapPin className="text-xl text-black dark:text-white text-opacity-20"/> <p className="pblack !font-normal">{location}</p>
           </div>
           <div className="flex items-center gap-2 truncate">
-            <PiMoney className="text-xl text-black dark:text-white text-opacity-20"/> <p className="pblack !font-normal">{salaryCurrency+" "}{salaryRangeFrom}-{salaryRangeTo   }</p>
+            <PiMoney className="text-xl text-black dark:text-white text-opacity-20"/>
+            {isSalaryPublic === "t" ? (
+            <p className="pblack !font-normal">{salaryCurrency+" "}{salaryRangeFrom}-{salaryRangeTo   }</p>
+            ):(
+              <p className="pblack !font-normal">N/L</p>
+            )}
           </div>
         </div>
       </div>
