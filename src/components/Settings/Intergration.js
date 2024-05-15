@@ -90,7 +90,7 @@ function Integration() {
                 <div className="mt-4">
                   <ButtonClick
                     BtnType="text"
-                    icon={<RiEdit2Line />}
+                    icon={<RiEdit2Line className="size-4 text-gray-600" />}
                     buttonName="Edit"
                     className={"bg-black/5 dark:border-white/10 dark:border"}
                   />
