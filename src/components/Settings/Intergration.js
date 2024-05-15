@@ -14,12 +14,12 @@ import CheckBoxInput from "../common/CheckBoxInput";
 
 function Integration() {
   const data = [
-    { title: "Naukrigulf", image: Naukrigulf },
-    { title: "Bayt", image: bayt },
-    { title: "Linked in", image: linkedin },
-    { title: "Gulf Talent", image: gulftalent },
-    { title: "Indeed", image: indeed },
-    { title: "Loyaltri", image: loyaltri },
+    { title: "Naukrigulf", email: "abcd@gmail", image: Naukrigulf },
+    { title: "Bayt", email: "abcd@gmail", image: bayt },
+    { title: "Linked in", email: "abcd@gmail", image: linkedin },
+    { title: "Gulf Talent", email: "abcd@gmail", image: gulftalent },
+    { title: "Indeed", email: "abcd@gmail", image: indeed },
+    { title: "Loyaltri", email: "abcd@gmail", image: loyaltri },
   ];
   const [selectedItems, setSelectedItems] = useState([]);
   const { t } = useTranslation();
@@ -57,8 +57,8 @@ function Integration() {
               <div
                 key={index}
                 className={`bg-white dark:bg-[#0c101c] rounded-lg border p-2 max-w-[300px] relative ${selectedItems.includes(index)
-                    ? "border-primary"
-                    : "border-black/10 dark:border-white/10"
+                  ? "border-primary"
+                  : "border-black/10 dark:border-white/10"
                   }`}
               >
                 <div className="flex flex-col items-center lg:flex-row">
@@ -71,7 +71,7 @@ function Integration() {
                   </div>
                   <div className="ml-2">
                     <h3 className="h6 ">{item.title}</h3>
-                    <p className="para">abcd@gmail</p>
+                    <p className="para">{item.email}</p>
                   </div>
 
                   <div className="absolute top-2 right-2">
