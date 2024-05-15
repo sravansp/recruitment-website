@@ -2,19 +2,19 @@ import React, { useState } from "react";
 import { RiEdit2Line } from "react-icons/ri";
 import ButtonClick from "../common/Button";
 import Heading from "../common/Heading";
-import indeed from "../../assets/images/indeed.png";
-import bayt from "../../assets/images/Bayt.png";
-import linkedin from "../../assets/images/Linked.png";
-import gulftalent from "../../assets/images/gulftalent.png";
-import Naukrigulf from "../../assets/images/Naukrigulf.png";
-import loyaltri from "../../assets/images/logo.png";
+import indeed from "../../assets/images/Hiring_patners/indeed.png";
+import bayt from "../../assets/images/Hiring_patners/Bayt.png";
+import linkedin from "../../assets/images/Hiring_patners/Linkedin.png";
+import gulftalent from "../../assets/images/Hiring_patners/gulftalent.png";
+import Naukrigulf from "../../assets/images/Hiring_patners/Naukrigulf.png";
+import loyaltri from "../../assets/images/Hiring_patners/loyaltri.png";
 import { useTranslation } from "react-i18next";
 import Breadcrumbs from "../common/BreadCrumbs";
 import CheckBoxInput from "../common/CheckBoxInput";
 
 function Integration() {
   const data = [
-    { title: "Naukarigulf", image: Naukrigulf },
+    { title: "Naukrigulf", image: Naukrigulf },
     { title: "Bayt", image: bayt },
     { title: "Linked in", image: linkedin },
     { title: "Gulf Talent", image: gulftalent },
