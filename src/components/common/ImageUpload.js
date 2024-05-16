@@ -15,6 +15,9 @@ export default function ImageUpload({
   const allowedImageFormats = ["jpg", "png", "jpeg", "svg", "webp"];
   const imageFormatsString = allowedImageFormats.join(", ");
   const [fileList, setFileList] = useState([]);
+  const [nameList, setNameList] = useState([]);
+  const [changeStatus, setChangeStatus] = useState(false);
+
 
   useEffect(() => {
     if (file) {
@@ -34,10 +37,16 @@ export default function ImageUpload({
       if (!isAllowedFile) {
         message.error(`${file.name} file format is not supported.`);
         return false;
+      } else if (nameList.includes(file.name)) {
+        message.error(`${file.name} file is already uploaded.`);
+        setChangeStatus(false);
+        return false;
       } else {
         message.success(`${file.name} file added successfully.`);
         // Clear the previously selected file and add the new one
         setFileList([file]);
+        setNameList([...nameList, file.name]);
+        setChangeStatus(true);
         return false; // Prevent automatic upload
       }
     },
@@ -53,8 +62,7 @@ export default function ImageUpload({
           const fileType = file.type;
           const isImage = fileType.startsWith('image');
           console.log(isImage, "isImage /n", file, "file")
-
-          if (isImage) {
+          if (isImage && changeStatus) {
             change(file);
           }
         }}
