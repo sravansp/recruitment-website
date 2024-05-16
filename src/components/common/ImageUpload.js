@@ -36,6 +36,7 @@ export default function ImageUpload({
       const isAllowedFile = allowedImageFormats.includes(fileExtension);
       if (!isAllowedFile) {
         message.error(`${file.name} file format is not supported.`);
+        setChangeStatus(false);
         return false;
       } else if (nameList.includes(file.name)) {
         message.error(`${file.name} file is already uploaded.`);
