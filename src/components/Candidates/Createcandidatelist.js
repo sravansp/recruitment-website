@@ -938,7 +938,7 @@ export default function Createcandidatelist({ open = "", close = () => { }, file
                           if (e) {
                             setFile(e)
                           }
-                          console.log(e)
+                          console.log(e, "file is here")
                         }} 
                         file={file}
                         />

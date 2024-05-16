@@ -35,6 +35,7 @@ export default function ImageUpload({
         message.error(`${file.name} file format is not supported.`);
         return false;
       } else {
+        message.success(`${file.name} file added successfully.`);
         // Clear the previously selected file and add the new one
         setFileList([file]);
         return false; // Prevent automatic upload
@@ -48,16 +49,25 @@ export default function ImageUpload({
         {...props}
         fileList={fileList}
         onChange={(info) => {
-          const { status, file } = info.file;
-          if (status === "done") {
-            message.success(`${file.name} file uploaded successfully.`);
-          } else if (status === "error") {
-            message.error(`${file.name} file upload failed.`);
-          }
-          if (status !== "error") {
+          const { file } = info;
+          const fileType = file.type;
+          const isImage = fileType.startsWith('image');
+          console.log(isImage, "isImage /n", file, "file")
+
+          if (isImage) {
             change(file);
           }
         }}
+
+      // onChange={(info) => {
+      //   const { status } = info.file;
+      //   if (status === "done") {
+      //     message.success(`${info.file.name} file uploaded successfully.`);
+      //   } else if (status === "error") {
+      //     message.error(`${info.file.name} file upload failed.`);
+      //   }
+      //   change(info.file);
+      // }}
       >
 
         {flex === true ? (
