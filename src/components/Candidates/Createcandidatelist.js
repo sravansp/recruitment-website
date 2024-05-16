@@ -1188,12 +1188,14 @@ export default function Createcandidatelist({ open = "", close = () => { }, file
                           value={Formik2.values.file}
   
                           /> */}
-                        <FileUpload change={(e) => {
-                          if (e) {
-
-                            setFilepdf(e)
-                          }
-                        }} />
+                            <FileUpload
+                              change={(e) => {
+                                if (e) {
+                                  console.log(e, "file is here.")
+                                  setFilepdf(e)
+                                }
+                              }}
+                            />
                       </div>
                       <div>
                         <TextArea
