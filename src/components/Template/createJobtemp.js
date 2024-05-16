@@ -136,6 +136,7 @@ const CreatejobTemp = ({
   const [OptionError, setoptionserror] = useState('')
   const[salaryRangeToError,setsalaryRangeToError] = useState("")
   const[salaryRangeFromError,setsalaryRangeFromError] = useState("")
+  const[trigger,SetTrigger] = useState("")
 
   // console.log(updateId);
   useEffect(() => {
@@ -251,7 +252,7 @@ const CreatejobTemp = ({
       setloader(false); // Hide loader after response is received
     }
   };
-  const handleEditorChange = (content) => {
+  const   handleEditorChange = (content) => {
         //             const contentState = content.getCurrentContent();
         //             const htmlContent = convertToHTML(contentState);
                     
@@ -929,8 +930,12 @@ const CreatejobTemp = ({
           formik.setFieldError('salaryCurrency', !formik.values.salaryCurrency ? 'Salary Currency is required' : '');
           formik.setFieldError('jobType', !formik.values.jobType ? 'JobType is required' : '');
           formik.setFieldError('education', !formik.values.education ? 'Education is required' : '');
-          formik.setFieldError('jobDescription', !content ? 'Description is required' : '');
-          return; // Exit early if any field is empty
+          formik.setFieldError(
+            'jobDescription',
+            !content ? 'Description is required' : ''
+        );
+       
+          return; 
 
         }
 
@@ -1516,6 +1521,7 @@ const CreatejobTemp = ({
                             className={'min-w-40'}
                             change={(e) => {
                               setDecriptionId(e)
+                              SetTrigger(e)
                             }}
                           />
                           <ButtonClick handleSubmit={handleGenerateWithAI} BtnType="primary" icon={<img src={image} alt="image" style={{ height: '20px', width: '20px', alignItems: "center" }} />} buttonName={"Generate with AI"} />
@@ -1524,7 +1530,7 @@ const CreatejobTemp = ({
                           <p className="pb-2">Description</p>
                           <FaAsterisk className="text-[6px] text-rose-600" />
                         </div>
-                        {/* <TextEditor
+                        <TextEditor
                           placeholder={t(
                             "Enter Description "
                           )}
@@ -1539,17 +1545,18 @@ const CreatejobTemp = ({
                           // changetoHtml={(e)=>{
                           //   setstateHTML(e)
                           // }}
+                          trigger={trigger}
                           loader={loader}
-                        /> */}
-                        <TextEditorcopy
+                        />
+                        {/* <TextEditorcopy
                           Change={(e)=>{
                             handleEditorChange(e)
-                            console.log(e)
+                            console.log(typeof e)
                           }}
                           initialValue={content}
                           error={formik.errors.jobDescription}
                           
-                        />
+                        /> */}
                         {/* <Editor1/> */}
 
                       </div>

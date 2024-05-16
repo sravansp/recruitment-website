@@ -146,7 +146,7 @@ const Template = ({
         {
           id: 4,
           title: t("Action"),
-          value: "Action",
+          value: "action",
           action: true,
         },
       ],
@@ -224,7 +224,7 @@ const Template = ({
         {
           id: 4,
           title: t("Action"),
-          value: "Action",
+          value: "action",
           action: true,
         },
       ],
@@ -548,13 +548,31 @@ const Template = ({
 
   const [TemplateList, setTemplateList] = useState([])
   console.log(TemplateList, 'this is template');
+  const stripHtmlTags = (html) => {
+    const temp = document.createElement("div");
+    temp.innerHTML = html;
+    return temp.textContent || temp.innerText || "";
+  }
 
   const gettemaplate = async () => {
     try {
 
       const response = await getAllRecruitmentJobTemplates({ companyId: companyId });
 
-      setTemplateList(response.result);
+      setTemplateList(response.result.map((job) => ({
+          jobTemplateId:job.jobTemplateId,
+          jobTitle:job.jobTitle,
+          jobDescription: stripHtmlTags(job.jobDescription),
+          isActive: job.isActive,
+          actionToggle:true,
+          action:true,
+        })))
+      // setTemplateList(response.result)
+        console.log(response.result.map((job) => ({
+           
+          jobDescription: stripHtmlTags(job.jobDescription),
+         
+        })))
       // const newData = {};
       // response.result.forEach((job) => {
       //   newData[job.jobId] = job; // Assuming jobId is the unique identifier
@@ -622,6 +640,15 @@ const Template = ({
         action: true,
       }))
       );
+
+      console.log(response.result.map((email) => ({
+        emailTemplateId: email.emailTemplateId,
+        title: email.emailTemplateName,
+        value: email.emailTemplate.subject, // Use the subject as the description value
+        isActive: email.isActive,
+        actionToggle: true,
+        action: true,
+      })))
       // const newData = {};
       // response.result.forEach((job) => {
       //   newData[job.jobId] = job; // Assuming jobId is the unique identifier
@@ -678,7 +705,15 @@ const Template = ({
       const data = await getAllRecruitmentJobDescriptionTemplates({ companyId: companyId })
       //  console.log(data)
       // 
-      setJobDescriptionList(data.result)
+      setJobDescriptionList(data.result.map((template)=>({
+        descriptionTemplateName:template.descriptionTemplateName,
+        descriptionTemplate:stripHtmlTags(template.descriptionTemplate),
+        descriptionTemplateId:template.descriptionTemplateId,
+        isActive:template.isActive,
+        actionToggle:true,
+        action:true
+
+      })))
     } catch (error) {
       // console.log(error)
     }

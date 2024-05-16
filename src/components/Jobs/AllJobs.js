@@ -508,7 +508,9 @@ function AllJobs() {
     callapi();
     break;
     case"MyOpenJobs":
+    if(userid){
     getcreatedBy();
+    }
     break;
     case"Open":
     getOpenjobs();

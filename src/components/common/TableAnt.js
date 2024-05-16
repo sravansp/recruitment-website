@@ -307,6 +307,7 @@ const TableAnt = ({
 
   useEffect(() => {
     console.log(header, "header");
+    
     setTableData(
       (header[0]?.[tabValue || path || ''] || []).map((each, i) => ({
         title: (

@@ -133,6 +133,7 @@ const Createjob = ({
   const [OptionError, setoptionserror] = useState('')
   const[salaryRangeToError,setsalaryRangeToError] = useState("")
  const[salaryRangeFromError,setsalaryRangeFromError] = useState("")
+ const[trigger,SetTrigger] = useState("")
 
 
   // console.log(updateId)
@@ -1894,6 +1895,7 @@ const Createjob = ({
                             className={'min-w-40'}
                             change={(e) => {
                               setDecriptionId(e)
+                              SetTrigger(e)
                             }}
                           />
 
@@ -1924,6 +1926,7 @@ const Createjob = ({
                             minheight="250px"
                             loader={loader}
                             error={formik1.errors.jobDescription}
+                            trigger={trigger}
                           />
                         </div>
                         {/* <TextArea
