@@ -1,10 +1,10 @@
 import React, { useState, useEffect } from "react";
 import ButtonClick from "../../common/Button";
 import TextEditor from "../../common/TextEditor/TextEditor";
-import {stateToHTML} from 'draft-js-export-html';
+import { stateToHTML } from 'draft-js-export-html';
 import { EditorState, convertToRaw, ContentState, convertFromHTML } from 'draft-js';
 import TabsNew from "../../common/TabsNew";
-import {getAllRecruitmentJobResumesOfferLetters,getRecruitmentJobResumesNoteById,updateRecruitmentJobResumesNote,getRecruitmentLetterTemplateById,saveRecruitmentJobResumesOfferLetter,getAllRecruitmentLetterTemplates,getAllRecruitmentJobResumesNotes,saveRecruitmentJobResumesNote } from "../../Api1";
+import { getAllRecruitmentJobResumesOfferLetters, getRecruitmentJobResumesNoteById, updateRecruitmentJobResumesNote, getRecruitmentLetterTemplateById, saveRecruitmentJobResumesOfferLetter, getAllRecruitmentLetterTemplates, getAllRecruitmentJobResumesNotes, saveRecruitmentJobResumesNote } from "../../Api1";
 
 import { format } from 'date-fns';
 import {
@@ -41,7 +41,7 @@ const Offers = () => {
   const [Letterdata, setLetterdata] = useState([])
   const [selectedNoteId, setSelectedNoteId] = useState(null);
   const [isPinned, setIsPinned] = useState(0);
-  const [offerLetters,setOfferLetters] = useState([])
+  const [offerLetters, setOfferLetters] = useState([])
   const [userid, setuserid] = useState("");
 
 
@@ -60,65 +60,64 @@ const Offers = () => {
         setJobId(storedJobId);
       }
     }
-}, [state]);
+  }, [state]);
 
-const handleViewResume= (PdFViewer)=>{
-  window.open(PdFViewer, '_blank');
-}
-const getFileIcon = (fileType) => {
-  switch (fileType) {
-    case "application/pdf":
-      return <BsFiletypePdf className="mr-2 text-red-500" size={20} />;
-    case "image/jpeg":
-    case "image/png":
-      return <BsFileImage className="mr-2 text-blue-500" size={20} />;
-    case "application/msword":
-    case "application/vnd.openxmlformats-officedocument.wordprocessingml.document":
-      return <BsFileWord className="mr-2 text-blue-700" size={20} />;
-    default:
-      return null;
+  const handleViewResume = (PdFViewer) => {
+    window.open(PdFViewer, '_blank');
   }
-};
-const formatSize = (bytes) => {
-  const sizes = ['Bytes', 'KB', 'MB', 'GB', 'TB'];
-  if (bytes === 0) return '0 Byte';
-  const i = parseInt(Math.floor(Math.log(bytes) / Math.log(1024)));
-  return Math.round(bytes / Math.pow(1024, i), 2) + ' ' + sizes[i];
-};
-const removeFile = (index) => {
-  const updatedFiles = [...uploadedFiles];
-  updatedFiles.splice(index, 1);
-  setUploadedFiles(updatedFiles);
-};
+  const getFileIcon = (fileType) => {
+    switch (fileType) {
+      case "application/pdf":
+        return <BsFiletypePdf className="mr-2 text-red-500" size={20} />;
+      case "image/jpeg":
+      case "image/png":
+        return <BsFileImage className="mr-2 text-blue-500" size={20} />;
+      case "application/msword":
+      case "application/vnd.openxmlformats-officedocument.wordprocessingml.document":
+        return <BsFileWord className="mr-2 text-blue-700" size={20} />;
+      default:
+        return null;
+    }
+  };
+  const formatSize = (bytes) => {
+    const sizes = ['Bytes', 'KB', 'MB', 'GB', 'TB'];
+    if (bytes === 0) return '0 Byte';
+    const i = parseInt(Math.floor(Math.log(bytes) / Math.log(1024)));
+    return Math.round(bytes / Math.pow(1024, i), 2) + ' ' + sizes[i];
+  };
+  const removeFile = (index) => {
+    const updatedFiles = [...uploadedFiles];
+    updatedFiles.splice(index, 1);
+    setUploadedFiles(updatedFiles);
+  };
 
-useEffect(() => {
-  // Retrieve the login data JSON string from local storage
-  const loginDataString = localStorage.getItem("LoginData");
+  useEffect(() => {
+    // Retrieve the login data JSON string from local storage
+    const loginDataString = localStorage.getItem("LoginData");
 
-  if (loginDataString) {
-    // Parse the JSON string to get the LoginData object
-    const loginData = JSON.parse(loginDataString);
+    if (loginDataString) {
+      // Parse the JSON string to get the LoginData object
+      const loginData = JSON.parse(loginDataString);
 
-    // Extract the username from the userData object
-    setuserid(
-      loginData && loginData.userData && loginData.userData.employeeId
-    );
+      // Extract the username from the userData object
+      setuserid(
+        loginData && loginData.userData && loginData.userData.employeeId
+      );
 
-    // Now, 'username' variable contains the username
-  } else {
-    console.error("Login data not found in local storage.");
-  }
-}, []);
-const [api, contextHolder] = notification.useNotification();
-const openNotification = (type, message, description) => {
-  api[type]({
-    message: message,
-    description: description,
-    placement: "top",
-    // stack: 2,
-    style: {
-      background: `${
-        type === "success"
+      // Now, 'username' variable contains the username
+    } else {
+      console.error("Login data not found in local storage.");
+    }
+  }, []);
+  const [api, contextHolder] = notification.useNotification();
+  const openNotification = (type, message, description) => {
+    api[type]({
+      message: message,
+      description: description,
+      placement: "top",
+      // stack: 2,
+      style: {
+        background: `${type === "success"
           ? `linear-gradient(180deg, rgba(204, 255, 233, 0.8) 0%, rgba(235, 252, 248, 0.8) 51.08%, rgba(246, 251, 253, 0.8) 100%)`
           : "linear-gradient(180deg, rgba(255, 236, 236, 0.80) 0%, rgba(253, 246, 248, 0.80) 51.13%, rgba(251, 251, 254, 0.80) 100%)"
           }`,
@@ -168,14 +167,14 @@ const openNotification = (type, message, description) => {
     // },
   ];
   const handleEditorChange = (state) => {
-   
-  
+
+
     setContent(state)
   };
 
 
   const [notes, setnotes] = useState("")
-  const[html,setstateHTML] =useState("")
+  const [html, setstateHTML] = useState("")
 
 
   const handlesubmit = async () => {
@@ -189,9 +188,9 @@ const openNotification = (type, message, description) => {
           offerLetterData: html,
           offerLetterTemplateId: LetterTemplateId || null,
           offerLetterStatusDate: formattedDate,
-          seal:null,
-          signature:null,
-          attachments:null,
+          seal: null,
+          signature: null,
+          attachments: null,
           createdBy: userid
         }
       )
@@ -303,28 +302,28 @@ const openNotification = (type, message, description) => {
   };
 
   useEffect(() => {
-   
-      getletteTemplateByid(LetterTemplateId);
-      console.log(content);
-    
+
+    getletteTemplateByid(LetterTemplateId);
+    console.log(content);
+
   }, [LetterTemplateId]);
 
-  const getOfferLetters = async()=>{
-    try{
+  const getOfferLetters = async () => {
+    try {
       const response = await getAllRecruitmentJobResumesOfferLetters({
-        jobId:jobId,
-        resumeId:resumeId
+        jobId: jobId,
+        resumeId: resumeId
 
       })
       console.log(response)
       setOfferLetters(response.result)
-    }catch(error){
+    } catch (error) {
       console.log(error)
     }
   }
-  useEffect(()=>{
+  useEffect(() => {
     getOfferLetters()
-  },[jobId])
+  }, [jobId])
 
 
   const options = [
@@ -354,12 +353,13 @@ const openNotification = (type, message, description) => {
       ))}
     </Menu>
   );
-  
+
   return (
     <div className="grid gap-6 lg:grid-cols-12">
       {/* LEFT COLUMN  */}
       <div className="flex flex-col gap-6 lg:col-span-8">
-        <div className="flex flex-col gap-4 box-wrapper ">
+        <div className="flex flex-col gap-4 box-wrapper rounded-[10px] dark:border dark:border-secondaryWhite border dark:border-opacity-10"
+        >
           <div className="flex flex-col gap-4 divide-y">
             <div className="flex items-center justify-between">
               <h6 className="h6">Offer Letter</h6>
@@ -380,38 +380,38 @@ const openNotification = (type, message, description) => {
 
             <div className="flex flex-col gap-4">
               <div className="pt-4">
-              <TextEditor
-  initialValue={content}
-  onChange={handleEditorChange}
-  changetoHtml={(e)=>{
-    setstateHTML(e)
-  }}
-  minheight="250px"
-/>
+                <TextEditor
+                  initialValue={content}
+                  onChange={handleEditorChange}
+                  changetoHtml={(e) => {
+                    setstateHTML(e)
+                  }}
+                  minheight="250px"
+                />
 
               </div>
               {uploadedFiles.length > 0 && (
-            <div className="flex flex-wrap items-center gap-2">
-              {/* <p className="font-bold">Uploaded Files:</p> */}
-              {uploadedFiles.map((file, index) => (
-                <div key={index} className="flex items-center p-4 text-black border border-black rounded-lg border-opacity-20 dark:border-white dark:text-white">
-                  {getFileIcon(file.type)}
-                  <p><span>{file.name}</span>   <span className="text-black text-opacity-50">{formatSize(file.size)}</span></p>
-                  <button
-                    className="ml-2 text-black text-opacity-40 hover:text-red-500"
-                    onClick={() => removeFile(index)}
-                  >
-                    <RiDeleteBin6Line />
-                  </button>
+                <div className="flex flex-wrap items-center gap-2">
+                  {/* <p className="font-bold">Uploaded Files:</p> */}
+                  {uploadedFiles.map((file, index) => (
+                    <div key={index} className="flex items-center p-4 text-black border border-black rounded-lg border-opacity-20 dark:border-white dark:text-white">
+                      {getFileIcon(file.type)}
+                      <p><span>{file.name}</span>   <span className="text-black text-opacity-50">{formatSize(file.size)}</span></p>
+                      <button
+                        className="ml-2 text-black text-opacity-40 hover:text-red-500"
+                        onClick={() => removeFile(index)}
+                      >
+                        <RiDeleteBin6Line />
+                      </button>
+                    </div>
+                  ))}
                 </div>
-              ))}
-            </div>
-          )}
+              )}
               <div
                 className="flex justify-between items-center gap-2.5 p-1.5  rounded-lg "
                 style={{
                   backgroundColor: `${primaryColor}10`,
-                 
+
                 }}
               >
                 <div className="flex justify-items-start !important  gap-2.5 p-1.5 ">
@@ -445,26 +445,26 @@ const openNotification = (type, message, description) => {
           </div>
         </div>
         <div className="rounded-lg bg-white dark:bg-secondaryDark p-1.5 ">
-        {offerLetters && offerLetters.map((Letter, index) => (
-  <div className="relative flex pb-6" key={index}>
-    <div className="flex items-center justify-between w-full">
-      <p className="pblack flex-grow pl-4 !font-normal">
-      <img src={Pdf} alt="PDF" />
-      </p>
-      <div className="flex items-center gap-6"> {/* Added gap between createdOn and icons */}
-        <p className="para !font-normal">{Letter.createdOn}</p>
-        <div className="flex items-center gap-3">
-        {/* <TiPin
+          {offerLetters && offerLetters.map((Letter, index) => (
+            <div className="relative flex pb-6" key={index}>
+              <div className="flex items-center justify-between w-full">
+                <p className="pblack flex-grow pl-4 !font-normal">
+                  <img src={Pdf} alt="PDF" />
+                </p>
+                <div className="flex items-center gap-6"> {/* Added gap between createdOn and icons */}
+                  <p className="para !font-normal">{Letter.createdOn}</p>
+                  <div className="flex items-center gap-3">
+                    {/* <TiPin
                   onClick={() => handlePinClick(note.jobResumeNoteId)}
                   style={{ color: selectedNoteId === note.jobResumeNoteId && isPinned === 1 ? 'blue' : 'gray' }}
                 />  */}
-          <Button onClick={() => handleViewResume(Letter.offerLetterPdf)}  > View Offer Letter</Button>
+                    <Button onClick={() => handleViewResume(Letter.offerLetterPdf)}  > View Offer Letter</Button>
+                  </div>
+                </div>
+              </div>
+            </div>
+          ))}
         </div>
-      </div>
-    </div>
-  </div>
-))}
-</div>
       </div>
 
       <div className="lg:col-span-4">
