@@ -115,7 +115,7 @@ const Evaluations = ({EvaluationID="",stageId=""}) => {
       const response = await getAllRecruitmentJobResumesEvaluations({
         jobId: localStorage.getItem('jobid'),
         resumeId: resumeId,
-        stageId:stageId
+        stageId: stageId
       });
       console.log(response);
       setfetchedAnswers(response.result);
@@ -211,8 +211,8 @@ const Evaluations = ({EvaluationID="",stageId=""}) => {
 
             jobId: jobId,
             resumeId: resumeId,
-            stageId:stageId,
-            evaluationTemplateId: evalutaionId||EvaluationID,
+            stageId: stageId,
+            evaluationTemplateId: evalutaionId || EvaluationID,
             evaluationTemplateDetailsId: detailsId,
             evaluationAnswer: answer ? answer.evaluationAnswer : evaluationAnswer,
             createdBy: null
@@ -263,12 +263,12 @@ const Evaluations = ({EvaluationID="",stageId=""}) => {
     newSelectedValues[index] = e.target.value;
     setSelectedValues(newSelectedValues);
   };
-  
+
 
   const getEvtempId = async () => {
     const response = await getRecruitmentJobById({ id: jobId })
     setEvaluationId(response.result[0].evaluationTemplateId)
-    
+
     console.log(response.result[0].evaluationTemplateId)
 
   }
@@ -359,13 +359,13 @@ const Evaluations = ({EvaluationID="",stageId=""}) => {
   const getevaluation = async () => {
     try {
       let idToUse;
-    if (EvaluationID) {
-      idToUse = parseInt(EvaluationID);
-    } else if (evalutaionId) {
-      idToUse = parseInt(evalutaionId);
-    } else {
-      throw new Error("Neither evaluationId nor EvaluationID is present.");
-    }
+      if (EvaluationID) {
+        idToUse = parseInt(EvaluationID);
+      } else if (evalutaionId) {
+        idToUse = parseInt(evalutaionId);
+      } else {
+        throw new Error("Neither evaluationId nor EvaluationID is present.");
+      }
 
       const response = await getRecruitmentEvaluationTemplateById({ id: idToUse })
       console.log(response)
@@ -379,7 +379,7 @@ const Evaluations = ({EvaluationID="",stageId=""}) => {
           }))
         }));
       });
-      
+
       setevaluationList(evaluationData)
 
     } catch (error) {
@@ -403,7 +403,7 @@ const Evaluations = ({EvaluationID="",stageId=""}) => {
   return (
     <div className="grid gap-6 lg:grid-cols-12">
       {/* LEFT COLUMN  */}
-      <div className="flex flex-col gap-6 lg:col-span-8">
+      <div className="flex flex-col gap-6 lg:col-span-8 rounded-[10px] dark:border dark:border-secondaryWhite border dark:border-opacity-10">
         <div className="flex flex-col gap-4 box-wrapper">
           <div className="flex flex-col gap-4 ">
             <div className="flex items-center justify-between">

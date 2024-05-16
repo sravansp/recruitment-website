@@ -932,18 +932,15 @@ export default function Createcandidatelist({ open = "", close = () => { }, file
                     </div>
 
                     <div className='w-4/5'>
-                      <p>Photo (Optional)</p>
+                      <p className='py-1'>Photo (Optional)</p>
                       <ImageUpload
                         change={(e) => {
                           if (e) {
                             setFile(e)
                           }
-                          
-
-                          console.log(e)
+                          console.log(e, "file is here")
                         }} 
                         file={file}
-                        
                         />
                     </div>
 
@@ -1191,12 +1188,14 @@ export default function Createcandidatelist({ open = "", close = () => { }, file
                           value={Formik2.values.file}
   
                           /> */}
-                        <FileUpload change={(e) => {
-                          if (e) {
-
-                            setFilepdf(e)
-                          }
-                        }} />
+                            <FileUpload
+                              change={(e) => {
+                                if (e) {
+                                  console.log(e, "file is here.")
+                                  setFilepdf(e)
+                                }
+                              }}
+                            />
                       </div>
                       <div>
                         <TextArea

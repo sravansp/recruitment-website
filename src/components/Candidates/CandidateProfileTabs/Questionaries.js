@@ -226,7 +226,7 @@ const Questionaries = ({QuestionareId,stageId}) => {
     <div className="grid gap-6 lg:grid-cols-12">
       {/* LEFT COLUMN  */}
       <div className="flex flex-col gap-6 lg:col-span-8">
-        <div className="flex flex-col gap-4 box-wrapper border-2">
+        <div className="flex flex-col gap-4 box-wrapper rounded-[10px] dark:border dark:border-secondaryWhite border dark:border-opacity-10">
           <div className="flex flex-col gap-4 divide-y">
             <div className="flex items-center justify-between">
               <h6 className="h6">Questionnaire </h6>
