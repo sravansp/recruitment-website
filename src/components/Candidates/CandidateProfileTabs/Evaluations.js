@@ -23,7 +23,7 @@ import { PiPushPinSlashBold } from "react-icons/pi";
 
 
 
-const Evaluations = ({EvaluationID,stageId}) => {
+const Evaluations = ({ EvaluationID, stageId }) => {
   console.log(EvaluationID)
   const primaryColor = localStorage.getItem("mainColor");
   const [evaluationList, setevaluationList] = useState([])
@@ -101,7 +101,7 @@ const Evaluations = ({EvaluationID,stageId}) => {
       const response = await getAllRecruitmentJobResumesEvaluations({
         jobId: localStorage.getItem('jobid'),
         resumeId: resumeId,
-        stageId:stageId
+        stageId: stageId
       });
       console.log(response);
       setfetchedAnswers(response.result);
@@ -115,10 +115,10 @@ const Evaluations = ({EvaluationID,stageId}) => {
     }
   };
   useEffect(() => {
-    if(stageId||EvaluationID||evalutaionId){
-    getresumeEvalutionId()
+    if (stageId || EvaluationID || evalutaionId) {
+      getresumeEvalutionId()
     }
-  }, [stageId||EvaluationID||evalutaionId])
+  }, [stageId || EvaluationID || evalutaionId])
 
 
 
@@ -157,8 +157,8 @@ const Evaluations = ({EvaluationID,stageId}) => {
 
             jobId: jobId,
             resumeId: resumeId,
-            stageId:stageId,
-            evaluationTemplateId: evalutaionId||EvaluationID,
+            stageId: stageId,
+            evaluationTemplateId: evalutaionId || EvaluationID,
             evaluationTemplateDetailsId: detailsId,
             evaluationAnswer: answer ? answer.evaluationAnswer : evaluationAnswer,
             createdBy: null
@@ -218,12 +218,12 @@ const Evaluations = ({EvaluationID,stageId}) => {
     newSelectedValues[index] = e.target.value;
     setSelectedValues(newSelectedValues);
   };
-  
+
 
   const getEvtempId = async () => {
     const response = await getRecruitmentJobById({ id: jobId })
     setEvaluationId(response.result[0].evaluationTemplateId)
-    
+
     console.log(response.result[0].evaluationTemplateId)
 
   }
@@ -314,13 +314,13 @@ const Evaluations = ({EvaluationID,stageId}) => {
   const getevaluation = async () => {
     try {
       let idToUse;
-    if (EvaluationID) {
-      idToUse = parseInt(EvaluationID);
-    } else if (evalutaionId) {
-      idToUse = parseInt(evalutaionId);
-    } else {
-      throw new Error("Neither evaluationId nor EvaluationID is present.");
-    }
+      if (EvaluationID) {
+        idToUse = parseInt(EvaluationID);
+      } else if (evalutaionId) {
+        idToUse = parseInt(evalutaionId);
+      } else {
+        throw new Error("Neither evaluationId nor EvaluationID is present.");
+      }
 
       const response = await getRecruitmentEvaluationTemplateById({ id: idToUse })
       console.log(response)
@@ -334,7 +334,7 @@ const Evaluations = ({EvaluationID,stageId}) => {
           }))
         }));
       });
-      
+
       setevaluationList(evaluationData)
 
     } catch (error) {
@@ -342,14 +342,14 @@ const Evaluations = ({EvaluationID,stageId}) => {
     }
   }
   useEffect(() => {
-    if (evalutaionId||EvaluationID) {
+    if (evalutaionId || EvaluationID) {
       getevaluation();
       console.log(evaluationList)
 
     }
 
 
-  }, [evalutaionId||EvaluationID||stageId])
+  }, [evalutaionId || EvaluationID || stageId])
   useEffect(() => {
     console.log(fetchedAnswers)
     fetchedAnswers.forEach(answer => {
@@ -397,7 +397,7 @@ const Evaluations = ({EvaluationID,stageId}) => {
   return (
     <div className="grid gap-6 lg:grid-cols-12">
       {/* LEFT COLUMN  */}
-      <div className="flex flex-col gap-6 lg:col-span-8">
+      <div className="flex flex-col gap-6 lg:col-span-8 rounded-[10px] dark:border dark:border-secondaryWhite border dark:border-opacity-10">
         <div className="flex flex-col gap-4 box-wrapper">
           <div className="flex flex-col gap-4 divide-y">
             <div className="flex items-center justify-between">
@@ -505,61 +505,61 @@ const Evaluations = ({EvaluationID,stageId}) => {
             {evaluationList.length > 0 ? (
               evaluationList.map((condition, index) => (
                 <>
-                <div key={index}>
-                  <h4>{condition.question}</h4>
-                  {condition.answerMetaData.map((metadata, idx) => (
-                    <div key={idx}>
-                      {metadata.key === 'Drop-down' && idx === 0 && (
-                        <Dropdown
-                          options={condition.answerMetaData
-                            .filter(meta => meta.key === 'Drop-down')
-                            .flatMap(meta => meta.value.split(','))
-                            .map(option => ({ label: option.trim(), value: option.trim() }))}
-                          change={Setdopdownvalue}
-                          value={dropdownvalue} />
-                      )}
-                      {metadata.key === 'Paragraph' && (
-                        <TextArea
-                          rows={4}
-                          change={setTextAreavalue}
-                          value={textAreaValue} />
-                      )}
-                      {metadata.key === 'Checkboxes' && (
-                        <div>
-                          {metadata.value.split(',').map((option, optIdx) => (
-                            <label key={optIdx}>
-                              <Checkbox
-                                value={option.trim()}
-                                checked={selectedCheckboxes.includes(option.trim())}
-                                onChange={() => handleCheckboxChange(option.trim())} />
-                              {option.trim()}
-                            </label>
-                          ))}
-                        </div>
-                      )}
-                      {metadata.key === 'Short Answer' && (
-                        <FormInput
-                          change={setForminputValue}
-                          value={forminputvalue} />
-                      )}
-                      {metadata.key === 'Multiple Choice' && (
-                        <div>
-                          <Radio.Group
-                            onChange={e => handleRadioChange(e, index)}
-                            value={selectedValues[index]}
-                          >
+                  <div key={index}>
+                    <h4>{condition.question}</h4>
+                    {condition.answerMetaData.map((metadata, idx) => (
+                      <div key={idx}>
+                        {metadata.key === 'Drop-down' && idx === 0 && (
+                          <Dropdown
+                            options={condition.answerMetaData
+                              .filter(meta => meta.key === 'Drop-down')
+                              .flatMap(meta => meta.value.split(','))
+                              .map(option => ({ label: option.trim(), value: option.trim() }))}
+                            change={Setdopdownvalue}
+                            value={dropdownvalue} />
+                        )}
+                        {metadata.key === 'Paragraph' && (
+                          <TextArea
+                            rows={4}
+                            change={setTextAreavalue}
+                            value={textAreaValue} />
+                        )}
+                        {metadata.key === 'Checkboxes' && (
+                          <div>
                             {metadata.value.split(',').map((option, optIdx) => (
-                              <Radio key={optIdx} value={option.trim()}>
+                              <label key={optIdx}>
+                                <Checkbox
+                                  value={option.trim()}
+                                  checked={selectedCheckboxes.includes(option.trim())}
+                                  onChange={() => handleCheckboxChange(option.trim())} />
                                 {option.trim()}
-                              </Radio>
+                              </label>
                             ))}
-                          </Radio.Group>
-                        </div>
-                      )}
-                    </div>
-                  ))}
-                </div>
-                   <div
+                          </div>
+                        )}
+                        {metadata.key === 'Short Answer' && (
+                          <FormInput
+                            change={setForminputValue}
+                            value={forminputvalue} />
+                        )}
+                        {metadata.key === 'Multiple Choice' && (
+                          <div>
+                            <Radio.Group
+                              onChange={e => handleRadioChange(e, index)}
+                              value={selectedValues[index]}
+                            >
+                              {metadata.value.split(',').map((option, optIdx) => (
+                                <Radio key={optIdx} value={option.trim()}>
+                                  {option.trim()}
+                                </Radio>
+                              ))}
+                            </Radio.Group>
+                          </div>
+                        )}
+                      </div>
+                    ))}
+                  </div>
+                  <div
                     className="flex items-center justify-end gap-2.5 p-1.5 mt-[18.88px] rounded-lg"
                   >
                     <ButtonClick handleSubmit={handleSubmit} buttonName="save" BtnType="primary" />
@@ -567,7 +567,7 @@ const Evaluations = ({EvaluationID,stageId}) => {
                 </>
 
               ))
-              
+
             ) : (
               <div className="h-full gap-4 vhcenter box-wrapper borderb">
                 <div className="flex flex-col items-center gap-4">
