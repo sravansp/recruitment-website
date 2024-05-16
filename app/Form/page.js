@@ -822,14 +822,21 @@ function Web({ closeDrawer, selectedJobId, onClick }) {
           "cityOrTown",
           !formik.values.cityOrTown ? "City or Town  is required" : ""
         );
+        
       }
 
-      if (!formik.values.namePrefix) {
+      // if (!formik.values.namePrefix) {
+      //   formik.setFieldError(
+      //     "namePrefix", "Prefix  is required"
+      //   );
+      //   isValid = false;
+      // }
+      if (formvalidation[0].headline == 1) {
         formik.setFieldError(
-          "namePrefix", "Prefix  is required"
-        );
-        isValid = false;
+          "namePrefix", !formik.values.namePrefix ? "Prefix is required" : "");
       }
+
+
 
       if (isValid) {
         try {
@@ -846,7 +853,7 @@ function Web({ closeDrawer, selectedJobId, onClick }) {
             });
             console.log(update);
             if (update.status === 200) {
-              openNotification("success", "Successful", "success");
+              openNotification("success", "Successful", "Personal Details has been updated");
               setActiveBtn(activeBtn + 1);
 
               setCurrentStep(currentStep + 1);
@@ -1714,30 +1721,30 @@ function Web({ closeDrawer, selectedJobId, onClick }) {
     setCoverletter(value);
   };
 
-  
-const editdetails=()=>{
-  if (currentStep !== 0) {
-    setCurrentStep(0);
-  }
-  if (activeBtn !==0) {
-    setActiveBtn(0)
-  }
-  if (presentage !==0) {
-    setPresentage(0)
-  }
-}
 
-const editcv=()=>{
-  if (currentStep !== 2) {
-    setCurrentStep(2);
+  const editdetails = () => {
+    if (currentStep !== 0) {
+      setCurrentStep(0);
+    }
+    if (activeBtn !== 0) {
+      setActiveBtn(0)
+    }
+    if (presentage !== 0) {
+      setPresentage(0)
+    }
   }
-  if (activeBtn !==2) {
-    setActiveBtn(2)
+
+  const editcv = () => {
+    if (currentStep !== 2) {
+      setCurrentStep(2);
+    }
+    if (activeBtn !== 2) {
+      setActiveBtn(2)
+    }
+    if (presentage !== 2) {
+      setPresentage(2)
+    }
   }
-  if (presentage !==2) {
-    setPresentage(2)
-  }
-}
 
 
   return (
@@ -1782,7 +1789,7 @@ const editcv=()=>{
                       /* <button
                       type="button" */
                       className="flex items-center justify-between w-full px-6 py-4 font-semibold text-left rounded-md"
-                      // style={{ backgroundColor: `${primaryColor}10` }}
+                    // style={{ backgroundColor: `${primaryColor}10` }}
                     /* > */
                     >
                       <div className="text-left rtl:text-right">
@@ -1801,27 +1808,27 @@ const editcv=()=>{
                         aria-labelledby={`acco-title-item`}
                         className="flex flex-col justify-between w-full gap-6 p-5"
                       >
-                        
+
                         <div className="grid grid-cols-2 gap-4 sm:grid-cols-6">
-                        {formvalidation.length > 0 && formvalidation[0].education === 0 ? null : (
-    <Dropdown
-      title={"Prefix"}
-      placeholder="Choose Prefix"
-      options={[
-        { label: "Mr", value: "mr" },
-        { label: "Miss", value: "miss" },
-      ]}
-      change={(e) => {
-        formik.setFieldValue("namePrefix", e);
-        console.log("First Name:", e);
-      }}
-      name="namePrefix"
-      value={formik.values.namePrefix}
-      error={formik.errors.namePrefix}
-      required={true}
-    />
-  )}
-</div>
+                          {formvalidation.length > 0 && formvalidation[0].education === 0 ? null : (
+                            <Dropdown
+                              title={"Prefix"}
+                              placeholder="Choose Prefix"
+                              options={[
+                                { label: "Mr", value: "mr" },
+                                { label: "Miss", value: "miss" },
+                              ]}
+                              change={(e) => {
+                                formik.setFieldValue("namePrefix", e);
+                                console.log("First Name:", e);
+                              }}
+                              name="namePrefix"
+                              value={formik.values.namePrefix}
+                              error={formik.errors.namePrefix}
+                              required={true}
+                            />
+                          )}
+                        </div>
                         <div className="grid grid-cols-1 gap-4 sm:grid-cols-3">
                           <FormInput
                             title={"First Name"}
@@ -2727,22 +2734,22 @@ const editcv=()=>{
                               objectFit: "cover",
                             }}
                           />
-                        ) : ( 
-                        <Image
-                        className="bg-cover rounded-full h-18 w-18 object-cover"
-                        src= {noImg}
-                        width={64}
-                        height={64}
-                        alt="Default Profile"
-                        style={{
-                          borderRadius: "50%",
-                          height: "4.5rem",
-                          width: "4.5rem",
-                          objectFit: "cover",
-                        }}
-                      />
-                    )}
-                        
+                        ) : (
+                          <Image
+                            className="bg-cover rounded-full h-18 w-18 object-cover"
+                            src={noImg}
+                            width={64}
+                            height={64}
+                            alt="Default Profile"
+                            style={{
+                              borderRadius: "50%",
+                              height: "4.5rem",
+                              width: "4.5rem",
+                              objectFit: "cover",
+                            }}
+                          />
+                        )}
+
                       </div>
                       <div className="flex-auto min-w-0 ml-4">
                         {item && item.candidateName && (
@@ -2804,7 +2811,7 @@ const editcv=()=>{
                 </div> */}
                   <div className="v-divider" />
 
-                  <div className="flex flex-col gap-4 box-wrapper">
+                  <div className="flex flex-col gap-4 ">
                     <h6 className="h6">Education</h6>
                     <div className="flex flex-col divide-y">
                       {educationaldetails.map((edu, index) => (
@@ -2812,10 +2819,13 @@ const editcv=()=>{
                           key={index}
                           className="flex justify-start gap-5 py-3 2xl:py-6"
                         >
-                          <img
+                          {/* <img
                             className="2xl:w-[60px] 2xl:h-[60px] w-11 h-11 rounded-full shadow"
                             src="https://via.placeholder.com/60x60"
-                          />
+                          /> */}
+                          <div className="2xl:w-[60px] 2xl:h-[60px] w-11 h-11 text-center  rounded-full shadow bg-gray-200" >
+                          {edu.institution && <p className="text-xl mt-2  ">{edu.institution.charAt(0).toUpperCase()}</p>}
+                            </div>
                           <div className="inline-flex flex-col items-start justify-start gap-1">
                             <div className="gap-2 vhcenter">
                               <h6 className="h6">{edu.institution}</h6>
@@ -2841,7 +2851,7 @@ const editcv=()=>{
                       ))}
                     </div>
                   </div>
-                  <div className="flex flex-col gap-4 box-wrapper">
+                  <div className="flex flex-col gap-4 ">
                     <h6 className="h6">All Experiences</h6>
                     <div className="flex flex-col divide-y">
                       {experience.map((work, index) => (
@@ -2849,10 +2859,13 @@ const editcv=()=>{
                           key={index}
                           className="flex items-center justify-start gap-5 py-3 2xl:py-6"
                         >
-                          <img
+                          {/* <img
                             className="2xl:w-[60px] 2xl:h-[60px] w-11 h-11 rounded-full shadow"
                             src="https://via.placeholder.com/60x60"
-                          />
+                          /> */}
+                           <div className="2xl:w-[60px] 2xl:h-[60px] w-11 h-11 text-center  rounded-full shadow bg-gray-200" >
+                          {work.companyName && <p className="text-xl mt-2  ">{work.companyName.charAt(0).toUpperCase()}</p>}
+                            </div>
                           <div className="inline-flex flex-col items-start justify-start gap-1">
                             <div className="gap-2 vhcenter">
                               <h6 className="h6">{work.companyName}</h6>

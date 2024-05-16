@@ -315,26 +315,65 @@ const Home = () => {
 
   useEffect(() => {
     const filterJobs = () => {
-      let filtered = filteredJobs;
+      let filtered = JobsList;
 
-      // Check if "Full Time" job type is selected
-      if (selectedFilters["Job Types"] && selectedFilters["Job Types"]["Full Time"]) {
-        // Filter jobs to include only "Full Time" jobs
+      if (selectedFilters["Job Types"] && selectedFilters["Job Types"]["Full-Time"]) {
         filtered = filtered.filter((job) => job.jobType === "Full Time");
       }
 
-      // Update filtered jobs state
       setFilteredJobs(filtered);
-      console.log(selectedFilters,"selected filter option");
     };
 
     filterJobs();
-  }, [selectedFilters]);
+  }, [selectedFilters, JobsList]);
 
   // Handle filter change from CustomDropdown
   const handleFilterChange = (filters) => {
+    console.log("Selected filters:", filters); // Log the selected filters
     setSelectedFilters(filters);
   };
+// const handleFilterChange = (key) =>{
+//   let filtered =  [...filteredJobs];
+//   switch (key) {
+//     case "1":
+//       filtered.sort((job)=>
+//         job.jobType === "Full Time"
+//     )
+//       break;
+//     case "2":
+//       // sortedJobs.sort(
+//       //   (a, b) =>
+//       //     new Date(b.createdOn).getTime() - new Date(a.createdOn).getTime()
+//       // );
+//       break;
+//     case "3":
+//       // sortedJobs.sort(
+//       //   (a, b) =>
+//       //     new Date(a.createdOn).getTime() - new Date(b.createdOn).getTime()
+//       // ); // Oldest
+//       break;
+//     case "4":
+//       // const tenDaysAgo = new Date();
+//       // tenDaysAgo.setDate(tenDaysAgo.getDate() - 5);
+//       // const tenDaysAgoTimestamp = tenDaysAgo.getTime();
+//       // sortedJobs = sortedJobs.filter(
+//       //   (job) => new Date(job.createdOn).getTime() >= tenDaysAgoTimestamp
+//       // );
+//       break;
+//     case "5":
+//       // const twentyDaysAgo = new Date();
+//       // twentyDaysAgo.setDate(twentyDaysAgo.getDate() - 20);
+//       // const twentyDaysAgoTimestamp = twentyDaysAgo.getTime();
+//       // sortedJobs = sortedJobs.filter(
+//       //   (job) => new Date(job.createdOn).getTime() >= twentyDaysAgoTimestamp
+//       // );
+//       break;
+//     default:
+//       break;
+//   }
+//   setFilteredJobs(filtered);
+// };
+
 
  
   return (
@@ -401,7 +440,7 @@ const Home = () => {
 
         <div className="grid items-center w-full grid-cols-12 container-wrapper">
           <div className="col-span-6 md:col-span-3">
-            <CustomDropdown onFilterChange={handleFilterChange} />
+            <CustomDropdown onFilterChange={handleFilterChange} selectedFilters={selectedFilters} />
           </div>
           <div className="col-span-6 md:col-span-9">
             <div className="flex gap-1">

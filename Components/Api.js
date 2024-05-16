@@ -64,7 +64,7 @@ const apiRequestforcompanyid  = async (action, method, kwargs) => {
 export const getRecruitmentJobById = async (id) => {
     const action = "getRecruitmentJobById";
     const method = "POST";
-    const kwargs = { id }; 
+    const kwargs = {id: id}; 
     return await apiRequest(action, method, kwargs);
   };
 export const getAllRecruitmentJobs = async () => {
