@@ -932,18 +932,15 @@ export default function Createcandidatelist({ open = "", close = () => { }, file
                     </div>
 
                     <div className='w-4/5'>
-                      <p>Photo (Optional)</p>
+                      <p className='py-1'>Photo (Optional)</p>
                       <ImageUpload
                         change={(e) => {
                           if (e) {
                             setFile(e)
                           }
-                          
-
                           console.log(e)
                         }} 
                         file={file}
-                        
                         />
                     </div>
 
