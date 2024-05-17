@@ -358,9 +358,9 @@ const Createjob = ({
   }, [UpdateId]);
   const formik1 = useFormik({
     initialValues: {
-      companyId: "",
+      companyId: null,
       jobTitle: "",
-      departmentId: "",
+      departmentId: null,
       jobCode: "",
       workLocationType: "Onsite",
       location: "",
