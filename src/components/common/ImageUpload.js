@@ -60,10 +60,8 @@ export default function ImageUpload({
         fileList={fileList}
         onChange={(info) => {
           const { file } = info;
-          const fileType = file.type;
-          const isImage = fileType.startsWith('image');
-          console.log(isImage, "isImage /n", file, "file")
-          if (isImage && changeStatus) {
+          console.log(file, "file")
+          if (file && changeStatus) {
             change(file);
           }
         }}
@@ -95,7 +93,7 @@ export default function ImageUpload({
             <p className="ant-upload-text">
               Click or drag file to this area to upload
             </p>
-              <p className="ant-upload-hint">
+            <p className="ant-upload-hint">
               Support for a single or bulk upload. Strictly prohibited from
               uploading company data or other banned files.
             </p>
