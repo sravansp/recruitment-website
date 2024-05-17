@@ -1195,6 +1195,7 @@ export default function Createcandidatelist({ open = "", close = () => { }, file
                                   setFilepdf(e)
                                 }
                               }}
+                              file={filePdf}
                             />
                       </div>
                       <div>

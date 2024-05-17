@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import { InboxOutlined } from "@ant-design/icons";
 import { message, Upload } from "antd";
 import { useTranslation } from "react-i18next";
@@ -9,13 +9,22 @@ export default function FileUpload({
   change = () => { },
   className,
   flex = true,
+  file = null,
 }) {
   const { t } = useTranslation();
   const allowedFileFormats = ["jpg", "png", "jpeg", "svg", "webp", "pdf", "doc", "docx", "pptx"];
   const fileFormatsString = allowedFileFormats.join(", ");
-  const [selectedFile, setSelectedFile] = useState(null);
+  const [selectedFile, setSelectedFile] = useState([]);
   const [nameList, setNameList] = useState([]);
   const [changeStatus, setChangeStatus] = useState(false);
+
+  useEffect(() => {
+    if (file) {
+      setSelectedFile([file])
+    } else {
+      setSelectedFile([])
+    }
+  }, [file])
 
   const props = {
     name: "file",
@@ -35,6 +44,7 @@ export default function FileUpload({
         return false;
       } else {
         message.success(`${file.name} file added successfully.`);
+        setSelectedFile([file]);
         setNameList([...nameList, file.name]);
         setChangeStatus(true);
         return false;
@@ -56,26 +66,18 @@ export default function FileUpload({
   //   }
   // };
 
-  const handleChange = (info) => {
-    const { file } = info;
-
-    // Ensure only one file is selected
-    if (file && changeStatus) {
-      setSelectedFile(file);
-      change(file);
-    }
-  };
 
   return (
     <div className={`${className}`}>
       <Dragger
         {...props}
-        onChange={handleChange}
-        onDrop={(e) => {
-          console.log(e.dataTransfer.files[0]);
-          setSelectedFile(e.dataTransfer.files[0]);
-          change(e.dataTransfer.files[0]);
-
+        fileList={selectedFile}
+        onChange={(info) => {
+          const { file } = info;
+          console.log(file, "file")
+          if (file && changeStatus) {
+            change(file);
+          }
         }}
         maxCount={1}
       >
