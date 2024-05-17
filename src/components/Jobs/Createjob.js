@@ -371,7 +371,7 @@ const Createjob = ({
       searchKeywords: "",
       salaryRangeFrom: "",
       salaryRangeTo: "",
-      salaryCurrency: "",
+      salaryCurrency: null,
       isSalaryPublic: "true",
       jobDescription: "",
       workFlowId: null,
@@ -1805,7 +1805,7 @@ const Createjob = ({
 
 <FormInput
   title={'Salary Range To'}
-  placeholder={'Enter value'}
+  placeholder={'Enter Salary Range To'}
   description={'Maximum Annual Salary'}
   change={(e) => {
     // Validate Salary Range To
