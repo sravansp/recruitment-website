@@ -103,6 +103,7 @@ const Workflowstage = ({
   const [emailTemp,setEmailTemp] = useState([])
   const [showDiv, setShowDiv] = useState(false);
   const primaryColor = localStorage.getItem('mainColor')
+  const [response,stateResponse] = useState("")
   
  
 
@@ -608,6 +609,7 @@ const Workflowstage = ({
 
           
           console.log(response);
+          stateResponse(response.message)
 
           if (response.status === 200) {
             const insertedId = response.result.insertedId; // Get insertedId here
@@ -648,8 +650,8 @@ const Workflowstage = ({
       } catch (error) {
         openNotification(
           "error",
-          "Error",
-          "WorkFlow Template Name Already Exist"
+          "Info",
+          "Template Name Already Exists"
         );
       }
       setSubmitting(false);

@@ -176,7 +176,7 @@ const TemplateDec = ({ open = "", close = () => { }, inputshow = false, isUpdate
 
       }
     } catch (error) {
-      openNotification("error", "Error..", "Template name already exist");
+      openNotification("error", "Error..", "Template Name Already Exist");
     }
 
   }

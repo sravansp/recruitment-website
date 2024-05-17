@@ -36,7 +36,7 @@ const CandidatesList = () => {
           value: "candidateName",
           bold: true,
           key:"candidateName",
-          sorter: (a, b) => a.candidateName.length - b.candidateName.length,
+          sorter: (a, b) => a.candidateName.localeCompare(b.candidateName),
           sortOrder: sortedInfo?.columnKey === 'candidateName' ? sortedInfo.order : null,
          
          
@@ -56,13 +56,13 @@ const CandidatesList = () => {
           titleCaseSensitive: true,
           key: "jobTitle",
           sorter: (a, b) => {
-              // Handle cases where jobTitle is null or undefined
-              const titleA = a.jobTitle || '';
-              const titleB = b.jobTitle || '';
-              return titleA.length - titleB.length;
+            // Handle cases where jobTitle is null or undefined
+            const titleA = a.jobTitle || '';
+            const titleB = b.jobTitle || '';
+            return titleA.localeCompare(titleB);
           },
           sortOrder: sortedInfo.columnKey === 'jobTitle' ? sortedInfo.order : null,
-      },
+        },
 
       {
         id: 4,
@@ -73,7 +73,7 @@ const CandidatesList = () => {
             // Handle cases where stageName is null or undefined
             const nameA = a.stageName || '';
             const nameB = b.stageName || '';
-            return nameA.length - nameB.length;
+            return nameA.localeCompare(nameB);
         },
         sortOrder: sortedInfo.columnKey === 'stageName' ? sortedInfo.order : null,
     },
@@ -86,7 +86,7 @@ const CandidatesList = () => {
           // Handle cases where candidateSource is null or undefined
           const sourceA = a.candidateSource || '';
           const sourceB = b.candidateSource || '';
-          return sourceA.length - sourceB.length;
+          return sourceA.localeCompare(sourceB);
       },
       sortOrder: sortedInfo.columnKey === 'candidateSource' ? sortedInfo.order : null,
   },
@@ -99,7 +99,7 @@ const CandidatesList = () => {
               // Handle cases where currentStatus is null or undefined
               const statusA = a.currentStatus || '';
               const statusB = b.currentStatus || '';
-              return statusA.length - statusB.length;
+              return statusA.localeCompare(statusB);
           },
           sortOrder: sortedInfo.columnKey === 'currentStatus' ? sortedInfo.order : null,
       },

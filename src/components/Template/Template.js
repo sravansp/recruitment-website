@@ -149,6 +149,12 @@ const Template = ({
           value: "action",
           action: true,
         },
+        {
+          id: 5,
+          title: t("View"),
+          value: "viewData",
+          status: "viewData",
+        },
       ],
       Job_Description: [
         {
@@ -174,6 +180,12 @@ const Template = ({
           title: t("Action"),
           value: "action",
           action: true,
+        },
+        {
+          id: 5,
+          title: t("View"),
+          value: "viewData",
+          status: "viewData",
         },
       ],
       Workflow: [
@@ -201,6 +213,12 @@ const Template = ({
           value: "action",
           action: true,
         },
+        {
+          id: 5,
+          title: t("View"),
+          value: "viewData",
+          status: "viewData",
+        },
       ],
       Email: [
         {
@@ -226,6 +244,12 @@ const Template = ({
           title: t("Action"),
           value: "action",
           action: true,
+        },
+        {
+          id: 5,
+          title: t("View"),
+          value: "viewData",
+          status: "viewData",
         },
       ],
       Evaluation: [
@@ -253,6 +277,12 @@ const Template = ({
           value: "Action",
           action: true,
         },
+        {
+          id: 5,
+          title: t("View"),
+          value: "viewData",
+          status: "viewData",
+        },
       ],
       Questionnaire: [
         {
@@ -278,6 +308,12 @@ const Template = ({
           title: t("Action"),
           value: "actions",
           action: true,
+        },
+        {
+          id: 5,
+          title: t("View"),
+          value: "viewData",
+          status: "viewData",
         },
       ],
       Letter: [
@@ -305,6 +341,12 @@ const Template = ({
           value: "actions",
           action: true,
         },
+        {
+          id: 5,
+          title: t("View"),
+          value: "viewData",
+          status: "viewData",
+        },
       ]
     }
   ]
@@ -317,80 +359,24 @@ const Template = ({
           title: "Template Name",
           value: "jobTitle",
         },
+        
         {
           id: 2,
-          title: "Location",
-          value: "location",
+          title: "Experience",
+          value: "experience",
         },
+
+        
+        
         {
           id: 3,
-          title: "Job Type",
+          title: "JobType",
           value: "jobType",
-
         },
         {
           id: 4,
-          title: "Job Code",
-          value: "jobCode",
-
-        },
-        {
-          id: 5,
-          title: "createdOn",
-          value: "createdOn",
-
-        },{
-          id: 6,
-          title: "Education",
-          value: "education",
-
-        },
-        {
-          id: 7,
-          title: "Experience",
-          value: "experience",
-
-        },
-        {
-          id: 8,
-          title: "Job Description",
-          value: "jobDescription",
-
-        },
-        {
-          id: 9,
           title: "Requirement Type",
           value: "requirementType",
-
-        },
-        {
-          id: 10,
-          title: "Salary Currency",
-          value: "salaryCurrency",
-
-        },
-        {
-          id: 11,
-          title: "WorkLocation Type",
-          value: "workLocationType",
-
-        },
-        {
-          id: 12,
-          title: "Salary Range From",
-          value: "salaryRangeFrom",
-
-        },
-        {
-          id: 13,
-          title: "Salary Range To",
-          value: "salaryRangeTo",
-
-        },
-        {
-          id: 14,
-          title: "Status",
-          value: "isActive",
         },
       ],
       Job_Description: [
@@ -425,6 +411,12 @@ const Template = ({
           id: 3,
           title: "Status",
           value: "isActive",
+        },
+        {
+          id: 4,
+          title: "Stages",
+          value: "recruitmentWorkFlowStages",
+          render: (stages) => stages.join(', '), // Display stages as a concatenated string
         },
         // {
         //   id: 4,
@@ -566,6 +558,15 @@ const Template = ({
           isActive: job.isActive,
           actionToggle:true,
           action:true,
+          
+          experience:job.experience,
+          
+          jobType:job.jobType,
+          requirementType:job.requirementType
+
+
+
+
         })))
       // setTemplateList(response.result)
         console.log(response.result.map((job) => ({
@@ -596,7 +597,23 @@ const Template = ({
 
       const response = await getAllRecruitmentWorkFlows({ companyId: companyId });
       // console.log(response," work flow list is here")
-      setWorkflow(response.result);
+      // setWorkflow(response.result);
+         setWorkflow(response.result.map((workflow)=>({
+          workFlowId:workflow.workFlowId,   
+          workFlowName:workflow.workFlowName,
+          description:workflow.description,
+          // recruitmentWorkFlowStages:workflow.recruitmentWorkFlowStages.map((stages)=>({
+          //   stageName:stages.stageName,
+          //   // stageRules:stages.stageRules
+
+          // }))
+          recruitmentWorkFlowStages: workflow.recruitmentWorkFlowStages.map((stage) => stage.stageName)
+   
+
+         })))
+       
+
+
       // const newData = {};
       // response.result.forEach((job) => {
       //   newData[job.jobId] = job; // Assuming jobId is the unique identifier

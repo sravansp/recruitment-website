@@ -341,8 +341,8 @@ const TemEvaluation = ({
         console.error("Error during form submission:", error);
         openNotification(
           "error",
-          "Error ...",
-          "Evaluation Template Name Already Exist"
+          "Info",
+          "Template Name Already Exists"
         );
       }
       setSubmitting(false);

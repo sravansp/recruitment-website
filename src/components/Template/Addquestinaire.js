@@ -348,7 +348,7 @@ const QuestionAire = ({
           openNotification(
             "error",
             "Error...",
-            "Qestionnare Template name already exist."
+            "Template Name Already Exist."
           );
         }
         setSubmitting(false);

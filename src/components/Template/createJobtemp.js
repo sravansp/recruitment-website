@@ -938,7 +938,10 @@ const CreatejobTemp = ({
           return; 
 
         }
-
+        if(formik.values.location && formik.values.location.length <3){
+          formik.setFieldError('location','Location field must contain atleast 3 Characters')
+          return;
+        }
    
         if(content && content.length < 3){
           formik.setFieldError('jobDescription','JobDescription should have at least 3 letters.');
