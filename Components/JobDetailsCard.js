@@ -124,7 +124,7 @@ const JobDetailsCard = ({ selectedJob, jobDetailsAnimation }) => {
               </div>
               <div className="grid grid-cols-6">
                 <p className="!font-normal !text-opacity-50 capitalize pblack col-span-1">
-                  Requirement
+                  Requirement Type
                 </p>
                 <p className="col-span-4 pblack">{selectedJob.requirementType}</p>
               </div>
@@ -144,12 +144,17 @@ const JobDetailsCard = ({ selectedJob, jobDetailsAnimation }) => {
             visible={drawerVisible}
             width="100%" // Adjust the width as needed
             height="100%"
+            
             wrapperBodyStyle={{ backgroundColor: "#F8FAFC" }}
+            
+            className="ant-drawer-body"
+            
 
 
           >
 
             <Web closeDrawer={closeDrawer} selectedJobId={selectedJobIdForApply} selectedJob />
+            
           </Drawer>
         </div>
       )}

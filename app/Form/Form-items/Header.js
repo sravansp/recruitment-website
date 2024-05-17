@@ -34,8 +34,8 @@ useEffect(() => {
 }, [job]);
 
   return (
-    <div >
-    <div className="bg-white flex items-center     dark:bg-black dark:text-white h-[65px] w-full">
+    // <div >
+    <div className="bg-white flex items-center     dark:bg-black dark:text-white h-[85px] w-full rounded   shadow-sm   ">
       <div className="flex mt-3 ml-5 float-end ">
       <button onClick={closeDrawer} className="rounded-full  size-9 borderb vhcenter text-primary">
           {/* <span className="inset-0 flex items-center justify-center bg-white rounded-md "> */}
@@ -65,8 +65,8 @@ useEffect(() => {
       </div>
       
     </div>
-    <div className="mt-4 divider-h"/>
-    </div>
+    /* <div className="mt-4 divider-h"/> */
+    // </div>
   );
 }
 

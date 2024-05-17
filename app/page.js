@@ -393,7 +393,7 @@ const Home = () => {
             </div>
             <div className="searchJob rounded-[10px] bg-white dark:bg-secondaryDark w-full lg:h-full p-3 flex gap-3 justify-between items-center flex-col md:flex-row md:divide-x divide-y md:divide-y-0">
               <SearchBox
-                placeholder="Job title or keyword"
+                placeholder="Job Title or Keyword"
                 // value={searchJobTitle !== undefined ? searchJobTitle : ""}
                 value={searchJobTitle}
                 // items={[...new Set(JobsList.map((job) => job.jobTitle))]} // Convert the job titles to a Set to remove duplicates
@@ -407,7 +407,7 @@ const Home = () => {
                  } }}
               />
               <SearchBox
-                placeholder="Location or Timezone"
+                placeholder="Location"
                 // value={searchJobLocation}
                 value={searchJobLocation}
                 className="pt-3 md:pl-6 md:pt-0"

@@ -138,6 +138,13 @@
 .borderb {
   @apply border border-black dark:border-white border-opacity-10 dark:border-opacity-20;
 }
+ .ant-drawer-body {
+  flex: 1;
+  min-width: 0;
+  min-height: 0;
+  padding: 0px !important; 
+  overflow: auto;
+}
 
 
 

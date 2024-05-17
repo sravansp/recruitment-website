@@ -13,7 +13,17 @@ const items = [
       { label: "Intern", value: "intern" }
     ],
   },
-  // Add more sections as needed
+  {
+    title: "Degree",
+    checkboxes: [
+      { label: "Associate", value: "Associate" },
+      { label: "Bachelor’s", value: "Bachelor’s" },
+      { label: "Master’s", value: "Master’s" },
+      { label: "Ph.D", value: "Ph.D" },
+      { label: "Pursuing Degree", value: "Pursuing Degree" }
+    ],
+  },
+  
 ];
 
 const CustomDropdown = ({ onFilterChange }) => {
@@ -25,13 +35,17 @@ const CustomDropdown = ({ onFilterChange }) => {
   }, [selectedFilters, onFilterChange]);
 
   const handleCheckboxChange = (sectionTitle, checkboxValue) => {
-    setSelectedFilters((prevFilters) => ({
-      ...prevFilters,
-      [sectionTitle]: {
+    setSelectedFilters((prevFilters) => {
+      const updatedSectionFilters = {
         ...(prevFilters[sectionTitle] || {}),
         [checkboxValue]: !prevFilters[sectionTitle]?.[checkboxValue],
-      },
-    }));
+      };
+      
+      return {
+        ...prevFilters,
+        [sectionTitle]: updatedSectionFilters,
+      };
+    });
   };
 
   const menu = (
