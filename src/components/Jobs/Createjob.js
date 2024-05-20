@@ -361,9 +361,9 @@ const Createjob = ({
   }, [UpdateId]);
   const formik1 = useFormik({
     initialValues: {
-      companyId: "",
+      companyId: null,
       jobTitle: "",
-      departmentId: "",
+      departmentId: null,
       jobCode: "",
       workLocationType: "Onsite",
       location: "",
@@ -374,7 +374,7 @@ const Createjob = ({
       searchKeywords: "",
       salaryRangeFrom: "",
       salaryRangeTo: "",
-      salaryCurrency: "",
+      salaryCurrency: null,
       isSalaryPublic: "true",
       jobDescription: "",
       workFlowId: null,
@@ -414,16 +414,16 @@ const Createjob = ({
         formik1.setFieldError('departmentId', !formik1.values.departmentId ? 'Department is required' : '');
         formik1.setFieldError('jobCode', !formik1.values.jobCode ? 'Job Code is required' : '');
         formik1.setFieldError('location', !formik1.values.location ? 'Location is required' : '');
-        formik1.setFieldError('requirementType', !formik1.values.requirementType ? 'Requirment Type is required' : '');
+        formik1.setFieldError('requirementType', !formik1.values.requirementType ? 'Requirment is required' : '');
         formik1.setFieldError('experience', !formik1.values.experience ? 'Experience is required' : '');
         formik1.setFieldError('searchKeywords', !formik1.values.searchKeywords ? 'Keywords is required' : '');
         formik1.setFieldError('salaryRangeFrom', !formik1.values.salaryRangeFrom ? 'Salary Range From is required' : '');
         formik1.setFieldError('salaryRangeTo', !formik1.values.salaryRangeTo ? 'Salary Range To is required' : '');
         formik1.setFieldError('salaryCurrency', !formik1.values.salaryCurrency ? 'Salary Currency is required' : '');
-        formik1.setFieldError('jobType', !formik1.values.jobType ? 'JobType is required' : '');
+        formik1.setFieldError('jobType', !formik1.values.jobType ? 'Job Type is required' : '');
         formik1.setFieldError('education', !formik1.values.education ? 'Education is required' : '');
         formik1.setFieldError('jobDescription', !content ? 'Job Description is required' : '')
-        formik1.setFieldError('noOfVaccancies', !formik1.values.noOfVaccancies ? 'Number Of Openings is required' : '')
+        formik1.setFieldError('noOfVaccancies', !formik1.values.noOfVaccancies ? 'Number of Openings is required' : '')
         return; // Exit early if any field is empty
       }
       try {
@@ -1132,7 +1132,7 @@ const Createjob = ({
 
         // console.log("valuegtgggggggggggg");
         if(content && content.length < 3){
-          formik1.setFieldError('jobDescription','JobDescription should have at least 3 letters.');
+          formik1.setFieldError('jobDescription','Job Description should have at least 3 letters.');
           return; 
         }
         formik1.handleSubmit();
@@ -1800,7 +1800,7 @@ const Createjob = ({
     const salaryRangeFrom = parseFloat(formik1.values.salaryRangeFrom); // Convert Salary Range From to a number
 
     if (salaryRangeTo <= salaryRangeFrom) {
-      setsalaryRangeToError("Salary Range To should be greater than the Salary Range from");
+      setsalaryRangeToError("Salary Range To should be greater than the Salary Range From");
       formik1.setFieldValue('salaryRangeTo', e);
     } else if (salaryRangeTo <= 0) {
       setsalaryRangeToError("Salary Range To must be a positive number");
