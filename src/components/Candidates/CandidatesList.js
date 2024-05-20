@@ -32,7 +32,7 @@ const CandidatesList = () => {
       Candidate_Profile: [
         {
           id: 1,
-          title: t("NAME"),
+          title: t("Name"),
           value: "candidateName",
           bold: true,
           key:"candidateName",
@@ -43,7 +43,7 @@ const CandidatesList = () => {
         },
         {
           id: 2,
-          title: t("CONTACT"),
+          title: t("Contact"),
           value: "candidateContact",
           key:"candidateContact",
           sorter: (a, b) => a.candidateContact - b.candidateContact,
@@ -51,7 +51,7 @@ const CandidatesList = () => {
         },
         {
           id: 3,
-          title: t("JOB"),
+          title: t("Job"),
           value: "jobTitle",
           titleCaseSensitive: true,
           key: "jobTitle",
@@ -66,7 +66,7 @@ const CandidatesList = () => {
 
       {
         id: 4,
-        title: t("STAGE"),
+        title: t("Stage"),
         value: "stageName",
         key: "stageName",
         sorter: (a, b) => {
@@ -79,7 +79,7 @@ const CandidatesList = () => {
     },
     {
       id: 5,
-      title: t("SOURCE"),
+      title: t("Source"),
       value: "candidateSource",
       key: "candidateSource",
       sorter: (a, b) => {
@@ -92,7 +92,7 @@ const CandidatesList = () => {
   },
         {
           id: 6,
-          title: t("STATUS"),
+          title: t("Status"),
           value: "currentStatus",
           key: "currentStatus",
           sorter: (a, b) => {
@@ -105,7 +105,7 @@ const CandidatesList = () => {
       },
         {
           id: 7,
-          title: t("APPLIED DATE"),
+          title: t("Applied Date"),
           value: "createdOn",
           key:"createdOn",
           sorter: (a, b) => {
@@ -180,7 +180,7 @@ const CandidatesList = () => {
       <div className='flex justify-between'>
         <Heading
           title={t("Candidates")}
-          description="Coordinates the planning, execution, and completion of projects..."/>
+          description="Coordinates the planning, execution, and completion of projects"/>
            <div className="flex gap-4">
           {" "}
           <Link onClick={handleNavigate} className="flex gap-2 mt-2">

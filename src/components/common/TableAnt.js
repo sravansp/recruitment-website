@@ -627,7 +627,11 @@ const TableAnt = ({
                 }}
               }
                 className="text-[#667085] text-xs 2xl:text-sm dark:text-white font-medium">
-                  <p>{record}</p>
+<p>
+  {record && typeof record === 'string' 
+    ? record.charAt(0).toUpperCase() + record.slice(1) 
+    : record}
+</p>
                 </div>
                ) 
     }

@@ -397,7 +397,7 @@ const CreatejobTemp = ({
               refresh()
             }, 1500);
           } else if (response.status === 500) {
-            openNotification("error", "Error", response.message.replace(/<br\/>/g, '\n'));
+            openNotification("error", "Info", response.message.replace(/<br\/>/g, '\n'));
 
           }
         } else {
@@ -455,7 +455,7 @@ const CreatejobTemp = ({
               refresh()
             }, 1500);
           } else if (response.status === 500) {
-            openNotification("error", "Error", response.message.replace(/<br\/>/g, '\n'));
+            openNotification("error", "Info", response.message.replace(/<br\/>/g, '\n'));
           }
 
 
@@ -1927,7 +1927,7 @@ icondropDown={true}
                                   }}
                                   error={condition.question ? '' : Questionerror || ''}
                                 />
-                                <div className="flex items-center gap-5">
+                                <div className="flex items-center gap-5 mt-4">
                                   <div className="flex-shrink-0">
                                     <Dropdown
                                       options={Form}

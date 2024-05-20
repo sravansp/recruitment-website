@@ -412,12 +412,20 @@ const Template = ({
           title: "Status",
           value: "isActive",
         },
-        {
-          id: 4,
-          title: "Stages",
-          value: "recruitmentWorkFlowStages",
-          render: (stages) => stages.join(', '), // Display stages as a concatenated string
-        },
+        // {
+        //   id: 4,
+        //   title: "Stages",
+        //   value: "recruitmentWorkFlowStages",
+        //   render: (stages) => (
+        //     <div className='flex flex-col gap-2'>
+        //       {stages.map((stage, index) => (
+        //         <div key={index}>
+        //           {index + 1}. {stage.stageName}
+        //         </div>
+        //       ))}
+        //     </div>
+        //   ), // Display stages as a concatenated string
+        // },
         // {
         //   id: 4,
         //   title: "Status",
