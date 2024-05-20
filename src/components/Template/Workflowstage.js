@@ -24,7 +24,8 @@ import {
   updateWorkFlowWithStages,
   getAllRecruitmentEmailTemplates,
   getAllRecruitmentEvaluationTemplates,
-  getAllRecruitmentQuestionnaireTemplates
+  getAllRecruitmentQuestionnaireTemplates,
+  getAllRecruitmentWorkFlows
 } from "../Api1";
 import { PiCopySimple, PiPencilSimpleLineThin } from "react-icons/pi";
 import { Modal, Button, notification, Tooltip, Menu } from "antd";
@@ -815,7 +816,19 @@ const Workflowstage = ({
  
   const [sections, setSections] = useState([]);
 
- 
+  const getWorkflowwithName=async(values)=>{
+    try{
+      const response = await getAllRecruitmentWorkFlows({
+        companyId:companyId,
+        workFlowName:values.workFlowName
+      })
+    }catch(error){
+      console.log(error)
+    }
+  }
+  // useEffect(()=>{
+  //   getWorkflowwithName(values)
+  // },[values.workFlowName])
    
 
   const handleDeleteSection = (id) => {
