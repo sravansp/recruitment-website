@@ -299,6 +299,7 @@ const Emailtemplate = ({
               <FormInput
                 title={"Subject"}
                 placeholder={"Enter Subject"}
+                maxLength={125}
                 value={subject}
                 change={(e) => {
                   setsubject(e)

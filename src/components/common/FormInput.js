@@ -22,12 +22,12 @@ export default function FormInput({
   required = false,
   answerMetaDataIndex,
   showValueParagraph = false,
+  maxLength = 30,
 }) {
   const isSmallScreen = useMediaQuery({ maxWidth: 1439 });
   const [show, setShow] = useState(false);
   const target = useRef(null);
 
-  let maxLength = 30;
   if (type === "number") {
     maxLength = 10;
   } else if (type === "alphanumeric") {
