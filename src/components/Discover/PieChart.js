@@ -12,16 +12,8 @@ import {
 import { getDashboardCandidateSource } from "../Api1";
 import { setDate } from "date-fns";
 
-const data = [
-  { name: "LinkedIn", value: 30 },
-  { name: "Indeed", value: 25 },
-  { name: "Naukri", value: 16 },
-  { name: "Resume", value: 10 },
-  { name: "Imported", value: 8 },
-];
 
 const COLORS = ["#0e2535", "#9da4fe", "#7942c5", "#ecc4f9", "#cfd6e6"];
-
 
 
 const PieChartWithLegends = () => {
