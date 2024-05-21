@@ -107,7 +107,7 @@ function AllJobs() {
           value: "jobTitle",
           bold: true,
           key:"jobTitle",
-          sorter: (a, b) => a.jobTitle.length - b.jobTitle.length,
+          sorter: (a, b) => a.jobTitle.localeCompare(b.jobTitle),
           sortOrder: sortedInfo?.columnKey === 'jobTitle' ? sortedInfo.order : null,
         },
         {
@@ -134,10 +134,9 @@ function AllJobs() {
           id: 4,
           title: t("Location"),
           value: "location",
-          key:"location",
-          sorter: (a, b) => a.location.length - b.location.length,
-          sortOrder: sortedInfo?.columnKey === 'location'
-
+          key: "location",
+          sorter: (a, b) => a.location.localeCompare(b.location),
+          sortOrder: sortedInfo?.columnKey === 'location' ? sortedInfo.order : null,
         },
         {
           id: 5,
@@ -149,9 +148,9 @@ function AllJobs() {
           id: 6,
           title: t("Posted_By"),
           value: "jobCreatedBy",
-          key:"jobCreatedBy",
-          sorter: (a, b) => a.jobCreatedBy.length - b.jobCreatedBy.length,
-          sortOrder: sortedInfo?.columnKey === 'jobCreatedBy'
+          key: "jobCreatedBy",
+          sorter: (a, b) => a.jobCreatedBy.localeCompare(b.jobCreatedBy),
+          sortOrder: sortedInfo?.columnKey === 'jobCreatedBy' ? sortedInfo.order : null,
         },
         {
           id: 7,
@@ -182,8 +181,8 @@ function AllJobs() {
           value: "jobTitle",
           bold: true,
           key:"jobTitle",
-          sorter: (a, b) => a.jobTitle.length - b.jobTitle.length,
-          sortOrder: sortedInfo?.columnKey === 'jobTitle' ? sortedInfo.order : null,
+          sorter: (a, b) => a.jobTitle.localeCompare(b.jobTitle),
+        sortOrder: sortedInfo?.columnKey === 'jobTitle' ? sortedInfo.order : null,
         },
         {
           id: 2,
@@ -210,8 +209,8 @@ function AllJobs() {
           title: t("Location"),
           value: "location",
           key:"location",
-          sorter: (a, b) => a.location.length - b.location.length,
-          sortOrder: sortedInfo?.columnKey === 'location'
+          sorter: (a, b) => a.location.localeCompare(b.location),
+          sortOrder: sortedInfo?.columnKey === 'location' ? sortedInfo.order : null,
 
         },
         {
@@ -225,8 +224,8 @@ function AllJobs() {
           title: t("Posted_By"),
           value: "jobCreatedBy",
           key:"jobCreatedBy",
-          sorter: (a, b) => a.jobCreatedBy.length - b.jobCreatedBy.length,
-          sortOrder: sortedInfo?.columnKey === 'jobCreatedBy'
+          sorter: (a, b) => a.jobCreatedBy.localeCompare(b.jobCreatedBy),
+          sortOrder: sortedInfo?.columnKey === 'jobCreatedBy' ? sortedInfo.order : null,
         },
         {
           id: 7,
@@ -257,7 +256,7 @@ function AllJobs() {
           value: "jobTitle",
           bold: true,
           key:"jobTitle",
-          sorter: (a, b) => a.jobTitle.length - b.jobTitle.length,
+          sorter: (a, b) => a.jobTitle.localeCompare(b.jobTitle),
           sortOrder: sortedInfo?.columnKey === 'jobTitle' ? sortedInfo.order : null,
         },
         {
@@ -285,8 +284,8 @@ function AllJobs() {
           title: t("Location"),
           value: "location",
           key:"location",
-          sorter: (a, b) => a.location.length - b.location.length,
-          sortOrder: sortedInfo?.columnKey === 'location'
+          sorter: (a, b) => a.location.localeCompare(b.location),
+          sortOrder: sortedInfo?.columnKey === 'location' ? sortedInfo.order : null,
 
         },
         {
@@ -300,8 +299,8 @@ function AllJobs() {
           title: t("Posted_By"),
           value: "jobCreatedBy",
           key:"jobCreatedBy",
-          sorter: (a, b) => a.jobCreatedBy.length - b.jobCreatedBy.length,
-          sortOrder: sortedInfo?.columnKey === 'jobCreatedBy'
+          sorter: (a, b) => a.jobCreatedBy.localeCompare(b.jobCreatedBy),
+          sortOrder: sortedInfo?.columnKey === 'jobCreatedBy' ? sortedInfo.order : null,
         },
         {
           id: 7,
@@ -332,7 +331,7 @@ function AllJobs() {
           value: "jobTitle",
           bold: true,
           key:"jobTitle",
-          sorter: (a, b) => a.jobTitle.length - b.jobTitle.length,
+          sorter: (a, b) => a.jobTitle.localeCompare(b.jobTitle),
           sortOrder: sortedInfo?.columnKey === 'jobTitle' ? sortedInfo.order : null,
         },
         {
@@ -442,7 +441,9 @@ function AllJobs() {
   const callapi = async () => {
     try {
       const response = await getAllRecruitmentJobs({ companyId });
-      setJobList(response.result);
+      const filteredJobs = response.result.filter(job => job.jobStatus !== "Draft");
+      console.log("Draft",filteredJobs)
+      setJobList(filteredJobs);
       console.log(response);
     } catch (error) {
       console.error(error);
@@ -757,7 +758,7 @@ function AllJobs() {
                   getcreatedBy();
                   getOpenjobs();
                   getDraftjobs();
-
+                 
                 }}
                 // openPolicy={openPop}
                 // updateId={updateId}
@@ -802,19 +803,26 @@ function AllJobs() {
           // recordId={record.jobId}
           actionToggle={(e) => {
             setUpdateId(e);
+           
+          }}
+          refreshJobCrad={()=>{
+            getJobstat()
+            console.log("hiii")
           }}
           refresh={() => {
+            
             switch (navigationPath) {
               default:
-                callapi();
-                break;
-              case "location":
                 getcreatedBy();
                 break;
-              case "department":
+              case "AllJobs":
+                
+                callapi();
+                break;
+              case "Open":
                 getOpenjobs();
                 break;
-              case "category":
+              case "Draft":
                 getDraftjobs();
                 break;
 

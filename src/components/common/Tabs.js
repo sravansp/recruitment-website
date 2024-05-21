@@ -43,7 +43,8 @@ const Tabs = ({
   All=false,
   recordId="",
   drawerH=[],
-  handlesort=()=>{} 
+  handlesort=()=>{},
+  refreshJobCrad =()=>{} 
  
 }) => {
   const [activeTab, setActiveTab] = useState(tabs[0].id);
@@ -311,6 +312,7 @@ const Tabs = ({
                     }}
                     All={All}
                     recordId={recordId}
+                    refreshJobCrad={refreshJobCrad}
                     // All={All}
                     
                     // arabic = true,

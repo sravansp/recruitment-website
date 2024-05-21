@@ -24,7 +24,8 @@ import {
   updateWorkFlowWithStages,
   getAllRecruitmentEmailTemplates,
   getAllRecruitmentEvaluationTemplates,
-  getAllRecruitmentQuestionnaireTemplates
+  getAllRecruitmentQuestionnaireTemplates,
+  getAllRecruitmentWorkFlows
 } from "../Api1";
 import { PiCopySimple, PiPencilSimpleLineThin } from "react-icons/pi";
 import { Modal, Button, notification, Tooltip, Menu } from "antd";
@@ -103,6 +104,8 @@ const Workflowstage = ({
   const [emailTemp,setEmailTemp] = useState([])
   const [showDiv, setShowDiv] = useState(false);
   const primaryColor = localStorage.getItem('mainColor')
+  const [response,setResponse] = useState("")
+
   
  
 
@@ -401,17 +404,17 @@ const Workflowstage = ({
     
     
     
-    if (!stageName ) {
-      setStageError("Stage Name is required.");
+    if (!stageName) {
+      setStageError('Stage Name is required.');
+      return;
+    } else if (stageName.length < 3) {
+      setStageError('Stage Name must be at least 3 characters long.');
+      return;
+    } else if (!stageName.trim()) {
+      setStageError('Stage Name must not be empty or contain only whitespace.');
       return;
     } else {
-      setStageError("");
-      
-    }
-
-    if (!stageName.trim()) {
-        // If stageName is empty or contains only whitespace, return without adding a stage
-        return;
+      setStageError('');
     }
 
     // Create an object to hold the stage rules based on user inputs
@@ -550,13 +553,25 @@ const Workflowstage = ({
       try {
         const alphanumericRegex = /^[a-zA-Z0-9 ]+$/; // Regex to allow only letters, numbers, and spaces
 
-        if (!values.workFlowName || !alphanumericRegex.test(values.workFlowName)) {
-          formik.setFieldError('workFlowName', !values.workFlowName ? 'Workflow Name is required' : 'Please enter only letters and numbers');
+        if (!values.workFlowName) {
+          formik.setFieldError('workFlowName', 'Workflow Name is required');
+          return;
+        } else if (!alphanumericRegex.test(values.workFlowName)) {
+          formik.setFieldError('workFlowName', 'Please enter only letters and numbers');
+          return;
+        } else if (values.workFlowName.length < 3) {
+          formik.setFieldError('workFlowName', 'Workflow Name must be at least 3 characters long');
+          return;
+        } else {
+          // Clear any existing errors if validation passes
+          formik.setFieldError('workFlowName', '');
         }
-
+        
         if (!values.description) {
           formik.setFieldError('description', 'Description is required');
         }
+         
+        if(stageName.length<3)
 
 
         if (stages.length === 0) {
@@ -608,6 +623,8 @@ const Workflowstage = ({
 
           
           console.log(response);
+          setResponse(response.message)
+          
 
           if (response.status === 200) {
             const insertedId = response.result.insertedId; // Get insertedId here
@@ -648,8 +665,8 @@ const Workflowstage = ({
       } catch (error) {
         openNotification(
           "error",
-          "Error",
-          "WorkFlow Template Name Already Exist"
+          "Info",
+          response
         );
       }
       setSubmitting(false);
@@ -799,7 +816,19 @@ const Workflowstage = ({
  
   const [sections, setSections] = useState([]);
 
- 
+  const getWorkflowwithName=async(values)=>{
+    try{
+      const response = await getAllRecruitmentWorkFlows({
+        companyId:companyId,
+        workFlowName:values.workFlowName
+      })
+    }catch(error){
+      console.log(error)
+    }
+  }
+  // useEffect(()=>{
+  //   getWorkflowwithName(values)
+  // },[values.workFlowName])
    
 
   const handleDeleteSection = (id) => {

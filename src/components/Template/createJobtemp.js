@@ -397,7 +397,7 @@ const CreatejobTemp = ({
               refresh()
             }, 1500);
           } else if (response.status === 500) {
-            openNotification("error", "Error", response.message.replace(/<br\/>/g, '\n'));
+            openNotification("error", "Info", response.message.replace(/<br\/>/g, '\n'));
 
           }
         } else {
@@ -455,7 +455,7 @@ const CreatejobTemp = ({
               refresh()
             }, 1500);
           } else if (response.status === 500) {
-            openNotification("error", "Error", response.message.replace(/<br\/>/g, '\n'));
+            openNotification("error", "Info", response.message.replace(/<br\/>/g, '\n'));
           }
 
 
@@ -938,7 +938,10 @@ const CreatejobTemp = ({
           return; 
 
         }
-
+        if(formik.values.location && formik.values.location.length <3){
+          formik.setFieldError('location','Location field must contain atleast 3 Characters')
+          return;
+        }
    
         if(content && content.length < 3){
           formik.setFieldError('jobDescription','JobDescription should have at least 3 letters.');
@@ -1924,7 +1927,7 @@ icondropDown={true}
                                   }}
                                   error={condition.question ? '' : Questionerror || ''}
                                 />
-                                <div className="flex items-center gap-5">
+                                <div className="flex items-center gap-5 mt-4">
                                   <div className="flex-shrink-0">
                                     <Dropdown
                                       options={Form}

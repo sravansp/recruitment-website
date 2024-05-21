@@ -164,7 +164,7 @@ const AddLetter = ({
       }
     } catch (error) {
       console.error("Error saving email template:", error);
-      openNotification("error", "Error..", error);
+      openNotification("error", "Info", error);
     }
   };
   const getLetterById = async () => {

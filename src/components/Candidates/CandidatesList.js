@@ -32,18 +32,18 @@ const CandidatesList = () => {
       Candidate_Profile: [
         {
           id: 1,
-          title: t("NAME"),
+          title: t("Name"),
           value: "candidateName",
           bold: true,
           key:"candidateName",
-          sorter: (a, b) => a.candidateName.length - b.candidateName.length,
+          sorter: (a, b) => a.candidateName.localeCompare(b.candidateName),
           sortOrder: sortedInfo?.columnKey === 'candidateName' ? sortedInfo.order : null,
          
          
         },
         {
           id: 2,
-          title: t("CONTACT"),
+          title: t("Contact"),
           value: "candidateContact",
           key:"candidateContact",
           sorter: (a, b) => a.candidateContact - b.candidateContact,
@@ -51,61 +51,61 @@ const CandidatesList = () => {
         },
         {
           id: 3,
-          title: t("JOB"),
+          title: t("Job"),
           value: "jobTitle",
           titleCaseSensitive: true,
           key: "jobTitle",
           sorter: (a, b) => {
-              // Handle cases where jobTitle is null or undefined
-              const titleA = a.jobTitle || '';
-              const titleB = b.jobTitle || '';
-              return titleA.length - titleB.length;
+            // Handle cases where jobTitle is null or undefined
+            const titleA = a.jobTitle || '';
+            const titleB = b.jobTitle || '';
+            return titleA.localeCompare(titleB);
           },
           sortOrder: sortedInfo.columnKey === 'jobTitle' ? sortedInfo.order : null,
-      },
+        },
 
       {
         id: 4,
-        title: t("STAGE"),
+        title: t("Stage"),
         value: "stageName",
         key: "stageName",
         sorter: (a, b) => {
             // Handle cases where stageName is null or undefined
             const nameA = a.stageName || '';
             const nameB = b.stageName || '';
-            return nameA.length - nameB.length;
+            return nameA.localeCompare(nameB);
         },
         sortOrder: sortedInfo.columnKey === 'stageName' ? sortedInfo.order : null,
     },
     {
       id: 5,
-      title: t("SOURCE"),
+      title: t("Source"),
       value: "candidateSource",
       key: "candidateSource",
       sorter: (a, b) => {
           // Handle cases where candidateSource is null or undefined
           const sourceA = a.candidateSource || '';
           const sourceB = b.candidateSource || '';
-          return sourceA.length - sourceB.length;
+          return sourceA.localeCompare(sourceB);
       },
       sortOrder: sortedInfo.columnKey === 'candidateSource' ? sortedInfo.order : null,
   },
         {
           id: 6,
-          title: t("STATUS"),
+          title: t("Status"),
           value: "currentStatus",
           key: "currentStatus",
           sorter: (a, b) => {
               // Handle cases where currentStatus is null or undefined
               const statusA = a.currentStatus || '';
               const statusB = b.currentStatus || '';
-              return statusA.length - statusB.length;
+              return statusA.localeCompare(statusB);
           },
           sortOrder: sortedInfo.columnKey === 'currentStatus' ? sortedInfo.order : null,
       },
         {
           id: 7,
-          title: t("APPLIED DATE"),
+          title: t("Applied Date"),
           value: "createdOn",
           key:"createdOn",
           sorter: (a, b) => {
@@ -180,7 +180,7 @@ const CandidatesList = () => {
       <div className='flex justify-between'>
         <Heading
           title={t("Candidates")}
-          description="Coordinates the planning, execution, and completion of projects..."/>
+          description="Coordinates the planning, execution, and completion of projects"/>
            <div className="flex gap-4">
           {" "}
           <Link onClick={handleNavigate} className="flex gap-2 mt-2">

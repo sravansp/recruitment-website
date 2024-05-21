@@ -7,7 +7,7 @@ import { DownOutlined, UserOutlined } from '@ant-design/icons';
 import TextArea from '../common/TextArea'
 import image from '../../assets/images/generate-ai-img.png'
 import TextEditor from '../../components/common/TextEditor/TextEditor'
-import { updateRecruitmentJobDescriptionTemplate, saveRecruitmentJobDescriptionTemplate, getRecruitmentJobDescriptionTemplateById } from '../Api1'
+import {getAllRecruitmentJobDescriptionTemplates, updateRecruitmentJobDescriptionTemplate, saveRecruitmentJobDescriptionTemplate, getRecruitmentJobDescriptionTemplateById } from '../Api1'
 import FormInput from '../common/FormInput'
 import ButtonClick from '../common/Button'
 import { RxQuestionMarkCircled } from 'react-icons/rx'
@@ -23,6 +23,7 @@ const TemplateDec = ({ open = "", close = () => { }, inputshow = false, isUpdate
   const [content, setContent] = useState("");
   const [templateNameError, setTemplateNameError] = useState('');
   const [contentError, setContentError] = useState('');
+  const[JobDescription,setJobDescription] = useState([])
   console.log(updateId)
   const { t } = useTranslation();
   const handleClose = () => {
@@ -109,7 +110,14 @@ const TemplateDec = ({ open = "", close = () => { }, inputshow = false, isUpdate
       } else {
         setTemplateNameError('');
       }
-      
+      if(JobDescription.length>0){
+        setTemplateNameError('Template Name Already Exist')
+        hasError = true;
+        console.log("hii")
+        
+      }else{
+        setTemplateNameError('')
+      }
       // Check if content is empty
       if (!content) {
         setContentError('Description is required.');
@@ -171,12 +179,12 @@ const TemplateDec = ({ open = "", close = () => { }, inputshow = false, isUpdate
           }, 2000);
 
         } else if (response.status === 500) {
-          openNotification("Error", "Error..", response.message);
+          openNotification("Error", "Info", response.message);
         }
 
       }
     } catch (error) {
-      openNotification("error", "Error..", "Template name already exist");
+      openNotification("error", "Info", "Template Name Already Exist");
     }
 
   }
@@ -202,6 +210,24 @@ const TemplateDec = ({ open = "", close = () => { }, inputshow = false, isUpdate
   // const handleEditorChange = (content) => {
   //   setContent(content);
   // };
+  const getJobdescription = async () =>{
+    try{
+    const response = await getAllRecruitmentJobDescriptionTemplates({
+      companyId:companyId,
+      descriptionTemplateName:templateName,
+    })
+    console.log(response)
+    setJobDescription(response.result)
+  }catch(error){
+    console.log(error)
+  }
+  }
+  
+
+  useEffect(()=>{
+    getJobdescription()
+  },[templateName])
+
   return (
     
     

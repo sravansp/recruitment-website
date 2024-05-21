@@ -227,15 +227,15 @@ const TemEvaluation = ({
           hasError = true;        
       }
        
-        evaluation.forEach((condition) => {
+        evaluation.forEach((condition,index) => {
           if (!condition.question) {
-            setQuestionError('Question is Required.');
+            setQuestionError(`Question[${index}] is Required.`);
             hasError = true;
 
           }
 
           if (!condition.answerMetaData || !condition.answerMetaData[0]?.key) {
-            setAnswerError('Answertype is required');
+            setAnswerError('Questiontype is required');
             hasError = true;
           }
           if (
@@ -341,8 +341,8 @@ const TemEvaluation = ({
         console.error("Error during form submission:", error);
         openNotification(
           "error",
-          "Error ...",
-          "Evaluation Template Name Already Exist"
+          "Info",
+          "Template Name Already Exists"
         );
       }
       setSubmitting(false);

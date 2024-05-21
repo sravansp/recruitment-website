@@ -134,6 +134,9 @@ const Createjob = ({
   const[salaryRangeToError,setsalaryRangeToError] = useState("")
  const[salaryRangeFromError,setsalaryRangeFromError] = useState("")
  const[trigger,SetTrigger] = useState("")
+ const capitalizeFirstLetter = (string) => {
+  return string.charAt(0).toUpperCase() + string.slice(1);
+};
 
 
   // console.log(updateId)
@@ -1596,65 +1599,49 @@ const Createjob = ({
                       // } }
                       initialExpanded={true}
                     >
-                      <div className="md:grid grid-cols-12 flex flex-col gap-6 dark:text-white">
-                        {regularOvertime?.map((each, i) => (
-                          <div
-                          key={i}
-                          className={`col-span-4 p-1.5 border rounded-2xl  cursor-pointer showDelay dark:bg-dark  ${
-                              (!formik1.values.workLocationType && each.value === "Onsite") || 
-                              (formik1.values.workLocationType === each.value) ? "border-primary" : ""
-                          }`}
-                          onClick={() => {
-                              setCustomRate(each.id);
-                              if (!formik1.values.workLocationType) {
-                                  formik1.setFieldValue("workLocationType", "Onsite");
-                              } else {
-                                  formik1.setFieldValue("workLocationType", each.value);
-                              }
-                              
-                          }}
-                      >
-                            <div className="flex justify-between items-start">
-                              <div className=" flex  gap-2">
-                                {/* <GiReceiveMoney
-                                className={`${
-                                  customRate === each.id && "text-primary"
-                                } `}
-                              /> */}
-                                 <img
-                                  className={`${(!formik1.values.workLocationType && each.value === "Onsite") || (formik.values.workLocationType === each.value) ? "text-primary" : ""} p-2 border rounded-md w-[66px] bg-[#F8FAFC]`}
-                                  src={each.image}
-                                  alt=""
-                                >
-                                </img>
-                                {/* <img
-                                  src={customRate === each.id ? cash : cashGray}
-                                  alt=""
-                                  className=" w-6 h-6"
-                                /> */}
-                                <div>
-                                  <h3 className=" text-sm font-semibold mt-[10px]">
-                                    {each.title}
-                                  </h3>
-                                  <p className=" text-xs font-medium text-[#667085] ">
-                                    {each.description}
-                                  </p>
-                                </div>
-                              </div>
-                              <div
-                                className={`${customRate === each.id && "border-primary"
-                                  } border  rounded-full`}
-                              >
-                                <div
-                                  className={`font-semibold text-base w-4 h-4 border-2 border-white   rounded-full ${customRate === each.id &&
-                                    "text-primary bg-primary"
-                                    } `}
-                                ></div>
-                              </div>
-                            </div>
-                          </div>
-                        ))}
-                      </div>
+<div className="md:grid grid-cols-12 flex flex-col gap-6 dark:text-white">
+  {regularOvertime?.map((each, i) => (
+    <div
+      key={i}
+      className={`col-span-4 p-1.5 border rounded-2xl cursor-pointer showDelay dark:bg-dark ${
+        (!formik1.values.workLocationType && each.value === "Onsite") || 
+        (formik1.values.workLocationType === each.value) ? "border-primary" : ""
+      }`}
+      onClick={() => {
+        setCustomRate(each.id);
+        formik1.setFieldValue("workLocationType", each.value === "Onsite" ? "Onsite" : each.value);
+      }}
+    >
+      <div className="flex justify-between items-start">
+        <div className="flex gap-2">
+          {/* Uncomment and use GiReceiveMoney icon if needed */}
+          {/* <GiReceiveMoney className={`${customRate === each.id && "text-primary"}`} /> */}
+          <img
+            className={`${
+              (!formik1.values.workLocationType && each.value === "Onsite") ||
+              (formik1.values.workLocationType === each.value)
+                ? "text-primary"
+                : ""
+            } p-2 border rounded-md w-[66px] bg-[#F8FAFC]`}
+            src={each.image}
+            alt=""
+          />
+          <div>
+            <h3 className="text-sm font-semibold mt-[10px]">{each.title}</h3>
+            <p className="text-xs font-medium text-[#667085]">{each.description}</p>
+          </div>
+        </div>
+        <div className={`border rounded-full ${customRate === each.id ? "border-primary" : ""}`}>
+          <div
+            className={`font-semibold text-base w-4 h-4 border-2 border-white rounded-full ${
+              customRate === each.id ? "text-primary bg-primary" : ""
+            }`}
+          ></div>
+        </div>
+      </div>
+    </div>
+  ))}
+</div>
                       <div className='grid grid-cols-2 gap-4'>
                         <FormInput
                           title={"Location"}
@@ -2458,12 +2445,28 @@ const Createjob = ({
                         }}
                       />
                       <div className="flex items-center gap-2">
-                        <CheckBoxInput
-                          change={(e) => {
-                            setCheckboxValue(!CheckboxValue)
-                          }}
-                          value={CheckboxValue}
-                        />
+                      <CheckBoxInput
+      change={(e) => {
+        const isChecked = !CheckboxValue;
+        setCheckboxValue(isChecked);
+        if (isChecked) {
+          const allUserIds = employeeList.map((employee) => employee.userId);
+          const allSelectedEmployees = employeeList.map((employee, index) => ({
+            id: index + 1,
+            jobId: "", // Set the job ID accordingly
+            userId: employee.userId,
+            roleId: employee.roleId,
+            createdBy: "", // Set the createdBy field accordingly
+          }));
+          setSelectedUserIds(allUserIds);
+          setselectedemployee(allSelectedEmployees);
+        } else {
+          setSelectedUserIds([]);
+          setselectedemployee([]);
+        }
+      }}
+      value={CheckboxValue}
+    />
                         <div>
                           <p className="text-sm dark:text-white">Check All</p>
                         </div>
@@ -2541,8 +2544,8 @@ const Createjob = ({
                                     )}
                                   </div>
                                   <div className="flex flex-col">
-                                    <div class="text-gray-900 text-sm font-semibold font-['Inter'] leading-tight">
-                                      {employee.username}
+                                    <div class="text-gray-900 font-semibold font-['Inter'] leading-tight text-sm dark:text-white">
+                                    {capitalizeFirstLetter(employee.username)}
                                     </div>
                                     <div className="text-gray-500 text-sm font-normal font-['Inter'] leading-tight">
                                       {employee.employeeid}
