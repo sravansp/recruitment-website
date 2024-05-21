@@ -229,13 +229,13 @@ const TemEvaluation = ({
        
         evaluation.forEach((condition,index) => {
           if (!condition.question) {
-            setQuestionError(`Question[${index}] is Required.`);
+            setQuestionError(`Question ${index+1} is required.`);
             hasError = true;
 
           }
 
           if (!condition.answerMetaData || !condition.answerMetaData[0]?.key) {
-            setAnswerError('Questiontype is required');
+            setAnswerError('Question type is required');
             hasError = true;
           }
           if (
