@@ -388,7 +388,7 @@ const CreatejobTemp = ({
           if (response.status === 200) {
             openNotification(
               "success",
-              "Success",
+              "Successful",
               response.message.replace(/<br\/>/g, '\n')
             );
             setPresentage(2);
@@ -446,7 +446,7 @@ const CreatejobTemp = ({
           if (response.status === 200) {
             openNotification(
               "success",
-              "Success",
+              "Successful",
               response.message.replace(/<br\/>/g, '\n')
             );
             setPresentage(2);

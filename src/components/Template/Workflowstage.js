@@ -601,7 +601,7 @@ const Workflowstage = ({
           });
           console.log(response);
           if (response.status === 200) {
-            openNotification("success", "Success", response.message);
+            openNotification("success", "Successful", response.message);
             setTimeout(() => {
               handleClose();
               refresh();
@@ -644,7 +644,7 @@ const Workflowstage = ({
             console.log(insertedId);
 
             if (response2.status === 200) {
-              openNotification("success", "Success", response2.message);
+              openNotification("success", "Successful", response2.message);
               setTimeout(() => {
                 handleClose();
                 refresh();

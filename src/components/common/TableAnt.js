@@ -235,7 +235,7 @@ const TableAnt = ({
         // setFunctionRender(!functionRender);
         // getRecords()
         // window.location.reload();
-        openNotification("success", "Success", response.message);
+        openNotification("success", "Successful", response.message);
       } else if (response.result === 500) {
         openNotification("error", "Failed", "Unable to update status.");
       }
@@ -266,7 +266,7 @@ const TableAnt = ({
     const result = await action(deleteApi, { id: id }); // Ensure 'id' is passed correctly
     if (result.status === 200) {
       // Handle success response
-      openNotification("success", "Success", result?.message);
+      openNotification("success", "Successful", result?.message);
       refresh(true);
     } else if (result.status === 500) {
       openNotification("error", "Info", result?.message)
