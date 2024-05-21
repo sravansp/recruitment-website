@@ -235,7 +235,7 @@ const QuestionAire = ({
             }
 
             if (!condition.answerMetaData || !condition.answerMetaData[0]?.key) {
-              setAnswerError('Answertype is required');
+              setAnswerError('Question Type is required');
               hasError = true;
             }
             if (
@@ -555,7 +555,7 @@ const QuestionAire = ({
                           icondropDown={true}
                           error={condition.answerMetaData[0]?.key ? '' : answerError || ''}
                           required={true}
-                          placeholder={"Choose Answertype"}
+                          placeholder={"Choose Question Type"}
                         />
                       </div>
                       {/* Additional dynamic input fields based on the selected value in the dropdown */}
@@ -573,7 +573,7 @@ const QuestionAire = ({
                         <IoIosCopy className="text-gray-500" style={{ width: '18px', height: '18px', cursor: 'pointer' }} />
                       </Tooltip> */}
                         <Tooltip placement="top" color={"red"} title={"Delete"}>
-                          <RiDeleteBinLine className="text-gray-500" style={{ width: '18px', height: '18px', cursor: 'pointer' }} onClick={() => handleDeleteCondition(index)} />
+                          <RiDeleteBinLine className="text-gray-500 hover:text-red-500" style={{ width: '18px', height: '18px', cursor: 'pointer' }} onClick={() => handleDeleteCondition(index)} />
                         </Tooltip>
                       </div>
 
