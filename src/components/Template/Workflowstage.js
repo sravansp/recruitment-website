@@ -664,11 +664,12 @@ const Workflowstage = ({
           }
         }
       } catch (error) {
-        openNotification(
-          "error",
-          "Info",
-          response
-        );
+        // openNotification(
+        //   "error",
+        //   "Info",
+        //   response
+        // );
+        console.log(error)
       }
       setSubmitting(false);
     },
