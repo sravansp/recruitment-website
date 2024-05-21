@@ -104,7 +104,6 @@ const Workflowstage = ({
   const [emailTemp,setEmailTemp] = useState([])
   const [showDiv, setShowDiv] = useState(false);
   const primaryColor = localStorage.getItem('mainColor')
-  const [response,setResponse] = useState("")
 
   
  
@@ -623,7 +622,9 @@ const Workflowstage = ({
 
           
           console.log(response);
-          setResponse(response.message)
+          if (response.status === 500) {
+            openNotification("error", "Info", response.message);
+          }
           
 
           if (response.status === 200) {
