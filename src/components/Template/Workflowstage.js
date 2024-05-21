@@ -860,10 +860,10 @@ const Workflowstage = ({
       }}
       header={[
         !updateId
-          ? t("Create a Workflow Template")
+          ? t("Create Workflow Template")
           : t("Update Workflow Template"),
         !updateId
-          ? t("Create a Workflow Template")
+          ? t("Create Workflow Template")
           : t("Update Workflow Template"),
       ]}
       //  headerRight={

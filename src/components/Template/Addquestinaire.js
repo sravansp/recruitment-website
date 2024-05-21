@@ -434,10 +434,10 @@ const QuestionAire = ({
           header={[
             !updateId
               ? t("Create Questionnaire  Template")
-              : t("update Questionnaire  Template"),
+              : t("Update Questionnaire  Template"),
             !updateId
               ? t("Create Questionnaire  Template")
-              : t("update Questionnaire  Template"),
+              : t("Update Questionnaire  Template"),
           ]}
 
           //  headerRight={
