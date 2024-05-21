@@ -7,6 +7,8 @@ import { useMediaQuery } from "react-responsive";
 export default function FormInput({
   title = "",
   type = "text",
+  pattern = "",
+  inputmode = "",
   placeholder = "",
   value = "",
   icon = "",
@@ -48,7 +50,7 @@ export default function FormInput({
   // console.log(error)
   return (
     <div className={`flex flex-col ${title ? "gap-2" : "gap-0 items-center "} `}>
-       <div className="flex gap-1.5">
+      <div className="flex gap-1.5">
         <p className={`text-xs font-medium 2xl:text-sm dark:text-white ${className}`}>
           {title}
         </p>
@@ -90,6 +92,8 @@ export default function FormInput({
         <span className="relative w-full">
           <Input
             type={type}
+            pattern={pattern}
+            inputmode={inputmode}
             placeholder={placeholder}
             value={value}
             onChange={handleChange}
