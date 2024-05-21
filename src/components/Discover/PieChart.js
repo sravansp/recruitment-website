@@ -42,7 +42,7 @@ const PieChartWithLegends = () => {
         name: name.toUpperCase(), // Convert month to uppercase
         value: value  // Calculate the frequency (multiplying by 1.8 as an example)
     }));
-    // console.log(formattedResult)
+    // console.log(formattedResult, "formattedResult")
     SetData(formattedResult)
     }catch(error){
       // console.log(error)
@@ -108,7 +108,7 @@ const PieChartWithLegends = () => {
           wrapperStyle={style}
           content={(props) => {
             const { payload } = props;
-            // console.log(payload);
+            // console.log(payload,"payload");
             return (
               <div className="flex flex-col gap-2 dark:text-white">
                 {/* <p className="font-medium text-opacity-50 2xl:text-xs text-[#667085]">Leave Summary</p> */}
