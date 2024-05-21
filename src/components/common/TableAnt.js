@@ -269,7 +269,7 @@ const TableAnt = ({
       openNotification("success", "Success", result?.message);
       refresh(true);
     } else if (result.status === 500) {
-      openNotification("error", "Failed", result?.message)
+      openNotification("error", "Info", result?.message)
     }
 
   };
