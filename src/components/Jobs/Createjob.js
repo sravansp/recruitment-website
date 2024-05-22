@@ -1787,8 +1787,10 @@ const Createjob = ({
 
                             }
                           }}
-                          value={formik1.values.salaryRangeFrom}
-                          type={"number"}
+                          value={isNaN(formik1.values.salaryRangeFrom)? "" : formik1.values.salaryRangeFrom}
+                          type={"text"}
+                          pattern="[0-9]*"
+                          inputmode="numeric"
                           error={formik1.errors.salaryRangeFrom || salaryRangeFromError}
                           required={true}
                           maxLength={15}
@@ -1815,10 +1817,12 @@ const Createjob = ({
                               formik1.setFieldValue('salaryRangeTo', e);
                             }
                           }}
-                          value={formik1.values.salaryRangeTo}
+                          value={isNaN(formik1.values.salaryRangeTo)? "" : formik1.values.salaryRangeTo}
                           error={formik1.errors.salaryRangeTo || salaryRangeToError}
                           required={true}
-                          type={"number"}
+                          type={"text"}
+                          pattern="[0-9]*"
+                          inputmode="numeric"
                         />
                         <Dropdown
                           title={'Salary Currency'}
