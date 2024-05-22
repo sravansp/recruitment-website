@@ -1494,8 +1494,8 @@ const Createjob = ({
                 <>
                   <FlexCol>
                     <Accordion
-                      title={"Job title & Department details"}
-                      description={"Job title & Department details"}
+                      title={"Job Title & Department Details"}
+                      description={"Job Title & Department Details"}
                       className="Text_area "
                       padding={true}
                       toggleBtn={false}
