@@ -69,13 +69,13 @@ const Template = ({
     {
       id: 3,
       title: t("Workflow"),
-      value: "Workflow",
+      value: "Workflow_Template",
       tabheading: "Work Flow Template List"
     },
     {
       id: 4,
       title: t("Email"),
-      value: "Email",
+      value: "Email_Template",
       tabheading: "Email Templates"
     },
     {
@@ -103,8 +103,8 @@ const Template = ({
     {
       Job_Template: { id: 1, api: API.UPDATE_Job_Templates },
       Job_Description_Template: { id: 2, api: API.UPDATE_Job_Description },
-      Workflow: { id: 3, api: API.UPDATE_Workflow },
-      Email: { id: 4, api: API.UPDATE_Email },
+      Workflow_Template: { id: 3, api: API.UPDATE_Workflow },
+      Email_Template: { id: 4, api: API.UPDATE_Email },
       Evaluation: { id: 5, api: API.UPDATE_EvaluationS },
       Questionnaire: { id: 5, api: API.UPDATE_Questionaire },
       Letter: { id: 5, api: API.UPDATE_Letter },
@@ -114,8 +114,8 @@ const Template = ({
     {
       Job_Template: { id: 1, api: API.DELETE_Job_Templates },
       Job_Description_Template: { id: 2, api: API.DELETE_Job_Description },
-      Workflow: { id: 3, api: API.DELETE_Workflow },
-      Email: { id: 4, api: API.DELETE_Email },
+      Workflow_Template: { id: 3, api: API.DELETE_Workflow },
+      Email_Template: { id: 4, api: API.DELETE_Email },
       Evaluation: { id: 5, api: API.DELETE_Evaluation },
       Questionnaire: { id: 5, api: API.DELETE_Questionaire },
       Letter: { id: 5, api: API.DELETE_Letter },
@@ -188,7 +188,7 @@ const Template = ({
           status: "viewData",
         },
       ],
-      Workflow: [
+      Workflow_Template: [
         {
           id: 1,
           title: t("Template Name"),
@@ -220,7 +220,7 @@ const Template = ({
           status: "viewData",
         },
       ],
-      Email: [
+      Email_Template: [
         {
           id: 1,
           title: t("Template Name"),
@@ -396,7 +396,7 @@ const Template = ({
           value: "isActive",
         },
       ],
-      Workflow: [
+      Workflow_Template: [
         {
           id: 1,
           title: "Template Name",
@@ -433,7 +433,7 @@ const Template = ({
         //   action: true,
         // },
       ],
-      Email: [
+      Email_Template: [
         {
           id: 1,
           title: "Template Name",
@@ -770,12 +770,12 @@ const Template = ({
         // console.log(newData)
         break;
       // Add more cases as needed
-      case "Workflow":
+      case "Workflow_Template":
         getWorkflows();
 
         // console.log(newData)
         break;
-      case "Email":
+      case "Email_Template":
         getEmailLsit();
 
         // console.log(newData)
@@ -812,8 +812,8 @@ const Template = ({
 
       Job_Template: { id: 1, data: TemplateList },
       Job_Description_Template: { id: 2, data: JobDescriptionList },
-      Workflow: { id: 3, data: WorkflowList },
-      Email: { id: 4, data: emailSubject },
+      Workflow_Template: { id: 3, data: WorkflowList },
+      Email_Template: { id: 4, data: emailSubject },
       Evaluation: { id: 5, data: EvaluationLIst },
       Questionnaire: { id: 6, data: QuestionaireLIst },
       Letter: { id: 7, data: LetterLIst }
@@ -824,8 +824,8 @@ const Template = ({
     {
       Job_Template: { id: "jobTemplateId" },
       Job_Description_Template: { id: "descriptionTemplateId" },
-      Workflow: { id: "workFlowId" },
-      Email: { id: "emailTemplateId" },
+      Workflow_Template: { id: "workFlowId" },
+      Email_Template: { id: "emailTemplateId" },
       Evaluation: { id: "evaluationTemplateId" },
       Questionnaire: { id: "questionnaireTemplateId" },
       Letter: { id: "letterTemplateId" }
@@ -961,10 +961,10 @@ const Template = ({
               case "Job_Description_Template":
                 getAllJobdescription();
                 break;
-              case "Workflow":
+              case "Workflow_Template":
                 getWorkflows();
                 break;
-              case "Email":
+              case "Email_Template":
                 getEmailLsit();
                 break;
               case "Evaluation":
@@ -1016,7 +1016,7 @@ const Template = ({
         // jobDescription={true}
         />
       )}
-      {navigationPath === "Workflow" && show && (
+      {navigationPath === "Workflow_Template" && show && (
         <Workflowstage
           open={show}
           close={(e) => {
@@ -1030,7 +1030,7 @@ const Template = ({
           }}
         />
       )}
-      {navigationPath === "Email" && show && (
+      {navigationPath === "Email_Template" && show && (
         <Emailtemplate
           open={show}
           close={(e) => {
