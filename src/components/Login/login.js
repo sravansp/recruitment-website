@@ -382,7 +382,7 @@ export default function Login() {
                     Remember Me
                   </Checkbox>
                   <div
-                    className="text-sm text-black underline"
+                    className="text-sm text-black underline cursor-pointer"
                     onClick={handleForgotPasswordClick}
                   >
                     Forgot password?
