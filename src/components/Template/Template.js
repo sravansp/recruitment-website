@@ -145,7 +145,7 @@ const Template = ({
         },
         {
           id: 4,
-          title: t("Action"),
+          title: t("Actions"),
           value: "action",
           action: true,
         },
@@ -177,7 +177,7 @@ const Template = ({
         },
         {
           id: 4,
-          title: t("Action"),
+          title: t("Actions"),
           value: "action",
           action: true,
         },
@@ -209,7 +209,7 @@ const Template = ({
         },
         {
           id: 4,
-          title: t("Action"),
+          title: t("Actions"),
           value: "action",
           action: true,
         },
@@ -241,7 +241,7 @@ const Template = ({
         },
         {
           id: 4,
-          title: t("Action"),
+          title: t("Actions"),
           value: "action",
           action: true,
         },
@@ -273,7 +273,7 @@ const Template = ({
         },
         {
           id: 4,
-          title: t("Action"),
+          title: t("Actions"),
           value: "Action",
           action: true,
         },
@@ -305,7 +305,7 @@ const Template = ({
         },
         {
           id: 4,
-          title: t("Action"),
+          title: t("Actions"),
           value: "actions",
           action: true,
         },
@@ -337,7 +337,7 @@ const Template = ({
         },
         {
           id: 4,
-          title: t("Action"),
+          title: t("Actions"),
           value: "actions",
           action: true,
         },
