@@ -25,7 +25,8 @@
 
 import React from 'react';
 import { notification } from 'antd';
-import 'antd/dist/antd.css';
+
+
 
 const NotificationAlert = ({ type, message, description }) => {
     const [api, contextHolder] = notification.useNotification();
