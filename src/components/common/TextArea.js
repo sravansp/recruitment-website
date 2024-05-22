@@ -31,10 +31,10 @@ export default function TextArea({
     change(inputValue);
   };
 
-  // useEffect(() => {
-  //   let inputValue = value;
-  //   setLetterCount(inputValue.length);
-  // }, [value])
+  useEffect(() => {
+    let inputValue = value;
+    setLetterCount(inputValue.length);
+  }, [value])
 
   return (
     <div className={` ${className}  relative flex flex-col gap-1`}>
