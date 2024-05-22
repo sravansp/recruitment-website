@@ -40,7 +40,7 @@ const Template = ({
   const [companyId, setCompanyId] = useState(localStorage.getItem("companyId"));
 
   const [emailSubject, setEmailSubject] = useState("")
-  const [navigationPath, setNavigationPath] = useState("Job");
+  const [navigationPath, setNavigationPath] = useState("Job_Template");
   useEffect(() => {
     setCompanyId(localStorage.getItem("companyId"));
   }, []);
@@ -57,13 +57,13 @@ const Template = ({
     {
       id: 1,
       title: t("Job_Templates"),
-      value: "Job",
+      value: "Job_Template",
       tabheading: "Job Template List"
     },
     {
       id: 2,
       title: t("Job_Description"),
-      value: "Job_Description",
+      value: "Job_Description_Template",
       tabheading: "Job Description Template List"
     },
     {
@@ -101,8 +101,8 @@ const Template = ({
   //update
   const updateApi = [
     {
-      Job: { id: 1, api: API.UPDATE_Job_Templates },
-      Job_Description: { id: 2, api: API.UPDATE_Job_Description },
+      Job_Template: { id: 1, api: API.UPDATE_Job_Templates },
+      Job_Description_Template: { id: 2, api: API.UPDATE_Job_Description },
       Workflow: { id: 3, api: API.UPDATE_Workflow },
       Email: { id: 4, api: API.UPDATE_Email },
       Evaluation: { id: 5, api: API.UPDATE_EvaluationS },
@@ -112,8 +112,8 @@ const Template = ({
   ];
   const deleteApi = [
     {
-      Job: { id: 1, api: API.DELETE_Job_Templates },
-      Job_Description: { id: 2, api: API.DELETE_Job_Description },
+      Job_Template: { id: 1, api: API.DELETE_Job_Templates },
+      Job_Description_Template: { id: 2, api: API.DELETE_Job_Description },
       Workflow: { id: 3, api: API.DELETE_Workflow },
       Email: { id: 4, api: API.DELETE_Email },
       Evaluation: { id: 5, api: API.DELETE_Evaluation },
@@ -124,7 +124,7 @@ const Template = ({
   ];
   const Header = [
     {
-      Job: [
+      Job_Template: [
         {
           id: 1,
           title: t("Template Name"),
@@ -156,7 +156,7 @@ const Template = ({
           status: "viewData",
         },
       ],
-      Job_Description: [
+      Job_Description_Template: [
         {
           id: 1,
           title: t("Template Name"),
@@ -353,7 +353,7 @@ const Template = ({
 
   const DraweHeader = [
     {
-      Job: [
+      Job_Template: [
         {
           id: 1,
           title: "Template Name",
@@ -379,7 +379,7 @@ const Template = ({
           value: "requirementType",
         },
       ],
-      Job_Description: [
+      Job_Description_Template: [
         {
           id: 1,
           title: "Template Name",
@@ -759,12 +759,12 @@ const Template = ({
     let newData = [];
 
     switch (navigationPath) {
-      case "Job":
+      case "Job_Template":
         // getLocationList();
         gettemaplate();
 
         break;
-      case "Job_Description":
+      case "Job_Description_Template":
         // getDepartmentList();
         getAllJobdescription()
         // console.log(newData)
@@ -810,8 +810,8 @@ const Template = ({
   const actionData = [
     {
 
-      Job: { id: 1, data: TemplateList },
-      Job_Description: { id: 2, data: JobDescriptionList },
+      Job_Template: { id: 1, data: TemplateList },
+      Job_Description_Template: { id: 2, data: JobDescriptionList },
       Workflow: { id: 3, data: WorkflowList },
       Email: { id: 4, data: emailSubject },
       Evaluation: { id: 5, data: EvaluationLIst },
@@ -822,8 +822,8 @@ const Template = ({
   ];
   const actionId = [
     {
-      Job: { id: "jobTemplateId" },
-      Job_Description: { id: "descriptionTemplateId" },
+      Job_Template: { id: "jobTemplateId" },
+      Job_Description_Template: { id: "descriptionTemplateId" },
       Workflow: { id: "workFlowId" },
       Email: { id: "emailTemplateId" },
       Evaluation: { id: "evaluationTemplateId" },
@@ -886,7 +886,7 @@ const Template = ({
             }
             // updateFun=""
             // updateBtn={true} // Set to true if it's an update button
-            buttonName={`Create ${navigationPath.replace(/_/g, ' ')} Template`}// Set the button name
+            buttonName={`Create ${navigationPath.replace(/_/g, ' ')}`}// Set the button name
             className="your-custom-styles" // Add any additional class names for styling
             BtnType="Add" // Specify the button type (Add or Update)
           />
@@ -958,7 +958,7 @@ const Template = ({
               default:
                 gettemaplate();
                 break;
-              case "Job_Description":
+              case "Job_Description_Template":
                 getAllJobdescription();
                 break;
               case "Workflow":
@@ -1000,7 +1000,7 @@ const Template = ({
         />
       )}
 
-      {navigationPath === "Job_Description" && show && (
+      {navigationPath === "Job_Description_Template" && show && (
         <TemplateDec
           open={show}
           close={(e) => {
