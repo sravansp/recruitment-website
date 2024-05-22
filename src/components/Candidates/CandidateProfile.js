@@ -455,7 +455,7 @@ const CandidateProfile = () => {
 
       // setuserdata(response.result.map((items)=>({
       //  personal:[
-      //   {id:1,
+      //   {id:1,git
       //     label:"Email Address",
       //     value:items.candidateEmail,
       //     icon: <RiMailSendLine />,

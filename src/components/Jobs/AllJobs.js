@@ -36,7 +36,7 @@ function AllJobs() {
     },
   ];
   const [companyId, setCompanyId] = useState(localStorage.getItem("companyId"));
-  const [navigationPath, setNavigationPath] = useState("MyOpenJobs");
+  const [navigationPath, setNavigationPath] = useState("My_Open_Jobs");
   const handleshow = () => setShow(true);
   const handleClose = () => setShow(false);
   const [show, setShow] = useState(false);
@@ -78,12 +78,12 @@ function AllJobs() {
     {
       id: 1,
       title: t("My_Open_Jobs"),
-      value: "MyOpenJobs",
+      value: "My_Open_Jobs",
     },
     {
       id: 2,
       title: t("All_Jobs"),
-      value: "AllJobs",
+      value: "All_Jobs",
     },
     {
       id: 3,
@@ -100,7 +100,7 @@ function AllJobs() {
 
   const header = [
     {
-      AllJobs: [
+      All_Jobs: [
         {
           id: 1,
           title: t("Name"),
@@ -174,7 +174,7 @@ function AllJobs() {
           status: "viewData",
         },
       ],
-      MyOpenJobs: [
+      My_Open_Jobs: [
         {
           id: 1,
           title: t("Name"),
@@ -413,8 +413,8 @@ function AllJobs() {
   // }, []);
   const updateApi = [
     {
-      AllJobs:{id:1,api:API. UpDate_jobs},
-      MyOpenJobs:{id:2,api:API. UpDate_jobs},
+      All_Jobs:{id:1,api:API. UpDate_jobs},
+      My_Open_Jobs:{id:2,api:API. UpDate_jobs},
       Open:{id:3,api:API. UpDate_jobs},
       Draft:{id:3,api:API. UpDate_jobs},
 
@@ -428,8 +428,8 @@ function AllJobs() {
 
   const actionData = [
     {
-      MyOpenJobs: { id: 1, response: FilteredJobList },
-      AllJobs: { id: 2, response: JobsList },
+      My_Open_Jobs: { id: 1, response: FilteredJobList },
+      All_Jobs: { id: 2, response: JobsList },
       Open: { id: 3, response: OpenJObs },
       Draft: { id: 4, response: DraftJObs },
 
@@ -504,11 +504,11 @@ function AllJobs() {
 
   useEffect(() => {
     switch(navigationPath){
-    case"AllJobs":
+    case"All_Jobs":
     
     callapi();
     break;
-    case"MyOpenJobs":
+    case"My_Open_Jobs":
     if(userid){
     getcreatedBy();
     }
@@ -552,7 +552,7 @@ function AllJobs() {
 
   const Drawerheader = [
     {
-      MyOpenJobs: [
+      My_Open_Jobs: [
         {
           id: 1,
           title: t("Name"),
@@ -674,7 +674,7 @@ function AllJobs() {
         },
 
       ],
-      AllJobs: [
+      All_Jobs: [
         {
           id: 1,
           title: t("Name"),

@@ -239,7 +239,7 @@ const QuestionAire = ({
             }
 
             if (!condition.answerMetaData || !condition.answerMetaData[0]?.key) {
-              setAnswerError('Answertype is required');
+              setAnswerError('Question Type is required');
               hasError = true;
             }
             if (
@@ -458,10 +458,10 @@ const QuestionAire = ({
           header={[
             !updateId
               ? t("Create Questionnaire  Template")
-              : t("update Questionnaire  Template"),
+              : t("Update Questionnaire  Template"),
             !updateId
               ? t("Create Questionnaire  Template")
-              : t("update Questionnaire  Template"),
+              : t("Update Questionnaire  Template"),
           ]}
 
           //  headerRight={
@@ -580,7 +580,7 @@ const QuestionAire = ({
                           icondropDown={true}
                           error={condition.answerMetaData[0]?.key ? '' : answerError || ''}
                           required={true}
-                          placeholder={"Choose Answertype"}
+                          placeholder={"Choose Question Type"}
                         />
                       </div>
                       {/* Additional dynamic input fields based on the selected value in the dropdown */}

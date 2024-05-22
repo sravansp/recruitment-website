@@ -388,7 +388,7 @@ const CreatejobTemp = ({
           if (response.status === 200) {
             openNotification(
               "success",
-              "Success",
+              "Successful",
               response.message.replace(/<br\/>/g, '\n')
             );
             setPresentage(2);
@@ -446,7 +446,7 @@ const CreatejobTemp = ({
           if (response.status === 200) {
             openNotification(
               "success",
-              "Success",
+              "Successful",
               response.message.replace(/<br\/>/g, '\n')
             );
             setPresentage(2);
@@ -1423,8 +1423,10 @@ const CreatejobTemp = ({
      
     }
   }}
-  value={formik.values.salaryRangeFrom}
-  type={"number"}
+  value={isNaN(formik.values.salaryRangeFrom)? "" : formik.values.salaryRangeFrom}
+  type={"text"}
+  pattern="[0-9]*"
+  inputmode="numeric"
   error={formik.errors.salaryRangeFrom||salaryRangeFromError}
   required={true}
   maxLength={15}
@@ -1451,11 +1453,12 @@ const CreatejobTemp = ({
       formik.setFieldValue('salaryRangeTo', e);
     }
   }}
-  value={formik.values.salaryRangeTo}
+  value={isNaN(formik.values.salaryRangeTo)? "" : formik.values.salaryRangeTo}
   error={formik.errors.salaryRangeTo || salaryRangeToError}
   required={true}
-  type={"number"}
-/>
+  type={"text"}
+  pattern="[0-9]*"
+  inputmode="numeric"/>
                         <Dropdown
                           title={"Salary Currency"}
                           placeholder={"Enter Salary Currency"}
