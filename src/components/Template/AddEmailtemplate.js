@@ -11,7 +11,7 @@ import FormInput from "../common/FormInput";
 import image from "../../assets/images/attachment-2.svg";
 import image2 from "../../assets/images/emoji-sticker-line.svg";
 
-import { saveRecruitmentEmailTemplate, getRecruitmentEmailTemplateById, updateRecruitmentEmailTemplate } from "../Api1";
+import {getAllRecruitmentEmailTemplates, saveRecruitmentEmailTemplate, getRecruitmentEmailTemplateById, updateRecruitmentEmailTemplate } from "../Api1";
 import { Subject, SubscriptionsOutlined } from "@mui/icons-material";
 const Emailtemplate = ({
   open = "",
@@ -29,7 +29,8 @@ const Emailtemplate = ({
   const [templateNameError, setTemplateNameError] = useState('');
   const [subjectError, setSubjectError] = useState('')
   const [contentError, setContentError] = useState('');
-  const handleClose = () => {
+  const [Length,setLength] = useState("")
+   const handleClose = () => {
     close(false);
   };
   const [content, setContent] = useState("");
@@ -84,7 +85,11 @@ const Emailtemplate = ({
       } else if (templateName.length < 3) {
         setTemplateNameError('Template Name should have at least 3 letters.');
         hasError = true; // Set flag to true if there's an error
-      } else {
+      }else if (Length > 0) {
+        setTemplateNameError('Template Name already exist');
+        hasError = true; // Set flag to true if there's an error
+      }  
+      else {
         setTemplateNameError('');
       }
 
@@ -193,7 +198,28 @@ const Emailtemplate = ({
 
     }
   };
+  //Get Template By Name 
+  const getEmailtemplateByName = async()=>{
+    try{
+     const response = await getAllRecruitmentEmailTemplates({
+      companyId:companyId,
+      emailTemplateName:templateName,
+     })
+     setLength(response.result.length)
 
+    //  if(response.result.length>0){
+    //   setTemplateNameError('Template Name Already Exist')
+    //   return
+    //  }
+    }catch(error){
+      console.log(error)
+    }
+  }
+  useEffect(()=>{
+    if(templateName){
+    getEmailtemplateByName()
+    }
+  },[templateName])
   const getEmailById = async () => {
     const id = updateId
     try {

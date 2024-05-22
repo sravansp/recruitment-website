@@ -560,8 +560,8 @@ function AllJobs() {
         },
         {
           id: 2,
-          title: "Created By",
-          value: "createdBy",
+          title: "Number of openings",
+          value: "noOfVaccancies",
         },
         {
           id: 3,
@@ -600,8 +600,8 @@ function AllJobs() {
         },
         {
           id: 2,
-          title: "Created By",
-          value: "createdBy",
+          title: "Number of openings",
+          value: "noOfVaccancies",
         },
         {
           id: 3,
@@ -641,8 +641,8 @@ function AllJobs() {
         },
         {
           id: 2,
-          title: "Created By",
-          value: "createdBy",
+          title: "Number of openings",
+          value: "noOfVaccancies",
         },
         {
           id: 3,
@@ -682,8 +682,8 @@ function AllJobs() {
         },
         {
           id: 2,
-          title: "Created By",
-          value: "createdBy",
+          title: "Number of openings",
+          value: "noOfVaccancies",
         },
         {
           id: 3,

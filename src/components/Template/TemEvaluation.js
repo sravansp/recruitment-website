@@ -13,7 +13,7 @@ import Dropdown from '../common/Dropdown'
 import { MdDelete, MdOutlineFileCopy } from 'react-icons/md'
 import { Form } from '../data'
 import { CgAdd } from 'react-icons/cg'
-import { updateEvaluationTemplateWithDetails, getRecruitmentEvaluationTemplateById, saveRecruitmentEvaluationTemplate, saveRecruitmentEvaluationTemplateDetailBatch } from '../Api1'
+import {getAllRecruitmentEvaluationTemplates, updateEvaluationTemplateWithDetails, getRecruitmentEvaluationTemplateById, saveRecruitmentEvaluationTemplate, saveRecruitmentEvaluationTemplateDetailBatch } from '../Api1'
 import { Formik, useFormik } from 'formik';
 import { Value } from 'devextreme-react/range-selector'
 import AddMore from '../common/AddMore'
@@ -54,6 +54,8 @@ const TemEvaluation = ({
       createdBy: 499
     },
   ]);
+  const [templateName,setTemplateName] = useState("")
+  const [Length,setLength] = useState("")
 
 
   //condition data
@@ -226,10 +228,13 @@ const TemEvaluation = ({
           formik.setFieldError('evaluationTemplateName', 'Template Name should have at least 3 letters.');
           hasError = true;        
       }
-       
-        evaluation.forEach((condition,index) => {
+       if(Length>0){
+        formik.setFieldError('evaluationTemplateName','Template name already exist')
+        hasError = true; 
+      }
+        evaluation.forEach((condition) => {
           if (!condition.question) {
-            setQuestionError(`Question[${index}] is Required.`);
+            setQuestionError(`Question is Required.`);
             hasError = true;
 
           }
@@ -397,6 +402,28 @@ const TemEvaluation = ({
     getevaluationtem()
 
   }, [])
+  const getEvalautaionTemplalateByName = async (values)=>{
+    try{
+      const response = await getAllRecruitmentEvaluationTemplates({
+        companyId:companyId,
+        evaluationTemplateName:templateName
+
+
+
+      })
+      setLength(response.result.length)
+      if(response.result.length>0){
+        formik.setFieldError('evaluationTemplateName', 'Template name already exist');
+         return
+      }
+    }catch(error){
+      console.log(error)
+    }
+  }
+  useEffect(()=>{
+    getEvalautaionTemplalateByName()
+  },[templateName])
+
   return (
     <div>
 
@@ -485,6 +512,7 @@ const TemEvaluation = ({
                 value={formik.values.evaluationTemplateName}
                 change={(e) => {
                   formik.setFieldValue('evaluationTemplateName', e)
+                  setTemplateName(e)
                 }}
                 error={formik.errors.evaluationTemplateName}
                 required={true}
@@ -548,7 +576,7 @@ const TemEvaluation = ({
                           icondropDown={true}
                           required={true}
                           error={condition.answerMetaData[0]?.key ? '' : answerError || ''}
-                          placeholder={"Choose Answertype"}
+                          placeholder={"Choose Questiontype"}
                         />
                       </div>
                       {/* Additional dynamic input fields based on the selected value in the dropdown */}
@@ -561,14 +589,17 @@ const TemEvaluation = ({
                         </Tooltip>
                       </div>
 
-                      <div style={{ display: 'flex', alignItems: 'center', gap: '15px' }}>
-                        {/* <Tooltip placement="top" title={"Copy"} >
-                      <MdOutlineFileCopy style={{ width: '18px', height: '18px', cursor: 'pointer' }} />
-                    </Tooltip> */}
-                        <Tooltip placement="top" title={"Delete"} >
-                          <RiDeleteBinLine className="text-gray-500" style={{ width: '18px', height: '18px', cursor: 'pointer' }} onClick={() => handleDeleteCondition(index)} />
-                        </Tooltip>
-                      </div>
+                      {index !== 0 && (
+          <div style={{ display: 'flex', alignItems: 'center', gap: '15px' }}>
+            <Tooltip placement="top" title="Delete">
+              <RiDeleteBinLine 
+                className="text-gray-500" 
+                style={{ width: '18px', height: '18px', cursor: 'pointer' }} 
+                onClick={() => handleDeleteCondition(index)} 
+              />
+            </Tooltip>
+          </div>
+        )}
 
                     </div>
                   </div>

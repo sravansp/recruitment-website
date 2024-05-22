@@ -13,7 +13,7 @@ import Dropdown from '../common/Dropdown'
 import { MdDelete, MdOutlineFileCopy } from 'react-icons/md'
 import { Form } from '../data'
 import { CgAdd } from 'react-icons/cg'
-import { getRecruitmentQuestionnaireTemplateById, updateQuestionnaireTemplateWithDetails, saveRecruitmentQuestionnaireTemplate, saveRecruitmentQuestionnaireTemplateDetailBatch } from '../Api1'
+import {getAllRecruitmentQuestionnaireTemplates, getRecruitmentQuestionnaireTemplateById, updateQuestionnaireTemplateWithDetails, saveRecruitmentQuestionnaireTemplate, saveRecruitmentQuestionnaireTemplateDetailBatch } from '../Api1'
 import { Formik, useFormik } from 'formik'
 import AddMore from '../common/AddMore'
 import { IoIosCopy } from 'react-icons/io'
@@ -48,7 +48,8 @@ const QuestionAire = ({
         createdBy: 499
       },
     ]);
-
+  const [templateName,setTemplateName] = useState("")
+  const [Length,setLength] = useState("")
 
     //condition data
 
@@ -218,6 +219,9 @@ const QuestionAire = ({
         } else if (values.questionnaireTemplateName.length < 3) {
             formik.setFieldError('questionnaireTemplateName', 'Template name should have at least 3 characters');
             hasError = true;
+        } else if (Length>0){
+          formik.setFieldError('questionnaireTemplateName', 'Template name already exist');
+          hasError = true;
         }
 
           if (!values.description) {
@@ -402,6 +406,26 @@ const QuestionAire = ({
       getevaluationtem()
 
     }, [updateId])
+    const getQuestionareByTemplatename = async ()=>{
+      try{
+       const response = await getAllRecruitmentQuestionnaireTemplates({
+        companyId:companyId,
+        questionnaireTemplateName:templateName,
+       })
+
+       setLength(response.result.length)
+       if(response.result.length>0){
+         formik.setFieldError("questionnaireTemplateName",'Template name already exist')
+
+       }
+      }catch(error){
+        console.log(error)
+      }
+    }
+    useEffect(()=>{
+      getQuestionareByTemplatename()
+    },[templateName])
+
     return (
       <div>
 
@@ -491,6 +515,7 @@ const QuestionAire = ({
                   value={formik.values.questionnaireTemplateName}
                   change={(e) => {
                     formik.setFieldValue('questionnaireTemplateName', e)
+                    setTemplateName(e)
                   }}
                   error={formik.errors.questionnaireTemplateName}
                   required={true}
@@ -568,14 +593,17 @@ const QuestionAire = ({
                         </Tooltip>
                       </div>
 
-                      <div style={{ display: 'flex', alignItems: 'center', gap: '15px' }}>
-                        {/* <Tooltip placement="top" title={"Copy"}>
-                        <IoIosCopy className="text-gray-500" style={{ width: '18px', height: '18px', cursor: 'pointer' }} />
-                      </Tooltip> */}
-                        <Tooltip placement="top" color={"red"} title={"Delete"}>
-                          <RiDeleteBinLine className="text-gray-500" style={{ width: '18px', height: '18px', cursor: 'pointer' }} onClick={() => handleDeleteCondition(index)} />
-                        </Tooltip>
-                      </div>
+                      {index !== 0 && (
+          <div style={{ display: 'flex', alignItems: 'center', gap: '15px' }}>
+            <Tooltip placement="top" title="Delete">
+              <RiDeleteBinLine 
+                className="text-gray-500" 
+                style={{ width: '18px', height: '18px', cursor: 'pointer' }} 
+                onClick={() => handleDeleteCondition(index)} 
+              />
+            </Tooltip>
+          </div>
+        )}
 
                     </div>
                   </div>

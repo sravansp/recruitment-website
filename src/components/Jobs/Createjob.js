@@ -119,7 +119,7 @@ const Createjob = ({
   const loginDataString = localStorage.getItem("LoginData");
   const [userid, setuserid] = useState("");
   const [workFlows, setWorkFlows] = useState([]);
-  const [selectedWorkFlowId, setSelectedWorkFlowId] = useState(null);
+  const [selectedWorkFlowId, setSelectedWorkFlowId] = useState("");
   const [selectedDivs, setSelectedDivs] = useState([]);
   const [selectedemployee, setselectedemployee] = useState([])
   const [selectedUserIds, setSelectedUserIds] = useState([])
@@ -325,9 +325,9 @@ const Createjob = ({
 
       setDraftJobs(firstJob);
 
-      formik1.setFieldValue("companyId", firstJob.companyId);
+      formik1.setFieldValue("companyId", parseInt(firstJob.companyId));
       formik1.setFieldValue("jobTitle", firstJob.jobTitle);
-      formik1.setFieldValue("departmentId", firstJob.departmentId);
+      formik1.setFieldValue("departmentId", parseInt(firstJob.departmentId) );
       formik1.setFieldValue("education", firstJob.education);
       formik1.setFieldValue("workLocationType", firstJob.workLocationType);
       formik1.setFieldValue("isActive", firstJob.isActive);
@@ -344,7 +344,8 @@ const Createjob = ({
       formik1.setFieldValue("searchKeywords", firstJob.searchKeywords);
       formik1.setFieldValue("experience", firstJob.experience);
 
-
+      
+      getDepartmentList(firstJob.companyId)
 
 
 
@@ -547,18 +548,18 @@ const Createjob = ({
           value: each.departmentId,
         }))
       );
-
+       console.log("GGGG")
       // console.log("Department List:", departmentList);
       // console.log("Is Update:", isUpdate);
     } catch (error) {
       // console.error("Error fetching department list:", error);
     }
   };
-  useEffect(() => {
-    // switch (assignBtnName) {
-    //   default:
-    getDepartmentList();
-  }, []);
+  // useEffect(() => {
+  //   // switch (assignBtnName) {
+  //   //   default:
+  //   getDepartmentList();
+  // }, []);
 
   const formik = useFormik({
     initialValues: {
@@ -1069,7 +1070,8 @@ const Createjob = ({
   const getJobtemp = async () => {
     try {
       const response = await getAllRecruitmentJobTemplates({
-        isActive: 1
+        isActive: 1,
+        companyId:companyId
       });
 
       // console.log(response);
@@ -1353,6 +1355,7 @@ const Createjob = ({
         formik.setFieldValue("resume", firstJob.jobApplicationFormData.resume)
         formik.setFieldValue("coverLetter", firstJob.jobApplicationFormData.coverLetter)
         // console.log(firstJob.companyId);
+        getDepartmentList(firstJob.companyId)
       } else {
         console.error("No data found in the response.");
       }
@@ -1360,7 +1363,11 @@ const Createjob = ({
       // console.log(error);
     }
   };
-
+  // useEffect(() => {
+  //   if (formik1.values.companyId) {
+  //     getDepartmentList();
+  //   }
+  // }, [formik1.values.companyId]);
   useEffect(() => {
     if (selectedJobId) {
       getjobById(selectedJobId);

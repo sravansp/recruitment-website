@@ -105,6 +105,8 @@ const Workflowstage = ({
   const [showDiv, setShowDiv] = useState(false);
   const primaryColor = localStorage.getItem('mainColor')
   const [response,setResponse] = useState("")
+  const [templateName,setTemplateName] =useState("")
+  const[Length,setLength] =useState("")
 
   
  
@@ -552,25 +554,33 @@ const Workflowstage = ({
     onSubmit: async (values, { setSubmitting }) => {
       try {
         const alphanumericRegex = /^[a-zA-Z0-9 ]+$/; // Regex to allow only letters, numbers, and spaces
-
+        let hasError = false;
         if (!values.workFlowName) {
           formik.setFieldError('workFlowName', 'Workflow Name is required');
-          return;
+          hasError = true;
         } else if (!alphanumericRegex.test(values.workFlowName)) {
           formik.setFieldError('workFlowName', 'Please enter only letters and numbers');
-          return;
+          hasError = true;
         } else if (values.workFlowName.length < 3) {
           formik.setFieldError('workFlowName', 'Workflow Name must be at least 3 characters long');
-          return;
+          hasError = true;
+        } else if (Length > 0) {
+          formik.setFieldError('workFlowName', 'Workflow Name Already Exist');
+          hasError = true;
         } else {
           // Clear any existing errors if validation passes
           formik.setFieldError('workFlowName', '');
         }
-        
+      
         if (!values.description) {
           formik.setFieldError('description', 'Description is required');
+          hasError = true;
+        } else {
+          formik.setFieldError('description', '');
         }
-         
+         if(hasError){
+          return
+         }
         if(stageName.length<3)
 
 
@@ -816,19 +826,24 @@ const Workflowstage = ({
  
   const [sections, setSections] = useState([]);
 
-  const getWorkflowwithName=async(values)=>{
+  const getWorkflowwithName=async(templateName)=>{
     try{
       const response = await getAllRecruitmentWorkFlows({
         companyId:companyId,
-        workFlowName:values.workFlowName
+        workFlowName:templateName
       })
+      setLength(response.result.length)
+     if (response.result.length > 0) {
+        formik.setFieldError('workFlowName', 'Workflow Name Already Exist');
+        return;
+      } 
     }catch(error){
       console.log(error)
     }
   }
-  // useEffect(()=>{
-  //   getWorkflowwithName(values)
-  // },[values.workFlowName])
+  useEffect(()=>{
+    getWorkflowwithName(templateName)
+  },[templateName])
    
 
   const handleDeleteSection = (id) => {
@@ -934,6 +949,7 @@ const Workflowstage = ({
                 className="!text-[#344054] "
                 change={(e) => {
                   formik.setFieldValue("workFlowName", e);
+                  setTemplateName(e)
                 }}
                 value={formik.values.workFlowName}
                 error={formik.errors.workFlowName}

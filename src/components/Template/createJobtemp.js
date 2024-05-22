@@ -800,7 +800,10 @@ const CreatejobTemp = ({
 
   const fetchData = async () => {
     try {
-      const response = await getAllRecruitmentWorkFlows({});
+      const response = await getAllRecruitmentWorkFlows({
+      companyId:companyId
+
+      });
       console.log("Response:", response);
 
       const stagesByWorkflowId = response.result.map((item) => ({
