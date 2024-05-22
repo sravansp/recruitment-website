@@ -30,7 +30,7 @@ import {
   FcProcess,
   FcShare,
 } from "react-icons/fc";
-import { MdContentCopy, MdPhone } from "react-icons/md";
+import { MdContentCopy, MdLocationOn, MdPhone } from "react-icons/md";
 import { DownOutlined } from "@ant-design/icons";
 import {
   RiCake2Line,
@@ -147,6 +147,7 @@ const CandidateProfile = () => {
   const [priority, setPriority] = useState("2");
   const[EvalutaionId,setEvaluationId] = useState("")
   const[QuestionareId,setQuestionareId] = useState("")
+  const[jobstatus,setJobstatus] = useState("")
 
   useEffect(() => {
     // Retrieve the login data JSON string from local storage
@@ -189,16 +190,17 @@ const CandidateProfile = () => {
   ];
 
   useEffect(() => {
-    if (state && state.jobID) {
-      setJobId(state.jobID);
-      console.log(state.jobID);
-    } else {
-      const storedJobId = localStorage.getItem("jobid");
-      if (storedJobId) {
-        setJobId(storedJobId);
-      }
-    }
-  }, [state]);
+    // if (state && state.jobID) {
+    //   setJobId(state.jobID);
+    //   console.log(state.jobID);
+    // } else {
+    //   const storedJobId = localStorage.getItem("jobid");
+    //   if (storedJobId) {
+    //     setJobId(storedJobId);
+    //   }
+    // }
+    setJobId(localStorage.getItem('jobid'));
+  }, []);
   const [selectedEmail, setSelectedEmail] = useState(""); // State to store selected email
 
   // Function to update selectedEmail state
@@ -252,9 +254,9 @@ const CandidateProfile = () => {
       id: 6,
       title: t("Evaluations"),
       value: "evaluations",
-      content: <Evaluations 
-      EvaluationID={EvalutaionId}
-      stageId={stageId}                     
+      content: <Evaluations
+        EvaluationID={EvalutaionId}
+        stageId={stageId}
       />,
       icon: <RiSurveyLine className="text-base" />,
     },
@@ -263,8 +265,8 @@ const CandidateProfile = () => {
       title: t("Questionaries"),
       value: "questionaries",
       content: <Questionaries
-            QuestionareId={QuestionareId}
-            stageId={stageId}
+        QuestionareId={QuestionareId}
+        stageId={stageId}
       />,
       icon: <RiQuestionnaireLine className="text-base" />,
     },
@@ -358,7 +360,7 @@ const CandidateProfile = () => {
   };
   useEffect(() => {
     getstagename();
-    
+
     console.log(getstatus);
   }, [jobId]);
 
@@ -370,7 +372,7 @@ const CandidateProfile = () => {
         resumeId: parseInt(resumeId),
       });
       console.log(response);
-      if(response.status===200){
+      if (response.status === 200) {
         getResumeJob()
       }
     } catch (error) {
@@ -389,9 +391,9 @@ const CandidateProfile = () => {
     ).label;
     setSelectedItemLabel(selectedItemLabel);
     setstageId(e.key);
-    
-   
-   
+
+
+
   };
   const handleMenuClick1 = async (e) => {
     try {
@@ -431,7 +433,7 @@ const CandidateProfile = () => {
       {stageName.map((item) => (
         <Menu.Item key={item.key}>{item.label}</Menu.Item>
       ))}
-        
+
     </Menu>
   );
 
@@ -440,12 +442,12 @@ const CandidateProfile = () => {
   //back end
   const getCandidatesById = async () => {
     try {
-      const response = await getRecruitmentResumeById(id);
+      const response = await getRecruitmentResumeById({id});
       console.log(response);
       const updatedCandidates = response.result.map((candidate) => ({
         ...candidate,
       }));
-      console.log(updatedCandidates);
+      console.log(updatedCandidates,"candidates");
       setcandidate(updatedCandidates);
       setPriority(response.result[0].priority)
       setRating(response.result[0].rating)
@@ -511,20 +513,27 @@ const CandidateProfile = () => {
 
     try {
       const response = await getResumeJobDetails({
-        jobId: jobId,
+        jobId: localStorage.getItem('jobid'),
         resumeId: resumeId,
-      
+
       });
       console.log(response);
 
       setSelectedItemLabel(response.result.stageName);
       setjobResumeMapping(response.result.jobResumeMappingId);
       setgetstatus(response.result.currentStatus);
-      setEvaluationId(response.result.stageRules.evaluation)
-      setQuestionareId(response.result.stageRules.questionnaire)
       setstageId(response.result.stageId)
-      console.log(response.result.stageRules.questionnaire);
+      const stageRules = JSON.parse(response.result.stageRules);
+
+
+     const evaluation = stageRules.evaluation; 
+     const QuestionAire =stageRules.questionnaire
       
+     setEvaluationId(evaluation || '');
+     setQuestionareId(QuestionAire || '')
+      
+      console.log(QuestionAire);
+      console.log(evaluation)
     } catch (error) {
       console.log(error);
     }
@@ -532,7 +541,9 @@ const CandidateProfile = () => {
   useEffect(() => {
     getResumeJob();
     console.log(getstatus)
-  }, [jobId]);
+    console.log(stageId)
+    console.log(EvalutaionId)
+  }, []);
   // useEffect(() => {
   //   console.log(getstatus);
   // }, [getstatus]);
@@ -565,6 +576,7 @@ const CandidateProfile = () => {
         const response = await getRecruitmentJobById({ id: jobId });
         console.log(response);
         setJobName(response.result[0].jobTitle);
+        setJobstatus(response.result[0].jobStatus)
       }
     } catch (error) {
       console.log(error);
@@ -576,7 +588,7 @@ const CandidateProfile = () => {
 
   const getAlljobs = async () => {
     try {
-      const response = await getAllRecruitmentJobs({ companyId: companyId,jobStatus: "Open" });
+      const response = await getAllRecruitmentJobs({ companyId: companyId, jobStatus: "Open" });
       console.log(response);
       const jobs = response.result.map((jobs) => ({
         label: jobs.jobTitle,
@@ -668,31 +680,28 @@ const CandidateProfile = () => {
         </Link>
         <div className="gap-2 vhcenter">
           {console.log(getstatus)}
-          {getstatus !== null && ( // Check if getstatus is not null
-            <>
-              <ButtonClick
-                buttonName="UnderProcess"
-                icon={<FcProcess className="text-white" />}
-                handleSubmit={() => handleButtonClick(0)}
-                BtnType={getstatus === "0" ? "primary" : ""}
-              // backgroundColor={getstatus === "0" ? "yellow" : "inherit"}
-              />
-              <ButtonClick
-                buttonName="Disqualify"
-                icon={<FcHighPriority />}
-                handleSubmit={() => handleButtonClick(2)}
-                // backgroundColor={getstatus === "2" ? "text-rose-600" : "inherit"}
-                BtnType={getstatus === "2" ? "primary" : ""}
-              />
-              <ButtonClick
-                buttonName="Hire"
-                icon={<FcCheckmark />}
-                handleSubmit={() => handleButtonClick(1)}
-                // backgroundColor={getstatus === "1" ? "green" : "inherit"}
-                BtnType={getstatus === "1" ? "primary" : ""}
-              />
-            </>
-          )}
+          {getstatus !== null && jobstatus === "Open" && (
+    <>
+        <ButtonClick
+            buttonName="UnderProcess"
+            icon={<FcProcess className="text-white" />}
+            handleSubmit={() => handleButtonClick(0)}
+            BtnType={getstatus === "0" ? "primary" : ""}
+        />
+        <ButtonClick
+            buttonName="Disqualify"
+            icon={<FcHighPriority />}
+            handleSubmit={() => handleButtonClick(2)}
+            BtnType={getstatus === "2" ? "primary" : ""}
+        />
+        <ButtonClick
+            buttonName="Hire"
+            icon={<FcCheckmark />}
+            handleSubmit={() => handleButtonClick(1)}
+            BtnType={getstatus === "1" ? "primary" : ""}
+        />
+    </>
+)}
           <ButtonClick buttonName="Share" icon={<FcShare />} />
           <Dropdown
             menu={{
@@ -700,7 +709,7 @@ const CandidateProfile = () => {
             }}
             placement="bottomRight"
             trigger={["click"]}
-            
+
           >
             <Button
               size={isSmallScreen ? "default" : "large"}
@@ -736,26 +745,32 @@ const CandidateProfile = () => {
                       .map((name) => name.charAt(0).toUpperCase() + name.slice(1).toLowerCase())
                       .join(' ')}</h2>
                     <PiBookmarkSimpleFill className=" text-[#12B76A] text-base" />
-                    <div className="bg-[#6A4BFC]/10 rounded-full px-4 py-1 text-[#6A4BFC] text-xs 2xl:text-sm font-semibold border border-[#6A4BFC]/20">
-                      {/* {jobName ? jobName : "Choose Job"} */}
-                      {jobName}
-                    </div>
+                    {jobName &&
+                      <div className="bg-[#6A4BFC]/10 rounded-full px-4 py-1 text-[#6A4BFC] text-xs 2xl:text-sm font-semibold border border-[#6A4BFC]/20"
+                      >
+                        {/* {jobName ? jobName : "Choose Job"} */}
+                        {jobName}
+                      </div>
+                    }
                   </div>
 
-                  <div className="inline-flex items-center justify-start gap-4">
-                    <p className="pblack !font-normal">
-                      {items.candidateLocation}
+                  <div className="inline-flex items-center justify-start gap-3">
+                    <p className="flex items-center gap-1">
+                      <MdLocationOn className="text-base text-primary" />
+                      <p className="pblack !font-normal">{items.candidateLocation}</p>
                     </p>
-                    <p className="gap-2 pblack vhcenter">
-                      <MdPhone className="text-base text-primary" />{" "}
-                      {items.candidateContact}
-                    </p>
+                    <div className="flex items-center gap-1">
+                      <p className="pblack vhcenter gap-1">
+                        <MdPhone className="text-base text-primary" />
+                        {items.candidateContact}
+                      </p>
 
-                    <div
-                      className="text-black cursor-pointer text-opacity-30 dark:text-white dark:hover:text-primary hover:text-opacity-90"
-                      onClick={() => handleCopyClick(items.candidateContact)}
-                    >
-                      <MdContentCopy size={16} />
+                      <div
+                        className="text-black cursor-pointer text-opacity-30 dark:text-white dark:hover:text-primary hover:text-opacity-90"
+                        onClick={() => handleCopyClick(items.candidateContact)}
+                      >
+                        <MdContentCopy size={16} />
+                      </div>
                     </div>
                   </div>
                 </div>
@@ -773,7 +788,7 @@ const CandidateProfile = () => {
                           <DownOutlined />
                         </Space>
                       </a>
-                      
+
                     </Dropdown>
                   ) : null}
                   {
@@ -783,6 +798,7 @@ const CandidateProfile = () => {
                   }
 
                 </div>
+                {jobstatus ==="Open"&&(
                 <div className="flex flex-col gap-3">
                   <Dropdown overlay={menu} trigger={["click"]}>
                     <a className="pblack" onClick={(e) => e.preventDefault()}>
@@ -796,6 +812,7 @@ const CandidateProfile = () => {
                     {selectedItemLabel ? selectedItemLabel : "Choose Stage"}
                   </div>
                 </div>
+                )}
 
                 <Divider type="vertical" className="hidden h-auto lg:block" />
                 <div className="flex flex-col gap-3">
@@ -818,35 +835,35 @@ const CandidateProfile = () => {
                     <div className="size-3 flex justify-between items-baseline">
                       <span
                         className={`${priority === "1"
-                            ? "bg-red-500 opacity-100"
-                            : priority === "2"
-                              ? " bg-amber-500 opacity-100"
-                              : "bg-[#12B76A] opacity-100"
+                          ? "bg-red-500 opacity-100"
+                          : priority === "2"
+                            ? " bg-amber-500 opacity-100"
+                            : "bg-[#12B76A] opacity-100"
                           } w-0.5 rounded-sm h-1`}
                       ></span>
                       <span
                         className={`${priority === '1'
-                            ? "bg-red-500 opacity-20"
-                            : priority === "2"
-                              ? "bg-amber-500 opacity-100"
-                              : priority === "3" && "bg-[#12B76A] opacity-100"
+                          ? "bg-red-500 opacity-20"
+                          : priority === "2"
+                            ? "bg-amber-500 opacity-100"
+                            : "bg-[#12B76A] opacity-100"
                           } w-0.5 rounded-sm h-2`}
                       ></span>
                       <span
                         className={`${priority === "1"
-                            ? "bg-red-500 opacity-20"
-                            : priority === "2"
-                              ? "bg-amber-500 opacity-20"
-                              : priority === "3" && "bg-[#12B76A] opacity-100"
+                          ? "bg-red-500 opacity-20"
+                          : priority === "2"
+                            ? "bg-amber-500 opacity-20"
+                            : "bg-[#12B76A] opacity-100"
                           } w-0.5 rounded-sm h-3`}
                       ></span>
                     </div>
                     <p
                       className={`pblack ${priority === "1"
-                          ? "!text-red-500"
-                          : priority === "2"
-                            ? "!text-amber-500"
-                            : "!text-[#12B76A]"
+                        ? "!text-red-500"
+                        : priority === "2"
+                          ? "!text-amber-500"
+                          : "!text-[#12B76A]"
                         }`}
                     >
                       {priority === "1"

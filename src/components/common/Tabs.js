@@ -43,6 +43,8 @@ const Tabs = ({
   All=false,
   recordId="",
   drawerH=[],
+  handlesort=()=>{},
+  refreshJobCrad =()=>{} 
  
 }) => {
   const [activeTab, setActiveTab] = useState(tabs[0].id);
@@ -291,6 +293,7 @@ const Tabs = ({
                     clickDrawer={clickDrawer}
                     path={path}
                     drawerH={drawerH}
+                    handlesort={handlesort}
                     // companyList = true,
                     // navigationClick = () => {},
                     // tablechange = false,
@@ -309,6 +312,7 @@ const Tabs = ({
                     }}
                     All={All}
                     recordId={recordId}
+                    refreshJobCrad={refreshJobCrad}
                     // All={All}
                     
                     // arabic = true,

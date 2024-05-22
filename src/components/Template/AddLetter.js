@@ -10,7 +10,7 @@ import TextEditor from "../common/TextEditor/TextEditor";
 import FormInput from "../common/FormInput";
 import image from "../../assets/images/attachment-2.svg";
 import image2 from "../../assets/images/emoji-sticker-line.svg";
-import { getRecruitmentLetterTemplateById, saveRecruitmentLetterTemplate, updateRecruitmentLetterTemplate } from "../Api1";
+import { getAllRecruitmentLetterTemplates,getRecruitmentLetterTemplateById, saveRecruitmentLetterTemplate, updateRecruitmentLetterTemplate } from "../Api1";
 const AddLetter = ({
   open = "",
   close = () => { },
@@ -31,6 +31,7 @@ const AddLetter = ({
     close(false);
   };
   const [content, setContent] = useState("");
+  const[Length,setLength] = useState("")
   const [api, contextHolder] = notification.useNotification();
   const openNotification = (type, message, description) => {
     api[type]({
@@ -79,6 +80,13 @@ const AddLetter = ({
         hasError = true; // Set flag to true if there's an error
       } else {
         setTemplateNameError('');
+      }
+
+      if(Length>0){
+        setTemplateNameError('Template name already exist.');
+        hasError = true; 
+      }else{
+         setTemplateNameError('')
       }
 
       // Check if subject is empty
@@ -164,7 +172,7 @@ const AddLetter = ({
       }
     } catch (error) {
       console.error("Error saving email template:", error);
-      openNotification("error", "Error..", error);
+      openNotification("error", "Info", error);
     }
   };
   const getLetterById = async () => {
@@ -196,6 +204,25 @@ const AddLetter = ({
 
     }
   };
+
+  const getLetterByName = async ()=>{
+    try{
+     const response = await getAllRecruitmentLetterTemplates({
+     companyId:companyId,
+     letterTemplateName:templateName
+
+     })
+     setLength(response.result.length)
+     console.log(response)
+
+    }catch(error){
+      console.log(error)
+    }
+  }
+
+  useEffect(()=>{
+    getLetterByName()
+  },[templateName])
   return (
     <div>
       <DrawerPop

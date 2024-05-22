@@ -81,7 +81,9 @@ const TableAnt = ({
   viewOutside = false,
   refresh = () => { },
   recordId = "",
-  jobId = ""
+  jobId = "",
+  handlesort = () => { },
+  refreshJobCrad =()=>{}
 
 }) => {
   const { t } = useTranslation();
@@ -179,9 +181,13 @@ const TableAnt = ({
             ? { ...sw, isActive: checked === true ? 1 : 0 }
             : sw
         )
-
+       
       // prevSwitches.map((sw) => (sw.id === i ? { ...sw, value: checked } : sw))
     );
+    // refresh(true)
+    
+
+
   };
 
   // const handleToggle = (id, checked) => {
@@ -303,30 +309,36 @@ const TableAnt = ({
   //   const record
   //   console.log(record.jobId)
   // })
+
   useEffect(() => {
-    // console.log(header, "header");
+    console.log(header, "header");
+    
     setTableData(
       (header[0]?.[tabValue || path || ''] || []).map((each, i) => ({
         title: (
           <span
             key={i}
+            
             className="text-[10px] 2xl:text-xs text-[#667085] dark:text-white font-medium capitalize"
           >
             {each.title}
           </span>
         ),
         dataIndex: each.value,
+        sorter: each.sorter, 
+        
         // dataIndex: "firstName",
         render: (record, text) => (
           <>
             <div
-              className=" cursor-pointer"
+             className={`${each.width} cursor-pointer`}
               // onClick={() => {
               //   navigate(`/${path}/${text[actionID]}`);
               //   // Store the clicked data ID in local storage only when the path is present and not an empty array
               //   localStorage.setItem('selectedDataId', text[actionID]);
               //   localStorage.setItem('jobid', text[jobId]);
               // }}
+
               
             >
               {each.value === "isActive" ? (
@@ -465,6 +477,7 @@ const TableAnt = ({
                       // activeOrNot(checked);
                       //console.log(checked);
                       //console.log(text?.[actionID]);
+                      refreshJobCrad(true)
                       updateCompany(text?.[actionID], checked);
                     }}
                     className=" bg-[#c2c0c0aa]"
@@ -614,11 +627,15 @@ const TableAnt = ({
                 }}
               }
                 className="text-[#667085] text-xs 2xl:text-sm dark:text-white font-medium">
-                  <p>{record}</p>
+<p>
+  {record && typeof record === 'string' 
+    ? record.charAt(0).toUpperCase() + record.slice(1) 
+    : record}
+</p>
                 </div>
                ) 
     }
-            </div>
+            
             {
               each.dotsVertical && (
                 <Popover
@@ -662,8 +679,11 @@ const TableAnt = ({
                 </Popover>
               )
             }
+         </div>
           </>
         ),
+        // fixed: each.fixed,
+        width: each.width,
         // responsive: ["sm"],
       }))
     );
@@ -1101,12 +1121,14 @@ const TableAnt = ({
       </div>
       <div className="border rounded-lg border-[#E7E7E7] dark:border-secondary relative overflow-auto">
         {/* {console.log(data)} */}
+        {console.log(tableData)}
         {data && (
+          
           <Table
             //rowSelection={{ ...rowSelection }}
             columns={tableData}
-           
-            onChange={handleSortFunction}
+            onChange={(pagination, filters, sorter) => handlesort(pagination, filters, sorter)}
+             
 
             // dataSource={data.filter(
             //   (item) =>

@@ -135,6 +135,7 @@ const Template = ({
           id: 2,
           title: t("Description"),
           value: "jobDescription",
+          width:"600px",
         },
         {
           id: 3,
@@ -145,8 +146,14 @@ const Template = ({
         {
           id: 4,
           title: t("Action"),
-          value: "Action",
+          value: "action",
           action: true,
+        },
+        {
+          id: 5,
+          title: t("View"),
+          value: "viewData",
+          status: "viewData",
         },
       ],
       Job_Description: [
@@ -160,6 +167,7 @@ const Template = ({
           id: 2,
           title: t("Description"),
           value: "descriptionTemplate",
+          width:"600px",
         },
         {
           id: 3,
@@ -172,6 +180,12 @@ const Template = ({
           title: t("Action"),
           value: "action",
           action: true,
+        },
+        {
+          id: 5,
+          title: t("View"),
+          value: "viewData",
+          status: "viewData",
         },
       ],
       Workflow: [
@@ -185,6 +199,7 @@ const Template = ({
           id: 2,
           title: t("Description"),
           value: "description",
+          width:"600px",
         },
         {
           id: 3,
@@ -198,6 +213,12 @@ const Template = ({
           value: "action",
           action: true,
         },
+        {
+          id: 5,
+          title: t("View"),
+          value: "viewData",
+          status: "viewData",
+        },
       ],
       Email: [
         {
@@ -210,6 +231,7 @@ const Template = ({
           id: 2,
           title: t("Description"),
           value: "value",
+          width:"600px",
         },
         {
           id: 3,
@@ -220,8 +242,14 @@ const Template = ({
         {
           id: 4,
           title: t("Action"),
-          value: "Action",
+          value: "action",
           action: true,
+        },
+        {
+          id: 5,
+          title: t("View"),
+          value: "viewData",
+          status: "viewData",
         },
       ],
       Evaluation: [
@@ -235,6 +263,7 @@ const Template = ({
           id: 2,
           title: t("Description"),
           value: "description",
+          width:"600px",
         },
         {
           id: 3,
@@ -248,6 +277,12 @@ const Template = ({
           value: "Action",
           action: true,
         },
+        {
+          id: 5,
+          title: t("View"),
+          value: "viewData",
+          status: "viewData",
+        },
       ],
       Questionnaire: [
         {
@@ -260,6 +295,7 @@ const Template = ({
           id: 2,
           title: t("Description"),
           value: "description",
+          width:"600px",
         },
         {
           id: 3,
@@ -273,6 +309,12 @@ const Template = ({
           value: "actions",
           action: true,
         },
+        {
+          id: 5,
+          title: t("View"),
+          value: "viewData",
+          status: "viewData",
+        },
       ],
       Letter: [
         {
@@ -285,6 +327,7 @@ const Template = ({
           id: 2,
           title: "Subject",
           value: "value",
+          width:"600px",
         },
         {
           id: 3,
@@ -298,6 +341,12 @@ const Template = ({
           value: "actions",
           action: true,
         },
+        {
+          id: 5,
+          title: t("View"),
+          value: "viewData",
+          status: "viewData",
+        },
       ]
     }
   ]
@@ -310,80 +359,24 @@ const Template = ({
           title: "Template Name",
           value: "jobTitle",
         },
+        
         {
           id: 2,
-          title: "Location",
-          value: "location",
+          title: "Experience",
+          value: "experience",
         },
+
+        
+        
         {
           id: 3,
-          title: "Job Type",
+          title: "JobType",
           value: "jobType",
-
         },
         {
           id: 4,
-          title: "Job Code",
-          value: "jobCode",
-
-        },
-        {
-          id: 5,
-          title: "createdOn",
-          value: "createdOn",
-
-        },{
-          id: 6,
-          title: "Education",
-          value: "education",
-
-        },
-        {
-          id: 7,
-          title: "Experience",
-          value: "experience",
-
-        },
-        {
-          id: 8,
-          title: "Job Description",
-          value: "jobDescription",
-
-        },
-        {
-          id: 9,
           title: "Requirement Type",
           value: "requirementType",
-
-        },
-        {
-          id: 10,
-          title: "Salary Currency",
-          value: "salaryCurrency",
-
-        },
-        {
-          id: 11,
-          title: "WorkLocation Type",
-          value: "workLocationType",
-
-        },
-        {
-          id: 12,
-          title: "Salary Range From",
-          value: "salaryRangeFrom",
-
-        },
-        {
-          id: 13,
-          title: "Salary Range To",
-          value: "salaryRangeTo",
-
-        },
-        {
-          id: 14,
-          title: "Status",
-          value: "isActive",
         },
       ],
       Job_Description: [
@@ -419,6 +412,20 @@ const Template = ({
           title: "Status",
           value: "isActive",
         },
+        // {
+        //   id: 4,
+        //   title: "Stages",
+        //   value: "recruitmentWorkFlowStages",
+        //   render: (stages) => (
+        //     <div className='flex flex-col gap-2'>
+        //       {stages.map((stage, index) => (
+        //         <div key={index}>
+        //           {index + 1}. {stage.stageName}
+        //         </div>
+        //       ))}
+        //     </div>
+        //   ), // Display stages as a concatenated string
+        // },
         // {
         //   id: 4,
         //   title: "Status",
@@ -541,13 +548,40 @@ const Template = ({
 
   const [TemplateList, setTemplateList] = useState([])
   console.log(TemplateList, 'this is template');
+  const stripHtmlTags = (html) => {
+    const temp = document.createElement("div");
+    temp.innerHTML = html;
+    return temp.textContent || temp.innerText || "";
+  }
 
   const gettemaplate = async () => {
     try {
 
       const response = await getAllRecruitmentJobTemplates({ companyId: companyId });
 
-      setTemplateList(response.result);
+      setTemplateList(response.result.map((job) => ({
+          jobTemplateId:job.jobTemplateId,
+          jobTitle:job.jobTitle,
+          jobDescription: stripHtmlTags(job.jobDescription),
+          isActive: job.isActive,
+          actionToggle:true,
+          action:true,
+          
+          experience:job.experience,
+          
+          jobType:job.jobType,
+          requirementType:job.requirementType
+
+
+
+
+        })))
+      // setTemplateList(response.result)
+        console.log(response.result.map((job) => ({
+           
+          jobDescription: stripHtmlTags(job.jobDescription),
+         
+        })))
       // const newData = {};
       // response.result.forEach((job) => {
       //   newData[job.jobId] = job; // Assuming jobId is the unique identifier
@@ -571,7 +605,23 @@ const Template = ({
 
       const response = await getAllRecruitmentWorkFlows({ companyId: companyId });
       // console.log(response," work flow list is here")
-      setWorkflow(response.result);
+      // setWorkflow(response.result);
+         setWorkflow(response.result.map((workflow)=>({
+          workFlowId:workflow.workFlowId,   
+          workFlowName:workflow.workFlowName,
+          description:workflow.description,
+          // recruitmentWorkFlowStages:workflow.recruitmentWorkFlowStages.map((stages)=>({
+          //   stageName:stages.stageName,
+          //   // stageRules:stages.stageRules
+
+          // }))
+          recruitmentWorkFlowStages: workflow.recruitmentWorkFlowStages.map((stage) => stage.stageName)
+   
+
+         })))
+       
+
+
       // const newData = {};
       // response.result.forEach((job) => {
       //   newData[job.jobId] = job; // Assuming jobId is the unique identifier
@@ -615,6 +665,15 @@ const Template = ({
         action: true,
       }))
       );
+
+      console.log(response.result.map((email) => ({
+        emailTemplateId: email.emailTemplateId,
+        title: email.emailTemplateName,
+        value: email.emailTemplate.subject, // Use the subject as the description value
+        isActive: email.isActive,
+        actionToggle: true,
+        action: true,
+      })))
       // const newData = {};
       // response.result.forEach((job) => {
       //   newData[job.jobId] = job; // Assuming jobId is the unique identifier
@@ -671,7 +730,15 @@ const Template = ({
       const data = await getAllRecruitmentJobDescriptionTemplates({ companyId: companyId })
       //  console.log(data)
       // 
-      setJobDescriptionList(data.result)
+      setJobDescriptionList(data.result.map((template)=>({
+        descriptionTemplateName:template.descriptionTemplateName,
+        descriptionTemplate:stripHtmlTags(template.descriptionTemplate),
+        descriptionTemplateId:template.descriptionTemplateId,
+        isActive:template.isActive,
+        actionToggle:true,
+        action:true
+
+      })))
     } catch (error) {
       // console.log(error)
     }

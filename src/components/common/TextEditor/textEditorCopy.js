@@ -23,19 +23,25 @@ const TextEditorcopy = ({
         () => EditorState.createEmpty(),
       );
 
+      const [isInitialized, setIsInitialized] = useState(false);
       useEffect(() => {
-        if (initialValue) {
+        if (initialValue && !isInitialized) {
             const blocksFromHTML = convertFromHTML(initialValue);
-            const contentState = ContentState.createFromBlockArray(blocksFromHTML.contentBlocks, blocksFromHTML.entityMap);
-            setEditorState(EditorState.createWithContent(contentState));
+            const content = ContentState.createFromBlockArray(
+                blocksFromHTML.contentBlocks,
+                blocksFromHTML.entityMap
+            );
+            setEditorState(EditorState.createWithContent(content));
+            
+            setIsInitialized(true);
         }
     }, [initialValue]);
-    
     const handleEditorChange =(editorState) => {
        
         const htmlContent = draftToHtml(convertToRaw(editorState.getCurrentContent()));
-        Change(htmlContent);
-        console.log(htmlContent) // Pass HTML content to the parent component
+        setEditorState(editorState)
+        Change(htmlContent||"");
+        console.log(htmlContent) 
       };
     
     // useEffect(()=>{

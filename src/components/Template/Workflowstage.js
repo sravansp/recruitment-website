@@ -24,7 +24,8 @@ import {
   updateWorkFlowWithStages,
   getAllRecruitmentEmailTemplates,
   getAllRecruitmentEvaluationTemplates,
-  getAllRecruitmentQuestionnaireTemplates
+  getAllRecruitmentQuestionnaireTemplates,
+  getAllRecruitmentWorkFlows
 } from "../Api1";
 import { PiCopySimple, PiPencilSimpleLineThin } from "react-icons/pi";
 import { Modal, Button, notification, Tooltip, Menu } from "antd";
@@ -103,6 +104,10 @@ const Workflowstage = ({
   const [emailTemp,setEmailTemp] = useState([])
   const [showDiv, setShowDiv] = useState(false);
   const primaryColor = localStorage.getItem('mainColor')
+  const [response,setResponse] = useState("")
+  const [templateName,setTemplateName] =useState("")
+  const[Length,setLength] =useState("")
+
   
  
 
@@ -323,7 +328,7 @@ const Workflowstage = ({
         if (stageRules.tag) {
             optionData.push({
                 id: "add_tag",
-                name: "add_tag",
+                name: "Add Tag",
                 option1: [
                     // Questionnaire options here...
                     {id:1, titletag:"Add New Tag"}
@@ -401,17 +406,17 @@ const Workflowstage = ({
     
     
     
-    if (!stageName ) {
-      setStageError("Stage Name is required.");
+    if (!stageName) {
+      setStageError('Stage Name is required.');
+      return;
+    } else if (stageName.length < 3) {
+      setStageError('Stage Name must be at least 3 characters long.');
+      return;
+    } else if (!stageName.trim()) {
+      setStageError('Stage Name must not be empty or contain only whitespace.');
       return;
     } else {
-      setStageError("");
-      
-    }
-
-    if (!stageName.trim()) {
-        // If stageName is empty or contains only whitespace, return without adding a stage
-        return;
+      setStageError('');
     }
 
     // Create an object to hold the stage rules based on user inputs
@@ -549,14 +554,34 @@ const Workflowstage = ({
     onSubmit: async (values, { setSubmitting }) => {
       try {
         const alphanumericRegex = /^[a-zA-Z0-9 ]+$/; // Regex to allow only letters, numbers, and spaces
-
-        if (!values.workFlowName || !alphanumericRegex.test(values.workFlowName)) {
-          formik.setFieldError('workFlowName', !values.workFlowName ? 'Workflow Name is required' : 'Please enter only letters and numbers');
+        let hasError = false;
+        if (!values.workFlowName) {
+          formik.setFieldError('workFlowName', 'Workflow Name is required');
+          hasError = true;
+        } else if (!alphanumericRegex.test(values.workFlowName)) {
+          formik.setFieldError('workFlowName', 'Please enter only letters and numbers');
+          hasError = true;
+        } else if (values.workFlowName.length < 3) {
+          formik.setFieldError('workFlowName', 'Workflow Name must be at least 3 characters long');
+          hasError = true;
+        } else if (Length > 0) {
+          formik.setFieldError('workFlowName', 'Workflow Name Already Exist');
+          hasError = true;
+        } else {
+          // Clear any existing errors if validation passes
+          formik.setFieldError('workFlowName', '');
         }
-
+      
         if (!values.description) {
           formik.setFieldError('description', 'Description is required');
+          hasError = true;
+        } else {
+          formik.setFieldError('description', '');
         }
+         if(hasError){
+          return
+         }
+        if(stageName.length<3)
 
 
         if (stages.length === 0) {
@@ -606,7 +631,10 @@ const Workflowstage = ({
             createdBy: 9,
           });
 
+          
           console.log(response);
+          setResponse(response.message)
+          
 
           if (response.status === 200) {
             const insertedId = response.result.insertedId; // Get insertedId here
@@ -647,8 +675,8 @@ const Workflowstage = ({
       } catch (error) {
         openNotification(
           "error",
-          "Error",
-          "WorkFlow Template Name Already Exist"
+          "Info",
+          response
         );
       }
       setSubmitting(false);
@@ -765,7 +793,7 @@ const Workflowstage = ({
       icon: <IoIosArrowDropdown />,
       det: [{
         id: "add_tag",
-        name: "add_tag",
+        name: "Add Tag",
         option1: [
           { id: 1, titletag: "Add New Tag" }
         ],
@@ -798,7 +826,24 @@ const Workflowstage = ({
  
   const [sections, setSections] = useState([]);
 
- 
+  const getWorkflowwithName=async(templateName)=>{
+    try{
+      const response = await getAllRecruitmentWorkFlows({
+        companyId:companyId,
+        workFlowName:templateName
+      })
+      setLength(response.result.length)
+     if (response.result.length > 0) {
+        formik.setFieldError('workFlowName', 'Workflow Name Already Exist');
+        return;
+      } 
+    }catch(error){
+      console.log(error)
+    }
+  }
+  useEffect(()=>{
+    getWorkflowwithName(templateName)
+  },[templateName])
    
 
   const handleDeleteSection = (id) => {
@@ -904,6 +949,7 @@ const Workflowstage = ({
                 className="!text-[#344054] "
                 change={(e) => {
                   formik.setFieldValue("workFlowName", e);
+                  setTemplateName(e)
                 }}
                 value={formik.values.workFlowName}
                 error={formik.errors.workFlowName}

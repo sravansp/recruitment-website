@@ -500,7 +500,7 @@ const DragView = ({jobStatus}) => {
       // getRecords()
       // window.location.reload();
       openNotification("success", "Success", response.message);
-    } else if (response.result === 500) {
+    } else if (response.result === 404) {
       openNotification("error", "Failed", response.message);
     }
     }catch(error){

@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import { InboxOutlined } from "@ant-design/icons";
 import { message, Upload } from "antd";
 import { useTranslation } from "react-i18next";
@@ -9,11 +9,22 @@ export default function FileUpload({
   change = () => { },
   className,
   flex = true,
+  file = null,
 }) {
   const { t } = useTranslation();
   const allowedFileFormats = ["jpg", "png", "jpeg", "svg", "webp", "pdf", "doc", "docx", "pptx"];
   const fileFormatsString = allowedFileFormats.join(", ");
-  const [selectedFile, setSelectedFile] = useState(null);
+  const [selectedFile, setSelectedFile] = useState([]);
+  const [nameList, setNameList] = useState([]);
+  const [changeStatus, setChangeStatus] = useState(false);
+
+  useEffect(() => {
+    if (file) {
+      setSelectedFile([file])
+    } else {
+      setSelectedFile([])
+    }
+  }, [file])
 
   const props = {
     name: "file",
@@ -24,38 +35,49 @@ export default function FileUpload({
       const isAllowedFile = allowedFileFormats.includes(fileExtension);
       if (!isAllowedFile) {
         message.error(`${file.name} file format is not supported.`);
+        setChangeStatus(false);
         return false;
       }
-      else {
-        return isAllowedFile;
+      else if (nameList.includes(file.name)) {
+        message.error(`${file.name} file is already uploaded.`);
+        setChangeStatus(false);
+        return false;
+      } else {
+        message.success(`${file.name} file added successfully.`);
+        setSelectedFile([file]);
+        setNameList([...nameList, file.name]);
+        setChangeStatus(true);
+        return false;
       }
     },
   };
 
-  const handleChange = (info) => {
-    const { status, originFileObj } = info.file;
-    if (status !== "uploading") {
-      console.log(info.fileList);
-      console.log(status, ":file upload status");
-      console.log(originFileObj);
-    }
-    // Ensure only one file is selected
-    if (originFileObj) {
-      setSelectedFile(originFileObj);
-      change(originFileObj);
-    }
-  };
+  // const handleChange = (info) => {
+  //   const { status, originFileObj } = info.file;
+  //   if (status !== "uploading") {
+  //     console.log(info.fileList);
+  //     console.log(status, ":file upload status");
+  //     console.log(originFileObj);
+  //   }
+  //   // Ensure only one file is selected
+  //   if (originFileObj && changeStatus) {
+  //     setSelectedFile(originFileObj);
+  //     change(originFileObj);
+  //   }
+  // };
+
 
   return (
     <div className={`${className}`}>
       <Dragger
         {...props}
-        onChange={handleChange}
-        onDrop={(e) => {
-          console.log(e.dataTransfer.files[0]);
-          setSelectedFile(e.dataTransfer.files[0]);
-          change(e.dataTransfer.files[0]);
-
+        fileList={selectedFile}
+        onChange={(info) => {
+          const { file } = info;
+          console.log(file, "file")
+          if (file && changeStatus) {
+            change(file);
+          }
         }}
         maxCount={1}
       >
@@ -63,7 +85,7 @@ export default function FileUpload({
           <div className="flex gap-2">
             <AiOutlineCloudUpload className="text-3xl text-primary " />
             <div className="flex flex-col">
-              <h2 className="acco-subhead"> {t("Click to upload")}</h2>
+              <h2 className="acco-subhead"> {t("Click or drag files to upload")}</h2>
               <p className="para px-5">{t("Allowed formats")}: {fileFormatsString}</p>
             </div>
           </div>

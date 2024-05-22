@@ -119,7 +119,7 @@ const Createjob = ({
   const loginDataString = localStorage.getItem("LoginData");
   const [userid, setuserid] = useState("");
   const [workFlows, setWorkFlows] = useState([]);
-  const [selectedWorkFlowId, setSelectedWorkFlowId] = useState(null);
+  const [selectedWorkFlowId, setSelectedWorkFlowId] = useState("");
   const [selectedDivs, setSelectedDivs] = useState([]);
   const [selectedemployee, setselectedemployee] = useState([])
   const [selectedUserIds, setSelectedUserIds] = useState([])
@@ -131,7 +131,12 @@ const Createjob = ({
   const [Questionerror, setQuestionError] = useState('')
   const [answerError, setAnswerError] = useState('')
   const [OptionError, setoptionserror] = useState('')
-
+  const[salaryRangeToError,setsalaryRangeToError] = useState("")
+ const[salaryRangeFromError,setsalaryRangeFromError] = useState("")
+ const[trigger,SetTrigger] = useState("")
+ const capitalizeFirstLetter = (string) => {
+  return string.charAt(0).toUpperCase() + string.slice(1);
+};
 
 
   // console.log(updateId)
@@ -320,9 +325,9 @@ const Createjob = ({
 
       setDraftJobs(firstJob);
 
-      formik1.setFieldValue("companyId", firstJob.companyId);
+      formik1.setFieldValue("companyId", parseInt(firstJob.companyId));
       formik1.setFieldValue("jobTitle", firstJob.jobTitle);
-      formik1.setFieldValue("departmentId", firstJob.departmentId);
+      formik1.setFieldValue("departmentId", parseInt(firstJob.departmentId) );
       formik1.setFieldValue("education", firstJob.education);
       formik1.setFieldValue("workLocationType", firstJob.workLocationType);
       formik1.setFieldValue("isActive", firstJob.isActive);
@@ -339,7 +344,8 @@ const Createjob = ({
       formik1.setFieldValue("searchKeywords", firstJob.searchKeywords);
       formik1.setFieldValue("experience", firstJob.experience);
 
-
+      
+      getDepartmentList(firstJob.companyId)
 
 
 
@@ -356,9 +362,9 @@ const Createjob = ({
   }, [UpdateId]);
   const formik1 = useFormik({
     initialValues: {
-      companyId: "",
+      companyId: null,
       jobTitle: "",
-      departmentId: "",
+      departmentId: null,
       jobCode: "",
       workLocationType: "Onsite",
       location: "",
@@ -369,7 +375,7 @@ const Createjob = ({
       searchKeywords: "",
       salaryRangeFrom: "",
       salaryRangeTo: "",
-      salaryCurrency: "",
+      salaryCurrency: null,
       isSalaryPublic: "true",
       jobDescription: "",
       workFlowId: null,
@@ -382,33 +388,7 @@ const Createjob = ({
       questionnaireTemplateId: null,
     },
 
-    // enableReinitialize: true,
-    // validateOnChange: false,
-    // validationSchema: Yup.object().shape({
-    //   companyId: Yup.string().required('Company is required'),
-    //   jobTitle: Yup.string().required('Job Title is required'),
-    //   departmentId: Yup.string().required('Department ID is required'),
-    //   jobCode: Yup.string().required('Job Code is required'),
-    //   workLocationType: Yup.string().required('Work Location Type is required'),
-
-    //   location: Yup.string().required('Location is required'),
-    //   requirementType: Yup.string().required('Requirement Type is required'),
-    //   jobType: Yup.string().required('Job Type is required'),
-    //   experience: Yup.string().required('Experience is required'),
-    //   education: Yup.string().required('Education is required'),
-    //   searchKeywords: Yup.string().required('Search Keywords is required'),
-    //   salaryRangeFrom: Yup.number()
-    //     .typeError('Salary Range From must be a number')
-    //     .required('Salary Range From is required'),
-    //   salaryRangeTo: Yup.number()
-    //     .typeError('Salary Range To must be a number')
-    //     .required('Salary Range To is required'),
-    //   salaryCurrency: Yup.string().required('Salary Currency is required'),
-    //   noOfVaccancies: Yup.number()
-    //     .typeError('Number Of Vaccancies must be a number')
-    //     .required('Number Of Vaccancies is required'),
-
-    // }),
+    
     onSubmit: async (e) => {
       if (formik1.values.noOfVaccancies && formik1.values.noOfVaccancies <= 0) {
         formik1.setFieldError('noOfVaccancies', 'Openings should be a positive value');
@@ -435,16 +415,16 @@ const Createjob = ({
         formik1.setFieldError('departmentId', !formik1.values.departmentId ? 'Department is required' : '');
         formik1.setFieldError('jobCode', !formik1.values.jobCode ? 'Job Code is required' : '');
         formik1.setFieldError('location', !formik1.values.location ? 'Location is required' : '');
-        formik1.setFieldError('requirementType', !formik1.values.requirementType ? 'Requirment Type is required' : '');
+        formik1.setFieldError('requirementType', !formik1.values.requirementType ? 'Requirment is required' : '');
         formik1.setFieldError('experience', !formik1.values.experience ? 'Experience is required' : '');
         formik1.setFieldError('searchKeywords', !formik1.values.searchKeywords ? 'Keywords is required' : '');
         formik1.setFieldError('salaryRangeFrom', !formik1.values.salaryRangeFrom ? 'Salary Range From is required' : '');
         formik1.setFieldError('salaryRangeTo', !formik1.values.salaryRangeTo ? 'Salary Range To is required' : '');
         formik1.setFieldError('salaryCurrency', !formik1.values.salaryCurrency ? 'Salary Currency is required' : '');
-        formik1.setFieldError('jobType', !formik1.values.jobType ? 'JobType is required' : '');
+        formik1.setFieldError('jobType', !formik1.values.jobType ? 'Job Type is required' : '');
         formik1.setFieldError('education', !formik1.values.education ? 'Education is required' : '');
         formik1.setFieldError('jobDescription', !content ? 'Job Description is required' : '')
-        formik1.setFieldError('noOfVaccancies', !formik1.values.noOfVaccancies ? 'Number Of Openings is required' : '')
+        formik1.setFieldError('noOfVaccancies', !formik1.values.noOfVaccancies ? 'Number of Openings is required' : '')
         return; // Exit early if any field is empty
       }
       try {
@@ -568,18 +548,18 @@ const Createjob = ({
           value: each.departmentId,
         }))
       );
-
+       console.log("GGGG")
       // console.log("Department List:", departmentList);
       // console.log("Is Update:", isUpdate);
     } catch (error) {
       // console.error("Error fetching department list:", error);
     }
   };
-  useEffect(() => {
-    // switch (assignBtnName) {
-    //   default:
-    getDepartmentList();
-  }, []);
+  // useEffect(() => {
+  //   // switch (assignBtnName) {
+  //   //   default:
+  //   getDepartmentList();
+  // }, []);
 
   const formik = useFormik({
     initialValues: {
@@ -1090,7 +1070,8 @@ const Createjob = ({
   const getJobtemp = async () => {
     try {
       const response = await getAllRecruitmentJobTemplates({
-        isActive: 1
+        isActive: 1,
+        companyId:companyId
       });
 
       // console.log(response);
@@ -1153,7 +1134,7 @@ const Createjob = ({
 
         // console.log("valuegtgggggggggggg");
         if(content && content.length < 3){
-          formik1.setFieldError('jobDescription','JobDescription should have at least 3 letters.');
+          formik1.setFieldError('jobDescription','Job Description should have at least 3 letters.');
           return; 
         }
         formik1.handleSubmit();
@@ -1374,6 +1355,7 @@ const Createjob = ({
         formik.setFieldValue("resume", firstJob.jobApplicationFormData.resume)
         formik.setFieldValue("coverLetter", firstJob.jobApplicationFormData.coverLetter)
         // console.log(firstJob.companyId);
+        getDepartmentList(firstJob.companyId)
       } else {
         console.error("No data found in the response.");
       }
@@ -1381,7 +1363,11 @@ const Createjob = ({
       // console.log(error);
     }
   };
-
+  // useEffect(() => {
+  //   if (formik1.values.companyId) {
+  //     getDepartmentList();
+  //   }
+  // }, [formik1.values.companyId]);
   useEffect(() => {
     if (selectedJobId) {
       getjobById(selectedJobId);
@@ -1620,65 +1606,49 @@ const Createjob = ({
                       // } }
                       initialExpanded={true}
                     >
-                      <div className="md:grid grid-cols-12 flex flex-col gap-6 dark:text-white">
-                        {regularOvertime?.map((each, i) => (
-                          <div
-                          key={i}
-                          className={`col-span-4 p-1.5 border rounded-2xl  cursor-pointer showDelay dark:bg-dark  ${
-                              (!formik1.values.workLocationType && each.value === "Onsite") || 
-                              (formik1.values.workLocationType === each.value) ? "border-primary" : ""
-                          }`}
-                          onClick={() => {
-                              setCustomRate(each.id);
-                              if (!formik1.values.workLocationType) {
-                                  formik1.setFieldValue("workLocationType", "Onsite");
-                              } else {
-                                  formik1.setFieldValue("workLocationType", each.value);
-                              }
-                              
-                          }}
-                      >
-                            <div className="flex justify-between items-start">
-                              <div className=" flex  gap-2">
-                                {/* <GiReceiveMoney
-                                className={`${
-                                  customRate === each.id && "text-primary"
-                                } `}
-                              /> */}
-                                 <img
-                                  className={`${(!formik1.values.workLocationType && each.value === "Onsite") || (formik.values.workLocationType === each.value) ? "text-primary" : ""} p-2 border rounded-md w-[66px] bg-[#F8FAFC]`}
-                                  src={each.image}
-                                  alt=""
-                                >
-                                </img>
-                                {/* <img
-                                  src={customRate === each.id ? cash : cashGray}
-                                  alt=""
-                                  className=" w-6 h-6"
-                                /> */}
-                                <div>
-                                  <h3 className=" text-sm font-semibold mt-[10px]">
-                                    {each.title}
-                                  </h3>
-                                  <p className=" text-xs font-medium text-[#667085] ">
-                                    {each.description}
-                                  </p>
-                                </div>
-                              </div>
-                              <div
-                                className={`${customRate === each.id && "border-primary"
-                                  } border  rounded-full`}
-                              >
-                                <div
-                                  className={`font-semibold text-base w-4 h-4 border-2 border-white   rounded-full ${customRate === each.id &&
-                                    "text-primary bg-primary"
-                                    } `}
-                                ></div>
-                              </div>
-                            </div>
-                          </div>
-                        ))}
-                      </div>
+<div className="md:grid grid-cols-12 flex flex-col gap-6 dark:text-white">
+  {regularOvertime?.map((each, i) => (
+    <div
+      key={i}
+      className={`col-span-4 p-1.5 border rounded-2xl cursor-pointer showDelay dark:bg-dark ${
+        (!formik1.values.workLocationType && each.value === "Onsite") || 
+        (formik1.values.workLocationType === each.value) ? "border-primary" : ""
+      }`}
+      onClick={() => {
+        setCustomRate(each.id);
+        formik1.setFieldValue("workLocationType", each.value === "Onsite" ? "Onsite" : each.value);
+      }}
+    >
+      <div className="flex justify-between items-start">
+        <div className="flex gap-2">
+          {/* Uncomment and use GiReceiveMoney icon if needed */}
+          {/* <GiReceiveMoney className={`${customRate === each.id && "text-primary"}`} /> */}
+          <img
+            className={`${
+              (!formik1.values.workLocationType && each.value === "Onsite") ||
+              (formik1.values.workLocationType === each.value)
+                ? "text-primary"
+                : ""
+            } p-2 border rounded-md w-[66px] bg-[#F8FAFC]`}
+            src={each.image}
+            alt=""
+          />
+          <div>
+            <h3 className="text-sm font-semibold mt-[10px]">{each.title}</h3>
+            <p className="text-xs font-medium text-[#667085]">{each.description}</p>
+          </div>
+        </div>
+        <div className={`border rounded-full ${customRate === each.id ? "border-primary" : ""}`}>
+          <div
+            className={`font-semibold text-base w-4 h-4 border-2 border-white rounded-full ${
+              customRate === each.id ? "text-primary bg-primary" : ""
+            }`}
+          ></div>
+        </div>
+      </div>
+    </div>
+  ))}
+</div>
                       <div className='grid grid-cols-2 gap-4'>
                         <FormInput
                           title={"Location"}
@@ -1799,19 +1769,30 @@ const Createjob = ({
   description={'Minimum Annual Salary'}
   change={(e) => {
     const value = parseFloat(e);
-    if (value <= 0 ) {
+    const salaryRangeTo = parseFloat(formik1.values.salaryRangeTo); 
+    const salaryRangeFrom = parseFloat(e);
+    if (value <= 0) {
       formik1.setFieldError('salaryRangeFrom', 'Salary Range From must be a positive number');
     } else {
       formik1.setFieldValue('salaryRangeFrom', value);
       // Clear the error message only if the input is non-empty or greater than 0
-      if (value > 0||value=="") {
+      if (value > 0 ) {
         formik1.setFieldError('salaryRangeFrom', '');
       }
+      if(salaryRangeTo<=salaryRangeFrom){
+        // formik1.setFieldError('salaryRangeFrom', 'Salary Range From should be less than Salary Range To ');
+        setsalaryRangeFromError('Salary Range From should be less than Salary Range To ')
+        formik1.setFieldValue('salaryRangeFrom', value);
+        console.log("ttt")
+      }else{
+        setsalaryRangeFromError("")
+      }
+     
     }
   }}
   value={formik1.values.salaryRangeFrom}
   type={"number"}
-  error={formik1.errors.salaryRangeFrom}
+  error={formik1.errors.salaryRangeFrom||salaryRangeFromError}
   required={true}
   maxLength={15}
 />
@@ -1821,26 +1802,26 @@ const Createjob = ({
   placeholder={'Enter Salary Range To'}
   description={'Maximum Annual Salary'}
   change={(e) => {
-    const value = parseFloat(e);
+    // Validate Salary Range To
+    const salaryRangeTo = parseFloat(e); // Convert input to a number
     const salaryRangeFrom = parseFloat(formik1.values.salaryRangeFrom); // Convert Salary Range From to a number
-    if (value <= 0 ) {
-      formik1.setFieldError('salaryRangeTo', 'Salary Range To must be a positive number');
-    } else if (value <= salaryRangeFrom) {
-      formik1.setFieldError('salaryRangeTo', 'Salary Range To cannot be less than or equal to Salary Range From');
+
+    if (salaryRangeTo <= salaryRangeFrom) {
+      setsalaryRangeToError("Salary Range To should be greater than the Salary Range From");
+      formik1.setFieldValue('salaryRangeTo', e);
+    } else if (salaryRangeTo <= 0) {
+      setsalaryRangeToError("Salary Range To must be a positive number");
+      console.log("gg")
     } else {
-      formik1.setFieldValue('salaryRangeTo', value);
-      // Clear the error message only if the input is non-empty or greater than 0
-      if (value > 0||value=="") {
-        
-        formik1.setFieldError('salaryRangeTo', '');
-      }
+      // Clear the error message when the conditions are met
+      setsalaryRangeToError("");
+      formik1.setFieldValue('salaryRangeTo', e);
     }
   }}
   value={formik1.values.salaryRangeTo}
-  error={formik1.errors.salaryRangeTo}
+  error={formik1.errors.salaryRangeTo || salaryRangeToError}
   required={true}
   type={"number"}
-  maxLength={15}
 />
                         <Dropdown
                           title={'Salary Currency'}
@@ -1908,6 +1889,7 @@ const Createjob = ({
                             className={'min-w-40'}
                             change={(e) => {
                               setDecriptionId(e)
+                              SetTrigger(e)
                             }}
                           />
 
@@ -1938,6 +1920,7 @@ const Createjob = ({
                             minheight="250px"
                             loader={loader}
                             error={formik1.errors.jobDescription}
+                            trigger={trigger}
                           />
                         </div>
                         {/* <TextArea
@@ -2469,12 +2452,28 @@ const Createjob = ({
                         }}
                       />
                       <div className="flex items-center gap-2">
-                        <CheckBoxInput
-                          change={(e) => {
-                            setCheckboxValue(!CheckboxValue)
-                          }}
-                          value={CheckboxValue}
-                        />
+                      <CheckBoxInput
+      change={(e) => {
+        const isChecked = !CheckboxValue;
+        setCheckboxValue(isChecked);
+        if (isChecked) {
+          const allUserIds = employeeList.map((employee) => employee.userId);
+          const allSelectedEmployees = employeeList.map((employee, index) => ({
+            id: index + 1,
+            jobId: "", // Set the job ID accordingly
+            userId: employee.userId,
+            roleId: employee.roleId,
+            createdBy: "", // Set the createdBy field accordingly
+          }));
+          setSelectedUserIds(allUserIds);
+          setselectedemployee(allSelectedEmployees);
+        } else {
+          setSelectedUserIds([]);
+          setselectedemployee([]);
+        }
+      }}
+      value={CheckboxValue}
+    />
                         <div>
                           <p className="text-sm dark:text-white">Check All</p>
                         </div>
@@ -2552,8 +2551,8 @@ const Createjob = ({
                                     )}
                                   </div>
                                   <div className="flex flex-col">
-                                    <div class="text-gray-900 text-sm font-semibold font-['Inter'] leading-tight">
-                                      {employee.username}
+                                    <div class="text-gray-900 font-semibold font-['Inter'] leading-tight text-sm dark:text-white">
+                                    {capitalizeFirstLetter(employee.username)}
                                     </div>
                                     <div className="text-gray-500 text-sm font-normal font-['Inter'] leading-tight">
                                       {employee.employeeid}

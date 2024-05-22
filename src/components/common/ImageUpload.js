@@ -6,7 +6,7 @@ import { AiOutlineCloudUpload } from "react-icons/ai";
 const { Dragger } = Upload;
 
 export default function ImageUpload({
-  change = () => {},
+  change = () => { },
   className,
   flex = true,
   file = null, // Default file prop
@@ -15,15 +15,18 @@ export default function ImageUpload({
   const allowedImageFormats = ["jpg", "png", "jpeg", "svg", "webp"];
   const imageFormatsString = allowedImageFormats.join(", ");
   const [fileList, setFileList] = useState([]);
+  const [nameList, setNameList] = useState([]);
+  const [changeStatus, setChangeStatus] = useState(false);
 
-  useEffect(()=>{
-    if(file){
+
+  useEffect(() => {
+    if (file) {
       setFileList([file])
 
-    }else{
+    } else {
       setFileList([])
     }
-  },[file])
+  }, [file])
 
   const props = {
     name: "file",
@@ -33,10 +36,18 @@ export default function ImageUpload({
       const isAllowedFile = allowedImageFormats.includes(fileExtension);
       if (!isAllowedFile) {
         message.error(`${file.name} file format is not supported.`);
+        setChangeStatus(false);
+        return false;
+      } else if (nameList.includes(file.name)) {
+        message.error(`${file.name} file is already uploaded.`);
+        setChangeStatus(false);
         return false;
       } else {
+        message.success(`${file.name} file added successfully.`);
         // Clear the previously selected file and add the new one
         setFileList([file]);
+        setNameList([...nameList, file.name]);
+        setChangeStatus(true);
         return false; // Prevent automatic upload
       }
     },
@@ -48,20 +59,29 @@ export default function ImageUpload({
         {...props}
         fileList={fileList}
         onChange={(info) => {
-          const { status } = info.file;
-          if (status === "done") {
-            message.success(`${info.file.name} file uploaded successfully.`);
-          } else if (status === "error") {
-            message.error(`${info.file.name} file upload failed.`);
+          const { file } = info;
+          console.log(file, "file")
+          if (file && changeStatus) {
+            change(file);
           }
-          change(info.file);
         }}
+
+      // onChange={(info) => {
+      //   const { status } = info.file;
+      //   if (status === "done") {
+      //     message.success(`${info.file.name} file uploaded successfully.`);
+      //   } else if (status === "error") {
+      //     message.error(`${info.file.name} file upload failed.`);
+      //   }
+      //   change(info.file);
+      // }}
       >
+
         {flex === true ? (
           <div className="flex gap-2">
             <AiOutlineCloudUpload className="text-3xl text-primary" />
             <div className="flex flex-col">
-              <h2 className="acco-subhead"> {t("Click to upload")}</h2>
+              <h2 className="acco-subhead"> {t("Click or drag files to upload")}</h2>
               <p className="para px-5">{t("Allowed formats")}: {imageFormatsString}</p>
             </div>
           </div>

@@ -40,7 +40,7 @@ import { useNavigate } from 'react-router-dom';
 
 export default function Createcandidatelist({ open = "", close = () => { }, fileUpdateId, refresh, ConfigurationAction, updateId = null, }) {
   const [show, setShow] = useState(open);
-  const [activeBtnValue, setActiveBtnValue] = useState("Personel");//Personel//Questions//Work//Personel//Educational
+  const [activeBtnValue, setActiveBtnValue] = useState("Personel");//Personel//Questions//Work//Review//Educational
   const [nextStep, setNextStep] = useState(0);
   const [applicableData, setApplicableData] = useState([]);
   const [isUpdate, setIsUpdate] = useState();
@@ -645,7 +645,7 @@ export default function Createcandidatelist({ open = "", close = () => { }, file
 
   const getCandidatesById = async () => {
     try {
-      const response = await getRecruitmentResumeById(resumeId);
+      const response = await getRecruitmentResumeById({id:resumeId});
       console.log(response);
 
       const personelDetails = [
@@ -668,10 +668,7 @@ export default function Createcandidatelist({ open = "", close = () => { }, file
     }
   };
 
-  useEffect(() => {
 
-    getCandidatesById()
-  }, []);
 
   const getEducationDetails = async () => {
     try {
@@ -706,10 +703,17 @@ export default function Createcandidatelist({ open = "", close = () => { }, file
     }
   }
 
+  // useEffect(() => {
+  //   getEducationDetails()
+  //   getEmployeExperiance()
+  // }, [resumeId])
   useEffect(() => {
-    getEducationDetails()
-    getEmployeExperiance()
-  }, [resumeId])
+    if (activeBtnValue === "Review") {
+      getEducationDetails();
+      getEmployeExperiance();
+      getCandidatesById();
+    }
+  }, [activeBtnValue]);
   return (
     <div>
       {show && (
@@ -811,7 +815,7 @@ export default function Createcandidatelist({ open = "", close = () => { }, file
 
             } else if (activeBtnValue === "Review") {
               // setBtnName("Add Employee");
-
+              
               handleClose()
             }
 
@@ -932,18 +936,15 @@ export default function Createcandidatelist({ open = "", close = () => { }, file
                     </div>
 
                     <div className='w-4/5'>
-                      <p>Photo (Optional)</p>
+                      <p className='py-1'>Photo (Optional)</p>
                       <ImageUpload
                         change={(e) => {
                           if (e) {
                             setFile(e)
                           }
-                          
-
-                          console.log(e)
+                          console.log(e, "file is here")
                         }} 
                         file={file}
-                        
                         />
                     </div>
 
@@ -1191,12 +1192,15 @@ export default function Createcandidatelist({ open = "", close = () => { }, file
                           value={Formik2.values.file}
   
                           /> */}
-                        <FileUpload change={(e) => {
-                          if (e) {
-
-                            setFilepdf(e)
-                          }
-                        }} />
+                            <FileUpload
+                              change={(e) => {
+                                if (e) {
+                                  console.log(e, "file is here.")
+                                  setFilepdf(e)
+                                }
+                              }}
+                              file={filePdf}
+                            />
                       </div>
                       <div>
                         <TextArea
