@@ -230,7 +230,7 @@ const Template = ({
         {
           id: 2,
           title: t("Description"),
-          value: "value",
+          value: "description",
           width:"600px",
         },
         {
@@ -654,7 +654,7 @@ const Template = ({
 
       const response = await getAllRecruitmentEmailTemplates({ companyId: companyId });
 
-      // console.log(response," Email list is here")
+      // console.log(response,"Email list is here")
       setEmail(response.result)
       setEmailSubject(response.result.map((email) => ({
         emailTemplateId: email.emailTemplateId,
@@ -702,7 +702,7 @@ const Template = ({
     try {
       const data = await getAllRecruitmentEvaluationTemplates({ companyId: companyId })
       setEvaluation(data.result)
-      // console.log(data)
+      // console.log(data,"Evaluation list is here")
     } catch (error) {
       console.error(error); // Handle errors
     }
