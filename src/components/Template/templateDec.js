@@ -260,10 +260,10 @@ const TemplateDec = ({ open = "", close = () => { }, inputshow = false, isUpdate
 
       header={[
         !updateId
-          ? t("Create a Job Description Template")
+          ? t("Create Job Description Template")
           : t("Update Job Description Template"),
         !updateId
-          ? t("Create a Job Description Template")
+          ? t("Create Job Description Template")
           : t("Update Job Description Template"),]}
 
       headerRight={
