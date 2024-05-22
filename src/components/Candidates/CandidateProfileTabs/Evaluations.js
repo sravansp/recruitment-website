@@ -115,9 +115,10 @@ const Evaluations = ({EvaluationID,stageId}) => {
     }
   };
   useEffect(() => {
-    if(stageId||EvaluationID||evalutaionId){
+    
     getresumeEvalutionId()
-    }
+    console.log(stageId)
+  
   }, [stageId||EvaluationID||evalutaionId])
 
 
