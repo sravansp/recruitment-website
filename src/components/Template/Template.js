@@ -81,19 +81,19 @@ const Template = ({
     {
       id: 5,
       title: t("Evaluation"),
-      value: "Evaluation",
+      value: "Evaluation_Template",
       tabheading: "Evaluation Templates"
     },
     {
       id: 6,
       title: t("Questionnaire"),
-      value: "Questionnaire",
+      value: "Questionnaire_Template",
       tabheading: "Questionnaire Templates"
     },
     {
       id: 7,
       title: t("Letter"),
-      value: "Letter",
+      value: "Letter_Template",
       tabheading: "Letter Templates"
     }
 
@@ -105,9 +105,9 @@ const Template = ({
       Job_Description_Template: { id: 2, api: API.UPDATE_Job_Description },
       Workflow_Template: { id: 3, api: API.UPDATE_Workflow },
       Email_Template: { id: 4, api: API.UPDATE_Email },
-      Evaluation: { id: 5, api: API.UPDATE_EvaluationS },
-      Questionnaire: { id: 5, api: API.UPDATE_Questionaire },
-      Letter: { id: 5, api: API.UPDATE_Letter },
+      Evaluation_Template: { id: 5, api: API.UPDATE_EvaluationS },
+      Questionnaire_Template: { id: 5, api: API.UPDATE_Questionaire },
+      Letter_Template: { id: 5, api: API.UPDATE_Letter },
     },
   ];
   const deleteApi = [
@@ -116,9 +116,9 @@ const Template = ({
       Job_Description_Template: { id: 2, api: API.DELETE_Job_Description },
       Workflow_Template: { id: 3, api: API.DELETE_Workflow },
       Email_Template: { id: 4, api: API.DELETE_Email },
-      Evaluation: { id: 5, api: API.DELETE_Evaluation },
-      Questionnaire: { id: 5, api: API.DELETE_Questionaire },
-      Letter: { id: 5, api: API.DELETE_Letter },
+      Evaluation_Template: { id: 5, api: API.DELETE_Evaluation },
+      Questionnaire_Template: { id: 5, api: API.DELETE_Questionaire },
+      Letter_Template: { id: 5, api: API.DELETE_Letter },
 
     },
   ];
@@ -252,7 +252,7 @@ const Template = ({
           status: "viewData",
         },
       ],
-      Evaluation: [
+      Evaluation_Template: [
         {
           id: 1,
           title: t("Template Name"),
@@ -284,7 +284,7 @@ const Template = ({
           status: "viewData",
         },
       ],
-      Questionnaire: [
+      Questionnaire_Template: [
         {
           id: 1,
           title: t("Template Name"),
@@ -316,7 +316,7 @@ const Template = ({
           status: "viewData",
         },
       ],
-      Letter: [
+      Letter_Template: [
         {
           id: 1,
           title: t("Template Name"),
@@ -456,7 +456,7 @@ const Template = ({
         //   action: true,
         // },
       ],
-      Evaluation: [
+      Evaluation_Template: [
         {
           id: 1,
           title: "Template Name",
@@ -473,7 +473,7 @@ const Template = ({
           value: "isActive",
         },
       ],
-      Questionnaire: [
+      Questionnaire_Template: [
         {
           id: 1,
           title: t("Template Name"),
@@ -496,7 +496,7 @@ const Template = ({
         //   action: true,
         // },
       ],
-      Letter: [
+      Letter_Template: [
         {
           id: 1,
           title: t("Template Name"),
@@ -780,18 +780,18 @@ const Template = ({
 
         // console.log(newData)
         break;
-      case "Evaluation":
+      case "Evaluation_Template":
         getallevaluation();
 
         // console.log(newData)
         break;
-      case "Questionnaire":
+      case "Questionnaire_Template":
         // getDepartmentList();
         getallquestionaire();
 
         // console.log(newData)
         break;
-      case "Letter":
+      case "Letter_Template":
         getallLetter()
 
         // console.log(newData)
@@ -814,9 +814,9 @@ const Template = ({
       Job_Description_Template: { id: 2, data: JobDescriptionList },
       Workflow_Template: { id: 3, data: WorkflowList },
       Email_Template: { id: 4, data: emailSubject },
-      Evaluation: { id: 5, data: EvaluationLIst },
-      Questionnaire: { id: 6, data: QuestionaireLIst },
-      Letter: { id: 7, data: LetterLIst }
+      Evaluation_Template: { id: 5, data: EvaluationLIst },
+      Questionnaire_Template: { id: 6, data: QuestionaireLIst },
+      Letter_Template: { id: 7, data: LetterLIst }
 
     },
   ];
@@ -826,9 +826,9 @@ const Template = ({
       Job_Description_Template: { id: "descriptionTemplateId" },
       Workflow_Template: { id: "workFlowId" },
       Email_Template: { id: "emailTemplateId" },
-      Evaluation: { id: "evaluationTemplateId" },
-      Questionnaire: { id: "questionnaireTemplateId" },
-      Letter: { id: "letterTemplateId" }
+      Evaluation_Template: { id: "evaluationTemplateId" },
+      Questionnaire_Template: { id: "questionnaireTemplateId" },
+      Letter_Template: { id: "letterTemplateId" }
     }
 
 
@@ -967,13 +967,13 @@ const Template = ({
               case "Email_Template":
                 getEmailLsit();
                 break;
-              case "Evaluation":
+              case "Evaluation_Template":
                 getallevaluation();
                 break;
-              case "Questionnaire":
+              case "Questionnaire_Template":
                 getallquestionaire();
                 break;
-              case "Letter":
+              case "Letter_Template":
                 getallLetter();
                 break;
             }
@@ -1044,7 +1044,7 @@ const Template = ({
           }}
         />
       )}
-      {navigationPath === "Evaluation" && show && (
+      {navigationPath === "Evaluation_Template" && show && (
         <TemEvaluation
           open={show}
           close={(e) => {
@@ -1059,7 +1059,7 @@ const Template = ({
           }}
         />
       )}
-      {navigationPath === "Questionnaire" && show && (
+      {navigationPath === "Questionnaire_Template" && show && (
         <QuestionAire
           open={show}
           close={(e) => {
@@ -1075,7 +1075,7 @@ const Template = ({
           }}
         />
       )}
-      {navigationPath === "Letter" && show && (
+      {navigationPath === "Letter_Template" && show && (
         <AddLetter
           open={show}
           close={(e) => {
