@@ -364,9 +364,9 @@ export default function Login() {
                       onClick={() => setShowPassword(!showPassword)}
                     >
                       {showPassword ? (
-                        <FiEyeOff size={18} className="text-black opacity-50" />
+                        <FiEyeOff size={18} className="text-black opacity-50 hover:text-primary hover:opacity-100" />
                       ) : (
-                        <FiEye size={18} className="text-black opacity-50" />
+                        <FiEye size={18} className="text-black opacity-50 hover:text-primary hover:opacity-100" />
                       )}
                     </div>
                   </div>
@@ -379,10 +379,10 @@ export default function Login() {
 
                 <div className="flex items-center justify-between">
                   <Checkbox onChange={onChange} checked={rememberMe}>
-                    Remember Me
+                    <span className="hover:text-primary">Remember Me</span>
                   </Checkbox>
                   <div
-                    className="text-sm text-black underline cursor-pointer"
+                    className="text-sm text-black underline cursor-pointer hover:text-primary"
                     onClick={handleForgotPasswordClick}
                   >
                     Forgot password?
