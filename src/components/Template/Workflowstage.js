@@ -556,7 +556,7 @@ const Workflowstage = ({
         const alphanumericRegex = /^[a-zA-Z0-9 ]+$/; // Regex to allow only letters, numbers, and spaces
         let hasError = false;
         if (!values.workFlowName) {
-          formik.setFieldError('workFlowName', 'Workflow Name is required');
+          formik.setFieldError('workFlowName', 'Template Name is required');
           hasError = true;
         } else if (!alphanumericRegex.test(values.workFlowName)) {
           formik.setFieldError('workFlowName', 'Please enter only letters and numbers');
