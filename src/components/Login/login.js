@@ -382,7 +382,7 @@ export default function Login() {
                     <span className="hover:text-primary">Remember Me</span>
                   </Checkbox>
                   <div
-                    className="text-sm text-black underline cursor-pointer hover:text-primary"
+                    className="text-sm text-black underline cursor-pointer hover:text-primary hover:no-underline"
                     onClick={handleForgotPasswordClick}
                   >
                     Forgot password?
