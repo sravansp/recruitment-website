@@ -595,9 +595,9 @@ const QuestionAire = ({
 
                       {index !== 0 && (
           <div style={{ display: 'flex', alignItems: 'center', gap: '15px' }}>
-            <Tooltip placement="top" title="Delete">
+            <Tooltip placement="top" color='red' title="Delete">
               <RiDeleteBinLine 
-                className="text-gray-500" 
+                className="text-gray-500 hover:text-red-500" 
                 style={{ width: '18px', height: '18px', cursor: 'pointer' }} 
                 onClick={() => handleDeleteCondition(index)} 
               />
