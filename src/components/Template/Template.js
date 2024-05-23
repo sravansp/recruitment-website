@@ -229,9 +229,8 @@ const Template = ({
         },
         {
           id: 2,
-          title: t("Description"),
-          value: "description",
-          width:"600px",
+          title: t("Subject"),
+          value: "value",
         },
         {
           id: 3,
