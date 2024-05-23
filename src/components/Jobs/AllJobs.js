@@ -6,7 +6,7 @@ import JobTabs from "../common/JobTabs";
 import { Add } from "@mui/icons-material";
 // import API from "../Api";
 import Table from "../common/Table";
-import API,{ getAllRecruitmentJobs, getJobStatics } from "../Api1";
+import API, { getAllRecruitmentJobs, getJobStatics } from "../Api1";
 import CustomTable from "../common/Table";
 import App1 from "../common/Table";
 import TableAnt1 from "../common/Table";
@@ -70,7 +70,7 @@ function AllJobs() {
   }, []);
   const handleChange = (pagination, filters, sorter) => {
     console.log('Various parameters', pagination, filters, sorter);
-   
+
     setSortedInfo(sorter || {});
   };
   console.log(updateId)
@@ -106,7 +106,7 @@ function AllJobs() {
           title: t("Name"),
           value: "jobTitle",
           bold: true,
-          key:"jobTitle",
+          key: "jobTitle",
           sorter: (a, b) => a.jobTitle.localeCompare(b.jobTitle),
           sortOrder: sortedInfo?.columnKey === 'jobTitle' ? sortedInfo.order : null,
         },
@@ -114,7 +114,7 @@ function AllJobs() {
           id: 2,
           title: t("Applied"),
           value: "noOfApplicants",
-          key:"noOfApplicants",
+          key: "noOfApplicants",
           sorter: (a, b) => a.noOfApplicants - b.noOfApplicants,
           sortOrder: sortedInfo?.columnKey === 'noOfApplicants' ? sortedInfo.order : null,
         },
@@ -161,7 +161,7 @@ function AllJobs() {
             // Parse the dates
             const dateA = new Date(a.createdOn);
             const dateB = new Date(b.createdOn);
-        
+
             // Compare the dates
             return dateA - dateB;
           },
@@ -180,15 +180,15 @@ function AllJobs() {
           title: t("Name"),
           value: "jobTitle",
           bold: true,
-          key:"jobTitle",
+          key: "jobTitle",
           sorter: (a, b) => a.jobTitle.localeCompare(b.jobTitle),
-        sortOrder: sortedInfo?.columnKey === 'jobTitle' ? sortedInfo.order : null,
+          sortOrder: sortedInfo?.columnKey === 'jobTitle' ? sortedInfo.order : null,
         },
         {
           id: 2,
           title: t("Applied"),
           value: "noOfApplicants",
-          key:"noOfApplicants",
+          key: "noOfApplicants",
           sorter: (a, b) => a.noOfApplicants - b.noOfApplicants,
           sortOrder: sortedInfo?.columnKey === 'noOfApplicants' ? sortedInfo.order : null,
         },
@@ -196,9 +196,9 @@ function AllJobs() {
           id: 3,
           title: t("Type"),
           value: "workLocationType",
-          key:"workLocationType",
+          key: "workLocationType",
           sorter: (a, b) => {
-            
+
             return a.workLocationType.localeCompare(b.workLocationType);
           },
           sortOrder: sortedInfo?.columnKey === 'workLocationType' ? sortedInfo.order : null,
@@ -208,7 +208,7 @@ function AllJobs() {
           id: 4,
           title: t("Location"),
           value: "location",
-          key:"location",
+          key: "location",
           sorter: (a, b) => a.location.localeCompare(b.location),
           sortOrder: sortedInfo?.columnKey === 'location' ? sortedInfo.order : null,
 
@@ -223,7 +223,7 @@ function AllJobs() {
           id: 6,
           title: t("Posted_By"),
           value: "jobCreatedBy",
-          key:"jobCreatedBy",
+          key: "jobCreatedBy",
           sorter: (a, b) => a.jobCreatedBy.localeCompare(b.jobCreatedBy),
           sortOrder: sortedInfo?.columnKey === 'jobCreatedBy' ? sortedInfo.order : null,
         },
@@ -236,7 +236,7 @@ function AllJobs() {
             // Parse the dates
             const dateA = new Date(a.createdOn);
             const dateB = new Date(b.createdOn);
-        
+
             // Compare the dates
             return dateA - dateB;
           },
@@ -255,7 +255,7 @@ function AllJobs() {
           title: t("Name"),
           value: "jobTitle",
           bold: true,
-          key:"jobTitle",
+          key: "jobTitle",
           sorter: (a, b) => a.jobTitle.localeCompare(b.jobTitle),
           sortOrder: sortedInfo?.columnKey === 'jobTitle' ? sortedInfo.order : null,
         },
@@ -263,7 +263,7 @@ function AllJobs() {
           id: 2,
           title: t("Applied"),
           value: "noOfApplicants",
-          key:"noOfApplicants",
+          key: "noOfApplicants",
           sorter: (a, b) => a.noOfApplicants - b.noOfApplicants,
           sortOrder: sortedInfo?.columnKey === 'noOfApplicants' ? sortedInfo.order : null,
         },
@@ -271,9 +271,9 @@ function AllJobs() {
           id: 3,
           title: t("Type"),
           value: "workLocationType",
-          key:"workLocationType",
+          key: "workLocationType",
           sorter: (a, b) => {
-            
+
             return a.workLocationType.localeCompare(b.workLocationType);
           },
           sortOrder: sortedInfo?.columnKey === 'workLocationType' ? sortedInfo.order : null,
@@ -283,7 +283,7 @@ function AllJobs() {
           id: 4,
           title: t("Location"),
           value: "location",
-          key:"location",
+          key: "location",
           sorter: (a, b) => a.location.localeCompare(b.location),
           sortOrder: sortedInfo?.columnKey === 'location' ? sortedInfo.order : null,
 
@@ -298,7 +298,7 @@ function AllJobs() {
           id: 6,
           title: t("Posted_By"),
           value: "jobCreatedBy",
-          key:"jobCreatedBy",
+          key: "jobCreatedBy",
           sorter: (a, b) => a.jobCreatedBy.localeCompare(b.jobCreatedBy),
           sortOrder: sortedInfo?.columnKey === 'jobCreatedBy' ? sortedInfo.order : null,
         },
@@ -311,7 +311,7 @@ function AllJobs() {
             // Parse the dates
             const dateA = new Date(a.createdOn);
             const dateB = new Date(b.createdOn);
-        
+
             // Compare the dates
             return dateA - dateB;
           },
@@ -330,7 +330,7 @@ function AllJobs() {
           title: t("Name"),
           value: "jobTitle",
           bold: true,
-          key:"jobTitle",
+          key: "jobTitle",
           sorter: (a, b) => a.jobTitle.localeCompare(b.jobTitle),
           sortOrder: sortedInfo?.columnKey === 'jobTitle' ? sortedInfo.order : null,
         },
@@ -338,7 +338,7 @@ function AllJobs() {
           id: 2,
           title: t("Applied"),
           value: "noOfApplicants",
-          key:"noOfApplicants",
+          key: "noOfApplicants",
           sorter: (a, b) => a.noOfApplicants - b.noOfApplicants,
           sortOrder: sortedInfo?.columnKey === 'noOfApplicants' ? sortedInfo.order : null,
         },
@@ -346,9 +346,9 @@ function AllJobs() {
           id: 3,
           title: t("Type"),
           value: "workLocationType",
-          key:"workLocationType",
+          key: "workLocationType",
           sorter: (a, b) => {
-            
+
             return a.workLocationType.localeCompare(b.workLocationType);
           },
           sortOrder: sortedInfo?.columnKey === 'workLocationType' ? sortedInfo.order : null,
@@ -358,7 +358,7 @@ function AllJobs() {
           id: 4,
           title: t("Location"),
           value: "location",
-          key:"location",
+          key: "location",
           sorter: (a, b) => a.location.length - b.location.length,
           sortOrder: sortedInfo?.columnKey === 'location'
         },
@@ -373,7 +373,7 @@ function AllJobs() {
           id: 5,
           title: t("Posted_By"),
           value: "jobCreatedBy",
-          key:"jobCreatedBy",
+          key: "jobCreatedBy",
           sorter: (a, b) => a.jobCreatedBy.length - b.jobCreatedBy.length,
           sortOrder: sortedInfo?.columnKey === 'jobCreatedBy'
         },
@@ -381,12 +381,12 @@ function AllJobs() {
           id: 6,
           title: t("Date"),
           value: "createdOn",
-          key:"createdOn",
+          key: "createdOn",
           sorter: (a, b) => {
             // Parse the dates
             const dateA = new Date(a.createdOn);
             const dateB = new Date(b.createdOn);
-        
+
             // Compare the dates
             return dateA - dateB;
           },
@@ -413,10 +413,10 @@ function AllJobs() {
   // }, []);
   const updateApi = [
     {
-      All_Jobs:{id:1,api:API. UpDate_jobs},
-      My_Open_Jobs:{id:2,api:API. UpDate_jobs},
-      Open:{id:3,api:API. UpDate_jobs},
-      Draft:{id:3,api:API. UpDate_jobs},
+      All_Jobs: { id: 1, api: API.UpDate_jobs },
+      My_Open_Jobs: { id: 2, api: API.UpDate_jobs },
+      Open: { id: 3, api: API.UpDate_jobs },
+      Draft: { id: 3, api: API.UpDate_jobs },
 
     },
   ];
@@ -442,7 +442,7 @@ function AllJobs() {
     try {
       const response = await getAllRecruitmentJobs({ companyId });
       const filteredJobs = response.result.filter(job => job.jobStatus !== "Draft");
-      console.log("Draft",filteredJobs)
+      console.log("Draft", filteredJobs)
       setJobList(filteredJobs);
       console.log(response);
     } catch (error) {
@@ -503,32 +503,32 @@ function AllJobs() {
   }, []);
 
   useEffect(() => {
-    switch(navigationPath){
-    case"All_Jobs":
-    
-    callapi();
-    break;
-    case"My_Open_Jobs":
-    if(userid){
-    getcreatedBy();
+    switch (navigationPath) {
+      case "All_Jobs":
+
+        callapi();
+        break;
+      case "My_Open_Jobs":
+        if (userid) {
+          getcreatedBy();
+        }
+        break;
+      case "Open":
+        getOpenjobs();
+        break
+      case "Draft":
+        getDraftjobs();
+        break
+      default:
+        break
+
+
     }
-    break;
-    case"Open":
-    getOpenjobs();
-    break
-    case"Draft":
-    getDraftjobs();
-    break
-    default:
-      break
-   
-  
-  }
   }, [navigationPath]);
-  useEffect(()=>{
+  useEffect(() => {
     getcreatedBy();
-    
-  },[userid])
+
+  }, [userid])
 
 
 
@@ -555,7 +555,7 @@ function AllJobs() {
       My_Open_Jobs: [
         {
           id: 1,
-          title: t("Name"),
+          title: "JobTitle",
           value: "jobTitle",
         },
         {
@@ -576,18 +576,11 @@ function AllJobs() {
         },
         {
           id: 5,
-
-          title: "JobTitle",
-          value: "jobTitle",
-
-        },
-        {
-          id: 6,
           title: "JobType",
           value: "jobType",
         },
         {
-          id: 7,
+          id: 6,
           title: "Requirement Type",
           value: "requirementType",
         },
@@ -595,7 +588,7 @@ function AllJobs() {
       Draft: [
         {
           id: 1,
-          title: t("Name"),
+          title: "JobTitle",
           value: "jobTitle",
         },
         {
@@ -616,27 +609,19 @@ function AllJobs() {
         },
         {
           id: 5,
-
-          title: "JobTitle",
-          value: "jobTitle",
-
-        },
-        {
-          id: 6,
           title: "JobType",
           value: "jobType",
         },
         {
-          id: 7,
+          id: 6,
           title: "Requirement Type",
           value: "requirementType",
         },
-
       ],
       Open: [
         {
           id: 1,
-          title: t("Name"),
+          title: "JobTitle",
           value: "jobTitle",
         },
         {
@@ -657,27 +642,19 @@ function AllJobs() {
         },
         {
           id: 5,
-
-          title: "JobTitle",
-          value: "jobTitle",
-
-        },
-        {
-          id: 6,
           title: "JobType",
           value: "jobType",
         },
         {
-          id: 7,
+          id: 6,
           title: "Requirement Type",
           value: "requirementType",
         },
-
       ],
       All_Jobs: [
         {
           id: 1,
-          title: t("Name"),
+          title: "JobTitle",
           value: "jobTitle",
         },
         {
@@ -698,18 +675,11 @@ function AllJobs() {
         },
         {
           id: 5,
-
-          title: "JobTitle",
-          value: "jobTitle",
-
-        },
-        {
-          id: 6,
           title: "JobType",
           value: "jobType",
         },
         {
-          id: 7,
+          id: 6,
           title: "Requirement Type",
           value: "requirementType",
         },
@@ -758,7 +728,7 @@ function AllJobs() {
                   getcreatedBy();
                   getOpenjobs();
                   getDraftjobs();
-                 
+
                 }}
                 // openPolicy={openPop}
                 // updateId={updateId}
@@ -777,7 +747,7 @@ function AllJobs() {
         {/* <TableAnt1 data={JobsList} header={header} path="AllJobs" /> */}
         <Tabs
           path="JobDetails"
-          handlesort={(e)=>handleChange(e)}
+          handlesort={(e) => handleChange(e)}
           tabs={tabs}
           header={header}
           drawerH={Drawerheader}
@@ -803,20 +773,20 @@ function AllJobs() {
           // recordId={record.jobId}
           actionToggle={(e) => {
             setUpdateId(e);
-           
+
           }}
-          refreshJobCrad={()=>{
+          refreshJobCrad={() => {
             getJobstat()
             console.log("hiii")
           }}
           refresh={() => {
-            
+
             switch (navigationPath) {
               default:
                 getcreatedBy();
                 break;
               case "AllJobs":
-                
+
                 callapi();
                 break;
               case "Open":
