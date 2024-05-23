@@ -84,6 +84,7 @@ const TemplateDec = ({ open = "", close = () => { }, inputshow = false, isUpdate
   };
 
   const handleTemplateNameChange = (value) => {
+    getJobdescription()
     if (!value) {
       setTemplateNameError('Template Name is required.');
     } else {
@@ -224,9 +225,9 @@ const TemplateDec = ({ open = "", close = () => { }, inputshow = false, isUpdate
   }
   
 
-  useEffect(()=>{
-    getJobdescription()
-  },[templateName])
+  // useEffect(()=>{
+  //   getJobdescription()
+  // },[templateName])
 
   return (
     
