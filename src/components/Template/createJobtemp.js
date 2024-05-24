@@ -1991,13 +1991,8 @@ icondropDown={true}
                                       cursor: "pointer",
                                     }}
                                   /> */}
-                                    <Tooltip placement="top" title={"Delete"}>
-                                      <RiDeleteBinLine className="text-gray-400"
-                                        style={{
-                                          width: "18px",
-                                          height: "18px",
-                                          cursor: "pointer",
-                                        }}
+                                    <Tooltip placement="top" color="red" title={"Delete"}>
+                                      <RiDeleteBinLine className="text-gray-400 hover:text-red-500 w-[18px] h-[18px] cursor-pointer"
                                         onClick={() => handleDeleteCondition(index)}
                                       />
                                     </Tooltip>
