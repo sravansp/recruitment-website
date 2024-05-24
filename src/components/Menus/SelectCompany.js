@@ -61,7 +61,7 @@ const SelectCompany = () => {
 
   return (
     <Dropdown
-      trigger="click"
+      // trigger="click"
       overlayStyle={{ top: "20px" }}
       overlay={
         <Menu
