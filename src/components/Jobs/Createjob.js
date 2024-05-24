@@ -2256,7 +2256,7 @@ const Createjob = ({
                                   icon={<MdOutlineShortText />}
                                   icondropDown={true}
                                   error={condition.answerMetaData[0]?.key ? '' : answerError || ''}
-                                  placeholder={"Choose Options"}
+                                  placeholder={"Choose anser type"}
 
                                 />
                                 <Tooltip placement="topRight" title={"Active / Inactive"}>
@@ -2275,7 +2275,7 @@ const Createjob = ({
                                   </Tooltip> */}
                                     <Tooltip placement="top" color={"red"} title={"Delete"}>
                                       <RiDeleteBin6Fill
-                                        style={{ width: '18px', height: '18px', cursor: 'pointer' }}
+                                        className="w-[18px] h-[18px] cursor-pointer text-slate-600 hover:text-red-500"
                                         onClick={() => handleDeleteCondition(index)}
                                       />
                                     </Tooltip>
@@ -2290,8 +2290,8 @@ const Createjob = ({
                                   condition.answerMetaData.map((field, fieldIndex) => (
                                     <div key={fieldIndex} className="flex items-center">
                                       <FormInput
-                                        title={`Options ${fieldIndex + 1}`}
-                                        placeholder={'Enter value'}
+                                        title={`Option ${fieldIndex + 1}`}
+                                        placeholder={`Enter option ${fieldIndex + 1}`}
                                         value={field.value}
                                         change={(e) => setEvaluation((prevEvaluation) => prevEvaluation.map((prevCondition, i) => i === index
                                           ? {
