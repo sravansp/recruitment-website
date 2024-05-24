@@ -1754,7 +1754,10 @@ const Createjob = ({
                           }}
                           value={formik1.values.noOfVaccancies}
                           error={formik1.errors.noOfVaccancies}
-                          type={"number"}
+                          type={"text"}
+                          pattern="[0-9]*"
+                          inputmode="numeric"
+                          maxLength={20}
                           required={true}
                         />
 
