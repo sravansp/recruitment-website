@@ -107,14 +107,18 @@ const SelectCompany = () => {
     boxShadow:
       "0px 29.49px 46.341px 0px rgba(6, 6, 6, 0.10), 0px 29.49px 46.341px 0px rgba(6, 6, 6, 0.10)",
   };
-
+  console.log(companyData, "companyData")
   const items = companyData?.map((company) => ({
     key: company.companyId.toString(),
     label: (
       <div className="flex items-center justify-between gap-2">
         <div className="flex items-center gap-2">
           <div className="overflow-hidden rounded-full size-[28px] 2xl:size-[30px]">
-            <img src={Clogo} alt="" />
+            {company?.logo ? (
+              <img src={company?.logo} alt="" />
+            ) : (
+              <img src={Clogo} alt="" />
+            )}
           </div>
           <div className="flex flex-col">
             <p className="text-[11px] font-semibold truncate capitalize 2xl:text-xs dark:text-white">
@@ -159,18 +163,24 @@ const SelectCompany = () => {
         {selectedCompany && (
           <div className="flex items-center justify-between overflow-hidden ">
             <div className="flex items-center gap-2 w-28 2xl:w-36">
-              <div className="overflow-hidden rounded-full size-[28px] 2xl:size-[30px] md:hidden">
-                <img src={Clogo} alt="" />
+              <div className="overflow-hidden border border-white rounded-full shadow-md 2xl:size-8 size-6 shrink-0">
+                {selectedCompany?.logo ? (
+                  <img src={selectedCompany?.logo} alt="" />
+                ) : (
+                  <img src={Clogo} alt="" />
+                )}
               </div>
               <h1
                 className="text-[10px] font-semibold capitalize truncate 2xl:text-sm dark:text-white opacity-70 hidden md:block"
                 title={selectedCompany?.company || ""}
               >
-                {selectedCompany?.company || ""}
+                {selectedCompany?.company && selectedCompany.company.length > 7
+                  ? `${selectedCompany.company.substring(0, 7)}...`
+                  : selectedCompany?.company || ""}
               </h1>
             </div>
             <div className="shrink-0">
-            <PiCaretDown size={18} className="opacity-50  dark:text-white" />
+              <PiCaretDown size={18} className="opacity-50  dark:text-white" />
             </div>
           </div>
         )}
