@@ -1458,7 +1458,9 @@ const CreatejobTemp = ({
   required={true}
   type={"text"}
   pattern="[0-9]*"
-  inputmode="numeric"/>
+  inputmode="numeric"
+  maxLength={15}
+/>
                         <Dropdown
                           title={"Salary Currency"}
                           placeholder={"Enter Salary Currency"}
