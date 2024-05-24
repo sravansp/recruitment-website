@@ -605,11 +605,11 @@ const TableAnt = ({
                 </div>
               ) :
                each.value === "viewData" ? (
-                <Tooltip title="View Data" placement="top">
+                <Tooltip title="View Details" placement="top" color={primaryColor}>
                 <div onClick={() => {
                   !viewOutside &&
                   handleModalOpen(text, drawerH[0]?.[tabValue || path]);
-                }}>
+                }} className="w-7 h-7 rounded-full text-center p-2 hover:text-primary hover:bg-primaryalpha/5">
                   <IoEyeOutline />
                 </div>
               </Tooltip>
