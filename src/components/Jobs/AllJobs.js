@@ -539,7 +539,7 @@ function AllJobs() {
     try {
       const response = await getJobStatics({ companyId });
       setjobstatic(response.result);
-      console.log(response);
+      console.log(response,"jobstatic");
     } catch (error) {
       console.error(error);
     }
