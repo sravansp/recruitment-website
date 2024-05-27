@@ -24,6 +24,7 @@ const TemplateDec = ({ open = "", close = () => { }, inputshow = false, isUpdate
   const [templateNameError, setTemplateNameError] = useState('');
   const [contentError, setContentError] = useState('');
   const[JobDescription,setJobDescription] = useState([])
+  const[copytemplateName,setcopytemplateName] = useState("")
   console.log(updateId)
   const { t } = useTranslation();
   const handleClose = () => {
@@ -110,7 +111,7 @@ const TemplateDec = ({ open = "", close = () => { }, inputshow = false, isUpdate
       } else {
         setTemplateNameError('');
       }
-      if(JobDescription.length>0){
+      if(JobDescription.length>0 && templateName !== copytemplateName){
         setTemplateNameError('Template Name Already Exist')
         hasError = true;
         console.log("hii")
@@ -194,6 +195,7 @@ const TemplateDec = ({ open = "", close = () => { }, inputshow = false, isUpdate
       const response = await getRecruitmentJobDescriptionTemplateById({ id: id })
       console.log(response)
       setTemplateName(response.result[0].descriptionTemplateName);
+      setcopytemplateName(response.result[0].descriptionTemplateName)
       setContent(response.result[0].descriptionTemplate);
 
 
@@ -225,7 +227,11 @@ const TemplateDec = ({ open = "", close = () => { }, inputshow = false, isUpdate
   
 
   useEffect(()=>{
-    getJobdescription()
+    if (templateName !== copytemplateName) {
+      getJobdescription();
+    }
+    console.log(copytemplateName)
+    console.log(templateName)
   },[templateName])
 
   return (

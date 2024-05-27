@@ -27,6 +27,7 @@ const AddLetter = ({
   const [templateNameError, setTemplateNameError] = useState('');
   const [subjectError, setSubjectError] = useState('')
   const [contentError, setContentError] = useState('');
+  const[copytemplateName,setcopytemplateName] = useState("")
   const handleClose = () => {
     close(false);
   };
@@ -82,7 +83,7 @@ const AddLetter = ({
         setTemplateNameError('');
       }
 
-      if(Length>0){
+      if(Length>0 && templateName!==copytemplateName){
         setTemplateNameError('Template name already exist.');
         hasError = true; 
       }else{
@@ -181,6 +182,7 @@ const AddLetter = ({
       const response = await getRecruitmentLetterTemplateById({ id })
       console.log(response)
       setTemplateName(response.result[0].letterTemplateName);
+      setcopytemplateName(response.result[0].letterTemplateName)
       setContent(response.result[0].letterTemplate.body);
       setsubject(response.result[0].letterTemplate.subject)
 
@@ -221,7 +223,10 @@ const AddLetter = ({
   }
 
   useEffect(()=>{
+    if(templateName!==copytemplateName){
     getLetterByName()
+
+    }
   },[templateName])
   return (
     <div>

@@ -30,6 +30,7 @@ const Emailtemplate = ({
   const [subjectError, setSubjectError] = useState('')
   const [contentError, setContentError] = useState('');
   const [Length,setLength] = useState("")
+  const[copytemplateName,setcopytemplateName] = useState("")
    const handleClose = () => {
     close(false);
   };
@@ -85,7 +86,7 @@ const Emailtemplate = ({
       } else if (templateName.length < 3) {
         setTemplateNameError('Template Name should have at least 3 letters.');
         hasError = true; // Set flag to true if there's an error
-      }else if (Length > 0) {
+      }else if (Length > 0 && templateName !== copytemplateName) {
         setTemplateNameError('Template Name already exist');
         hasError = true; // Set flag to true if there's an error
       }  
@@ -216,7 +217,7 @@ const Emailtemplate = ({
     }
   }
   useEffect(()=>{
-    if(templateName){
+    if (templateName !== copytemplateName) {
     getEmailtemplateByName()
     }
   },[templateName])
@@ -226,6 +227,7 @@ const Emailtemplate = ({
       const response = await getRecruitmentEmailTemplateById({ id })
       console.log(response)
       setTemplateName(response.result[0].emailTemplateName);
+      setcopytemplateName(response.result[0].emailTemplateName)
       setContent(response.result[0].emailTemplate.body);
       setsubject(response.result[0].emailTemplate.subject)
 
@@ -234,6 +236,7 @@ const Emailtemplate = ({
     }
   }
   useEffect(() => {
+    
     getEmailById()
     console.log(templateName)
     console.log(content)
