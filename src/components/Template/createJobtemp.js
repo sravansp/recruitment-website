@@ -388,7 +388,7 @@ const CreatejobTemp = ({
           if (response.status === 200) {
             openNotification(
               "success",
-              "Success",
+              "Successful",
               response.message.replace(/<br\/>/g, '\n')
             );
             setPresentage(2);
@@ -446,7 +446,7 @@ const CreatejobTemp = ({
           if (response.status === 200) {
             openNotification(
               "success",
-              "Success",
+              "Successful",
               response.message.replace(/<br\/>/g, '\n')
             );
             setPresentage(2);
@@ -1062,8 +1062,8 @@ const CreatejobTemp = ({
           refresh()
         }}
         header={[
-          !updateId ? t("Create a Job Template") : t("Update Job Template"),
-          !updateId ? t("Create a Job Template") : t("Update Job Template"),
+          !updateId ? t("Create Job Template") : t("Update Job Template"),
+          !updateId ? t("Create Job Template") : t("Update Job Template"),
         ]}
         headerRight={
           <div className="flex items-center gap-10">
@@ -1423,8 +1423,10 @@ const CreatejobTemp = ({
      
     }
   }}
-  value={formik.values.salaryRangeFrom}
-  type={"number"}
+  value={isNaN(formik.values.salaryRangeFrom)? "" : formik.values.salaryRangeFrom}
+  type={"text"}
+  pattern="[0-9]*"
+  inputmode="numeric"
   error={formik.errors.salaryRangeFrom||salaryRangeFromError}
   required={true}
   maxLength={15}
@@ -1451,10 +1453,13 @@ const CreatejobTemp = ({
       formik.setFieldValue('salaryRangeTo', e);
     }
   }}
-  value={formik.values.salaryRangeTo}
+  value={isNaN(formik.values.salaryRangeTo)? "" : formik.values.salaryRangeTo}
   error={formik.errors.salaryRangeTo || salaryRangeToError}
   required={true}
-  type={"number"}
+  type={"text"}
+  pattern="[0-9]*"
+  inputmode="numeric"
+  maxLength={15}
 />
                         <Dropdown
                           title={"Salary Currency"}
@@ -1986,13 +1991,8 @@ icondropDown={true}
                                       cursor: "pointer",
                                     }}
                                   /> */}
-                                    <Tooltip placement="top" title={"Delete"}>
-                                      <RiDeleteBinLine className="text-gray-400"
-                                        style={{
-                                          width: "18px",
-                                          height: "18px",
-                                          cursor: "pointer",
-                                        }}
+                                    <Tooltip placement="top" color="red" title={"Delete"}>
+                                      <RiDeleteBinLine className="text-gray-400 hover:text-red-500 w-[18px] h-[18px] cursor-pointer"
                                         onClick={() => handleDeleteCondition(index)}
                                       />
                                     </Tooltip>

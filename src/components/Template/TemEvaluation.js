@@ -240,7 +240,7 @@ const TemEvaluation = ({
           }
 
           if (!condition.answerMetaData || !condition.answerMetaData[0]?.key) {
-            setAnswerError('Questiontype is required');
+            setAnswerError('Question type is required');
             hasError = true;
           }
           if (
@@ -521,7 +521,7 @@ const TemEvaluation = ({
             </div>
             <div className='grid grid-cols-2'>
               <TextArea
-                title={"Decription"}
+                title={"Description"}
                 placeholder={"Enter Description"}
                 value={formik.values.description}
                 change={(e) => {
@@ -576,7 +576,7 @@ const TemEvaluation = ({
                           icondropDown={true}
                           required={true}
                           error={condition.answerMetaData[0]?.key ? '' : answerError || ''}
-                          placeholder={"Choose Questiontype"}
+                          placeholder={"Choose Question Type"}
                         />
                       </div>
                       {/* Additional dynamic input fields based on the selected value in the dropdown */}
@@ -591,9 +591,9 @@ const TemEvaluation = ({
 
                       {index !== 0 && (
           <div style={{ display: 'flex', alignItems: 'center', gap: '15px' }}>
-            <Tooltip placement="top" title="Delete">
+            <Tooltip placement="top" color={"red"} title="Delete">
               <RiDeleteBinLine 
-                className="text-gray-500" 
+                className="text-gray-500 hover:text-red-500" 
                 style={{ width: '18px', height: '18px', cursor: 'pointer' }} 
                 onClick={() => handleDeleteCondition(index)} 
               />
@@ -610,7 +610,7 @@ const TemEvaluation = ({
                         <div key={fieldIndex} className="flex items-center">
                           {['Drop-down', 'Multiple Choice', 'Checkboxes'].includes(field.key) && (
                             <FormInput
-                              title={`Options ${fieldIndex + 1}`}
+                              title={`Option ${fieldIndex + 1}`}
                               placeholder={'Enter option'}
                               value={field.value}
                               change={(e) => setEvaluation((prevEvaluation) => prevEvaluation.map((prevCondition, i) => i === index

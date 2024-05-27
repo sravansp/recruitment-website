@@ -61,7 +61,7 @@ const SelectCompany = () => {
 
   return (
     <Dropdown
-      trigger="click"
+      // trigger="click"
       overlayStyle={{ top: "20px" }}
       overlay={
         <Menu
@@ -84,7 +84,11 @@ const SelectCompany = () => {
               <Space>
                 <RiDraggable />
                 <div className="overflow-hidden rounded-lg w-7 2xl:w-8 h-7 2xl:h-8">
-                  <img src={Clogo} alt="" />
+                  {item?.logo ? (
+                    <img src={item?.logo} alt="" />
+                  ) : (
+                    <img src={Clogo} alt="" />
+                  )}
                 </div>
                 <div className="flex flex-col">
                   <p className="text-[11px] font-semibold capitalize 2xl:text-sm dark:text-white">
@@ -111,7 +115,11 @@ const SelectCompany = () => {
           <div className="flex items-center justify-between">
             <div className="flex items-center gap-2 overflow-hidden">
               <div className="w-6 h-6 overflow-hidden rounded-full 2xl:w-9 2xl:h-9 shrink-0">
-                <img src={Clogo} alt="" />
+                {selectedCompany?.logo ? (
+                  <img src={selectedCompany?.logo} alt="" />
+                ) : (
+                  <img src={Clogo} alt="" />
+                )}
               </div>
               <h1
                 className="text-[10px] font-semibold capitalize truncate  2xl:text-sm dark:text-white"

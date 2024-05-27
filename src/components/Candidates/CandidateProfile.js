@@ -442,12 +442,12 @@ const CandidateProfile = () => {
   //back end
   const getCandidatesById = async () => {
     try {
-      const response = await getRecruitmentResumeById(id);
+      const response = await getRecruitmentResumeById({id});
       console.log(response);
       const updatedCandidates = response.result.map((candidate) => ({
         ...candidate,
       }));
-      console.log(updatedCandidates);
+      console.log(updatedCandidates,"candidates");
       setcandidate(updatedCandidates);
       setPriority(response.result[0].priority)
       setRating(response.result[0].rating)
@@ -455,7 +455,7 @@ const CandidateProfile = () => {
 
       // setuserdata(response.result.map((items)=>({
       //  personal:[
-      //   {id:1,
+      //   {id:1,git
       //     label:"Email Address",
       //     value:items.candidateEmail,
       //     icon: <RiMailSendLine />,

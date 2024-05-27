@@ -239,7 +239,7 @@ const QuestionAire = ({
             }
 
             if (!condition.answerMetaData || !condition.answerMetaData[0]?.key) {
-              setAnswerError('Answertype is required');
+              setAnswerError('Question Type is required');
               hasError = true;
             }
             if (
@@ -458,10 +458,10 @@ const QuestionAire = ({
           header={[
             !updateId
               ? t("Create Questionnaire  Template")
-              : t("update Questionnaire  Template"),
+              : t("Update Questionnaire  Template"),
             !updateId
               ? t("Create Questionnaire  Template")
-              : t("update Questionnaire  Template"),
+              : t("Update Questionnaire  Template"),
           ]}
 
           //  headerRight={
@@ -580,7 +580,7 @@ const QuestionAire = ({
                           icondropDown={true}
                           error={condition.answerMetaData[0]?.key ? '' : answerError || ''}
                           required={true}
-                          placeholder={"Choose Answertype"}
+                          placeholder={"Choose Question Type"}
                         />
                       </div>
                       {/* Additional dynamic input fields based on the selected value in the dropdown */}
@@ -595,9 +595,9 @@ const QuestionAire = ({
 
                       {index !== 0 && (
           <div style={{ display: 'flex', alignItems: 'center', gap: '15px' }}>
-            <Tooltip placement="top" title="Delete">
+            <Tooltip placement="top" color='red' title="Delete">
               <RiDeleteBinLine 
-                className="text-gray-500" 
+                className="text-gray-500 hover:text-red-500" 
                 style={{ width: '18px', height: '18px', cursor: 'pointer' }} 
                 onClick={() => handleDeleteCondition(index)} 
               />

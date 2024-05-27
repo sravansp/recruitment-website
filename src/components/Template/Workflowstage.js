@@ -556,7 +556,7 @@ const Workflowstage = ({
         const alphanumericRegex = /^[a-zA-Z0-9 ]+$/; // Regex to allow only letters, numbers, and spaces
         let hasError = false;
         if (!values.workFlowName) {
-          formik.setFieldError('workFlowName', 'Workflow Name is required');
+          formik.setFieldError('workFlowName', 'Template Name is required');
           hasError = true;
         } else if (!alphanumericRegex.test(values.workFlowName)) {
           formik.setFieldError('workFlowName', 'Please enter only letters and numbers');
@@ -611,7 +611,7 @@ const Workflowstage = ({
           });
           console.log(response);
           if (response.status === 200) {
-            openNotification("success", "Success", response.message);
+            openNotification("success", "Successful", response.message);
             setTimeout(() => {
               handleClose();
               refresh();
@@ -633,7 +633,9 @@ const Workflowstage = ({
 
           
           console.log(response);
-          setResponse(response.message)
+          if (response.status === 500) {
+            openNotification("error", "Info", response.message);
+          }
           
 
           if (response.status === 200) {
@@ -654,7 +656,7 @@ const Workflowstage = ({
             console.log(insertedId);
 
             if (response2.status === 200) {
-              openNotification("success", "Success", response2.message);
+              openNotification("success", "Successful", response2.message);
               setTimeout(() => {
                 handleClose();
                 refresh();
@@ -673,11 +675,12 @@ const Workflowstage = ({
           }
         }
       } catch (error) {
-        openNotification(
-          "error",
-          "Info",
-          response
-        );
+        // openNotification(
+        //   "error",
+        //   "Info",
+        //   response
+        // );
+        console.log(error)
       }
       setSubmitting(false);
     },
@@ -875,10 +878,10 @@ const Workflowstage = ({
       }}
       header={[
         !updateId
-          ? t("Create a Workflow Template")
+          ? t("Create Workflow Template")
           : t("Update Workflow Template"),
         !updateId
-          ? t("Create a Workflow Template")
+          ? t("Create Workflow Template")
           : t("Update Workflow Template"),
       ]}
       //  headerRight={

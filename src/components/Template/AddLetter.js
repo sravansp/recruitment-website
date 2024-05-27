@@ -11,6 +11,7 @@ import FormInput from "../common/FormInput";
 import image from "../../assets/images/attachment-2.svg";
 import image2 from "../../assets/images/emoji-sticker-line.svg";
 import { getAllRecruitmentLetterTemplates,getRecruitmentLetterTemplateById, saveRecruitmentLetterTemplate, updateRecruitmentLetterTemplate } from "../Api1";
+import { FaAsterisk } from "react-icons/fa";
 const AddLetter = ({
   open = "",
   close = () => { },
@@ -42,12 +43,12 @@ const AddLetter = ({
       // stack: 2,
       style: {
         background: `${type === "success"
-            ? `linear-gradient(180deg, rgba(204, 255, 233, 0.8) 0%, rgba(235, 252, 248, 0.8) 51.08%, rgba(246, 251, 253, 0.8) 100%)`
-            : "linear-gradient(180deg, rgba(255, 236, 236, 0.80) 0%, rgba(253, 246, 248, 0.80) 51.13%, rgba(251, 251, 254, 0.80) 100%)"
+          ? `linear-gradient(180deg, rgba(204, 255, 233, 0.8) 0%, rgba(235, 252, 248, 0.8) 51.08%, rgba(246, 251, 253, 0.8) 100%)`
+          : "linear-gradient(180deg, rgba(255, 236, 236, 0.80) 0%, rgba(253, 246, 248, 0.80) 51.13%, rgba(251, 251, 254, 0.80) 100%)"
           }`,
         boxShadow: `${type === "success"
-            ? "0px 4.868px 11.358px rgba(62, 255, 93, 0.2)"
-            : "0px 22px 60px rgba(134, 92, 144, 0.20)"
+          ? "0px 4.868px 11.358px rgba(62, 255, 93, 0.2)"
+          : "0px 22px 60px rgba(134, 92, 144, 0.20)"
           }`,
       },
       // duration: null,
@@ -322,7 +323,10 @@ const AddLetter = ({
               required={true}
             />
             <div>
+              <p className="flex">
               <p className="pb-2">Letter</p>
+              <FaAsterisk className="ml-1.5 text-[6px] text-rose-600" />
+              </p>
               <TextEditor
                 initialValue={content}
                 placeholder={"Start typing your Letter"}

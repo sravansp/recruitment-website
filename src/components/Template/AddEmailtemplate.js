@@ -13,6 +13,7 @@ import image2 from "../../assets/images/emoji-sticker-line.svg";
 
 import {getAllRecruitmentEmailTemplates, saveRecruitmentEmailTemplate, getRecruitmentEmailTemplateById, updateRecruitmentEmailTemplate } from "../Api1";
 import { Subject, SubscriptionsOutlined } from "@mui/icons-material";
+import { FaAsterisk } from "react-icons/fa";
 const Emailtemplate = ({
   open = "",
   close = () => { },
@@ -328,6 +329,7 @@ const Emailtemplate = ({
               <FormInput
                 title={"Subject"}
                 placeholder={"Enter Subject"}
+                maxLength={125}
                 value={subject}
                 change={(e) => {
                   setsubject(e)
@@ -339,7 +341,10 @@ const Emailtemplate = ({
 
             </div>
             <div>
-              <p className="pb-2">Email</p>
+              <p className="flex">
+                <p className="pb-2">Email</p>
+                <FaAsterisk className="ml-1.5 text-[6px] text-rose-600" />
+              </p>
               <TextEditor
                 placeholder={"Start typing your email"}
                 initialValue={content}

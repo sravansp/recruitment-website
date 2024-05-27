@@ -252,33 +252,33 @@ export default function Createcandidatelist({ open = "", close = () => { }, file
         field: [
           {
             title: "Job Title",
-            inputFeild: "jobTitle" + ( prevWorkexp.length + 1),
+            inputFeild: "jobTitle" + (prevWorkexp.length + 1),
             type: "input"
           },
           {
             title: "Employment Type",
-            inputFeild: "employmentType" + ( prevWorkexp.length + 1),
+            inputFeild: "employmentType" + (prevWorkexp.length + 1),
             type: "dropdown"
 
           },
           {
             title: "Company Name",
-            inputFeild: "companyName" + ( prevWorkexp.length + 1),
+            inputFeild: "companyName" + (prevWorkexp.length + 1),
             type: "input"
           },
           {
             title: "Location  ",
-            inputFeild: "location" + ( prevWorkexp.length + 1),
+            inputFeild: "location" + (prevWorkexp.length + 1),
             type: "input"
           },
           {
             title: "From Date",
-            inputFeild: "fromDate" + ( prevWorkexp.length + 1),
+            inputFeild: "fromDate" + (prevWorkexp.length + 1),
             type: "date"
           },
           {
             title: "To Date",
-            inputFeild: "toDate" + ( prevWorkexp.length + 1),
+            inputFeild: "toDate" + (prevWorkexp.length + 1),
             type: "date"
           },
         ],
@@ -436,7 +436,7 @@ export default function Createcandidatelist({ open = "", close = () => { }, file
       try {
         console.log(values)
         const result = await saveRecruitmentResumeEducationalDetailBatch(
-           
+
           education.map((each) => ({
             resumeId: resumeId,
             institute: values[each.field[0].inputName],
@@ -645,7 +645,7 @@ export default function Createcandidatelist({ open = "", close = () => { }, file
 
   const getCandidatesById = async () => {
     try {
-      const response = await getRecruitmentResumeById({id:resumeId});
+      const response = await getRecruitmentResumeById({ id: resumeId });
       console.log(response);
 
       const personelDetails = [
@@ -815,7 +815,7 @@ export default function Createcandidatelist({ open = "", close = () => { }, file
 
             } else if (activeBtnValue === "Review") {
               // setBtnName("Add Employee");
-              
+
               handleClose()
             }
 
@@ -923,14 +923,30 @@ export default function Createcandidatelist({ open = "", close = () => { }, file
                       />
                       <FormInput
                         title={t("Phone_number")}
-                        type={"number"}
+                        type={"text"}
+                        pattern="[0-9]*"
+                        inputmode="numeric"
                         placeholder={t("Enter Phone number")}
+                        // change={(e) => {
+                        //   Formik2.setFieldValue("candidateContact", e);
+                        // }}
                         change={(e) => {
-                          Formik2.setFieldValue("candidateContact", e);
+                          if (
+                            /^\d+$/g.test(e) &&
+                            /^\d+(?!.*--).*$/g.test(e)
+                          ) {
+                            Formik2.setFieldValue("candidateContact", e);
+                          } else if (e === "") {
+                            Formik2.setFieldValue(
+                              "candidateContact",
+                              ""
+                            );
+                          }
                         }}
                         value={Formik2.values.candidateContact}
                         error={Formik2.values.candidateContact ? "" : Formik2.errors.candidateContact}
                         required={true}
+                        maxLength={10}
                       />
 
                     </div>
@@ -943,9 +959,9 @@ export default function Createcandidatelist({ open = "", close = () => { }, file
                             setFile(e)
                           }
                           console.log(e, "file is here")
-                        }} 
+                        }}
                         file={file}
-                        />
+                      />
                     </div>
 
 
@@ -979,12 +995,28 @@ export default function Createcandidatelist({ open = "", close = () => { }, file
                       />
                       <FormInput
                         title={t("Postal_Code")}
-                        type={"number"}
+                        type={"text"}
+                        pattern="[0-9]*"
+                        inputmode="numeric"
                         placeholder={t("Enter Postal Code")}
+                        // change={(e) => {
+                        //   Formik2.setFieldValue("postalCode", e);
+                        // }}
                         change={(e) => {
-                          Formik2.setFieldValue("postalCode", e);
+                          if (
+                            /^\d+$/g.test(e) &&
+                            /^\d+(?!.*--).*$/g.test(e)
+                          ) {
+                            Formik2.setFieldValue("postalCode", e);
+                          } else if (e === "") {
+                            Formik2.setFieldValue(
+                              "postalCode",
+                              ""
+                            );
+                          }
                         }}
                         value={Formik2.values.postalCode}
+                        maxLength={15}
                       />
 
                     </div>
@@ -1007,65 +1039,65 @@ export default function Createcandidatelist({ open = "", close = () => { }, file
                     initialExpanded={true}
                   >
                     {education.map((condition, index) => (
-  <div className='flex items-end' key={index}>
-    <div className="grid grid-cols-2 gap-4 w-4/5">
-      {condition.field.map((eachField, fieldIndex) =>
-        eachField.type === "input" ? (
-          <FormInput
-            key={fieldIndex}
-            title={eachField.title}
-            placeholder={`Enter ${eachField.title}`}
-            change={(e) => {
-              formik.setFieldValue(eachField.inputName, e);
-            }}
-            required={true}
-            value={formik.values[eachField.inputName] || eachField.value}
-            error={formik.errors[eachField.inputName]}
-          />
-        ) : eachField.type === "number" ? (
-          <FormInput
-            key={fieldIndex}
-            title={eachField.title}
-            type={"number"}
-            placeholder={`Enter ${eachField.title}`}
-            change={(e) => {
-              formik.setFieldValue(eachField.inputName, e);
-            }}
-            required={true}
-            value={formik.values[eachField.inputName]}
-            error={formik.errors[eachField.inputName]}
-          />
-        ) : (
-          <Dropdown
-            title={eachField.title}
-            placeholder={t("Choose" + eachField.title)}
-            options={Degree}
-            required={true}
-            change={(e) => {
-              formik.setFieldValue(eachField.inputName, e);
-            }}
-            value={formik.values[eachField.inputName]}
-            error={
-              formik.values[eachField.inputName]
-                ? ""
-                : formik.errors[eachField.inputName]
-            }
-          />
-        )
-      )}
-    </div>
-    <div className='ml-auto '>
-      <Tooltip placement="top" title={"Delete"}>
-        {index !== 0 && (
-          <RiDeleteBin6Line
-            className='size-4 text-slate-500 hover:text-red-500'
-            onClick={() => handleDeleteCondition(index)}
-          />
-        )}
-      </Tooltip>
-    </div>
-  </div>
-))}
+                      <div className='flex items-end' key={index}>
+                        <div className="grid grid-cols-2 gap-4 w-4/5">
+                          {condition.field.map((eachField, fieldIndex) =>
+                            eachField.type === "input" ? (
+                              <FormInput
+                                key={fieldIndex}
+                                title={eachField.title}
+                                placeholder={`Enter ${eachField.title}`}
+                                change={(e) => {
+                                  formik.setFieldValue(eachField.inputName, e);
+                                }}
+                                required={true}
+                                value={formik.values[eachField.inputName] || eachField.value}
+                                error={formik.errors[eachField.inputName]}
+                              />
+                            ) : eachField.type === "number" ? (
+                              <FormInput
+                                key={fieldIndex}
+                                title={eachField.title}
+                                type={"number"}
+                                placeholder={`Enter ${eachField.title}`}
+                                change={(e) => {
+                                  formik.setFieldValue(eachField.inputName, e);
+                                }}
+                                required={true}
+                                value={formik.values[eachField.inputName]}
+                                error={formik.errors[eachField.inputName]}
+                              />
+                            ) : (
+                              <Dropdown
+                                title={eachField.title}
+                                placeholder={t("Choose" + eachField.title)}
+                                options={Degree}
+                                required={true}
+                                change={(e) => {
+                                  formik.setFieldValue(eachField.inputName, e);
+                                }}
+                                value={formik.values[eachField.inputName]}
+                                error={
+                                  formik.values[eachField.inputName]
+                                    ? ""
+                                    : formik.errors[eachField.inputName]
+                                }
+                              />
+                            )
+                          )}
+                        </div>
+                        <div className='ml-auto '>
+                          <Tooltip placement="top" title={"Delete"}>
+                            {index !== 0 && (
+                              <RiDeleteBin6Line
+                                className='size-4 text-slate-500 hover:text-red-500'
+                                onClick={() => handleDeleteCondition(index)}
+                              />
+                            )}
+                          </Tooltip>
+                        </div>
+                      </div>
+                    ))}
                     <AddMore
                       name="Add Custom Field "
                       className="!text-black"
@@ -1192,15 +1224,15 @@ export default function Createcandidatelist({ open = "", close = () => { }, file
                           value={Formik2.values.file}
   
                           /> */}
-                            <FileUpload
-                              change={(e) => {
-                                if (e) {
-                                  console.log(e, "file is here.")
-                                  setFilepdf(e)
-                                }
-                              }}
-                              file={filePdf}
-                            />
+                        <FileUpload
+                          change={(e) => {
+                            if (e) {
+                              console.log(e, "file is here.")
+                              setFilepdf(e)
+                            }
+                          }}
+                          file={filePdf}
+                        />
                       </div>
                       <div>
                         <TextArea
