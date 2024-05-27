@@ -1013,7 +1013,7 @@ const Createjob = ({
           setPresentage(3.4);
           setNextStep(nextStep + 1);
         } else if (response.status === 500) {
-          openNotification("error", response.message);
+          openNotification("error", "Info", response.message);
         }
       } catch (error) {
         // Handle the error here
@@ -1057,7 +1057,7 @@ const Createjob = ({
             handleClose();
           }, 2000); // Adjust the delay time as needed
         } else if (response.status === 500) {
-          openNotification("error", response.message);
+          openNotification("error", "Info", response.message);
         }
       } catch (error) {
         // Handle the error here
@@ -1285,7 +1285,7 @@ const Createjob = ({
           // Adjust the delay time as needed
           setNextStep(nextStep + 1)
         } else if (response.status === 500) {
-          openNotification("error", response.message);
+          openNotification("error", "Info", response.message);
         }
       } catch (error) {
         // Handle the error here
