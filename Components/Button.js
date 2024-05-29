@@ -47,10 +47,10 @@ export default function ButtonClick({
       className={`
   ${
     (BtnType.toLowerCase() === "add" || getButtonType() === "primary") &&
-    "bg-accent"
+    "bg-accent "
   } ${
         getButtonType() === "default" || getButtonType() === ""
-          ? "!bg-white dark:!bg-transparent"
+          ? "!bg-white dark:!bg-transparent justify-items-center"
           : ""
       } text-xs 2xl:text-sm font-medium w-fit flex items-center justify-center leading-6 z-50 ${className}`}
     >

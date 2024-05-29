@@ -57,6 +57,7 @@ export default function Dropdown({
         <Select
           showSearch
           placeholder={placeholder}
+          // placeholder="f"
           optionFilterProp="children"
           onChange={change}
           onSearch={onSearch}
@@ -110,6 +111,7 @@ export default function Dropdown({
         <Select
           showSearch
           placeholder={placeholder}
+       
           optionFilterProp="children"
           onChange={change}
           onSearch={onSearch}

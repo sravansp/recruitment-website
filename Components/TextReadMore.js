@@ -10,7 +10,7 @@ const TextReadMore = ({ text, length = 1000 }) => {
 
   const shortenedText = showFullText
     ? yourLongText
-    : `${yourLongText.slice(0, length)}...`;
+    : `${yourLongText.slice(0, length)}`;
 
   return (
     <div className="relative overflow-hidden">

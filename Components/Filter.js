@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from "react";
 import { DownOutlined } from "@ant-design/icons";
-import { Menu, Dropdown } from "antd";
+import { Menu, Dropdown, Checkbox } from "antd"; // Import Checkbox from antd
 import Accordion from "./Accordion";
 
 const items = [
@@ -23,16 +23,10 @@ const items = [
       { label: "Pursuing Degree", value: "Pursuing Degree" }
     ],
   },
-  
 ];
 
 const CustomDropdown = ({ onFilterChange }) => {
   const [selectedFilters, setSelectedFilters] = useState({});
-
-  useEffect(() => {
-    // Pass selected filters to parent component whenever it changes
-    onFilterChange(selectedFilters);
-  }, [selectedFilters, onFilterChange]);
 
   const handleCheckboxChange = (sectionTitle, checkboxValue) => {
     setSelectedFilters((prevFilters) => {
@@ -48,12 +42,18 @@ const CustomDropdown = ({ onFilterChange }) => {
     });
   };
 
+  useEffect(() => {
+    console.log("Selected filters:", selectedFilters); // Log selected filters
+    // Pass selected filters to parent component whenever it changes
+    onFilterChange(selectedFilters);
+  }, [selectedFilters, onFilterChange]);
+
   const menu = (
     <Menu className="p-4 min-w-[250px]">
       <Accordion
         items={items}
-        selectedFilters={selectedFilters}
-        onCheckboxChange={handleCheckboxChange}
+        checkboxes={selectedFilters}
+        handleItemClick={handleCheckboxChange}
       />
     </Menu>
   );

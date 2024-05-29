@@ -33,6 +33,7 @@ import {
   saveRecruitmentResumeEducationalDetailBatch,
   saveRecruitmentResumesExperienceDetail,
   saveRecruitmentResumesExperienceDetailBatch,
+  saveorUpdateRecruitmentJobResumesCustomFieldBatch,
   updateRecruitmentResume,
   updateRecruitmentResumeEducationalDetail,
 } from "@/Components/Api";
@@ -59,7 +60,7 @@ import candidate from "@/public/Frame 427319140.png";
 import uploader from "@/public/image 339.png";
 import pdfFile from "@/public/sample.pdf";
 import { useRouter } from "next/router";
-import { Button, DatePicker, AntdModal, Modal, notification, Tooltip } from "antd";
+import { Button, DatePicker, AntdModal, Modal, notification, Tooltip, Checkbox, Radio } from "antd";
 import DateSelect from "@/Components/ui/DateSelect";
 import Modal2 from "@/Components/ui/Modal";
 import { IoIosArrowBack } from "react-icons/io";
@@ -111,7 +112,7 @@ function Web({ closeDrawer, selectedJobId, onClick }) {
   const [todate, settodate] = useState("");
 
   const [exp, setExp] = useState("");
-
+  const [selectedValues, setSelectedValues] = useState(null);
   const [dropdownvalue, Setdopdownvalue] = useState(null);
   const [textAreaValue, setTextAreavalue] = useState(null);
   const [forminputvalue, setForminputValue] = useState(null);
@@ -474,21 +475,21 @@ const updateFileInfo = (file) => {
   //   });
   // };
 
-  //   useEffect(() => {
-  //     const fetchdata = async () => {
-  //       try {
-  //         const response = await getRecruitmentJobById(jobid);
-  //         console.log(response, "qestid");
-  //         const questionnaireId = response.result[0].questionnaireTemplateId;
-  // console.log(questionnaireId,"iddd data in questionrie")
-  //         setQestid(questionnaireId);
-  //         console.log(questid, "idddddddddddddd");
-  //       } catch (error) {
-  //         console.error("error", error);
-  //       }
-  //     };
-  //     fetchdata();
-  //   }, [questid]);
+    useEffect(() => {
+      const fetchdata = async () => {
+        try {
+          const response = await getRecruitmentJobById(jobid);
+          console.log(response, "qestid");
+          const questionnaireId = response.result.questionnaireTemplateId;
+  console.log(questionnaireId,"iddd data in questionrie")
+          setQestid(questionnaireId);
+          console.log(questid, "idddddddddddddd");
+        } catch (error) {
+          console.error("error", error);
+        }
+      };
+      fetchdata();
+    }, []);
 
   const fetchdata1 = async () => {
     try {
@@ -521,6 +522,7 @@ const updateFileInfo = (file) => {
         const questionnaireId = response.result[0].questionnaireTemplateId;
         console.log(questionnaireId, "iddd data in questionrie");
         setQestid(questionnaireId);
+        
       } else {
         console.error("No data found in response");
       }
@@ -771,7 +773,7 @@ const updateFileInfo = (file) => {
           formik.setFieldError("candidateEmail", "Email is required");
           isValid = false;
         } else if (!formik.values.candidateEmail.endsWith("@gmail.com")) {
-          formik.setFieldError("candidateEmail", "Please use a valid email address");
+          formik.setFieldError("candidateEmail", "Enter valid Email ");
           isValid = false;
         }
       }
@@ -787,7 +789,7 @@ const updateFileInfo = (file) => {
         const candidateContact = formik.values.candidateContact;
         const numberPattern = /^\d+$/;
         if (!numberPattern.test(candidateContact)) {
-          formik.setFieldError("candidateContact", "Only numbers are allowed");
+          formik.setFieldError("candidateContact", "Enter valid Phone number");
           isValid = false;
         } else if (!candidateContact) {
           formik.setFieldError("candidateContact", "Phone number is required");
@@ -940,6 +942,35 @@ const updateFileInfo = (file) => {
     }
   };
 
+
+  // useEffect(() => {
+  //   const Fileuplaod = async () => {
+  //     //  console.log(, "hhhhhhhhhhhhhh");
+  //  if (insertedid1) {
+  //      try {
+       
+  //          console.log(e,"hhhhhh");
+  //          const formData = new FormData();
+   
+  //          formData.append("file", filePdf);
+   
+  //          console.log("inside file upload api");
+   
+  //          formData.append("action", "resumePhotoUpload");
+  //          formData.append("resumeId", e);
+   
+  //          const FileUpload = await fileAction(formData);
+  //          console.log(FileUpload, "fileUploadResult");
+  //        }
+  //       catch (error) {
+  //        console.log(error);
+  //      }}
+  //    };
+  //   Fileuplaod ();
+  //    }, [insertedid1]);
+
+
+
   // You can handle the API response here
   // For example, update UI, show success message, etc.
 
@@ -963,6 +994,10 @@ const updateFileInfo = (file) => {
       courseName: "",
       yearOfStudy: "",
       location: "jnvkjdn",
+      additionalEducationalDetails: [
+        { institute: "", courseType: "", courseName: "", yearOfStudy: "" },
+      ],
+  
     },
     // enableReinitialize: true,
     // validateOnChange: false,
@@ -1085,7 +1120,6 @@ const updateFileInfo = (file) => {
   const formik2 = useFormik({
     initialValues: {
       // ...existing fields
-
       resumeId: insertedid1,
       jobTitle: "",
       employmentType: "",
@@ -1114,7 +1148,7 @@ const updateFileInfo = (file) => {
       try {
         // Check validation
         const errors = {};
-
+  
         if (values.additionalExperiences) {
           values.additionalExperiences.map((experience, index) => {
             if (!experience.jobTitle) {
@@ -1155,7 +1189,7 @@ const updateFileInfo = (file) => {
         );
         Fileuplaodresume(insertedid1);
         console.log("work experience Details API Response:", response);
-
+  
         console.log(response.result.insertedId1);
         if (response.status === 200) {
           openNotification("success", "Successful", "Work Experience has been saved");
@@ -1179,15 +1213,15 @@ const updateFileInfo = (file) => {
       if (e) {
         console.log("hhhhhh");
         const formData = new FormData();
-
+  
         formData.append("file", filePdfresume);
         formData.append("text", coverLetter);
-
+  
         console.log("inside file upload api");
-
+  
         formData.append("action", "resumeFileUpload");
         formData.append("resumeId", e);
-
+  
         const FileUploadresume = await fileAction(formData);
         console.log(FileUploadresume, "fileUploadResult");
       }
@@ -1229,9 +1263,12 @@ const updateFileInfo = (file) => {
   const formik3 = useFormik({
     initialValues: {
       customQuestion: "Are you legally eligible to work in the country?",
-      answer: "",
+      answer : "",
+      // customQuestion:Questions ? Questions.questtemp : questtemp,
+      // answer: answerMetaData ? answerMetaData.questionAnswer : questionAnswers,
       jobId: selectedJobId,
       resumeId: insertedid1,
+      
       // highestEducationLevel: "",
     },
     enableReinitialize: true,
@@ -1241,6 +1278,7 @@ const updateFileInfo = (file) => {
     }),
     onSubmit: async (values, { setSubmitting }) => {
       try {
+        // *******************************************
         // const newAnswers = questtemp.flatMap((condition, conditionIndex) => {
         //   const answers = {};
         //   condition.answerMetaData.forEach((metadata) => {
@@ -1284,7 +1322,7 @@ const updateFileInfo = (file) => {
         const response = await saveRecruitmentJobResumesCustomField(values);
         console.log("question Details API Response:", response);
         if (response.status === 200) {
-          openNotification("success", "Successful", "Answers has been saved");
+          openNotification("success", "Successful", "Questions has been saved");
           setActiveBtn(activeBtn + 1);
           setCurrentStep(currentStep + 1);
           setPresentage(presentage + 1);
@@ -1335,29 +1373,50 @@ const updateFileInfo = (file) => {
   //   console.log(data, "dhcdghcvhd");
   // }, [currentStep]);
 
+
+
+// ***************************************
   // const getquestionnaire = async () => {
   //   try {
-  //     console.log(questid, "iddd");
-  //     const idnew = questid;
-  //     console.log(idnew, "daataa of idd new");
-  //     const response = await getAllRecruitmentJobApplicationFormSettings(
-  //       jobid
+  //     // console.log(questid, "iddd");
+  //     // const idnew = questid;
+  //     // console.log(idnew, "daataa of idd new");
+  //     const response = await getRecruitmentQuestionnaireTemplateDetailsById(
+  //       questid
   //     );
-
-  //     const questionData = response.result.customFields.map((item) => ({
-  //       questionTemplateDetailsId: item.formSettingsId,
-  //       question: item.question,
-  //       answerMetaData: item.customFields.map((field) => ({
-  //         key: field.answer_type,
-  //         value: field.answer_meta_data[0].value,
-  //       })),
-  //     }));
-
+  //     // if (response && response.result && response.result.length > 0) {
+  //     //   const questionnaireId = response.result[0].questionnaireTemplateId;
+  //     console.log(response,"questionnaire response");
+  //     console.log(response.result[0].question,"qqqqqqqqqq");
+  //     console.log(response.result[0],"result");
+  //     const questionData = response.result[0].questionaireTemplateDetailData.
+  //     map(item => ({
+        
+  //     //   item.questionTemplateDetailData.map(detail =>({
+          
+  //     //   questionTemplateDetailsId: detail.formSettingsId,
+  //     //   question: detail.question,
+  //     //   answerMetaData: detail.answerMetaData.map(metadata =>({
+  //     //     key: metadata.key,
+  //     //     value: metadata.value
+  //     //   }))
+  //     // }));
+  //     question: item.question,
+  //     answerMetaData: item.answerMetaData.map(metadata=>({
+  //       key: metadata.key,
+  //       value: metadata.value
+  //     }))
+  //   }));
+  //   // const questionData = response.result[0].answerMetaData.map((items)=>({
+  //   //         key: items.key,
+  //   //         value: items.value
+  //   // }))
+  //   console.log(questionData,"questionsssss");
   //     // return questionData;
 
   //     setQuesttemp(questionData);
-  //     console.log(questionData);
-  //     console.log(response, "questionnaire");
+     
+  //     console.log(response.result, "questionnaire");
   //   } catch (error) {
   //     console.error("error", error);
   //   }
@@ -1365,19 +1424,19 @@ const updateFileInfo = (file) => {
 
   // useEffect(() => {
   //   getquestionnaire();
-  // }, []);
+  // }, [questid]);
 
   // useEffect(() => {
   //   fetchedAnswers.forEach((answer) => {
   //     const { questionTemplateDetailsId, questionAnswer } = answer;
-  //     const matchedCondition = questtemp.find(
-  //       (condition) =>
-  //         condition.customFields === questionTemplateDetailsId
+  //     const matchedCondition = questtemp.find
+  //       (condition =>
+  //         condition.questionTemplateDetailsId === questionTemplateDetailsId
   //     );
 
   //     if (matchedCondition) {
-  //       const metaData = matchedCondition.answerMetaData.find(
-  //         (meta) => meta.key
+  //       const metaData = matchedCondition.answerMetaData.find
+  //         (meta => meta.key
   //       );
 
   //       if (metaData) {
@@ -1388,6 +1447,60 @@ const updateFileInfo = (file) => {
   //             break;
   //           case "Paragraph":
   //             setTextAreavalue(questionAnswer);
+  //             break;
+  //           case "Checkboxes":
+  //             const selectedOptions = questionAnswer
+  //               .split(",")
+  //               .map((option) => option.trim());
+  //             setSelectedCheckboxes(selectedOptions);
+  //             break;
+  //           case "ShortAnswer":
+  //             setForminputValue(questionAnswer);
+  //             break;
+  //           case "MultipleChoice":
+  //             setSelectedValues(prevState => {
+  //               const newState = [...prevState];
+  //               const index = questtemp.findIndex
+  //                 (condition =>
+  //                   condition.questionTemplateDetailsId ===
+  //                   questionTemplateDetailsId
+  //               );
+  //               newState[index] = questionAnswer;
+  //               return newState;
+  //             });
+  //             break;
+  //           default:
+  //             break;
+  //         }
+  //       }
+  //     }
+  //   });
+  // }, [questtemp, questionAnswers]);
+
+
+  // console.log(questtemp,"questionssssss");
+
+  // useEffect(() => {
+  //   fetchedAnswers.forEach((answer) => {
+  //     const { questionTemplateDetailsId, questionAnswer } = answer;
+  //     const matchedCondition = questtemp.find(
+  //       (condition) =>
+  //         condition.questionTemplateDetailsId === questionTemplateDetailsId
+  //     );
+  
+  //     if (matchedCondition) {
+  //       const metaData = matchedCondition.answerMetaData.find(
+  //         (meta) => meta.key
+  //       );
+  
+  //       if (metaData) {
+  //         const { key } = metaData;
+  //         switch (key) {
+  //           case "Drop-down":
+  //             setDropdownValue(questionAnswer);
+  //             break;
+  //           case "Paragraph":
+  //             setTextAreaValue(questionAnswer);
   //             break;
   //           case "Checkboxes":
   //             const selectedOptions = questionAnswer
@@ -1416,7 +1529,8 @@ const updateFileInfo = (file) => {
   //       }
   //     }
   //   });
-  // }, [questtemp, questionAnswers]);
+  // }, [questtemp, fetchedAnswers]);
+  
 
   useEffect(() => {
     const fetchapi = async () => {
@@ -1764,6 +1878,8 @@ const updateFileInfo = (file) => {
     }
   }
 
+ 
+  
 
   return (
     <div className="bg-[#F8FAFC] ">
@@ -1830,10 +1946,10 @@ const updateFileInfo = (file) => {
                       >
 
                         <div className="grid grid-cols-2 gap-4 sm:grid-cols-6">
-                          {formvalidation.length > 0 && formvalidation[0].education === 0 ? null : (
+                          {formvalidation.length > 0 && formvalidation[0].headline === 0 ? null : (
                             <Dropdown
                               title={"Prefix"}
-                              placeholder="Choose Prefix"
+                              placeholder={"Choose Prefix"}
                               options={[
                                 { label: "Mr", value: "mr" },
                                 { label: "Miss", value: "miss" },
@@ -1850,6 +1966,7 @@ const updateFileInfo = (file) => {
                           )}
                         </div>
                         <div className="grid grid-cols-1 gap-4 sm:grid-cols-3">
+                        {formvalidation.length > 0 && formvalidation[0].name === 0 ? null : (
                           <FormInput
                             title={"First Name"}
                             placeholder={"Enter First Name"}
@@ -1863,6 +1980,8 @@ const updateFileInfo = (file) => {
                             required={formvalidation && formvalidation.length > 0 && formvalidation[0].name === 1}
                             error={formik.errors.firstName}
                           />
+                        )}
+                         {formvalidation.length > 0 && formvalidation[0].name === 0 ? null : (
                           <FormInput
                             title={"Last Name"}
                             placeholder={"Enter Last Name"}
@@ -1875,8 +1994,10 @@ const updateFileInfo = (file) => {
                             required={formvalidation && formvalidation.length > 0 && formvalidation[0].lastname === 1}
                             error={formik.errors.lastName}
                           />
-                        </div>
-                        <div className="grid grid-cols-1 gap-4 sm:grid-cols-3">
+                         )}
+                        {/* </div>
+                        <div className="grid grid-cols-1 gap-4 sm:grid-cols-3"> */}
+                        {formvalidation.length > 0 && formvalidation[0].email === 0 ? null : (
                           <FormInput
                             title={"Email"}
                             placeholder={"Enter Email"}
@@ -1889,6 +2010,8 @@ const updateFileInfo = (file) => {
                             required={formvalidation && formvalidation.length > 0 && formvalidation[0].email === 1}
                             error={formik.errors.candidateEmail}
                           />
+                        )}
+                         {formvalidation.length > 0 && formvalidation[0].phone === 0 ? null : (
                           <FormInput
                             title={"Phone Number"}
                             placeholder={"Enter Phone Number"}
@@ -1897,14 +2020,17 @@ const updateFileInfo = (file) => {
                             // className="text-[#344054]"
                             value={formik.values.candidateContact}
                             change={(e) => {
-                              formik.setFieldValue("candidateContact", e);
+                              const input = e.replace(/\D/g, ''); 
+                              formik.setFieldValue("candidateContact", input);
                             }}
                             required={formvalidation && formvalidation.length > 0 && formvalidation[0].phone === 1}
                             error={formik.errors.candidateContact}
                           />
-                        </div>
+                         )}
+                        {/* </div>
 
-                        <div className="grid grid-cols-1 gap-4 sm:grid-cols-3">
+                        <div className="grid grid-cols-1 gap-4 sm:grid-cols-3"> */}
+                     
                           <DateSelect
                             title={"DOB"}
                             placeholder={"Enter Date of birth"}
@@ -1917,6 +2043,7 @@ const updateFileInfo = (file) => {
                             required={formvalidation && formvalidation.length > 0 && formvalidation[0].dob === 1}
                             error={formik.errors.dob}
                           />
+                      
                         </div>
                         {/* <div className="relative max-w-[1070px] sm:w-[492px] w-full borderb rounded-md h-24 bg-[#FAFAFA] dark:bg-black"> */}
                         {/* <div className="flex min-w-0 pt-5 pl-5 gap-x-4">
@@ -1975,6 +2102,7 @@ const updateFileInfo = (file) => {
                         {/* </div> */}
                         {/* </div> */}
                         <div className="grid grid-cols-1 gap-4 sm:grid-cols-3">
+                        {formvalidation.length > 0 && formvalidation[0].country === 0 ? null : (
                           <FormInput
                             title={"Location"}
                             placeholder={"Enter Location"}
@@ -1986,6 +2114,8 @@ const updateFileInfo = (file) => {
                             required={formvalidation && formvalidation.length > 0 && formvalidation[0].country === 1}
                             error={formik.errors.candidateLocation}
                           />
+                        )}
+                         {formvalidation.length > 0 && formvalidation[0].address === 0 ? null : (
                           <FormInput
                             title={"City or Town"}
                             placeholder={"Enter City or Town"}
@@ -1997,8 +2127,10 @@ const updateFileInfo = (file) => {
                             required={formvalidation && formvalidation.length > 0 && formvalidation[0].address === 1}
                             error={formik.errors.cityOrTown}
                           />
+                         )}
                         </div>
                         <div className="grid grid-cols-1 gap-4 sm:grid-cols-3">
+                        {formvalidation.length > 0 && formvalidation[0].address === 0 ? null : (
                           <FormInput
                             title={"Address"}
                             placeholder={"Enter Address"}
@@ -2010,17 +2142,21 @@ const updateFileInfo = (file) => {
                             required={formvalidation && formvalidation.length > 0 && formvalidation[0].address === 1}
                             error={formik.errors.address}
                           />
+                        )}
+                         {formvalidation.length > 0 && formvalidation[0].address === 0 ? null : (
                           <FormInput
                             title={"Postal Code"}
                             placeholder={"Enter Postal Code"}
                             // className="text-[#344054]"
                             value={formik.values.postalCode}
                             change={(e) => {
-                              formik.setFieldValue("postalCode", e);
+                              const input = e.replace(/\D/g, '');
+                              formik.setFieldValue("postalCode", input);
                             }}
                             required={formvalidation && formvalidation.length > 0 && formvalidation[0].address === 1}
                             error={formik.errors.postalCode}
                           />
+                         )}
                         </div>
                       </div>
                     </form>
@@ -2175,6 +2311,7 @@ const updateFileInfo = (file) => {
                               className="text-[#344054]"
                               name={`additionalEducationalDetails[${index}].yearOfStudy`}
                               // picker={"YYYY"}
+                              
                               placeholder="Enter passout year"
                               value={detail.yearOfStudy}
                               change={(e) => {
@@ -2189,19 +2326,14 @@ const updateFileInfo = (file) => {
                                 );
                               }}
                               required={true}
-                              // error={
-                              //   isFormSubmitted
-                              //     ? formik1.errors.additionalEducationalDetails?.[
-                              //         index
-                              //       ]?.yearOfStudy
-                              //     : ""
-                              // }
-                              // error={yearofstudy}
+                             
                               error={
                                 formik1.errors.additionalEducationalDetails?.[
                                   index
                                 ]?.yearOfStudy || ""
                               }
+                             
+                              
                             />
                             {index !== 0 &&
                               <div className="flex items-center justify-end">
@@ -2317,6 +2449,7 @@ const updateFileInfo = (file) => {
                           key={index}
                           className="flex flex-col justify-between w-full gap-6 "
                         >
+                          
                           <div className="grid grid-cols-1 gap-4 sm:grid-cols-3">
                             <FormInput
                               title={"Job Title"}
@@ -2345,14 +2478,15 @@ const updateFileInfo = (file) => {
                             />
                             <Dropdown
                               title={"Employment Type"}
-                              placeholder="Choose Employment Type"
+                              placeholder={"Choose Employment Type"}
+                              
                               options={[
                                 { value: "Fulltime", label: "Full-time" },
                                 { value: "Parttime", label: "Part-time" },
                               ]}
                               className="text-[#344054]"
                               name={`additionalExperiences[${index}].employmentType`}
-                              value={experience.employmentType}
+                              value={experience.employmentType ? experience.employmentType : undefined}
                               change={(e) => {
                                 const updatedExperiences = [
                                   ...additionalExperiences,
@@ -2562,6 +2696,7 @@ const updateFileInfo = (file) => {
                           </div>
                         </div>
                       </div> */}
+                       {formvalidation.length > 0 && formvalidation[0].resume === 0 ? null : (
                         <FileUpload
                           className={
                             "relative max-w-[1070px] sm:w-[492px] w-full borderb rounded-md h-24 bg-[#FAFAFA] dark:bg-black"
@@ -2570,6 +2705,8 @@ const updateFileInfo = (file) => {
                             setfilepdfresume(e);
                           }}
                         />
+                       )}
+                        {formvalidation.length > 0 && formvalidation[0].coverLetter === 0 ? null : (
                         <TextArea
                           title="Cover Letter"
                           placeholder="Type here"
@@ -2584,6 +2721,7 @@ const updateFileInfo = (file) => {
                           required={false}
                         // error={formik2.errors.coverLetter}
                         />
+                        )}
                       </div>
                     </div>
                   </div>
@@ -2612,82 +2750,66 @@ const updateFileInfo = (file) => {
                       aria-labelledby={`acco-title-item`}
                       className="flex flex-col justify-between w-full gap-6 p-5"
                     >
-                      <div>
-                        {/* {questtemp.length > 0 ? (
-        questtemp.map((condition, index) => (
-          <div key={index}>
-            <h4>{condition.question}</h4>
-            {condition.answerMetaData.map((metadata, idx) => (
-              <div key={idx}>
-                {metadata.key === "Paragraph" && (
-                  <TextArea
-                    rows={4}
-                    change={(e) => setTextAreavalue(e.target.value)}
-                    value={textAreaValue}
-                  />
-                )}
-                {metadata.key === "ShortAnswer" && (
-                  <FormInput
-                    change={(e) => setForminputValue(e.target.value)}
-                    value={forminputvalue}
-                  />
-                )}
-                {metadata.key === "Checkboxes" && (
-                  <div>
-                    {metadata.value
-                      .split(",")
-                      .map((option, optIdx) => (
-                        <label key={optIdx}>
-                          <Checkbox
-                            value={option.trim()}
-                            checked={selectedCheckboxes.includes(option.trim())}
-                            onChange={() => {
-                              const newSelected = selectedCheckboxes.includes(option.trim())
-                                ? selectedCheckboxes.filter((item) => item !== option.trim())
-                                : [...selectedCheckboxes, option.trim()];
-                              setSelectedCheckboxes(newSelected);
-                            }}
-                          />
-                          {option.trim()}
-                        </label>
-                      ))}
-                  </div>
-                )}
-                {metadata.key === "Drop-down" && idx === 0 && (
-                  <Dropdown
-                    options={metadata.value
-                      .split(",")
-                      .map((option) => ({
-                        label: option.trim(),
-                        value: option.trim(),
-                      }))}
-                    change={(value) => setDropdownValue(value)}
-                    value={dropdownvalue}
-                  />
-                )}
-                {metadata.key === "MultipleChoice" && (
-                  <div>
-                    <Radio.Group
-                      onChange={(e) => {
-                        const newSelectedValues = [...selectedValues];
-                        newSelectedValues[index] = e.target.value;
-                        setSelectedValues(newSelectedValues);
-                      }}
-                      value={selectedValues[index] || ''}
-                    >
-                      {metadata.value.split(",").map((option, optIdx) => (
-                        <Radio key={optIdx} value={option.trim()}>
-                          {option.trim()}
-                        </Radio>
-                      ))}
-                    </Radio.Group>
-                  </div>
-                )}
-              </div>
-            ))}
-          </div>
-        ))
-                      ) : ( */}
+                      <div className="grid grid-cols-1 gap-4 sm:grid-cols-1 ">
+                      {/* {questtemp.length > 0 ? (
+              questtemp.map((condition, index) => (
+                <><div key={index}>
+                  <h4>{condition.question}</h4>
+                  {condition.answerMetaData.map((metadata, idx) => (
+                    <div key={idx}>
+                      {metadata.key === 'Drop-down' && idx === 0 && (
+                        <Dropdown
+                          options={condition.answerMetaData
+                            .filter(meta => meta.key === 'Drop-down')
+                            .flatMap(meta => meta.value.split(','))
+                            .map(option => ({ label: option.trim(), value: option.trim() }))}
+                          change={Setdopdownvalue}
+                          value={dropdownvalue} />
+                      )}
+                      {metadata.key === 'Paragraph' && (
+                        <TextArea
+                          rows={4}
+                          change={setTextAreavalue}
+                          value={textAreaValue} />
+                      )}
+                      {metadata.key === 'Checkboxes' && (
+                        <div>
+                          {metadata.value.split(',').map((option, optIdx) => (
+                            <label key={optIdx}>
+                              <Checkbox
+                                value={option.trim()}
+                                checked={selectedCheckboxes.includes(option.trim())}
+                                onChange={() => handleCheckboxChange(option.trim())} />
+                              {option.trim()}
+                            </label>
+                          ))}
+                        </div>
+                      )}
+                      {metadata.key === 'Short Answer' && (
+                        <FormInput
+                          change={setForminputValue}
+                          value={forminputvalue} />
+                      )}
+                      {metadata.key === 'Multiple Choice' && (
+                        <div>
+                          <Radio.Group
+                            onChange={e => handleRadioChange(e, index)}
+                            // value={selectedValues[index]}
+                          >
+                            {metadata.value.split(',').map((option, optIdx) => (
+                              <Radio key={optIdx} value={option.trim()}>
+                                {option.trim()}
+                              </Radio>
+                            ))}
+                          </Radio.Group>
+                        </div>
+                      )}
+                    </div>
+                  ))}
+                </div>
+               
+                </>
+              ))         ) : ( */}
                         <div className="grid grid-cols-1 gap-4 sm:grid-cols-2 ">
                           <FormInput
                             title={
@@ -2717,7 +2839,7 @@ const updateFileInfo = (file) => {
                           />
                           {/* Additional FormInput components can be added here */}
                         </div>
-                        {/* )} */}
+                         {/* )}  */}
                       </div>
                     </div>
                   </div>
@@ -3072,7 +3194,7 @@ const updateFileInfo = (file) => {
             />
           }
         </div>
-        <div className="flex gap-2.5 p-1.5 justify-end mt-4">
+        <div className="flex gap-2.5 p-1.5 justify-end items-center">
           <ButtonClick
             buttonName="Cancel"
             icon={<RxCross2 />}

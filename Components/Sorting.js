@@ -2,10 +2,10 @@ import React from "react";
 import { DownOutlined } from "@ant-design/icons";
 import { Dropdown, Space, Typography } from "antd";
 const items = [
-  {
-    key: "1",
-    label: "Relevance",
-  },
+  // {
+  //   key: "1",
+  //   label: "Relevance",
+  // },
   {
     key: "2",
     label: "Recently added",
@@ -19,7 +19,7 @@ const items = [
     label: "10days Ago",
   },
   {
-    key: "3",
+    key: "5",
     label: "20days Ago",
   },
 ];

@@ -68,6 +68,7 @@ console.log(activeIndices);
                 isActive={true}
                 onClick={() => handleItemClick(index)}
                 key={index}
+                // checked={isOpen}
               />
             )}
           </AnimatePresence>

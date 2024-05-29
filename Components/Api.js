@@ -170,7 +170,7 @@ export const getAllRecruitmentJobs = async () => {
 
 
   export const getRecruitmentQuestionnaireTemplateDetailsById = async (id) => {
-    const action = "getRecruitmentQuestionnaireTemplateDetailById";
+    const action = "getRecruitmentQuestionnaireTemplateById";
   
     const method = "POST";
   
@@ -223,3 +223,13 @@ export const getAllRecruitmentJobs = async () => {
 
 
 
+  // export const saveorUpdateRecruitmentJobResumesCustomFieldBatch = async (e) => {
+  //   const action = "saveorUpdateRecruitmentJobResumesCustomFieldBatch";
+  
+  //   const method = "POST";
+  //   const kwargs = e;
+  //   // const response = await apiRequest(action, method,{...e});
+  //   // console.log("API Response:", response);
+  
+  //   return await apiRequest(action, method, kwargs);
+  // };

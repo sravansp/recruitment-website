@@ -86,11 +86,11 @@ const JobDetailsCard = ({ selectedJob, jobDetailsAnimation }) => {
                 <p className="!font-normal !text-opacity-50 capitalize pblack col-span-1">
                   experience
                 </p>
-                <p className="col-span-4 pblack">{selectedJob.experience}</p>
+                <p className="col-span-4 pblack"> {selectedJob.experience.replace(/([a-z])([A-Z])/g, '$1 $2')}</p>
               </div>
               <div className="grid grid-cols-6">
                 <p className="!font-normal !text-opacity-50 capitalize pblack col-span-1">
-                  type
+                 Job type
                 </p>
                 <p className="col-span-4 pblack">{selectedJob.jobType}</p>
               </div>
@@ -114,7 +114,7 @@ const JobDetailsCard = ({ selectedJob, jobDetailsAnimation }) => {
                 <p className="!font-normal !text-opacity-50 capitalize pblack col-span-1">
                   Education
                 </p>
-                <p className="col-span-4 pblack">{selectedJob.education}</p>
+                <p className="col-span-4 pblack">{selectedJob.education.replace(/([a-z])([A-Z])/g, '$1 $2')}</p>
               </div>
               <div className="grid grid-cols-6">
                 <p className="!font-normal !text-opacity-50 capitalize pblack col-span-1">

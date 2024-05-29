@@ -17,6 +17,7 @@ export default function DateSelect({
   required = false,
   placeholder = "",
   minDate = null,
+  
 }) {
   const isSmallScreen = useMediaQuery({ maxWidth: 1439 });
 
@@ -40,7 +41,8 @@ export default function DateSelect({
           console.log(dateString);
           change(dateString);
         }}
-        
+        // value={value}
+        picker={picker}
         status={error && "error"}
         size={isSmallScreen ? "default" : "large"}
         placeholder={placeholder}
