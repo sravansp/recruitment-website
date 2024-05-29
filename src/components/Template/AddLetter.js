@@ -132,16 +132,16 @@ const AddLetter = ({
 
           openNotification(
             "success",
-            "Success",
+            "Successful",
             response.message
           );
           setTimeout(() => {
             handleClose();
             refresh()
-          }, 1500);
+          }, 1000);
 
         } else if (response.status === 500) {
-          openNotification("error", "Error..", response.message.replace(/<br\/>/g, '\n'));
+          openNotification("error", "Info", response.message.replace(/<br\/>/g, '\n'));
         }
       }
       else {
@@ -161,15 +161,15 @@ const AddLetter = ({
         if (response.status === 200) {
           openNotification(
             "success",
-            "Success",
+            "Successful",
             response.message
           );
           setTimeout(() => {
             handleClose();
             refresh()
-          }, 1500);
+          }, 1000);
         } else {
-          openNotification("error", "Error..", response.message);
+          openNotification("error", "Info", response.message);
         }
       }
     } catch (error) {
