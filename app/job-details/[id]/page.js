@@ -112,6 +112,7 @@
 import { useEffect, useState } from "react";
 import dynamic from "next/dynamic";
 import { getRecruitmentJobById } from "@/Components/Api";
+import Navbar from "@/Components/Navbar";
 
 // Import useRouter dynamically
 const useRouter = dynamic(() => import("next/router"), {
@@ -150,6 +151,7 @@ const JobDetailsPage = () => {
 
   return (
     <div className="flex flex-col gap-4 dark:bg-black">
+      <Navbar/>
       <div className="md:h-[288px] h-full w-full bg-TopSection py-5">
         <div className="flex flex-col gap-3 px-5 pt-16 md:pt-24 container-wrapper">
           <div>

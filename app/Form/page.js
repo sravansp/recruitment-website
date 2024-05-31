@@ -71,7 +71,7 @@ import noImg from "@/public/noImg.webp";
 function Web({ closeDrawer, selectedJobId, onClick }) {
   const questidRef = useRef(null);
 
-  const [currentStep, setCurrentStep] = useState(0);
+  const [currentStep, setCurrentStep] = useState();
   const [activeBtn, setActiveBtn] = useState(0);
   const [presentage, setPresentage] = useState(0);
   const [nextStep, setNextStep] = useState(0);
@@ -384,7 +384,7 @@ const updateFileInfo = (file) => {
   }, []);
   useEffect(() => {
     if (closeDrawer) {
-      setCurrentStep(0);
+      setCurrentStep(4);
       setActiveBtn(0);
       setPresentage(0);
     }
@@ -541,6 +541,7 @@ const updateFileInfo = (file) => {
 
   const handleCloseModal = () => {
     setShowModal(false);
+    closeDrawer()
   };
 
   // const handleCloseModal = () => {
@@ -737,8 +738,8 @@ const updateFileInfo = (file) => {
       jobId: selectedJobId,
       createdBy: "154",
     },
-    // enableReinitialize: true,
-    // validateOnChange: false,
+    // enableReinitialize: false,
+    // validateOnChange: true,
     // validationSchema: Yup.object().shape({
     //   firstName: Yup.string().required("First name is required"),
     //   lastName: Yup.string().required("Last name is required"),
@@ -757,7 +758,7 @@ const updateFileInfo = (file) => {
       if (formvalidation[0].name == 1) {
         formik.setFieldError(
           "firstName",
-          !formik.values.firstName ? "first Name  is required" : ""
+          !formik.values.firstName ? "First Name  is required" : ""
         );
         if (!formik.values.firstName) isValid = false;
       }
@@ -799,7 +800,7 @@ const updateFileInfo = (file) => {
       if (formvalidation[0].address == 1) {
         formik.setFieldError(
           "address",
-          !formik.values.address ? "address is required" : ""
+          !formik.values.address ? "Address is Required" : ""
         );
         if (!formik.values.address) isValid = false;
       }
@@ -814,20 +815,20 @@ const updateFileInfo = (file) => {
       if (formvalidation[0].lastname == 1) {
         formik.setFieldError(
           "lastName",
-          !formik.values.lastName ? "last name  is required" : ""
+          !formik.values.lastName ? "Last Name  is required" : ""
         );
       }
       if (formvalidation[0].address == 1) {
         formik.setFieldError(
           "postalCode",
-          !formik.values.postalCode ? "postal code  is required" : ""
+          !formik.values.postalCode ? "Postal Code  is required" : ""
         );
       }
 
       if (formvalidation[0].dob == 1) {
         formik.setFieldError(
           "candidateContact",
-          !formik.values.dob ? "date of birth  is required" : ""
+          !formik.values.dob ? "Date of Birth  is required" : ""
         );
         if (!formik.values.dob) isValid = false;
       }
@@ -1789,13 +1790,15 @@ const updateFileInfo = (file) => {
         // formik3.resetForm();
         break;
       case 4:
-        setShowModal(true);
-        closeDrawer();
+        
+        // closeDrawer();
+       
         formik.resetForm();
         formik1.resetForm();
         formik2.resetForm();
         formik3.resetForm();
-        window.location.reload();
+        setShowModal(true);
+        // window.location.reload();
 
         // Close the drawer only when the modal is closed
 
@@ -2164,7 +2167,8 @@ const updateFileInfo = (file) => {
                 </div>
               </div>
             </>
-          ) : currentStep === 1 ? (
+          ) :  currentStep === 1 ? 
+            formvalidation.length > 0 && formvalidation[0].education === 1 ? null : (
             <>
               <FlexCol />
               <div className="relative w-full mx-auto rounded-md borderb">
@@ -2178,7 +2182,7 @@ const updateFileInfo = (file) => {
                       <div className="text-left rtl:text-right">
                         <h1 className="acco-h1">Educational Details </h1>
                         <p className="para">
-                          Fill your educational details.
+                          Fill your Educational Details.
                         </p>
                       </div>
                     </h2>
@@ -2307,12 +2311,12 @@ const updateFileInfo = (file) => {
                               }
                             />
                             <DateSelect
-                              title={"Passout year"}
+                              title={"Passout Year"}
                               className="text-[#344054]"
                               name={`additionalEducationalDetails[${index}].yearOfStudy`}
                               // picker={"YYYY"}
                               
-                              placeholder="Enter passout year"
+                              placeholder="Enter Passout Year"
                               value={detail.yearOfStudy}
                               change={(e) => {
                                 const updatedDetails = [
@@ -2420,7 +2424,8 @@ const updateFileInfo = (file) => {
                 </div>
               </div>
             </>
-          ) : currentStep === 2 ? (
+             )
+          : currentStep === 2 ? (
             <>
               <FlexCol />
               <div className="relative w-full mx-auto rounded-md borderb">

@@ -1,7 +1,12 @@
+"use client";
 import Image from "next/image";
 import React from "react";
 import logo from '@/public/brand/logo.png'
 import { HiOutlineMenuAlt3 } from "react-icons/hi";
+import NoImagePlaceholder from "@/public/NoImagePlaceholder.png"
+
+
+
 // import Switcher from "./Switcher";
 
 const Navbar = ({ company }) => {
@@ -11,14 +16,16 @@ const Navbar = ({ company }) => {
         <div className="flex flex-row items-center justify-between py-5 ">
           <a className="flex items-center font-medium text-gray-900  title-font md:mb-0 gap-4">
             {/* {company?.logo&&<Image src={"company?.logo"} alt="logo" width={50} height={50} />} */}
+
             <div className="overflow-hidden border-2 border-white rounded-full shadow-md 2xl:size-16 size-14 shrink-0">
-              <img
-                src={company.logo}
+              <Image
+                src={company?.logo || NoImagePlaceholder}
                 alt="image"
                 className="object-cover object-center w-full h-full"
               />
             </div>
-            <p className="h1  !text-[#6A4BFC] !font-[Red Hat Display] pr-2">{company.company}</p>
+
+            <p className="h1  !text-[#6A4BFC] !font-[Red Hat Display] pr-2">{company?.company}</p>
             {/* /* <p className="h2">RECRUITMENT</p> */}
 
           </a>

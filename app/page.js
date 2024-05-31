@@ -187,7 +187,7 @@ const Home = () => {
   // Function to handle closing the drawer
   const closeDrawer = () => {
     setDrawerVisible(false);
-    window.location.reload();
+    // window.location.reload();
   };
   const handleApply = (jobId) => {
     setSelectedJobIdForApply(jobId);
@@ -279,7 +279,7 @@ const Home = () => {
               break;
       case "5":
             const twentyDaysAgo = new Date();
-            twentyDaysAgo.setDate(twentyDaysAgo.getDate() - 20);
+            twentyDaysAgo.setDate(twentyDaysAgo.getDate() - 10);
             const twentyDaysAgoTimestamp = twentyDaysAgo.getTime();
             // Filter jobs created before 20 days ago
             sortedJobs = sortedJobs.filter(

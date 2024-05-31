@@ -33,13 +33,13 @@
 //     <div
 //       style={{
 //         boxShadow: `0px 3.882px 6.211px 0px ${primaryColor}66, 0px 0.776px 1.553px 0px #ffffff66 inset`,
-      
+
 //       }}
 //       className="flex items-center justify-center text-xs 2xl:text-base font-medium rounded-full transition duration-500 ease-in-out h-7 w-7 2xl:h-8 2xl:w-8 bg-accent text-white"
 //     >
 //       <span className="font-bold text-white">{<MdCheck />}</span>
 //     </div>
-  
+
 
 //       </div>
 //         <div className='flex justify-center mb-2'>
@@ -61,7 +61,7 @@
 //         </div>
 //         </>
 //       ),
-      
+
 //       width: 500,  // Set modal width
 //     height: 248, // Set modal height
 //     centered: true,
@@ -115,7 +115,7 @@ import ButtonClick from "./Button";
 import { lightenColor } from "./Lightercolor";
 import { useDispatch, useSelector } from "react-redux";
 import { MdCheck } from "react-icons/md";
- 
+
 const Modal2 = ({
   isOpen,
   onClose,
@@ -125,11 +125,18 @@ const Modal2 = ({
   buttonClose = "Cancel",
   buttonSubmit = "Submit",
   className = "",
-  handleSubmit = () => {},
+  handleSubmit = () => { },
 }) => {
-  // const primaryColor = localStorage.getItem("mainColor");
-  // const mode = localStorage.getItem("theme");
-  const [timer, setTimer] = useState(null); 
+  const [primaryColor, setPrimaryColor] = useState("");
+
+  useEffect(() => {
+    const color = localStorage.getItem("mainColor");
+    if (color) {
+      setPrimaryColor(color);
+    }
+  }, []);
+  const mode = localStorage.getItem("theme");
+  const [timer, setTimer] = useState(null);
 
   useEffect(() => {
     // const handleOutsideClick = (e) => {
@@ -141,7 +148,7 @@ const Modal2 = ({
     const startTimer = () => {
       const newTimer = setTimeout(() => {
         onClose();
-      }, 5000); // Close the modal after 5 seconds
+      }, 2000); // Close the modal after 2 seconds
       setTimer(newTimer); // Set the new timer in state
     };
 
@@ -158,9 +165,9 @@ const Modal2 = ({
       clearTimeout(timer); // Clear the timer on component unmount
     };
   }, [isOpen, onClose]);
- 
-  // const lighterColor = lightenColor(primaryColor, 0.9);
- 
+
+  const lighterColor = lightenColor(primaryColor, 0.9);
+
   return (
     <AnimatePresence>
       {isOpen && (
@@ -182,31 +189,30 @@ const Modal2 = ({
           >
             <div
               className="flex flex-col w-full h-full gap-4 p-4 overflow-hidden rounded-xl borderb"
-              // style={{
-              //   background: `${
-              //     mode === "dark"
-              //       ? "linear-gradient(rgb(29 27 36) 0%, rgb(48 45 54) 30.42%, rgba(255, 255, 255, 0) 99.67%)"
-              //       : `linear-gradient(180deg, ${lighterColor} 0%, rgba(255, 255, 255, 0.82) 30.42%, rgba(255, 255, 255, 0.00) 99.67%)`
-              //   } `,
-              // }}
+              style={{
+                background: `${mode === "dark"
+                    ? "linear-gradient(rgb(29 27 36) 0%, rgb(48 45 54) 30.42%, rgba(255, 255, 255, 0) 99.67%)"
+                    : `linear-gradient(180deg, ${lighterColor} 0%, rgba(255, 255, 255, 0.82) 30.42%, rgba(255, 255, 255, 0.00) 99.67%)`
+                  } `,
+              }}
             >
-              <div className="justify-center">
- <div style={{alignItems:"center",marginLeft:"209px",marginTop:"20px"}} className={`flex items-center justify-center rounded-full 2xl:h-11 2xl:w-11 h-10 w-10 shadow-stepShadowInset place-items-center bg-[#E3DFFB] border-[0.5px] border-[${primaryColor}] border-opacity-10`}>
-<div
-      style={{
-        boxShadow: `0px 3.882px 6.211px 0px ${primaryColor}66, 0px 0.776px 1.553px 0px #ffffff66 inset`,
-      
-      }}
-      className="flex items-center justify-center text-xs 2xl:text-base font-medium rounded-full transition duration-500 ease-in-out h-7 w-7 2xl:h-8 2xl:w-8 bg-accent text-white"
-    >
-      <span className="font-bold text-white">{<MdCheck />}</span>
-    </div>
-    </div>  
-    </div>
+              <div className="flex justify-center items-center">
+                <div className={`flex justify-center items-center  rounded-full 2xl:h-11 2xl:w-11 h-10 w-10 shadow-stepShadowInset place-items-center bg-[#E3DFFB] border-[0.5px] border-[${primaryColor}] border-opacity-10`}>
+                  <div
+                    style={{
+                      boxShadow: `0px 3.882px 6.211px 0px ${primaryColor}66, 0px 0.776px 1.553px 0px #ffffff66 inset`,
+
+                    }}
+                    className="flex items-center justify-center text-xs 2xl:text-base font-medium rounded-full transition duration-500 ease-in-out h-7 w-7 2xl:h-8 2xl:w-8 bg-accent text-white"
+                  >
+                    <span className="font-bold text-white">{<MdCheck />}</span>
+                  </div>
+                </div>
+              </div>
               <h1 className="h1 text-center">Congratulations!</h1>
               <h6 className="h6 text-center">Thank you for your application <br />
-          This form has now been submitted</h6>
-          <h6 className="h6 text-center"> We’ll be in touch soon</h6>
+                This form has now been submitted</h6>
+              <h6 className="h6 text-center"> We’ll be in touch soon</h6>
               {/* {footer && (
                 <div className="flex items-center justify-end gap-4">
                   {buttonClose && (
@@ -231,6 +237,6 @@ const Modal2 = ({
     </AnimatePresence>
   );
 };
- 
+
 export default Modal2;
- 
+
