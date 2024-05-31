@@ -384,7 +384,7 @@ const updateFileInfo = (file) => {
   }, []);
   useEffect(() => {
     if (closeDrawer) {
-      setCurrentStep(4);
+      setCurrentStep(0);
       setActiveBtn(0);
       setPresentage(0);
     }
