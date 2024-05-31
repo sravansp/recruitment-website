@@ -2227,6 +2227,7 @@ const Createjob = ({
                                   // console.log(e);
                                 }}
                                 error={condition.question ? '' : Questionerror || ''}
+                                maxLength = {100}
                               />
                               <div className="flex items-center gap-5">
 
