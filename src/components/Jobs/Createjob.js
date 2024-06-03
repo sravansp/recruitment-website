@@ -1231,12 +1231,17 @@ const Createjob = ({
     // );
   }, [searchFilter]);
   const AllRecruitmentJobTeamMembers = async () => {
-    // const jobId=1;
     try {
       const response = await getAllRecruitmentUsers();
       // console.log(response);
+
+      // Sort the response by username, case insensitive
+      const sortedData = response.result.sort((a, b) => {
+        return a.userName.localeCompare(b.userName, undefined, { sensitivity: 'base' });
+      });
+
       setemployeeList(
-        response.result.map((item) => ({
+        sortedData.map((item) => ({
           username: item.userName,
           userId: item.userId,
           userimage: item.userImage,
