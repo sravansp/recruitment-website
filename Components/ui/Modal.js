@@ -127,15 +127,16 @@ const Modal2 = ({
   className = "",
   handleSubmit = () => { },
 }) => {
-  const [primaryColor, setPrimaryColor] = useState("");
+  // const [primaryColor, setPrimaryColor] = useState();
+  const primaryColor = "#6A4BFC"
 
-  useEffect(() => {
-    const color = localStorage.getItem("mainColor");
-    if (color) {
-      setPrimaryColor(color);
-    }
-  }, []);
-  const mode = localStorage.getItem("theme");
+  // useEffect(() => {
+  //   const color = localStorage.getItem("mainColor");
+  //   if (color) {
+  //     setPrimaryColor(color);
+  //   }
+  // }, []);
+  // const mode = localStorage.getItem("theme");
   const [timer, setTimer] = useState(null);
 
   useEffect(() => {
@@ -190,9 +191,7 @@ const Modal2 = ({
             <div
               className="flex flex-col w-full h-full gap-4 p-4 overflow-hidden rounded-xl borderb"
               style={{
-                background: `${mode === "dark"
-                    ? "linear-gradient(rgb(29 27 36) 0%, rgb(48 45 54) 30.42%, rgba(255, 255, 255, 0) 99.67%)"
-                    : `linear-gradient(180deg, ${lighterColor} 0%, rgba(255, 255, 255, 0.82) 30.42%, rgba(255, 255, 255, 0.00) 99.67%)`
+                background: `${ `linear-gradient(180deg, ${lighterColor} 0%, rgba(255, 255, 255, 0.82) 30.42%, rgba(255, 255, 255, 0.00) 99.67%)`
                   } `,
               }}
             >
