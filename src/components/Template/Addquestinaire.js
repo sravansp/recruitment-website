@@ -74,8 +74,8 @@ const QuestionAire = ({
           ...prevEvaluation,
           {
             id: prevEvaluation.length + 1,
-            companyId: companyId, // Replace companyId with your actual value
-            questionnaireTemplateId: "", // Replace insertedId with your actual value
+            companyId: companyId, 
+            questionnaireTemplateId: "", 
             question: "",
             answerMetaData: '[]',
             description: "hihihihi",
@@ -650,7 +650,7 @@ const QuestionAire = ({
                         {['Drop-down', 'Multiple Choice', 'Checkboxes'].includes(
                           condition.answerMetaData[0]?.key
                         ) && (
-                            <Tooltip placement="top" title={"Add new"}>
+                            <Tooltip placement="top" title={"Add new option"}>
                               <CgAdd
                                 onClick={() => handleAddField(index, condition.answerMetaData[0]?.key)}
                                 className="w-5 h-5 cursor-pointer hover:text-primary transform duration-300"
