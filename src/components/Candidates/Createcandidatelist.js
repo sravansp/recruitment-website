@@ -40,7 +40,7 @@ import { useNavigate } from 'react-router-dom';
 
 export default function Createcandidatelist({ open = "", close = () => { }, fileUpdateId, refresh, ConfigurationAction, updateId = null, }) {
   const [show, setShow] = useState(open);
-  const [activeBtnValue, setActiveBtnValue] = useState("Personel");//Personel//Questions//Work//Review//Educational
+  const [activeBtnValue, setActiveBtnValue] = useState("Work");//Personel//Questions//Work//Review//Educational
   const [nextStep, setNextStep] = useState(0);
   const [applicableData, setApplicableData] = useState([]);
   const [isUpdate, setIsUpdate] = useState();
@@ -1170,6 +1170,7 @@ export default function Createcandidatelist({ open = "", close = () => { }, file
                               /> :
                               <DateSelect
                                 title={each.title}
+                                placeholder={`Select ${each.title}`}
                                 change={(e) => {
                                   formik3.setFieldValue(each.inputFeild, e);
                                 }}
