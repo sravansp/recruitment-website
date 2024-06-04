@@ -1786,7 +1786,7 @@ const Createjob = ({
                               }
                               if (salaryRangeTo <= salaryRangeFrom) {
                                 // formik1.setFieldError('salaryRangeFrom', 'Salary Range From should be less than Salary Range To ');
-                                setsalaryRangeFromError('Salary Range From should be less than Salary Range To ')
+                                setsalaryRangeFromError(" 'Salary Range From' should be less than 'Salary Range To' ")
                                 formik1.setFieldValue('salaryRangeFrom', value);
                                 console.log("ttt")
                               } else {
@@ -1814,7 +1814,7 @@ const Createjob = ({
                             const salaryRangeFrom = parseFloat(formik1.values.salaryRangeFrom); // Convert Salary Range From to a number
 
                             if (salaryRangeTo <= salaryRangeFrom) {
-                              setsalaryRangeToError("Salary Range To should be greater than the Salary Range From");
+                              setsalaryRangeToError(" 'Salary Range To' should be greater than the 'Salary Range From' ");
                               formik1.setFieldValue('salaryRangeTo', e);
                             } else if (salaryRangeTo <= 0) {
                               setsalaryRangeToError("Salary Range To must be a positive number");
