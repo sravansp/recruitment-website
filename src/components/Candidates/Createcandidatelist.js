@@ -1170,6 +1170,7 @@ export default function Createcandidatelist({ open = "", close = () => { }, file
                               /> :
                               <DateSelect
                                 title={each.title}
+                                placeholder={`Select ${each.title}`}
                                 change={(e) => {
                                   formik3.setFieldValue(each.inputFeild, e);
                                 }}

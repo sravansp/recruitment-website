@@ -457,7 +457,7 @@ function AllJobs() {
       setFilteredJobList(response.result);
       console.log(response);
     } catch (error) {
-      console.error(error);
+      // console.error(error);
     }
   };
 
