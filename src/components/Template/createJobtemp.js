@@ -1934,6 +1934,7 @@ icondropDown={true}
                                     console.log(e);
                                   }}
                                   error={condition.question ? '' : Questionerror || ''}
+                                  maxLength ={100}
                                 />
                                 <div className="flex items-center gap-5 mt-4">
                                   <div className="flex-shrink-0">

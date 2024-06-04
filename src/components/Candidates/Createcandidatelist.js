@@ -1058,10 +1058,22 @@ export default function Createcandidatelist({ open = "", close = () => { }, file
                               <FormInput
                                 key={fieldIndex}
                                 title={eachField.title}
-                                type={"number"}
+                                type={"text"}
+                                pattern="[0-9]*"
+                                inputmode="numeric"
                                 placeholder={`Enter ${eachField.title}`}
                                 change={(e) => {
-                                  formik.setFieldValue(eachField.inputName, e);
+                                  if (
+                                    /^\d+$/g.test(e) &&
+                                    /^\d+(?!.*--).*$/g.test(e)
+                                  ) {
+                                    formik.setFieldValue(eachField.inputName, e);
+                                  } else if (e === "") {
+                                    Formik2.setFieldValue(
+                                      "eachField.inputName",
+                                      ""
+                                    );
+                                  }
                                 }}
                                 required={true}
                                 value={formik.values[eachField.inputName]}

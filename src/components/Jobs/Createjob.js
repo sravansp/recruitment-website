@@ -1013,7 +1013,7 @@ const Createjob = ({
           setPresentage(3.4);
           setNextStep(nextStep + 1);
         } else if (response.status === 500) {
-          openNotification("error", response.message);
+          openNotification("error", "Info", response.message);
         }
       } catch (error) {
         // Handle the error here
@@ -1057,7 +1057,7 @@ const Createjob = ({
             handleClose();
           }, 2000); // Adjust the delay time as needed
         } else if (response.status === 500) {
-          openNotification("error", response.message);
+          openNotification("error", "Info", response.message);
         }
       } catch (error) {
         // Handle the error here
@@ -1231,12 +1231,17 @@ const Createjob = ({
     // );
   }, [searchFilter]);
   const AllRecruitmentJobTeamMembers = async () => {
-    // const jobId=1;
     try {
       const response = await getAllRecruitmentUsers();
       // console.log(response);
+
+      // Sort the response by username, case insensitive
+      const sortedData = response.result.sort((a, b) => {
+        return a.userName.localeCompare(b.userName, undefined, { sensitivity: 'base' });
+      });
+
       setemployeeList(
-        response.result.map((item) => ({
+        sortedData.map((item) => ({
           username: item.userName,
           userId: item.userId,
           userimage: item.userImage,
@@ -1285,7 +1290,7 @@ const Createjob = ({
           // Adjust the delay time as needed
           setNextStep(nextStep + 1)
         } else if (response.status === 500) {
-          openNotification("error", response.message);
+          openNotification("error", "Info", response.message);
         }
       } catch (error) {
         // Handle the error here
@@ -2227,6 +2232,7 @@ const Createjob = ({
                                   // console.log(e);
                                 }}
                                 error={condition.question ? '' : Questionerror || ''}
+                                maxLength = {100}
                               />
                               <div className="flex items-center gap-5">
 

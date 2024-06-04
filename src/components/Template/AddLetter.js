@@ -10,7 +10,7 @@ import TextEditor from "../common/TextEditor/TextEditor";
 import FormInput from "../common/FormInput";
 import image from "../../assets/images/attachment-2.svg";
 import image2 from "../../assets/images/emoji-sticker-line.svg";
-import { getAllRecruitmentLetterTemplates,getRecruitmentLetterTemplateById, saveRecruitmentLetterTemplate, updateRecruitmentLetterTemplate } from "../Api1";
+import { getAllRecruitmentLetterTemplates, getRecruitmentLetterTemplateById, saveRecruitmentLetterTemplate, updateRecruitmentLetterTemplate } from "../Api1";
 import { FaAsterisk } from "react-icons/fa";
 const AddLetter = ({
   open = "",
@@ -28,12 +28,12 @@ const AddLetter = ({
   const [templateNameError, setTemplateNameError] = useState('');
   const [subjectError, setSubjectError] = useState('')
   const [contentError, setContentError] = useState('');
-  const[copytemplateName,setcopytemplateName] = useState("")
+  const [copytemplateName, setcopytemplateName] = useState("")
   const handleClose = () => {
     close(false);
   };
   const [content, setContent] = useState("");
-  const[Length,setLength] = useState("")
+  const [Length, setLength] = useState("")
   const [api, contextHolder] = notification.useNotification();
   const openNotification = (type, message, description) => {
     api[type]({
@@ -84,11 +84,11 @@ const AddLetter = ({
         setTemplateNameError('');
       }
 
-      if(Length>0 && templateName!==copytemplateName){
+      if (Length > 0 && templateName !== copytemplateName) {
         setTemplateNameError('Template name already exist.');
-        hasError = true; 
-      }else{
-         setTemplateNameError('')
+        hasError = true;
+      } else {
+        setTemplateNameError('')
       }
 
       // Check if subject is empty
@@ -132,16 +132,16 @@ const AddLetter = ({
 
           openNotification(
             "success",
-            "Success",
+            "Successful",
             response.message
           );
           setTimeout(() => {
             handleClose();
             refresh()
-          }, 1500);
+          }, 1000);
 
         } else if (response.status === 500) {
-          openNotification("error", "Error..", response.message.replace(/<br\/>/g, '\n'));
+          openNotification("error", "Info", response.message.replace(/<br\/>/g, '\n'));
         }
       }
       else {
@@ -161,15 +161,15 @@ const AddLetter = ({
         if (response.status === 200) {
           openNotification(
             "success",
-            "Success",
+            "Successful",
             response.message
           );
           setTimeout(() => {
             handleClose();
             refresh()
-          }, 1500);
+          }, 1000);
         } else {
-          openNotification("error", "Error..", response.message);
+          openNotification("error", "Info", response.message);
         }
       }
     } catch (error) {
@@ -208,27 +208,27 @@ const AddLetter = ({
     }
   };
 
-  const getLetterByName = async ()=>{
-    try{
-     const response = await getAllRecruitmentLetterTemplates({
-     companyId:companyId,
-     letterTemplateName:templateName
+  const getLetterByName = async () => {
+    try {
+      const response = await getAllRecruitmentLetterTemplates({
+        companyId: companyId,
+        letterTemplateName: templateName
 
-     })
-     setLength(response.result.length)
-     console.log(response)
+      })
+      setLength(response.result.length)
+      console.log(response)
 
-    }catch(error){
+    } catch (error) {
       console.log(error)
     }
   }
 
-  useEffect(()=>{
-    if(templateName!==copytemplateName){
-    getLetterByName()
+  useEffect(() => {
+    if (templateName !== copytemplateName) {
+      getLetterByName()
 
     }
-  },[templateName])
+  }, [templateName])
   return (
     <div>
       <DrawerPop
@@ -322,10 +322,10 @@ const AddLetter = ({
               error={subjectError}
               required={true}
             />
-            <div>
+            <div className="flex flex-col gap-2">
               <p className="flex">
-              <p className="pb-2">Letter</p>
-              <FaAsterisk className="ml-1.5 text-[6px] text-rose-600" />
+                <p>Letter</p>
+                <FaAsterisk className="ml-1.5 text-[6px] text-rose-600" />
               </p>
               <TextEditor
                 initialValue={content}
