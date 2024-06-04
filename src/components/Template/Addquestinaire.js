@@ -614,7 +614,7 @@ const QuestionAire = ({
                           <div key={fieldIndex} className="flex items-center">
                             {['Drop-down', 'Multiple Choice', 'Checkboxes'].includes(field.key) && (
                               <FormInput
-                                title={`Options ${fieldIndex + 1}`}
+                                title={`Option ${fieldIndex + 1}`}
                                 placeholder={'Enter option'}
                                 value={field.value}
                                 change={(e) => setEvaluation((prevEvaluation) => prevEvaluation.map((prevCondition, i) => i === index
@@ -636,9 +636,9 @@ const QuestionAire = ({
                             {['Drop-down', 'Multiple Choice', 'Checkboxes'].includes(field.key) && (
                               <div className="ml-2">
                                 <Tooltip placement="top" title={"Delete"}>
-                                  <MdDelete
+                                  <RiDeleteBinLine
                                     onClick={() => handleDeleteField(index, fieldIndex)}
-                                    className="cursor-pointer text-red-500"
+                                    className="cursor-pointer text-slate-500 dark:text-slate-300 hover:text-red-500"
                                   />
                                 </Tooltip>
                               </div>
@@ -653,7 +653,7 @@ const QuestionAire = ({
                             <Tooltip placement="top" title={"Add new"}>
                               <CgAdd
                                 onClick={() => handleAddField(index, condition.answerMetaData[0]?.key)}
-                                style={{ width: '18px', height: '18px', cursor: 'pointer' }}
+                                className="w-5 h-5 cursor-pointer hover:text-primary transform duration-300"
                               />
                             </Tooltip>
                           )}
