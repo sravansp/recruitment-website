@@ -1,93 +1,93 @@
-import React, { useState, useRef } from 'react';
-import ReactQuill from 'react-quill';
-import Quill from 'quill';
-import ImageResize from 'quill-image-resize-module-react';
+import React, { useEffect, useRef } from "react";
 
-Quill.register('modules/imageResize', ImageResize);
+function Editor({ onChange, editorLoaded, name, value }) {
+  const editorRef = useRef();
+  const { CKEditor, ClassicEditor } = editorRef.current || {};
 
-const modules = {
-  toolbar: {
-    container: [
-      [{ 'header': [1, 2, 3, 4, 5, 6, false] }],
-      ['bold', 'italic', 'underline', 'strike', 'blockquote'],
-      [{ 'list': 'ordered' }, { 'list': 'bullet' }],
-      [{ 'indent': '-1' }, { 'indent': '+1' }],
-      ['link', 'image', 'video'],
-      ['clean'],
-    ],
-    handlers: {
-      'image': function() {
-        const input = document.createElement('input');
-        input.setAttribute('type', 'file');
-        input.click();
+useEffect(()=>{
+    console.log(value);
+},[value])
+  console.log(value);
+  useEffect(() => {
+    editorRef.current = {
+      CKEditor: require("@ckeditor/ckeditor5-react").CKEditor, // v3+
+      ClassicEditor: require("@ckeditor/ckeditor5-build-classic")
 
-        input.onchange = () => {
-          const file = input.files[0];
-          const reader = new FileReader();
-          reader.onload = () => {
-            const base64 = reader.result.split(',')[1];
-            this.quill.editor.insertEmbed(this.quill.selection.savedRange.index, 'image', `data:image/png;base64,${base64}`);
-          };
-          reader.readAsDataURL(file);
-        };
-      },
-    },
-  },
-  clipboard: {
-    matchVisual: false,
-  },
-  imageResize: {
-    modules: ['Resize', 'DisplaySize', 'Toolbar'],
-    displaySize: {
-      name: 'imageSize',
-      toolbar: ['imageSize100', 'imageSize50', 'imageSize25'],
-    },
-    toolbar: {
-      imageSize100: {
-        name: 'imageSizeFull',
-        action: 'resizeImage',
-        value: 1,
-      },
-      imageSize50: {
-        name: 'imageSizeHalf',
-        action: 'resizeImage',
-        value: 0.5,
-      },
-      imageSize25: {
-        name: 'imageSizeQuarter',
-        action: 'resizeImage',
-        value: 0.25,
-      },
-    },
-  },
-};
-
-const formats = [
-  'bold', 'italic', 'underline', 'strike', 'blockquote', 'list', 'bullet', 'indent',
-  'link', 'image', 'video', 'header', 'font', 'size',
-];
-
-const Editor = ({ placeholder }) => {
-  const [editorHtml, setEditorHtml] = useState('');
-  const ref = useRef(null);
-
-  const handleChange = (html) => {
-    setEditorHtml(html);
-    console.log(html);
-  };
+    };
+  }, []);
+// Configuration of the formatting dropdown.
 
   return (
-    <ReactQuill
-      ref={ref}
-      theme={null}
-      onChange={handleChange}
-      value={editorHtml}
-      modules={modules}
-      formats={formats}
-      bounds="#root"
-      placeholder={placeholder}
-    />
+    <div>
+      {editorLoaded ? (
+        <CKEditor
+          type=""
+          name={name}
+          editor={ClassicEditor}
+          config={{
+            ckfinder: {
+              // Upload the images to the server using the CKFinder QuickUpload command
+              // You have to change this address to your server that has the ckfinder php connector
+              uploadUrl: "" //Enter your upload url
+            },
+            toolbar: [
+                'undo',
+                'redo',
+                '|',
+                {
+                    label: 'Text',
+                    icon: false,
+                    items: [
+                       
+                        'fontFamily',
+                        'fontSize',
+                        'fontColor',
+                        'fontBackgroundColor',
+                        '|',
+                        'bold',
+                        'italic',
+                        'underline',
+                        'strikethrough',
+                        '|',
+                        'alignment',
+                        '|',
+                        'bulletedList',
+                        'numberedList',
+                        '|',
+                        'outdent',
+                        'indent',
+                        '|',
+                        'removeFormat'
+                    ]
+                },
+                '|',
+                'link',
+                'blockQuote',
+                'uploadImage',
+                'insertTable',
+                'mediaEmbed',
+                'horizontalLine',
+                '|',
+                {
+                    label: 'Lists',
+                    icon: false,
+                    items: [ 'bulletedList', 'numberedList', '|', 'outdent', 'indent' ]
+                }
+                
+            ],
+          }}
+          data={value}
+          onChange={(event, editor) => {
+            const data = editor.getData();
+            // console.log({ event, editor, data })
+            onChange(data);
+          }}
+        />
+      ) : (
+        <div>Editor loading</div>
+      )}
+    </div>
   );
-};
+}
 
 export default Editor;

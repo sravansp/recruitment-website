@@ -189,3 +189,35 @@
 .page-controls button:enabled:hover, .page-controls button:enabled:focus {
   background-color: #e6e6e6;
 }
+
+/* CKEditor Theme Overrides  */
+
+.ck-rounded-corners .ck.ck-editor__top .ck-sticky-panel .ck-sticky-panel__content, .ck.ck-editor__top .ck-sticky-panel .ck-sticky-panel__content.ck-rounded-corners {
+  border-top-left-radius: 10px !important;
+  border-top-right-radius: 10px !important;
+  border-bottom-left-radius: 0;
+  border-bottom-right-radius: 0;
+}
+
+.ck-rounded-corners .ck.ck-toolbar, .ck.ck-toolbar.ck-rounded-corners {
+  border-top-left-radius: 10px !important;
+  border-top-right-radius: 10px !important;
+}
+.ck.ck-button.ck-on, a.ck.ck-button.ck-on {
+  color: var(--primary-color) !important;
+  background: rgba(var(--primary), 0.1) !important;
+}
+.ck.ck-editor__editable.ck-focused:not(.ck-editor__nested-editable) {
+  border: 1px solid var(--primary-color) !important;
+}
+.dark .ck.ck-toolbar {
+  background: #3f3e3e00;
+}
+.dark .ck-reset_all :not(.ck-reset_all-excluded *), .ck.ck-reset_all {
+  color: #fff;
+}
+.ck.ck-button:active, .ck.ck-button:focus, a.ck.ck-button:active, a.ck.ck-button:focus {
+  /* border: var(--ck-focus-ring); */
+  box-shadow: none !important;
+  outline: none;
+}

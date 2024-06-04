@@ -62,7 +62,7 @@ const AgeDistribution = () => {
   },[])
 
   return (
-    <div className="h-[250px] xl:h-[285px]">
+    <div className="h-[250px] xl:h-[254px] zoom-125">
       <ResponsiveContainer width="100%" height="100%">
         <AreaChart
           //   width={730}

@@ -14,6 +14,8 @@ import {
 import { BsFileEarmarkRichtext } from "react-icons/bs";
 import { FaRegEdit } from "react-icons/fa";
 import { PiPushPinSlashBold } from "react-icons/pi";
+import Editor from "../../common/TextEditor/Editor";
+import { json } from "d3";
 
 // const candidateStatus = [
 //   {
@@ -87,6 +89,13 @@ const ActivityFeed = () => {
   const { state } = useLocation();
   const [selectedNoteId, setSelectedNoteId] = useState(null);
   const [isPinned, setIsPinned] = useState(0);
+
+  const [editorLoaded, setEditorLoaded] = useState(false);
+  const [data, setData] = useState("");
+
+  useEffect(() => {
+    setEditorLoaded(true);
+  }, []);
   const handleEditClick = (jobResumeNoteId) => {
     setSelectedNoteId(jobResumeNoteId);
     getnotesbyId(jobResumeNoteId)
@@ -302,6 +311,17 @@ const ActivityFeed = () => {
             }}
             minheight="250px"
           />
+           {/* <Editor
+        name="description"
+        onChange={(data) => {
+          setData(data);
+          formik.setFieldValue('notes', data)
+          console.log(data);
+        }}
+        value={formik.values.notes}
+
+        editorLoaded={editorLoaded}
+      /> */}
           <div
             className="flex items-center justify-end gap-2.5 p-1.5 mt-4 rounded-lg"
             style={{ backgroundColor: `${primaryColor}10` }}
