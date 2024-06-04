@@ -1550,7 +1550,7 @@ const Createjob = ({
                           placeholder={t("Choose department")}
                           required={true}
                           options={departmentList}
-                          value={isNaN(formik1.values.departmentId) ? null : formik1.values.departmentId}
+                          value={formik1.values.departmentId}
                           error={formik1.errors.departmentId}
                           change={(e) => {
                             formik1.setFieldValue("departmentId", e);

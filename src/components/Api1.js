@@ -251,7 +251,7 @@ export const getAllRecruitmentQuestionnaireTemplates = async (data) => {
 //   //   jobId: jobId,
 //   // };
 
-const kwargs = {};
+
 
 //   return await apiRequest(action, method, kwargs);
 // };

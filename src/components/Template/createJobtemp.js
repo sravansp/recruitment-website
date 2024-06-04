@@ -483,7 +483,7 @@ const CreatejobTemp = ({
 
         setjobdata(firstJob);
 
-        formik.setFieldValue("companyId", firstJob.companyId);
+        // formik.setFieldValue("companyId", firstJob.companyId);
         formik.setFieldValue("jobTitle", firstJob.jobTitle);
         formik.setFieldValue("departmentId", firstJob.departmentId);
         formik.setFieldValue("education", firstJob.education);
@@ -732,29 +732,29 @@ const CreatejobTemp = ({
     }
   }, [nextStep]);
 
-  const getCompany = async () => {
-    try {
-      const result = await axios.post(
-        API.HOST + API.GET_COMPANY_RECORDS + "/" + organisationId
-      );
-      setCompany(
-        result.data.tbl_company.map((each) => ({
-          label: each.company,
-          value: each.companyId,
-        }))
-      );
-      // console.log(result.data);
-    } catch (error) {
-      console.log(error);
-    }
-    console.log("company", company);
-  };
-  useEffect(() => {
-    // switch (assignBtnName) {
-    //   default:
-    getCompany();
-    console.log("value", company);
-  }, []);
+  // const getCompany = async () => {
+  //   try {
+  //     const result = await axios.post(
+  //       API.HOST + API.GET_COMPANY_RECORDS + "/" + organisationId
+  //     );
+  //     setCompany(
+  //       result.data.tbl_company.map((each) => ({
+  //         label: each.company,
+  //         value: each.companyId,
+  //       }))
+  //     );
+  //     // console.log(result.data);
+  //   } catch (error) {
+  //     console.log(error);
+  //   }
+  //   console.log("company", company);
+  // };
+  // useEffect(() => {
+  //   // switch (assignBtnName) {
+  //   //   default:
+  //   getCompany();
+  //   console.log("value", company);
+  // }, []);
   const handleCompanyChange = (selectedOption) => {
     setSelectedCompany(selectedOption);
     // Additional logic if needed
@@ -1135,7 +1135,7 @@ const CreatejobTemp = ({
                       }}
                       initialExpanded={true}
                     >
-                      {inputshow && (
+                      {/* {inputshow && (
                         <div className="grid grid-cols-3 gap-6 ">
                           <Dropdown
                             title={t("Choose Template")}
@@ -1158,7 +1158,7 @@ const CreatejobTemp = ({
                             }}
                           />
                         </div>
-                      )}
+                      )} */}
                       <div className="grid grid-cols-3 gap-4">
                         <FormInput
                           title={t("Job Title")}
