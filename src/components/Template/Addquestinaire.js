@@ -635,7 +635,7 @@ const QuestionAire = ({
 
                             {['Drop-down', 'Multiple Choice', 'Checkboxes'].includes(field.key) && (
                               <div className="ml-2">
-                                <Tooltip placement="top" title={"Delete"}>
+                                <Tooltip placement="top" color='red' title={"Delete"}>
                                   <RiDeleteBinLine
                                     onClick={() => handleDeleteField(index, fieldIndex)}
                                     className="cursor-pointer text-slate-500 dark:text-slate-300 hover:text-red-500"
