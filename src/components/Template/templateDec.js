@@ -108,24 +108,19 @@ const TemplateDec = ({ open = "", close = () => { }, inputshow = false, isUpdate
       let hasError = false;
       if (!templateName) {
         setTemplateNameError('Template Name is required.');
-        hasError = true;
-      } else {
-        setTemplateNameError('');
-        hasError = false;
-      }
-      if (templateName.length > 0 && templateName.length < 3) {
-        setTemplateNameError('Template Name should contain atleast 3 characters.');
-        hasError = true;
-      } else {
-        setTemplateNameError('');
-        hasError = false;
-      }
-      if (templateName.length > 3 && templateName === JobDescription[0]?.descriptionTemplateName) {
+        hasError = true; // Set flag to true if there's an error
+      } else if (!/^[a-zA-Z\s]+$/.test(templateName)) {
+        setTemplateNameError('Template Name should only contain letters.');
+        hasError = true; // Set flag to true if there's an error
+      } else if (templateName.length < 3) {
+        setTemplateNameError('Template Name should have at least 3 letters.');
+        hasError = true; // Set flag to true if there's an error
+      }else if (templateName.length > 3 && templateName === JobDescription[0]?.descriptionTemplateName) {
         setTemplateNameError('Template Name Already Exist')
         hasError = true;
       } else {
         setTemplateNameError('')
-        hasError = false;
+       
       }
 
       // Check if content is empty
@@ -134,7 +129,7 @@ const TemplateDec = ({ open = "", close = () => { }, inputshow = false, isUpdate
         hasError = true;
       } else {
         setContentError('');
-        hasError = false;
+       
       }
 
       if (hasError) {

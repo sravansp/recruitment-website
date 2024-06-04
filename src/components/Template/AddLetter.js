@@ -75,21 +75,23 @@ const AddLetter = ({
       // API call
 
       let hasError = false; // Flag to track if any error occurred
-
-      // Check if templateName is empty
       if (!templateName) {
         setTemplateNameError('Template Name is required.');
         hasError = true; // Set flag to true if there's an error
-      } else {
+      } else if (!/^[a-zA-Z\s]+$/.test(templateName)) {
+        setTemplateNameError('Template Name should only contain letters.');
+        hasError = true; // Set flag to true if there's an error
+      } else if (templateName.length < 3) {
+        setTemplateNameError('Template Name should have at least 3 letters.');
+        hasError = true; // Set flag to true if there's an error
+      }else if (Length > 0 && templateName !== copytemplateName) {
+        setTemplateNameError('Template Name already exist');
+        hasError = true; // Set flag to true if there's an error
+      }  
+      else {
         setTemplateNameError('');
       }
 
-      if (Length > 0 && templateName !== copytemplateName) {
-        setTemplateNameError('Template name already exist.');
-        hasError = true;
-      } else {
-        setTemplateNameError('')
-      }
 
       // Check if subject is empty
       if (!subject) {
@@ -98,6 +100,7 @@ const AddLetter = ({
       } else {
         setSubjectError('');
       }
+
       if (!content) {
         setContentError('Content is required.');
         hasError = true;
@@ -106,6 +109,7 @@ const AddLetter = ({
       } else {
         setContentError('');
       }
+
       // If any error occurred, return early
       if (hasError) {
         return;
