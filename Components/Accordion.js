@@ -1,9 +1,9 @@
 "use clients";
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import { motion, AnimatePresence } from "framer-motion";
 import { Checkbox } from "antd";
 
-const AccordionItem = ({ title, checkboxes, isOpen, children, isActive, onClick }) => {
+const AccordionItem = ({ title, checkboxes, isOpen, isActive, onCheckboxChange }) => {
   return (
     <AnimatePresence>
       {isActive && (
@@ -15,15 +15,17 @@ const AccordionItem = ({ title, checkboxes, isOpen, children, isActive, onClick 
           transition={{ duration: 0.3, ease: "easeInOut" }}
         >
           <div className="py-2">
-            {/* Map over checkboxes array */}
-            <div defaultValue={[]} className="grid grid-cols-2 gap-4" style={{ width: "100%" }}>
+            <div className="grid grid-cols-2 gap-4" style={{ width: "100%" }}>
               {checkboxes.map((checkbox) => (
-                <Checkbox key={checkbox.value} value={checkbox.value}>
+                <Checkbox
+                  key={checkbox.value}
+                  value={checkbox.value}
+                  onChange={(e) => onCheckboxChange(title, checkbox.value, e.target.checked)}
+                >
                   {checkbox.label}
                 </Checkbox>
               ))}
             </div>
-            {children}
           </div>
         </motion.div>
       )}
@@ -31,18 +33,18 @@ const AccordionItem = ({ title, checkboxes, isOpen, children, isActive, onClick 
   );
 };
 
-const Accordion = ({ items = [] }) => {
+const Accordion = ({ items = [], onCheckboxChange }) => {
   const [activeIndices, setActiveIndices] = useState([]);
-console.log(activeIndices);
+  useEffect(() => {
+    setActiveIndices(items.map((_, index) => index)); // Set all indices as active initially
+  }, [items]);
   const handleItemClick = (index) => {
     setActiveIndices((prevIndices) => {
       const isIndexOpen = prevIndices.includes(index);
 
       if (isIndexOpen) {
-        // If index is already open, close it
         return prevIndices.filter((i) => i !== index);
       } else {
-        // If index is not open, open it
         return [...prevIndices, index];
       }
     });
@@ -56,19 +58,17 @@ console.log(activeIndices);
             className="flex justify-between py-2 cursor-pointer"
             onClick={() => handleItemClick(index)}
           >
-            <p className="text-sm font-semibold dark:text-white">{item.title}</p>
-            {/* {isOpen ? <DownOutlined /> : <RightOutlined />} {title} */}
+            <p className="text-sm font-semibold">{item.title}</p>
           </div>
           <AnimatePresence>
             {activeIndices.includes(index) && (
               <AccordionItem
                 title={item.title}
                 checkboxes={item.checkboxes}
-                children={item.content}
+                isOpen={true}
                 isActive={true}
-                onClick={() => handleItemClick(index)}
+                onCheckboxChange={onCheckboxChange}
                 key={index}
-                // checked={isOpen}
               />
             )}
           </AnimatePresence>

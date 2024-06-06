@@ -11,7 +11,7 @@ import { PiMagnifyingGlass, PiNavigationArrow } from "react-icons/pi";
 import { useMediaQuery } from "react-responsive";
 import { useRouter } from "next/navigation";
 import Link from "next/link";
-import { jobs } from "@/Components/Data";
+
 import {
   getAllRecruitmentJobs,
   getCompanyById,
@@ -22,15 +22,15 @@ import Web from "./Form/page";
 import Navbar from "@/Components/Navbar";
 import CustomDropdown from "@/Components/Filter";
 
-const Home = () => {
+const Home = ({ jobs }) => {
   const [selectedJobId, setSelectedJobId] = useState(1);
   const [selectedJob, setSelectedJob] = useState(); // Change to null
   const [JobsList, setJobList] = useState([]);
   const [searchJobTitle, setSearchJobTitle] = useState("");
   const [searchJobLocation, setSearchJobLocation] = useState("");
   const [filteredJobs, setFilteredJobs] = useState([]);
-  const [searchKeywords,setSearchKeywords]=useState("")
-  
+  const [searchKeywords, setSearchKeywords] = useState("")
+
 
   const jobDetailsAnimation = useAnimation();
   const isSmallScreen = useMediaQuery({ maxWidth: 767 });
@@ -226,16 +226,16 @@ const Home = () => {
 
       let newFilteredJobs = filteredJobs.filter((job) => {
         const titleMatch = job.jobTitle.toLowerCase().includes(searchJobTitle.toLowerCase()) ||
-                          job.searchKeywords.toLowerCase().includes(searchJobTitle.toLowerCase());
+          job.searchKeywords.toLowerCase().includes(searchJobTitle.toLowerCase());
         const locationMatch = job.location.toLowerCase().includes(searchJobLocation.toLowerCase());
-        
+
         return titleMatch && locationMatch;
       });
       setFilteredJobs(newFilteredJobs);
     };
 
     handleSearch();
-    
+
 
   }, [searchJobTitle, searchJobLocation]);
 
@@ -253,55 +253,61 @@ const Home = () => {
     let sortedJobs = [...selectedFilters]; // Make a copy of filteredJobs array for manipulation
 
     switch (key) {
-        case "1":
-            // Add your sorting logic for case 1 if needed
-            break;
-        case "2":
-            sortedJobs.sort(
-                (a, b) => new Date(b.createdOn).getTime() - new Date(a.createdOn).getTime()
-            ); // Sort by newest
-            break;
-        case "3":
-            sortedJobs.sort(
-                (a, b) => new Date(a.createdOn).getTime() - new Date(b.createdOn).getTime()
-            ); // Sort by oldest
-            break;
-            case "4":
-              const tenDaysAgo = new Date();
-              tenDaysAgo.setDate(tenDaysAgo.getDate() - 9); // Subtracting 9 instead of 10 to include jobs created within the last 10 days
-              sortedJobs = sortedJobs.filter(
-                  (job) => {
-                      const jobTimestamp = new Date(job.createdOn).getTime();
-                      // Check if job was created within the last ten days
-                      return jobTimestamp >= tenDaysAgo.getTime(); // Compare against the adjusted date
-                  }
-              );
-              break;
+      case "1":
+        // Add your sorting logic for case 1 if needed
+        break;
+      case "2":
+        sortedJobs.sort(
+          (a, b) => new Date(b.createdOn).getTime() - new Date(a.createdOn).getTime()
+        ); // Sort by newest
+        break;
+      case "3":
+        sortedJobs.sort(
+          (a, b) => new Date(a.createdOn).getTime() - new Date(b.createdOn).getTime()
+        ); // Sort by oldest
+        break;
+      case "4":
+        const tenDaysAgo = new Date();
+        tenDaysAgo.setDate(tenDaysAgo.getDate() - 9); // Subtracting 9 instead of 10 to include jobs created within the last 10 days
+        sortedJobs = sortedJobs.filter(
+          (job) => {
+            const jobTimestamp = new Date(job.createdOn).getTime();
+            // Check if job was created within the last ten days
+            return jobTimestamp >= tenDaysAgo.getTime(); // Compare against the adjusted date
+          }
+        );
+        break;
       case "5":
-            const twentyDaysAgo = new Date();
-            twentyDaysAgo.setDate(twentyDaysAgo.getDate() - 10);
-            const twentyDaysAgoTimestamp = twentyDaysAgo.getTime();
-            // Filter jobs created before 20 days ago
-            sortedJobs = sortedJobs.filter(
-                (job) => {
-                    const jobTimestamp = new Date(job.createdOn).getTime();
-                    // Check if job was created before 20 days ago
-                    return jobTimestamp >= twentyDaysAgoTimestamp && jobTimestamp < twentyDaysAgoTimestamp + (24 * 60 * 60 * 2000);
-                }
-            );
-            // Check if any jobs are filtered out
-            if (sortedJobs.length === 0) {
-                // If no jobs are found, update sortedJobs to display "No jobs found"
-                sortedJobs = ["No jobs found"];
-            }
-            break;
-        default:
-            break;
+        const twentyDaysAgo = new Date();
+        twentyDaysAgo.setDate(twentyDaysAgo.getDate() - 10);
+        const twentyDaysAgoTimestamp = twentyDaysAgo.getTime();
+        // Filter jobs created before 20 days ago
+        sortedJobs = sortedJobs.filter(
+          (job) => {
+            const jobTimestamp = new Date(job.createdOn).getTime();
+            // Check if job was created before 20 days ago
+            return jobTimestamp >= twentyDaysAgoTimestamp && jobTimestamp < twentyDaysAgoTimestamp + (24 * 60 * 60 * 2000);
+          }
+        );
+        // Check if any jobs are filtered out
+        if (sortedJobs.length === 0) {
+          // If no jobs are found, update sortedJobs to display "No jobs found"
+          sortedJobs = ["No jobs found"];
+        }
+        break;
+      default:
+        break;
     }
 
     // Update the state with the sorted or filtered jobs
     setFilteredJobs(sortedJobs);
-};
+  };
+
+  const handleFilterChange = (filteredJobs) => {
+    // Update the filtered jobs in the parent component
+    setFilteredJobs(filteredJobs);
+  };
+
 
 
 
@@ -355,53 +361,49 @@ const Home = () => {
   //   console.log("Selected filters:", filters); // Log the selected filters
   //   setSelectedFilters(filters);
   // };
-// const handleFilterChange = (key) =>{
-//   let filtered =  [...filteredJobs];
-//   switch (key) {
-//     case "1":
-//       filtered.sort((job)=>
-//         job.jobType === "Full Time"
-//     )
-//       break;
-//     case "2":
-//       // sortedJobs.sort(
-//       //   (a, b) =>
-//       //     new Date(b.createdOn).getTime() - new Date(a.createdOn).getTime()
-//       // );
-//       break;
-//     case "3":
-//       // sortedJobs.sort(
-//       //   (a, b) =>
-//       //     new Date(a.createdOn).getTime() - new Date(b.createdOn).getTime()
-//       // ); // Oldest
-//       break;
-//     case "4":
-//       // const tenDaysAgo = new Date();
-//       // tenDaysAgo.setDate(tenDaysAgo.getDate() - 5);
-//       // const tenDaysAgoTimestamp = tenDaysAgo.getTime();
-//       // sortedJobs = sortedJobs.filter(
-//       //   (job) => new Date(job.createdOn).getTime() >= tenDaysAgoTimestamp
-//       // );
-//       break;
-//     case "5":
-//       // const twentyDaysAgo = new Date();
-//       // twentyDaysAgo.setDate(twentyDaysAgo.getDate() - 20);
-//       // const twentyDaysAgoTimestamp = twentyDaysAgo.getTime();
-//       // sortedJobs = sortedJobs.filter(
-//       //   (job) => new Date(job.createdOn).getTime() >= twentyDaysAgoTimestamp
-//       // );
-//       break;
-//     default:
-//       break;
-//   }
-//   setFilteredJobs(filtered);
-// };
+  // const handleFilterChange = (key) =>{
+  //   let filtered =  [...filteredJobs];
+  //   switch (key) {
+  //     case "1":
+  //       filtered.sort((job)=>
+  //         job.jobType === "Full Time"
+  //     )
+  //       break;
+  //     case "2":
+  //       // sortedJobs.sort(
+  //       //   (a, b) =>
+  //       //     new Date(b.createdOn).getTime() - new Date(a.createdOn).getTime()
+  //       // );
+  //       break;
+  //     case "3":
+  //       // sortedJobs.sort(
+  //       //   (a, b) =>
+  //       //     new Date(a.createdOn).getTime() - new Date(b.createdOn).getTime()
+  //       // ); // Oldest
+  //       break;
+  //     case "4":
+  //       // const tenDaysAgo = new Date();
+  //       // tenDaysAgo.setDate(tenDaysAgo.getDate() - 5);
+  //       // const tenDaysAgoTimestamp = tenDaysAgo.getTime();
+  //       // sortedJobs = sortedJobs.filter(
+  //       //   (job) => new Date(job.createdOn).getTime() >= tenDaysAgoTimestamp
+  //       // );
+  //       break;
+  //     case "5":
+  //       // const twentyDaysAgo = new Date();
+  //       // twentyDaysAgo.setDate(twentyDaysAgo.getDate() - 20);
+  //       // const twentyDaysAgoTimestamp = twentyDaysAgo.getTime();
+  //       // sortedJobs = sortedJobs.filter(
+  //       //   (job) => new Date(job.createdOn).getTime() >= twentyDaysAgoTimestamp
+  //       // );
+  //       break;
+  //     default:
+  //       break;
+  //   }
+  //   setFilteredJobs(filtered);
+  // };
 
-const handleFilterChange =()=>{
-  console.log("filter ");
-}
 
- 
   return (
     <>
       <Navbar company={company} />
@@ -428,9 +430,10 @@ const handleFilterChange =()=>{
                 onItemSelected={setSearchJobTitle}
                 onChange={(value) => {
                   if (value.length <= 30) {
-                  setSearchJobTitle(value);
-                  // handleSearch();
-                 } }}
+                    setSearchJobTitle(value);
+                    // handleSearch();
+                  }
+                }}
               />
               <SearchBox
                 placeholder="Location"
@@ -442,7 +445,9 @@ const handleFilterChange =()=>{
                 onItemSelected={setSearchJobLocation}
                 onChange={(value) => {
                   if (value.length <= 30) {
-                  setSearchJobLocation(value)}}}
+                    setSearchJobLocation(value)
+                  }
+                }}
                 onSearch={() => setIsSearchClicked(true)}
                 clearInput={clearInput}
               />
@@ -466,7 +471,7 @@ const handleFilterChange =()=>{
 
         <div className="grid items-center w-full grid-cols-12 container-wrapper">
           <div className="col-span-6 md:col-span-3">
-            <CustomDropdown onFilterChange={handleFilterChange} selectedFilters={selectedFilters} />
+            {/* <CustomDropdown filteredJobs={filteredJobs} onFilterChange={handleFilterChange} /> */}
           </div>
           <div className="col-span-6 md:col-span-9">
             <div className="flex gap-1">
@@ -501,7 +506,7 @@ const handleFilterChange =()=>{
               selectedJob={selectedJob}
               jobDetailsAnimation={jobDetailsAnimation}
               handleApply={handleApply}
-              
+
             />
           </div>
         </motion.div>

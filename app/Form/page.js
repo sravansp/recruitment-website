@@ -202,50 +202,50 @@ function Web({ closeDrawer, selectedJobId, onClick }) {
       additionalEducationalDetails.filter((_, index) => index !== indexToRemove)
     );
   };
-const updateFileInfo = (file) => {
+  const updateFileInfo = (file) => {
     if (file) {
-        setFileInfo({
-            file: file,
-            fileName: file.name
-        });
+      setFileInfo({
+        file: file,
+        fileName: file.name
+      });
     }
-};
-  
+  };
+
   const [steps, setSteps] = useState([
-      {
-        id: 1,
-        value: 0,
-        title: "Personal Details",
-        data: "personaldetails",
-      },
+    {
+      id: 1,
+      value: 0,
+      title: "Personal Details",
+      data: "personaldetails",
+    },
 
-      {
-        id: 2,
-        value: 1,
-        title: "Educational Details",
-        data: "educationaldetails",
-      },
-      {
-        id: 3,
-        value: 2,
-        title: "Work Experience",
-        data: "workexperience",
-      },
+    {
+      id: 2,
+      value: 1,
+      title: "Educational Details",
+      data: "educationaldetails",
+    },
+    {
+      id: 3,
+      value: 2,
+      title: "Work Experience",
+      data: "workexperience",
+    },
 
-      {
-        id: 4,
-        value: 3,
-        title: "Questions",
-        data: "questions",
-      },
-      {
-        id: 5,
-        value: 4,
-        title: "Review",
-        data: "review",
-      },
+    {
+      id: 4,
+      value: 3,
+      title: "Questions",
+      data: "questions",
+    },
+    {
+      id: 5,
+      value: 4,
+      title: "Review",
+      data: "review",
+    },
   ]);
-  
+
   // const [steps, setSteps] = useState(() => {
   //   const baseSteps = [
   //     {
@@ -286,7 +286,7 @@ const updateFileInfo = (file) => {
   //     const newSteps = baseSteps.filter(step => step.id !== 3);
   //     return newSteps;
   //   }
-  
+
   //   return baseSteps;
   // });
 
@@ -475,21 +475,21 @@ const updateFileInfo = (file) => {
   //   });
   // };
 
-    useEffect(() => {
-      const fetchdata = async () => {
-        try {
-          const response = await getRecruitmentJobById(jobid);
-          console.log(response, "qestid");
-          const questionnaireId = response.result.questionnaireTemplateId;
-  console.log(questionnaireId,"iddd data in questionrie")
-          setQestid(questionnaireId);
-          console.log(questid, "idddddddddddddd");
-        } catch (error) {
-          console.error("error", error);
-        }
-      };
-      fetchdata();
-    }, []);
+  useEffect(() => {
+    const fetchdata = async () => {
+      try {
+        const response = await getRecruitmentJobById(jobid);
+        console.log(response, "qestid");
+        const questionnaireId = response.result.questionnaireTemplateId;
+        console.log(questionnaireId, "iddd data in questionrie")
+        setQestid(questionnaireId);
+        console.log(questid, "idddddddddddddd");
+      } catch (error) {
+        console.error("error", error);
+      }
+    };
+    fetchdata();
+  }, []);
 
   const fetchdata1 = async () => {
     try {
@@ -522,7 +522,7 @@ const updateFileInfo = (file) => {
         const questionnaireId = response.result[0].questionnaireTemplateId;
         console.log(questionnaireId, "iddd data in questionrie");
         setQestid(questionnaireId);
-        
+
       } else {
         console.error("No data found in response");
       }
@@ -863,9 +863,13 @@ const updateFileInfo = (file) => {
         try {
           console.log(values, "gggg");
 
-          // Make your API call here
-          values.candidateName =
-            `${values.namePrefix}. ${values.firstName} ${values.lastName}`.trim();
+
+          if (values.namePrefix) {
+            values.candidateName = `${values.namePrefix}. ${values.firstName} ${values.lastName}`.trim();
+          } else {
+            values.candidateName = `${values.firstName} ${values.lastName}`.trim();
+          }
+
           if (insertedid1) {
             console.log(values, "gggg");
             const update = await updateRecruitmentResume({
@@ -925,7 +929,7 @@ const updateFileInfo = (file) => {
     console.log(e, "hhhhhhhhhhhhhh");
     try {
       if (e) {
-        console.log(e,"hhhhhh");
+        console.log(e, "hhhhhh");
         const formData = new FormData();
 
         formData.append("file", filePdf);
@@ -949,17 +953,17 @@ const updateFileInfo = (file) => {
   //     //  console.log(, "hhhhhhhhhhhhhh");
   //  if (insertedid1) {
   //      try {
-       
+
   //          console.log(e,"hhhhhh");
   //          const formData = new FormData();
-   
+
   //          formData.append("file", filePdf);
-   
+
   //          console.log("inside file upload api");
-   
+
   //          formData.append("action", "resumePhotoUpload");
   //          formData.append("resumeId", e);
-   
+
   //          const FileUpload = await fileAction(formData);
   //          console.log(FileUpload, "fileUploadResult");
   //        }
@@ -998,7 +1002,7 @@ const updateFileInfo = (file) => {
       additionalEducationalDetails: [
         { institute: "", courseType: "", courseName: "", yearOfStudy: "" },
       ],
-  
+
     },
     // enableReinitialize: true,
     // validateOnChange: false,
@@ -1149,7 +1153,7 @@ const updateFileInfo = (file) => {
       try {
         // Check validation
         const errors = {};
-  
+
         if (values.additionalExperiences) {
           values.additionalExperiences.map((experience, index) => {
             if (!experience.jobTitle) {
@@ -1190,7 +1194,7 @@ const updateFileInfo = (file) => {
         );
         Fileuplaodresume(insertedid1);
         console.log("work experience Details API Response:", response);
-  
+
         console.log(response.result.insertedId1);
         if (response.status === 200) {
           openNotification("success", "Successful", "Work Experience has been saved");
@@ -1214,15 +1218,15 @@ const updateFileInfo = (file) => {
       if (e) {
         console.log("hhhhhh");
         const formData = new FormData();
-  
+
         formData.append("file", filePdfresume);
-        formData.append("text", coverLetter);
-  
+        formData.append("coverLetter", coverLetter);
+
         console.log("inside file upload api");
-  
+
         formData.append("action", "resumeFileUpload");
         formData.append("resumeId", e);
-  
+
         const FileUploadresume = await fileAction(formData);
         console.log(FileUploadresume, "fileUploadResult");
       }
@@ -1264,12 +1268,12 @@ const updateFileInfo = (file) => {
   const formik3 = useFormik({
     initialValues: {
       customQuestion: "Are you legally eligible to work in the country?",
-      answer : "",
+      answer: "",
       // customQuestion:Questions ? Questions.questtemp : questtemp,
       // answer: answerMetaData ? answerMetaData.questionAnswer : questionAnswers,
       jobId: selectedJobId,
       resumeId: insertedid1,
-      
+
       // highestEducationLevel: "",
     },
     enableReinitialize: true,
@@ -1376,7 +1380,7 @@ const updateFileInfo = (file) => {
 
 
 
-// ***************************************
+  // ***************************************
   // const getquestionnaire = async () => {
   //   try {
   //     // console.log(questid, "iddd");
@@ -1392,9 +1396,9 @@ const updateFileInfo = (file) => {
   //     console.log(response.result[0],"result");
   //     const questionData = response.result[0].questionaireTemplateDetailData.
   //     map(item => ({
-        
+
   //     //   item.questionTemplateDetailData.map(detail =>({
-          
+
   //     //   questionTemplateDetailsId: detail.formSettingsId,
   //     //   question: detail.question,
   //     //   answerMetaData: detail.answerMetaData.map(metadata =>({
@@ -1416,7 +1420,7 @@ const updateFileInfo = (file) => {
   //     // return questionData;
 
   //     setQuesttemp(questionData);
-     
+
   //     console.log(response.result, "questionnaire");
   //   } catch (error) {
   //     console.error("error", error);
@@ -1488,12 +1492,12 @@ const updateFileInfo = (file) => {
   //       (condition) =>
   //         condition.questionTemplateDetailsId === questionTemplateDetailsId
   //     );
-  
+
   //     if (matchedCondition) {
   //       const metaData = matchedCondition.answerMetaData.find(
   //         (meta) => meta.key
   //       );
-  
+
   //       if (metaData) {
   //         const { key } = metaData;
   //         switch (key) {
@@ -1531,7 +1535,7 @@ const updateFileInfo = (file) => {
   //     }
   //   });
   // }, [questtemp, fetchedAnswers]);
-  
+
 
   useEffect(() => {
     const fetchapi = async () => {
@@ -1790,9 +1794,9 @@ const updateFileInfo = (file) => {
         // formik3.resetForm();
         break;
       case 4:
-        
+
         // closeDrawer();
-       
+
         formik.resetForm();
         formik1.resetForm();
         formik2.resetForm();
@@ -1881,8 +1885,8 @@ const updateFileInfo = (file) => {
     }
   }
 
- 
-  
+
+
 
   return (
     <div className="bg-[#F8FAFC] ">
@@ -1969,71 +1973,74 @@ const updateFileInfo = (file) => {
                           )}
                         </div>
                         <div className="grid grid-cols-1 gap-4 sm:grid-cols-3">
-                        {formvalidation.length > 0 && formvalidation[0].name === 0 ? null : (
-                          <FormInput
-                            title={"First Name"}
-                            placeholder={"Enter First Name"}
-                            // className="text-[#344054] "
-                            name="firstName"
-                            value={formik.values.firstName}
-                            change={(e) => {
-                              formik.setFieldValue("firstName", e);
-                              console.log("First Name:", e);
-                            }}
-                            required={formvalidation && formvalidation.length > 0 && formvalidation[0].name === 1}
-                            error={formik.errors.firstName}
-                          />
-                        )}
-                         {formvalidation.length > 0 && formvalidation[0].name === 0 ? null : (
-                          <FormInput
-                            title={"Last Name"}
-                            placeholder={"Enter Last Name"}
-                            // className="text-[#344054]"
-                            name="lastName"
-                            value={formik.values.lastName}
-                            change={(e) => {
-                              formik.setFieldValue("lastName", e);
-                            }}
-                            required={formvalidation && formvalidation.length > 0 && formvalidation[0].lastname === 1}
-                            error={formik.errors.lastName}
-                          />
-                         )}
-                        {/* </div>
+                          {formvalidation.length > 0 && formvalidation[0].name === 0 ? null : (
+                            <FormInput
+                              title={"First Name"}
+                              placeholder={"Enter First Name"}
+                              // className="text-[#344054] "
+                              name="firstName"
+                              maxLength={"25"}
+                              value={formik.values.firstName}
+                              change={(e) => {
+                                formik.setFieldValue("firstName", e);
+                                console.log("First Name:", e);
+                              }}
+                              required={formvalidation && formvalidation.length > 0 && formvalidation[0].name === 1}
+                              error={formik.errors.firstName}
+                            />
+                          )}
+                          {formvalidation.length > 0 && formvalidation[0].name === 0 ? null : (
+                            <FormInput
+                              title={"Last Name"}
+                              placeholder={"Enter Last Name"}
+                              // className="text-[#344054]"
+                              name="lastName"
+                              maxLength={"25"}
+                              value={formik.values.lastName}
+                              change={(e) => {
+                                formik.setFieldValue("lastName", e);
+                              }}
+                              required={formvalidation && formvalidation.length > 0 && formvalidation[0].lastname === 1}
+                              error={formik.errors.lastName}
+                            />
+                          )}
+                          {/* </div>
                         <div className="grid grid-cols-1 gap-4 sm:grid-cols-3"> */}
-                        {formvalidation.length > 0 && formvalidation[0].email === 0 ? null : (
-                          <FormInput
-                            title={"Email"}
-                            placeholder={"Enter Email"}
-                            // className="text-[#344054]"
-                            name="candidateEmail"
-                            value={formik.values.candidateEmail}
-                            change={(e) => {
-                              formik.setFieldValue("candidateEmail", e);
-                            }}
-                            required={formvalidation && formvalidation.length > 0 && formvalidation[0].email === 1}
-                            error={formik.errors.candidateEmail}
-                          />
-                        )}
-                         {formvalidation.length > 0 && formvalidation[0].phone === 0 ? null : (
-                          <FormInput
-                            title={"Phone Number"}
-                            placeholder={"Enter Phone Number"}
+                          {formvalidation.length > 0 && formvalidation[0].email === 0 ? null : (
+                            <FormInput
+                              title={"Email"}
+                              placeholder={"Enter Email"}
+                              // className="text-[#344054]"
+                              name="candidateEmail"
+                              maxLength={"25"}
+                              value={formik.values.candidateEmail}
+                              change={(e) => {
+                                formik.setFieldValue("candidateEmail", e);
+                              }}
+                              required={formvalidation && formvalidation.length > 0 && formvalidation[0].email === 1}
+                              error={formik.errors.candidateEmail}
+                            />
+                          )}
+                          {formvalidation.length > 0 && formvalidation[0].phone === 0 ? null : (
+                            <FormInput
+                              title={"Phone Number"}
+                              placeholder={"Enter Phone Number"}
 
-                            maxLength={"12"}
-                            // className="text-[#344054]"
-                            value={formik.values.candidateContact}
-                            change={(e) => {
-                              const input = e.replace(/\D/g, ''); 
-                              formik.setFieldValue("candidateContact", input);
-                            }}
-                            required={formvalidation && formvalidation.length > 0 && formvalidation[0].phone === 1}
-                            error={formik.errors.candidateContact}
-                          />
-                         )}
-                        {/* </div>
+                              maxLength={"12"}
+                              // className="text-[#344054]"
+                              value={formik.values.candidateContact}
+                              change={(e) => {
+                                const input = e.replace(/\D/g, '');
+                                formik.setFieldValue("candidateContact", input);
+                              }}
+                              required={formvalidation && formvalidation.length > 0 && formvalidation[0].phone === 1}
+                              error={formik.errors.candidateContact}
+                            />
+                          )}
+                          {/* </div>
 
                         <div className="grid grid-cols-1 gap-4 sm:grid-cols-3"> */}
-                     
+
                           <DateSelect
                             title={"DOB"}
                             placeholder={"Enter Date of birth"}
@@ -2046,7 +2053,7 @@ const updateFileInfo = (file) => {
                             required={formvalidation && formvalidation.length > 0 && formvalidation[0].dob === 1}
                             error={formik.errors.dob}
                           />
-                      
+
                         </div>
                         {/* <div className="relative max-w-[1070px] sm:w-[492px] w-full borderb rounded-md h-24 bg-[#FAFAFA] dark:bg-black"> */}
                         {/* <div className="flex min-w-0 pt-5 pl-5 gap-x-4">
@@ -2091,75 +2098,81 @@ const updateFileInfo = (file) => {
                             }}
                           />
                         </div> */}
-                        <div className='w-4/5'>
-                      <p>Photo (Optional)</p>
-                      <FileUpload change={(e) => {
-                        if (e) {
+                        <div className='w-3/5'>
+                          <p>Photo (Optional)</p>
+                         
+                          <FileUpload change={(e) => {
+                            if (e) {
 
-                          setfilepdf(e)
+                              setfilepdf(e)
 
-                        }
-                        console.log(e)
-                      }} />
-                    </div>
+                            }
+                            console.log(e)
+                          }} />
+                          
+                        </div>
                         {/* </div> */}
                         {/* </div> */}
                         <div className="grid grid-cols-1 gap-4 sm:grid-cols-3">
-                        {formvalidation.length > 0 && formvalidation[0].country === 0 ? null : (
-                          <FormInput
-                            title={"Location"}
-                            placeholder={"Enter Location"}
-                            // className="text-[#344054]"
-                            value={formik.values.candidateLocation}
-                            change={(e) => {
-                              formik.setFieldValue("candidateLocation", e);
-                            }}
-                            required={formvalidation && formvalidation.length > 0 && formvalidation[0].country === 1}
-                            error={formik.errors.candidateLocation}
-                          />
-                        )}
-                         {formvalidation.length > 0 && formvalidation[0].address === 0 ? null : (
-                          <FormInput
-                            title={"City or Town"}
-                            placeholder={"Enter City or Town"}
-                            // className="text-[#344054]"
-                            value={formik.values.cityOrTown}
-                            change={(e) => {
-                              formik.setFieldValue("cityOrTown", e);
-                            }}
-                            required={formvalidation && formvalidation.length > 0 && formvalidation[0].address === 1}
-                            error={formik.errors.cityOrTown}
-                          />
-                         )}
+                          {formvalidation.length > 0 && formvalidation[0].country === 0 ? null : (
+                            <FormInput
+                              title={"Location"}
+                              placeholder={"Enter Location"}
+                              maxLength={"25"}
+                              // className="text-[#344054]"
+                              value={formik.values.candidateLocation}
+                              change={(e) => {
+                                formik.setFieldValue("candidateLocation", e);
+                              }}
+                              required={formvalidation && formvalidation.length > 0 && formvalidation[0].country === 1}
+                              error={formik.errors.candidateLocation}
+                            />
+                          )}
+                          {formvalidation.length > 0 && formvalidation[0].address === 0 ? null : (
+                            <FormInput
+                              title={"City or Town"}
+                              placeholder={"Enter City or Town"}
+                              maxLength={"25"}
+                              // className="text-[#344054]"
+                              value={formik.values.cityOrTown}
+                              change={(e) => {
+                                formik.setFieldValue("cityOrTown", e);
+                              }}
+                              required={formvalidation && formvalidation.length > 0 && formvalidation[0].address === 1}
+                              error={formik.errors.cityOrTown}
+                            />
+                          )}
                         </div>
                         <div className="grid grid-cols-1 gap-4 sm:grid-cols-3">
-                        {formvalidation.length > 0 && formvalidation[0].address === 0 ? null : (
-                          <FormInput
-                            title={"Address"}
-                            placeholder={"Enter Address"}
-                            // className="text-[#344054]"
-                            value={formik.values.address}
-                            change={(e) => {
-                              formik.setFieldValue("address", e);
-                            }}
-                            required={formvalidation && formvalidation.length > 0 && formvalidation[0].address === 1}
-                            error={formik.errors.address}
-                          />
-                        )}
-                         {formvalidation.length > 0 && formvalidation[0].address === 0 ? null : (
-                          <FormInput
-                            title={"Postal Code"}
-                            placeholder={"Enter Postal Code"}
-                            // className="text-[#344054]"
-                            value={formik.values.postalCode}
-                            change={(e) => {
-                              const input = e.replace(/\D/g, '');
-                              formik.setFieldValue("postalCode", input);
-                            }}
-                            required={formvalidation && formvalidation.length > 0 && formvalidation[0].address === 1}
-                            error={formik.errors.postalCode}
-                          />
-                         )}
+                          {formvalidation.length > 0 && formvalidation[0].address === 0 ? null : (
+                            <FormInput
+                              title={"Address"}
+                              placeholder={"Enter Address"}
+                              maxLength={"25"}
+                              // className="text-[#344054]"
+                              value={formik.values.address}
+                              change={(e) => {
+                                formik.setFieldValue("address", e);
+                              }}
+                              required={formvalidation && formvalidation.length > 0 && formvalidation[0].address === 1}
+                              error={formik.errors.address}
+                            />
+                          )}
+                          {formvalidation.length > 0 && formvalidation[0].address === 0 ? null : (
+                            <FormInput
+                              title={"Postal Code"}
+                              placeholder={"Enter Postal Code"}
+                              maxLength={"25"}
+                              // className="text-[#344054]"
+                              value={formik.values.postalCode}
+                              change={(e) => {
+                                const input = e.replace(/\D/g, '');
+                                formik.setFieldValue("postalCode", input);
+                              }}
+                              required={formvalidation && formvalidation.length > 0 && formvalidation[0].address === 1}
+                              error={formik.errors.postalCode}
+                            />
+                          )}
                         </div>
                       </div>
                     </form>
@@ -2167,8 +2180,8 @@ const updateFileInfo = (file) => {
                 </div>
               </div>
             </>
-          ) :  currentStep === 1 ? 
-            formvalidation.length > 0 && formvalidation[0].education === 1 ? null : (
+          ) : currentStep === 1 ? (
+
             <>
               <FlexCol />
               <div className="relative w-full mx-auto rounded-md borderb">
@@ -2315,7 +2328,7 @@ const updateFileInfo = (file) => {
                               className="text-[#344054]"
                               name={`additionalEducationalDetails[${index}].yearOfStudy`}
                               // picker={"YYYY"}
-                              
+
                               placeholder="Enter Passout Year"
                               value={detail.yearOfStudy}
                               change={(e) => {
@@ -2330,14 +2343,14 @@ const updateFileInfo = (file) => {
                                 );
                               }}
                               required={true}
-                             
+
                               error={
                                 formik1.errors.additionalEducationalDetails?.[
                                   index
                                 ]?.yearOfStudy || ""
                               }
-                             
-                              
+
+
                             />
                             {index !== 0 &&
                               <div className="flex items-center justify-end">
@@ -2424,246 +2437,11 @@ const updateFileInfo = (file) => {
                 </div>
               </div>
             </>
-             )
-          : currentStep === 2 ? (
-            <>
-              <FlexCol />
-              <div className="relative w-full mx-auto rounded-md borderb">
+          )
+            : currentStep === 2 ? (
+              <>
                 <FlexCol />
-                <div className="relative flex flex-col gap-12">
-                  <div className="p-1 bg-white rounded-[10px] dark:bg-transparent dark:border dark:border-secondaryWhite border-opacity-20 dark:border-opacity-10">
-                    <h2
-                      className="flex items-center justify-between w-full px-6 py-4 font-semibold text-left rounded-md"
-                      style={{ backgroundColor: `${primaryColor}10` }}
-                    >
-                      <div className="text-left rtl:text-right">
-                        <h1 className="acco-h1">Work Experience Details </h1>
-                        <p className="para">
-                          Fill your work experience details.
-                        </p>
-                      </div>
-                    </h2>
-                    <div
-                      id={`acco-text-item`}
-                      role="region"
-                      aria-labelledby={`acco-title-item`}
-                      className="flex flex-col justify-between w-full gap-6 p-5"
-                    >
-                      {additionalExperiences.map((experience, index) => (
-                        <div
-                          key={index}
-                          className="flex flex-col justify-between w-full gap-6 "
-                        >
-                          
-                          <div className="grid grid-cols-1 gap-4 sm:grid-cols-3">
-                            <FormInput
-                              title={"Job Title"}
-                              placeholder={"Enter Job Title"}
-                              className="text-[#344054]"
-                              name={`additionalExperiences[${index}].jobTitle`}
-                              value={experience.jobTitle}
-                              change={(e) => {
-                                const updatedExperiences = [
-                                  ...additionalExperiences,
-                                ];
-                                updatedExperiences[index].jobTitle = e;
-                                setAdditionalExperiences(updatedExperiences);
-                              }}
-                              required={true}
-                              // error={
-                              //   isFormSubmitted
-                              //     ? formik2.errors.additionalExperiences?.[index]
-                              //         ?.jobTitle
-                              //     : ""
-                              // }
-                              error={
-                                formik2.errors.additionalExperiences?.[index]
-                                  ?.jobTitle || ""
-                              }
-                            />
-                            <Dropdown
-                              title={"Employment Type"}
-                              placeholder={"Choose Employment Type"}
-                              
-                              options={[
-                                { value: "Fulltime", label: "Full-time" },
-                                { value: "Parttime", label: "Part-time" },
-                              ]}
-                              className="text-[#344054]"
-                              name={`additionalExperiences[${index}].employmentType`}
-                              value={experience.employmentType ? experience.employmentType : undefined}
-                              change={(e) => {
-                                const updatedExperiences = [
-                                  ...additionalExperiences,
-                                ];
-                                updatedExperiences[index].employmentType = e;
-                                setAdditionalExperiences(updatedExperiences);
-                              }}
-                              required={true}
-                              // error={
-                              //   isFormSubmitted
-                              //     ? formik2.errors.additionalExperiences?.[index]
-                              //         ?.employmentType
-                              //     : ""
-                              // }
-                              error={
-                                formik2.errors.additionalExperiences?.[index]
-                                  ?.employmentType || ""
-                              }
-                            />
-                          </div>
-                          <div className="grid grid-cols-1 gap-4 sm:grid-cols-3 ">
-                            <FormInput
-                              title={"Company Name"}
-                              placeholder={"Enter Company Name"}
-                              className="text-[#344054]"
-                              name={`additionalExperiences[${index}].companyName`}
-                              value={experience.companyName}
-                              change={(e) => {
-                                const updatedExperiences = [
-                                  ...additionalExperiences,
-                                ];
-                                updatedExperiences[index].companyName = e;
-                                setAdditionalExperiences(updatedExperiences);
-                              }}
-                              required={true}
-                              // error={
-                              //   isFormSubmitted
-                              //     ? formik2.errors.additionalExperiences?.[index]
-                              //         ?.companyName
-                              //     : ""
-                              // }
-                              error={
-                                formik2.errors.additionalExperiences?.[index]
-                                  ?.companyName || ""
-                              }
-                            />
-                            <FormInput
-                              title={"Location"}
-                              placeholder={"Enter Location"}
-                              className="text-[#344054]"
-                              name={`additionalExperiences[${index}].location`}
-                              value={experience.location}
-                              change={(e) => {
-                                const updatedExperiences = [
-                                  ...additionalExperiences,
-                                ];
-                                updatedExperiences[index].location = e;
-                                setAdditionalExperiences(updatedExperiences);
-                              }}
-                              required={true}
-                              // error={
-                              //   isFormSubmitted
-                              //     ? formik2.errors.additionalExperiences?.[index]
-                              //         ?.location
-                              //     : ""
-                              // }
-                              error={
-                                formik2.errors.additionalExperiences?.[index]
-                                  ?.location || ""
-                              }
-                            />
-                          </div>
-                          <div className="grid grid-cols-3 gap-4 sm:grid-cols-6">
-                            <DateSelect
-                              title={"From"}
-                              placeholder={"01/09/2023"}
-                              className="text-[#344054]"
-                              name={`additionalExperiences[${index}].fromDate`}
-                              value={experience.fromDate}
-                              change={(e) => {
-                                const formattedDate = e
-                                  .split("/")
-                                  .reverse()
-                                  .join("-");
-
-                                const updatedExperiences = [
-                                  ...additionalExperiences,
-                                ];
-                                updatedExperiences[index].fromDate =
-                                  formattedDate;
-
-                                setAdditionalExperiences(updatedExperiences);
-                              }}
-                              required={true}
-                              // error={
-                              //   isFormSubmitted
-                              //     ? formik2.errors.additionalExperiences?.[index]
-                              //         ?.fromDate
-                              //     : ""
-                              // }
-                              error={
-                                formik2.errors.additionalExperiences?.[index]
-                                  ?.fromDate || ""
-                              }
-                            />
-                            <DateSelect
-                              title={"To"}
-                              placeholder={"01/09/2024"}
-                              selectpicker="dateandtime"
-                              className="text-[#344054]"
-                              name={`additionalExperiences[${index}].toDate`}
-                              value={experience.toDate}
-                              minDate={experience.fromDate}
-                              change={(e) => {
-                                const formattedDate = e
-                                  .split("/")
-                                  .reverse()
-                                  .join("-");
-
-                                const updatedExperiences = [
-                                  ...additionalExperiences,
-                                ];
-                                updatedExperiences[index].toDate =
-                                  formattedDate;
-
-                                setAdditionalExperiences(updatedExperiences);
-                              }}
-                              required={true}
-                              // error={
-                              //   isFormSubmitted
-                              //     ? formik2.errors.additionalExperiences?.[index]
-                              //         ?.toDate
-                              //     : ""
-                              // }
-                              error={
-                                formik2.errors.additionalExperiences?.[index]
-                                  ?.toDate || ""
-                              }
-                            />
-                            {/* <div className="flex items-center justify-end">
-                              <Tooltip placement="top" title={"Delete"}>
-                                <button onClick={() => handleDelete1(index)}>
-                                  <RiDeleteBin5Line className="text-gray-500 w-[17px] h-[17px]" />
-                                </button>
-                              </Tooltip>
-                            </div> */}
-                          </div>
-                          {index !== 0 &&
-                            <div className="flex items-center justify-end">
-                              <Tooltip placement="top" title={"Delete"}>
-                                <button onClick={() => handleDelete1(index)}>
-                                  <RiDeleteBin5Line className="text-gray-500 w-[17px] h-[17px] hover:text-red-600" />
-                                </button>
-                              </Tooltip>
-                            </div>
-                          }
-                          <div className="divider-h" />
-                        </div>
-                      ))}
-
-                      <AddMore
-                        name="Add More Experience "
-                        className="text-black"
-                        change={handleAddMoreExperience}
-                      />
-                    </div>
-                  </div>
-                </div>
-              </div>
-              <div className="flex flex-col gap-6">
-                <FlexCol />
-                <div className="relative w-full mx-auto rounded-md borderb ">
+                <div className="relative w-full mx-auto rounded-md borderb">
                   <FlexCol />
                   <div className="relative flex flex-col gap-12">
                     <div className="p-1 bg-white rounded-[10px] dark:bg-transparent dark:border dark:border-secondaryWhite border-opacity-20 dark:border-opacity-10">
@@ -2672,9 +2450,9 @@ const updateFileInfo = (file) => {
                         style={{ backgroundColor: `${primaryColor}10` }}
                       >
                         <div className="text-left rtl:text-right">
-                          <h1 className="acco-h1">Resume & Cover Letter </h1>
+                          <h1 className="acco-h1">Work Experience Details </h1>
                           <p className="para">
-                            Add your resume and cover letter.
+                            Fill your work experience details.
                           </p>
                         </div>
                       </h2>
@@ -2684,7 +2462,242 @@ const updateFileInfo = (file) => {
                         aria-labelledby={`acco-title-item`}
                         className="flex flex-col justify-between w-full gap-6 p-5"
                       >
-                        {/* <div className="relative max-w-[1070px] sm:w-[492px] w-full borderb rounded-md h-24 bg-[#FAFAFA] dark:bg-black">
+                        {additionalExperiences.map((experience, index) => (
+                          <div
+                            key={index}
+                            className="flex flex-col justify-between w-full gap-6 "
+                          >
+
+                            <div className="grid grid-cols-1 gap-4 sm:grid-cols-3">
+                              <FormInput
+                                title={"Job Title"}
+                                placeholder={"Enter Job Title"}
+                                className="text-[#344054]"
+                                name={`additionalExperiences[${index}].jobTitle`}
+                                value={experience.jobTitle}
+                                change={(e) => {
+                                  const updatedExperiences = [
+                                    ...additionalExperiences,
+                                  ];
+                                  updatedExperiences[index].jobTitle = e;
+                                  setAdditionalExperiences(updatedExperiences);
+                                }}
+                                required={true}
+                                // error={
+                                //   isFormSubmitted
+                                //     ? formik2.errors.additionalExperiences?.[index]
+                                //         ?.jobTitle
+                                //     : ""
+                                // }
+                                error={
+                                  formik2.errors.additionalExperiences?.[index]
+                                    ?.jobTitle || ""
+                                }
+                              />
+                              <Dropdown
+                                title={"Employment Type"}
+                                placeholder={"Choose Employment Type"}
+
+                                options={[
+                                  { value: "Fulltime", label: "Full-time" },
+                                  { value: "Parttime", label: "Part-time" },
+                                ]}
+                                className="text-[#344054]"
+                                name={`additionalExperiences[${index}].employmentType`}
+                                value={experience.employmentType ? experience.employmentType : undefined}
+                                change={(e) => {
+                                  const updatedExperiences = [
+                                    ...additionalExperiences,
+                                  ];
+                                  updatedExperiences[index].employmentType = e;
+                                  setAdditionalExperiences(updatedExperiences);
+                                }}
+                                required={true}
+                                // error={
+                                //   isFormSubmitted
+                                //     ? formik2.errors.additionalExperiences?.[index]
+                                //         ?.employmentType
+                                //     : ""
+                                // }
+                                error={
+                                  formik2.errors.additionalExperiences?.[index]
+                                    ?.employmentType || ""
+                                }
+                              />
+                            </div>
+                            <div className="grid grid-cols-1 gap-4 sm:grid-cols-3 ">
+                              <FormInput
+                                title={"Company Name"}
+                                placeholder={"Enter Company Name"}
+                                className="text-[#344054]"
+                                name={`additionalExperiences[${index}].companyName`}
+                                value={experience.companyName}
+                                change={(e) => {
+                                  const updatedExperiences = [
+                                    ...additionalExperiences,
+                                  ];
+                                  updatedExperiences[index].companyName = e;
+                                  setAdditionalExperiences(updatedExperiences);
+                                }}
+                                required={true}
+                                // error={
+                                //   isFormSubmitted
+                                //     ? formik2.errors.additionalExperiences?.[index]
+                                //         ?.companyName
+                                //     : ""
+                                // }
+                                error={
+                                  formik2.errors.additionalExperiences?.[index]
+                                    ?.companyName || ""
+                                }
+                              />
+                              <FormInput
+                                title={"Location"}
+                                placeholder={"Enter Location"}
+                                className="text-[#344054]"
+                                name={`additionalExperiences[${index}].location`}
+                                value={experience.location}
+                                change={(e) => {
+                                  const updatedExperiences = [
+                                    ...additionalExperiences,
+                                  ];
+                                  updatedExperiences[index].location = e;
+                                  setAdditionalExperiences(updatedExperiences);
+                                }}
+                                required={true}
+                                // error={
+                                //   isFormSubmitted
+                                //     ? formik2.errors.additionalExperiences?.[index]
+                                //         ?.location
+                                //     : ""
+                                // }
+                                error={
+                                  formik2.errors.additionalExperiences?.[index]
+                                    ?.location || ""
+                                }
+                              />
+                            </div>
+                            <div className="grid grid-cols-3 gap-4 sm:grid-cols-6">
+                              <DateSelect
+                                title={"From"}
+                                placeholder={"01/09/2023"}
+                                className="text-[#344054]"
+                                name={`additionalExperiences[${index}].fromDate`}
+                                value={experience.fromDate}
+                                change={(e) => {
+                                  const formattedDate = e
+                                    .split("/")
+                                    .reverse()
+                                    .join("-");
+
+                                  const updatedExperiences = [
+                                    ...additionalExperiences,
+                                  ];
+                                  updatedExperiences[index].fromDate =
+                                    formattedDate;
+
+                                  setAdditionalExperiences(updatedExperiences);
+                                }}
+                                required={true}
+                                // error={
+                                //   isFormSubmitted
+                                //     ? formik2.errors.additionalExperiences?.[index]
+                                //         ?.fromDate
+                                //     : ""
+                                // }
+                                error={
+                                  formik2.errors.additionalExperiences?.[index]
+                                    ?.fromDate || ""
+                                }
+                              />
+                              <DateSelect
+                                title={"To"}
+                                placeholder={"01/09/2024"}
+                                selectpicker="dateandtime"
+                                className="text-[#344054]"
+                                name={`additionalExperiences[${index}].toDate`}
+                                value={experience.toDate}
+                                minDate={experience.fromDate}
+                                change={(e) => {
+                                  const formattedDate = e
+                                    .split("/")
+                                    .reverse()
+                                    .join("-");
+
+                                  const updatedExperiences = [
+                                    ...additionalExperiences,
+                                  ];
+                                  updatedExperiences[index].toDate =
+                                    formattedDate;
+
+                                  setAdditionalExperiences(updatedExperiences);
+                                }}
+                                required={true}
+                                // error={
+                                //   isFormSubmitted
+                                //     ? formik2.errors.additionalExperiences?.[index]
+                                //         ?.toDate
+                                //     : ""
+                                // }
+                                error={
+                                  formik2.errors.additionalExperiences?.[index]
+                                    ?.toDate || ""
+                                }
+                              />
+                              {/* <div className="flex items-center justify-end">
+                              <Tooltip placement="top" title={"Delete"}>
+                                <button onClick={() => handleDelete1(index)}>
+                                  <RiDeleteBin5Line className="text-gray-500 w-[17px] h-[17px]" />
+                                </button>
+                              </Tooltip>
+                            </div> */}
+                            </div>
+                            {index !== 0 &&
+                              <div className="flex items-center justify-end">
+                                <Tooltip placement="top" title={"Delete"}>
+                                  <button onClick={() => handleDelete1(index)}>
+                                    <RiDeleteBin5Line className="text-gray-500 w-[17px] h-[17px] hover:text-red-600" />
+                                  </button>
+                                </Tooltip>
+                              </div>
+                            }
+                            <div className="divider-h" />
+                          </div>
+                        ))}
+
+                        <AddMore
+                          name="Add More Experience "
+                          className="text-black"
+                          change={handleAddMoreExperience}
+                        />
+                      </div>
+                    </div>
+                  </div>
+                </div>
+                <div className="flex flex-col gap-6">
+                  <FlexCol />
+                  <div className="relative w-full mx-auto rounded-md borderb ">
+                    <FlexCol />
+                    <div className="relative flex flex-col gap-12">
+                      <div className="p-1 bg-white rounded-[10px] dark:bg-transparent dark:border dark:border-secondaryWhite border-opacity-20 dark:border-opacity-10">
+                        <h2
+                          className="flex items-center justify-between w-full px-6 py-4 font-semibold text-left rounded-md"
+                          style={{ backgroundColor: `${primaryColor}10` }}
+                        >
+                          <div className="text-left rtl:text-right">
+                            <h1 className="acco-h1">Resume & Cover Letter </h1>
+                            <p className="para">
+                              Add your resume and cover letter.
+                            </p>
+                          </div>
+                        </h2>
+                        <div
+                          id={`acco-text-item`}
+                          role="region"
+                          aria-labelledby={`acco-title-item`}
+                          className="flex flex-col justify-between w-full gap-6 p-5"
+                        >
+                          {/* <div className="relative max-w-[1070px] sm:w-[492px] w-full borderb rounded-md h-24 bg-[#FAFAFA] dark:bg-black">
                         <div className="flex min-w-0 pt-5 pl-5 gap-x-4">
                           <Image
                             className="flex-none w-12 h-12 rounded-full bg-gray-50"
@@ -2701,62 +2714,62 @@ const updateFileInfo = (file) => {
                           </div>
                         </div>
                       </div> */}
-                       {formvalidation.length > 0 && formvalidation[0].resume === 0 ? null : (
-                        <FileUpload
-                          className={
-                            "relative max-w-[1070px] sm:w-[492px] w-full borderb rounded-md h-24 bg-[#FAFAFA] dark:bg-black"
-                          }
-                          change={(e) => {
-                            setfilepdfresume(e);
-                          }}
-                        />
-                       )}
-                        {formvalidation.length > 0 && formvalidation[0].coverLetter === 0 ? null : (
-                        <TextArea
-                          title="Cover Letter"
-                          placeholder="Type here"
-                          className="!text-[#344054]"
-                          name="coverLetter"
-                          // value={formik2.values.coverLetter}
-                          value={coverLetter}
-                          // change={(e) => {
-                          //   setCoverletter(e);
-                          // }}
-                          change={handleTextChange}
-                          required={false}
-                        // error={formik2.errors.coverLetter}
-                        />
-                        )}
+                          {formvalidation.length > 0 && formvalidation[0].resume === 0 ? null : (
+                            <FileUpload
+                              className={
+                                "relative max-w-[1070px] sm:w-[492px] w-full borderb rounded-md h-24 bg-[#FAFAFA] dark:bg-black"
+                              }
+                              change={(e) => {
+                                setfilepdfresume(e);
+                              }}
+                            />
+                          )}
+                          {formvalidation.length > 0 && formvalidation[0].coverLetter === 0 ? null : (
+                            <TextArea
+                              title="Cover Letter"
+                              placeholder="Type here"
+                              className="!text-[#344054]"
+                              name="coverLetter"
+                              // value={formik2.values.coverLetter}
+                              value={coverLetter}
+                              // change={(e) => {
+                              //   setCoverletter(e);
+                              // }}
+                              change={handleTextChange}
+                              required={false}
+                            // error={formik2.errors.coverLetter}
+                            />
+                          )}
+                        </div>
                       </div>
                     </div>
                   </div>
                 </div>
-              </div>
-            </>
-          ) : currentStep === 3 ? (
-            <>
-              <FlexCol />
-              <div className="relative w-full mx-auto rounded-md borderb">
+              </>
+            ) : currentStep === 3 ? (
+              <>
                 <FlexCol />
-                <div className="relative flex flex-col gap-12">
-                  <div className="p-1 bg-white rounded-[10px] dark:bg-transparent dark:border dark:border-secondaryWhite border-opacity-20 dark:border-opacity-10">
-                    <h2
-                      className="flex items-center justify-between w-full px-6 py-4 font-semibold text-left rounded-md"
-                      style={{ backgroundColor: `${primaryColor}10` }}
-                    >
-                      <div className="text-left rtl:text-right">
-                        <h1 className="acco-h1">Questions </h1>
-                        <p className="para">Questions for you.</p>
-                      </div>
-                    </h2>
-                    <div
-                      id={`acco-text-item`}
-                      role="region"
-                      aria-labelledby={`acco-title-item`}
-                      className="flex flex-col justify-between w-full gap-6 p-5"
-                    >
-                      <div className="grid grid-cols-1 gap-4 sm:grid-cols-1 ">
-                      {/* {questtemp.length > 0 ? (
+                <div className="relative w-full mx-auto rounded-md borderb">
+                  <FlexCol />
+                  <div className="relative flex flex-col gap-12">
+                    <div className="p-1 bg-white rounded-[10px] dark:bg-transparent dark:border dark:border-secondaryWhite border-opacity-20 dark:border-opacity-10">
+                      <h2
+                        className="flex items-center justify-between w-full px-6 py-4 font-semibold text-left rounded-md"
+                        style={{ backgroundColor: `${primaryColor}10` }}
+                      >
+                        <div className="text-left rtl:text-right">
+                          <h1 className="acco-h1">Questions </h1>
+                          <p className="para">Questions for you.</p>
+                        </div>
+                      </h2>
+                      <div
+                        id={`acco-text-item`}
+                        role="region"
+                        aria-labelledby={`acco-title-item`}
+                        className="flex flex-col justify-between w-full gap-6 p-5"
+                      >
+                        <div className="grid grid-cols-1 gap-4 sm:grid-cols-1 ">
+                          {/* {questtemp.length > 0 ? (
               questtemp.map((condition, index) => (
                 <><div key={index}>
                   <h4>{condition.question}</h4>
@@ -2815,122 +2828,122 @@ const updateFileInfo = (file) => {
                
                 </>
               ))         ) : ( */}
-                        <div className="grid grid-cols-1 gap-4 sm:grid-cols-2 ">
-                          <FormInput
-                            title={
-                              "Are you legally eligible to work in the country?"
-                            }
-                            placeholder={"Answer here.."}
-                            className="text-[#344054]"
-                            // name="customQuestion"
-                            // value={questionfield}
-                            // change={(e) => {
-                            //   formik3.setFieldValue("customQuestion", e);
-                            // }}
-                            // change={(e) => {
-                            //   setQuestionfield(e);
-                            // }}
-                            name="answer"
-                            value={formik3.values.answer}
-                            // change={formik3.handleChange}
-                            change={(e) => {
-                              formik3.setFieldValue("answer", e);
-                            }}
-                            // onBlur={formik3.handleBlur}
-                            required={true}
-                            error={formik3.errors.answer}
-                          // required={false}
-                          // error={formik3.errors.customQuestion}
-                          />
-                          {/* Additional FormInput components can be added here */}
+                          <div className="grid grid-cols-1 gap-4 sm:grid-cols-2 ">
+                            <FormInput
+                              title={
+                                "Are you legally eligible to work in the country?"
+                              }
+                              placeholder={"Answer here.."}
+                              className="text-[#344054]"
+                              // name="customQuestion"
+                              // value={questionfield}
+                              // change={(e) => {
+                              //   formik3.setFieldValue("customQuestion", e);
+                              // }}
+                              // change={(e) => {
+                              //   setQuestionfield(e);
+                              // }}
+                              name="answer"
+                              value={formik3.values.answer}
+                              // change={formik3.handleChange}
+                              change={(e) => {
+                                formik3.setFieldValue("answer", e);
+                              }}
+                              // onBlur={formik3.handleBlur}
+                              required={true}
+                              error={formik3.errors.answer}
+                            // required={false}
+                            // error={formik3.errors.customQuestion}
+                            />
+                            {/* Additional FormInput components can be added here */}
+                          </div>
+                          {/* )}  */}
                         </div>
-                         {/* )}  */}
                       </div>
                     </div>
                   </div>
                 </div>
-              </div>
-            </>
+              </>
 
-          ) : currentStep === 4 ? (
-            <>
-              <FlexCol />
+            ) : currentStep === 4 ? (
+              <>
+                <FlexCol />
 
-              <div className="relative w-full mx-auto rounded-md borderb">
-                <Accordion
-                  title="Review"
-                  description="Review your details."
-                  padding={true}
-                  className={""}
-                  initialExpanded={true}
-                >
-                  <div className="flex justify-between ">
-                    <h1 className="acco-h1">Personal Details</h1>
-                    <ButtonClick
-                      buttonName="Edit Details"
-                      className="text-[#6044E5]"
-                      icon={<AiTwotoneEdit />}
-                      handleSubmit={editdetails}
-                    />
-                  </div>
-                  {data.map((item, index) => (
-                    <div
-                      key={index}
-                      className="flex justify-between items-center mt-3"
-                    >
-                      <div className="flex-none">
-                        {item.candidatePhoto ? (
-                          <Image
-                            className="bg-cover rounded-full h-18 w-18 object-cover"
-                            src={item.candidatePhoto}
-                            width={64}
-                            height={64}
-                            alt="profilepic"
-                            style={{
-                              borderRadius: "50%",
-                              height: "4.5rem",
-                              width: "4.5rem",
-                              objectFit: "cover",
-                            }}
-                          />
-                        ) : (
-                          <Image
-                            className="bg-cover rounded-full h-18 w-18 object-cover"
-                            src={noImg}
-                            width={64}
-                            height={64}
-                            alt="Default Profile"
-                            style={{
-                              borderRadius: "50%",
-                              height: "4.5rem",
-                              width: "4.5rem",
-                              objectFit: "cover",
-                            }}
-                          />
-                        )}
-
-                      </div>
-                      <div className="flex-auto min-w-0 ml-4">
-                        {item && item.candidateName && (
-                          <p className="acco-h1">
-                            {item.candidateName
-                              .split(' ')
-                              .map(word => word.charAt(0).toUpperCase() + word.slice(1))
-                              .join(' ')}
-                          </p>
-                        )}
-                      </div>
-                    </div>
-                  ))}
-
-                  <div>
-                    {userdata.map((user) => (
-                      <UserInfoComponent
-                        key={user.personal[0].id}
-                        personalInfo={user.personal}
+                <div className="relative w-full mx-auto rounded-md borderb">
+                  <Accordion
+                    title="Review"
+                    description="Review your details."
+                    padding={true}
+                    className={""}
+                    initialExpanded={true}
+                  >
+                    <div className="flex justify-between ">
+                      <h1 className="acco-h1">Personal Details</h1>
+                      <ButtonClick
+                        buttonName="Edit Details"
+                        className="text-[#6044E5]"
+                        icon={<AiTwotoneEdit />}
+                        handleSubmit={editdetails}
                       />
+                    </div>
+                    {data.map((item, index) => (
+                      <div
+                        key={index}
+                        className="flex justify-between items-center mt-3"
+                      >
+                        <div className="flex-none">
+                          {item.candidatePhoto ? (
+                            <Image
+                              className="bg-cover rounded-full h-18 w-18 object-cover"
+                              src={item.candidatePhoto}
+                              width={64}
+                              height={64}
+                              alt="profilepic"
+                              style={{
+                                borderRadius: "50%",
+                                height: "4.5rem",
+                                width: "4.5rem",
+                                objectFit: "cover",
+                              }}
+                            />
+                          ) : (
+                            <Image
+                              className="bg-cover rounded-full h-18 w-18 object-cover"
+                              src={noImg}
+                              width={64}
+                              height={64}
+                              alt="Default Profile"
+                              style={{
+                                borderRadius: "50%",
+                                height: "4.5rem",
+                                width: "4.5rem",
+                                objectFit: "cover",
+                              }}
+                            />
+                          )}
+
+                        </div>
+                        <div className="flex-auto min-w-0 ml-4">
+                          {item && item.candidateName && (
+                            <p className="acco-h1">
+                              {item.candidateName
+                                .split(' ')
+                                .map(word => word.charAt(0).toUpperCase() + word.slice(1))
+                                .join(' ')}
+                            </p>
+                          )}
+                        </div>
+                      </div>
                     ))}
-                    {/* <div className="grid md:grid-cols-2 gap-7">
+
+                    <div>
+                      {userdata.map((user) => (
+                        <UserInfoComponent
+                          key={user.personal[0].id}
+                          personalInfo={user.personal}
+                        />
+                      ))}
+                      {/* <div className="grid md:grid-cols-2 gap-7">
              { data.map((item, index) => (
         <div className="flex items-center gap-2.5">
           <div className="w-8 h-8 iconI vhcenter bg-[#F5F5F5] dark:bg-secondaryDark text-base rounded-lg ">
@@ -2957,10 +2970,10 @@ const updateFileInfo = (file) => {
           </div>
         </div>
      ))} */}
-                  </div>
+                    </div>
 
-                  {/* </div> */}
-                  {/* <div>
+                    {/* </div> */}
+                    {/* <div>
                   {educationaldetails.map((user) => (
                     <UserInfoComponent
                       key={user.personal[0].id}
@@ -2968,171 +2981,179 @@ const updateFileInfo = (file) => {
                     />
                   ))}
                 </div> */}
-                  <div className="v-divider" />
+                    <div className="v-divider" />
 
-                  <div className="flex flex-col gap-4 ">
-                    <h6 className="h6">Education</h6>
-                    <div className="flex flex-col divide-y">
-                      {educationaldetails.map((edu, index) => (
-                        <div
-                          key={index}
-                          className="flex justify-start gap-5 py-3 2xl:py-6"
-                        >
-                          {/* <img
+                    <div className="flex flex-col gap-4 ">
+                      <h6 className="h6">Education</h6>
+                      <div className="flex flex-col divide-y">
+                        {educationaldetails.map((edu, index) => (
+                          <div
+                            key={index}
+                            className="flex justify-start gap-5 py-3 2xl:py-6"
+                          >
+                            {/* <img
                             className="2xl:w-[60px] 2xl:h-[60px] w-11 h-11 rounded-full shadow"
                             src="https://via.placeholder.com/60x60"
                           /> */}
-                          <div className="2xl:w-[60px] 2xl:h-[60px] w-11 h-11 text-center  rounded-full shadow bg-gray-200" >
-                            {edu.institution && <p className="text-xl mt-2  ">{edu.institution.charAt(0).toUpperCase()}</p>}
-                          </div>
-                          <div className="inline-flex flex-col items-start justify-start gap-1">
-                            <div className="gap-2 vhcenter">
-                              <h6 className="h6">{edu.institution}</h6>
-                              {/* <p className="para p-1.5 rounded-md bg-secondaryWhite !leading-none">
+                            <div className="2xl:w-[60px] 2xl:h-[60px] w-11 h-11 text-center  rounded-full shadow bg-gray-200" >
+                              {edu.institution && <p className="text-xl mt-2  ">{edu.institution.charAt(0).toUpperCase()}</p>}
+                            </div>
+                            <div className="inline-flex flex-col items-start justify-start gap-1">
+                              <div className="gap-2 vhcenter">
+                                <h6 className="h6">{edu.institution}</h6>
+                                {/* <p className="para p-1.5 rounded-md bg-secondaryWhite !leading-none">
                         {work.Shift}
                       </p> */}
-                            </div>
+                              </div>
 
-                            <div className="flex flex-col gap-4">
-                              <p className="h6 !font-medium">{edu.degree}</p>
-                              <div className="flex gap-3">
+                              <div className="flex flex-col gap-4">
+                                <p className="h6 !font-medium">{edu.degree}</p>
+                                <div className="flex gap-3">
+                                  <p className="para !font-normal text-opacity-70">
+                                    {edu.graduationYear}
+                                  </p>
+
+                                  <p className="para !font-normal text-opacity-70">
+                                    {edu.location}
+                                  </p>
+                                </div>
+                              </div>
+                            </div>
+                          </div>
+                        ))}
+                      </div>
+                    </div>
+                    <div className="flex flex-col gap-4 ">
+                      <h6 className="h6">All Experiences</h6>
+                      <div className="flex flex-col divide-y">
+                        {experience.map((work, index) => (
+                          <div
+                            key={index}
+                            className="flex items-center justify-start gap-5 py-3 2xl:py-6"
+                          >
+                            {/* <img
+                            className="2xl:w-[60px] 2xl:h-[60px] w-11 h-11 rounded-full shadow"
+                            src="https://via.placeholder.com/60x60"
+                          /> */}
+                            <div className="2xl:w-[60px] 2xl:h-[60px] w-11 h-11 text-center  rounded-full shadow bg-gray-200" >
+                              {work.companyName && <p className="text-xl mt-2  ">{work.companyName.charAt(0).toUpperCase()}</p>}
+                            </div>
+                            <div className="inline-flex flex-col items-start justify-start gap-1">
+                              <div className="gap-2 vhcenter">
+                                <h6 className="h6">{work.companyName}</h6>
+                                <p className="para p-1.5 rounded-md bg-secondaryWhite dark:bg-secondaryDark !leading-none">
+                                  {work.Shift}
+                                </p>
+                              </div>
+
+                              <div className="inline-flex items-center justify-start gap-4">
+                                <p className="!text-opacity-50 h6">{work.role}</p>
                                 <p className="para !font-normal text-opacity-70">
-                                  {edu.graduationYear}
+                                  {work.experienceDuration}
                                 </p>
 
                                 <p className="para !font-normal text-opacity-70">
-                                  {edu.location}
+                                  {work.startDate}, {work.endDate}
                                 </p>
                               </div>
                             </div>
                           </div>
-                        </div>
-                      ))}
+                        ))}
+                      </div>
                     </div>
-                  </div>
-                  <div className="flex flex-col gap-4 ">
-                    <h6 className="h6">All Experiences</h6>
-                    <div className="flex flex-col divide-y">
-                      {experience.map((work, index) => (
-                        <div
-                          key={index}
-                          className="flex items-center justify-start gap-5 py-3 2xl:py-6"
-                        >
-                          {/* <img
-                            className="2xl:w-[60px] 2xl:h-[60px] w-11 h-11 rounded-full shadow"
-                            src="https://via.placeholder.com/60x60"
-                          /> */}
-                          <div className="2xl:w-[60px] 2xl:h-[60px] w-11 h-11 text-center  rounded-full shadow bg-gray-200" >
-                            {work.companyName && <p className="text-xl mt-2  ">{work.companyName.charAt(0).toUpperCase()}</p>}
-                          </div>
-                          <div className="inline-flex flex-col items-start justify-start gap-1">
-                            <div className="gap-2 vhcenter">
-                              <h6 className="h6">{work.companyName}</h6>
-                              <p className="para p-1.5 rounded-md bg-secondaryWhite dark:bg-secondaryDark !leading-none">
-                                {work.Shift}
-                              </p>
-                            </div>
+                  </Accordion>
 
-                            <div className="inline-flex items-center justify-start gap-4">
-                              <p className="!text-opacity-50 h6">{work.role}</p>
-                              <p className="para !font-normal text-opacity-70">
-                                {work.experienceDuration}
-                              </p>
-
-                              <p className="para !font-normal text-opacity-70">
-                                {work.startDate}, {work.endDate}
-                              </p>
+                  <div className="box-wrapper">
+                    <div className="flex flex-col gap-4">
+                      <div className="flex items-center justify-between">
+                        <h6 className="h6 !text-black dark:!text-white">
+                          CV / Resume
+                        </h6>
+                        {/* <ButtonClick buttonName="Add Cover Note" icon={<IoMdAdd />} /> */}
+                      </div>
+                      <div className="flex items-center justify-between">
+                        {filePdfresume ? (
+                          <div className="flex items-center gap-2.5">
+                            <div className="w-8 h-8 iconI vhcenter bg-[#F5F5F5] dark:bg-secondaryDark text-base rounded-lg ">
+                              <div className="text-black opacity-50 ">
+                                {<RiFileList3Line />}
+                              </div>
                             </div>
+                            <p className="text-xs font-semibold leading-tight text-black dark:text-white">
+                              Resume.pdf
+                            </p>
                           </div>
-                        </div>
-                      ))}
-                    </div>
-                  </div>
-                </Accordion>
-
-                <div className="box-wrapper">
-                  <div className="flex flex-col gap-4">
-                    <div className="flex items-center justify-between">
-                      <h6 className="h6 !text-black dark:!text-white">
-                        CV / Resume
-                      </h6>
-                      {/* <ButtonClick buttonName="Add Cover Note" icon={<IoMdAdd />} /> */}
-                    </div>
-                    <div className="flex items-center justify-between">
-                      {filePdfresume ? (
-                        <div className="flex items-center gap-2.5">
-                          <div className="w-8 h-8 iconI vhcenter bg-[#F5F5F5] dark:bg-secondaryDark text-base rounded-lg ">
-                            <div className="text-black opacity-50 ">
-                              {<RiFileList3Line />}
-                            </div>
-                          </div>
-                          <p className="text-xs font-semibold leading-tight text-black dark:text-white">
-                            Resume.pdf
-                          </p>
-                        </div>
-                      ) : "Resume not uploaded"
-                      }
-                      <ButtonClick
-                        buttonName="Edit Details"
-                        className="text-[#6044E5]"
-                        icon={<AiTwotoneEdit />}
-                        handleSubmit={editcv}
-                      />
-                    </div>
-                    {filePdfresume && (
-                      <div className="divider-h" />
-                    )}
-                    {/* {data.map((item, index) => (
+                        ) : "Resume not uploaded"
+                        }
+                        <ButtonClick
+                          buttonName="Edit Details"
+                          className="text-[#6044E5]"
+                          icon={<AiTwotoneEdit />}
+                          handleSubmit={editcv}
+                        />
+                      </div>
+                      {filePdfresume && (
+                        <div className="divider-h" />
+                      )}
+                      {/* {data.map((item, index) => (
                     <PDFViewer pdfUrl={item.resumeFile} />
                     ))} */}
-                    {data.map((item, index) => (
-                      <>
-                        {filePdfresume ? (
-                          <iframe
-                            key={index}
-                            src={item.resumeFile}
-                            width="100%"
-                            height="500px"
-                            title={`Resume-${index}`}
-                          />
-                        ) : ""}
-                      </>
-                    ))}
-                  </div>
+                      {data.map((item, index) => (
+                        <>
+                          {filePdfresume ? (
+                            <iframe
+                              key={index}
+                              src={item.resumeFile}
+                              width="100%"
+                              height="500px"
+                              title={`Resume-${index}`}
+                            />
+                          ) : ""}
+                        </>
+                      ))}
+                    </div>
+                    <div className="divider-h mt-9" />
+                    <div className="flex flex-col gap-8 mt-8">
+                      <h2 className="h6">Cover Letter</h2>
+                    </div>
+                    <div className="inline-flex flex-col items-start justify-start pt-4 gap-7">
+                      {data.resumeCoverLetter}
+                    </div>
 
-                  <div className="divider-h mt-9" />
-                  <div className="flex flex-col gap-8 mt-8">
-                    <h2 className="h6">Prerequisite</h2>
-                  </div>
-                  <div className="inline-flex flex-col items-start justify-start pt-4 gap-7">
-                    {customfield?.map((quest) => (
-                      <div className="flex flex-col gap-3">
-                        {/* key={quest.id} */}
-                        <div className="flex">
-                          <div className="w-12 ">
-                            <span className="pblack">Q.</span>
+
+                    <div className="divider-h mt-9" />
+                    <div className="flex flex-col gap-8 mt-8">
+                      <h2 className="h6">Prerequisite</h2>
+                    </div>
+                    <div className="inline-flex flex-col items-start justify-start pt-4 gap-7">
+                      {customfield?.map((quest) => (
+                        <div className="flex flex-col gap-3">
+                          {/* key={quest.id} */}
+                          <div className="flex">
+                            <div className="w-12 ">
+                              <span className="pblack">Q.</span>
+                            </div>
+                            <div>
+                              <span className="pblack !text-opacity-80">
+                                {quest.customQuestion}
+                              </span>
+                            </div>
                           </div>
-                          <div>
-                            <span className="pblack !text-opacity-80">
-                              {quest.customQuestion}
-                            </span>
+                          <div className="flex">
+                            <div className="w-12 ">
+                              <p className="pblack">Ans.</p>
+                            </div>
+                            <p className="pblack !text-opacity-80">
+                              {quest.answer}
+                            </p>
                           </div>
                         </div>
-                        <div className="flex">
-                          <div className="w-12 ">
-                            <p className="pblack">Ans.</p>
-                          </div>
-                          <p className="pblack !text-opacity-80">
-                            {quest.answer}
-                          </p>
-                        </div>
-                      </div>
-                    ))}
+                      ))}
+                    </div>
                   </div>
                 </div>
-              </div>
-            </>
-          ) : null}
+              </>
+            ) : null}
         </div>
 
         {/* <>
@@ -3186,6 +3207,8 @@ const updateFileInfo = (file) => {
         </di>
         {contextHolder}
       </div>
+      
+
       {/* <div className=" mt-10 divider-h  bottom-0" /> */}
       <div className="flex justify-between mt-4  rounded shadow-sm bg-white h-[65px] w-full fixed bottom-0 overflow-hidden">
         <div className="mt-4">
