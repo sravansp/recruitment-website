@@ -1004,6 +1004,7 @@ function Web({ closeDrawer, selectedJobId, onClick }) {
       ],
 
     },
+    
     // enableReinitialize: true,
     // validateOnChange: false,
     // validationSchema: Yup.object().shape({
@@ -2100,7 +2101,7 @@ function Web({ closeDrawer, selectedJobId, onClick }) {
                         </div> */}
                         <div className='w-3/5'>
                           <p>Photo (Optional)</p>
-                         
+
                           <FileUpload change={(e) => {
                             if (e) {
 
@@ -2109,7 +2110,7 @@ function Web({ closeDrawer, selectedJobId, onClick }) {
                             }
                             console.log(e)
                           }} />
-                          
+
                         </div>
                         {/* </div> */}
                         {/* </div> */}
@@ -3116,9 +3117,12 @@ function Web({ closeDrawer, selectedJobId, onClick }) {
                     <div className="flex flex-col gap-8 mt-8">
                       <h2 className="h6">Cover Letter</h2>
                     </div>
-                    <div className="inline-flex flex-col items-start justify-start pt-4 gap-7">
-                      {data.resumeCoverLetter}
-                    </div>
+                    {data.map((data, index) => (
+                      <div className="inline-flex flex-col items-start justify-start pt-4 gap-7">
+                        {data.resumeCoverLetter}
+                      </div>
+                    ))}
+
 
 
                     <div className="divider-h mt-9" />
@@ -3207,7 +3211,7 @@ function Web({ closeDrawer, selectedJobId, onClick }) {
         </di>
         {contextHolder}
       </div>
-      
+
 
       {/* <div className=" mt-10 divider-h  bottom-0" /> */}
       <div className="flex justify-between mt-4  rounded shadow-sm bg-white h-[65px] w-full fixed bottom-0 overflow-hidden">

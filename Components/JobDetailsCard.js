@@ -19,7 +19,7 @@ const JobDetailsCard = ({ selectedJob, jobDetailsAnimation }) => {
   // Function to handle closing the drawer
   const closeDrawer = () => {
     setDrawerVisible(false);
-    // window.location.reload();
+    window.location.reload();
   };
   const handleApply = (jobId) => {
     setSelectedJobIdForApply(jobId);

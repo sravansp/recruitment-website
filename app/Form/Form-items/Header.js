@@ -37,7 +37,7 @@ useEffect(() => {
     // <div >
     <div className="bg-white flex items-center     dark:bg-black dark:text-white h-[85px] w-full rounded   shadow-sm   ">
       <div className="flex mt-3 ml-5 float-end ">
-      <button onClick={closeDrawer} className="rounded-full  size-9 borderb vhcenter text-primary">
+      <button onClick={closeDrawer} className="rounded-full mt-1  size-9 borderb vhcenter text-primary">
           {/* <span className="inset-0 flex items-center justify-center bg-white rounded-md "> */}
             {/* <span className="flex items-center justify-center w-[35px] h-[36px]  rounded-full border-[1px]  bg-[#FAFAFA]"> */}
               <FaArrowLeft size={15}/>
