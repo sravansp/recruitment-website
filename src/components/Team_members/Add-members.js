@@ -222,7 +222,7 @@ const Addmembers = ({
 
       }}
       contentWrapperStyle={{
-        maxWidth: "540px",
+        width: "590px",
       }}
       handleSubmit={(e) => {
         // console.log(e);

@@ -836,8 +836,8 @@ export default function Createcandidatelist({ open = "", close = () => { }, file
 
 
         >
-          <FlexCol justify="center" align="center" >
-            <div className='mt-5 m-auto w-5/6'>
+          <FlexCol justify="center" align="center" className={"mx-auto w-3/5"}>
+            <div className='mt-5'>
               {CreateDirectorSteps && (
                 <Stepper
                   currentStepNumber={activeBtn}
@@ -858,7 +858,7 @@ export default function Createcandidatelist({ open = "", close = () => { }, file
             </div>
             {activeBtnValue === "Personel" ? (
               <>
-                <FlexCol justify="center" align="center" className="w-5/6 m-auto mt-10">
+                <FlexCol justify="center" align="center" className="mt-10">
                   <Accordion
                     title={t("Personal_Details")}
                     className="Text_area"
@@ -1027,7 +1027,7 @@ export default function Createcandidatelist({ open = "", close = () => { }, file
               </>
             ) : activeBtnValue === "Educational" ? (
               <>
-                <FlexCol justify="center" align="center" className="w-5/6 m-auto mt-10">
+                <FlexCol justify="center" align="center" className="mt-10">
                   <Accordion
                     title={"Educational Details"}
                     className="Text_area "
@@ -1124,7 +1124,7 @@ export default function Createcandidatelist({ open = "", close = () => { }, file
               </>
             ) : activeBtnValue === "Work" ? (
               <>
-                <FlexCol justify="center" align="center" className="w-5/6 m-auto mt-10">
+                <FlexCol justify="center" align="center" className="mt-10">
                   <Accordion
                     title={"Work Experience Details"}
                     className="Text_area "
@@ -1216,7 +1216,7 @@ export default function Createcandidatelist({ open = "", close = () => { }, file
 
 
                 </FlexCol>
-                <FlexCol justify="center" align="center" className="w-5/6 m-auto">
+                <FlexCol justify="center" align="center" className="">
                   <Accordion
                     title={"Resume & Cover Letter"}
                     className="Text_area "
@@ -1265,7 +1265,7 @@ export default function Createcandidatelist({ open = "", close = () => { }, file
               </>)
               // ) : activeBtnValue === "Questions" ? (
               //   <>
-              //     <FlexCol justify="center" align="center" className="w-5/6 m-auto  mt-10">
+              //     <FlexCol justify="center" align="center" className="mt-10">
               //       <Accordion
               //         title={"Prerequisite"}
               //         className="Text_area "
@@ -1311,7 +1311,7 @@ export default function Createcandidatelist({ open = "", close = () => { }, file
               // ) 
               : (activeBtnValue === "Review" && (
                 <>
-                  <FlexCol justify="center" align="center" className="w-5/6 m-auto  mt-10">
+                  <FlexCol justify="center" align="center" className="mt-10">
                     <Accordion
                       title={"Review"}
                       className="Text_area "

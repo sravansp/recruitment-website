@@ -32,13 +32,11 @@ export const theme = {
       grey: "#667085",
       lightdark: "#242424",
       whiteTint: "#F4F4F4",
+      dark: "#242424",
 
      // Specify black color for dark mode
      black: {
       DEFAULT: "#000000",
-    },
-    dark: {
-      black: "#161618",
     },
     },
     // },
