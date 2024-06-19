@@ -10,7 +10,8 @@ import TextEditor from "../common/TextEditor/TextEditor";
 import FormInput from "../common/FormInput";
 import image from "../../assets/images/attachment-2.svg";
 import image2 from "../../assets/images/emoji-sticker-line.svg";
-import { getRecruitmentLetterTemplateById, saveRecruitmentLetterTemplate, updateRecruitmentLetterTemplate } from "../Api1";
+import { getAllRecruitmentLetterTemplates, getRecruitmentLetterTemplateById, saveRecruitmentLetterTemplate, updateRecruitmentLetterTemplate } from "../Api1";
+import { FaAsterisk } from "react-icons/fa";
 const AddLetter = ({
   open = "",
   close = () => { },
@@ -27,10 +28,12 @@ const AddLetter = ({
   const [templateNameError, setTemplateNameError] = useState('');
   const [subjectError, setSubjectError] = useState('')
   const [contentError, setContentError] = useState('');
+  const [copytemplateName, setcopytemplateName] = useState("")
   const handleClose = () => {
     close(false);
   };
   const [content, setContent] = useState("");
+  const [Length, setLength] = useState("")
   const [api, contextHolder] = notification.useNotification();
   const openNotification = (type, message, description) => {
     api[type]({
@@ -40,12 +43,12 @@ const AddLetter = ({
       // stack: 2,
       style: {
         background: `${type === "success"
-            ? `linear-gradient(180deg, rgba(204, 255, 233, 0.8) 0%, rgba(235, 252, 248, 0.8) 51.08%, rgba(246, 251, 253, 0.8) 100%)`
-            : "linear-gradient(180deg, rgba(255, 236, 236, 0.80) 0%, rgba(253, 246, 248, 0.80) 51.13%, rgba(251, 251, 254, 0.80) 100%)"
+          ? `linear-gradient(180deg, rgba(204, 255, 233, 0.8) 0%, rgba(235, 252, 248, 0.8) 51.08%, rgba(246, 251, 253, 0.8) 100%)`
+          : "linear-gradient(180deg, rgba(255, 236, 236, 0.80) 0%, rgba(253, 246, 248, 0.80) 51.13%, rgba(251, 251, 254, 0.80) 100%)"
           }`,
         boxShadow: `${type === "success"
-            ? "0px 4.868px 11.358px rgba(62, 255, 93, 0.2)"
-            : "0px 22px 60px rgba(134, 92, 144, 0.20)"
+          ? "0px 4.868px 11.358px rgba(62, 255, 93, 0.2)"
+          : "0px 22px 60px rgba(134, 92, 144, 0.20)"
           }`,
       },
       // duration: null,
@@ -72,14 +75,23 @@ const AddLetter = ({
       // API call
 
       let hasError = false; // Flag to track if any error occurred
-
-      // Check if templateName is empty
       if (!templateName) {
         setTemplateNameError('Template Name is required.');
         hasError = true; // Set flag to true if there's an error
-      } else {
+      } else if (!/^[a-zA-Z\s]+$/.test(templateName)) {
+        setTemplateNameError('Template Name should only contain letters.');
+        hasError = true; // Set flag to true if there's an error
+      } else if (templateName.length < 3) {
+        setTemplateNameError('Template Name should have at least 3 letters.');
+        hasError = true; // Set flag to true if there's an error
+      }else if (Length > 0 && templateName !== copytemplateName) {
+        setTemplateNameError('Template Name already exist');
+        hasError = true; // Set flag to true if there's an error
+      }  
+      else {
         setTemplateNameError('');
       }
+
 
       // Check if subject is empty
       if (!subject) {
@@ -88,6 +100,7 @@ const AddLetter = ({
       } else {
         setSubjectError('');
       }
+
       if (!content) {
         setContentError('Content is required.');
         hasError = true;
@@ -96,6 +109,7 @@ const AddLetter = ({
       } else {
         setContentError('');
       }
+
       // If any error occurred, return early
       if (hasError) {
         return;
@@ -122,16 +136,16 @@ const AddLetter = ({
 
           openNotification(
             "success",
-            "Success",
+            "Successful",
             response.message
           );
           setTimeout(() => {
             handleClose();
             refresh()
-          }, 1500);
+          }, 1000);
 
         } else if (response.status === 500) {
-          openNotification("error", "Error..", response.message.replace(/<br\/>/g, '\n'));
+          openNotification("error", "Info", response.message.replace(/<br\/>/g, '\n'));
         }
       }
       else {
@@ -151,20 +165,20 @@ const AddLetter = ({
         if (response.status === 200) {
           openNotification(
             "success",
-            "Success",
+            "Successful",
             response.message
           );
           setTimeout(() => {
             handleClose();
             refresh()
-          }, 1500);
+          }, 1000);
         } else {
-          openNotification("error", "Error..", response.message);
+          openNotification("error", "Info", response.message);
         }
       }
     } catch (error) {
       console.error("Error saving email template:", error);
-      openNotification("error", "Error..", error);
+      openNotification("error", "Info", error);
     }
   };
   const getLetterById = async () => {
@@ -173,6 +187,7 @@ const AddLetter = ({
       const response = await getRecruitmentLetterTemplateById({ id })
       console.log(response)
       setTemplateName(response.result[0].letterTemplateName);
+      setcopytemplateName(response.result[0].letterTemplateName)
       setContent(response.result[0].letterTemplate.body);
       setsubject(response.result[0].letterTemplate.subject)
 
@@ -196,6 +211,28 @@ const AddLetter = ({
 
     }
   };
+
+  const getLetterByName = async () => {
+    try {
+      const response = await getAllRecruitmentLetterTemplates({
+        companyId: companyId,
+        letterTemplateName: templateName
+
+      })
+      setLength(response.result.length)
+      console.log(response)
+
+    } catch (error) {
+      console.log(error)
+    }
+  }
+
+  useEffect(() => {
+    if (templateName !== copytemplateName) {
+      getLetterByName()
+
+    }
+  }, [templateName])
   return (
     <div>
       <DrawerPop
@@ -289,8 +326,11 @@ const AddLetter = ({
               error={subjectError}
               required={true}
             />
-            <div>
-              <p className="pb-2">Letter</p>
+            <div className="flex flex-col gap-2">
+              <p className="flex">
+                <p>Letter</p>
+                <FaAsterisk className="ml-1.5 text-[6px] text-rose-600" />
+              </p>
               <TextEditor
                 initialValue={content}
                 placeholder={"Start typing your Letter"}

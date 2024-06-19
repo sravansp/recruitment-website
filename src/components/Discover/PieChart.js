@@ -1,4 +1,4 @@
-import React, { useEffect,useState } from "react";
+import React, { useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import {
   PieChart,
@@ -12,45 +12,37 @@ import {
 import { getDashboardCandidateSource } from "../Api1";
 import { setDate } from "date-fns";
 
-const data = [
-  { name: "LinkedIn", value: 30 },
-  { name: "Indeed", value: 25 },
-  { name: "Naukri", value: 16 },
-  { name: "Resume", value: 10 },
-  { name: "Imported", value: 8 },
-];
 
 const COLORS = ["#0e2535", "#9da4fe", "#7942c5", "#ecc4f9", "#cfd6e6"];
 
 
-
 const PieChartWithLegends = () => {
   const theme = useSelector((state) => state.layout.mode)
-  const[data,SetData]=useState([])
+  const [data, SetData] = useState([])
   const [companyId, setCompanyId] = useState(localStorage.getItem("companyId"));
 
   useEffect(() => {
     setCompanyId(localStorage.getItem("companyId"));
-    
+
   }, []);
 
-  const getCandidateSource= async ()=>{
-    try{
-      const response = await getDashboardCandidateSource({companyId:companyId})
+  const getCandidateSource = async () => {
+    try {
+      const response = await getDashboardCandidateSource({ companyId: companyId })
       // console.log(response)
       const formattedResult = Object.entries(response.result).map(([name, value]) => ({
         name: name.toUpperCase(), // Convert month to uppercase
         value: value  // Calculate the frequency (multiplying by 1.8 as an example)
-    }));
-    // console.log(formattedResult)
-    SetData(formattedResult)
-    }catch(error){
+      }));
+      // console.log(formattedResult, "formattedResult")
+      SetData(formattedResult)
+    } catch (error) {
       // console.log(error)
     }
   }
-  useEffect(()=>{
+  useEffect(() => {
     getCandidateSource()
-  },[])
+  }, [])
   const getTotalSources = () => {
     let total = 0;
     data.forEach((item) => (total += item.value));
@@ -68,11 +60,13 @@ const PieChartWithLegends = () => {
     const { cx, cy } = viewBox;
     return (
       <text x={cx} y={cy} textAnchor="middle" dominantBaseline="middle">
-       <tspan fill={theme === "dark" ? "white" : "black"} fontSize="10" fontWeight="normal">Total Sources</tspan>
-<tspan x={cx} dy="20" fill={theme === "dark" ? "white" : "black"} fontSize="18" fontWeight="bold">{totalSources}</tspan>
+        <tspan fill={theme === "dark" ? "white" : "black"} fontSize="10" fontWeight="normal">Total Sources</tspan>
+        <tspan x={cx} dy="20" fill={theme === "dark" ? "white" : "black"} fontSize="18" fontWeight="bold">{totalSources}</tspan>
       </text>
     );
   };
+
+
   return (
     <ResponsiveContainer width="100%" height={220}>
       <PieChart margin={{ top: 0, right: 0, bottom: 0, left: 0 }}>
@@ -95,7 +89,7 @@ const PieChartWithLegends = () => {
               stroke="none"
             />
           ))}
-        <Label content={labelText} position="center" />
+          <Label content={labelText} position="center" />
 
         </Pie>
         <Tooltip />
@@ -108,7 +102,7 @@ const PieChartWithLegends = () => {
           wrapperStyle={style}
           content={(props) => {
             const { payload } = props;
-            // console.log(payload);
+            // console.log(payload,"payload");
             return (
               <div className="flex flex-col gap-2 dark:text-white">
                 {/* <p className="font-medium text-opacity-50 2xl:text-xs text-[#667085]">Leave Summary</p> */}

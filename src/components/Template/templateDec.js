@@ -7,7 +7,7 @@ import { DownOutlined, UserOutlined } from '@ant-design/icons';
 import TextArea from '../common/TextArea'
 import image from '../../assets/images/generate-ai-img.png'
 import TextEditor from '../../components/common/TextEditor/TextEditor'
-import { updateRecruitmentJobDescriptionTemplate, saveRecruitmentJobDescriptionTemplate, getRecruitmentJobDescriptionTemplateById } from '../Api1'
+import { getAllRecruitmentJobDescriptionTemplates, updateRecruitmentJobDescriptionTemplate, saveRecruitmentJobDescriptionTemplate, getRecruitmentJobDescriptionTemplateById } from '../Api1'
 import FormInput from '../common/FormInput'
 import ButtonClick from '../common/Button'
 import { RxQuestionMarkCircled } from 'react-icons/rx'
@@ -23,6 +23,8 @@ const TemplateDec = ({ open = "", close = () => { }, inputshow = false, isUpdate
   const [content, setContent] = useState("");
   const [templateNameError, setTemplateNameError] = useState('');
   const [contentError, setContentError] = useState('');
+  const [JobDescription, setJobDescription] = useState([])
+  const [copytemplateName, setcopytemplateName] = useState("")
   console.log(updateId)
   const { t } = useTranslation();
   const handleClose = () => {
@@ -83,41 +85,53 @@ const TemplateDec = ({ open = "", close = () => { }, inputshow = false, isUpdate
   };
 
   const handleTemplateNameChange = (value) => {
+    getJobdescription()
     if (!value) {
       setTemplateNameError('Template Name is required.');
     } else {
       setTemplateNameError('');
     }
   };
-  
+
   const handleContentChange = (value) => {
     if (value) {
       setContentError('');
-    } 
-     
-    
+    }
+
+
   };
 
   const handlesubmit = async (e) => {
     try {
       console.log(content)
 
-      let hasError = false; 
+      let hasError = false;
       if (!templateName) {
         setTemplateNameError('Template Name is required.');
+        hasError = true; // Set flag to true if there's an error
+      } else if (!/^[a-zA-Z\s]+$/.test(templateName)) {
+        setTemplateNameError('Template Name should only contain letters.');
+        hasError = true; // Set flag to true if there's an error
+      } else if (templateName.length < 3) {
+        setTemplateNameError('Template Name should have at least 3 letters.');
+        hasError = true; // Set flag to true if there's an error
+      }else if (templateName.length > 3 && templateName === JobDescription[0]?.descriptionTemplateName) {
+        setTemplateNameError('Template Name Already Exist')
         hasError = true;
       } else {
-        setTemplateNameError('');
+        setTemplateNameError('')
+       
       }
-      
+
       // Check if content is empty
       if (!content) {
         setContentError('Description is required.');
         hasError = true;
       } else {
         setContentError('');
+       
       }
-      
+
       if (hasError) {
         return;
       }
@@ -128,13 +142,11 @@ const TemplateDec = ({ open = "", close = () => { }, inputshow = false, isUpdate
           descriptionTemplate: content,
           createdBy: null
         })
-        console.log(response)
+        console.log(response, "save data")
         if (response.status === 200) {
-
-
           openNotification(
             "success",
-            "Success",
+            "Successful",
             response.message.replace(/<br\/>/g, '\n')
           );
           setTimeout(() => {
@@ -143,10 +155,10 @@ const TemplateDec = ({ open = "", close = () => { }, inputshow = false, isUpdate
           }, 2000);
 
         } else if (response.status === 500) {
-          openNotification("Error", "Error..", response.message);
+          openNotification("Error", "info", response.message);
         }
 
-        
+
       } else {
         const id = updateId
         const response = await updateRecruitmentJobDescriptionTemplate({
@@ -171,12 +183,12 @@ const TemplateDec = ({ open = "", close = () => { }, inputshow = false, isUpdate
           }, 2000);
 
         } else if (response.status === 500) {
-          openNotification("Error", "Error..", response.message);
+          openNotification("Error", "Info", response.message);
         }
 
       }
     } catch (error) {
-      openNotification("error", "Error..", "Template name already exist");
+      console.log(error, "catch error");
     }
 
   }
@@ -186,6 +198,7 @@ const TemplateDec = ({ open = "", close = () => { }, inputshow = false, isUpdate
       const response = await getRecruitmentJobDescriptionTemplateById({ id: id })
       console.log(response)
       setTemplateName(response.result[0].descriptionTemplateName);
+      setcopytemplateName(response.result[0].descriptionTemplateName)
       setContent(response.result[0].descriptionTemplate);
 
 
@@ -202,13 +215,31 @@ const TemplateDec = ({ open = "", close = () => { }, inputshow = false, isUpdate
   // const handleEditorChange = (content) => {
   //   setContent(content);
   // };
-  return (
-    
-    
-    
-    
-    <DrawerPop
+  const getJobdescription = async () => {
+    try {
+      const response = await getAllRecruitmentJobDescriptionTemplates({
+        companyId: companyId,
+        descriptionTemplateName: templateName,
+      })
+      console.log(response)
+      setJobDescription(response.result)
+    } catch (error) {
+      console.log(error)
+    }
+  }
 
+
+  useEffect(() => {
+    if (templateName !== copytemplateName) {
+      getJobdescription();
+    }
+    console.log(copytemplateName)
+    console.log(templateName)
+  }, [templateName])
+
+
+  return (
+    <DrawerPop
       open={show}
       contentWrapperStyle={{
         position: "absolute",
@@ -234,10 +265,10 @@ const TemplateDec = ({ open = "", close = () => { }, inputshow = false, isUpdate
 
       header={[
         !updateId
-          ? t("Create a Job Description Template")
+          ? t("Create Job Description Template")
           : t("Update Job Description Template"),
         !updateId
-          ? t("Create a Job Description Template")
+          ? t("Create Job Description Template")
           : t("Update Job Description Template"),]}
 
       headerRight={
@@ -274,7 +305,7 @@ const TemplateDec = ({ open = "", close = () => { }, inputshow = false, isUpdate
 
 
     >
-     
+
       <div className="relative max-w-[1070px]  w-full mx-auto">
         <Accordion
           title={"Job Description"}
@@ -286,57 +317,57 @@ const TemplateDec = ({ open = "", close = () => { }, inputshow = false, isUpdate
           }}
           initialExpanded={true}
         >
-           <div class="flex flex-col gap-4 overflow-hidden">
-          <div className="grid grid-cols-2 ">
-            <FormInput
-              title={"Template Name"}
-              placeholder={"Enter Template Name"}
-              value={templateName}
-              change={(e) => {
-                setTemplateName(e);
-                handleTemplateNameChange(e); // Trigger validation on change
-              }}
-              error={templateNameError}
-              required={true}
-            />
-          </div>
-          <div className="border rounded-md bg-primaryalpha/5">
-            <div className="flex items-center px-1.5  ">
-              <img src={AI_Text} alt='' className="border rounded-md"></img>
-              <div className="flex flex-col gap-1 p-1.5">
-                <div className="flex items-center justify-between ">
-                  <p className="font-bold">Generate personalized job descriptions based on pas account data.
+          <div class="flex flex-col gap-4 overflow-hidden">
+            <div className="grid grid-cols-2 ">
+              <FormInput
+                title={"Template Name"}
+                placeholder={"Enter Template Name"}
+                value={templateName}
+                change={(e) => {
+                  setTemplateName(e);
+                  handleTemplateNameChange(e); // Trigger validation on change
+                }}
+                error={templateNameError}
+                required={true}
+              />
+            </div>
+            <div className="border rounded-md bg-primaryalpha/5">
+              <div className="flex items-center px-1.5  ">
+                <img src={AI_Text} alt='' className="border rounded-md"></img>
+                <div className="flex flex-col gap-1 p-1.5">
+                  <div className="flex items-center justify-between ">
+                    <p className="font-bold">Generate personalized job descriptions based on pas account data.
+                    </p>
+                    {/* <p className="text-primary"><IoClose /></p> */}
+                  </div>
+                  <p className="text-gray-400">When you generate with Al, we look for similar jobs you've created in the past and use the data to create content that's
+                    impactful, accurate and personalized to your company.
                   </p>
-                  {/* <p className="text-primary"><IoClose /></p> */}
                 </div>
-                <p className="text-gray-400">When you generate with Al, we look for similar jobs you've created in the past and use the data to create content that's
-                  impactful, accurate and personalized to your company.
-                </p>
               </div>
             </div>
-          </div>
-          <div style={{ display: 'flex', justifyContent: 'flex-end', gap: '16px' }}>
-            {/* <Button>
+            <div style={{ display: 'flex', justifyContent: 'flex-end', gap: '16px' }}>
+              {/* <Button>
         <Space>
         Choose Job Description
           <DownOutlined />
         </Space>
       </Button> */}
 
-            <ButtonClick handleSubmit={handleGenerateWithAI} BtnType="primary" icon={<img src={image} alt="image" style={{ height: '20px', width: '20px', alignItems: "center" }} />} buttonName={"Generate with AI"} />
-          </div>
+              <ButtonClick handleSubmit={handleGenerateWithAI} BtnType="primary" icon={<img src={image} alt="image" style={{ height: '20px', width: '20px', alignItems: "center" }} />} buttonName={"Generate with AI"} />
+            </div>
 
-          {/* <div className='font-bold'>About the role</div> */}
-          {/* <div className='border rounded-2xl p-5'> */}
+            {/* <div className='font-bold'>About the role</div> */}
+            {/* <div className='border rounded-2xl p-5'> */}
             {/* <TextArea
               title={"Description"}
               placeholder={"Enter the job description here, include key areas of resposibility on what the candidate might do on a typical day."}
             /> */}
             <div className='pt-5'>
-            <div className="flex gap-1.5">
-                        <p className="pb-2">Description</p>
-                        <FaAsterisk className="text-[6px] text-rose-600" />
-                        </div>
+              <div className="flex gap-1.5">
+                <p className="pb-2">Description</p>
+                <FaAsterisk className="text-[6px] text-rose-600" />
+              </div>
               <TextEditor
                 onChange={(e) => {
                   setContent(e)
@@ -348,15 +379,15 @@ const TemplateDec = ({ open = "", close = () => { }, inputshow = false, isUpdate
                 loader={loader}
               />
             </div>
-          {/* </div> */}
+            {/* </div> */}
           </div>
 
         </Accordion>
       </div>
-      
+
       {contextHolder}
     </DrawerPop>
-   
+
   )
 }
 

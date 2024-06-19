@@ -286,7 +286,7 @@ const Emails = ({ Email }) => {
     <div className="grid gap-6 lg:grid-cols-12">
       {/* LEFT COLUMN  */}
       <div className="flex flex-col gap-6 lg:col-span-8">
-        <div className="flex flex-col gap-4 box-wrapper">
+        <div className="flex flex-col gap-4 box-wrapper rounded-[10px] dark:border dark:border-secondaryWhite border dark:border-opacity-10">
           <div className="flex flex-col gap-4 divide-y">
             <div className="flex items-center justify-between">
               <h6 className="h6">Email</h6>
@@ -305,6 +305,7 @@ const Emails = ({ Email }) => {
             </div>
             <div className="pt-4">
               <TextEditor
+                placeholder="Start typing your email"
                 initialValue={formik.values.emailContent.body} // Corrected
                 onChange={(e) => {
                   formik.setFieldValue("body", e); // Corrected

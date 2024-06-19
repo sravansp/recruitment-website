@@ -13,7 +13,7 @@ import Dropdown from '../common/Dropdown'
 import { MdDelete, MdOutlineFileCopy } from 'react-icons/md'
 import { Form } from '../data'
 import { CgAdd } from 'react-icons/cg'
-import { updateEvaluationTemplateWithDetails, getRecruitmentEvaluationTemplateById, saveRecruitmentEvaluationTemplate, saveRecruitmentEvaluationTemplateDetailBatch } from '../Api1'
+import {getAllRecruitmentEvaluationTemplates, updateEvaluationTemplateWithDetails, getRecruitmentEvaluationTemplateById, saveRecruitmentEvaluationTemplate, saveRecruitmentEvaluationTemplateDetailBatch } from '../Api1'
 import { Formik, useFormik } from 'formik';
 import { Value } from 'devextreme-react/range-selector'
 import AddMore from '../common/AddMore'
@@ -54,6 +54,8 @@ const TemEvaluation = ({
       createdBy: 499
     },
   ]);
+  const [templateName,setTemplateName] = useState("")
+  const [Length,setLength] = useState("")
 
 
   //condition data
@@ -215,24 +217,30 @@ const TemEvaluation = ({
         // });
 
         // Make the first API call
+        let hasError = false;
         if (
           !formik.values.evaluationTemplateName || !formik.values.description) {
           formik.setFieldError('evaluationTemplateName', !formik.values.evaluationTemplateName ? 'Template name is required' : '');
           formik.setFieldError('description', !formik.values.description ? 'Description is required' : '');
+          hasError = true;
         }
-        if (formik.values.evaluationTemplateName.length < 3) {
+        if (formik.values.evaluationTemplateName && formik.values.evaluationTemplateName.length < 3) {
           formik.setFieldError('evaluationTemplateName', 'Template Name should have at least 3 letters.');
-        }
-        let hasError = false;
+          hasError = true;        
+      }
+       if(Length>0){
+        formik.setFieldError('evaluationTemplateName','Template name already exist')
+        hasError = true; 
+      }
         evaluation.forEach((condition) => {
           if (!condition.question) {
-            setQuestionError('Question is Required.');
+            setQuestionError(`Question is Required.`);
             hasError = true;
 
           }
 
           if (!condition.answerMetaData || !condition.answerMetaData[0]?.key) {
-            setAnswerError('Please choose an answer type.');
+            setAnswerError('Question type is required');
             hasError = true;
           }
           if (
@@ -338,8 +346,8 @@ const TemEvaluation = ({
         console.error("Error during form submission:", error);
         openNotification(
           "error",
-          "Error ...",
-          "Evaluation Template Name Already Exist"
+          "Info",
+          "Template Name Already Exists"
         );
       }
       setSubmitting(false);
@@ -394,6 +402,28 @@ const TemEvaluation = ({
     getevaluationtem()
 
   }, [])
+  const getEvalautaionTemplalateByName = async (values)=>{
+    try{
+      const response = await getAllRecruitmentEvaluationTemplates({
+        companyId:companyId,
+        evaluationTemplateName:templateName
+
+
+
+      })
+      setLength(response.result.length)
+      if(response.result.length>0){
+        formik.setFieldError('evaluationTemplateName', 'Template name already exist');
+         return
+      }
+    }catch(error){
+      console.log(error)
+    }
+  }
+  useEffect(()=>{
+    getEvalautaionTemplalateByName()
+  },[templateName])
+
   return (
     <div>
 
@@ -465,8 +495,8 @@ const TemEvaluation = ({
 
       > <div className="relative max-w-[1070px]  w-full mx-auto">
           <Accordion
-            title={"New Evaluation Template"}
-            description={"New Evaluation Template"}
+            title={"Evaluation Template"}
+            description={"Evaluation Template"}
             className="Text_area"
             padding={true}
 
@@ -482,6 +512,7 @@ const TemEvaluation = ({
                 value={formik.values.evaluationTemplateName}
                 change={(e) => {
                   formik.setFieldValue('evaluationTemplateName', e)
+                  setTemplateName(e)
                 }}
                 error={formik.errors.evaluationTemplateName}
                 required={true}
@@ -490,7 +521,7 @@ const TemEvaluation = ({
             </div>
             <div className='grid grid-cols-2'>
               <TextArea
-                title={"Decription"}
+                title={"Description"}
                 placeholder={"Enter Description"}
                 value={formik.values.description}
                 change={(e) => {
@@ -520,8 +551,8 @@ const TemEvaluation = ({
                       required={true}
                     />
 
-                    <div className="flex items-center gap-5">
-                      <div className="flex-shrink-0"> {/* Add this container for the dropdown and icons */}
+                    <div className="flex items-center gap-5 mt-4">
+                      <div className="flex-shrink-0 "> 
                         <Dropdown
                           options={Form}
                           dropdownWidth='200px'
@@ -545,7 +576,7 @@ const TemEvaluation = ({
                           icondropDown={true}
                           required={true}
                           error={condition.answerMetaData[0]?.key ? '' : answerError || ''}
-                          placeholder={"Choose Options"}
+                          placeholder={"Choose Question Type"}
                         />
                       </div>
                       {/* Additional dynamic input fields based on the selected value in the dropdown */}
@@ -558,14 +589,17 @@ const TemEvaluation = ({
                         </Tooltip>
                       </div>
 
-                      <div style={{ display: 'flex', alignItems: 'center', gap: '15px' }}>
-                        {/* <Tooltip placement="top" title={"Copy"} >
-                      <MdOutlineFileCopy style={{ width: '18px', height: '18px', cursor: 'pointer' }} />
-                    </Tooltip> */}
-                        <Tooltip placement="top" title={"Delete"} >
-                          <RiDeleteBinLine className="text-gray-500" style={{ width: '18px', height: '18px', cursor: 'pointer' }} onClick={() => handleDeleteCondition(index)} />
-                        </Tooltip>
-                      </div>
+                      {index !== 0 && (
+          <div style={{ display: 'flex', alignItems: 'center', gap: '15px' }}>
+            <Tooltip placement="top" color={"red"} title="Delete">
+              <RiDeleteBinLine 
+                className="text-gray-500 hover:text-red-500" 
+                style={{ width: '18px', height: '18px', cursor: 'pointer' }} 
+                onClick={() => handleDeleteCondition(index)} 
+              />
+            </Tooltip>
+          </div>
+        )}
 
                     </div>
                   </div>
@@ -576,7 +610,7 @@ const TemEvaluation = ({
                         <div key={fieldIndex} className="flex items-center">
                           {['Drop-down', 'Multiple Choice', 'Checkboxes'].includes(field.key) && (
                             <FormInput
-                              title={`Options ${fieldIndex + 1}`}
+                              title={`Option ${fieldIndex + 1}`}
                               placeholder={'Enter option'}
                               value={field.value}
                               change={(e) => setEvaluation((prevEvaluation) => prevEvaluation.map((prevCondition, i) => i === index

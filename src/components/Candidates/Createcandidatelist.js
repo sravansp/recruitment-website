@@ -40,7 +40,7 @@ import { useNavigate } from 'react-router-dom';
 
 export default function Createcandidatelist({ open = "", close = () => { }, fileUpdateId, refresh, ConfigurationAction, updateId = null, }) {
   const [show, setShow] = useState(open);
-  const [activeBtnValue, setActiveBtnValue] = useState("Personel");//Review//Questions//Work//Personel//Educational
+  const [activeBtnValue, setActiveBtnValue] = useState("Personel");//Personel//Questions//Work//Review//Educational
   const [nextStep, setNextStep] = useState(0);
   const [applicableData, setApplicableData] = useState([]);
   const [isUpdate, setIsUpdate] = useState();
@@ -168,37 +168,78 @@ export default function Createcandidatelist({ open = "", close = () => { }, file
     close(false);
   };
 
-  const handleAddCondition = (e, i) => {
-    setEducation((prevEvaluation) => [
-      ...prevEvaluation,
+  // const handleAddCondition = (e, i) => {
+  //   setEducation((prevEvaluation) => [
+  //     ...prevEvaluation,
+  //     {
+  //       id: 2,
+  //       row: "two" + i,
+  //       field: [
+  //         {
+  //           title: "School Or University",
+  //           inputName: "institute" + i,
+  //           type: "input"
+  //         },
+  //         {
+  //           title: "Degree",
+  //           inputName: "courseType" + i,
+  //           type: "dropdown"
+
+  //         },
+  //         {
+  //           title: "Field of Study",
+  //           inputName: "courseName" + i,
+  //           type: "input"
+  //         }, {
+  //           title: "Year",
+  //           inputName: "yearOfStudy" + i,
+  //           type: "number"
+  //         }, {
+  //           title: "Location",
+  //           inputName: "location" + i,
+  //           type: "input"
+  //         }]
+  //     }
+  //   ]);
+  // };
+  const handleAddCondition = () => {
+    setEducation(prevEducation => [
+      ...prevEducation,
       {
-        id: 2,
-        row: "two" + i,
+        id: prevEducation.length + 1,
+        row: "two" + (prevEducation.length + 1),
         field: [
           {
             title: "School Or University",
-            inputName: "institute" + i,
-            type: "input"
+            inputName: "institute" + (prevEducation.length + 1),
+            type: "input",
+            value: "" // Initialize with an empty string
           },
           {
             title: "Degree",
-            inputName: "courseType" + i,
-            type: "dropdown"
-
+            inputName: "courseType" + (prevEducation.length + 1),
+            type: "dropdown",
+            value: "" // Initialize with an empty string
           },
           {
             title: "Field of Study",
-            inputName: "courseName" + i,
-            type: "input"
-          }, {
+            inputName: "courseName" + (prevEducation.length + 1),
+            type: "input",
+            value: "" // Initialize with an empty string
+          },
+          {
             title: "Year",
-            inputName: "yearOfStudy" + i,
-            type: "number"
-          }, {
+            inputName: "yearOfStudy" + (prevEducation.length + 1),
+            type: "number",
+            value: "" // Initialize with an empty string
+          },
+          {
             title: "Location",
-            inputName: "location" + i,
-            type: "input"
-          }]
+            inputName: "location" + (prevEducation.length + 1),
+            type: "input",
+            value: "" // Initialize with an empty string
+          }
+        ]
       }
     ]);
   };
@@ -211,33 +252,33 @@ export default function Createcandidatelist({ open = "", close = () => { }, file
         field: [
           {
             title: "Job Title",
-            inputFeild: "jobTitle" + i,
+            inputFeild: "jobTitle" + (prevWorkexp.length + 1),
             type: "input"
           },
           {
             title: "Employment Type",
-            inputFeild: "employmentType" + i,
+            inputFeild: "employmentType" + (prevWorkexp.length + 1),
             type: "dropdown"
 
           },
           {
             title: "Company Name",
-            inputFeild: "companyName" + i,
+            inputFeild: "companyName" + (prevWorkexp.length + 1),
             type: "input"
           },
           {
             title: "Location  ",
-            inputFeild: "location" + i,
+            inputFeild: "location" + (prevWorkexp.length + 1),
             type: "input"
           },
           {
             title: "From Date",
-            inputFeild: "fromDate" + i,
+            inputFeild: "fromDate" + (prevWorkexp.length + 1),
             type: "date"
           },
           {
             title: "To Date",
-            inputFeild: "toDate" + i,
+            inputFeild: "toDate" + (prevWorkexp.length + 1),
             type: "date"
           },
         ],
@@ -329,12 +370,12 @@ export default function Createcandidatelist({ open = "", close = () => { }, file
             console.log(FileUpload, "fileUploadResult")
           }
           setNextStep(nextStep + 1);
-          setPresentage(1);
-          openNotification("success", "Success...", response.message);
+          setPresentage(3);
+          openNotification("success", "Successful", response.message.replace(/<br\/>/g, '\n'));
 
         } else {
           console.log("file upload failed")
-          openNotification("error", "Failed..", response.message);
+          openNotification("error", "Failed..", response.message.replace(/<br\/>/g, '\n'));
         }
 
         // File upload
@@ -350,7 +391,7 @@ export default function Createcandidatelist({ open = "", close = () => { }, file
         // console.log(result);
         // console.log(result.errors);
       } catch (error) {
-        openNotification("error", "Failed..", error.message);
+        openNotification("error", "Failed..", error.message.replace(/<br\/>/g, '\n'));
       }
       // finally {
       //   setSubmitting(false);
@@ -393,6 +434,7 @@ export default function Createcandidatelist({ open = "", close = () => { }, file
 
     onSubmit: async (values) => {
       try {
+        console.log(values)
         const result = await saveRecruitmentResumeEducationalDetailBatch(
 
           education.map((each) => ({
@@ -409,25 +451,25 @@ export default function Createcandidatelist({ open = "", close = () => { }, file
         );
         if (result.status === 200) {
           setNextStep(nextStep + 1);
-          setPresentage(1);
-          openNotification("success", "Success...", result.message);
+          setPresentage(2);
+          openNotification("success", "Successful", "Educational Details has been saved");
 
         } else if (result.status === 500) {
-          openNotification("error", "Failed..", result.message);
+          openNotification("error", "Failed..", result.message.replace(/<br\/>/g, '\n'));
         }
         console.log(result);
         console.log(result.errors);
 
       }
       catch (error) {
-        openNotification("error", "Failed..", error.message);
+        openNotification("error", "Failed..", error.message.replace(/<br\/>/g, '\n'));
         console.log(error);
       }
     }
   });
 
 
-  const Degree = [{ id: 1, title: "Bachelors", value: "Bachelors" },{ id: 1, title: "Masters", value: "Masters" }, { id: 3, title: "other", value: "other" }
+  const Degree = [{ id: 1, title: "Bachelors", value: "Bachelors" }, { id: 1, title: "Masters", value: "Masters" }, { id: 3, title: "other", value: "other" }
   ];
   const scrollRef = useRef();
 
@@ -483,7 +525,7 @@ export default function Createcandidatelist({ open = "", close = () => { }, file
           setPresentage(1);
           setResumeId(result.result.insertedId);
         } else if (result.status === 500) {
-          openNotification("error", "Failed..", result.message);
+          openNotification("error", "Failed..", result.message.replace(/<br\/>/g, '\n'));
         }
         console.log(result);
         console.log(result.errors);
@@ -507,7 +549,7 @@ export default function Createcandidatelist({ open = "", close = () => { }, file
         //   }
         // }
       } catch (error) {
-        openNotification("error", "Failed..", error.message);
+        openNotification("error", "Failed..", error.message.replace(/<br\/>/g, '\n'));
         console.log(error);
       }
     }
@@ -526,12 +568,12 @@ export default function Createcandidatelist({ open = "", close = () => { }, file
           console.log(response, "fileUploadResult");
           if (response.status === 200) {
 
-            openNotification("success", "Success...", response.message);
+            openNotification("success", "Successful", "Personal Details has been saved");
           } else {
-            openNotification("error", "Failed..", response.message);
+            openNotification("error", "Failed..", response.message.replace(/<br\/>/g, '\n'));
           }
         } catch (error) {
-          openNotification("error", "Failed..", error.message);
+          openNotification("error", "Failed..", error.message.replace(/<br\/>/g, '\n'));
           console.log(error);
         }
       }
@@ -603,7 +645,7 @@ export default function Createcandidatelist({ open = "", close = () => { }, file
 
   const getCandidatesById = async () => {
     try {
-      const response = await getRecruitmentResumeById(resumeId);
+      const response = await getRecruitmentResumeById({ id: resumeId });
       console.log(response);
 
       const personelDetails = [
@@ -626,10 +668,7 @@ export default function Createcandidatelist({ open = "", close = () => { }, file
     }
   };
 
-  useEffect(() => {
 
-    getCandidatesById()
-  }, [resumeId, PdFViewer]);
 
   const getEducationDetails = async () => {
     try {
@@ -664,10 +703,17 @@ export default function Createcandidatelist({ open = "", close = () => { }, file
     }
   }
 
+  // useEffect(() => {
+  //   getEducationDetails()
+  //   getEmployeExperiance()
+  // }, [resumeId])
   useEffect(() => {
-    getEducationDetails()
-    getEmployeExperiance()
-  }, [resumeId])
+    if (activeBtnValue === "Review") {
+      getEducationDetails();
+      getEmployeExperiance();
+      getCandidatesById();
+    }
+  }, [activeBtnValue]);
   return (
     <div>
       {show && (
@@ -814,7 +860,7 @@ export default function Createcandidatelist({ open = "", close = () => { }, file
               <>
                 <FlexCol justify="center" align="center" className="w-5/6 m-auto mt-10">
                   <Accordion
-                    title={t("Personal_Information")}
+                    title={t("Personal_Details")}
                     className="Text_area"
                     padding={true}
                     toggleBtn={false}
@@ -877,27 +923,45 @@ export default function Createcandidatelist({ open = "", close = () => { }, file
                       />
                       <FormInput
                         title={t("Phone_number")}
-                        type={"number"}
+                        type={"text"}
+                        pattern="[0-9]*"
+                        inputmode="numeric"
                         placeholder={t("Enter Phone number")}
+                        // change={(e) => {
+                        //   Formik2.setFieldValue("candidateContact", e);
+                        // }}
                         change={(e) => {
-                          Formik2.setFieldValue("candidateContact", e);
+                          if (
+                            /^\d+$/g.test(e) &&
+                            /^\d+(?!.*--).*$/g.test(e)
+                          ) {
+                            Formik2.setFieldValue("candidateContact", e);
+                          } else if (e === "") {
+                            Formik2.setFieldValue(
+                              "candidateContact",
+                              ""
+                            );
+                          }
                         }}
                         value={Formik2.values.candidateContact}
                         error={Formik2.values.candidateContact ? "" : Formik2.errors.candidateContact}
                         required={true}
+                        maxLength={10}
                       />
 
                     </div>
 
                     <div className='w-4/5'>
-                      <p>Photo (Optional)</p>
+                      <p className='py-1'>Photo (Optional)</p>
                       <ImageUpload
                         change={(e) => {
                           if (e) {
                             setFile(e)
                           }
-                          console.log(e)
-                        }} />
+                          console.log(e, "file is here")
+                        }}
+                        file={file}
+                      />
                     </div>
 
 
@@ -931,11 +995,28 @@ export default function Createcandidatelist({ open = "", close = () => { }, file
                       />
                       <FormInput
                         title={t("Postal_Code")}
+                        type={"text"}
+                        pattern="[0-9]*"
+                        inputmode="numeric"
                         placeholder={t("Enter Postal Code")}
+                        // change={(e) => {
+                        //   Formik2.setFieldValue("postalCode", e);
+                        // }}
                         change={(e) => {
-                          Formik2.setFieldValue("postalCode", e);
+                          if (
+                            /^\d+$/g.test(e) &&
+                            /^\d+(?!.*--).*$/g.test(e)
+                          ) {
+                            Formik2.setFieldValue("postalCode", e);
+                          } else if (e === "") {
+                            Formik2.setFieldValue(
+                              "postalCode",
+                              ""
+                            );
+                          }
                         }}
                         value={Formik2.values.postalCode}
+                        maxLength={15}
                       />
 
                     </div>
@@ -958,51 +1039,72 @@ export default function Createcandidatelist({ open = "", close = () => { }, file
                     initialExpanded={true}
                   >
                     {education.map((condition, index) => (
-                      <div className='flex items-end'>
+                      <div className='flex items-end' key={index}>
                         <div className="grid grid-cols-2 gap-4 w-4/5">
-                          {condition.field.map((each) =>
-                            each.type === "input" ?
+                          {condition.field.map((eachField, fieldIndex) =>
+                            eachField.type === "input" ? (
                               <FormInput
-                                key={each.id}
-                                title={each.title}
-                                placeholder={`Enter ${each.title}`}
+                                key={fieldIndex}
+                                title={eachField.title}
+                                placeholder={`Enter ${eachField.title}`}
                                 change={(e) => {
-                                  formik.setFieldValue(each.inputName, e);
+                                  formik.setFieldValue(eachField.inputName, e);
                                 }}
                                 required={true}
-                                value={formik.values[each.inputName]}
-                                error={formik.errors[each.inputName]}
-                              // error={formik.values[each.field[0].inputName] ? "" : formik.errors.institute}
-                              // required={true}
-
-                              /> : each.type === "number" ?
-                                <FormInput
-                                  key={each.id}
-                                  title={each.title}
-                                  type={"number"}
-                                  placeholder={`Enter ${each.title}`}
-                                  change={(e) => {
-                                    formik.setFieldValue(each.inputName, e);
-                                  }}
-                                  required={true}
-                                  value={formik.values[each.inputName]}
-                                  error={formik.errors[each.inputName]}
-                                /> : <Dropdown
-                                  title={each.title}
-                                  placeholder={t("Choose" + each.title)}
-                                  options={Degree}
-                                  required={true}
-                                  change={(e) => {
-                                    formik.setFieldValue(each.inputName, e);
-                                  }}
-                                  value={formik.values[each.inputName]}
-                                  error={formik.values[each.inputName] ? "" : formik.errors[each.inputName]}
-                                />)}
+                                value={formik.values[eachField.inputName] || eachField.value}
+                                error={formik.errors[eachField.inputName]}
+                              />
+                            ) : eachField.type === "number" ? (
+                              <FormInput
+                                key={fieldIndex}
+                                title={eachField.title}
+                                type={"text"}
+                                pattern="[0-9]*"
+                                inputmode="numeric"
+                                placeholder={`Enter ${eachField.title}`}
+                                change={(e) => {
+                                  if (
+                                    /^\d+$/g.test(e) &&
+                                    /^\d+(?!.*--).*$/g.test(e)
+                                  ) {
+                                    formik.setFieldValue(eachField.inputName, e);
+                                  } else if (e === "") {
+                                    Formik2.setFieldValue(
+                                      "eachField.inputName",
+                                      ""
+                                    );
+                                  }
+                                }}
+                                required={true}
+                                value={formik.values[eachField.inputName]}
+                                error={formik.errors[eachField.inputName]}
+                              />
+                            ) : (
+                              <Dropdown
+                                title={eachField.title}
+                                placeholder={t("Choose" + eachField.title)}
+                                options={Degree}
+                                required={true}
+                                change={(e) => {
+                                  formik.setFieldValue(eachField.inputName, e);
+                                }}
+                                value={formik.values[eachField.inputName]}
+                                error={
+                                  formik.values[eachField.inputName]
+                                    ? ""
+                                    : formik.errors[eachField.inputName]
+                                }
+                              />
+                            )
+                          )}
                         </div>
                         <div className='ml-auto '>
                           <Tooltip placement="top" title={"Delete"}>
                             {index !== 0 && (
-                              <RiDeleteBin6Line className='size-4 text-slate-500 hover:text-red-500' onClick={() => handleDeleteCondition(index)} />
+                              <RiDeleteBin6Line
+                                className='size-4 text-slate-500 hover:text-red-500'
+                                onClick={() => handleDeleteCondition(index)}
+                              />
                             )}
                           </Tooltip>
                         </div>
@@ -1068,6 +1170,7 @@ export default function Createcandidatelist({ open = "", close = () => { }, file
                               /> :
                               <DateSelect
                                 title={each.title}
+                                placeholder={`Select ${each.title}`}
                                 change={(e) => {
                                   formik3.setFieldValue(each.inputFeild, e);
                                 }}
@@ -1134,12 +1237,15 @@ export default function Createcandidatelist({ open = "", close = () => { }, file
                           value={Formik2.values.file}
   
                           /> */}
-                        <FileUpload change={(e) => {
-                          if (e) {
-
-                            setFilepdf(e)
-                          }
-                        }} />
+                        <FileUpload
+                          change={(e) => {
+                            if (e) {
+                              console.log(e, "file is here.")
+                              setFilepdf(e)
+                            }
+                          }}
+                          file={filePdf}
+                        />
                       </div>
                       <div>
                         <TextArea

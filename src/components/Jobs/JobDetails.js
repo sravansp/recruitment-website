@@ -8,7 +8,7 @@ import {
 } from "../Api1";
 // import BoardData from "../../data/board.json";
 import { DragDropContext, Droppable, Draggable } from "react-beautiful-dnd";
-import { Dropdown, Tooltip, Radio, Alert } from "antd";
+import { Dropdown, Tooltip, Radio, Alert, notification } from "antd";
 import Breadcrumbs from "../common/BreadCrumbs";
 import { motion } from "framer-motion";
 import { useMediaQuery } from "react-responsive";
@@ -70,6 +70,7 @@ const JobDetails = () => {
   const [jobTitle, setjobTitle] = useState("");
   const [Jobdetails, setJobdetails] = useState([]);
   const[jobstatus,setjobStatus] = useState("")
+  
   // Initial view type
   const breadcrumbItems = [
     { label: "Jobs", url: "/AllJobs" },
@@ -160,18 +161,22 @@ const JobDetails = () => {
       {/* FILTER SECTON AND DETAILS  */}
       <div className="flex flex-col items-baseline justify-between gap-4 lg:items-center lg:gap-0 lg:flex-row">
         <div className="flex flex-wrap items-center gap-7">
-          <div
-            className={`px-2.5 py-1 ${
-              Jobdetails.jobStatus === "Open"
-                ? "bg-emerald-500 bg-opacity-10 dark:bg-opacity-50"
-                : "bg-rose-500 bg-opacity-10 dark:bg-opacity-50"
-            } rounded-[18px] gap-[7px] vhcenter`}
-          >
-            <div className="w-2.5 h-2.5 relative bg-emerald-500 rounded-[5px] border border-white shrink-0" />
-            <p className="para dark:text-white !font-normal">
-              {Jobdetails.jobStatus}
-            </p>
-          </div>
+        <div
+  className={`px-2.5 py-1 ${
+    Jobdetails.jobStatus === "Open"
+      ? "bg-emerald-500 bg-opacity-10 dark:bg-opacity-50"
+      : "bg-red-500 bg-opacity-10 dark:bg-opacity-50"
+  } rounded-[18px] gap-[7px] vhcenter`}
+>
+<div className="w-2.5 h-2.5 relative rounded-[5px] border border-white shrink-0"
+    style={{
+      backgroundColor: Jobdetails.jobStatus === "Open" ? "#10B981" : "#EF4444",
+    }}
+  />
+  <p className="para dark:text-white !font-normal">
+    {Jobdetails.jobStatus}
+  </p>
+</div>
           <div className="gap-2 vhcenter">
             <PiUsersThreeFill size={20} className="text-[#DFDFDF]" />
             <p className="para !text-black dark:!text-white !font-normal">
@@ -255,6 +260,28 @@ const DragView = ({jobStatus}) => {
   const [Workflow, setWorkflow] = useState([]);
   // const selectedDataId = useSelector((state) => state.dataId.selectedDataId);
   const selectedDataId = localStorage.getItem("selectedDataId");
+  const [api, contextHolder] = notification.useNotification();
+  const openNotification = (type, message, description, callback) => {
+    api[type]({
+      message: message,
+      description: description,
+      placement: "top",
+      onClose: callback,
+
+      // stack: 2,
+      style: {
+        background: `${type === "success"
+          ? `linear-gradient(180deg, rgba(204, 255, 233, 0.8) 0%, rgba(235, 252, 248, 0.8) 51.08%, rgba(246, 251, 253, 0.8) 100%)`
+          : "linear-gradient(180deg, rgba(255, 236, 236, 0.80) 0%, rgba(253, 246, 248, 0.80) 51.13%, rgba(251, 251, 254, 0.80) 100%)"
+          }`,
+        boxShadow: `${type === "success"
+          ? "0px 4.868px 11.358px rgba(62, 255, 93, 0.2)"
+          : "0px 22px 60px rgba(134, 92, 144, 0.20)"
+          }`,
+      },
+      // duration: null,
+    });
+  };
   const { jobId } = useParams();
   useEffect(() => {
     localStorage.setItem("jobid", jobId);
@@ -467,6 +494,15 @@ const DragView = ({jobStatus}) => {
       stageId: stageId
     })
     console.log(response)
+    if (response.status === 200) {
+      // handleClose();
+      // setFunctionRender(!functionRender);
+      // getRecords()
+      // window.location.reload();
+      openNotification("success", "Success", response.message);
+    } else if (response.result === 404) {
+      openNotification("error", "Failed", response.message);
+    }
     }catch(error){
       console.log(error)
     }
@@ -621,6 +657,7 @@ const DragView = ({jobStatus}) => {
           </div>
         )}
       </div>
+      {contextHolder}
     </div>
   );
 };
@@ -716,7 +753,7 @@ const CardItem = ({ data, index, color, jobId,jobStatus }) => {
             snapshot.isDragging &&
             "shadow-dragShadow dark:shadow-dragShadowDark"
           } p-3 mb-1.5 bg-white border rounded-md ${
-            parseInt(data.currentStatus) !== 0
+            parseInt(data.currentStatus) !== 0 || jobStatus === 'Closed'
               ? " cursor-default"
               : "cursor-grab"
           }  border-borderlight dark:border-borderdark dark:bg-[#0c101c] dark:text-white`}

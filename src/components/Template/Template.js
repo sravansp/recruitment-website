@@ -40,7 +40,7 @@ const Template = ({
   const [companyId, setCompanyId] = useState(localStorage.getItem("companyId"));
 
   const [emailSubject, setEmailSubject] = useState("")
-  const [navigationPath, setNavigationPath] = useState("Job");
+  const [navigationPath, setNavigationPath] = useState("Job_Template");
   useEffect(() => {
     setCompanyId(localStorage.getItem("companyId"));
   }, []);
@@ -57,43 +57,43 @@ const Template = ({
     {
       id: 1,
       title: t("Job_Templates"),
-      value: "Job",
+      value: "Job_Template",
       tabheading: "Job Template List"
     },
     {
       id: 2,
       title: t("Job_Description"),
-      value: "Job_Description",
+      value: "Job_Description_Template",
       tabheading: "Job Description Template List"
     },
     {
       id: 3,
       title: t("Workflow"),
-      value: "Workflow",
+      value: "Workflow_Template",
       tabheading: "Work Flow Template List"
     },
     {
       id: 4,
       title: t("Email"),
-      value: "Email",
+      value: "Email_Template",
       tabheading: "Email Templates"
     },
     {
       id: 5,
       title: t("Evaluation"),
-      value: "Evaluation",
+      value: "Evaluation_Template",
       tabheading: "Evaluation Templates"
     },
     {
       id: 6,
       title: t("Questionnaire"),
-      value: "Questionnaire",
+      value: "Questionnaire_Template",
       tabheading: "Questionnaire Templates"
     },
     {
       id: 7,
       title: t("Letter"),
-      value: "Letter",
+      value: "Letter_Template",
       tabheading: "Letter Templates"
     }
 
@@ -101,30 +101,30 @@ const Template = ({
   //update
   const updateApi = [
     {
-      Job: { id: 1, api: API.UPDATE_Job_Templates },
-      Job_Description: { id: 2, api: API.UPDATE_Job_Description },
-      Workflow: { id: 3, api: API.UPDATE_Workflow },
-      Email: { id: 4, api: API.UPDATE_Email },
-      Evaluation: { id: 5, api: API.UPDATE_EvaluationS },
-      Questionnaire: { id: 5, api: API.UPDATE_Questionaire },
-      Letter: { id: 5, api: API.UPDATE_Letter },
+      Job_Template: { id: 1, api: API.UPDATE_Job_Templates },
+      Job_Description_Template: { id: 2, api: API.UPDATE_Job_Description },
+      Workflow_Template: { id: 3, api: API.UPDATE_Workflow },
+      Email_Template: { id: 4, api: API.UPDATE_Email },
+      Evaluation_Template: { id: 5, api: API.UPDATE_EvaluationS },
+      Questionnaire_Template: { id: 5, api: API.UPDATE_Questionaire },
+      Letter_Template: { id: 5, api: API.UPDATE_Letter },
     },
   ];
   const deleteApi = [
     {
-      Job: { id: 1, api: API.DELETE_Job_Templates },
-      Job_Description: { id: 2, api: API.DELETE_Job_Description },
-      Workflow: { id: 3, api: API.DELETE_Workflow },
-      Email: { id: 4, api: API.DELETE_Email },
-      Evaluation: { id: 5, api: API.DELETE_Evaluation },
-      Questionnaire: { id: 5, api: API.DELETE_Questionaire },
-      Letter: { id: 5, api: API.DELETE_Letter },
+      Job_Template: { id: 1, api: API.DELETE_Job_Templates },
+      Job_Description_Template: { id: 2, api: API.DELETE_Job_Description },
+      Workflow_Template: { id: 3, api: API.DELETE_Workflow },
+      Email_Template: { id: 4, api: API.DELETE_Email },
+      Evaluation_Template: { id: 5, api: API.DELETE_Evaluation },
+      Questionnaire_Template: { id: 5, api: API.DELETE_Questionaire },
+      Letter_Template: { id: 5, api: API.DELETE_Letter },
 
     },
   ];
   const Header = [
     {
-      Job: [
+      Job_Template: [
         {
           id: 1,
           title: t("Template Name"),
@@ -135,6 +135,7 @@ const Template = ({
           id: 2,
           title: t("Description"),
           value: "jobDescription",
+          width:"600px",
         },
         {
           id: 3,
@@ -144,12 +145,18 @@ const Template = ({
         },
         {
           id: 4,
-          title: t("Action"),
-          value: "Action",
+          title: t("Actions"),
+          value: "action",
           action: true,
         },
+        {
+          id: 5,
+          title: t("View"),
+          value: "viewData",
+          status: "viewData",
+        },
       ],
-      Job_Description: [
+      Job_Description_Template: [
         {
           id: 1,
           title: t("Template Name"),
@@ -160,6 +167,7 @@ const Template = ({
           id: 2,
           title: t("Description"),
           value: "descriptionTemplate",
+          width:"600px",
         },
         {
           id: 3,
@@ -169,12 +177,18 @@ const Template = ({
         },
         {
           id: 4,
-          title: t("Action"),
+          title: t("Actions"),
           value: "action",
           action: true,
         },
+        {
+          id: 5,
+          title: t("View"),
+          value: "viewData",
+          status: "viewData",
+        },
       ],
-      Workflow: [
+      Workflow_Template: [
         {
           id: 1,
           title: t("Template Name"),
@@ -185,8 +199,9 @@ const Template = ({
           id: 2,
           title: t("Description"),
           value: "description",
+          width:"600px",
         },
-         {
+        {
           id: 3,
           title: t("Status"),
           value: "",
@@ -194,12 +209,18 @@ const Template = ({
         },
         {
           id: 4,
-          title: t("Action"),
+          title: t("Actions"),
           value: "action",
           action: true,
         },
+        {
+          id: 5,
+          title: t("View"),
+          value: "viewData",
+          status: "viewData",
+        },
       ],
-      Email: [
+      Email_Template: [
         {
           id: 1,
           title: t("Template Name"),
@@ -208,7 +229,7 @@ const Template = ({
         },
         {
           id: 2,
-          title: t("Description"),
+          title: t("Subject"),
           value: "value",
         },
         {
@@ -219,12 +240,18 @@ const Template = ({
         },
         {
           id: 4,
-          title: t("Action"),
-          value: "Action",
+          title: t("Actions"),
+          value: "action",
           action: true,
         },
+        {
+          id: 5,
+          title: t("View"),
+          value: "viewData",
+          status: "viewData",
+        },
       ],
-      Evaluation: [
+      Evaluation_Template: [
         {
           id: 1,
           title: t("Template Name"),
@@ -235,6 +262,7 @@ const Template = ({
           id: 2,
           title: t("Description"),
           value: "description",
+          width:"600px",
         },
         {
           id: 3,
@@ -244,12 +272,18 @@ const Template = ({
         },
         {
           id: 4,
-          title: t("Action"),
+          title: t("Actions"),
           value: "Action",
           action: true,
         },
+        {
+          id: 5,
+          title: t("View"),
+          value: "viewData",
+          status: "viewData",
+        },
       ],
-      Questionnaire: [
+      Questionnaire_Template: [
         {
           id: 1,
           title: t("Template Name"),
@@ -260,6 +294,7 @@ const Template = ({
           id: 2,
           title: t("Description"),
           value: "description",
+          width:"600px",
         },
         {
           id: 3,
@@ -269,12 +304,18 @@ const Template = ({
         },
         {
           id: 4,
-          title: t("Action"),
+          title: t("Actions"),
           value: "actions",
           action: true,
         },
+        {
+          id: 5,
+          title: t("View"),
+          value: "viewData",
+          status: "viewData",
+        },
       ],
-      Letter: [
+      Letter_Template: [
         {
           id: 1,
           title: t("Template Name"),
@@ -285,6 +326,7 @@ const Template = ({
           id: 2,
           title: "Subject",
           value: "value",
+          width:"600px",
         },
         {
           id: 3,
@@ -294,9 +336,15 @@ const Template = ({
         },
         {
           id: 4,
-          title: t("Action"),
+          title: t("Actions"),
           value: "actions",
           action: true,
+        },
+        {
+          id: 5,
+          title: t("View"),
+          value: "viewData",
+          status: "viewData",
         },
       ]
     }
@@ -304,30 +352,33 @@ const Template = ({
 
   const DraweHeader = [
     {
-      Job: [
+      Job_Template: [
         {
           id: 1,
           title: "Template Name",
           value: "jobTitle",
         },
+        
         {
           id: 2,
-          title: "Location",
-          value: "location",
+          title: "Experience",
+          value: "experience",
         },
+
+        
+        
         {
           id: 3,
           title: "JobType",
           value: "jobType",
-
         },
         {
-          id: 3,
-          title: "Status",
-          value: "isActive",
+          id: 4,
+          title: "Requirement Type",
+          value: "requirementType",
         },
       ],
-      Job_Description: [
+      Job_Description_Template: [
         {
           id: 1,
           title: "Template Name",
@@ -344,7 +395,7 @@ const Template = ({
           value: "isActive",
         },
       ],
-      Workflow: [
+      Workflow_Template: [
         {
           id: 1,
           title: "Template Name",
@@ -362,12 +413,26 @@ const Template = ({
         },
         // {
         //   id: 4,
+        //   title: "Stages",
+        //   value: "recruitmentWorkFlowStages",
+        //   render: (stages) => (
+        //     <div className='flex flex-col gap-2'>
+        //       {stages.map((stage, index) => (
+        //         <div key={index}>
+        //           {index + 1}. {stage.stageName}
+        //         </div>
+        //       ))}
+        //     </div>
+        //   ), // Display stages as a concatenated string
+        // },
+        // {
+        //   id: 4,
         //   title: "Status",
         //   value: "Status",
         //   action: true,
         // },
       ],
-      Email: [
+      Email_Template: [
         {
           id: 1,
           title: "Template Name",
@@ -390,7 +455,7 @@ const Template = ({
         //   action: true,
         // },
       ],
-      Evaluation: [
+      Evaluation_Template: [
         {
           id: 1,
           title: "Template Name",
@@ -407,7 +472,7 @@ const Template = ({
           value: "isActive",
         },
       ],
-      Questionnaire: [
+      Questionnaire_Template: [
         {
           id: 1,
           title: t("Template Name"),
@@ -430,7 +495,7 @@ const Template = ({
         //   action: true,
         // },
       ],
-      Letter: [
+      Letter_Template: [
         {
           id: 1,
           title: t("Template Name"),
@@ -481,14 +546,41 @@ const Template = ({
   //  console.log("header",Header)
 
   const [TemplateList, setTemplateList] = useState([])
-  console.log(TemplateList,'this is template');
+  console.log(TemplateList, 'this is template');
+  const stripHtmlTags = (html) => {
+    const temp = document.createElement("div");
+    temp.innerHTML = html;
+    return temp.textContent || temp.innerText || "";
+  }
 
   const gettemaplate = async () => {
     try {
 
-      const response = await getAllRecruitmentJobTemplates({companyId:companyId});
+      const response = await getAllRecruitmentJobTemplates({ companyId: companyId });
 
-      setTemplateList(response.result);
+      setTemplateList(response.result.map((job) => ({
+          jobTemplateId:job.jobTemplateId,
+          jobTitle:job.jobTitle,
+          jobDescription: stripHtmlTags(job.jobDescription),
+          isActive: job.isActive,
+          actionToggle:true,
+          action:true,
+          
+          experience:job.experience,
+          
+          jobType:job.jobType,
+          requirementType:job.requirementType
+
+
+
+
+        })))
+      // setTemplateList(response.result)
+        console.log(response.result.map((job) => ({
+           
+          jobDescription: stripHtmlTags(job.jobDescription),
+         
+        })))
       // const newData = {};
       // response.result.forEach((job) => {
       //   newData[job.jobId] = job; // Assuming jobId is the unique identifier
@@ -496,7 +588,7 @@ const Template = ({
 
       // setTableData(response.data);
       // console.log(response.data); // Access response data
-      //  console.log(response);
+      // console.log(response, "job template data");
     } catch (error) {
       console.error(error); // Handle errors
     }
@@ -510,9 +602,25 @@ const Template = ({
   const getWorkflows = async () => {
     try {
 
-      const response = await getAllRecruitmentWorkFlows({companyId:companyId});
+      const response = await getAllRecruitmentWorkFlows({ companyId: companyId });
       // console.log(response," work flow list is here")
-      setWorkflow(response.result);
+      // setWorkflow(response.result);
+         setWorkflow(response.result.map((workflow)=>({
+          workFlowId:workflow.workFlowId,   
+          workFlowName:workflow.workFlowName,
+          description:workflow.description,
+          // recruitmentWorkFlowStages:workflow.recruitmentWorkFlowStages.map((stages)=>({
+          //   stageName:stages.stageName,
+          //   // stageRules:stages.stageRules
+
+          // }))
+          recruitmentWorkFlowStages: workflow.recruitmentWorkFlowStages.map((stage) => stage.stageName)
+   
+
+         })))
+       
+
+
       // const newData = {};
       // response.result.forEach((job) => {
       //   newData[job.jobId] = job; // Assuming jobId is the unique identifier
@@ -543,19 +651,28 @@ const Template = ({
   const getEmailLsit = async () => {
     try {
 
-      const response = await getAllRecruitmentEmailTemplates({companyId:companyId});
+      const response = await getAllRecruitmentEmailTemplates({ companyId: companyId });
 
-      // console.log(response," Email list is here")
+      // console.log(response,"Email list is here")
       setEmail(response.result)
       setEmailSubject(response.result.map((email) => ({
         emailTemplateId: email.emailTemplateId,
         title: email.emailTemplateName,
         value: email.emailTemplate.subject, // Use the subject as the description value
-        isActive:email.isActive,
+        isActive: email.isActive,
         actionToggle: true,
         action: true,
       }))
       );
+
+      console.log(response.result.map((email) => ({
+        emailTemplateId: email.emailTemplateId,
+        title: email.emailTemplateName,
+        value: email.emailTemplate.subject, // Use the subject as the description value
+        isActive: email.isActive,
+        actionToggle: true,
+        action: true,
+      })))
       // const newData = {};
       // response.result.forEach((job) => {
       //   newData[job.jobId] = job; // Assuming jobId is the unique identifier
@@ -572,7 +689,7 @@ const Template = ({
   };
   const getallquestionaire = async () => {
     try {
-      const data = await getAllRecruitmentQuestionnaireTemplates({companyId:companyId})
+      const data = await getAllRecruitmentQuestionnaireTemplates({ companyId: companyId })
       setQuestionaire(data.result)
       // console.log(data)
     } catch (error) {
@@ -582,9 +699,9 @@ const Template = ({
   }
   const getallevaluation = async () => {
     try {
-      const data = await getAllRecruitmentEvaluationTemplates({companyId:companyId})
+      const data = await getAllRecruitmentEvaluationTemplates({ companyId: companyId })
       setEvaluation(data.result)
-      // console.log(data)
+      // console.log(data,"Evaluation list is here")
     } catch (error) {
       console.error(error); // Handle errors
     }
@@ -592,12 +709,12 @@ const Template = ({
   }
   const getallLetter = async () => {
     try {
-      const data = await getAllRecruitmentLetterTemplates({companyId:companyId})
+      const data = await getAllRecruitmentLetterTemplates({ companyId: companyId })
       setLetter(data.result.map((Letter) => ({
         letterTemplateId: Letter.letterTemplateId,
         title: Letter.letterTemplateName,
         value: Letter.letterTemplate.subject, // Use the subject as the description value
-        isActive:Letter.isActive,
+        isActive: Letter.isActive,
         actionToggle: true,
         action: true,
       })))
@@ -609,10 +726,18 @@ const Template = ({
   }
   const getAllJobdescription = async () => {
     try {
-      const data = await getAllRecruitmentJobDescriptionTemplates({companyId:companyId})
+      const data = await getAllRecruitmentJobDescriptionTemplates({ companyId: companyId })
       //  console.log(data)
       // 
-      setJobDescriptionList(data.result)
+      setJobDescriptionList(data.result.map((template)=>({
+        descriptionTemplateName:template.descriptionTemplateName,
+        descriptionTemplate:stripHtmlTags(template.descriptionTemplate),
+        descriptionTemplateId:template.descriptionTemplateId,
+        isActive:template.isActive,
+        actionToggle:true,
+        action:true
+
+      })))
     } catch (error) {
       // console.log(error)
     }
@@ -633,39 +758,39 @@ const Template = ({
     let newData = [];
 
     switch (navigationPath) {
-      case "Job":
+      case "Job_Template":
         // getLocationList();
         gettemaplate();
 
         break;
-      case "Job_Description":
+      case "Job_Description_Template":
         // getDepartmentList();
         getAllJobdescription()
         // console.log(newData)
         break;
       // Add more cases as needed
-      case "Workflow":
+      case "Workflow_Template":
         getWorkflows();
 
         // console.log(newData)
         break;
-      case "Email":
+      case "Email_Template":
         getEmailLsit();
 
         // console.log(newData)
         break;
-      case "Evaluation":
+      case "Evaluation_Template":
         getallevaluation();
 
         // console.log(newData)
         break;
-      case "Questionnaire":
+      case "Questionnaire_Template":
         // getDepartmentList();
         getallquestionaire();
 
         // console.log(newData)
         break;
-      case "Letter":
+      case "Letter_Template":
         getallLetter()
 
         // console.log(newData)
@@ -684,25 +809,25 @@ const Template = ({
   const actionData = [
     {
 
-      Job: { id: 1, data: TemplateList },
-      Job_Description: { id: 2, data: JobDescriptionList },
-      Workflow: { id: 3, data: WorkflowList },
-      Email: { id: 4, data: emailSubject },
-      Evaluation: { id: 5, data: EvaluationLIst },
-      Questionnaire: { id: 6, data: QuestionaireLIst },
-      Letter: { id: 7, data: LetterLIst }
+      Job_Template: { id: 1, data: TemplateList },
+      Job_Description_Template: { id: 2, data: JobDescriptionList },
+      Workflow_Template: { id: 3, data: WorkflowList },
+      Email_Template: { id: 4, data: emailSubject },
+      Evaluation_Template: { id: 5, data: EvaluationLIst },
+      Questionnaire_Template: { id: 6, data: QuestionaireLIst },
+      Letter_Template: { id: 7, data: LetterLIst }
 
     },
   ];
   const actionId = [
     {
-      Job: { id: "jobTemplateId" },
-      Job_Description: { id: "descriptionTemplateId" },
-      Workflow: { id: "workFlowId" },
-      Email: { id: "emailTemplateId" },
-      Evaluation: { id: "evaluationTemplateId" },
-      Questionnaire: { id: "questionnaireTemplateId" },
-      Letter: { id: "letterTemplateId" }
+      Job_Template: { id: "jobTemplateId" },
+      Job_Description_Template: { id: "descriptionTemplateId" },
+      Workflow_Template: { id: "workFlowId" },
+      Email_Template: { id: "emailTemplateId" },
+      Evaluation_Template: { id: "evaluationTemplateId" },
+      Questionnaire_Template: { id: "questionnaireTemplateId" },
+      Letter_Template: { id: "letterTemplateId" }
     }
 
 
@@ -760,7 +885,7 @@ const Template = ({
             }
             // updateFun=""
             // updateBtn={true} // Set to true if it's an update button
-            buttonName={`Create ${navigationPath.replace(/_/g, ' ')} Template`}// Set the button name
+            buttonName={`Create ${navigationPath.replace(/_/g, ' ')}`}// Set the button name
             className="your-custom-styles" // Add any additional class names for styling
             BtnType="Add" // Specify the button type (Add or Update)
           />
@@ -832,22 +957,22 @@ const Template = ({
               default:
                 gettemaplate();
                 break;
-              case "Job_Description":
+              case "Job_Description_Template":
                 getAllJobdescription();
                 break;
-              case "Workflow":
+              case "Workflow_Template":
                 getWorkflows();
                 break;
-              case "Email":
+              case "Email_Template":
                 getEmailLsit();
                 break;
-              case "Evaluation":
+              case "Evaluation_Template":
                 getallevaluation();
                 break;
-              case "Questionnaire":
+              case "Questionnaire_Template":
                 getallquestionaire();
                 break;
-              case "Letter":
+              case "Letter_Template":
                 getallLetter();
                 break;
             }
@@ -874,7 +999,7 @@ const Template = ({
         />
       )}
 
-      {navigationPath === "Job_Description" && show && (
+      {navigationPath === "Job_Description_Template" && show && (
         <TemplateDec
           open={show}
           close={(e) => {
@@ -890,7 +1015,7 @@ const Template = ({
         // jobDescription={true}
         />
       )}
-      {navigationPath === "Workflow" && show && (
+      {navigationPath === "Workflow_Template" && show && (
         <Workflowstage
           open={show}
           close={(e) => {
@@ -904,7 +1029,7 @@ const Template = ({
           }}
         />
       )}
-      {navigationPath === "Email" && show && (
+      {navigationPath === "Email_Template" && show && (
         <Emailtemplate
           open={show}
           close={(e) => {
@@ -918,7 +1043,7 @@ const Template = ({
           }}
         />
       )}
-      {navigationPath === "Evaluation" && show && (
+      {navigationPath === "Evaluation_Template" && show && (
         <TemEvaluation
           open={show}
           close={(e) => {
@@ -933,7 +1058,7 @@ const Template = ({
           }}
         />
       )}
-      {navigationPath === "Questionnaire" && show && (
+      {navigationPath === "Questionnaire_Template" && show && (
         <QuestionAire
           open={show}
           close={(e) => {
@@ -949,7 +1074,7 @@ const Template = ({
           }}
         />
       )}
-      {navigationPath === "Letter" && show && (
+      {navigationPath === "Letter_Template" && show && (
         <AddLetter
           open={show}
           close={(e) => {

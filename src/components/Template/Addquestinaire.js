@@ -13,7 +13,7 @@ import Dropdown from '../common/Dropdown'
 import { MdDelete, MdOutlineFileCopy } from 'react-icons/md'
 import { Form } from '../data'
 import { CgAdd } from 'react-icons/cg'
-import { getRecruitmentQuestionnaireTemplateById, updateQuestionnaireTemplateWithDetails, saveRecruitmentQuestionnaireTemplate, saveRecruitmentQuestionnaireTemplateDetailBatch } from '../Api1'
+import {getAllRecruitmentQuestionnaireTemplates, getRecruitmentQuestionnaireTemplateById, updateQuestionnaireTemplateWithDetails, saveRecruitmentQuestionnaireTemplate, saveRecruitmentQuestionnaireTemplateDetailBatch } from '../Api1'
 import { Formik, useFormik } from 'formik'
 import AddMore from '../common/AddMore'
 import { IoIosCopy } from 'react-icons/io'
@@ -48,7 +48,8 @@ const QuestionAire = ({
         createdBy: 499
       },
     ]);
-
+  const [templateName,setTemplateName] = useState("")
+  const [Length,setLength] = useState("")
 
     //condition data
 
@@ -73,8 +74,8 @@ const QuestionAire = ({
           ...prevEvaluation,
           {
             id: prevEvaluation.length + 1,
-            companyId: companyId, // Replace companyId with your actual value
-            questionnaireTemplateId: "", // Replace insertedId with your actual value
+            companyId: companyId, 
+            questionnaireTemplateId: "", 
             question: "",
             answerMetaData: '[]',
             description: "hihihihi",
@@ -209,16 +210,27 @@ const QuestionAire = ({
             createdBy: null,
           });
           const alphanumericRegex = /^[a-zA-Z0-9 ]+$/; // Regex to allow only letters, numbers, and spaces
-
+          let hasError = false;
           if (!values.questionnaireTemplateName || !alphanumericRegex.test(values.questionnaireTemplateName)) {
-            formik.setFieldError('questionnaireTemplateName', !values.questionnaireTemplateName ? 'Template name is required' : 'Please enter only letters and numbers');
-          }
+            formik.setFieldError('questionnaireTemplateName', 
+                !values.questionnaireTemplateName ? 'Template name is required' : 
+                'Please enter only letters and numbers');
+            hasError = true;
+        } else if (values.questionnaireTemplateName.length < 3) {
+            formik.setFieldError('questionnaireTemplateName', 'Template name should have at least 3 characters');
+            hasError = true;
+        } else if (Length>0){
+          formik.setFieldError('questionnaireTemplateName', 'Template name already exist');
+          hasError = true;
+        }
 
           if (!values.description) {
             formik.setFieldError('description', 'Description is required');
+             hasError = true;
           }
+         
 
-          let hasError = false;
+          
           evaluation.forEach((condition) => {
             if (!condition.question) {
               setQuestionError('Question is Required.');
@@ -227,7 +239,7 @@ const QuestionAire = ({
             }
 
             if (!condition.answerMetaData || !condition.answerMetaData[0]?.key) {
-              setAnswerError('Please choose an answer type.');
+              setAnswerError('Question Type is required');
               hasError = true;
             }
             if (
@@ -340,7 +352,7 @@ const QuestionAire = ({
           openNotification(
             "error",
             "Error...",
-            "Qestionnare Template name already exist."
+            "Template Name Already Exist."
           );
         }
         setSubmitting(false);
@@ -394,6 +406,26 @@ const QuestionAire = ({
       getevaluationtem()
 
     }, [updateId])
+    const getQuestionareByTemplatename = async ()=>{
+      try{
+       const response = await getAllRecruitmentQuestionnaireTemplates({
+        companyId:companyId,
+        questionnaireTemplateName:templateName,
+       })
+
+       setLength(response.result.length)
+       if(response.result.length>0){
+         formik.setFieldError("questionnaireTemplateName",'Template name already exist')
+
+       }
+      }catch(error){
+        console.log(error)
+      }
+    }
+    useEffect(()=>{
+      getQuestionareByTemplatename()
+    },[templateName])
+
     return (
       <div>
 
@@ -426,10 +458,10 @@ const QuestionAire = ({
           header={[
             !updateId
               ? t("Create Questionnaire  Template")
-              : t("update Questionnaire  Template"),
+              : t("Update Questionnaire  Template"),
             !updateId
               ? t("Create Questionnaire  Template")
-              : t("update Questionnaire  Template"),
+              : t("Update Questionnaire  Template"),
           ]}
 
           //  headerRight={
@@ -466,8 +498,8 @@ const QuestionAire = ({
 
         > <div className="relative max-w-[1070px]  w-full mx-auto">
             <Accordion
-              title={"New Questionnaire Templates"}
-              description={"New Questionnaire  Templates"}
+              title={"Questionnaire Templates"}
+              description={"Questionnaire  Templates"}
               className="Text_area"
               padding={true}
 
@@ -483,6 +515,7 @@ const QuestionAire = ({
                   value={formik.values.questionnaireTemplateName}
                   change={(e) => {
                     formik.setFieldValue('questionnaireTemplateName', e)
+                    setTemplateName(e)
                   }}
                   error={formik.errors.questionnaireTemplateName}
                   required={true}
@@ -522,8 +555,8 @@ const QuestionAire = ({
 
                     />
 
-                    <div className="flex items-center gap-5">
-                      <div className="flex-shrink-0"> {/* Add this container for the dropdown and icons */}
+                    <div className="flex items-center gap-5 mt-4">
+                      <div className="flex-shrink-0 "> 
                         <Dropdown
                           options={Form}
                           dropdownWidth='200px'
@@ -547,7 +580,7 @@ const QuestionAire = ({
                           icondropDown={true}
                           error={condition.answerMetaData[0]?.key ? '' : answerError || ''}
                           required={true}
-                          placeholder={"Choose Options"}
+                          placeholder={"Choose Question Type"}
                         />
                       </div>
                       {/* Additional dynamic input fields based on the selected value in the dropdown */}
@@ -560,14 +593,17 @@ const QuestionAire = ({
                         </Tooltip>
                       </div>
 
-                      <div style={{ display: 'flex', alignItems: 'center', gap: '15px' }}>
-                        {/* <Tooltip placement="top" title={"Copy"}>
-                        <IoIosCopy className="text-gray-500" style={{ width: '18px', height: '18px', cursor: 'pointer' }} />
-                      </Tooltip> */}
-                        <Tooltip placement="top" color={"red"} title={"Delete"}>
-                          <RiDeleteBinLine className="text-gray-500" style={{ width: '18px', height: '18px', cursor: 'pointer' }} onClick={() => handleDeleteCondition(index)} />
-                        </Tooltip>
-                      </div>
+                      {index !== 0 && (
+          <div style={{ display: 'flex', alignItems: 'center', gap: '15px' }}>
+            <Tooltip placement="top" color='red' title="Delete">
+              <RiDeleteBinLine 
+                className="text-gray-500 hover:text-red-500" 
+                style={{ width: '18px', height: '18px', cursor: 'pointer' }} 
+                onClick={() => handleDeleteCondition(index)} 
+              />
+            </Tooltip>
+          </div>
+        )}
 
                     </div>
                   </div>
@@ -578,7 +614,7 @@ const QuestionAire = ({
                           <div key={fieldIndex} className="flex items-center">
                             {['Drop-down', 'Multiple Choice', 'Checkboxes'].includes(field.key) && (
                               <FormInput
-                                title={`Options ${fieldIndex + 1}`}
+                                title={`Option ${fieldIndex + 1}`}
                                 placeholder={'Enter option'}
                                 value={field.value}
                                 change={(e) => setEvaluation((prevEvaluation) => prevEvaluation.map((prevCondition, i) => i === index
@@ -599,10 +635,10 @@ const QuestionAire = ({
 
                             {['Drop-down', 'Multiple Choice', 'Checkboxes'].includes(field.key) && (
                               <div className="ml-2">
-                                <Tooltip placement="top" title={"Delete"}>
-                                  <MdDelete
+                                <Tooltip placement="top" color='red' title={"Delete"}>
+                                  <RiDeleteBinLine
                                     onClick={() => handleDeleteField(index, fieldIndex)}
-                                    className="cursor-pointer text-red-500"
+                                    className="cursor-pointer text-slate-500 dark:text-slate-300 hover:text-red-500"
                                   />
                                 </Tooltip>
                               </div>
@@ -614,10 +650,10 @@ const QuestionAire = ({
                         {['Drop-down', 'Multiple Choice', 'Checkboxes'].includes(
                           condition.answerMetaData[0]?.key
                         ) && (
-                            <Tooltip placement="top" title={"Add new"}>
+                            <Tooltip placement="top" title={"Add new option"}>
                               <CgAdd
                                 onClick={() => handleAddField(index, condition.answerMetaData[0]?.key)}
-                                style={{ width: '18px', height: '18px', cursor: 'pointer' }}
+                                className="w-5 h-5 cursor-pointer hover:text-primary transform duration-300"
                               />
                             </Tooltip>
                           )}

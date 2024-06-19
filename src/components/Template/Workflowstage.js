@@ -24,7 +24,8 @@ import {
   updateWorkFlowWithStages,
   getAllRecruitmentEmailTemplates,
   getAllRecruitmentEvaluationTemplates,
-  getAllRecruitmentQuestionnaireTemplates
+  getAllRecruitmentQuestionnaireTemplates,
+  getAllRecruitmentWorkFlows
 } from "../Api1";
 import { PiCopySimple, PiPencilSimpleLineThin } from "react-icons/pi";
 import { Modal, Button, notification, Tooltip, Menu } from "antd";
@@ -39,6 +40,7 @@ import Dropdown from "../common/Dropdown";
 import arrow from "../../assets/images/arrow3d 1.png";
 import Emailtemplate from "./AddEmailtemplate";
 import { title } from "process";
+import MenuItems from "../DropDown";
 
 const Workflowstage = ({
   open = "",
@@ -100,7 +102,12 @@ const Workflowstage = ({
   const[evaluation,setEvaluation] = useState([])
   const[questionareTemp,setQuestionareTemp] = useState([])
   const [emailTemp,setEmailTemp] = useState([])
-  
+  const [showDiv, setShowDiv] = useState(false);
+  const primaryColor = localStorage.getItem('mainColor')
+  const [response,setResponse] = useState("")
+  const [templateName,setTemplateName] =useState("")
+  const[Length,setLength] =useState("")
+
   
  
 
@@ -164,7 +171,8 @@ const Workflowstage = ({
     
     setmenuitem(true);
     setMenuVisible(false)
-  };
+    setShowDiv(true);
+  };  
   console.log(optionData, "0000");
  
   const getEvaluationtem = async () => {
@@ -265,8 +273,10 @@ const Workflowstage = ({
     
     if (index !== -1) {
         // Set the selected stage name and edit stage index
-        setSelectedStageName(stages[index].stageName);
+        setStageName(stages[index].stageName);
+
         setEditStageIndex(index);
+       
 
         // Parse the stage rules string into a JavaScript object
         const stageRules = stages[index].stageRules;
@@ -318,7 +328,7 @@ const Workflowstage = ({
         if (stageRules.tag) {
             optionData.push({
                 id: "add_tag",
-                name: "add_tag",
+                name: "Add Tag",
                 option1: [
                     // Questionnaire options here...
                     {id:1, titletag:"Add New Tag"}
@@ -397,20 +407,21 @@ const Workflowstage = ({
     
     
     if (!stageName) {
-        setStageError("Stage Name is required.");
-        return;
+      setStageError('Stage Name is required.');
+      return;
+    } else if (stageName.length < 3) {
+      setStageError('Stage Name must be at least 3 characters long.');
+      return;
+    } else if (!stageName.trim()) {
+      setStageError('Stage Name must not be empty or contain only whitespace.');
+      return;
     } else {
-        setStageError("");
-    }
-
-    if (!stageName.trim()) {
-        // If stageName is empty or contains only whitespace, return without adding a stage
-        return;
+      setStageError('');
     }
 
     // Create an object to hold the stage rules based on user inputs
     const stageRules = {};
-
+    
     // Set the stage rules based on dropdown selections and input field values
     if (evaluationValue) {
         stageRules["evaluation"] = evaluationValue;
@@ -543,14 +554,34 @@ const Workflowstage = ({
     onSubmit: async (values, { setSubmitting }) => {
       try {
         const alphanumericRegex = /^[a-zA-Z0-9 ]+$/; // Regex to allow only letters, numbers, and spaces
-
-        if (!values.workFlowName || !alphanumericRegex.test(values.workFlowName)) {
-          formik.setFieldError('workFlowName', !values.workFlowName ? 'Workflow Name is required' : 'Please enter only letters and numbers');
+        let hasError = false;
+        if (!values.workFlowName) {
+          formik.setFieldError('workFlowName', 'Template Name is required');
+          hasError = true;
+        } else if (!alphanumericRegex.test(values.workFlowName)) {
+          formik.setFieldError('workFlowName', 'Please enter only letters and numbers');
+          hasError = true;
+        } else if (values.workFlowName.length < 3) {
+          formik.setFieldError('workFlowName', 'Workflow Name must be at least 3 characters long');
+          hasError = true;
+        } else if (Length > 0) {
+          formik.setFieldError('workFlowName', 'Workflow Name Already Exist');
+          hasError = true;
+        } else {
+          // Clear any existing errors if validation passes
+          formik.setFieldError('workFlowName', '');
         }
-
+      
         if (!values.description) {
           formik.setFieldError('description', 'Description is required');
+          hasError = true;
+        } else {
+          formik.setFieldError('description', '');
         }
+         if(hasError){
+          return
+         }
+        if(stageName.length<3)
 
 
         if (stages.length === 0) {
@@ -580,7 +611,7 @@ const Workflowstage = ({
           });
           console.log(response);
           if (response.status === 200) {
-            openNotification("success", "Success", response.message);
+            openNotification("success", "Successful", response.message);
             setTimeout(() => {
               handleClose();
               refresh();
@@ -600,7 +631,12 @@ const Workflowstage = ({
             createdBy: 9,
           });
 
+          
           console.log(response);
+          if (response.status === 500) {
+            openNotification("error", "Info", response.message);
+          }
+          
 
           if (response.status === 200) {
             const insertedId = response.result.insertedId; // Get insertedId here
@@ -620,7 +656,7 @@ const Workflowstage = ({
             console.log(insertedId);
 
             if (response2.status === 200) {
-              openNotification("success", "Success", response2.message);
+              openNotification("success", "Successful", response2.message);
               setTimeout(() => {
                 handleClose();
                 refresh();
@@ -639,11 +675,12 @@ const Workflowstage = ({
           }
         }
       } catch (error) {
-        openNotification(
-          "error",
-          "Error",
-          "WorkFlow Template Name Already Exist"
-        );
+        // openNotification(
+        //   "error",
+        //   "Info",
+        //   response
+        // );
+        console.log(error)
       }
       setSubmitting(false);
     },
@@ -759,7 +796,7 @@ const Workflowstage = ({
       icon: <IoIosArrowDropdown />,
       det: [{
         id: "add_tag",
-        name: "add_tag",
+        name: "Add Tag",
         option1: [
           { id: 1, titletag: "Add New Tag" }
         ],
@@ -792,7 +829,24 @@ const Workflowstage = ({
  
   const [sections, setSections] = useState([]);
 
- 
+  const getWorkflowwithName=async(templateName)=>{
+    try{
+      const response = await getAllRecruitmentWorkFlows({
+        companyId:companyId,
+        workFlowName:templateName
+      })
+      setLength(response.result.length)
+     if (response.result.length > 0) {
+        formik.setFieldError('workFlowName', 'Workflow Name Already Exist');
+        return;
+      } 
+    }catch(error){
+      console.log(error)
+    }
+  }
+  useEffect(()=>{
+    getWorkflowwithName(templateName)
+  },[templateName])
    
 
   const handleDeleteSection = (id) => {
@@ -824,10 +878,10 @@ const Workflowstage = ({
       }}
       header={[
         !updateId
-          ? t("Create a Workflow Template")
+          ? t("Create Workflow Template")
           : t("Update Workflow Template"),
         !updateId
-          ? t("Create a Workflow Template")
+          ? t("Create Workflow Template")
           : t("Update Workflow Template"),
       ]}
       //  headerRight={
@@ -898,6 +952,7 @@ const Workflowstage = ({
                 className="!text-[#344054] "
                 change={(e) => {
                   formik.setFieldValue("workFlowName", e);
+                  setTemplateName(e)
                 }}
                 value={formik.values.workFlowName}
                 error={formik.errors.workFlowName}
@@ -1001,7 +1056,8 @@ const Workflowstage = ({
             buttonSubmit={handleAddStageClick}
 
           >
-            <div className="flex flex-col items-center justify-center w-full h-full gap-5">
+            {/* <div className="h-[500px] overflow-auto"> */}
+            <div className=" flex flex-col items-center justify-center w-full h-full gap-5">
               <div className="flex flex-col items-center gap-2 text-center">
                 <div className="p-1 overflow-hidden border-2 border-white rounded-full 2xl:size-14 size-12 bg-primaryalpha/10">
                   <img
@@ -1028,7 +1084,7 @@ const Workflowstage = ({
                 <FormInput
                   title={"Stage Name"}
                   placeholder={"Enter Stage Name"}
-                  value={selectedStageName}
+                  value={stageName}
                   change={(e) => {
                     setStageName(e);
                     setSelectedStageName(e);
@@ -1038,15 +1094,18 @@ const Workflowstage = ({
                 />
               </div>
             </div>
+           
+            <div className="h-auto max-h-[370px] overflow-auto gap-5 flex flex-col">
             {optionData.map((key, index) => (
-  <div key={index} className="flex flex-col gap-3 w-full border border-black-500 ring-1 ring-black ring-opacity-5 shadow-lg rounded-lg p-1">
-    <div className="w-full m-auto bg-slate-100 h-12 rounded-lg flex justify-between items-center pr-2">
-      <h1 className="mt-3.5 m-3 font-semibold">{key.name}</h1>
+  <div key={index} className="flex flex-col gap-3 w-full borderb rounded-[10px] p-1 "
+  >
+    <div className="w-full m-auto h-12 rounded-md flex justify-between items-center pr-2"   style={{backgroundColor: `${primaryColor}10`}}>
+      <h1 className="mt-3.5 m-3 font-semibold dark:text-white">{key.name}</h1>
       <Tooltip placement="top" color={'red'} title={"Delete"}>
         <RiDeleteBin5Line className="text-gray-500 2xl:text-base dark:text-white hover:text-red-500" onClick={() => handleDeleteSection(key.id)} />
       </Tooltip>
     </div>
-    <div className="flex gap-2 w-full p-1">
+    <div className="flex gap-2 w-full px-5 py-4">
       {key && key.option1 && key.option1.map((item, ind) => (
         <>
           {console.log(item)}
@@ -1129,13 +1188,7 @@ const Workflowstage = ({
               </div>
             ))} */}
 
-          <div className="justify-start">
-            <AddMore
-              name="Add stage rule"
-              className="text-black"
-              change={() => setMenuVisible(true)}
-            />
-          </div>
+        
 
           {/* <Menu
               onClick={({ key }) => handleMenuClick(key)}
@@ -1160,6 +1213,15 @@ const Workflowstage = ({
                 );
               })}
             </Menu> */}
+            </div>
+           
+            {/* <div className="justify-start">
+            <AddMore
+              name="Add stage rule"
+              className="text-black"
+              change={() => setMenuVisible(true)}
+            />
+          </div>
           <Menu
             onClick={({ key, value }) => handleMenuClick(key, value)}
             style={{ display: menuVisible ? "block" : "none" }}
@@ -1175,7 +1237,16 @@ const Workflowstage = ({
                 </Menu.Item>
               );
             })}
-          </Menu>
+          </Menu> */}
+          <MenuItems
+          Items ={options}
+          handleItemClick={(Key)=>{
+            handleMenuClick(Key)
+          }}
+          
+          />
+          
+          {/* </div> */}
         </WorkflowModal>
         {/* <Modal
             // title="Vertically centered modal dialog"

@@ -38,6 +38,7 @@ import { useNavigate } from 'react-router-dom';
 import ModalPop from "./ModalPop";
 import TabsNew from "./TabsNew";
 import { PiEye } from "react-icons/pi";
+import { IoEyeOutline } from "react-icons/io5";
 
 
 // Filter Dropdown
@@ -80,7 +81,9 @@ const TableAnt = ({
   viewOutside = false,
   refresh = () => { },
   recordId = "",
-  jobId = ""
+  jobId = "",
+  handlesort = () => { },
+  refreshJobCrad = () => { }
 
 }) => {
   const { t } = useTranslation();
@@ -145,7 +148,11 @@ const TableAnt = ({
     // }
   }, [data[0]]);
 
+  //Sort Function
+  const handleSortFunction = (pagination, filters, sorter, extra) => {
 
+    console.log('params', pagination, filters, sorter, extra);
+  }
   React.useEffect(() => {
     dispatch(setNavigationPath(tabValue));
   }, [dispatch, tabValue]);
@@ -177,6 +184,10 @@ const TableAnt = ({
 
       // prevSwitches.map((sw) => (sw.id === i ? { ...sw, value: checked } : sw))
     );
+    // refresh(true)
+
+
+
   };
 
   // const handleToggle = (id, checked) => {
@@ -224,7 +235,7 @@ const TableAnt = ({
         // setFunctionRender(!functionRender);
         // getRecords()
         // window.location.reload();
-        openNotification("success", "Success", response.message);
+        openNotification("success", "Successful", response.message);
       } else if (response.result === 500) {
         openNotification("error", "Failed", "Unable to update status.");
       }
@@ -255,10 +266,10 @@ const TableAnt = ({
     const result = await action(deleteApi, { id: id }); // Ensure 'id' is passed correctly
     if (result.status === 200) {
       // Handle success response
-      openNotification("success", "Success", result?.message);
+      openNotification("success", "Successful", result?.message);
       refresh(true);
     } else if (result.status === 500) {
-      openNotification("error", "Failed", result?.message)
+      openNotification("error", "Info", result?.message)
     }
 
   };
@@ -269,19 +280,19 @@ const TableAnt = ({
     // setModalData({ text, title });
     // setIsModalOpen(true);
     // Check if the path is present and is not an empty array and if 'action' does not exist in the current column configuration
-    if (
-      path &&
-      path.length > 0 &&
-      !header[0]?.[tabValue || path || '']?.some(
-        column => column.value === 'action' // Check if 'action' exists in the column configuration
-      )
-    ) {
-      dispatch(setSelectedDataId(record[actionID]));
-      navigate(`/${path}/${record[actionID]}`);
-      // Store the clicked data ID in local storage only when the path is present and not an empty array
-      localStorage.setItem('selectedDataId', record[actionID]);
-      localStorage.setItem('jobid', record[jobId]);
-    }
+    // if (
+    //   path &&
+    //   path.length > 0 &&
+    //   !header[0]?.[tabValue || path || '']?.some(
+    //     column => column.value === 'action' // Check if 'action' exists in the column configuration
+    //   )
+    // ) {
+    dispatch(setSelectedDataId(record[actionID]));
+    navigate(`/${path}/${record[actionID]}`);
+    // Store the clicked data ID in local storage only when the path is present and not an empty array
+    localStorage.setItem('selectedDataId', record[actionID]);
+    localStorage.setItem('jobid', record[jobId]);
+
 
 
   };
@@ -298,27 +309,37 @@ const TableAnt = ({
   //   const record
   //   console.log(record.jobId)
   // })
+
   useEffect(() => {
-    // console.log(header, "header");
+    console.log(header, "header");
+
     setTableData(
       (header[0]?.[tabValue || path || ''] || []).map((each, i) => ({
         title: (
           <span
             key={i}
+
             className="text-[10px] 2xl:text-xs text-[#667085] dark:text-white font-medium capitalize"
           >
             {each.title}
           </span>
         ),
         dataIndex: each.value,
+        sorter: each.sorter,
+
         // dataIndex: "firstName",
         render: (record, text) => (
           <>
             <div
-              className=" cursor-pointer"
-              onClick={() => {
-                if (viewDetails) navigate(`/employeeProfile/${text[actionID]}`);
-              }}
+              className={`${each.width} cursor-pointer`}
+            // onClick={() => {
+            //   navigate(`/${path}/${text[actionID]}`);
+            //   // Store the clicked data ID in local storage only when the path is present and not an empty array
+            //   localStorage.setItem('selectedDataId', text[actionID]);
+            //   localStorage.setItem('jobid', text[jobId]);
+            // }}
+
+
             >
               {each.value === "isActive" ? (
                 <div
@@ -327,11 +348,12 @@ const TableAnt = ({
                     ? " bg-emerald-100 text-emerald-600"
                     : " bg-rose-100 text-rose-600"
                     } rounded-full pr-2 py-[2px] w-fit font-medium text-[10px] 2xl:text-sm vhcenter flex-nowrap`}
-                  onClick={() => {
-                    !viewOutside &&
-                      handleModalOpen(text, drawerH[0]?.[tabValue || path]);
-                    // console.log(tabValue, path, "kiok");
-                  }}
+                // onClick={() => {
+                //   !viewOutside &&
+                //     handleModalOpen(text, drawerH[0]?.[tabValue || path]);
+                //   // console.log(tabValue, path, "kiok");
+                // }}
+
                 >
                   <RxDotFilled
                     className={`${parseInt(record) === 1
@@ -344,17 +366,28 @@ const TableAnt = ({
               ) : each.value === "currentStatus" ? (
                 <div
                   key={text}
+                  onClick={() => {
+                    if (path &&
+                      path.length > 0) {
+                      console.log(path)
+                      navigate(`/${path}/${text[actionID]}`);
+                      // Store the clicked data ID in local storage only when the path is present and not an empty array
+                      localStorage.setItem('selectedDataId', text[actionID]);
+                      localStorage.setItem('jobid', text[jobId]);
+                    }
+                  }
+                  }
                   className={`${parseInt(record) === 0 || record === null
                     ? "bg-yellow-100 text-yellow-600"
                     : parseInt(record) === 1
                       ? "bg-emerald-100 text-emerald-600"
                       : "bg-rose-100 text-rose-600"
                     } rounded-full pr-2 py-[2px] w-fit font-medium text-[10px] 2xl:text-sm vhcenter flex-nowrap`}
-                  onClick={() => {
-                    !viewOutside &&
-                      handleModalOpen(text, header[0]?.[tabValue || path]);
-                    // console.log(tabValue, path, "kiok");
-                  }}
+                // onClick={() => {
+                //   !viewOutside &&
+                //     handleModalOpen(text, header[0]?.[tabValue || path]);
+                //   // console.log(tabValue, path, "kiok");
+                // }}
                 >
                   <RxDotFilled
                     className={`${parseInt(record) === 0
@@ -372,10 +405,11 @@ const TableAnt = ({
                 </div>
               ) : each.flexColumn === true ? (
                 <div className="flex items-center gap-4"
-                  onClick={() => {
-                    !viewOutside &&
-                      handleModalOpen(text, drawerH[0]?.[tabValue || path]);
-                  }}>
+                // onClick={() => {
+                //   !viewOutside &&
+                //     handleModalOpen(text, drawerH[0]?.[tabValue || path]);
+                // }}
+                >
                   <div className="w-8 h-8 overflow-hidden rounded-full 2xl:w-10 2xl:h-10">
                     <img
                       // src={record.logo}
@@ -409,10 +443,23 @@ const TableAnt = ({
                   </div>
                 </div>
               ) : each.block ? (
-                <div onClick={() => {
-                  !viewOutside &&
-                    handleModalOpen(text, drawerH[0]?.[tabValue || path]);
-                }}>
+                <div
+                  // onClick={() => {
+                  //   !viewOutside &&
+                  //     handleModalOpen(text, drawerH[0]?.[tabValue || path]);
+                  // }}
+                  onClick={() => {
+                    if (path &&
+                      path.length > 0) {
+                      navigate(`/${path}/${text[actionID]}`);
+                      // Store the clicked data ID in local storage only when the path is present and not an empty array
+                      localStorage.setItem('selectedDataId', text[actionID]);
+                      localStorage.setItem('jobid', text[jobId]);
+                    }
+                  }
+                  }
+
+                >
                   <p className="text-xs font-medium text-black 2xl:text-sm dark:text-white">
                     {text[each.value]}
                   </p>
@@ -431,6 +478,7 @@ const TableAnt = ({
                       // activeOrNot(checked);
                       //console.log(checked);
                       //console.log(text?.[actionID]);
+                      refreshJobCrad(true)
                       updateCompany(text?.[actionID], checked);
                     }}
                     className=" bg-[#c2c0c0aa]"
@@ -489,10 +537,21 @@ const TableAnt = ({
                     ? "font-semibold text-black"
                     : "text-[#667085]"
                     } text-xs 2xl:text-sm dark:text-white font-medium`}
+                  // onClick={() => {
+                  //   !viewOutside &&
+                  //   handleModalOpen(text, drawerH[0]?.[tabValue || path]);
+                  // }}
                   onClick={() => {
-                    !viewOutside &&
-                    handleModalOpen(text, drawerH[0]?.[tabValue || path]);
-                  }}
+                    if (path &&
+                      path.length > 0) {
+                      navigate(`/${path}/${text[actionID]}`);
+                      // Store the clicked data ID in local storage only when the path is present and not an empty array
+                      localStorage.setItem('selectedDataId', text[actionID]);
+                      localStorage.setItem('jobid', text[jobId]);
+                    }
+                  }
+                  }
+
                   style={{ width: each.width }}
                 >
                   <p>
@@ -519,10 +578,10 @@ const TableAnt = ({
               ) : each.titleCaseSensitive === true ? (
                 <div
                   className={`text-[#667085] text-xs 2xl:text-sm dark:text-white font-medium`}
-                  onClick={() => {
-                    !viewOutside &&
-                    handleModalOpen(text, drawerH[0]?.[tabValue || path]);
-                  }}
+                  // onClick={() => {
+                  //   !viewOutside &&
+                  //   handleModalOpen(text, drawerH[0]?.[tabValue || path]);
+                  // }}
                   style={{ width: each.width }}
                 >
                   <p>
@@ -546,61 +605,88 @@ const TableAnt = ({
                           : record}
                   </p>
                 </div>
-              ) : (
-                // </Popover>
-                <div onClick={() => {
-                  !viewOutside &&
-                    handleModalOpen(text, drawerH[0]?.[tabValue || path]);
-                }} className="text-[#667085] text-xs 2xl:text-sm dark:text-white font-medium">
-                  <p>{record}</p>
-                </div>
-              )}
-            </div>
-            {
-              each.dotsVertical && (
-                <Popover
-                  content={
-                    <div>
-                      <p
-                        onClick={() => {
-                          buttonClick(text[actionID], "edit"); //"8"
-                          clickDrawer(true);
-                          // console.log(text[actionID]);
-
-                          // console.log(actionID);
-                          // console.log(text[actionID], "ddddddddsfsd");
-                        }}
-                        className="text-md font-semibold p-2 cursor-pointer"
-                      >
-                        Update
-                      </p>
-                      <Popconfirm
-                        placement="top"
-                        title={"Confirm To Delete"}
-                        description={"Are you sure to delete this row?"}
-                        okText="Confirm"
-                        cancelText="No"
-                        onConfirm={() => {
-                          // console.log("hh");
-                          deleteRecord(text[actionID]);
-                        }}
-                        // className="activeBtn"
-                        style={{}}
-                      >
-                        <p className="text-md font-semibold p-2  cursor-pointer">
-                          Delete
-                        </p>
-                      </Popconfirm>
+              ) :
+                each.value === "viewData" ? (
+                  <Tooltip title="View Details" placement="top" color={primaryColor}>
+                    <div onClick={() => {
+                      !viewOutside &&
+                        handleModalOpen(text, drawerH[0]?.[tabValue || path]);
+                    }} className="w-7 h-7 rounded-full text-center p-2 hover:text-primary hover:bg-primaryalpha/5">
+                      <IoEyeOutline />
                     </div>
-                  }
-                // title="Start Action"
-                >
-                  <BsThreeDotsVertical className=" opacity-50 cursor-pointer" />
-                </Popover>
-              )
-            }
+                  </Tooltip>
+                ) :
+                  (
+                    // </Popover>
+                    <div
+                      onClick={() => {
+                        if (path &&
+                          path.length > 0) {
+                          navigate(`/${path}/${text[actionID]}`);
+                          // Store the clicked data ID in local storage only when the path is present and not an empty array
+                          localStorage.setItem('selectedDataId', text[actionID]);
+                          localStorage.setItem('jobid', text[jobId]);
+                        }
+                      }
+                      }
+                      className="text-[#667085] text-xs 2xl:text-sm dark:text-white font-medium">
+                      <p>
+                        {record && typeof record === 'string'
+                          ? record.split('. ').map(sentence => sentence.charAt(0).toUpperCase() + sentence.slice(1)).join('. ')
+                          : record}
+                      </p>
+                    </div>
+                  )
+              }
+
+              {
+                each.dotsVertical && (
+                  <Popover
+                    content={
+                      <div>
+                        <p
+                          onClick={() => {
+                            buttonClick(text[actionID], "edit"); //"8"
+                            clickDrawer(true);
+                            // console.log(text[actionID]);
+
+                            // console.log(actionID);
+                            // console.log(text[actionID], "ddddddddsfsd");
+                          }}
+                          className="text-md font-semibold p-2 cursor-pointer"
+                        >
+                          Update
+                        </p>
+                        <Popconfirm
+                          placement="top"
+                          title={"Confirm To Delete"}
+                          description={"Are you sure to delete this row?"}
+                          okText="Confirm"
+                          cancelText="No"
+                          onConfirm={() => {
+                            // console.log("hh");
+                            deleteRecord(text[actionID]);
+                          }}
+                          // className="activeBtn"
+                          style={{}}
+                        >
+                          <p className="text-md font-semibold p-2  cursor-pointer">
+                            Delete
+                          </p>
+                        </Popconfirm>
+                      </div>
+                    }
+                  // title="Start Action"
+                  >
+                    <BsThreeDotsVertical className=" opacity-50 cursor-pointer" />
+                  </Popover>
+                )
+              }
+            </div>
           </>
         ),
+        // fixed: each.fixed,
+        width: each.width,
         // responsive: ["sm"],
       }))
     );
@@ -913,7 +999,7 @@ const TableAnt = ({
             ) : (
               showsearch && (
                 <div className="flex items-center gap-3">
-                  
+
                   <SearchBox
                     data={data}
                     placeholder={t("Search_placeholder")}
@@ -1038,10 +1124,15 @@ const TableAnt = ({
       </div>
       <div className="border rounded-lg border-[#E7E7E7] dark:border-secondary relative overflow-auto">
         {/* {console.log(data)} */}
+        {console.log(tableData)}
         {data && (
+
           <Table
             //rowSelection={{ ...rowSelection }}
             columns={tableData}
+            onChange={(pagination, filters, sorter) => handlesort(pagination, filters, sorter)}
+
+
             // dataSource={data.filter(
             //   (item) =>
             //     item.location_name
@@ -1058,9 +1149,9 @@ const TableAnt = ({
             //       .toLowerCase()
             //       .includes(searchValue.toLowerCase())
             // )}
-            onRow={(record) => ({
-              onClick: () => handleRowClick(record),
-            })}
+            // onRow={(record) => ({
+            //   onClick: () => handleRowClick(record),
+            // })}
             dataSource={listData}
             size={isSmallScreen ? "small" : ""}
           />

@@ -19,53 +19,106 @@ const CandidatesList = () => {
   const [openPop, setOpenPop] = useState("");
   const [updateId, setUpdateId] = useState("");
   const[jobId,setJobId]=useState(null)
+  const [sortedInfo, setSortedInfo] = useState({});
   const { t } = useTranslation();
+  const handleChange = (pagination, filters, sorter) => {
+    console.log('Various parameters', pagination, filters, sorter);
+   
+    setSortedInfo(sorter || {});
+  };
 
   const header = [
     {
       Candidate_Profile: [
         {
           id: 1,
-          title: t("NAME"),
+          title: t("Name"),
           value: "candidateName",
           bold: true,
+          key:"candidateName",
+          sorter: (a, b) => a.candidateName.localeCompare(b.candidateName),
+          sortOrder: sortedInfo?.columnKey === 'candidateName' ? sortedInfo.order : null,
+         
+         
         },
         {
           id: 2,
-          title: t("CONTACT"),
+          title: t("Contact"),
           value: "candidateContact",
+          key:"candidateContact",
+          sorter: (a, b) => a.candidateContact - b.candidateContact,
+          sortOrder: sortedInfo.columnKey === 'candidateContact' ? sortedInfo.order : null,
         },
         {
           id: 3,
-          title: t("JOB"),
+          title: t("Job"),
           value: "jobTitle",
           titleCaseSensitive: true,
+          key: "jobTitle",
+          sorter: (a, b) => {
+            // Handle cases where jobTitle is null or undefined
+            const titleA = a.jobTitle || '';
+            const titleB = b.jobTitle || '';
+            return titleA.localeCompare(titleB);
+          },
+          sortOrder: sortedInfo.columnKey === 'jobTitle' ? sortedInfo.order : null,
         },
 
-        {
-          id: 4,
-          title: t("STAGE"),
-          value: "stageName",
-         
+      {
+        id: 4,
+        title: t("Stage"),
+        value: "stageName",
+        key: "stageName",
+        sorter: (a, b) => {
+            // Handle cases where stageName is null or undefined
+            const nameA = a.stageName || '';
+            const nameB = b.stageName || '';
+            return nameA.localeCompare(nameB);
         },
-        {
-          id: 5,
-
-          title: t("SOURCE"),
-          value: "candidateSource",
-         
-        },
+        sortOrder: sortedInfo.columnKey === 'stageName' ? sortedInfo.order : null,
+    },
+    {
+      id: 5,
+      title: t("Source"),
+      value: "candidateSource",
+      key: "candidateSource",
+      sorter: (a, b) => {
+          // Handle cases where candidateSource is null or undefined
+          const sourceA = a.candidateSource || '';
+          const sourceB = b.candidateSource || '';
+          return sourceA.localeCompare(sourceB);
+      },
+      sortOrder: sortedInfo.columnKey === 'candidateSource' ? sortedInfo.order : null,
+  },
         {
           id: 6,
-
-          title: t("STATUS"),
+          title: t("Status"),
           value: "currentStatus",
-         
-        },
+          key: "currentStatus",
+          sorter: (a, b) => {
+              // Handle cases where currentStatus is null or undefined
+              const statusA = a.currentStatus || '';
+              const statusB = b.currentStatus || '';
+              return statusA.localeCompare(statusB);
+          },
+          sortOrder: sortedInfo.columnKey === 'currentStatus' ? sortedInfo.order : null,
+      },
         {
           id: 7,
-          title: t("APPLIED DATE"),
+          title: t("Applied Date"),
           value: "createdOn",
+          key:"createdOn",
+          sorter: (a, b) => {
+            // Parse the dates
+            const dateA = new Date(a.createdOn);
+            const dateB = new Date(b.createdOn);
+        
+            // Compare the dates
+            return dateA - dateB;
+          },
+          sortOrder: sortedInfo?.columnKey === 'createdOn' ? sortedInfo.order : null,
+        
+
         },
         
         // {
@@ -127,7 +180,7 @@ const CandidatesList = () => {
       <div className='flex justify-between'>
         <Heading
           title={t("Candidates")}
-          description="Coordinates the planning, execution, and completion of projects..."/>
+          description="Coordinates the planning, execution, and completion of projects"/>
            <div className="flex gap-4">
           {" "}
           <Link onClick={handleNavigate} className="flex gap-2 mt-2">
@@ -144,7 +197,18 @@ const CandidatesList = () => {
       <JobListCopy data={jobstatic}/>
       <div className=''>
         {/* <TableCopy data={jobList} header={header} path='CandidateProfile'/> */}
-        <TableAnt All={true} data={jobList} header={header} path='Candidate_Profile' actionID="resumeId" jobId="jobId"/>
+        <TableAnt
+        All={true} 
+        data={jobList} 
+        header={header} 
+        path='Candidate_Profile' 
+        actionID="resumeId" 
+        jobId="jobId"
+        handlesort={(e)=>{
+          handleChange(e)
+
+        }}
+        />
       </div>
       {show && (
          <motion.div initial="hidden" animate="visible" >

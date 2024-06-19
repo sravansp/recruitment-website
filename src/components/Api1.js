@@ -251,7 +251,7 @@ export const getAllRecruitmentQuestionnaireTemplates = async (data) => {
 //   //   jobId: jobId,
 //   // };
 
-const kwargs = {};
+
 
 //   return await apiRequest(action, method, kwargs);
 // };
@@ -272,12 +272,9 @@ export const getRecruitmentResumeById = async (id) => {
   const action = "getRecruitmentResumeById";
 
   const method = "POST";
-  const requestData = {
-    // Include any other necessary parameters
-    id: id,
-  };
+  const kwargs = id
  console.log(id)
-  return await apiRequest(action, method, requestData);
+  return await apiRequest(action, method, kwargs);
 };
 export const saveRecruitmentJobResumesStage = async (data) => {
   const action = "saveRecruitmentJobResumesStage";
@@ -732,8 +729,8 @@ export const getAllRecruitmentResumeEducationalDetails = async (resumeId) => {
   const action = "getAllRecruitmentResumeEducationalDetails";
 
   const method = "POST";
-
-  const kwargs = { resumeId };
+  console.log(resumeId)
+  const kwargs =  {resumeId} ;
 
   return await apiRequest(action, method, kwargs);
 };
@@ -1189,6 +1186,7 @@ const API = {
   UPDATE_EvaluationS: "toggleRecruitmentEvaluationTemplateStatus",
   UPDATE_Questionaire: "toggleRecruitmentQuestionnaireTemplateStatus",
   UPDATE_Letter: "toggleRecruitmentLetterTemplateStatus",
+  UpDate_jobs:"toggleRecruitmentJobStatus",
 
   //delete API
   DELETE_Job_Templates: "deleteRecruitmentJobTemplateById",

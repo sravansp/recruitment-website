@@ -14,7 +14,7 @@ function Jobcardcopy({
 
 
 }) {
-
+  console.log(options,"options")
   const itemsPerPage = 6;
   const containerRef = useRef(0);
   const scrollAmount = 253;
@@ -58,7 +58,9 @@ function Jobcardcopy({
     <div className="flex ">
       <div className="flex overflow-x-auto " ref={containerRef}>
         {options.map((each, index) => (
-          <div key={index} className="flex items-center ">
+         
+         
+         <div key={index} className="flex items-center ">
              
             {index === 0 && (
               <svg
@@ -148,7 +150,7 @@ function Jobcardcopy({
                 </svg>
               </div>
             )}
-            {index === options.length - 1 && (
+          {(index === options.length - 1 || options.length === 1) && (
               <svg
                 xmlns="http://www.w3.org/2000/svg"
                 width="211"

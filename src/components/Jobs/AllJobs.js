@@ -4,9 +4,9 @@ import TableAnt from "../common/TableAnt";
 import axios from "axios";
 import JobTabs from "../common/JobTabs";
 import { Add } from "@mui/icons-material";
-import API from "../Api";
+// import API from "../Api";
 import Table from "../common/Table";
-import { getAllRecruitmentJobs, getJobStatics } from "../Api1";
+import API, { getAllRecruitmentJobs, getJobStatics } from "../Api1";
 import CustomTable from "../common/Table";
 import App1 from "../common/Table";
 import TableAnt1 from "../common/Table";
@@ -21,6 +21,7 @@ import { motion } from "framer-motion";
 import JobListCopy from "../common/JobListCopy";
 import { RiRuler2Fill } from "react-icons/ri";
 import JobDetails from "./JobDetails";
+// import API, { action, getJobStatics } from "../Api1";
 
 function AllJobs() {
   const { t } = useTranslation();
@@ -35,7 +36,7 @@ function AllJobs() {
     },
   ];
   const [companyId, setCompanyId] = useState(localStorage.getItem("companyId"));
-  const [navigationPath, setNavigationPath] = useState("MyOpenJobs");
+  const [navigationPath, setNavigationPath] = useState("My_Open_Jobs");
   const handleshow = () => setShow(true);
   const handleClose = () => setShow(false);
   const [show, setShow] = useState(false);
@@ -46,6 +47,7 @@ function AllJobs() {
   const [createdBy, setCreatedBy] = useState("");
   const [DraftJObs, setDraftJObs] = useState([])
   const [openPop, setOpenPop] = useState("");
+  const [sortedInfo, setSortedInfo] = useState({});
   const record = ""
 
 
@@ -66,17 +68,22 @@ function AllJobs() {
       console.error('Login data not found in local storage.');
     }
   }, []);
+  const handleChange = (pagination, filters, sorter) => {
+    console.log('Various parameters', pagination, filters, sorter);
+
+    setSortedInfo(sorter || {});
+  };
   console.log(updateId)
   const tabs = [
     {
       id: 1,
       title: t("My_Open_Jobs"),
-      value: "MyOpenJobs",
+      value: "My_Open_Jobs",
     },
     {
       id: 2,
       title: t("All_Jobs"),
-      value: "AllJobs",
+      value: "All_Jobs",
     },
     {
       id: 3,
@@ -93,104 +100,154 @@ function AllJobs() {
 
   const header = [
     {
-      AllJobs: [
+      All_Jobs: [
         {
           id: 1,
           title: t("Name"),
           value: "jobTitle",
           bold: true,
+          key: "jobTitle",
+          sorter: (a, b) => a.jobTitle.localeCompare(b.jobTitle),
+          sortOrder: sortedInfo?.columnKey === 'jobTitle' ? sortedInfo.order : null,
         },
         {
           id: 2,
           title: t("Applied"),
           value: "noOfApplicants",
+          key: "noOfApplicants",
+          sorter: (a, b) => a.noOfApplicants - b.noOfApplicants,
+          sortOrder: sortedInfo?.columnKey === 'noOfApplicants' ? sortedInfo.order : null,
         },
         {
           id: 3,
           title: t("Type"),
           value: "workLocationType",
+          key: "workLocationType",
+          sorter: (a, b) => {
+            // Compare the workLocationType strings alphabetically
+            return a.workLocationType.localeCompare(b.workLocationType);
+          },
+          sortOrder: sortedInfo?.columnKey === 'workLocationType' ? sortedInfo.order : null,
         },
 
         {
           id: 4,
           title: t("Location"),
           value: "location",
+          key: "location",
+          sorter: (a, b) => a.location.localeCompare(b.location),
+          sortOrder: sortedInfo?.columnKey === 'location' ? sortedInfo.order : null,
         },
         {
           id: 5,
           title: t("Status"),
-          value: "isActive",
+          value: "",
           actionToggle: true,
         },
         {
           id: 6,
           title: t("Posted_By"),
           value: "jobCreatedBy",
+          key: "jobCreatedBy",
+          sorter: (a, b) => a.jobCreatedBy.localeCompare(b.jobCreatedBy),
+          sortOrder: sortedInfo?.columnKey === 'jobCreatedBy' ? sortedInfo.order : null,
         },
         {
           id: 7,
           title: t("Date"),
           value: "createdOn",
+          key: "createdOn",
+          sorter: (a, b) => {
+            // Parse the dates
+            const dateA = new Date(a.createdOn);
+            const dateB = new Date(b.createdOn);
+
+            // Compare the dates
+            return dateA - dateB;
+          },
+          sortOrder: sortedInfo?.columnKey === 'createdOn' ? sortedInfo.order : null,
         },
-        // {
-        //   id: 8,
-        //   title: "",
-        //   value: "action",
-        //   dotsVertical: true,
-        // },
+        {
+          id: 8,
+          title: t("View"),
+          value: "viewData",
+          status: "viewData",
+        },
       ],
-      MyOpenJobs: [
+      My_Open_Jobs: [
         {
           id: 1,
           title: t("Name"),
           value: "jobTitle",
           bold: true,
+          key: "jobTitle",
+          sorter: (a, b) => a.jobTitle.localeCompare(b.jobTitle),
+          sortOrder: sortedInfo?.columnKey === 'jobTitle' ? sortedInfo.order : null,
         },
         {
           id: 2,
           title: t("Applied"),
           value: "noOfApplicants",
+          key: "noOfApplicants",
+          sorter: (a, b) => a.noOfApplicants - b.noOfApplicants,
+          sortOrder: sortedInfo?.columnKey === 'noOfApplicants' ? sortedInfo.order : null,
         },
         {
           id: 3,
           title: t("Type"),
           value: "workLocationType",
+          key: "workLocationType",
+          sorter: (a, b) => {
+
+            return a.workLocationType.localeCompare(b.workLocationType);
+          },
+          sortOrder: sortedInfo?.columnKey === 'workLocationType' ? sortedInfo.order : null,
         },
 
         {
           id: 4,
           title: t("Location"),
           value: "location",
+          key: "location",
+          sorter: (a, b) => a.location.localeCompare(b.location),
+          sortOrder: sortedInfo?.columnKey === 'location' ? sortedInfo.order : null,
+
         },
         {
           id: 5,
-
           title: t("Status"),
-          value: "isActive",
+          value: "",
           actionToggle: true,
         },
         {
           id: 6,
           title: t("Posted_By"),
           value: "jobCreatedBy",
+          key: "jobCreatedBy",
+          sorter: (a, b) => a.jobCreatedBy.localeCompare(b.jobCreatedBy),
+          sortOrder: sortedInfo?.columnKey === 'jobCreatedBy' ? sortedInfo.order : null,
         },
         {
           id: 7,
           title: t("Date"),
           value: "createdOn",
+          key: "createdOn",
+          sorter: (a, b) => {
+            // Parse the dates
+            const dateA = new Date(a.createdOn);
+            const dateB = new Date(b.createdOn);
+
+            // Compare the dates
+            return dateA - dateB;
+          },
+          sortOrder: sortedInfo?.columnKey === 'createdOn' ? sortedInfo.order : null,
         },
-        // {
-        //   id: 8,
-        //   title: t("View"),
-        //   value: "viewData",
-        //   status: "viewData",
-        // },
-        // {
-        //   id: 8,
-        //   title: "",
-        //   value: "action",
-        //   dotsVertical: true,
-        // },
+        {
+          id: 8,
+          title: t("View"),
+          value: "viewData",
+          status: "viewData",
+        },
       ],
       Open: [
         {
@@ -198,46 +255,74 @@ function AllJobs() {
           title: t("Name"),
           value: "jobTitle",
           bold: true,
+          key: "jobTitle",
+          sorter: (a, b) => a.jobTitle.localeCompare(b.jobTitle),
+          sortOrder: sortedInfo?.columnKey === 'jobTitle' ? sortedInfo.order : null,
         },
         {
           id: 2,
           title: t("Applied"),
           value: "noOfApplicants",
+          key: "noOfApplicants",
+          sorter: (a, b) => a.noOfApplicants - b.noOfApplicants,
+          sortOrder: sortedInfo?.columnKey === 'noOfApplicants' ? sortedInfo.order : null,
         },
         {
           id: 3,
           title: t("Type"),
           value: "workLocationType",
+          key: "workLocationType",
+          sorter: (a, b) => {
+
+            return a.workLocationType.localeCompare(b.workLocationType);
+          },
+          sortOrder: sortedInfo?.columnKey === 'workLocationType' ? sortedInfo.order : null,
         },
 
         {
           id: 4,
           title: t("Location"),
           value: "location",
+          key: "location",
+          sorter: (a, b) => a.location.localeCompare(b.location),
+          sortOrder: sortedInfo?.columnKey === 'location' ? sortedInfo.order : null,
+
         },
         {
           id: 5,
-
           title: t("Status"),
-          value: "isActive",
+          value: "",
           actionToggle: true,
         },
         {
           id: 6,
           title: t("Posted_By"),
           value: "jobCreatedBy",
+          key: "jobCreatedBy",
+          sorter: (a, b) => a.jobCreatedBy.localeCompare(b.jobCreatedBy),
+          sortOrder: sortedInfo?.columnKey === 'jobCreatedBy' ? sortedInfo.order : null,
         },
         {
           id: 7,
           title: t("Date"),
           value: "createdOn",
+          key: "createdOn",
+          sorter: (a, b) => {
+            // Parse the dates
+            const dateA = new Date(a.createdOn);
+            const dateB = new Date(b.createdOn);
+
+            // Compare the dates
+            return dateA - dateB;
+          },
+          sortOrder: sortedInfo?.columnKey === 'createdOn' ? sortedInfo.order : null,
         },
-        // {
-        //   id: 8,
-        //   title: "",
-        //   value: "action",
-        //   dotsVertical: true,
-        // },
+        {
+          id: 8,
+          title: t("View"),
+          value: "viewData",
+          status: "viewData",
+        },
       ],
       Draft: [
         {
@@ -245,45 +330,79 @@ function AllJobs() {
           title: t("Name"),
           value: "jobTitle",
           bold: true,
+          key: "jobTitle",
+          sorter: (a, b) => a.jobTitle.localeCompare(b.jobTitle),
+          sortOrder: sortedInfo?.columnKey === 'jobTitle' ? sortedInfo.order : null,
         },
         {
           id: 2,
           title: t("Applied"),
           value: "noOfApplicants",
+          key: "noOfApplicants",
+          sorter: (a, b) => a.noOfApplicants - b.noOfApplicants,
+          sortOrder: sortedInfo?.columnKey === 'noOfApplicants' ? sortedInfo.order : null,
         },
         {
           id: 3,
           title: t("Type"),
           value: "workLocationType",
+          key: "workLocationType",
+          sorter: (a, b) => {
+
+            return a.workLocationType.localeCompare(b.workLocationType);
+          },
+          sortOrder: sortedInfo?.columnKey === 'workLocationType' ? sortedInfo.order : null,
         },
 
         {
           id: 4,
           title: t("Location"),
           value: "location",
+          key: "location",
+          sorter: (a, b) => a.location.length - b.location.length,
+          sortOrder: sortedInfo?.columnKey === 'location'
         },
+        // {
+        //   id: 5,
+
+        //   title: t("Status"),
+        //   value: "",
+        //   actionToggle: true,
+        // },
         {
           id: 5,
-
-          title: t("Status"),
-          value: "isActive",
-          actionToggle: true,
+          title: t("Posted_By"),
+          value: "jobCreatedBy",
+          key: "jobCreatedBy",
+          sorter: (a, b) => a.jobCreatedBy.length - b.jobCreatedBy.length,
+          sortOrder: sortedInfo?.columnKey === 'jobCreatedBy'
         },
         {
           id: 6,
-          title: t("Posted_By"),
-          value: "jobCreatedBy",
+          title: t("Date"),
+          value: "createdOn",
+          key: "createdOn",
+          sorter: (a, b) => {
+            // Parse the dates
+            const dateA = new Date(a.createdOn);
+            const dateB = new Date(b.createdOn);
+
+            // Compare the dates
+            return dateA - dateB;
+          },
+          sortOrder: sortedInfo?.columnKey === 'createdOn' ? sortedInfo.order : null,
         },
         {
           id: 7,
-          title: t("Date"),
-          value: "createdOn",
+          title: "Action",
+          value: "action",
+          dotsVertical: true,
         },
         {
           id: 8,
-          title: "",
-          value: "action",
-          dotsVertical: true,
+          title: t("View"),
+          value: "viewData",
+          status: "viewData",
         },
       ],
     },
@@ -292,6 +411,15 @@ function AllJobs() {
   //   setCreatedBy(1);
 
   // }, []);
+  const updateApi = [
+    {
+      All_Jobs: { id: 1, api: API.UpDate_jobs },
+      My_Open_Jobs: { id: 2, api: API.UpDate_jobs },
+      Open: { id: 3, api: API.UpDate_jobs },
+      Draft: { id: 3, api: API.UpDate_jobs },
+
+    },
+  ];
   useEffect(() => {
     setCompanyId(localStorage.getItem("companyId"));
 
@@ -300,8 +428,8 @@ function AllJobs() {
 
   const actionData = [
     {
-      MyOpenJobs: { id: 1, response: FilteredJobList },
-      AllJobs: { id: 2, response: JobsList },
+      My_Open_Jobs: { id: 1, response: FilteredJobList },
+      All_Jobs: { id: 2, response: JobsList },
       Open: { id: 3, response: OpenJObs },
       Draft: { id: 4, response: DraftJObs },
 
@@ -313,7 +441,9 @@ function AllJobs() {
   const callapi = async () => {
     try {
       const response = await getAllRecruitmentJobs({ companyId });
-      setJobList(response.result);
+      const filteredJobs = response.result.filter(job => job.jobStatus !== "Draft");
+      console.log("Draft", filteredJobs)
+      setJobList(filteredJobs);
       console.log(response);
     } catch (error) {
       console.error(error);
@@ -327,7 +457,7 @@ function AllJobs() {
       setFilteredJobList(response.result);
       console.log(response);
     } catch (error) {
-      console.error(error);
+      // console.error(error);
     }
   };
 
@@ -373,11 +503,32 @@ function AllJobs() {
   }, []);
 
   useEffect(() => {
-    callapi();
+    switch (navigationPath) {
+      case "All_Jobs":
+
+        callapi();
+        break;
+      case "My_Open_Jobs":
+        if (userid) {
+          getcreatedBy();
+        }
+        break;
+      case "Open":
+        getOpenjobs();
+        break
+      case "Draft":
+        getDraftjobs();
+        break
+      default:
+        break
+
+
+    }
+  }, [navigationPath]);
+  useEffect(() => {
     getcreatedBy();
-    getOpenjobs();
-    getDraftjobs();
-  }, [companyId, userid]);
+
+  }, [userid])
 
 
 
@@ -388,7 +539,7 @@ function AllJobs() {
     try {
       const response = await getJobStatics({ companyId });
       setjobstatic(response.result);
-      console.log(response);
+      console.log(response,"jobstatic");
     } catch (error) {
       console.error(error);
     }
@@ -401,16 +552,16 @@ function AllJobs() {
 
   const Drawerheader = [
     {
-      MyOpenJobs: [
+      My_Open_Jobs: [
         {
           id: 1,
-          title: t("Name"),
+          title: "JobTitle",
           value: "jobTitle",
         },
         {
           id: 2,
-          title: "Created By",
-          value: "createdBy",
+          title: "Number of openings",
+          value: "noOfVaccancies",
         },
         {
           id: 3,
@@ -425,18 +576,11 @@ function AllJobs() {
         },
         {
           id: 5,
-
-          title: "JobTitle",
-          value: "jobTitle",
-
-        },
-        {
-          id: 6,
           title: "JobType",
           value: "jobType",
         },
         {
-          id: 7,
+          id: 6,
           title: "Requirement Type",
           value: "requirementType",
         },
@@ -444,13 +588,13 @@ function AllJobs() {
       Draft: [
         {
           id: 1,
-          title: t("Name"),
+          title: "JobTitle",
           value: "jobTitle",
         },
         {
           id: 2,
-          title: "Created By",
-          value: "createdBy",
+          title: "Number of openings",
+          value: "noOfVaccancies",
         },
         {
           id: 3,
@@ -465,18 +609,77 @@ function AllJobs() {
         },
         {
           id: 5,
-
-          title: "JobTitle",
-          value: "jobTitle",
-
-        },
-        {
-          id: 6,
           title: "JobType",
           value: "jobType",
         },
         {
-          id: 7,
+          id: 6,
+          title: "Requirement Type",
+          value: "requirementType",
+        },
+      ],
+      Open: [
+        {
+          id: 1,
+          title: "JobTitle",
+          value: "jobTitle",
+        },
+        {
+          id: 2,
+          title: "Number of openings",
+          value: "noOfVaccancies",
+        },
+        {
+          id: 3,
+          title: "Experience",
+          value: "experience",
+        },
+
+        {
+          id: 4,
+          title: "Job Created By",
+          value: "jobCreatedBy",
+        },
+        {
+          id: 5,
+          title: "JobType",
+          value: "jobType",
+        },
+        {
+          id: 6,
+          title: "Requirement Type",
+          value: "requirementType",
+        },
+      ],
+      All_Jobs: [
+        {
+          id: 1,
+          title: "JobTitle",
+          value: "jobTitle",
+        },
+        {
+          id: 2,
+          title: "Number of openings",
+          value: "noOfVaccancies",
+        },
+        {
+          id: 3,
+          title: "Experience",
+          value: "experience",
+        },
+
+        {
+          id: 4,
+          title: "Job Created By",
+          value: "jobCreatedBy",
+        },
+        {
+          id: 5,
+          title: "JobType",
+          value: "jobType",
+        },
+        {
+          id: 6,
           title: "Requirement Type",
           value: "requirementType",
         },
@@ -544,6 +747,7 @@ function AllJobs() {
         {/* <TableAnt1 data={JobsList} header={header} path="AllJobs" /> */}
         <Tabs
           path="JobDetails"
+          handlesort={(e) => handleChange(e)}
           tabs={tabs}
           header={header}
           drawerH={Drawerheader}
@@ -569,25 +773,36 @@ function AllJobs() {
           // recordId={record.jobId}
           actionToggle={(e) => {
             setUpdateId(e);
+
+          }}
+          refreshJobCrad={() => {
+            getJobstat()
+            console.log("hiii")
           }}
           refresh={() => {
+
             switch (navigationPath) {
               default:
-                callapi();
-                break;
-              case "location":
                 getcreatedBy();
                 break;
-              case "department":
+              case "AllJobs":
+
+                callapi();
+                break;
+              case "Open":
                 getOpenjobs();
                 break;
-              case "category":
+              case "Draft":
                 getDraftjobs();
                 break;
 
             }
           }}
-
+          updateApi={
+            Object.keys(updateApi[0]).includes(navigationPath)
+              ? updateApi[0]?.[navigationPath].api
+              : null
+          }
 
         />
       </div>

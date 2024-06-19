@@ -11,8 +11,9 @@ import FormInput from "../common/FormInput";
 import image from "../../assets/images/attachment-2.svg";
 import image2 from "../../assets/images/emoji-sticker-line.svg";
 
-import { saveRecruitmentEmailTemplate, getRecruitmentEmailTemplateById, updateRecruitmentEmailTemplate } from "../Api1";
+import {getAllRecruitmentEmailTemplates, saveRecruitmentEmailTemplate, getRecruitmentEmailTemplateById, updateRecruitmentEmailTemplate } from "../Api1";
 import { Subject, SubscriptionsOutlined } from "@mui/icons-material";
+import { FaAsterisk } from "react-icons/fa";
 const Emailtemplate = ({
   open = "",
   close = () => { },
@@ -29,7 +30,9 @@ const Emailtemplate = ({
   const [templateNameError, setTemplateNameError] = useState('');
   const [subjectError, setSubjectError] = useState('')
   const [contentError, setContentError] = useState('');
-  const handleClose = () => {
+  const [Length,setLength] = useState("")
+  const[copytemplateName,setcopytemplateName] = useState("")
+   const handleClose = () => {
     close(false);
   };
   const [content, setContent] = useState("");
@@ -84,7 +87,11 @@ const Emailtemplate = ({
       } else if (templateName.length < 3) {
         setTemplateNameError('Template Name should have at least 3 letters.');
         hasError = true; // Set flag to true if there's an error
-      } else {
+      }else if (Length > 0 && templateName !== copytemplateName) {
+        setTemplateNameError('Template Name already exist');
+        hasError = true; // Set flag to true if there's an error
+      }  
+      else {
         setTemplateNameError('');
       }
 
@@ -193,13 +200,35 @@ const Emailtemplate = ({
 
     }
   };
+  //Get Template By Name 
+  const getEmailtemplateByName = async()=>{
+    try{
+     const response = await getAllRecruitmentEmailTemplates({
+      companyId:companyId,
+      emailTemplateName:templateName,
+     })
+     setLength(response.result.length)
 
+    //  if(response.result.length>0){
+    //   setTemplateNameError('Template Name Already Exist')
+    //   return
+    //  }
+    }catch(error){
+      console.log(error)
+    }
+  }
+  useEffect(()=>{
+    if (templateName !== copytemplateName) {
+    getEmailtemplateByName()
+    }
+  },[templateName])
   const getEmailById = async () => {
     const id = updateId
     try {
       const response = await getRecruitmentEmailTemplateById({ id })
       console.log(response)
       setTemplateName(response.result[0].emailTemplateName);
+      setcopytemplateName(response.result[0].emailTemplateName)
       setContent(response.result[0].emailTemplate.body);
       setsubject(response.result[0].emailTemplate.subject)
 
@@ -208,6 +237,7 @@ const Emailtemplate = ({
     }
   }
   useEffect(() => {
+    
     getEmailById()
     console.log(templateName)
     console.log(content)
@@ -299,6 +329,7 @@ const Emailtemplate = ({
               <FormInput
                 title={"Subject"}
                 placeholder={"Enter Subject"}
+                maxLength={125}
                 value={subject}
                 change={(e) => {
                   setsubject(e)
@@ -310,7 +341,10 @@ const Emailtemplate = ({
 
             </div>
             <div>
-              <p className="pb-2">Email</p>
+              <p className="flex">
+                <p className="pb-2">Email</p>
+                <FaAsterisk className="ml-1.5 text-[6px] text-rose-600" />
+              </p>
               <TextEditor
                 placeholder={"Start typing your email"}
                 initialValue={content}
@@ -320,12 +354,12 @@ const Emailtemplate = ({
 
               />
             </div>
-            <div class="relative max-w-[1070px]  w-full mx-auto h-[49.72px] bg-purple-50 rounded-lg">
+            {/* <div class="relative max-w-[1070px]  w-full mx-auto h-[49.72px] bg-purple-50 rounded-lg">
               <div className="flex justify-start items-center m-3 gap-3">
-                {/* <img src={image}></img>
-                  <img src={image2}></img> */}
+                <img src={image}></img>
+                  <img src={image2}></img>
               </div>
-            </div>
+            </div> */}
           </Accordion>
         </div>
       </DrawerPop>
