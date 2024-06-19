@@ -2175,6 +2175,20 @@ section {
     box-shadow: none;
   } */
 
+    .ant-drawer-right > .ant-drawer-content-wrapper {
+
+      overflow: hidden;
+      box-shadow: none;
+      max-width: 100%;
+    }
+  
+    .ant-drawer-left > .ant-drawer-content-wrapper {
+ 
+      overflow: hidden;
+      box-shadow: none;
+      max-width: 100%;
+    }
+
   .ant-drawer .ant-drawer-mask {
     background: linear-gradient(180deg, rgba(14, 5, 34, 0.30) 0%, rgba(13, 6, 30, 0.60) 100%);
   }

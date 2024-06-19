@@ -1,4 +1,4 @@
-import React, { useEffect,useState } from "react";
+import React, { useEffect, useState } from "react";
 import Card from "./Card";
 import { PiChartBar } from "react-icons/pi";
 import { IoMdArrowDropdown, IoMdArrowDropup } from "react-icons/io";
@@ -11,6 +11,7 @@ import AgeOfJobs from "./AgeOfJobs";
 import NewApplicants from "./NewApplicants";
 import AgeDistribution from "./AgeDistribution";
 import { getDashboardStaticDatas } from "../Api1";
+import TinyLineChart from "./TinyLineChart";
 
 const Discover = () => {
   // const smallCard = [
@@ -39,9 +40,9 @@ const Discover = () => {
   //     IODPercentage: "43%",
   //   },
   // ];
-  const[Name,setName]=useState("")
+  const [Name, setName] = useState("");
   useEffect(() => {
-    const loginDataString = localStorage.getItem('LoginData');
+    const loginDataString = localStorage.getItem("LoginData");
 
     if (loginDataString) {
       const loginData = JSON.parse(loginDataString);
@@ -49,10 +50,10 @@ const Discover = () => {
       const fullName = `${firstName} ${lastName}`;
       setName(fullName);
     } else {
-      console.error('Login data not found in local storage');
+      console.error("Login data not found in local storage");
     }
   }, []);
- const [SmallCard,setsmallCard] =useState([])
+  const [SmallCard, setsmallCard] = useState([]);
   const dropdown1 = [
     {
       id: 1,
@@ -97,50 +98,47 @@ const Discover = () => {
       value: "recruiters",
     },
   ];
-  const [companyId, setCompanyId] = useState(localStorage.getItem("companyId")); 
-  
+  const [companyId, setCompanyId] = useState(localStorage.getItem("companyId"));
+
   useEffect(() => {
     setCompanyId(localStorage.getItem("companyId"));
-    
   }, []);
-  const getJobdetails = async () =>{
-    try{
-    const response = await getDashboardStaticDatas({companyId:companyId})
-    console.log(response)
-    const resultArray = Object.entries(response.result).map(([key, value]) => {
-      console.log("Processing statistic:", key);
-      
-      
-      const currentValue = value.prefix;
-      
-     
-      const isIncreasedOrDecreased = value.isPositive;
-      
-      
-      const IODPercentage = (value.suffix * 100).toFixed(1) + "%";
-      let title = key.replace(/([A-Z])/g, ' $1').trim();
-      title = title.charAt(0).toUpperCase() + title.slice(1);
-    
-      return {
-        title,
-        currentValue,
-        isIncreasedOrDecreased,
-        IODPercentage
-      };
-    });
-    
-    console.log("Result Array:", resultArray);
-    
-    setsmallCard(resultArray);
+  const getJobdetails = async () => {
+    try {
+      const response = await getDashboardStaticDatas({ companyId: companyId });
+      console.log(response);
+      const resultArray = Object.entries(response.result).map(
+        ([key, value]) => {
+          console.log("Processing statistic:", key);
 
-    }catch(error){
-     console.log(error)
+          const currentValue = value.prefix;
+
+          const isIncreasedOrDecreased = value.isPositive;
+
+          const IODPercentage = (value.suffix * 100).toFixed(1) + "%";
+          let title = key.replace(/([A-Z])/g, " $1").trim();
+          title = title.charAt(0).toUpperCase() + title.slice(1);
+
+          return {
+            title,
+            currentValue,
+            isIncreasedOrDecreased,
+            IODPercentage,
+          };
+        }
+      );
+
+      console.log("Result Array:", resultArray);
+
+      setsmallCard(resultArray);
+    } catch (error) {
+      console.log(error);
     }
-  }
-  useEffect(()=>{
-    getJobdetails()
-    console.log(SmallCard)
-  },[])
+  };
+  useEffect(() => {
+    getJobdetails();
+    console.log(SmallCard);
+  }, []);
   return (
     <div className="flex flex-col gap-4 discover">
       <div className="headerTitle">
@@ -156,50 +154,57 @@ const Discover = () => {
         <div className="flex flex-col col-span-12 gap-4 xl:col-span-8 2xl:col-span-9 3xl:col-span-8 4xl:col-span-9">
           {/* SMALL CARD  */}
           <div className="grid grid-cols-12 gap-3">
-          {SmallCard.map((card, index) => (
-  <div key={index} className="col-span-12 sm:col-span-6 lg:col-span-3 2xl:col-span-3">
-    <Card className="2xl:h-[128px]">
-      <div className="flex flex-col gap-3">
-        <div className="flex justify-between">
-          <div
-            className={`vhcenter size-[30px] rounded shrink-0 ${
-              card.isIncreasedOrDecreased
-                ? "bg-[#07A86D]/5 dark:bg-[#07A86D]/20 text-[#07A86D]"
-                : "bg-[#F23131]/5 dark:bg-[#F23131]/20 text-[#F23131]"
-            }`}
-          >
-            <PiChartBar size={16} />
-          </div>
-        </div>
-        <div className="flex flex-col">
-          <p className="para !font-normal">{card.title}</p>
-          <div className="flex items-center gap-2">
-            <h1 className="text-2xl 2xl:text-[32px] dark:text-white 2xl:leading-[140%] font-semibold">
-              {card.currentValue}
-            </h1>
-            <div
-              className={`vhcenter px-2.5 py-1 rounded-full h-6 text-[11px] font-semibold 2xl:leading-[140%] flex items-center gap-1 border ${
-                card.isIncreasedOrDecreased
-                  ? "bg-[#07A86D]/5 dark:bg-[#07A86D]/20 text-[#07A86D] border-[#07A86D]/10 dark:border-[#07A86D]/20"
-                  : "bg-[#F23131]/5 dark:bg-[#F23131]/20 text-[#F23131] border-[#F23131]/10 dark:border-[#F23131]/20"
-              }`}
-            >
-              {card.isIncreasedOrDecreased ? (
-                <IoMdArrowDropup size={16} />
-              ) : (
-                <IoMdArrowDropdown size={16} />
-              )}
-              <span>
-                {card.isIncreasedOrDecreased ? "+" : "-"}
-                {card.IODPercentage}
-              </span>
-            </div>
-          </div>
-        </div>
-      </div>
-    </Card>
-  </div>
-))}
+            {SmallCard.map((card, index) => (
+              <div
+                key={index}
+                className="col-span-12 sm:col-span-6 lg:col-span-3 2xl:col-span-3"
+              >
+                <Card className="2xl:h-[128px]">
+                  <div className="flex flex-col gap-3 relative">
+                    <div className="flex justify-between">
+                      <div
+                        className={`vhcenter size-[30px] rounded shrink-0 ${
+                          card.isIncreasedOrDecreased
+                            ? "bg-[#07A86D]/5 dark:bg-[#07A86D]/20 text-[#07A86D]"
+                            : "bg-[#F23131]/5 dark:bg-[#F23131]/20 text-[#F23131]"
+                        }`}
+                      >
+                        <PiChartBar size={16} />
+                      </div>
+                    </div>
+                    <div className="flex flex-col">
+                      <p className="para !font-normal">{card.title}</p>
+                      <div className="flex items-center gap-2">
+                        <h1 className="text-2xl 2xl:text-[32px] dark:text-white 2xl:leading-[140%] font-semibold">
+                          {card.currentValue}
+                        </h1>
+                        <div
+                          className={`vhcenter px-2.5 py-1 rounded-full h-6 text-[11px] font-semibold 2xl:leading-[140%] flex items-center gap-1 border ${
+                            card.isIncreasedOrDecreased
+                              ? "bg-[#07A86D]/5 dark:bg-[#07A86D]/20 text-[#07A86D] border-[#07A86D]/10 dark:border-[#07A86D]/20"
+                              : "bg-[#F23131]/5 dark:bg-[#F23131]/20 text-[#F23131] border-[#F23131]/10 dark:border-[#F23131]/20"
+                          }`}
+                        >
+                          {card.isIncreasedOrDecreased ? (
+                            <IoMdArrowDropup size={16} />
+                          ) : (
+                            <IoMdArrowDropdown size={16} />
+                          )}
+                          <span>
+                            {card.isIncreasedOrDecreased ? "+" : "-"}
+                            {card.IODPercentage}
+                          </span>
+                        </div>
+                      </div>
+                    </div>
+                    
+                    <div className="absolute top-0 right-0 h-10 w-32">
+                      <TinyLineChart color={card.isIncreasedOrDecreased ? "#07A86D" : "#F23131" }/>
+                    </div>
+                  </div>
+                </Card>
+              </div>
+            ))}
           </div>
 
           {/* TWO COLUMN CHART */}

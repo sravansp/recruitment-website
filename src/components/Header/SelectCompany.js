@@ -103,6 +103,8 @@ const SelectCompany = () => {
   };
   const menuStyle = {
     minWidth: "203px",
+    maxHeight: "400px",
+    overflow: "auto",
     borderRadius: "12.106px",
     boxShadow:
       "0px 29.49px 46.341px 0px rgba(6, 6, 6, 0.10), 0px 29.49px 46.341px 0px rgba(6, 6, 6, 0.10)",
@@ -163,13 +165,13 @@ const SelectCompany = () => {
         {selectedCompany && (
           <div className="flex items-center justify-between overflow-hidden ">
             <div className="flex items-center gap-2 w-28 2xl:w-36">
-              <div className="overflow-hidden border border-white rounded-full shadow-md 2xl:size-8 size-6 shrink-0">
+              {/* <div className="overflow-hidden border border-white rounded-full shadow-md 2xl:size-8 size-6 shrink-0">
                 {selectedCompany?.logo ? (
                   <img src={selectedCompany?.logo} alt="" />
                 ) : (
                   <img src={Clogo} alt="" />
                 )}
-              </div>
+              </div> */}
               <h1
                 className="text-[10px] font-semibold capitalize truncate 2xl:text-sm dark:text-white opacity-70 hidden md:block"
                 title={selectedCompany?.company || ""}
