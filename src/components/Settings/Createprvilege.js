@@ -131,6 +131,12 @@ export default function Createprvilege({
             dataTosave
           )
           console.log(response1);
+          if(response1.status===200){
+            openNotification("success",response?.result)
+          }else{
+            openNotification("error",response1?.result)
+          }
+
 
         }
       } catch (error) {
@@ -153,25 +159,7 @@ export default function Createprvilege({
   useEffect(() => {
     getRoles();
   }, []);
-  // const fromik1 = useFormik({
-  //   initialValues:{
-  //     roleId:"",
-  //     functionId:"",
-  //     createdBy:"",
-  //   },
-  //   onSubmit: async(e) =>{
-     
-     
-  //    console.log(dataTosave);
-  //     try{
-     
-  //     console.log(response)
-  //    }catch(error){
-  //     console.log(error)
-  //    }
-
-  //   }
-  // }) 
+ 
   return (
     <div>
       {show && (
@@ -314,7 +302,7 @@ export default function Createprvilege({
                         // key={item.functionId}
                       >
                         <div className="flex gap-2 dark:text-white ">
-                          {item.subFunctions.length > 0 && (
+                          {item.subFunctions?.length > 0 && (
                             <CheckBoxInput
                               titleRight="Enable All"
                               value={item.subFunctions.every(
@@ -333,7 +321,7 @@ export default function Createprvilege({
                               className="grid grid-cols-2 gap-2 dark:text-white"
                               
                             >
-                          {item.subFunctions.map((subItem, index) => (
+                          {item.subFunctions?.map((subItem, index) => (
                            
                           <div 
                           style={{
