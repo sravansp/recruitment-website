@@ -346,6 +346,8 @@ const Createjob = ({
 
 
       getDepartmentList(firstJob.companyId)
+      getEvaluationtem(firstJob.companyId)
+      getQuestionare(firstJob.companyId)
 
 
 
@@ -1088,9 +1090,12 @@ const Createjob = ({
     // console.log(jobtemplate);
   }, []);
   const [evalutaionTem, setEvalutaionTem] = useState([]);
-  const getEvaluationtem = async () => {
+  const getEvaluationtem = async (e) => {
     try {
-      const response = await getAllRecruitmentEvaluationTemplates({});
+      const response = await getAllRecruitmentEvaluationTemplates({
+        companyId:e
+
+      });
       // console.log(response);
       setEvalutaionTem(
         response.result.map((each) => ({
@@ -1102,15 +1107,18 @@ const Createjob = ({
       // console.log(error);
     }
   };
-  useEffect(() => {
-    getEvaluationtem();
-    // console.log(evalutaionTem);
-  }, []);
+  // useEffect(() => {
+  //   getEvaluationtem();
+  //   // console.log(evalutaionTem);
+  // }, []);
 
   const [questionareTem, setQuestionare] = useState([]);
-  const getQuestionare = async () => {
+  const getQuestionare = async (e) => {
     try {
-      const response = await getAllRecruitmentQuestionnaireTemplates({});
+      const response = await getAllRecruitmentQuestionnaireTemplates({
+        companyId:e
+
+      });
       // console.log(response);
       setQuestionare(
         response.result.map((each) => ({
@@ -1122,10 +1130,10 @@ const Createjob = ({
       // console.log(error);
     }
   };
-  useEffect(() => {
-    getQuestionare();
-    // console.log(evalutaionTem);
-  }, []);
+  // useEffect(() => {
+  //   getQuestionare();
+  //   // console.log(evalutaionTem);
+  // }, []);
 
   const handleButtonClick = async (e) => {
     switch (activeBtnValue) {
@@ -1533,6 +1541,8 @@ const Createjob = ({
                             change={(e) => {
                               formik1.setFieldValue("companyId", e);
                               getDepartmentList(e);
+                              getEvaluationtem(e);
+                              getQuestionare(e)
                             }}
                           />
                         </div>

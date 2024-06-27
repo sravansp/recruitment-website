@@ -1,8 +1,8 @@
 import axios from "axios";
 
 // const apiUrl = 'http://192.168.29.185/loyaltri-recruitment-server/api/v1';
-// const apiUrl = 'https://alpha-jobs-api.loyaltri.com/api/v1';
-const apiUrl = 'https://jobs-api.loyaltri.com/api/v1';
+const apiUrl = 'https://alpha-jobs-api.loyaltri.com/api/v1';
+// const apiUrl = 'https://jobs-api.loyaltri.com/api/v1';
 
 // const apiUrl = 'https://web-jobs-api.loyaltri.com/api/v1';
 // const apiUrl = 'https://demo-jobs-api.loyaltri.com/api/v1'
@@ -65,24 +65,7 @@ export const deleteRecruitmentJobById = async (id) => {
 
   return await apiRequest(action, method, kwargs);
 };
-// export const deleteRecruitmentQuestionnaireTemplateById = async (id) => {
-//   try {
-//     const actionUrl = "deleteRecruitmentQuestionnaireTemplateById";
-//     const method = "DELETE";
-//     const kwargs = { id };
-    
-//     const response = await action(actionUrl, kwargs); // Call action directly
-    
-//     if (response.status === 200) {
-//       return { success: true };
-//     } else {
-//       return { success: false, error: response.statusText };
-//     }
-//   } catch (error) {
-//     console.error("Error deleting template:", error);
-//     return { success: false, error: "An error occurred while deleting the template." };
-//   }
-// };
+
 
 export const getAllRecruitmentResumes = async () => {
   const action = "getAllRecruitmentResumes";
@@ -106,16 +89,7 @@ export const saveRecruitmentJobApplicationFormSetting = async (e) => {
   return await apiRequest(action, method, kwargs);
 };
 
-//Team Members
-// export const getAllRecruitmentJobTeamMembers = async () => {
-//   const action = "getAllRecruitmentJobTeamMembers";
 
-//   const method = "POST";
-
-//   const kwargs = {};
-
-//   return await apiRequest(action, method, kwargs);
-// };
 
 export const getAllRecruitmentUserRoleMappings = async () => {
   const action = "getAllRecruitmentUserRoleMappings";
@@ -195,19 +169,7 @@ export const getAllRecruitmentEmailTemplates = async (data) => {
 
   return await apiRequest(action, method, kwargs);
 };
-// export const getAllRecruitmentQuestionnaireTemplateDetails = async () => {
-//   const action = "getAllRecruitmentQuestionnaireTemplateDetails";
 
-//   const method = "POST";
-//   // const requestData = {
-//   //   // Include any other necessary parameters
-//   //   jobId: jobId,
-//   // };
-
-//   const kwargs = { };
-
-//   return await apiRequest(action, method, kwargs);
-// };
 export const getAllRecruitmentLetterTemplates = async (data) => {
   const action = "getAllRecruitmentLetterTemplates";
 
@@ -232,31 +194,7 @@ export const getAllRecruitmentQuestionnaireTemplates = async (data) => {
   return await apiRequest(action, method, kwargs);
 };
 
-// export const getAllRecruitmentQuestionnaireTemplateDetails = async () => {
-//   const action = "getAllRecruitmentQuestionnaireTemplateDetails";
 
-//   const method = "POST";
-
-//   const kwargs = {};
-
-//   return await apiRequest(action, method, kwargs);
-// };
-
-
-
-// export const getAllRecruitmentLetterTemplates = async () => {
-//   const action = "getAllRecruitmentLetterTemplates";
-
-//   const method = "POST";
-//   // const requestData = {
-//   //   // Include any other necessary parameters
-//   //   jobId: jobId,
-//   // };
-
-
-
-//   return await apiRequest(action, method, kwargs);
-// };
 export const getAllCandidatesByjobId = async (jobId) => {
   console.log(jobId);
   const action = "getAllCandidatesByjobId";
@@ -295,13 +233,7 @@ export const saveRecruitmentResume = async (data) => {
   return await apiRequest(action, method, kwargs);
 };
 
-// export const saveRecruitmentEvaluationTemplateDetailBatch = async (data) => {
-//   const action = "saveRecruitmentEvaluationTemplateDetailBatch";
 
-//   const method = "POST";
-//   const kwargs=data;
-// return await apiRequest(action, method, kwargs);
-// };
 export const saveRecruitmentEvaluationTemplate = async (e) => {
   const action = "saveRecruitmentEvaluationTemplate";
 
@@ -385,15 +317,7 @@ export const saveRecruitmentQuestionnaireTemplateDetailBatch = async (formattedD
     throw error; // Re-throw the error to handle it where the function is called.
   }
 };
-// export const getAllRecruitmentQuestionnaireTemplateDetails = async () => {
-//   const action = "getAllRecruitmentQuestionnaireTemplateDetails";
 
-//   const method = "POST";
-
-//   const kwargs = {};
-
-//   return await apiRequest(action, method, kwargs);
-// };
 export const getAllRecruitmentEvaluationTemplateDetails = async () => {
   const action = "getAllRecruitmentEvaluationTemplateDetails";
 
@@ -403,15 +327,7 @@ export const getAllRecruitmentEvaluationTemplateDetails = async () => {
 
   return await apiRequest(action, method, kwargs);
 };
-// export const getAllRecruitmentLetterTemplates = async () => {
-//   const action = "getAllRecruitmentLetterTemplates";
 
-//   const method = "POST";
-
-//   const kwargs = {};
-
-//   return await apiRequest(action, method, kwargs);
-// };
 
 
 export const saveRecruitmentWorkFlow = async (e) => {
@@ -1236,10 +1152,10 @@ export { action };
 
 
 // file handling url
-// const urlFileHandler = "https://alpha-jobs-api.loyaltri.com/api/fileHandler";
+const urlFileHandler = "https://alpha-jobs-api.loyaltri.com/api/fileHandler";
 // const urlFileHandler = "https://demo-jobs-api.loyaltri.com/api/fileHandler";
 // const urlFileHandler = "https://web-jobs-api.loyaltri.com/api/fileHandler";
-const urlFileHandler = "https://jobs-api.loyaltri.com/api/fileHandler";
+// const urlFileHandler = "https://jobs-api.loyaltri.com/api/fileHandler";
 const fileAction = async (formData) => {
   try {
     const result = await axios.post(urlFileHandler, formData, {

@@ -193,7 +193,9 @@ const Questionaries = ({QuestionareId,stageId}) => {
 
   }, [questionareId||QuestionareId||stageId])
 
-
+  useEffect(()=>{
+    setquestionnaireData([])
+  }, [questionareId===""||QuestionareId===""||stageId===""])
   const options = [
     {
       id: 1,

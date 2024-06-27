@@ -21,7 +21,7 @@ export default function TextArea({
   const isSmallScreen = useMediaQuery({ maxWidth: 1439 });
   const { TextArea } = Input;
 
-  const [letterCount, setLetterCount] = useState(value?.length);
+  const [letterCount, setLetterCount] = useState("");
   const handleChange = (e) => {
     let inputValue = e.target.value;
     if (inputValue.length > maxLength) {
@@ -33,7 +33,7 @@ export default function TextArea({
 
   useEffect(() => {
     let inputValue = value;
-    setLetterCount(inputValue.length);
+    setLetterCount(inputValue?.length||0);
   }, [value])
 
   return (

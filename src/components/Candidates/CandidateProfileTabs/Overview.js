@@ -116,7 +116,7 @@ const Overview = ({ onEmailSelect }) => {
   };
   const getCandidatesById = async () => {
     try {
-      const response = await getRecruitmentResumeById(id);
+      const response = await getRecruitmentResumeById({id:id});
       console.log(response, "getRecruitmentResumeById")
       setcandidate(response.result)
       setCandidateEmail(response.result[0].candidateEmail)

@@ -163,7 +163,7 @@ const CVResume = ({ showTextEditor, pdfUrl }) => {
 
   const getCandidatesById = async () => {
     try {
-      const response = await getRecruitmentResumeById(resumeId);
+      const response = await getRecruitmentResumeById({id:resumeId});
 
 
       setPdFViewer(response.result[0].resumeFile)

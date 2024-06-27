@@ -391,11 +391,13 @@ const Evaluations = ({EvaluationID="",stageId=""}) => {
       getevaluation();
       console.log(evaluationList)
 
-   
+    
 
 
   }, [evalutaionId||EvaluationID||stageId])
-  
+  useEffect(()=>{
+    setevaluationList([])
+  },[evalutaionId===""||EvaluationID===""||stageId===""])
 
   const onChange = (e) => { };
 

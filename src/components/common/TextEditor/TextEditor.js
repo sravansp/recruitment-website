@@ -4,6 +4,7 @@ import {
     convertToRaw,
     ContentState,
     convertFromHTML,
+    Modifier,
 } from "draft-js";
 import { Editor } from "react-draft-wysiwyg";
 import { FaAsterisk } from "react-icons/fa";
@@ -12,6 +13,7 @@ import "react-draft-wysiwyg/dist/react-draft-wysiwyg.css";
 import { BeatLoader } from "react-spinners";
 import { FiAlertCircle } from "react-icons/fi";
 import draftToHtml from 'draftjs-to-html';
+import { Select } from "antd";
 
 const TextEditor = ({
     title = "",
@@ -78,7 +80,41 @@ const TextEditor = ({
         console.log(htmlContent)
         setTrigger(true)
     };
+    const handleItemClick = (value) => {
+        const contentState = editorState.getCurrentContent();
+        const selectionState = editorState.getSelection();
+        const newContentState = Modifier.insertText(
+            contentState,
+            selectionState,
+            value
+        );
+        const newEditorState = EditorState.push(
+            editorState,
+            newContentState,
+            'insert-characters'
+        );
+        setEditorState(newEditorState);
+    };
 
+    const items = [
+        { value: '[Enter Name Here]', label: 'Enter Name' },
+        { value: '[Enter Date Here]', label: 'Enter Date' },
+        { value: '[Enter Location Here]', label: 'Enter Location' },
+    ];
+
+    const DropdownComponent = () => (
+        <Select
+            placeholder="Insert Placeholder"
+            style={{ width: 200 }}
+            onChange={handleItemClick}
+        >
+            {items.map(item => (
+                <Select.Option key={item.value} value={item.value}>
+                    {item.label}
+                </Select.Option>
+            ))}
+        </Select>
+    );
     // useEffect(()=>{
     //     handleEditorChange()
     // },[initialValue])
@@ -108,6 +144,7 @@ const TextEditor = ({
                         onEditorStateChange={handleEditorChange}
                         placeholder={placeholder}
                         wrapperStyle={{ height: height }}
+                        toolbarCustomButtons={[<DropdownComponent key="dropdown" />]}
                         toolbar={{
                             options: ["inline", "fontSize", "list", "textAlign"],
                             inline: { options: ["bold", "italic", "underline", "strikethrough"] },

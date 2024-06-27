@@ -314,7 +314,7 @@ const Emails = ({ Email }) => {
                 className="border-none"
                 height="250px"
               />
-              <Dropdown options={dropdown1} value="Placeholder" placeholder="Placeholder" icon={<PiBracketsCurly />} icondropDown={<PiBracketsCurly />}/>
+              {/* <Dropdown options={dropdown1} value="Placeholder" placeholder="Placeholder" icon={<PiBracketsCurly />} icondropDown={<PiBracketsCurly />}/> */}
             </div>
           </div>
           {uploadedFiles.length > 0 && (
