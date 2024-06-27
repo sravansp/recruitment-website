@@ -12,33 +12,38 @@ import { FaCircleMinus, FaThumbsDown, FaThumbsUp } from "react-icons/fa6";
 import { GoStarFill } from "react-icons/go";
 import { RxCrossCircled } from "react-icons/rx";
 import { useParams, useLocation } from "react-router-dom";
-import { updateRecruitmentJobResumesNote, getRecruitmentJobResumesNoteById, getAllRecruitmentJobResumesEvaluations, saveOrUpdateRecruitmentJobResumesEvaluationBatch, saveRecruitmentJobResumesNote, getAllRecruitmentJobResumesNotes, getRecruitmentEvaluationTemplateById, getRecruitmentJobById } from "../../Api1";
-import { Formik, useFormik } from 'formik';
+import {
+  updateRecruitmentJobResumesNote,
+  getRecruitmentJobResumesNoteById,
+  getAllRecruitmentJobResumesEvaluations,
+  saveOrUpdateRecruitmentJobResumesEvaluationBatch,
+  saveRecruitmentJobResumesNote,
+  getAllRecruitmentJobResumesNotes,
+  getRecruitmentEvaluationTemplateById,
+  getRecruitmentJobById,
+} from "../../Api1";
+import { Formik, useFormik } from "formik";
 import TextArea from "../../common/TextArea";
 import CheckBoxInput from "../../common/CheckBoxInput";
 import FormInput from "../../common/FormInput";
 import { FaRegEdit } from "react-icons/fa";
 import { PiPushPinSlashBold } from "react-icons/pi";
 
-
-
-
-const Evaluations = ({EvaluationID="",stageId=""}) => {
-  console.log(EvaluationID)
-  console.log(stageId)
+const Evaluations = ({ EvaluationID = "", stageId = "" }) => {
+  console.log(EvaluationID);
+  console.log(stageId);
 
   const primaryColor = localStorage.getItem("mainColor");
-  const [evaluationList, setevaluationList] = useState([])
+  const [evaluationList, setevaluationList] = useState([]);
   const { state } = useLocation();
-  const [jobId, setJobId] = useState(null)
-  const { resumeId } = useParams()
+  const [jobId, setJobId] = useState(null);
+  const { resumeId } = useParams();
   const [selectedNoteId, setSelectedNoteId] = useState(null);
   const [isPinned, setIsPinned] = useState(0);
-  const [evalutaionId, setEvaluationId] = useState("")
+  const [evalutaionId, setEvaluationId] = useState("");
   const handleEditClick = (jobResumeNoteId) => {
     setSelectedNoteId(jobResumeNoteId);
-    getnotesbyId(jobResumeNoteId)
-    
+    getnotesbyId(jobResumeNoteId);
   };
   const onTabChange = (tabId) => {
     // Do something when the tab changes if needed
@@ -78,27 +83,28 @@ const Evaluations = ({EvaluationID="",stageId=""}) => {
       placement: "top",
       // stack: 2,
       style: {
-        background: `${type === "success"
-          ? `linear-gradient(180deg, rgba(204, 255, 233, 0.8) 0%, rgba(235, 252, 248, 0.8) 51.08%, rgba(246, 251, 253, 0.8) 100%)`
-          : "linear-gradient(180deg, rgba(255, 236, 236, 0.80) 0%, rgba(253, 246, 248, 0.80) 51.13%, rgba(251, 251, 254, 0.80) 100%)"
-          }`,
-        boxShadow: `${type === "success"
-          ? "0px 4.868px 11.358px rgba(62, 255, 93, 0.2)"
-          : "0px 22px 60px rgba(134, 92, 144, 0.20)"
-          }`,
+        background: `${
+          type === "success"
+            ? `linear-gradient(180deg, rgba(204, 255, 233, 0.8) 0%, rgba(235, 252, 248, 0.8) 51.08%, rgba(246, 251, 253, 0.8) 100%)`
+            : "linear-gradient(180deg, rgba(255, 236, 236, 0.80) 0%, rgba(253, 246, 248, 0.80) 51.13%, rgba(251, 251, 254, 0.80) 100%)"
+        }`,
+        boxShadow: `${
+          type === "success"
+            ? "0px 4.868px 11.358px rgba(62, 255, 93, 0.2)"
+            : "0px 22px 60px rgba(134, 92, 144, 0.20)"
+        }`,
       },
       // duration: null,
     });
   };
 
-  const [evaluationAnswers, setEvaluationAnswers] = useState([])
-  const [dropdownvalue, Setdopdownvalue] = useState(null)
-  const [textAreaValue, setTextAreavalue] = useState(null)
-  const [forminputvalue, setForminputValue] = useState(null)
-  const [jobResumeEvaluationId, setjobResumeEvaluationId] = useState([])
-  const [fetchedAnswers, setfetchedAnswers] = useState([])
-  
-  
+  const [evaluationAnswers, setEvaluationAnswers] = useState([]);
+  const [dropdownvalue, Setdopdownvalue] = useState(null);
+  const [textAreaValue, setTextAreavalue] = useState(null);
+  const [forminputvalue, setForminputValue] = useState(null);
+  const [jobResumeEvaluationId, setjobResumeEvaluationId] = useState([]);
+  const [fetchedAnswers, setfetchedAnswers] = useState([]);
+
   useEffect(() => {
     // if (state && state.jobID) {
     //   setJobId(state.jobID);
@@ -108,62 +114,70 @@ const Evaluations = ({EvaluationID="",stageId=""}) => {
     //     setJobId(storedJobId);
     //   }
     // }
-    setJobId(localStorage.getItem('jobid'));
+    setJobId(localStorage.getItem("jobid"));
   }, []);
   const getresumeEvalutionId = async () => {
     try {
       const response = await getAllRecruitmentJobResumesEvaluations({
-        jobId: localStorage.getItem('jobid'),
+        jobId: localStorage.getItem("jobid"),
         resumeId: resumeId,
-        stageId: stageId
+        stageId: stageId,
       });
       console.log(response);
       setfetchedAnswers(response.result);
       // Set the fetched evaluation answers to state
-      console.log(response.result) 
+      console.log(response.result);
 
-      console.log(evaluationList)// Iterate through the fetched evaluation answers and set the corresponding state variables
-
+      console.log(evaluationList); // Iterate through the fetched evaluation answers and set the corresponding state variables
     } catch (error) {
       console.log(error);
     }
   };
   useEffect(() => {
-   
-    getresumeEvalutionId()
-    console.log("hi")
-   
-  }, [evaluationList])
+    getresumeEvalutionId();
+    console.log("hi");
+  }, [evaluationList]);
 
   useEffect(() => {
-    console.log(fetchedAnswers)
-    fetchedAnswers.forEach(answer => {
+    console.log(fetchedAnswers);
+    fetchedAnswers.forEach((answer) => {
       const { evaluationTemplateDetailsId, evaluationAnswer } = answer;
-      const matchedCondition = evaluationList.find(condition => condition.evaluationTemplateDetailsId === evaluationTemplateDetailsId);
-      console.log(matchedCondition)
+      const matchedCondition = evaluationList.find(
+        (condition) =>
+          condition.evaluationTemplateDetailsId === evaluationTemplateDetailsId
+      );
+      console.log(matchedCondition);
       if (matchedCondition) {
-        const metaData = matchedCondition.answerMetaData.find(meta => meta.key);
+        const metaData = matchedCondition.answerMetaData.find(
+          (meta) => meta.key
+        );
         if (metaData) {
           const { key } = metaData;
           switch (key) {
-            case 'Drop-down':
+            case "Drop-down":
               Setdopdownvalue(evaluationAnswer);
               break;
-            case 'Paragraph':
+            case "Paragraph":
               setTextAreavalue(evaluationAnswer);
               break;
-            case 'Checkboxes':
-              const selectedOptions = evaluationAnswer.split(',').map(option => option.trim());
+            case "Checkboxes":
+              const selectedOptions = evaluationAnswer
+                .split(",")
+                .map((option) => option.trim());
               setSelectedCheckboxes(selectedOptions);
-              console.log(selectedOptions)
+              console.log(selectedOptions);
               break;
-            case 'Short Answer':
+            case "Short Answer":
               setForminputValue(evaluationAnswer);
               break;
-            case 'Multiple Choice':
-              setSelectedValues(prevState => {
+            case "Multiple Choice":
+              setSelectedValues((prevState) => {
                 const newState = [...prevState];
-                const index = evaluationList.findIndex(condition => condition.evaluationTemplateDetailsId === evaluationTemplateDetailsId);
+                const index = evaluationList.findIndex(
+                  (condition) =>
+                    condition.evaluationTemplateDetailsId ===
+                    evaluationTemplateDetailsId
+                );
                 newState[index] = evaluationAnswer;
                 return newState;
               });
@@ -180,42 +194,44 @@ const Evaluations = ({EvaluationID="",stageId=""}) => {
     try {
       const newAnswers = evaluationList.flatMap((condition, conditionIndex) => {
         const answers = {}; // Object to store answers for each evaluationTemplateDetailsId
-        condition.answerMetaData.forEach(metadata => {
+        condition.answerMetaData.forEach((metadata) => {
           const detailsId = condition.evaluationTemplateDetailsId;
-          const answer = evaluationAnswers.find(a => a.evaluationTemplateDetailsId === detailsId);
+          const answer = evaluationAnswers.find(
+            (a) => a.evaluationTemplateDetailsId === detailsId
+          );
           let evaluationAnswer;
           switch (metadata.key) {
-            case 'Drop-down':
+            case "Drop-down":
               evaluationAnswer = dropdownvalue;
               break;
-            case 'Paragraph':
+            case "Paragraph":
               evaluationAnswer = textAreaValue;
               break;
-            case 'Checkboxes':
-              const selectedCheckboxValues = selectedCheckboxes.filter(option =>
-                metadata.value.split(',').includes(option.trim())
-              );
-              evaluationAnswer = selectedCheckboxValues.join(', ');
+              case "Checkboxes":
+                const selectedCheckboxValues = selectedCheckboxes.filter(
+                  (option) => metadata.value.split(",").includes(option.trim())
+                );
+                evaluationAnswer = selectedCheckboxes.join(", ");
               break;
-            case 'Short Answer':
+            case "Short Answer":
               evaluationAnswer = forminputvalue;
               break;
-            case 'Multiple Choice':
+            case "Multiple Choice":
               evaluationAnswer = selectedValues[conditionIndex];
               break;
             default:
-             
           }
           // Store the answer based on evaluationTemplateDetailsId
           answers[detailsId] = {
-
             jobId: jobId,
             resumeId: resumeId,
             stageId: stageId,
             evaluationTemplateId: evalutaionId || EvaluationID,
             evaluationTemplateDetailsId: detailsId,
-            evaluationAnswer: answer ? answer.evaluationAnswer : evaluationAnswer,
-            createdBy: null
+            evaluationAnswer: answer
+              ? answer.evaluationAnswer
+              : evaluationAnswer,
+            createdBy: null,
           };
         });
         // Convert the answers object to an array
@@ -224,36 +240,24 @@ const Evaluations = ({EvaluationID="",stageId=""}) => {
 
       console.log("New Answers:", newAnswers);
 
-
       // Save the new answers to the database
-      const response = await saveOrUpdateRecruitmentJobResumesEvaluationBatch(newAnswers);
+      const response = await saveOrUpdateRecruitmentJobResumesEvaluationBatch(
+        newAnswers
+      );
       console.log("Save Response:", response);
       if (response.status === 200) {
-
-
-        openNotification(
-          "success",
-          "Successful",
-          response.message
-        );
+        openNotification("success", "Successful", response.message);
         formik.resetForm();
-
       } else if (response.status === 500) {
-        openNotification(
-          "success",
-          "Successful",
-          response.message
-        );
+        openNotification("success", "Successful", response.message);
       }
 
       // Optionally, handle the response from the database here
-
     } catch (error) {
       console.error("Error in handleSubmit:", error);
       // Handle errors here
     }
   };
-
 
   const [selectedValues, setSelectedValues] = useState([]);
 
@@ -264,41 +268,51 @@ const Evaluations = ({EvaluationID="",stageId=""}) => {
     setSelectedValues(newSelectedValues);
   };
 
-
   const getEvtempId = async () => {
-    const response = await getRecruitmentJobById({ id: jobId })
-    setEvaluationId(response.result[0].evaluationTemplateId)
+    const response = await getRecruitmentJobById({ id: jobId });
+    setEvaluationId(response.result[0].evaluationTemplateId);
 
-    console.log(response.result[0].evaluationTemplateId)
-
-  }
+    console.log(response.result[0].evaluationTemplateId);
+  };
 
   const [selectedCheckboxes, setSelectedCheckboxes] = useState([]);
 
   // Function to handle changes in the selected checkboxes
+  // const handleCheckboxChange = (value) => {
+  //   const newSelectedCheckboxes = [...selectedCheckboxes];
+  //   const index = newSelectedCheckboxes.indexOf(value);
+  //   if (index === -1) {
+  //     newSelectedCheckboxes.push(value);
+  //   } else {
+  //     newSelectedCheckboxes.splice(index, 1);
+  //   }
+  //   setSelectedCheckboxes(newSelectedCheckboxes);
+  // };
   const handleCheckboxChange = (value) => {
-    const newSelectedCheckboxes = [...selectedCheckboxes];
-    const index = newSelectedCheckboxes.indexOf(value);
-    if (index === -1) {
-      newSelectedCheckboxes.push(value);
-    } else {
-      newSelectedCheckboxes.splice(index, 1);
-    }
-    setSelectedCheckboxes(newSelectedCheckboxes);
+    setSelectedCheckboxes((prevSelectedCheckboxes) => {
+      const newSelectedCheckboxes = [...prevSelectedCheckboxes];
+      const index = newSelectedCheckboxes.indexOf(value);
+      if (index === -1) {
+        newSelectedCheckboxes.push(value);
+      } else {
+        newSelectedCheckboxes.splice(index, 1);
+      }
+      console.log("newSelectedCheckboxes",newSelectedCheckboxes)
+      return newSelectedCheckboxes;
+    });
   };
   useEffect(() => {
     if (jobId !== "null") {
-      getEvtempId()
+      getEvtempId();
     }
-
-  }, [jobId])
+  }, [jobId]);
   const [notes, setnotes] = useState("");
   const formik = useFormik({
     initialValues: {
       jobId: "",
       resumeId: "",
       notes: "",
-      createdBy: ""
+      createdBy: "",
     },
     onSubmit: async (e) => {
       try {
@@ -308,9 +322,9 @@ const Evaluations = ({EvaluationID="",stageId=""}) => {
             resumeId: resumeId,
             notes: e.notes,
             createdBy: null,
-          })
-          console.log(response)
-          getnotes()
+          });
+          console.log(response);
+          getnotes();
         } else {
           const response = await updateRecruitmentJobResumesNote({
             id: selectedNoteId,
@@ -318,43 +332,43 @@ const Evaluations = ({EvaluationID="",stageId=""}) => {
             resumeId: resumeId,
             notes: e.notes,
             isPinned: isPinned,
-            modifiedBy: null
-          })
-          console.log(response)
-          getnotes()
+            modifiedBy: null,
+          });
+          console.log(response);
+          getnotes();
         }
       } catch (error) {
-        console.log(error)
+        console.log(error);
       }
-    }
-  })
+    },
+  });
   const getnotes = async () => {
     try {
-      const response = await getAllRecruitmentJobResumesNotes({ resumeId: resumeId })
-      console.log(response)
-      setnotes(response.result)
-
+      const response = await getAllRecruitmentJobResumesNotes({
+        resumeId: resumeId,
+      });
+      console.log(response);
+      setnotes(response.result);
     } catch (error) {
-      console.log(error)
+      console.log(error);
     }
-  }
+  };
   useEffect(() => {
-    getnotes()
-    console.log(notes)
-
-  }, [resumeId])
+    getnotes();
+    console.log(notes);
+  }, [resumeId]);
 
   const getnotesbyId = async (jobResumeNoteId) => {
     try {
-      const response = await getRecruitmentJobResumesNoteById({ id: jobResumeNoteId })
+      const response = await getRecruitmentJobResumesNoteById({
+        id: jobResumeNoteId,
+      });
       console.log(response);
-      formik.setFieldValue('notes', response.result[0].notes)
+      formik.setFieldValue("notes", response.result[0].notes);
     } catch (error) {
-      console.log(error)
+      console.log(error);
     }
-
-  }
-
+  };
 
   const getevaluation = async () => {
     try {
@@ -367,39 +381,36 @@ const Evaluations = ({EvaluationID="",stageId=""}) => {
         throw new Error("Neither evaluationId nor EvaluationID is present.");
       }
 
-      const response = await getRecruitmentEvaluationTemplateById({ id: idToUse })
-      console.log(response)
-      const evaluationData = response.result.flatMap(item => {
-        return item.evaluationTemplateDetailData.map(detail => ({
+      const response = await getRecruitmentEvaluationTemplateById({
+        id: idToUse,
+      });
+      console.log(response);
+      const evaluationData = response.result.flatMap((item) => {
+        return item.evaluationTemplateDetailData.map((detail) => ({
           evaluationTemplateDetailsId: detail.evaluationTemplateDetailsId,
           question: detail.question,
-          answerMetaData: detail.answerMetaData.map(metadata => ({ // Fix here
+          answerMetaData: detail.answerMetaData.map((metadata) => ({
+            // Fix here
             key: metadata.key,
-            value: metadata.value
-          }))
+            value: metadata.value,
+          })),
         }));
       });
 
-      setevaluationList(evaluationData)
-
+      setevaluationList(evaluationData);
     } catch (error) {
-      console.log(error)
+      console.log(error);
     }
-  }
+  };
   useEffect(() => {
-    
-      getevaluation();
-      console.log(evaluationList)
+    getevaluation();
+    console.log(evaluationList);
+  }, [evalutaionId || EvaluationID || stageId]);
+  useEffect(() => {
+    setevaluationList([]);
+  }, [evalutaionId === "" || EvaluationID === "" || stageId === ""]);
 
-    
-
-
-  }, [evalutaionId||EvaluationID||stageId])
-  useEffect(()=>{
-    setevaluationList([])
-  },[evalutaionId===""||EvaluationID===""||stageId===""])
-
-  const onChange = (e) => { };
+  const onChange = (e) => {};
 
   //rendecomponent
   return (
@@ -410,7 +421,6 @@ const Evaluations = ({EvaluationID="",stageId=""}) => {
           <div className="flex flex-col gap-4 ">
             <div className="flex items-center justify-between">
               <h6 className="h6">Evaluation Form</h6>
-
             </div>
             {/* <div className="v-divider  border-[1px] opacity-[10px]" /> */}
 
@@ -511,87 +521,102 @@ const Evaluations = ({EvaluationID="",stageId=""}) => {
               </Radio.Group>
             </div> */}
             {evaluationList.length > 0 ? (
-  <>
-  <div className="flex flex-col gap-4">
-    {evaluationList.map((condition, index) => (
-      <div key={index}>
-        <h4>{condition.question}</h4>
-        {condition.answerMetaData.map((metadata, idx) => (
-          <div key={idx}>
-            {metadata.key === 'Drop-down' && idx === 0 && (
-              <Dropdown
-                options={condition.answerMetaData
-                  .filter(meta => meta.key === 'Drop-down')
-                  .flatMap(meta => meta.value.split(','))
-                  .map(option => ({ label: option.trim(), value: option.trim() }))}
-                change={Setdopdownvalue}
-                value={dropdownvalue} 
-                // title={condition.question}
-                
-                />
-            )}
-            {metadata.key === 'Paragraph' && (
-              <TextArea
-                rows={4}
-                change={setTextAreavalue}
-                value={textAreaValue} 
-                // title={condition.question}
-                />
-            )}
-            {metadata.key === 'Checkboxes' && (
-              <div>
-                {metadata.value.split(',').map((option, optIdx) => (
-                  <label key={optIdx}>
-                    <Checkbox
-                      value={option.trim()}
-                      checked={selectedCheckboxes.includes(option.trim())}
-                      onChange={() => handleCheckboxChange(option.trim())} 
-                      
-                      
-                      />
-                    {option.trim()}
-                  </label>
-                ))}
-              </div>
-            )}
-            {metadata.key === 'Short Answer' && (
-              <FormInput
-                change={setForminputValue}
-                value={forminputvalue} 
-                // title={condition.question}
-                />
-            )}
-            {metadata.key === 'Multiple Choice' && (
-              <div>
-                <Radio.Group
-                  onChange={e => handleRadioChange(e, index)}
-                  value={selectedValues[index]}
-                >
-                  {metadata.value.split(',').map((option, optIdx) => (
-                    <Radio key={optIdx} value={option.trim()}>
-                      {option.trim()}
-                    </Radio>
+              <>
+                <div className="flex flex-col gap-4">
+                  {evaluationList.map((condition, index) => (
+                    <div key={index}>
+                      <h4>{condition.question}</h4>
+                      {condition.answerMetaData.map((metadata, idx) => (
+                        <div key={idx}>
+                          {metadata.key === "Drop-down" && idx === 0 && (
+                            <Dropdown
+                              options={condition.answerMetaData
+                                .filter((meta) => meta.key === "Drop-down")
+                                .flatMap((meta) => meta.value.split(","))
+                                .map((option) => ({
+                                  label: option.trim(),
+                                  value: option.trim(),
+                                }))}
+                              change={Setdopdownvalue}
+                              value={dropdownvalue}
+                              // title={condition.question}
+                            />
+                          )}
+                          {metadata.key === "Paragraph" && (
+                            <TextArea
+                              rows={4}
+                              change={setTextAreavalue}
+                              value={textAreaValue}
+                              // title={condition.question}
+                            />
+                          )}
+                          {metadata.key === "Checkboxes" && (
+                            <div>
+                              {metadata.value
+                                .split(",")
+                                .map((option, optIdx) => (
+                                  <label key={optIdx}>
+                                    <Checkbox
+                                      value={option.trim()}
+                                      checked={selectedCheckboxes.includes(
+                                        option.trim()
+                                      )}
+                                      onChange={() =>
+                                        handleCheckboxChange(option.trim())
+                                      }
+                                    />
+                                    {option.trim()}
+                                  </label>
+                                ))}
+                            </div>
+                          )}
+                          {metadata.key === "Short Answer" && (
+                            <FormInput
+                              change={setForminputValue}
+                              value={forminputvalue}
+                              // title={condition.question}
+                            />
+                          )}
+                          {metadata.key === "Multiple Choice" && (
+                            <div>
+                              <Radio.Group
+                                onChange={(e) => handleRadioChange(e, index)}
+                                value={selectedValues[index]}
+                              >
+                                {metadata.value
+                                  .split(",")
+                                  .map((option, optIdx) => (
+                                    <Radio key={optIdx} value={option.trim()}>
+                                      {option.trim()}
+                                    </Radio>
+                                  ))}
+                              </Radio.Group>
+                            </div>
+                          )}
+                        </div>
+                      ))}
+                    </div>
                   ))}
-                </Radio.Group>
-              </div>
-            )}
-          </div>
-        ))}
-      </div>
-    ))}
-    </div>
-    <div className="flex items-center justify-end gap-2.5 p-1.5 mt-[18.88px] rounded-lg">
-      <ButtonClick handleSubmit={handleSubmit} buttonName="save" BtnType="primary" />
-    </div>
-  </>
-) : (
-  <div className="h-full gap-4 vhcenter box-wrapper borderb">
-    <div className="flex flex-col items-center gap-4">
-      <div className="size-11 bg-[#F9FAFB] dark:bg-secondaryDark rounded-full vhcenter">
-        <RiImage2Fill size={60} className="text-black text-opacity-50 dark:text-white" />
-      </div>
-      <h6 className="h6">You don't have any evaluation now</h6>
-      {/* <p className="para">
+                </div>
+                <div className="flex items-center justify-end gap-2.5 p-1.5 mt-[18.88px] rounded-lg">
+                  <ButtonClick
+                    handleSubmit={handleSubmit}
+                    buttonName="save"
+                    BtnType="primary"
+                  />
+                </div>
+              </>
+            ) : (
+              <div className="h-full gap-4 vhcenter box-wrapper borderb">
+                <div className="flex flex-col items-center gap-4">
+                  <div className="size-11 bg-[#F9FAFB] dark:bg-secondaryDark rounded-full vhcenter">
+                    <RiImage2Fill
+                      size={60}
+                      className="text-black text-opacity-50 dark:text-white"
+                    />
+                  </div>
+                  <h6 className="h6">You don't have any evaluation now</h6>
+                  {/* <p className="para">
         You can schedule a meeting at any moment you want. Click "Create Event" to set one.
       </p>
       <ButtonClick
@@ -599,10 +624,9 @@ const Evaluations = ({EvaluationID="",stageId=""}) => {
         BtnType="primary"
         handleSubmit={onCreateEventClick}
       /> */}
-    </div>
-  </div>
-)}
-
+                </div>
+              </div>
+            )}
           </div>
         </div>
       </div>
@@ -620,7 +644,7 @@ const Evaluations = ({EvaluationID="",stageId=""}) => {
             initialValue={formik.values.notes}
             placeholder={"Type here....."}
             onChange={(e) => {
-              formik.setFieldValue('notes', e)
+              formik.setFieldValue("notes", e);
             }}
             minheight="250px"
           />
@@ -629,29 +653,38 @@ const Evaluations = ({EvaluationID="",stageId=""}) => {
             style={{ backgroundColor: `${primaryColor}10` }}
           >
             <ButtonClick buttonName="Cancel" />
-            <ButtonClick buttonName="Save" BtnType="primary" handleSubmit={formik.handleSubmit} />
+            <ButtonClick
+              buttonName="Save"
+              BtnType="primary"
+              handleSubmit={formik.handleSubmit}
+            />
           </div>
         </div>
         <div className="rounded-lg bg-white dark:bg-secondaryDark p-1.5 ">
-          {notes && notes.map((note, index) => (
-            <div className="relative flex pb-6" key={index}>
-              <div className="flex items-center justify-between w-full">
-                <p className="pblack flex-grow pl-4 !font-normal">
-                  <strong>{note.notes}</strong>
-                </p>
-                <div className="flex items-center gap-6"> {/* Added gap between createdOn and icons */}
-                  <p className="para !font-normal">{note.createdOn}</p>
-                  <div className="flex items-center gap-3">
-                    {/* <TiPin
+          {notes &&
+            notes.map((note, index) => (
+              <div className="relative flex pb-6" key={index}>
+                <div className="flex items-center justify-between w-full">
+                  <p className="pblack flex-grow pl-4 !font-normal">
+                    <strong>{note.notes}</strong>
+                  </p>
+                  <div className="flex items-center gap-6">
+                    {" "}
+                    {/* Added gap between createdOn and icons */}
+                    <p className="para !font-normal">{note.createdOn}</p>
+                    <div className="flex items-center gap-3">
+                      {/* <TiPin
                   onClick={() => handlePinClick(note.jobResumeNoteId)}
                   style={{ color: selectedNoteId === note.jobResumeNoteId && isPinned === 1 ? 'blue' : 'gray' }}
                 />  */}
-                    <FaRegEdit onClick={() => handleEditClick(note.jobResumeNoteId)} />
+                      <FaRegEdit
+                        onClick={() => handleEditClick(note.jobResumeNoteId)}
+                      />
+                    </div>
                   </div>
                 </div>
               </div>
-            </div>
-          ))}
+            ))}
         </div>
       </div>
       {contextHolder}
