@@ -41,6 +41,7 @@ const Template = ({
 
   const [emailSubject, setEmailSubject] = useState("")
   const [navigationPath, setNavigationPath] = useState("Job_Template");
+  const [sortedInfo, setSortedInfo] = useState({});
   useEffect(() => {
     setCompanyId(localStorage.getItem("companyId"));
   }, []);
@@ -53,6 +54,11 @@ const Template = ({
     { label: t("Templates"), url: "" },
     { label: navigationPath.replace(/_/g, ' '), url: "" },
   ];
+  const handleChange = (pagination, filters, sorter) => {
+    console.log('Various parameters', pagination, filters, sorter);
+
+    setSortedInfo(sorter || {});
+  };
   const tabs = [
     {
       id: 1,
@@ -130,6 +136,9 @@ const Template = ({
           title: t("Template Name"),
           value: "jobTitle",
           bold: true,
+          key: "jobTitle",
+          sorter: (a, b) => a.jobTitle.localeCompare(b.jobTitle),
+          sortOrder: sortedInfo?.columnKey === 'jobTitle' ? sortedInfo.order : null,
         },
         {
           id: 2,
@@ -162,6 +171,9 @@ const Template = ({
           title: t("Template Name"),
           value: "descriptionTemplateName",
           bold: true,
+          key: "descriptionTemplateName",
+          sorter: (a, b) => a.descriptionTemplateName.localeCompare(b.descriptionTemplateName),
+          sortOrder: sortedInfo?.columnKey === 'descriptionTemplateName' ? sortedInfo.order : null,
         },
         {
           id: 2,
@@ -194,6 +206,9 @@ const Template = ({
           title: t("Template Name"),
           value: "workFlowName",
           bold: true,
+          key: "workFlowName",
+          sorter: (a, b) => a.workFlowName.localeCompare(b.workFlowName),
+          sortOrder: sortedInfo?.columnKey === 'workFlowName' ? sortedInfo.order : null,
         },
         {
           id: 2,
@@ -226,6 +241,9 @@ const Template = ({
           title: t("Template Name"),
           value: "title",
           bold: true,
+          key: "title",
+          sorter: (a, b) => a.title.localeCompare(b.title),
+          sortOrder: sortedInfo?.columnKey === 'title' ? sortedInfo.order : null,
         },
         {
           id: 2,
@@ -257,6 +275,9 @@ const Template = ({
           title: t("Template Name"),
           value: "evaluationTemplateName",
           bold: true,
+          key: "evaluationTemplateName",
+          sorter: (a, b) => a.evaluationTemplateName.localeCompare(b.evaluationTemplateName),
+          sortOrder: sortedInfo?.columnKey === 'evaluationTemplateName' ? sortedInfo.order : null,
         },
         {
           id: 2,
@@ -289,6 +310,9 @@ const Template = ({
           title: t("Template Name"),
           value: "questionnaireTemplateName",
           bold: true,
+          key: "questionnaireTemplateName",
+          sorter: (a, b) => a.questionnaireTemplateName.localeCompare(b.questionnaireTemplateName),
+          sortOrder: sortedInfo?.columnKey === 'questionnaireTemplateName' ? sortedInfo.order : null,
         },
         {
           id: 2,
@@ -321,6 +345,9 @@ const Template = ({
           title: t("Template Name"),
           value: "title",
           bold: true,
+          key: "title",
+          sorter: (a, b) => a.title.localeCompare(b.title),
+          sortOrder: sortedInfo?.columnKey === 'title' ? sortedInfo.order : null,
         },
         {
           id: 2,
@@ -897,7 +924,7 @@ const Template = ({
           header={Header}
           drawerH={DraweHeader}
           // path="employee"
-
+          handlesort={(e) => handleChange(e)}
           tabs={tabs}
           All={true}
           clickDrawer={(e) => {
