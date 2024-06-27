@@ -2,7 +2,7 @@ import React, { useState, useEffect, useRef } from "react";
 import DrawerPop from "../common/DrawerPop";
 import { useTranslation } from "react-i18next";
 import { RxCross2, RxQuestionMarkCircled } from "react-icons/rx";
-import AI_Text from "../../assets/images/AI_Text.jpg"
+import AI_Text from "../../assets/images/AI_Text.jpg";
 import Stepper from "../common/Stepper";
 import {
   Button,
@@ -47,7 +47,7 @@ import {
   getRecruitmentJobTemplateById,
   getAllRecruitmentJobDescriptionTemplates,
   getRecruitmentJobDescriptionTemplateById,
-  getAllRecruitmentJobTemplates
+  getAllRecruitmentJobTemplates,
 } from "../Api1";
 import { Formik, useFormik } from "formik";
 import { CgAdd } from "react-icons/cg";
@@ -81,7 +81,7 @@ import Jobcardcopy from "../common/Jobcardcopy";
 import { RiDeleteBinLine } from "react-icons/ri";
 import { FaAsterisk } from "react-icons/fa";
 import TextEditorcopy from "../common/TextEditor/textEditorCopy";
-import { EditorState, ContentState, convertFromHTML } from 'draft-js';
+import { EditorState, ContentState, convertFromHTML } from "draft-js";
 // import Editor from "../common/TextEditor/textEditorCopy";
 // import Editor1 from "../common/TextEditor/textEditorCopy";
 // import { convertToHTML } from 'draft-convert';
@@ -89,21 +89,21 @@ import { EditorState, ContentState, convertFromHTML } from 'draft-js';
 
 const CreatejobTemp = ({
   open = "",
-  close = () => { },
+  close = () => {},
   inputshow = false,
   isUpdate = {},
   updateId,
-  refresh
+  refresh,
 }) => {
   const [show, setShow] = useState(open);
   const { t } = useTranslation();
 
   // const [isUpdate, setIsUpdate] = useState();
-  const [Jobcode, setJobcode] = useState("")
+  const [Jobcode, setJobcode] = useState("");
   const [errorMessages, setErrorMessages] = useState("");
-  const [Education, seteducation] = useState(1)
-  const [fieldValue, setFieldValue] = useState("")
-  const [Experience, setExperience] = useState(1)
+  const [Education, seteducation] = useState(1);
+  const [fieldValue, setFieldValue] = useState("");
+  const [Experience, setExperience] = useState(1);
   const [activeBtn, setActiveBtn] = useState(0);
   const [presentage, setPresentage] = useState(0);
   const [nextStep, setNextStep] = useState(0);
@@ -119,24 +119,24 @@ const CreatejobTemp = ({
   const [selectedWorkFlowId, setSelectedWorkFlowId] = useState("");
   const [selectedDivs, setSelectedDivs] = useState([]);
   const [content, setContent] = useState("");
-  const [JobDescriptionList, setJobDescriptionList] = useState([])
-  const [decriptionId, setDecriptionId] = useState(null)
-  const [Phone, setPhone] = useState(1)
-  const [Headline, setHeadline] = useState(1)
-  const [Address, setAddress] = useState(1)
-  const [country, setCountry] = useState(1)
-  const [summary, setSummary] = useState(1)
-  const [resume, setResume] = useState(1)
-  const [coverLetter, setCoverletter] = useState(1)
+  const [JobDescriptionList, setJobDescriptionList] = useState([]);
+  const [decriptionId, setDecriptionId] = useState(null);
+  const [Phone, setPhone] = useState(1);
+  const [Headline, setHeadline] = useState(1);
+  const [Address, setAddress] = useState(1);
+  const [country, setCountry] = useState(1);
+  const [summary, setSummary] = useState(1);
+  const [resume, setResume] = useState(1);
+  const [coverLetter, setCoverletter] = useState(1);
   const [errors, setErrors] = useState([]);
-  const [jobTitle, setJobTitle] = useState("")
-  const [html, setstateHTML] = useState("")
-  const [Questionerror, setQuestionError] = useState('')
-  const [answerError, setAnswerError] = useState('')
-  const [OptionError, setoptionserror] = useState('')
-  const[salaryRangeToError,setsalaryRangeToError] = useState("")
-  const[salaryRangeFromError,setsalaryRangeFromError] = useState("")
-  const[trigger,SetTrigger] = useState("")
+  const [jobTitle, setJobTitle] = useState("");
+  const [html, setstateHTML] = useState("");
+  const [Questionerror, setQuestionError] = useState("");
+  const [answerError, setAnswerError] = useState("");
+  const [OptionError, setoptionserror] = useState("");
+  const [salaryRangeToError, setsalaryRangeToError] = useState("");
+  const [salaryRangeFromError, setsalaryRangeFromError] = useState("");
+  const [trigger, SetTrigger] = useState("");
 
   // console.log(updateId);
   useEffect(() => {
@@ -159,37 +159,39 @@ const CreatejobTemp = ({
 
   const getAllJobdescription = async () => {
     try {
-      const data = await getAllRecruitmentJobDescriptionTemplates({})
-      console.log(data)
-      // 
-      setJobDescriptionList(data.result.map((each) => ({
-        label: each.descriptionTemplateName,
-        value: each.descriptionTemplateId
-      })))
+      const data = await getAllRecruitmentJobDescriptionTemplates({});
+      console.log(data);
+      //
+      setJobDescriptionList(
+        data.result.map((each) => ({
+          label: each.descriptionTemplateName,
+          value: each.descriptionTemplateId,
+        }))
+      );
     } catch (error) {
-      console.log(error)
+      console.log(error);
     }
-  }
+  };
 
   const getDecriptionById = async () => {
-    const id = decriptionId
+    const id = decriptionId;
     try {
-      const response = await getRecruitmentJobDescriptionTemplateById({ id: id })
-      console.log(response)
+      const response = await getRecruitmentJobDescriptionTemplateById({
+        id: id,
+      });
+      console.log(response);
 
       setContent(response.result[0].descriptionTemplate);
-
-
     } catch (error) {
-      console.log(error)
+      console.log(error);
     }
-  }
+  };
   useEffect(() => {
-    getDecriptionById()
-  }, [decriptionId])
+    getDecriptionById();
+  }, [decriptionId]);
   useEffect(() => {
-    getAllJobdescription()
-  }, [])
+    getAllJobdescription();
+  }, []);
 
   // console.log("Username:", userid);
   const [api, contextHolder] = notification.useNotification();
@@ -200,14 +202,16 @@ const CreatejobTemp = ({
       placement: "top",
       // stack: 2,
       style: {
-        background: `${type === "success"
-          ? `linear-gradient(180deg, rgba(204, 255, 233, 0.8) 0%, rgba(235, 252, 248, 0.8) 51.08%, rgba(246, 251, 253, 0.8) 100%)`
-          : "linear-gradient(180deg, rgba(255, 236, 236, 0.80) 0%, rgba(253, 246, 248, 0.80) 51.13%, rgba(251, 251, 254, 0.80) 100%)"
-          }`,
-        boxShadow: `${type === "success"
-          ? "0px 4.868px 11.358px rgba(62, 255, 93, 0.2)"
-          : "0px 22px 60px rgba(134, 92, 144, 0.20)"
-          }`,
+        background: `${
+          type === "success"
+            ? `linear-gradient(180deg, rgba(204, 255, 233, 0.8) 0%, rgba(235, 252, 248, 0.8) 51.08%, rgba(246, 251, 253, 0.8) 100%)`
+            : "linear-gradient(180deg, rgba(255, 236, 236, 0.80) 0%, rgba(253, 246, 248, 0.80) 51.13%, rgba(251, 251, 254, 0.80) 100%)"
+        }`,
+        boxShadow: `${
+          type === "success"
+            ? "0px 4.868px 11.358px rgba(62, 255, 93, 0.2)"
+            : "0px 22px 60px rgba(134, 92, 144, 0.20)"
+        }`,
       },
       // duration: null,
     });
@@ -219,51 +223,50 @@ const CreatejobTemp = ({
     localStorage.getItem("organisationId")
   );
   // const [isGoogleFormVisible, setIsGoogleFormVisible] = useState(false);
-  const [loader, setloader] = useState(false)
+  const [loader, setloader] = useState(false);
   const handleGenerateWithAI = async () => {
-    setloader(true)
+    setloader(true);
     try {
       const requestBody = {
         val: jobTitle,
-        radioval: '1',
-        summarise: null
+        radioval: "1",
+        summarise: null,
       };
 
-      const response = await fetch('https://chat.bmark.in/ai/api.php', {
-        method: 'POST',
+      const response = await fetch("https://chat.bmark.in/ai/api.php", {
+        method: "POST",
         headers: {
-          'Content-Type': 'application/json'
+          "Content-Type": "application/json",
         },
-        body: JSON.stringify(requestBody)
+        body: JSON.stringify(requestBody),
       });
 
       if (response.ok) {
         const data = await response.json();
         // Handle the response data as needed
         console.log(data);
-        setContent(data.receivedData)
+        setContent(data.receivedData);
       } else {
-        console.error('Failed to fetch data');
+        console.error("Failed to fetch data");
       }
     } catch (error) {
-      console.error('Error:', error);
-    }
-    finally {
+      console.error("Error:", error);
+    } finally {
       setloader(false); // Hide loader after response is received
     }
   };
-  const   handleEditorChange = (content) => {
-        //             const contentState = content.getCurrentContent();
-        //             const htmlContent = convertToHTML(contentState);
-                    
-        //  console.log(content)           
-                  // setContent(htmlContent);
-                  // const blocksFromHTML = convertFromHTML(content);
-                  // const contentState = ContentState.createFromBlockArray(blocksFromHTML.contentBlocks, blocksFromHTML.entityMap);
-                           
-                  // setContent(EditorState.createWithContent(contentState))
-                  setContent(content)
-                  // console.log(contentState);
+  const handleEditorChange = (content) => {
+    //             const contentState = content.getCurrentContent();
+    //             const htmlContent = convertToHTML(contentState);
+
+    //  console.log(content)
+    // setContent(htmlContent);
+    // const blocksFromHTML = convertFromHTML(content);
+    // const contentState = ContentState.createFromBlockArray(blocksFromHTML.contentBlocks, blocksFromHTML.entityMap);
+
+    // setContent(EditorState.createWithContent(contentState))
+    setContent(content);
+    // console.log(contentState);
   };
   const [evaluation, setEvaluation] = useState([
     {
@@ -286,7 +289,7 @@ const CreatejobTemp = ({
       jobTitle: "",
       departmentId: "",
       jobCode: "",
-      workLocationType:"",
+      workLocationType: "",
       location: "",
       requirementType: "",
       jobType: "",
@@ -343,8 +346,6 @@ const CreatejobTemp = ({
           answer_meta_data: condition.answerMetaData,
         }));
 
-
-
         if (updateId) {
           const response = await updateRecruitmentJobTemplate({
             id: updateId,
@@ -352,7 +353,7 @@ const CreatejobTemp = ({
             jobTitle: e.jobTitle,
             departmentId: e.departmentId,
             jobCode: e.jobCode,
-            workLocationType: e.workLocationType||"Onsite",
+            workLocationType: e.workLocationType || "Onsite",
             location: e.location,
             requirementType: e.requirementType,
             jobType: e.jobType,
@@ -389,16 +390,19 @@ const CreatejobTemp = ({
             openNotification(
               "success",
               "Successful",
-              response.message.replace(/<br\/>/g, '\n')
+              response.message.replace(/<br\/>/g, "\n")
             );
             setPresentage(2);
             setTimeout(() => {
               handleClose();
-              refresh()
+              refresh();
             }, 1500);
           } else if (response.status === 500) {
-            openNotification("error", "Info", response.message.replace(/<br\/>/g, '\n'));
-
+            openNotification(
+              "error",
+              "Info",
+              response.message.replace(/<br\/>/g, "\n")
+            );
           }
         } else {
           console.log(e);
@@ -408,7 +412,7 @@ const CreatejobTemp = ({
             jobTitle: e.jobTitle,
             departmentId: e.departmentId,
             jobCode: e.jobCode,
-            workLocationType: e.workLocationType||"Onsite",
+            workLocationType: e.workLocationType || "Onsite",
             location: e.location,
             requirementType: e.requirementType,
             jobType: e.jobType,
@@ -447,18 +451,20 @@ const CreatejobTemp = ({
             openNotification(
               "success",
               "Successful",
-              response.message.replace(/<br\/>/g, '\n')
+              response.message.replace(/<br\/>/g, "\n")
             );
             setPresentage(2);
             setTimeout(() => {
               handleClose();
-              refresh()
+              refresh();
             }, 1500);
           } else if (response.status === 500) {
-            openNotification("error", "Info", response.message.replace(/<br\/>/g, '\n'));
+            openNotification(
+              "error",
+              "Info",
+              response.message.replace(/<br\/>/g, "\n")
+            );
           }
-
-
         }
       } catch (error) {
         // Handle the error here
@@ -491,11 +497,11 @@ const CreatejobTemp = ({
         formik.setFieldValue("isActive", firstJob.isActive);
         formik.setFieldValue("isSalaryPublic", firstJob.isSalaryPublic);
         formik.setFieldValue("jobCode", firstJob.jobCode);
-        setContent(firstJob.jobDescription)
-          // const blocksFromHTML = convertFromHTML(firstJob.jobDescription);
-          // const contentState = ContentState.createFromBlockArray(blocksFromHTML.contentBlocks, blocksFromHTML.entityMap);
-          // const newEditorState = EditorState.createWithContent(contentState);
-          // setContent(newEditorState);
+        setContent(firstJob.jobDescription);
+        // const blocksFromHTML = convertFromHTML(firstJob.jobDescription);
+        // const contentState = ContentState.createFromBlockArray(blocksFromHTML.contentBlocks, blocksFromHTML.entityMap);
+        // const newEditorState = EditorState.createWithContent(contentState);
+        // setContent(newEditorState);
         formik.setFieldValue("jobType", firstJob.jobType);
         formik.setFieldValue("location", firstJob.location);
         formik.setFieldValue("requirementType", firstJob.requirementType);
@@ -504,15 +510,15 @@ const CreatejobTemp = ({
         formik.setFieldValue("salaryRangeTo", firstJob.salaryRangeTo);
         formik.setFieldValue("searchKeywords", firstJob.searchKeywords);
         formik.setFieldValue("experience", firstJob.experience);
-        setHeadline(firstJob.jobApplicationFormData.headline)
-        setPhone(firstJob.jobApplicationFormData.phone)
-        setAddress(firstJob.jobApplicationFormData.address)
-        setCountry(firstJob.jobApplicationFormData.country)
-        seteducation(firstJob.jobApplicationFormData.education)
-        setExperience(firstJob.jobApplicationFormData.experience)
-        setSummary(firstJob.jobApplicationFormData.summary)
-        setResume(firstJob.jobApplicationFormData.resume)
-        setCoverletter(firstJob.jobApplicationFormData.coverLetter)
+        setHeadline(firstJob.jobApplicationFormData.headline);
+        setPhone(firstJob.jobApplicationFormData.phone);
+        setAddress(firstJob.jobApplicationFormData.address);
+        setCountry(firstJob.jobApplicationFormData.country);
+        seteducation(firstJob.jobApplicationFormData.education);
+        setExperience(firstJob.jobApplicationFormData.experience);
+        setSummary(firstJob.jobApplicationFormData.summary);
+        setResume(firstJob.jobApplicationFormData.resume);
+        setCoverletter(firstJob.jobApplicationFormData.coverLetter);
         const formattedCustomFields =
           firstJob.jobApplicationFormData.customFields.map((field) => ({
             id: firstJob.jobTemplateId,
@@ -523,7 +529,6 @@ const CreatejobTemp = ({
           }));
         setEvaluation(formattedCustomFields);
         setSelectedWorkFlowId(firstJob.workFlowId);
-
 
         console.log(firstJob.companyId);
       } else {
@@ -599,11 +604,11 @@ const CreatejobTemp = ({
       prevEvaluation.map((prevCondition, i) =>
         i === conditionIndex
           ? {
-            ...prevCondition,
-            answerMetaData: (prevCondition.answerMetaData || []).filter(
-              (field, j) => j !== fieldIndex
-            ),
-          }
+              ...prevCondition,
+              answerMetaData: (prevCondition.answerMetaData || []).filter(
+                (field, j) => j !== fieldIndex
+              ),
+            }
           : prevCondition
       )
     );
@@ -613,16 +618,16 @@ const CreatejobTemp = ({
       prevEvaluation.map((prevCondition, i) =>
         i === index
           ? {
-            ...prevCondition,
-            answerMetaData: [
-              ...prevCondition.answerMetaData,
-              {
-                id: prevCondition.answerMetaData.length + 1,
-                key: selectedvalue, // You can set the default key or customize as needed
-                value: "",
-              },
-            ],
-          }
+              ...prevCondition,
+              answerMetaData: [
+                ...prevCondition.answerMetaData,
+                {
+                  id: prevCondition.answerMetaData.length + 1,
+                  key: selectedvalue, // You can set the default key or customize as needed
+                  value: "",
+                },
+              ],
+            }
           : prevCondition
       )
     );
@@ -801,8 +806,7 @@ const CreatejobTemp = ({
   const fetchData = async () => {
     try {
       const response = await getAllRecruitmentWorkFlows({
-      companyId:companyId
-
+        companyId: companyId,
       });
       console.log("Response:", response);
 
@@ -812,7 +816,6 @@ const CreatejobTemp = ({
         stages: item.recruitmentWorkFlowStages.map((stage) => ({
           id: stage.stageId,
           title: stage.stageName,
-
         })),
       }));
       setStages(stagesByWorkflowId);
@@ -822,8 +825,8 @@ const CreatejobTemp = ({
     }
   };
   useEffect(() => {
-    fetchData()
-  }, [])
+    fetchData();
+  }, []);
 
   useEffect(() => {
     console.log("Updated Workflow:", Stages);
@@ -876,40 +879,53 @@ const CreatejobTemp = ({
 
   //   }
   // };
-  const [jobcodelength, setJobcodelength] = useState("")
+  const [jobcodelength, setJobcodelength] = useState("");
   const getJobsByJoBecode = async () => {
     try {
       const response = await getAllRecruitmentJobTemplates({
-        jobCode: Jobcode
-      })
-      setJobcodelength(response.result.length)
+        jobCode: Jobcode,
+      });
+      setJobcodelength(response.result.length);
       if (response.result.length > 0) {
-        formik.setFieldError('jobCode', 'Job code already exists.');
+        formik.setFieldError("jobCode", "Job code already exists.");
       }
 
-      console.log(response)
+      console.log(response);
     } catch (error) {
       console.log(error);
     }
-  }
+  };
   useEffect(() => {
-    getJobsByJoBecode()
-  }, [Jobcode])
+    getJobsByJoBecode();
+  }, [Jobcode]);
   const handleButtonClick = async (e) => {
     switch (activeBtnValue) {
       case "Jobdetails":
         // Handle submission for Configuration
 
-        if (formik.values.salaryRangeTo && formik.values.salaryRangeFrom && parseFloat(formik.values.salaryRangeTo) <= parseFloat(formik.values.salaryRangeFrom)) {
-          formik.setFieldError('salaryRangeTo', '"Salary Range To" must be greater than "Salary Range From"');
+        if (
+          formik.values.salaryRangeTo &&
+          formik.values.salaryRangeFrom &&
+          parseFloat(formik.values.salaryRangeTo) <=
+            parseFloat(formik.values.salaryRangeFrom)
+        ) {
+          formik.setFieldError(
+            "salaryRangeTo",
+            '"Salary Range To" must be greater than "Salary Range From"'
+          );
           return;
         }
         if (formik.values.jobTitle && formik.values.jobTitle.length < 3) {
-          formik.setFieldError('jobTitle', 'Job Title should have at least 3 letters.');
+          formik.setFieldError(
+            "jobTitle",
+            "Job Title should have at least 3 letters."
+          );
           return;
         }
         if (
-          !formik.values.jobTitle || !formik.values.departmentId || !formik.values.jobCode ||
+          !formik.values.jobTitle ||
+          !formik.values.departmentId ||
+          !formik.values.jobCode ||
           !formik.values.location ||
           !formik.values.requirementType ||
           !formik.values.jobType ||
@@ -921,43 +937,83 @@ const CreatejobTemp = ({
           !formik.values.salaryCurrency ||
           !content
         ) {
-          formik.setFieldError('jobTitle', !formik.values.jobTitle ? 'Job Title is required' : '');
-          formik.setFieldError('departmentId', !formik.values.departmentId ? 'Department is required' : '');
-          formik.setFieldError('jobCode', !formik.values.jobCode ? 'Job Code is required' : '');
-          formik.setFieldError('location', !formik.values.location ? 'Location is required' : '');
-          formik.setFieldError('requirementType', !formik.values.requirementType ? 'Requirment Type is required' : '');
-          formik.setFieldError('experience', !formik.values.experience ? 'Experience is required' : '');
-          formik.setFieldError('searchKeywords', !formik.values.searchKeywords ? 'Search Key Words is required' : '');
-          formik.setFieldError('salaryRangeFrom', !formik.values.salaryRangeFrom ? 'Salery Range From is required' : '');
-          formik.setFieldError('salaryRangeTo', !formik.values.salaryRangeTo ? 'Salary Range To is required' : '');
-          formik.setFieldError('salaryCurrency', !formik.values.salaryCurrency ? 'Salary Currency is required' : '');
-          formik.setFieldError('jobType', !formik.values.jobType ? 'JobType is required' : '');
-          formik.setFieldError('education', !formik.values.education ? 'Education is required' : '');
           formik.setFieldError(
-            'jobDescription',
-            !content ? 'Description is required' : ''
-        );
-       
-          return; 
+            "jobTitle",
+            !formik.values.jobTitle ? "Job Title is required" : ""
+          );
+          formik.setFieldError(
+            "departmentId",
+            !formik.values.departmentId ? "Department is required" : ""
+          );
+          formik.setFieldError(
+            "jobCode",
+            !formik.values.jobCode ? "Job Code is required" : ""
+          );
+          formik.setFieldError(
+            "location",
+            !formik.values.location ? "Location is required" : ""
+          );
+          formik.setFieldError(
+            "requirementType",
+            !formik.values.requirementType ? "Requirment Type is required" : ""
+          );
+          formik.setFieldError(
+            "experience",
+            !formik.values.experience ? "Experience is required" : ""
+          );
+          formik.setFieldError(
+            "searchKeywords",
+            !formik.values.searchKeywords ? "Search Key Words is required" : ""
+          );
+          formik.setFieldError(
+            "salaryRangeFrom",
+            !formik.values.salaryRangeFrom
+              ? "Salery Range From is required"
+              : ""
+          );
+          formik.setFieldError(
+            "salaryRangeTo",
+            !formik.values.salaryRangeTo ? "Salary Range To is required" : ""
+          );
+          formik.setFieldError(
+            "salaryCurrency",
+            !formik.values.salaryCurrency ? "Salary Currency is required" : ""
+          );
+          formik.setFieldError(
+            "jobType",
+            !formik.values.jobType ? "JobType is required" : ""
+          );
+          formik.setFieldError(
+            "education",
+            !formik.values.education ? "Education is required" : ""
+          );
+          formik.setFieldError(
+            "jobDescription",
+            !content ? "Description is required" : ""
+          );
 
-        }
-        if(formik.values.location && formik.values.location.length <3){
-          formik.setFieldError('location','Location field must contain atleast 3 Characters')
           return;
         }
-   
-        if(content && content.length < 3){
-          formik.setFieldError('jobDescription','JobDescription should have at least 3 letters.');
-          return; 
+        if (formik.values.location && formik.values.location.length < 3) {
+          formik.setFieldError(
+            "location",
+            "Location field must contain atleast 3 Characters"
+          );
+          return;
+        }
+
+        if (content && content.length < 3) {
+          formik.setFieldError(
+            "jobDescription",
+            "JobDescription should have at least 3 letters."
+          );
+          return;
         }
         if (jobcodelength === 0) {
-
           setNextStep(nextStep + 1);
-        } else (
-          getJobsByJoBecode()
-        )
-        console.log(content)
-        setPresentage(1)
+        } else getJobsByJoBecode();
+        console.log(content);
+        setPresentage(1);
         break;
 
       case "ApplicationForm":
@@ -966,26 +1022,25 @@ const CreatejobTemp = ({
         // Move to the next step if applicable
         let hasError = false;
         const newErrorMessages = evaluation.map((condition) => {
-          
-
           if (!condition.question) {
-            setQuestionError('Please enter a question.');
-            hasError=true
-          } 
-           if (!condition.answer_type) {
-            setAnswerError('Please choose an answer type.');
-            hasError=true
-          } 
-           if (
-            ["Drop-down", "Multiple Choice", "Checkboxes"].includes(condition.answer_type) &&
-            (condition.answerMetaData.some((field) => !field.value) ||
-              (!condition.answerMetaData[0]?.value && condition.answerMetaData[0]?.key !== "ShortAnswer"))
-          ) {
-            setoptionserror('Option is required');
-            hasError=true
+            setQuestionError("Please enter a question.");
+            hasError = true;
           }
-
-         
+          if (!condition.answer_type) {
+            setAnswerError("Please choose an answer type.");
+            hasError = true;
+          }
+          if (
+            ["Drop-down", "Multiple Choice", "Checkboxes"].includes(
+              condition.answer_type
+            ) &&
+            (condition.answerMetaData.some((field) => !field.value) ||
+              (!condition.answerMetaData[0]?.value &&
+                condition.answerMetaData[0]?.key !== "ShortAnswer"))
+          ) {
+            setoptionserror("Option is required");
+            hasError = true;
+          }
         });
 
         // Update errorMessages state with new error messages
@@ -998,7 +1053,7 @@ const CreatejobTemp = ({
         setNextStep(nextStep + 1);
 
         break;
-        setPresentage(2)
+        setPresentage(2);
       // Add more cases for additional activeBtnValues...
 
       case "Workflow":
@@ -1037,8 +1092,6 @@ const CreatejobTemp = ({
 
   //Teammebers
 
-
-
   return (
     <div>
       <DrawerPop
@@ -1059,7 +1112,7 @@ const CreatejobTemp = ({
           setShow(e);
           //    setUpdateId(null);
           handleClose();
-          refresh()
+          refresh();
         }}
         header={[
           !updateId ? t("Create Job Template") : t("Update Job Template"),
@@ -1109,13 +1162,13 @@ const CreatejobTemp = ({
                     // direction="left"
                     // labelPlacement="vertical"
                     steps={steps}
-                  // className=" text-sm font-medium"
-                  // style={{
-                  //   fontSize: isSmallScreen ? "8px" : "10px",
-                  //   fontWeight: 600,
-                  // }}
-                  // // className="text-[10px]"
-                  // size={isSmallScreen ? "default" : "large"}
+                    // className=" text-sm font-medium"
+                    // style={{
+                    //   fontSize: isSmallScreen ? "8px" : "10px",
+                    //   fontWeight: 600,
+                    // }}
+                    // // className="text-[10px]"
+                    // size={isSmallScreen ? "default" : "large"}
                   />
                 </div>
               )}
@@ -1166,8 +1219,8 @@ const CreatejobTemp = ({
                           required={true}
                           change={(e) => {
                             formik.setFieldValue("jobTitle", e);
-                            setPresentage(.1)
-                            setJobTitle(e)
+                            setPresentage(0.1);
+                            setJobTitle(e);
                           }}
                           value={formik.values.jobTitle}
                           error={formik.errors.jobTitle}
@@ -1181,7 +1234,7 @@ const CreatejobTemp = ({
                           value={formik.values.departmentId}
                           change={(e) => {
                             formik.setFieldValue("departmentId", e);
-                            setPresentage(.2)
+                            setPresentage(0.2);
                           }}
                           error={formik.errors.departmentId}
                         />
@@ -1192,8 +1245,8 @@ const CreatejobTemp = ({
                           required={true}
                           change={(e) => {
                             formik.setFieldValue("jobCode", e);
-                            setJobcode(e)
-                            setPresentage(.3)
+                            setJobcode(e);
+                            setPresentage(0.3);
                           }}
                           value={formik.values.jobCode}
                           error={formik.errors.jobCode}
@@ -1213,30 +1266,45 @@ const CreatejobTemp = ({
                     >
                       <div className="md:grid grid-cols-12 flex flex-col gap-6 dark:text-white">
                         {regularOvertime?.map((each, i) => (
-                        <div
-                        key={i}
-                        className={`col-span-4 p-1.5 border rounded-2xl  cursor-pointer showDelay dark:bg-dark  ${
-                            (!formik.values.workLocationType && each.value === "Onsite") || 
-                            (formik.values.workLocationType === each.value) ? "border-primary" : ""
-                        }`}
-                        onClick={() => {
-                            setCustomRate(each.id);
-                            if (!formik.values.workLocationType) {
-                                formik.setFieldValue("workLocationType", "Onsite");
-                            } else {
-                                formik.setFieldValue("workLocationType", each.value);
-                            }
-                            setPresentage(.4);
-                        }}
-                    >
+                          <div
+                            key={i}
+                            className={`col-span-4 p-1.5 border rounded-2xl  cursor-pointer showDelay dark:bg-dark  ${
+                              (!formik.values.workLocationType &&
+                                each.value === "Onsite") ||
+                              formik.values.workLocationType === each.value
+                                ? "border-primary"
+                                : ""
+                            }`}
+                            onClick={() => {
+                              setCustomRate(each.id);
+                              if (!formik.values.workLocationType) {
+                                formik.setFieldValue(
+                                  "workLocationType",
+                                  "Onsite"
+                                );
+                              } else {
+                                formik.setFieldValue(
+                                  "workLocationType",
+                                  each.value
+                                );
+                              }
+                              setPresentage(0.4);
+                            }}
+                          >
                             <div className="flex justify-between items-start">
                               <div className="flex gap-2">
                                 <img
-                                  className={`${(!formik.values.workLocationType && each.value === "Onsite") || (formik.values.workLocationType === each.value) ? "text-primary" : ""} p-2 border rounded-md w-[66px] bg-[#F8FAFC]`}
+                                  className={`${
+                                    (!formik.values.workLocationType &&
+                                      each.value === "Onsite") ||
+                                    formik.values.workLocationType ===
+                                      each.value
+                                      ? "text-primary"
+                                      : ""
+                                  } p-2 border rounded-md w-[66px] bg-[#F8FAFC]`}
                                   src={each.image}
                                   alt=""
-                                >
-                                </img>
+                                ></img>
                                 <div>
                                   <h3 className=" text-sm font-semibold mt-[10px]">
                                     {each.title}
@@ -1247,10 +1315,23 @@ const CreatejobTemp = ({
                                 </div>
                               </div>
                               <div
-                                className={`${(!formik.values.workLocationType && each.value === "Onsite") || (formik.values.workLocationType === each.value) ? "border-primary" : ""} border  rounded-full`}
+                                className={`${
+                                  (!formik.values.workLocationType &&
+                                    each.value === "Onsite") ||
+                                  formik.values.workLocationType === each.value
+                                    ? "border-primary"
+                                    : ""
+                                } border  rounded-full`}
                               >
                                 <div
-                                  className={`font-semibold text-base w-4 h-4 border-2 border-white   rounded-full ${(!formik.values.workLocationType && each.value === "Onsite") || (formik.values.workLocationType === each.value) ? "text-primary bg-primary" : ""}`}
+                                  className={`font-semibold text-base w-4 h-4 border-2 border-white   rounded-full ${
+                                    (!formik.values.workLocationType &&
+                                      each.value === "Onsite") ||
+                                    formik.values.workLocationType ===
+                                      each.value
+                                      ? "text-primary bg-primary"
+                                      : ""
+                                  }`}
                                 ></div>
                               </div>
                             </div>
@@ -1264,7 +1345,7 @@ const CreatejobTemp = ({
                           placeholder={"Enter Location"}
                           change={(e) => {
                             formik.setFieldValue("location", e);
-                            setPresentage(.5)
+                            setPresentage(0.5);
                           }}
                           value={formik.values.location}
                           required={true}
@@ -1279,7 +1360,7 @@ const CreatejobTemp = ({
                           change={(e) => {
                             formik.setFieldValue("requirementType", e);
                             console.log(e);
-                            setPresentage(.6)
+                            setPresentage(0.6);
                           }}
                           required={true}
                           error={formik.errors.requirementType}
@@ -1305,7 +1386,7 @@ const CreatejobTemp = ({
                           change={(e) => {
                             formik.setFieldValue("jobType", e);
                             console.log(e);
-                            setPresentage(.7)
+                            setPresentage(0.7);
                           }}
                           required={true}
                           value={formik.values.jobType}
@@ -1318,7 +1399,7 @@ const CreatejobTemp = ({
                           value={formik.values.experience}
                           change={(e) => {
                             formik.setFieldValue("experience", e);
-                            setPresentage(.8)
+                            setPresentage(0.8);
                           }}
                           required={true}
                           error={formik.errors.experience}
@@ -1330,7 +1411,7 @@ const CreatejobTemp = ({
                           value={formik.values.education}
                           change={(e) => {
                             formik.setFieldValue("education", e);
-                            setPresentage(.9)
+                            setPresentage(0.9);
                           }}
                           required={true}
                           error={formik.errors.education}
@@ -1346,7 +1427,6 @@ const CreatejobTemp = ({
                           value={formik.values.searchKeywords}
                           required={true}
                           error={formik.errors.searchKeywords}
-
                         />
                         {/* <Dropdown
                                                     title={'Requirement'}
@@ -1396,71 +1476,96 @@ const CreatejobTemp = ({
   type={"number"}
 />  */}
 
-<FormInput
-  title={'Salary Range From'}
-  placeholder={'Enter Salary Range From'}
-  description={'Minimum Annual Salary'}
-  change={(e) => {
-    const value = parseFloat(e);
-    const salaryRangeTo = parseFloat(formik.values.salaryRangeTo); 
-    const salaryRangeFrom = parseFloat(e);
-    if (value <= 0) {
-      formik.setFieldError('salaryRangeFrom', 'Salary Range From must be a positive number');
-    } else {
-      formik.setFieldValue('salaryRangeFrom', value);
-      // Clear the error message only if the input is non-empty or greater than 0
-      if (value > 0 ) {
-        formik.setFieldError('salaryRangeFrom', '');
-      }
-      if(salaryRangeTo<=salaryRangeFrom){
-        // formik1.setFieldError('salaryRangeFrom', 'Salary Range From should be less than Salary Range To ');
-        setsalaryRangeFromError('Salary Range From should be less than Salary Range To ')
-        formik.setFieldValue('salaryRangeFrom', value);
-        console.log("ttt")
-      }else{
-        setsalaryRangeFromError("")
-      }
-     
-    }
-  }}
-  value={isNaN(formik.values.salaryRangeFrom)? "" : formik.values.salaryRangeFrom}
-  type={"text"}
-  pattern="[0-9]*"
-  inputmode="numeric"
-  error={formik.errors.salaryRangeFrom||salaryRangeFromError}
-  required={true}
-  maxLength={15}
-/>
+                        <FormInput
+                          title={"Salary Range From"}
+                          placeholder={"Enter Salary Range From"}
+                          description={"Minimum Annual Salary"}
+                          change={(e) => {
+                            const value = parseFloat(e);
+                            const salaryRangeTo = parseFloat(
+                              formik.values.salaryRangeTo
+                            );
+                            const salaryRangeFrom = parseFloat(e);
+                            if (value <= 0) {
+                              formik.setFieldError(
+                                "salaryRangeFrom",
+                                "Salary Range From must be a positive number"
+                              );
+                            } else {
+                              formik.setFieldValue("salaryRangeFrom", value);
+                              // Clear the error message only if the input is non-empty or greater than 0
+                              if (value > 0) {
+                                formik.setFieldError("salaryRangeFrom", "");
+                              }
+                              if (salaryRangeTo <= salaryRangeFrom) {
+                                // formik1.setFieldError('salaryRangeFrom', 'Salary Range From should be less than Salary Range To ');
+                                setsalaryRangeFromError(
+                                  "Salary Range From should be less than Salary Range To "
+                                );
+                                formik.setFieldValue("salaryRangeFrom", value);
+                                console.log("ttt");
+                              } else {
+                                setsalaryRangeFromError("");
+                              }
+                            }
+                          }}
+                          value={
+                            isNaN(formik.values.salaryRangeFrom)
+                              ? ""
+                              : formik.values.salaryRangeFrom
+                          }
+                          type={"text"}
+                          pattern="[0-9]*"
+                          inputmode="numeric"
+                          error={
+                            formik.errors.salaryRangeFrom ||
+                            salaryRangeFromError
+                          }
+                          required={true}
+                          maxLength={15}
+                        />
 
-<FormInput
-  title={'Salary Range To'}
-  placeholder={'Enter value'}
-  description={'Maximum Annual Salary'}
-  change={(e) => {
-    // Validate Salary Range To
-    const salaryRangeTo = parseFloat(e); // Convert input to a number
-    const salaryRangeFrom = parseFloat(formik.values.salaryRangeFrom); // Convert Salary Range From to a number
+                        <FormInput
+                          title={"Salary Range To"}
+                          placeholder={"Enter value"}
+                          description={"Maximum Annual Salary"}
+                          change={(e) => {
+                            // Validate Salary Range To
+                            const salaryRangeTo = parseFloat(e); // Convert input to a number
+                            const salaryRangeFrom = parseFloat(
+                              formik.values.salaryRangeFrom
+                            ); // Convert Salary Range From to a number
 
-    if (salaryRangeTo <= salaryRangeFrom) {
-      setsalaryRangeToError("Salary Range To should be greater than the Salary Range from");
-      formik.setFieldValue('salaryRangeTo', e);
-    } else if (salaryRangeTo <= 0) {
-      setsalaryRangeToError("Salary Range To must be a positive number");
-      console.log("gg")
-    } else {
-      // Clear the error message when the conditions are met
-      setsalaryRangeToError("");
-      formik.setFieldValue('salaryRangeTo', e);
-    }
-  }}
-  value={isNaN(formik.values.salaryRangeTo)? "" : formik.values.salaryRangeTo}
-  error={formik.errors.salaryRangeTo || salaryRangeToError}
-  required={true}
-  type={"text"}
-  pattern="[0-9]*"
-  inputmode="numeric"
-  maxLength={15}
-/>
+                            if (salaryRangeTo <= salaryRangeFrom) {
+                              setsalaryRangeToError(
+                                "Salary Range To should be greater than the Salary Range from"
+                              );
+                              formik.setFieldValue("salaryRangeTo", e);
+                            } else if (salaryRangeTo <= 0) {
+                              setsalaryRangeToError(
+                                "Salary Range To must be a positive number"
+                              );
+                              console.log("gg");
+                            } else {
+                              // Clear the error message when the conditions are met
+                              setsalaryRangeToError("");
+                              formik.setFieldValue("salaryRangeTo", e);
+                            }
+                          }}
+                          value={
+                            isNaN(formik.values.salaryRangeTo)
+                              ? ""
+                              : formik.values.salaryRangeTo
+                          }
+                          error={
+                            formik.errors.salaryRangeTo || salaryRangeToError
+                          }
+                          required={true}
+                          type={"text"}
+                          pattern="[0-9]*"
+                          inputmode="numeric"
+                          maxLength={15}
+                        />
                         <Dropdown
                           title={"Salary Currency"}
                           placeholder={"Enter Salary Currency"}
@@ -1481,11 +1586,14 @@ const CreatejobTemp = ({
                             value={formik.values.isSalaryPublic}
                             title={"View Public"}
                             titleRight={true}
-
                           />
                           <div className="flex flex-col gap-1 pt-2">
-                            <p className="text-sm dark:text-white">View Public</p>
-                            <p className="text-xs text-gray-500">Given Salary will be visible for public</p>
+                            <p className="text-sm dark:text-white">
+                              View Public
+                            </p>
+                            <p className="text-xs text-gray-500">
+                              Given Salary will be visible for public
+                            </p>
                           </div>
                         </div>
                       </div>
@@ -1501,18 +1609,27 @@ const CreatejobTemp = ({
                       }}
                       initialExpanded={true}
                     >
-                      <div class="flex flex-col gap-4 overflow-hidden">
+                      <div class="flex flex-col gap-4 ">
                         <div className="border rounded-md bg-primaryalpha/5">
                           <div className="flex items-center px-1.5  ">
-                            <img src={AI_Text} alt='' className="border rounded-md"></img>
+                            <img
+                              src={AI_Text}
+                              alt=""
+                              className="border rounded-md"
+                            ></img>
                             <div className="flex flex-col gap-1 p-1.5">
                               <div className="flex items-center justify-between ">
-                                <p className="font-bold">Generate personalized job descriptions based on pas account data.
+                                <p className="font-bold">
+                                  Generate personalized job descriptions based
+                                  on pas account data.
                                 </p>
                                 {/* <p className="text-primary"><IoClose /></p> */}
                               </div>
-                              <p className="text-gray-400">When you generate with Al, we look for similar jobs you've created in the past and use the data to create content that's
-                                impactful, accurate and personalized to your company.
+                              <p className="text-gray-400">
+                                When you generate with Al, we look for similar
+                                jobs you've created in the past and use the data
+                                to create content that's impactful, accurate and
+                                personalized to your company.
                               </p>
                             </div>
                           </div>
@@ -1525,79 +1642,49 @@ const CreatejobTemp = ({
                           }}
                         >
                           <Dropdown
-                            title={''}
-                            placeholder={'Choose Job Description'}
+                            title={""}
+                            placeholder={"Choose Job Description"}
                             options={JobDescriptionList}
                             value={decriptionId}
-                            className={'min-w-40'}
+                            className={"min-w-40"}
                             change={(e) => {
-                              setDecriptionId(e)
-                              SetTrigger(e)
+                              setDecriptionId(e);
+                              SetTrigger(e);
                             }}
                           />
-                          <ButtonClick handleSubmit={handleGenerateWithAI} BtnType="primary" icon={<img src={image} alt="image" style={{ height: '20px', width: '20px', alignItems: "center" }} />} buttonName={"Generate with AI"} />
+                          <ButtonClick
+                            handleSubmit={handleGenerateWithAI}
+                            BtnType="primary"
+                            icon={
+                              <img
+                                src={image}
+                                alt="image"
+                                style={{
+                                  height: "20px",
+                                  width: "20px",
+                                  alignItems: "center",
+                                }}
+                              />
+                            }
+                            buttonName={"Generate with AI"}
+                          />
                         </div>
                         <div className="flex gap-1.5">
                           <p className="pb-2">Description</p>
                           <FaAsterisk className="text-[6px] text-rose-600" />
                         </div>
                         <TextEditor
-                          placeholder={t(
-                            "Enter Description "
-                          )}
-
-                          hideBorder={true}
+                          placeholder={t("Enter Description ")}
+                          minheight="300px"
+                          height="250px"
                           initialValue={content}
-                          //  change={(e)=>{
-                          //    formik.setFieldValue('jobDescription',e)
-                          //  }}
                           onChange={handleEditorChange}
-                          error={formik.errors.jobDescription}
-                          // changetoHtml={(e)=>{
-                          //   setstateHTML(e)
-                          // }}
+                          // error={formik.errors.jobDescription}
                           trigger={trigger}
                           loader={loader}
                         />
-                        {/* <TextEditorcopy
-                          Change={(e)=>{
-                            handleEditorChange(e)
-                            console.log(typeof e)
-                          }}
-                          initialValue={content}
-                          error={formik.errors.jobDescription}
-                          
-                        /> */}
-                        {/* <Editor1/> */}
-
                       </div>
-                      {/* <TextArea
-                                             title={t("Requirement")}
-                                             placeholder={t("Enter the job requirements here; from soft skills to the specific qualifications needed to perform the role.")}
-                                             required={true}
-                                             hideBorder={true} 
-                                              // value={formik1.values.jobDescription}
-                                              // change={(e)=>{
-                                              //   formik1.setFieldValue('jobDescription',e)
-                                              // }}
-                                             />
-                                                  <TextArea
-                                             title={t("Benefits")}
-                                             placeholder={t("Enter the benefits here; Include nat just sa aty details but the perks that make your ca:npany unique.")}
-                                             required={true}
-                                             hideBorder={true} 
-                                            //  change={(e) => {
-                                            //    formik.setFieldValue("description", e);
-                                            //    if (presentage < 1.3)
-                                            //          setPresentage(presentage + 0.1);
-                                               
-                                            //  }}
-                                            //  value={formik.values.description || selectedAccordionItem?.description || fetchedData.description}
-                                            //  error={formik.errors.description}
-                                             /> */}
-
                     </Accordion>
-
                   </FlexCol>
                 </>
               ) : activeBtnValue === "ApplicationForm" ? (
@@ -1664,7 +1751,7 @@ const CreatejobTemp = ({
                             title={""}
                             change={(e) => {
                               formik.setFieldValue("headline", e);
-                              setHeadline(e)
+                              setHeadline(e);
                             }}
                             defaultValue={Headline}
                           >
@@ -1684,7 +1771,7 @@ const CreatejobTemp = ({
                             title={""}
                             change={(e) => {
                               formik.setFieldValue("phone", e);
-                              setPhone(e)
+                              setPhone(e);
                             }}
                             defaultValue={Phone}
                           >
@@ -1704,7 +1791,7 @@ const CreatejobTemp = ({
                             title={""}
                             change={(e) => {
                               formik.setFieldValue("address", e);
-                              setAddress(e)
+                              setAddress(e);
                             }}
                             defaultValue={Address}
                           >
@@ -1724,7 +1811,7 @@ const CreatejobTemp = ({
                             title={""}
                             change={(e) => {
                               formik.setFieldValue("country", e);
-                              setCountry(e)
+                              setCountry(e);
                             }}
                             defaultValue={country}
                           >
@@ -1736,7 +1823,6 @@ const CreatejobTemp = ({
                       </Accordion>
                     </div>
                     <div className="rounded-md borderb">
-
                       <Accordion
                         title={"Profile "}
                         className="Text_area"
@@ -1759,7 +1845,7 @@ const CreatejobTemp = ({
                             title={""}
                             change={(e) => {
                               seteducation(e);
-                              setPresentage(1.1)
+                              setPresentage(1.1);
                             }}
                             defaultValue={Education}
                           >
@@ -1779,8 +1865,8 @@ const CreatejobTemp = ({
                             )}
                             title={""}
                             change={(e) => {
-                              setExperience(e)
-                              setPresentage(1.2)
+                              setExperience(e);
+                              setPresentage(1.2);
                             }}
                             defaultValue={Experience}
                           >
@@ -1799,8 +1885,8 @@ const CreatejobTemp = ({
                             title={""}
                             change={(e) => {
                               formik.setFieldValue("summary", e);
-                              setSummary(e)
-                              setPresentage(1.3)
+                              setSummary(e);
+                              setPresentage(1.3);
                             }}
                             defaultValue={summary}
                           >
@@ -1820,8 +1906,8 @@ const CreatejobTemp = ({
                             title={""}
                             change={(e) => {
                               formik.setFieldValue("resume", e);
-                              setResume(e)
-                              setPresentage(1.4)
+                              setResume(e);
+                              setPresentage(1.4);
                             }}
                             defaultValue={resume}
                           >
@@ -1842,8 +1928,8 @@ const CreatejobTemp = ({
                             title={""}
                             change={(e) => {
                               formik.setFieldValue("coverLetter", e);
-                              setCoverletter(e)
-                              setPresentage(1.5)
+                              setCoverletter(e);
+                              setPresentage(1.5);
                             }}
                             defaultValue={coverLetter}
                           >
@@ -1923,7 +2009,7 @@ icondropDown={true}
                                   placeholder={`Enter Question ${index + 1}`}
                                   value={condition.question}
                                   change={(e) => {
-                                    setPresentage(1.6)
+                                    setPresentage(1.6);
                                     setEvaluation((prevEvaluation) =>
                                       prevEvaluation.map((prevCondition, i) =>
                                         i === index
@@ -1933,8 +2019,12 @@ icondropDown={true}
                                     );
                                     console.log(e);
                                   }}
-                                  error={condition.question ? '' : Questionerror || ''}
-                                  maxLength ={100}
+                                  error={
+                                    condition.question
+                                      ? ""
+                                      : Questionerror || ""
+                                  }
+                                  maxLength={100}
                                 />
                                 <div className="flex items-center gap-5 mt-4">
                                   <div className="flex-shrink-0">
@@ -1942,29 +2032,34 @@ icondropDown={true}
                                       options={Form}
                                       dropdownWidth="200px"
                                       change={(e) => {
-                                        setPresentage(1.7)
+                                        setPresentage(1.7);
                                         setEvaluation((prevEvaluation) =>
-                                          prevEvaluation.map((prevCondition, i) =>
-                                            i === index
-                                              ? {
-                                                ...prevCondition,
-                                                answer_type: e,
-                                                answerMetaData: [
-                                                  {
-                                                    id: 1,
-                                                    key: e,
-                                                    value: "",
-                                                  },
-                                                ],
-                                              }
-                                              : prevCondition
+                                          prevEvaluation.map(
+                                            (prevCondition, i) =>
+                                              i === index
+                                                ? {
+                                                    ...prevCondition,
+                                                    answer_type: e,
+                                                    answerMetaData: [
+                                                      {
+                                                        id: 1,
+                                                        key: e,
+                                                        value: "",
+                                                      },
+                                                    ],
+                                                  }
+                                                : prevCondition
                                           )
                                         );
-                                        handleAddField(e)
+                                        handleAddField(e);
                                       }}
                                       value={condition.answerMetaData[0]?.key}
                                       icondropDown={true}
-                                      error={condition.answerMetaData[0]?.key ? '' : answerError || ''}
+                                      error={
+                                        condition.answerMetaData[0]?.key
+                                          ? ""
+                                          : answerError || ""
+                                      }
                                       placeholder={"Choose Options"}
                                     />
                                   </div>
@@ -1972,7 +2067,11 @@ icondropDown={true}
                                   {/* Add your logic here */}
 
                                   <div>
-                                    <Tooltip placement="topRight" title={"Active / Inactive"} className="flex items-center gap-2">
+                                    <Tooltip
+                                      placement="topRight"
+                                      title={"Active / Inactive"}
+                                      className="flex items-center gap-2"
+                                    >
                                       <p>Mandatory</p>
                                       <ToggleBtn />
                                     </Tooltip>
@@ -1992,9 +2091,16 @@ icondropDown={true}
                                       cursor: "pointer",
                                     }}
                                   /> */}
-                                    <Tooltip placement="top" color="red" title={"Delete"}>
-                                      <RiDeleteBinLine className="text-gray-400 hover:text-red-500 w-[18px] h-[18px] cursor-pointer"
-                                        onClick={() => handleDeleteCondition(index)}
+                                    <Tooltip
+                                      placement="top"
+                                      color="red"
+                                      title={"Delete"}
+                                    >
+                                      <RiDeleteBinLine
+                                        className="text-gray-400 hover:text-red-500 w-[18px] h-[18px] cursor-pointer"
+                                        onClick={() =>
+                                          handleDeleteCondition(index)
+                                        }
                                       />
                                     </Tooltip>
                                   </div>
@@ -2014,61 +2120,69 @@ icondropDown={true}
                                           "Multiple Choice",
                                           "Checkboxes",
                                         ].includes(field.key) && (
-                                            <FormInput
-                                              title={`Options ${fieldIndex + 1}`}
-                                              placeholder={"Enter value"}
-                                              value={field.value}
-                                              change={(e) => {
-                                                setPresentage(1.8)
-                                                setEvaluation((prevEvaluation) =>
-                                                  prevEvaluation.map(
-                                                    (prevCondition, i) =>
-                                                      i === index
-                                                        ? {
+                                          <FormInput
+                                            title={`Options ${fieldIndex + 1}`}
+                                            placeholder={"Enter value"}
+                                            value={field.value}
+                                            change={(e) => {
+                                              setPresentage(1.8);
+                                              setEvaluation((prevEvaluation) =>
+                                                prevEvaluation.map(
+                                                  (prevCondition, i) =>
+                                                    i === index
+                                                      ? {
                                                           ...prevCondition,
                                                           answerMetaData:
                                                             prevCondition.answerMetaData.map(
                                                               (f, j) =>
                                                                 j === fieldIndex
                                                                   ? {
-                                                                    ...f,
-                                                                    value:
-                                                                      String(e),
-                                                                  }
+                                                                      ...f,
+                                                                      value:
+                                                                        String(
+                                                                          e
+                                                                        ),
+                                                                    }
                                                                   : f
                                                             ),
                                                         }
-                                                        : prevCondition
-                                                  )
+                                                      : prevCondition
                                                 )
-                                              }}
-                                              error={field.value ? '' : OptionError || ''}
-                                            />
-                                          )}
+                                              );
+                                            }}
+                                            error={
+                                              field.value
+                                                ? ""
+                                                : OptionError || ""
+                                            }
+                                          />
+                                        )}
 
                                         {[
                                           "Drop-down",
                                           "Multiple Choice",
                                           "Checkboxes",
                                         ].includes(field.key) && (
-                                            <Tooltip placement="top" title={"Delete"}>
-                                              <div className="ml-2">
-                                                <MdDelete
-                                                  onClick={() =>
-                                                    handleDeleteField(
-                                                      index,
-                                                      fieldIndex
-                                                    )
-                                                  }
-                                                  className="cursor-pointer text-red-500"
-                                                />
-                                              </div>
-                                            </Tooltip>
-                                          )}
+                                          <Tooltip
+                                            placement="top"
+                                            title={"Delete"}
+                                          >
+                                            <div className="ml-2">
+                                              <MdDelete
+                                                onClick={() =>
+                                                  handleDeleteField(
+                                                    index,
+                                                    fieldIndex
+                                                  )
+                                                }
+                                                className="cursor-pointer text-red-500"
+                                              />
+                                            </div>
+                                          </Tooltip>
+                                        )}
                                       </div>
                                     )
                                   )}
-
 
                                   {[
                                     "Drop-down",
@@ -2077,23 +2191,22 @@ icondropDown={true}
                                   ].includes(
                                     condition.answerMetaData[0]?.key
                                   ) && (
-                                      <Tooltip placement="top" title={"Add new"}>
-                                        <CgAdd
-                                          onClick={() =>
-                                            handleAddField(
-                                              index,
-                                              condition.answerMetaData[0]?.key
-                                            )
-                                          }
-                                          style={{
-                                            width: "18px",
-                                            height: "18px",
-                                            cursor: "pointer",
-                                          }}
-                                        />
-                                      </Tooltip>
-                                    )}
-
+                                    <Tooltip placement="top" title={"Add new"}>
+                                      <CgAdd
+                                        onClick={() =>
+                                          handleAddField(
+                                            index,
+                                            condition.answerMetaData[0]?.key
+                                          )
+                                        }
+                                        style={{
+                                          width: "18px",
+                                          height: "18px",
+                                          cursor: "pointer",
+                                        }}
+                                      />
+                                    </Tooltip>
+                                  )}
                                 </>
                               )}
                             </>
@@ -2112,7 +2225,6 @@ icondropDown={true}
                         />
                       </div>
                     </Accordion>
-
                   </FlexCol>
                 </>
               ) : activeBtnValue === "Workflow" ? (
@@ -2147,13 +2259,24 @@ icondropDown={true}
                       value={selectedWorkFlowId}
                     >
                       {Stages.map((each) => (
-                        <div key={each.workFlowId} className={`  relative p-2.5  mt-6 border rounded-md ${selectedWorkFlowId === each.workFlowId ? 'bg-[#F2F0FD]  border-[#690CE7]' : ''}`}  >
+                        <div
+                          key={each.workFlowId}
+                          className={`  relative p-2.5  mt-6 border rounded-md ${
+                            selectedWorkFlowId === each.workFlowId
+                              ? "bg-[#F2F0FD]  border-[#690CE7]"
+                              : ""
+                          }`}
+                        >
                           {/* <title={<span className="no-underline">{each.workFlowName}</span>}> */}
                           {/* <h6 className="h6 mt">{each.workFlowName}</h6> */}
-                          <h6 className="h6 mb-4"> {each.workFlowName}  </h6>
+                          <h6 className="h6 mb-4"> {each.workFlowName} </h6>
 
                           <div className="">
-                            <Jobcardcopy options={each.stages} selectable={false} firstCardSelectable={false} />
+                            <Jobcardcopy
+                              options={each.stages}
+                              selectable={false}
+                              firstCardSelectable={false}
+                            />
                           </div>
                           <div
                             style={{
@@ -2163,11 +2286,9 @@ icondropDown={true}
                               padding: "8px",
                             }}
                           >
-
                             <Radio
                               value={each.workFlowId || selectedWorkFlowId}
-                            >
-                            </Radio>
+                            ></Radio>
                           </div>
                         </div>
                       ))}
@@ -2177,11 +2298,9 @@ icondropDown={true}
               ) : null}
               {contextHolder}
             </div>
-
           </FlexCol>
         </div>
       </DrawerPop>
-
     </div>
   );
 };

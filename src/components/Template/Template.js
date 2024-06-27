@@ -641,8 +641,10 @@ const Template = ({
           //   // stageRules:stages.stageRules
 
           // }))
-          recruitmentWorkFlowStages: workflow.recruitmentWorkFlowStages.map((stage) => stage.stageName)
-   
+          isActive: workflow.isActive,
+          recruitmentWorkFlowStages: workflow.recruitmentWorkFlowStages.map((stage) => stage.stageName),
+          actionToggle: true,
+          action: true,
 
          })))
        
