@@ -27,6 +27,11 @@ import TextArea from "../../common/TextArea";
 import CheckBoxInput from "../../common/CheckBoxInput";
 import FormInput from "../../common/FormInput";
 import { FaRegEdit } from "react-icons/fa";
+import { SlClose } from "react-icons/sl";
+import { AiTwotoneDislike } from "react-icons/ai";
+import { PiMinusCircleDuotone } from "react-icons/pi";
+import { AiTwotoneLike } from "react-icons/ai";
+import { PiStarFill } from "react-icons/pi";
 import { PiPushPinSlashBold } from "react-icons/pi";
 
 const Evaluations = ({ EvaluationID = "", stageId = "" }) => {
@@ -39,6 +44,8 @@ const Evaluations = ({ EvaluationID = "", stageId = "" }) => {
   const [jobId, setJobId] = useState(null);
   const { resumeId } = useParams();
   const [selectedNoteId, setSelectedNoteId] = useState(null);
+  const [selectedOption, setSelectedOption] = useState(null);
+  const [selectedOption1, setSelectedOption1] = useState(null);
   const [isPinned, setIsPinned] = useState(0);
   const [evalutaionId, setEvaluationId] = useState("");
   const handleEditClick = (jobResumeNoteId) => {
@@ -83,16 +90,14 @@ const Evaluations = ({ EvaluationID = "", stageId = "" }) => {
       placement: "top",
       // stack: 2,
       style: {
-        background: `${
-          type === "success"
-            ? `linear-gradient(180deg, rgba(204, 255, 233, 0.8) 0%, rgba(235, 252, 248, 0.8) 51.08%, rgba(246, 251, 253, 0.8) 100%)`
-            : "linear-gradient(180deg, rgba(255, 236, 236, 0.80) 0%, rgba(253, 246, 248, 0.80) 51.13%, rgba(251, 251, 254, 0.80) 100%)"
-        }`,
-        boxShadow: `${
-          type === "success"
-            ? "0px 4.868px 11.358px rgba(62, 255, 93, 0.2)"
-            : "0px 22px 60px rgba(134, 92, 144, 0.20)"
-        }`,
+        background: `${type === "success"
+          ? `linear-gradient(180deg, rgba(204, 255, 233, 0.8) 0%, rgba(235, 252, 248, 0.8) 51.08%, rgba(246, 251, 253, 0.8) 100%)`
+          : "linear-gradient(180deg, rgba(255, 236, 236, 0.80) 0%, rgba(253, 246, 248, 0.80) 51.13%, rgba(251, 251, 254, 0.80) 100%)"
+          }`,
+        boxShadow: `${type === "success"
+          ? "0px 4.868px 11.358px rgba(62, 255, 93, 0.2)"
+          : "0px 22px 60px rgba(134, 92, 144, 0.20)"
+          }`,
       },
       // duration: null,
     });
@@ -207,11 +212,11 @@ const Evaluations = ({ EvaluationID = "", stageId = "" }) => {
             case "Paragraph":
               evaluationAnswer = textAreaValue;
               break;
-              case "Checkboxes":
-                const selectedCheckboxValues = selectedCheckboxes.filter(
-                  (option) => metadata.value.split(",").includes(option.trim())
-                );
-                evaluationAnswer = selectedCheckboxes.join(", ");
+            case "Checkboxes":
+              const selectedCheckboxValues = selectedCheckboxes.filter(
+                (option) => metadata.value.split(",").includes(option.trim())
+              );
+              evaluationAnswer = selectedCheckboxes.join(", ");
               break;
             case "Short Answer":
               evaluationAnswer = forminputvalue;
@@ -297,7 +302,7 @@ const Evaluations = ({ EvaluationID = "", stageId = "" }) => {
       } else {
         newSelectedCheckboxes.splice(index, 1);
       }
-      console.log("newSelectedCheckboxes",newSelectedCheckboxes)
+      console.log("newSelectedCheckboxes", newSelectedCheckboxes)
       return newSelectedCheckboxes;
     });
   };
@@ -410,8 +415,34 @@ const Evaluations = ({ EvaluationID = "", stageId = "" }) => {
     setevaluationList([]);
   }, [evalutaionId === "" || EvaluationID === "" || stageId === ""]);
 
-  const onChange = (e) => {};
+  const onChange = (e) => { };
+  const options = [
+    {
+      id: 1,
+      label: "Yes",
+      value: "yes",
+    },
+    {
+      id: 2,
+      label: "No",
+      value: "no",
+    },
+    {
+      id: 3,
+      label: "Not Sure",
+      value: "not",
+    }
 
+  ];
+  
+
+  const options2 = [
+    { label: 'Strong No', icon: <SlClose /> },
+    { label: 'No', icon: <AiTwotoneDislike /> },
+    { label: 'Not Sure', icon: <PiMinusCircleDuotone /> },
+    { label: 'Yes', icon: <AiTwotoneLike /> },
+    { label: 'Strong Yes', icon: <PiStarFill /> },
+  ];
   //rendecomponent
   return (
     <div className="grid gap-6 lg:grid-cols-12">
@@ -419,8 +450,10 @@ const Evaluations = ({ EvaluationID = "", stageId = "" }) => {
       <div className="flex flex-col gap-6 lg:col-span-8 rounded-[10px] dark:border dark:border-secondaryWhite border dark:border-opacity-10">
         <div className="flex flex-col gap-4 box-wrapper">
           <div className="flex flex-col gap-4 ">
-            <div className="flex items-center justify-between">
-              <h6 className="h6">Evaluation Form</h6>
+            <div className="flex items-center justify-between ">
+              <p className="text-sm 2xl:text-base font-semibold">Evaluation Form</p>
+              <ButtonClick
+                buttonName="Create New Form" />
             </div>
             {/* <div className="v-divider  border-[1px] opacity-[10px]" /> */}
 
@@ -522,89 +555,79 @@ const Evaluations = ({ EvaluationID = "", stageId = "" }) => {
             </div> */}
             {evaluationList.length > 0 ? (
               <>
-                <div className="flex flex-col gap-4">
-                  {evaluationList.map((condition, index) => (
-                    <div key={index}>
-                      <h4>{condition.question}</h4>
-                      {condition.answerMetaData.map((metadata, idx) => (
-                        <div key={idx}>
-                          {metadata.key === "Drop-down" && idx === 0 && (
-                            <Dropdown
-                              options={condition.answerMetaData
-                                .filter((meta) => meta.key === "Drop-down")
-                                .flatMap((meta) => meta.value.split(","))
-                                .map((option) => ({
-                                  label: option.trim(),
-                                  value: option.trim(),
-                                }))}
-                              change={Setdopdownvalue}
-                              value={dropdownvalue}
-                              // title={condition.question}
-                            />
-                          )}
-                          {metadata.key === "Paragraph" && (
-                            <TextArea
-                              rows={4}
-                              change={setTextAreavalue}
-                              value={textAreaValue}
-                              // title={condition.question}
-                            />
-                          )}
-                          {metadata.key === "Checkboxes" && (
-                            <div>
-                              {metadata.value
-                                .split(",")
-                                .map((option, optIdx) => (
-                                  <label key={optIdx}>
-                                    <Checkbox
-                                      value={option.trim()}
-                                      checked={selectedCheckboxes.includes(
-                                        option.trim()
-                                      )}
-                                      onChange={() =>
-                                        handleCheckboxChange(option.trim())
-                                      }
-                                    />
-                                    {option.trim()}
-                                  </label>
-                                ))}
-                            </div>
-                          )}
-                          {metadata.key === "Short Answer" && (
-                            <FormInput
-                              change={setForminputValue}
-                              value={forminputvalue}
-                              // title={condition.question}
-                            />
-                          )}
-                          {metadata.key === "Multiple Choice" && (
-                            <div>
-                              <Radio.Group
-                                onChange={(e) => handleRadioChange(e, index)}
-                                value={selectedValues[index]}
-                              >
-                                {metadata.value
-                                  .split(",")
-                                  .map((option, optIdx) => (
-                                    <Radio key={optIdx} value={option.trim()}>
-                                      {option.trim()}
-                                    </Radio>
-                                  ))}
-                              </Radio.Group>
-                            </div>
-                          )}
+                <div className="flex flex-col gap-4 border-t">
+
+
+                  <div className="mt-3 ml-0 flex flex-col gap-3 text-[10px] 2xltext-xs">
+                    <p >Does the candidate have the appropriate educational qualifications or training for this position?</p>
+                    <div className="grid grid-cols-3 gap-3 items-center">
+                      {options.map((option, index) => (
+                        <div className={` rounded-lg ${selectedOption === option.value ? "bg-[#F9FAFB]" : ""}`}  key={option.id}>
+                          <Radio className="p-1.5 text-[9px] 2xl:text-[11px]"  
+                           checked={selectedOption === option.value} 
+                            onChange={() => setSelectedOption(option.value)}
+                            >{option.label}</Radio>
                         </div>
                       ))}
                     </div>
-                  ))}
+                  </div>
+                  <div className=" ml-0 flex flex-col gap-3 text-[10px] 2xltext-xs">
+                    <p>Did the candidate demonstrate, through their answers, a high degree of initiative?</p>
+                    <div className="grid grid-cols-3 gap-3 items-center">
+                    {options.map((option, index) => (
+                        <div className={` rounded-lg ${selectedOption1 === option.value ? "bg-[#F9FAFB]" : ""}`}  key={option.id}>
+                          <Radio className="p-1.5 text-[9px] 2xl:text-[11px]"  
+                           checked={selectedOption1 === option.value} 
+                            onChange={() => setSelectedOption1(option.value)}
+                            >{option.label}</Radio>
+                        </div>
+                      ))}
+                    </div>
+                  </div>
+                  <div className="flex flex-col gap-2">
+                    <Dropdown
+                      className="w-48 text-xs 2xl:text-sm"
+                      title="Characteristics"
+                      change={Setdopdownvalue}
+                      value={dropdownvalue}
+                    // title={condition.question}
+                    />
+                    <Dropdown
+                      className="w-48 text-xs 2xl:text-sm"
+                      title="Appearance"
+                      change={Setdopdownvalue}
+                      value={dropdownvalue}
+                    // title={condition.question}
+                    />
+                  </div>
+                  <div className="border-t ">
+                    <div className="flex items-center justify-between mt-4 ">
+                      <div className="flex flex-col gap-1.5">
+                        <p className="text-sm text-base font-semibold">Overall Score</p>
+                        <p className="text-[10px] 2xl:text-xs">Give the candidate a quick evaluation score</p>
+                      </div>
+                      <p className="text-[9px] 2xl:text-[11px]">*Overall score always required</p>
+                    </div>
+
+                  </div>
+
+                  <div className="bg-[#F9FAFA] rounded-[10px] divide-x divide-black/20 dark:divide-white/20 h-full md:h-[70px] dark:bg-dark borderb grid grid-cols-2 md:grid-cols-5">
+                    {options2.map((option, index) => (
+                      <button
+                        key={index}
+                        className={`transition-colors duration-300 m-auto w-full h-full ${index !== options2.length - 1 ? "" : ""}`}
+                      >
+                        <div className="flex flex-col items-center text-grey">
+                          <span className="text-sm ">{option.icon}</span>
+                          <span className="mt-1 text-xs">{option.label}</span>
+                        </div>
+                      </button>
+                    ))}
+                  </div>
+
+
                 </div>
-                <div className="flex items-center justify-end gap-2.5 p-1.5 mt-[18.88px] rounded-lg">
-                  <ButtonClick
-                    handleSubmit={handleSubmit}
-                    buttonName="save"
-                    BtnType="primary"
-                  />
-                </div>
+
               </>
             ) : (
               <div className="h-full gap-4 vhcenter box-wrapper borderb">
