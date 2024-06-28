@@ -5,6 +5,7 @@ import {
     ContentState,
     convertFromHTML,
     Modifier,
+
 } from "draft-js";
 import { Editor } from "react-draft-wysiwyg";
 import { FaAsterisk } from "react-icons/fa";
@@ -80,6 +81,10 @@ const TextEditor = ({
         console.log(htmlContent)
         setTrigger(true)
     };
+
+    // useEffect(()=>{
+    //     handleEditorChange()
+    // },[initialValue])
     const handleItemClick = (value) => {
         const contentState = editorState.getCurrentContent();
         const selectionState = editorState.getSelection();
@@ -95,7 +100,6 @@ const TextEditor = ({
         );
         setEditorState(newEditorState);
     };
-
     const items = [
         { value: '[Enter Name Here]', label: 'Enter Name' },
         { value: '[Enter Date Here]', label: 'Enter Date' },
@@ -105,7 +109,7 @@ const TextEditor = ({
     const DropdownComponent = () => (
         <Select
             placeholder="Insert Placeholder"
-            style={{ width: 200 }}
+            // style={{ width: 200 }}
             onChange={handleItemClick}
         >
             {items.map(item => (
@@ -115,9 +119,6 @@ const TextEditor = ({
             ))}
         </Select>
     );
-    // useEffect(()=>{
-    //     handleEditorChange()
-    // },[initialValue])
 
     return (
         <>
@@ -145,6 +146,7 @@ const TextEditor = ({
                         placeholder={placeholder}
                         wrapperStyle={{ height: height }}
                         toolbarCustomButtons={[<DropdownComponent key="dropdown" />]}
+
                         toolbar={{
                             options: ["inline", "fontSize", "list", "textAlign"],
                             inline: { options: ["bold", "italic", "underline", "strikethrough"] },

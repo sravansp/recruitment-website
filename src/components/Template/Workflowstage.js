@@ -353,27 +353,32 @@ const Workflowstage = ({
 
         // Update the optionData state
         setOptionData(optionData);
-
+         console.log("haaa",optionData)
         // Set the values of input fields based on the stage rules of the selected stage
         if (stageRules) {
+          
             if (stageRules.evaluation) {
                 console.log(stageRules.evaluation,"haaa")
                 setEvaluationValue(stageRules.evaluation);
             }
 
             if (stageRules.questionnaire) {
-                setQuestionnaire(stageRules.questionnaire);
+              console.log(stageRules.questionnaire,"haaa")  
+              setQuestionnaire(stageRules.questionnaire);
             }
 
             if (stageRules.emailTemplate) {
+              console.log(stageRules.emailTemplate,"haaa")  
                 setEmail(stageRules.emailTemplate);
             }
 
             if (stageRules.note) {
-                setAddnote(stageRules.note);
+              console.log(stageRules.note,"haaa")
+              setAddnote(stageRules.note);
             }
 
             if (stageRules.tag) {
+              console.log(stageRules.tag,"haaa")
                 setAddtag(stageRules.tag);
             }
         }
@@ -386,16 +391,7 @@ const Workflowstage = ({
     }
 };
 
-  // const handleModalClose = () => {
-  //   // Set the state to false to hide the modal
-  //   setIsModalVisible(false);
-  //   //set the state empty
-  //   setStageName("");
-  //   setSelectedStageName("");
-  // };
-  // const handleCopy = (stageIndex) => {
-  //   copy(stageIndex);
-  // };
+  
 
   useEffect(() => {
     console.log(stages);
@@ -697,30 +693,40 @@ const Workflowstage = ({
       console.log({ stageName: stageName });
       if (response.result.length > 0) {
         const firstJob = response.result[0];
-
+  
         // Set workflow name
         formik.setFieldValue("workFlowName", firstJob.workFlowName);
         formik.setFieldValue("description", firstJob.description);
-
-        // Set stages
-        const stagesData = firstJob.recruitmentWorkFlowStages.map((stage) => ({
-          id: stage.stageId,
-          workFlowId: stage.workFlowId,
-          stageOrder: stage.stageOrder,
-          stageName: stage.stageName,
-          stageRules: stage.stageRules,
-        }));
-        console.log(stagesData)
+  
+        // Set stages and parse stageRules from JSON
+        const stagesData = firstJob.recruitmentWorkFlowStages.map((stage) => {
+          let parsedStageRules;
+          try {
+            parsedStageRules = JSON.parse(stage.stageRules || '{}');
+          } catch (error) {
+            console.error("Error parsing stageRules:", error);
+            parsedStageRules = {};
+          }
+          return {
+            id: stage.stageId,
+            workFlowId: stage.workFlowId,
+            stageOrder: stage.stageOrder,
+            stageName: stage.stageName,
+            stageRules: parsedStageRules,
+          };
+        });
+  
+        console.log(stagesData);
         setstages(stagesData);
-        console.log(stagesData); // Check here
       }
     } catch (error) {
       console.log(error);
     }
   };
+  
   useEffect(() => {
     getworkFlow();
-    console.log(stages);
+    console.log(stages,"haaa");
   }, []);
 
   const [options, setoptions] = useState([
