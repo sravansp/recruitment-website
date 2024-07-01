@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from "react";
-import logo from "../../assets/images/logo_full.svg";
+import logo from "../../assets/images/login/brandlogo.png";
 import { LuMail } from "react-icons/lu";
 import { LuLock } from "react-icons/lu";
 import { RiCheckFill } from "react-icons/ri";
@@ -221,10 +221,10 @@ export default function Login() {
     <div className="absolute top-0 bottom-0 flex w-full">
       {contextHolder}
       <div className="w-full lg:w-1/2">
-        <div className="flex flex-col justify-between h-full p-10 py-4 mx-auto sm:w-2/3 lg:w-full md:px-20 2xl:py-20">
+        <div className="flex flex-col justify-between h-full p-10 py-4 mx-auto sm:w-2/3 lg:w-full md:px-12 2xl:py-12">
           {/* LOGO  */}
           <div className="flex justify-center logo lg:justify-start">
-            <img src={logo} alt="logo" className="w-20 2xl:w-28" />
+            <img src={logo} alt="logo" className="w-40 2xl:w-60" />
           </div>
 
           {/* FORM  */}
