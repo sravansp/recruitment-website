@@ -14,6 +14,7 @@ import image2 from "../../assets/images/emoji-sticker-line.svg";
 import {getAllRecruitmentEmailTemplates, saveRecruitmentEmailTemplate, getRecruitmentEmailTemplateById, updateRecruitmentEmailTemplate } from "../Api1";
 import { Subject, SubscriptionsOutlined } from "@mui/icons-material";
 import { FaAsterisk } from "react-icons/fa";
+import TextEditorcopy from "../common/TextEditor/textEditorCopy";
 const Emailtemplate = ({
   open = "",
   close = () => { },
@@ -193,6 +194,7 @@ const Emailtemplate = ({
     }
   };
   const handleEditorChange = (content) => {
+    console.log(content,"content")
     setContent(content);
     if (content) {
       setContentError('');
@@ -345,7 +347,7 @@ const Emailtemplate = ({
                 <p className="pb-2">Email</p>
                 <FaAsterisk className="ml-1.5 text-[6px] text-rose-600" />
               </p>
-              <TextEditor
+              <TextEditorcopy
                 placeholder={"Start typing your email"}
                 initialValue={content}
                 onChange={handleEditorChange}
