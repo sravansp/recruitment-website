@@ -123,8 +123,8 @@ export default function Login() {
 
   const formik = useFormik({
     initialValues: {
-      username: "",
-      password: "",
+      username: "admin",
+      password: "123abcAB",
     },
     enableReinitialize: true,
     validateOnChange: false,
@@ -132,41 +132,40 @@ export default function Login() {
       username: yup.string().required("Email is required"),
       password: yup.string().required("Password is required"),
     }),
-    onSubmit: async (e) => {
+    onSubmit: async (values) => {
       try {
-        const result = await axios.post(
+        const response = await axios.post(
           API.HOST + API.LOGIN_USER,
           {
-            username: e.username,
-            password: e.password,
+            username: values.username,
+            password: values.password,
+            thirdPartyLogin: 0,
           }
-          // {
-          //   headers: {
-          //     // "Access-Control-Allow-Origin":false,
-          //     "API-Key": 525-777-777,
-          //     // "API-Key": '525-777-777',
-          //   },
-          // }
         );
-        console.log(result.data);
-
-        // localStorage.setItem("organisationId", JSON.stringify(2));
-        console.log(result.status);
-        if (result.data.status === false) {
-          openNotification("error", "Failure", result.data.message);
-        }
-        if (result.data.status === true) {
-          localStorage.setItem("LoginData", JSON.stringify(result.data));
+  
+        if (response.data.status === true) {
+          const userData = response.data.userData;
+          const employeeId = userData.employeeId;
+          const companyId = userData.companyId[0]; 
+          const organisationId = userData.organisationId;
+  
+          localStorage.setItem("LoginData", JSON.stringify(response.data));
+          localStorage.setItem("employeeId", employeeId);
+          localStorage.setItem("companyId", companyId);
+          localStorage.setItem("organisationId", organisationId);
+  
+          navigate("/");
           window.location.reload();
-          // navigate("/home");
+        } else {
+          openNotification("error", "Failure", response.data.message);
         }
-        // console.log("result");
-        console.log(result);
       } catch (error) {
-        console.log(error);
+        console.error("Login error:", error);
+        openNotification("error", "Failed", error.message);
       }
     },
   });
+  
 
   const formik2 = useFormik({
     initialValues: {

@@ -43,7 +43,7 @@ const SelectCompany = () => {
       setOrganisationId(organisationId);
       getCompanyList(organisationId);
     }
-  }, []); // Run this effect only once when the component mounts
+  }, []); 
 
   const handleItemClick = (itemId) => {
     dispatch(companyIdSet(itemId));
@@ -76,10 +76,7 @@ const SelectCompany = () => {
         API.HOST + API.GET_COMPANY_RECORDS + "/" + organisationId
       );
 
-      // // Set company data to state
-      // setCompanyData(result.data.tbl_company);
-
-      // // If companyId is not set in localStorage, set it to the first company
+     
       if (!selectedItemId) {
         setSelectedItemId(result.data.tbl_company[0].companyId);
         localStorage.setItem("companyId", result.data.tbl_company[0].companyId);

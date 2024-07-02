@@ -38,17 +38,19 @@ export default function FrequencyBarChart() {
   // ];
   const[data,SetData]=useState([])
   const [companyId, setCompanyId] = useState(localStorage.getItem("companyId"));
-  useEffect(() => {
-    setCompanyId(localStorage.getItem("companyId"));
+  console.log(companyId,"companyId")
+  // useEffect(() => {
+  //   setCompanyId(localStorage.getItem("companyId"));
     
-  }, []);
+  // }, []);
   const getFrequencyRate = async ()=>{
     try {
+      
       const response = await getDashboardApplicationFrequencyRate({companyId:companyId})
       console.log(response);
       const formattedResult = Object.entries(response.result).map(([month, frequency]) => ({
-        month: month.toUpperCase(), // Convert month to uppercase
-        Frequency: frequency  // Calculate the frequency (multiplying by 1.8 as an example)
+        month: month.toUpperCase(), 
+        Frequency: frequency  
     }));
     console.log(formattedResult)
     SetData(formattedResult)
