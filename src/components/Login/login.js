@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from "react";
-import logo from "../../assets/images/logo_full.svg";
+import logo from "../../assets/images/login/brandlogo.png";
 import { LuMail } from "react-icons/lu";
 import { LuLock } from "react-icons/lu";
 import { RiCheckFill } from "react-icons/ri";
@@ -9,6 +9,9 @@ import { FiEye, FiEyeOff } from "react-icons/fi";
 import googleLogo from "../../assets/images/Social/Google.png";
 import appleLogo from "../../assets/images/Social/apple-fill.png";
 import metaLogo from "../../assets/images/Social/meta-fill.png";
+import widget1 from "../../assets/images/login/widget1.png";
+import widget2 from "../../assets/images/login/widget2.png";
+import widget3 from "../../assets/images/login/widget3.png";
 import { Button, Checkbox, Modal, notification } from "antd";
 
 import { Link, useNavigate } from "react-router-dom";
@@ -20,7 +23,7 @@ import logindash from "../../assets/images/logindash.png";
 import ImageScroll from "../common/ImageScroll";
 import FormInput from "../common/FormInput";
 import { googleLogout, useGoogleLogin } from "@react-oauth/google";
-
+import { motion, AnimatePresence } from "framer-motion";
 
 export default function Login() {
   const [showPassword, setShowPassword] = useState(false);
@@ -93,7 +96,6 @@ export default function Login() {
   };
   const navigate = useNavigate();
 
-
   const [api, contextHolder] = notification.useNotification();
   const openNotification = (type, message, description, callback) => {
     api[type]({
@@ -104,14 +106,16 @@ export default function Login() {
 
       // stack: 2,
       style: {
-        background: `${type === "success"
-          ? `linear-gradient(180deg, rgba(204, 255, 233, 0.8) 0%, rgba(235, 252, 248, 0.8) 51.08%, rgba(246, 251, 253, 0.8) 100%)`
-          : "linear-gradient(180deg, rgba(255, 236, 236, 0.80) 0%, rgba(253, 246, 248, 0.80) 51.13%, rgba(251, 251, 254, 0.80) 100%)"
-          }`,
-        boxShadow: `${type === "success"
-          ? "0px 4.868px 11.358px rgba(62, 255, 93, 0.2)"
-          : "0px 22px 60px rgba(134, 92, 144, 0.20)"
-          }`,
+        background: `${
+          type === "success"
+            ? `linear-gradient(180deg, rgba(204, 255, 233, 0.8) 0%, rgba(235, 252, 248, 0.8) 51.08%, rgba(246, 251, 253, 0.8) 100%)`
+            : "linear-gradient(180deg, rgba(255, 236, 236, 0.80) 0%, rgba(253, 246, 248, 0.80) 51.13%, rgba(251, 251, 254, 0.80) 100%)"
+        }`,
+        boxShadow: `${
+          type === "success"
+            ? "0px 4.868px 11.358px rgba(62, 255, 93, 0.2)"
+            : "0px 22px 60px rgba(134, 92, 144, 0.20)"
+        }`,
       },
       // duration: null,
     });
@@ -217,10 +221,10 @@ export default function Login() {
     <div className="absolute top-0 bottom-0 flex w-full">
       {contextHolder}
       <div className="w-full lg:w-1/2">
-        <div className="flex flex-col justify-between h-full p-10 py-4 mx-auto sm:w-2/3 lg:w-full md:px-20 2xl:py-20">
+        <div className="flex flex-col justify-between h-full p-10 py-4 mx-auto sm:w-2/3 lg:w-full md:px-12 2xl:py-12">
           {/* LOGO  */}
           <div className="flex justify-center logo lg:justify-start">
-            <img src={logo} alt="logo" className="w-20 2xl:w-28" />
+            <img src={logo} alt="logo" className="w-40 2xl:w-60" />
           </div>
 
           {/* FORM  */}
@@ -242,7 +246,8 @@ export default function Login() {
                   <div className="mneta_login bg-blue-600 2xl:h-[62px] 2xl:w-[62px] h-12 w-12 rounded-full flex justify-center items-center cursor-pointer">
                     <img src={metaLogo} alt="metaLogin" className="w-6 h-6" />
                   </div>
-                  <div className="google_login 2xl:h-[62px] 2xl:w-[62px] h-12 w-12 rounded-full flex justify-center items-center bg-white border border-[#D9D9D9] cursor-pointer"
+                  <div
+                    className="google_login 2xl:h-[62px] 2xl:w-[62px] h-12 w-12 rounded-full flex justify-center items-center bg-white border border-[#D9D9D9] cursor-pointer"
                     onClick={googleLogin}
                   >
                     <img
@@ -267,7 +272,8 @@ export default function Login() {
 
               <div className="flex flex-col !gap-5">
                 {/* Email Input Box */}
-                <div className="input-section"
+                <div
+                  className="input-section"
                   onKeyDown={(event) => {
                     if (event.key === "Enter") {
                       formik.handleSubmit();
@@ -310,10 +316,11 @@ export default function Login() {
 
                     <label
                       htmlFor="floating_filled_email"
-                      className={`-z-10 absolute transition-all leading-[1] duration-300 ${formik.values.username.length === 0
-                        ? "left-12 text-gray-400 peer-focus-within:left-12 peer-focus-within:-translate-y-4 peer-focus-within:text-gray-700 peer-focus-within:text-[10px] peer-focus-within:text-bold"
-                        : "left-12 -translate-y-4 text-gray-700 text-[10px] text-bold"
-                        }`}
+                      className={`-z-10 absolute transition-all leading-[1] duration-300 ${
+                        formik.values.username.length === 0
+                          ? "left-12 text-gray-400 peer-focus-within:left-12 peer-focus-within:-translate-y-4 peer-focus-within:text-gray-700 peer-focus-within:text-[10px] peer-focus-within:text-bold"
+                          : "left-12 -translate-y-4 text-gray-700 text-[10px] text-bold"
+                      }`}
                     >
                       Email Address
                     </label>
@@ -326,7 +333,8 @@ export default function Login() {
                 </div>
 
                 {/* Password Input Box */}
-                <div className="relative input-section"
+                <div
+                  className="relative input-section"
                   onKeyDown={(event) => {
                     if (event.key === "Enter") {
                       formik.handleSubmit();
@@ -350,10 +358,11 @@ export default function Login() {
 
                     <label
                       htmlFor="floating_filled_password"
-                      className={`-z-10 absolute transition-all leading-[1] duration-300 ${formik.values.password.length === 0
-                        ? "left-12 text-gray-400 peer-focus-within:left-12 peer-focus-within:-translate-y-4 peer-focus-within:text-gray-700 peer-focus-within:text-[10px] peer-focus-within:text-bold"
-                        : "left-12 -translate-y-4 text-gray-700 text-[10px] text-bold"
-                        }`}
+                      className={`-z-10 absolute transition-all leading-[1] duration-300 ${
+                        formik.values.password.length === 0
+                          ? "left-12 text-gray-400 peer-focus-within:left-12 peer-focus-within:-translate-y-4 peer-focus-within:text-gray-700 peer-focus-within:text-[10px] peer-focus-within:text-bold"
+                          : "left-12 -translate-y-4 text-gray-700 text-[10px] text-bold"
+                      }`}
                     >
                       Password
                     </label>
@@ -364,9 +373,15 @@ export default function Login() {
                       onClick={() => setShowPassword(!showPassword)}
                     >
                       {showPassword ? (
-                        <FiEyeOff size={18} className="text-black opacity-50 hover:text-primary hover:opacity-100" />
+                        <FiEyeOff
+                          size={18}
+                          className="text-black opacity-50 hover:text-primary hover:opacity-100"
+                        />
                       ) : (
-                        <FiEye size={18} className="text-black opacity-50 hover:text-primary hover:opacity-100" />
+                        <FiEye
+                          size={18}
+                          className="text-black opacity-50 hover:text-primary hover:opacity-100"
+                        />
                       )}
                     </div>
                   </div>
@@ -451,28 +466,157 @@ export default function Login() {
 
       <div className="items-center justify-center hidden text-white lg:w-1/2 lg:flex">
         <div className="h-[calc(100%_-5%)] w-[calc(100%_-5%)] bg_linear_colort rounded-3xl px-20 py-10 2xl:py-20 gap-4  flex flex-col justify-between">
-          <div className="top h-[20%] 5xl:h-[5%] flex flex-col gap-1">
+          {/* <div className="top h-[20%] 5xl:h-[5%] flex flex-col gap-1">
             <h1 className="text-2xl leading-none 2xl:text-4xl">
               The simplest way to manage your organisation
             </h1>
             <p className="para !text-white !font-normal">
               Enter your credintials to access your account
             </p>
-          </div>
+          </div> */}
 
-          {/* <div className="ml-0 middle h-[200px] lg:h-[250px] xl:h-[250px] 2xl:h-[400px]"> */}
-          <div className="ml-0 h-[70%] 2xl:h-[60%]">
+          {/* <div className="ml-0 h-[70%] 2xl:h-[60%]">
             <img
               src={logindash}
               alt="logindash"
               className="object-contain object-left w-full h-full ml-auto"
             />
-          </div>
+          </div> */}
 
-          <div className="w-full mx-auto h-[10%]">
+          {/* <div className="w-full mx-auto h-[10%]">
             <div className="text-center">
-              {/* <ImageScroll /> */}
+              <ImageScroll />
             </div>
+          </div> */}
+          <div className="h-full w-full flex flex-col justify-between">
+            {/* <div className="ml-0 middle h-[200px] lg:h-[250px] xl:h-[250px] 2xl:h-[400px]"> */}
+            {/* <div className="h-ful mb-6"> */}
+            {/* <img
+              src={logindash}
+              alt="logindash"
+              className="object-contain object-left w-full h-full ml-auto"
+            /> */}
+            <div className=" w-full h-full vhcenter">
+              <div className="2xl:w-[500px] w-[270px] 5 relative">
+                <motion.div
+                  initial={{ opacity: 0, translateX: 30 }}
+                  animate={{ opacity: 1, translateX: 0 }}
+                  transition={{
+                    type: "",
+                    yoyo: Infinity,
+                    delay: 0.5,
+                    duration: 0.6,
+                  }}
+                  className=" drop-shadow-2xl relative"
+                >
+                  <img src={widget1} alt="" className="w-full" />
+                  {/* GLASSMORPHISAMS  */}
+                  <motion.div
+                   initial={{ scale: 0, opacity: 0, }}
+                    animate={{ scale: 1, opacity: 1 }}
+                    transition={{
+                      yoyo: Infinity,
+                      delay: 1.2,
+                      duration: 1.5,
+                      ease: "easeInOut",
+                    }}
+                    className="isolate absolute w-[14%] h-[24%] -right-[7%] top-1/2 bg-white/10 shadow-lg ring-1 ring-white/80 backdrop-blur-sm"
+                  />
+                  <motion.div
+                   initial={{ scale: 0, opacity: 0, }}
+                    animate={{ scale: 1, opacity: 1 }}
+                    transition={{
+                      yoyo: Infinity,
+                      delay: 1.4,
+                      duration: 1.5,
+                      ease: "easeInOut",
+                    }}
+                    className="isolate absolute w-[10%] h-[13%] -right-[6%] -bottom-[8%] bg-white/10 shadow-lg ring-1 ring-white/80 backdrop-blur-sm"
+                  />
+                  <motion.div
+                   initial={{ scale: 0, opacity: 0, }}
+                    animate={{ scale: 1, opacity: 1 }}
+                    transition={{
+                      yoyo: Infinity,
+                      delay: 1.6,
+                      duration: 1.5,
+                      ease: "easeInOut",
+                    }}
+                    className="isolate absolute w-[24%] h-[28%] -left-[20%] -top-[10%] bg-white/10 shadow-lg ring-1 ring-white/60  backdrop-blur-[6px]"
+                  />
+                  <motion.div
+                   initial={{ scale: 0, opacity: 0, }}
+                    animate={{ scale: 1, opacity: 1 }}
+                    transition={{
+                      yoyo: Infinity,
+                      delay: 1.8,
+                      duration: 1.5,
+                      ease: "easeInOut",
+                    }}
+                    className="isolate absolute w-[8%] h-[10%] -left-[24%] -top-[15%] bg-white/10 shadow-lg ring-1 ring-white/60  backdrop-blur-[6px]"
+                  />
+                </motion.div>
+                <motion.div
+                  className="w-[70%] -left-[16%] -bottom-[9%] absolute shadow-widget drop-shadow-2xl"
+                  initial={{ opacity: 0, translateX: -30 }}
+                  animate={{ opacity: 1, translateX: 0 }}
+                  transition={{
+                    type: "",
+                    yoyo: Infinity,
+                    delay: 0.9,
+                    duration: 0.6,
+                  }}
+                >
+                  <div className="relative w-full h-full">
+                    <img
+                      src={widget2}
+                      alt=""
+                      className=" w-full object-cover"
+                    />
+                    <motion.div
+                     initial={{ scale: 0, opacity: 0, }}
+                      animate={{ scale: 1, opacity: 1 }}
+                      transition={{
+                        yoyo: Infinity,
+                        delay: 2,
+                        duration: 1.5,
+                        ease: "easeInOut",
+                      }}
+                      className="isolate absolute w-[20%] h-[32%] -left-[13%] top-[14%] bg-white/10 shadow-lg ring-1 ring-white/60  backdrop-blur-[6px]"
+                    />
+                  </div>
+                </motion.div>
+                <motion.div
+                  className="w-[55%] -top-[11%] -right-[16%] absolute shadow-widget  overflow-hidden drop-shadow-2xl"
+                  initial={{ opacity: 0, translateY: 30 }}
+                  animate={{ opacity: 1, translateY: 0 }}
+                  transition={{
+                    type: "",
+                    yoyo: Infinity,
+                    delay: 1,
+                    duration: 0.6,
+                  }}
+                >
+                  <img src={widget3} alt="" className=" w-full object-cover" />
+                </motion.div>
+              </div>
+            </div>
+
+            {/* </div> */}
+            <div className="top flex flex-col gap-3">
+              <h1 className="text-2xl 2xl:text-5xl font-semibold">
+                The simplest way to manage your organisation
+              </h1>
+              <p className="text-sm 2xl:text-xl !text-white !font-normal">
+                Enter your credintials to access your account
+              </p>
+            </div>
+
+            {/* <div className="w-full mx-auto">
+              <div className="text-center">
+                <ImageScroll />
+              </div>
+            </div> */}
           </div>
         </div>
       </div>
