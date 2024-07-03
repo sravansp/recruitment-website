@@ -51,7 +51,13 @@ export default function Router() {
     changeLanguage(layout === "rtl" ? "ar" : "en");
     setLoginData(JSON.parse(localStorage.getItem("LoginData")));
   }, []);
-
+  // useEffect(() => {
+  //   const localCompanyId = localStorage.getItem("companyId");
+  //   if (localCompanyId) {
+  //     setIsLoaded(true);
+  //   }
+  // }, []);
+    
   return (
     <BrowserRouter basename="">
         
@@ -66,8 +72,8 @@ export default function Router() {
             <Header />
             <div className="relative px-4 py-8 md:p-4 2xl:p-8 content">
               <Routes>
-              <Route path="/" element={<Discover />} />
-                {/* Company submenus */}
+              <Route path="/" element={<Discover/>} />
+                
                 <Route path="/Reports" element={<Reports />} />
                 <Route path="/JobsList" element={<JobsList />} />
                 <Route path="/Appearance" element={<Appearance />} />

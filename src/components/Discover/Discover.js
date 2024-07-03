@@ -99,10 +99,10 @@ const Discover = () => {
     },
   ];
   const [companyId, setCompanyId] = useState(localStorage.getItem("companyId"));
-
-  useEffect(() => {
-    setCompanyId(localStorage.getItem("companyId"));
-  }, []);
+  console.log(companyId,"companyId")  
+  // useEffect(() => {
+  //   setCompanyId(localStorage.getItem("companyId"));
+  // }, []);
   const getJobdetails = async () => {
     try {
       const response = await getDashboardStaticDatas({ companyId: companyId });
@@ -211,7 +211,9 @@ const Discover = () => {
           <div className="grid grid-cols-12 gap-4">
             <div className="col-span-12 lg:col-span-8 xl:col-span-12 2xl:col-span-8">
               <Card cardName="Application Frequency Rate" className="h-[397px]">
-                <FrequencyBarChart />
+                <FrequencyBarChart 
+                companyId={companyId}
+                />
               </Card>
             </div>
 
