@@ -4,43 +4,42 @@ import { FaAsterisk } from "react-icons/fa";
 import draftToHtml from 'draftjs-to-html';
 import { Select } from "antd";
 import { BeatLoader } from "react-spinners";
+import '../../../assets/css/texteditor.css';
 import {
     EditorState,
     convertToRaw,
     ContentState,
     convertFromHTML,
     Modifier,
-
 } from "draft-js";
 
-const TextEditorcopy = ({  title = "",
+const TextEditorcopy = ({
+    title = "",
     required = false,
     initialValue = "",
     onChange = () => { },
     changetoHtml = () => { },
-    className, 
-
-
-
+    className,
     minheight = "250px",
     height = "",
     placeholder = "",
     loader = false,
     error = "",
-    trigger = ""}) => {
+    trigger = ""
+}) => {
     const editor = useRef(null);
     const [content, setContent] = useState('');
-    
-    const [Trigger, setTrigger] = useState(false)
+    const [Trigger, setTrigger] = useState(false);
     const [isInitialized, setIsInitialized] = useState(false);
+
     useEffect(() => {
         if (trigger) {
-            setTrigger(false)
+            setTrigger(false);
         }
-    }, [trigger])
+    }, [trigger]);
 
     const config = useMemo(() => {
-        console.log("Creating config");  // Add logging to debug
+        console.log("Creating config");
         return {
             readonly: false,
             toolbar: true,
@@ -50,53 +49,54 @@ const TextEditorcopy = ({  title = "",
             showWordsCounter: false,
             toolbarAdaptive: false,
             toolbarSticky: true,
+            // buttons: [
+            //     {
+            //         group: 'inline',
+            //         buttons: ['bold', 'italic', 'underline']
+            //     },
+            //     {
+            //         group: 'inline-options',
+            //         buttons: ['ul', 'ol']
+            //     },
+            //     {
+            //         group: 'list-options',
+            //         buttons: ['font', 'fontsize', 'paragraph']
+            //     },
+            //     {
+            //         group: 'align-options',
+            //         buttons: ['image', 'table', 'link', 'left','center',
+            //      'right',
+            //      'justify',]
+            //     }
+            // ],
             buttons: [
                 'bold',
                 'italic',
                 'underline',
-                '|',
                 'ul',
                 'ol',
-                '|',
                 'font',
                 'fontsize',
                 'brush',
                 'paragraph',
-                '|',
                 'image',
                 'table',
                 'link',
-                '|',
                 'left',
                 'center',
                 'right',
                 'justify',
-                '|',
                 'undo',
                 'redo',
-                '|',
-                'hr',
-                'eraser',
-                'fullsize',
+            
+              
             ],
-            // buttons: ["bold", "italic", "underline", "fontsize", "orderedlist", "align"],
-            // buttonsMD: ["bold", "italic", "underline", "fontsize", "orderedlist", "align"],
-            // buttonsSM: ["bold", "italic", "underline", "fontsize", "orderedlist", "align"],
-            // buttonsXS: ["bold", "italic", "underline", "fontsize", "orderedlist", "align"],
-            placeholder: 'Start typing...'
+            placeholder: 'Start typing...',
+          
         };
     }, []);
-    
-    
-
-    // useEffect(()=>{
-    //     handleEditorChange()
-    // },[initialValue])
-  
-    
 
     return (
-       
         <>
             <div
                 className={`relative p-4 border border-black rounded-md border-opacity-10 dark:border-secondaryDark mb-14 ${className} ${loader ? "vhcenter" : ""}`}
@@ -108,7 +108,6 @@ const TextEditorcopy = ({  title = "",
                     minHeight: `${minheight}`,
                 }}
             >
-
                 <div className="flex">
                     <p className={`text-xs font-medium 2xl:text-sm dark:text-white ${className}`}>{title}</p>
                     {required && <FaAsterisk className="text-[10px] text-rose-600" />}
@@ -116,21 +115,21 @@ const TextEditorcopy = ({  title = "",
                 {loader ? (
                     <BeatLoader color="#6A4BFC" />
                 ) : (
-                    
                     <JoditEditor
-                         ref={editor}
-                         value={initialValue}
-                         config={config}
-                         tabIndex={1}
-                         onBlur={newContent => {
-                             console.log("Blur event", newContent);  // Add logging to debug
-                             setContent(newContent);
-                         }}
-                         onChange={newContent => {
-                             console.log("Change event", newContent);  // Add logging to debug
-                             onChange(newContent);
-                         }}
-                     />
+                        ref={editor}
+                        value={initialValue}
+                        config={config}
+                        tabIndex={1}
+                        className="custom-jodit-editor"
+                        onBlur={newContent => {
+                            console.log("Blur event", newContent);
+                            setContent(newContent);
+                        }}
+                        onChange={newContent => {
+                            console.log("Change event", newContent);
+                            onChange(newContent);
+                        }}
+                    />
                 )}
             </div>
             {error && (
@@ -143,6 +142,8 @@ const TextEditorcopy = ({  title = "",
 };
 
 export default TextEditorcopy;
+
+
 
 
 

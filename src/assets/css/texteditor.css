@@ -1,0 +1,24 @@
+.jodit-toolbar__box {
+    position: absolute;
+    bottom: -55px;
+    margin-left: 0;
+    border: 1px solid #dadadae0;
+    border: none;
+    border-bottom: none;
+   
+}
+
+.jodit-toolbar__box:not(:empty) {
+    border-bottom: none;
+}
+
+.jodit-add-new-line span{
+    display: none;
+}
+.jodit-container:not(.jodit_inline){
+    border: none;
+    background: none;
+}
+.jodit-toolbar-button button{
+  background-color: rgb(210, 215, 213);
+}
