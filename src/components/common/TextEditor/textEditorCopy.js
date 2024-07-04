@@ -26,68 +26,41 @@ const TextEditorcopy = ({
             setTrigger(false);
         }
     }, [trigger]);
-    // const customPlaceholderButton = {
-    //     name: 'placeholder',
-    //     tooltip: 'Insert Placeholder',
-    //     popup: {
-    //         body: '<div id="placeholder-options"></div>',
-    //         buttons: ['insert', 'cancel']
-    //     },
-    //     exec: function (editor) {
-    //         const placeholderOptions = ['Option 1', 'Option 2', 'Option 3'];
-    //         const optionsHtml = placeholderOptions.map(option => `<div class="placeholder-option">${option}</div>`).join('');
-            
-    //         // Ensure the popup is rendered before manipulating its content
-    //         editor.openPopup(this.popup);
-            
-    //         // Use a small timeout to ensure the popup is fully rendered
-    //         setTimeout(() => {
-    //             document.getElementById('placeholder-options').innerHTML = optionsHtml;
-    //             document.querySelectorAll('.placeholder-option').forEach(element => {
-    //                 element.addEventListener('click', () => {
-    //                     editor.selection.insertHTML(element.textContent);
-    //                     editor.closeAllPopups();
-    //                 });
-    //             });
-    //         }, 0); // Timeout set to 0 to ensure it runs after the popup is rendered
-    //     }
-    // };
-    
 
     const customPlaceholderButton = {
         name: 'placeholder',
-       // Replace with the URL of your icon if needed
         tooltip: 'Insert Placeholder',
-        popup: {
-            body: '<div id="placeholder-options"></div>',
-            buttons: ['insert', 'cancel']
+        list: {
+            name: 'Insert { Name }',
+            place: 'Insert { Place }',
+            location: 'Insert { Location }',
+            jobtitle: 'Insert { Jobtitle }',
+            date: 'Insert { Date }'
         },
-        // exec: function (editor) {
-        //     const placeholderOptions = ['Option 1', 'Option 2', 'Option 3'];
-        //     const optionsHtml = placeholderOptions.map(option => `<div class="placeholder-option">${option}</div>`).join('');
-        //     document.getElementById('placeholder-options').innerHTML = optionsHtml;
-
-        //     document.querySelectorAll('.placeholder-option').forEach(element => {
-        //         element.addEventListener('click', () => {
-        //             editor.selection.insertHTML(element.textContent);
-        //             editor.closeAllPopups();
-        //         });
-        //     });
-        // }
-        popup: (editor, current, self, close) => {
-            const placeholderOptions = ['Option 1', 'Option 2', 'Option 3'];
-            const div = editor.create.div('placeholder-options');
-            placeholderOptions.forEach(option => {
-                const optionDiv = editor.create.div('placeholder-option');
-                optionDiv.textContent = option;
-                optionDiv.style.cursor = 'pointer';
-                optionDiv.onclick = () => {
-                    editor.s.insertHTML(option);
-                    close();
-                };
-                div.appendChild(optionDiv);
-            });
-            return div;
+        exec: (editor, current, control, close) => {
+            console.log(control, "control");
+            let placeholder = '';
+            switch (control.control.name) {
+                case 'name':
+                    placeholder = '{ Name }';
+                    break;
+                case 'place':
+                    placeholder = '{ Place }';
+                    break;
+                case 'location':
+                    placeholder = '{ Location }';
+                    break;
+                case 'jobtitle':
+                    placeholder = '{ Jobtitle }';
+                    break;
+                case 'date':
+                    placeholder = '{ Date }';
+                    break;
+                default:
+                    break;
+            }
+            editor.s.insertHTML(placeholder);
+            close && close();
         }
     };
 
@@ -125,11 +98,9 @@ const TextEditorcopy = ({
                 },
                 {
                     group: 'misc-options',
-                    // buttons: [customPlaceholderButton]
-                    buttons: ['placeholder']
+                    buttons: [customPlaceholderButton]
                 },
-            ]  
-            
+            ]
         };
     }, []);
 
@@ -179,6 +150,7 @@ const TextEditorcopy = ({
 };
 
 export default TextEditorcopy;
+
 
 
 
