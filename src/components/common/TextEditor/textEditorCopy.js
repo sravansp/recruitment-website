@@ -1,27 +1,17 @@
 import React, { useState, useRef, useMemo, useEffect } from 'react';
 import JoditEditor from 'jodit-react';
 import { FaAsterisk } from "react-icons/fa";
-import draftToHtml from 'draftjs-to-html';
 import { Select } from "antd";
 import { BeatLoader } from "react-spinners";
 import '../../../assets/css/texteditor.css';
-import {
-    EditorState,
-    convertToRaw,
-    ContentState,
-    convertFromHTML,
-    Modifier,
-} from "draft-js";
 
 const TextEditorcopy = ({
     title = "",
     required = false,
     initialValue = "",
     onChange = () => { },
-    changetoHtml = () => { },
     className,
     minheight = "250px",
-    height = "",
     placeholder = "",
     loader = false,
     error = "",
@@ -30,13 +20,76 @@ const TextEditorcopy = ({
     const editor = useRef(null);
     const [content, setContent] = useState('');
     const [Trigger, setTrigger] = useState(false);
-    const [isInitialized, setIsInitialized] = useState(false);
 
     useEffect(() => {
         if (trigger) {
             setTrigger(false);
         }
     }, [trigger]);
+    // const customPlaceholderButton = {
+    //     name: 'placeholder',
+    //     tooltip: 'Insert Placeholder',
+    //     popup: {
+    //         body: '<div id="placeholder-options"></div>',
+    //         buttons: ['insert', 'cancel']
+    //     },
+    //     exec: function (editor) {
+    //         const placeholderOptions = ['Option 1', 'Option 2', 'Option 3'];
+    //         const optionsHtml = placeholderOptions.map(option => `<div class="placeholder-option">${option}</div>`).join('');
+            
+    //         // Ensure the popup is rendered before manipulating its content
+    //         editor.openPopup(this.popup);
+            
+    //         // Use a small timeout to ensure the popup is fully rendered
+    //         setTimeout(() => {
+    //             document.getElementById('placeholder-options').innerHTML = optionsHtml;
+    //             document.querySelectorAll('.placeholder-option').forEach(element => {
+    //                 element.addEventListener('click', () => {
+    //                     editor.selection.insertHTML(element.textContent);
+    //                     editor.closeAllPopups();
+    //                 });
+    //             });
+    //         }, 0); // Timeout set to 0 to ensure it runs after the popup is rendered
+    //     }
+    // };
+    
+
+    const customPlaceholderButton = {
+        name: 'placeholder',
+       // Replace with the URL of your icon if needed
+        tooltip: 'Insert Placeholder',
+        popup: {
+            body: '<div id="placeholder-options"></div>',
+            buttons: ['insert', 'cancel']
+        },
+        // exec: function (editor) {
+        //     const placeholderOptions = ['Option 1', 'Option 2', 'Option 3'];
+        //     const optionsHtml = placeholderOptions.map(option => `<div class="placeholder-option">${option}</div>`).join('');
+        //     document.getElementById('placeholder-options').innerHTML = optionsHtml;
+
+        //     document.querySelectorAll('.placeholder-option').forEach(element => {
+        //         element.addEventListener('click', () => {
+        //             editor.selection.insertHTML(element.textContent);
+        //             editor.closeAllPopups();
+        //         });
+        //     });
+        // }
+        popup: (editor, current, self, close) => {
+            const placeholderOptions = ['Option 1', 'Option 2', 'Option 3'];
+            const div = editor.create.div('placeholder-options');
+            placeholderOptions.forEach(option => {
+                const optionDiv = editor.create.div('placeholder-option');
+                optionDiv.textContent = option;
+                optionDiv.style.cursor = 'pointer';
+                optionDiv.onclick = () => {
+                    editor.s.insertHTML(option);
+                    close();
+                };
+                div.appendChild(optionDiv);
+            });
+            return div;
+        }
+    };
 
     const config = useMemo(() => {
         console.log("Creating config");
@@ -49,50 +102,34 @@ const TextEditorcopy = ({
             showWordsCounter: false,
             toolbarAdaptive: false,
             toolbarSticky: true,
-            // buttons: [
-            //     {
-            //         group: 'inline',
-            //         buttons: ['bold', 'italic', 'underline']
-            //     },
-            //     {
-            //         group: 'inline-options',
-            //         buttons: ['ul', 'ol']
-            //     },
-            //     {
-            //         group: 'list-options',
-            //         buttons: ['font', 'fontsize', 'paragraph']
-            //     },
-            //     {
-            //         group: 'align-options',
-            //         buttons: ['image', 'table', 'link', 'left','center',
-            //      'right',
-            //      'justify',]
-            //     }
-            // ],
             buttons: [
-                'bold',
-                'italic',
-                'underline',
-                'ul',
-                'ol',
-                'font',
-                'fontsize',
-                'brush',
-                'paragraph',
-                'image',
-                'table',
-                'link',
-                'left',
-                'center',
-                'right',
-                'justify',
-                'undo',
-                'redo',
+                {
+                    group: 'list-options',
+                    buttons: ['fontsize']
+                },
+                {
+                    group: 'inline',
+                    buttons: ['bold', 'italic', 'strikethrough', 'underline']
+                },
+                {
+                    group: 'align-options',
+                    buttons: ['left', 'right', 'center', 'justify']
+                },
+                {
+                    group: 'inline-options',
+                    buttons: ['ul', 'ol']
+                },
+                {
+                    group: 'list-options',
+                    buttons: ['brush']
+                },
+                {
+                    group: 'misc-options',
+                    // buttons: [customPlaceholderButton]
+                    buttons: ['placeholder']
+                },
+            ]  
             
-              
-            ],
-            placeholder: 'Start typing...',
-          
         };
     }, []);
 
@@ -142,6 +179,7 @@ const TextEditorcopy = ({
 };
 
 export default TextEditorcopy;
+
 
 
 
