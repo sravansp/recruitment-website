@@ -1679,8 +1679,8 @@ const CreatejobTemp = ({
                           height="250px"
                           initialValue={content}
                           onChange={handleEditorChange}
-                          // error={formik.errors.jobDescription}
-                          trigger={trigger}
+                          error={formik.errors.jobDescription}
+                          
                           loader={loader}
                         />
                       </div>

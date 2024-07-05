@@ -5,7 +5,7 @@ import { Select } from "antd";
 import { BeatLoader } from "react-spinners";
 import '../../../assets/css/texteditor.css';
 
-const TextEditorcopy = ({
+const TextEditor = ({
     title = "",
     required = false,
     initialValue = "",
@@ -20,12 +20,15 @@ const TextEditorcopy = ({
     const editor = useRef(null);
     const [content, setContent] = useState('');
     const [Trigger, setTrigger] = useState(false);
-
+    // const[showplaceholder,setPlaceholder] = useState("")
+    console.log(initialValue,"placeholder")
+   
     useEffect(() => {
         if (trigger) {
             setTrigger(false);
         }
     }, [trigger]);
+
 
     const customPlaceholderButton = {
         name: 'placeholder',
@@ -75,6 +78,7 @@ const TextEditorcopy = ({
             showWordsCounter: false,
             toolbarAdaptive: false,
             toolbarSticky: true,
+            placeholder: "", 
             buttons: [
                 {
                     group: 'list-options',
@@ -123,6 +127,12 @@ const TextEditorcopy = ({
                 {loader ? (
                     <BeatLoader color="#6A4BFC" />
                 ) : (
+                    <>
+                    {!initialValue && (
+                        <div className="text-grey opacity-40 font-normal">
+                            {placeholder}
+                        </div>
+                    )}
                     <JoditEditor
                         ref={editor}
                         value={initialValue}
@@ -138,6 +148,7 @@ const TextEditorcopy = ({
                             onChange(newContent);
                         }}
                     />
+                    </>
                 )}
             </div>
             {error && (
@@ -149,7 +160,7 @@ const TextEditorcopy = ({
     );
 };
 
-export default TextEditorcopy;
+export default TextEditor;
 
 
 

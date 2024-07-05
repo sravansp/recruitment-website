@@ -347,7 +347,7 @@ const Emailtemplate = ({
                 <p className="pb-2">Email</p>
                 <FaAsterisk className="ml-1.5 text-[6px] text-rose-600" />
               </p>
-              <TextEditorcopy
+              <TextEditor
                 placeholder={"Start typing your email"}
                 initialValue={content}
                 onChange={handleEditorChange}

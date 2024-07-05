@@ -1,124 +1,112 @@
-import React, { useState, useEffect } from "react";
-import {
-    EditorState,
-    convertToRaw,
-    ContentState,
-    convertFromHTML,
-    Modifier,
-
-} from "draft-js";
-import { Editor } from "react-draft-wysiwyg";
+import React, { useState, useRef, useMemo, useEffect } from 'react';
+import JoditEditor from 'jodit-react';
 import { FaAsterisk } from "react-icons/fa";
-import "react-draft-wysiwyg/dist/react-draft-wysiwyg.css";
-
-import { BeatLoader } from "react-spinners";
-import { FiAlertCircle } from "react-icons/fi";
-import draftToHtml from 'draftjs-to-html';
 import { Select } from "antd";
+import { BeatLoader } from "react-spinners";
+import '../../../assets/css/texteditor.css';
 
 const TextEditor = ({
     title = "",
     required = false,
     initialValue = "",
     onChange = () => { },
-    changetoHtml = () => { },
     className,
-
-
-
     minheight = "250px",
-    height = "",
     placeholder = "",
     loader = false,
     error = "",
     trigger = ""
 }) => {
-    const [editorState, setEditorState] = useState(
-        () => EditorState.createEmpty(),
-    );
-    const [Trigger, setTrigger] = useState(false)
-    console.log(initialValue)
-    console.log(trigger)
-
-    const [isInitialized, setIsInitialized] = useState(false);
+    const editor = useRef(null);
+    const [content, setContent] = useState('');
+    const [Trigger, setTrigger] = useState(false);
+    // const[showplaceholder,setPlaceholder] = useState("")
+    console.log(initialValue,"placeholder")
+   
     useEffect(() => {
         if (trigger) {
-            setTrigger(false)
+            setTrigger(false);
         }
-    }, [trigger])
-
-    useEffect(() => {
-        if (initialValue && !isInitialized && !trigger) {
-            const blocksFromHTML = convertFromHTML(initialValue);
-            const content = ContentState.createFromBlockArray(
-                blocksFromHTML.contentBlocks,
-                blocksFromHTML.entityMap
-            );
-            setEditorState(EditorState.createWithContent(content));
-
-            setIsInitialized(true);
-            console.log("HIII")
-
-        } else if (initialValue && trigger && !Trigger) {
-            const blocksFromHTML = convertFromHTML(initialValue);
-            const content = ContentState.createFromBlockArray(
-                blocksFromHTML.contentBlocks,
-                blocksFromHTML.entityMap
-            );
-            setEditorState(EditorState.createWithContent(content));
-            setIsInitialized(true);
-            setTrigger(false)
+    }, [trigger]);
 
 
-            console.log("GGG")
+    const customPlaceholderButton = {
+        name: 'placeholder',
+        tooltip: 'Insert Placeholder',
+        list: {
+            name: 'Insert { Name }',
+            place: 'Insert { Place }',
+            location: 'Insert { Location }',
+            jobtitle: 'Insert { Jobtitle }',
+            date: 'Insert { Date }'
+        },
+        exec: (editor, current, control, close) => {
+            console.log(control, "control");
+            let placeholder = '';
+            switch (control.control.name) {
+                case 'name':
+                    placeholder = '{ Name }';
+                    break;
+                case 'place':
+                    placeholder = '{ Place }';
+                    break;
+                case 'location':
+                    placeholder = '{ Location }';
+                    break;
+                case 'jobtitle':
+                    placeholder = '{ Jobtitle }';
+                    break;
+                case 'date':
+                    placeholder = '{ Date }';
+                    break;
+                default:
+                    break;
+            }
+            editor.s.insertHTML(placeholder);
+            close && close();
         }
-    }, [initialValue, isInitialized, trigger]);
-    const handleEditorChange = (editorState) => {
-
-        const htmlContent = draftToHtml(convertToRaw(editorState.getCurrentContent()));
-        setEditorState(editorState)
-        onChange(htmlContent || "");
-        console.log(htmlContent)
-        setTrigger(true)
     };
 
-    // useEffect(()=>{
-    //     handleEditorChange()
-    // },[initialValue])
-    const handleItemClick = (value) => {
-        const contentState = editorState.getCurrentContent();
-        const selectionState = editorState.getSelection();
-        const newContentState = Modifier.insertText(
-            contentState,
-            selectionState,
-            value
-        );
-        const newEditorState = EditorState.push(
-            editorState,
-            newContentState,
-            'insert-characters'
-        );
-        setEditorState(newEditorState);
-    };
-    const items = [
-        { value: '[Enter Name Here]', label: 'Enter Name' },
-        { value: '[Enter Date Here]', label: 'Enter Date' },
-        { value: '[Enter Location Here]', label: 'Enter Location' },
-    ];
-
-    const DropdownComponent = () => (
-        <Select
-            placeholder="Insert Placeholder"
-            // style={{ width: 200 }}
-            onChange={handleItemClick}
-        >
-            {items.map(item => (
-                <Select.Option key={item.value} value={item.value}>
-                    {item.label}
-                </Select.Option>
-            ))}
-        </Select>
-    );
+    const config = useMemo(() => {
+        console.log("Creating config");
+        return {
+            readonly: false,
+            toolbar: true,
+            uploader: { insertImageAsBase64URI: true },
+            showXPathInStatusbar: false,
+            showCharsCounter: false,
+            showWordsCounter: false,
+            toolbarAdaptive: false,
+            toolbarSticky: true,
+            placeholder: "", 
+            buttons: [
+                {
+                    group: 'list-options',
+                    buttons: ['fontsize']
+                },
+                {
+                    group: 'inline',
+                    buttons: ['bold', 'italic', 'strikethrough', 'underline']
+                },
+                {
+                    group: 'align-options',
+                    buttons: ['left', 'right', 'center', 'justify']
+                },
+                {
+                    group: 'inline-options',
+                    buttons: ['ul', 'ol']
+                },
+                {
+                    group: 'list-options',
+                    buttons: ['brush']
+                },
+                {
+                    group: 'misc-options',
+                    buttons: [customPlaceholderButton]
+                },
+            ]
+        };
+    }, []);
 
     return (
         <>
@@ -132,7 +120,6 @@ const TextEditor = ({
                     minHeight: `${minheight}`,
                 }}
             >
-
                 <div className="flex">
                     <p className={`text-xs font-medium 2xl:text-sm dark:text-white ${className}`}>{title}</p>
                     {required && <FaAsterisk className="text-[10px] text-rose-600" />}
@@ -140,23 +127,28 @@ const TextEditor = ({
                 {loader ? (
                     <BeatLoader color="#6A4BFC" />
                 ) : (
-                    <Editor
-                        editorState={editorState}
-                        onEditorStateChange={handleEditorChange}
-                        placeholder={placeholder}
-                        wrapperStyle={{ height: height }}
-                        toolbarCustomButtons={[<DropdownComponent key="dropdown" />]}
-
-                        toolbar={{
-                            options: ["inline", "fontSize", "list", "textAlign"],
-                            inline: { options: ["bold", "italic", "underline", "strikethrough"] },
-                            list: { options: ["unordered", "ordered", "indent"] },
-                            textAlign: { options: ["left", "center", "right", "justify"] },
+                    <>
+                    {!initialValue && (
+                        <div className="text-grey opacity-40 font-normal">
+                            {placeholder}
+                        </div>
+                    )}
+                    <JoditEditor
+                        ref={editor}
+                        value={initialValue}
+                        config={config}
+                        tabIndex={1}
+                        className="custom-jodit-editor"
+                        onBlur={newContent => {
+                            console.log("Blur event", newContent);
+                            setContent(newContent);
                         }}
-                        toolbarStyle={{ position: "absolute", bottom: "-60px", left: "0", right: "0" }}
-                        toolbarClassName="bg-black"
-                        editorClassName="h-full"
+                        onChange={newContent => {
+                            console.log("Change event", newContent);
+                            onChange(newContent);
+                        }}
                     />
+                    </>
                 )}
             </div>
             {error && (

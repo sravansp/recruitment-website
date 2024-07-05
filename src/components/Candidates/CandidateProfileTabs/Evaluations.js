@@ -554,101 +554,111 @@ const Evaluations = ({ EvaluationID = "", stageId = "" }) => {
               </Radio.Group>
             </div> */}
             {evaluationList.length > 0 ? (
-              <>
-                <div className="flex flex-col gap-4 border-t">
-
-
-                  <div className="mt-3 ml-0 flex flex-col gap-3 text-[10px] 2xltext-xs">
-                    <p >Does the candidate have the appropriate educational qualifications or training for this position?</p>
-                    <div className="grid grid-cols-3 gap-3 items-center">
-                      {options.map((option, index) => (
-                        <div className={` rounded-lg ${selectedOption === option.value ? "bg-[#F9FAFB]" : ""}`}  key={option.id}>
-                          <Radio className="p-1.5 text-[9px] 2xl:text-[11px]"  
-                           checked={selectedOption === option.value} 
-                            onChange={() => setSelectedOption(option.value)}
-                            >{option.label}</Radio>
-                        </div>
+<>
+<div className="flex flex-col gap-4 border-t">
+                  {evaluationList.map((condition, index) => (
+<div key={index} className="mt-3">
+<h4>{condition.question}</h4>
+                      {condition.answerMetaData.map((metadata, idx) => (
+<div key={idx}>
+                          {metadata.key === "Drop-down" && idx === 0 && (
+<Dropdown
+                              options={condition.answerMetaData
+                                .filter((meta) => meta.key === "Drop-down")
+                                .flatMap((meta) => meta.value.split(","))
+                                .map((option) => ({
+                                  label: option.trim(),
+                                  value: option.trim(),
+                                }))}
+                              change={Setdopdownvalue}
+                              value={dropdownvalue}
+                              // title={condition.question}
+                            />
+                          )}
+                          {metadata.key === "Paragraph" && (
+<TextArea
+                              rows={4}
+                              change={setTextAreavalue}
+                              value={textAreaValue}
+                              // title={condition.question}
+                            />
+                          )}
+                          {metadata.key === "Checkboxes" && (
+<div>
+                              {metadata.value
+                                .split(",")
+                                .map((option, optIdx) => (
+<label key={optIdx}>
+<Checkbox
+                                      value={option.trim()}
+                                      checked={selectedCheckboxes.includes(
+                                        option.trim()
+                                      )}
+                                      onChange={() =>
+                                        handleCheckboxChange(option.trim())
+                                      }
+                                    />
+                                    {option.trim()}
+</label>
+                                ))}
+</div>
+                          )}
+                          {metadata.key === "Short Answer" && (
+<FormInput
+                              change={setForminputValue}
+                              value={forminputvalue}
+                              // title={condition.question}
+                            />
+                          )}
+                          {metadata.key === "Multiple Choice" && (
+<div>
+<Radio.Group
+                                onChange={(e) => handleRadioChange(e, index)}
+                                value={selectedValues[index]}
+>
+                                {metadata.value
+                                  .split(",")
+                                  .map((option, optIdx) => (
+<Radio key={optIdx} value={option.trim()}>
+                                      {option.trim()}
+</Radio>
+                                  ))}
+</Radio.Group>
+</div>
+                          )}
+</div>
                       ))}
-                    </div>
-                  </div>
-                  <div className=" ml-0 flex flex-col gap-3 text-[10px] 2xltext-xs">
-                    <p>Did the candidate demonstrate, through their answers, a high degree of initiative?</p>
-                    <div className="grid grid-cols-3 gap-3 items-center">
-                    {options.map((option, index) => (
-                        <div className={` rounded-lg ${selectedOption1 === option.value ? "bg-[#F9FAFB]" : ""}`}  key={option.id}>
-                          <Radio className="p-1.5 text-[9px] 2xl:text-[11px]"  
-                           checked={selectedOption1 === option.value} 
-                            onChange={() => setSelectedOption1(option.value)}
-                            >{option.label}</Radio>
-                        </div>
-                      ))}
-                    </div>
-                  </div>
-                  <div className="flex flex-col gap-2">
-                    <Dropdown
-                      className="w-48 text-xs 2xl:text-sm"
-                      title="Characteristics"
-                      change={Setdopdownvalue}
-                      value={dropdownvalue}
-                    // title={condition.question}
-                    />
-                    <Dropdown
-                      className="w-48 text-xs 2xl:text-sm"
-                      title="Appearance"
-                      change={Setdopdownvalue}
-                      value={dropdownvalue}
-                    // title={condition.question}
-                    />
-                  </div>
-                  <div className="border-t ">
-                    <div className="flex items-center justify-between mt-4 ">
-                      <div className="flex flex-col gap-1.5">
-                        <p className="text-sm text-base font-semibold">Overall Score</p>
-                        <p className="text-[10px] 2xl:text-xs">Give the candidate a quick evaluation score</p>
-                      </div>
-                      <p className="text-[9px] 2xl:text-[11px]">*Overall score always required</p>
-                    </div>
-
-                  </div>
-
-                  <div className="bg-[#F9FAFA] rounded-[10px] divide-x divide-black/20 dark:divide-white/20 h-full md:h-[70px] dark:bg-dark borderb grid grid-cols-2 md:grid-cols-5">
-                    {options2.map((option, index) => (
-                      <button
-                        key={index}
-                        className={`transition-colors duration-300 m-auto w-full h-full ${index !== options2.length - 1 ? "" : ""}`}
-                      >
-                        <div className="flex flex-col items-center text-grey">
-                          <span className="text-sm ">{option.icon}</span>
-                          <span className="mt-1 text-xs">{option.label}</span>
-                        </div>
-                      </button>
-                    ))}
-                  </div>
-
-
-                </div>
-
-              </>
+</div>
+                  ))}
+</div>
+<div className="flex items-center justify-end gap-2.5 p-1.5 mt-[18.88px] rounded-lg">
+<ButtonClick
+                    handleSubmit={handleSubmit}
+                    buttonName="save"
+                    BtnType="primary"
+                  />
+</div>
+</>
             ) : (
-              <div className="h-full gap-4 vhcenter box-wrapper borderb">
-                <div className="flex flex-col items-center gap-4">
-                  <div className="size-11 bg-[#F9FAFB] dark:bg-secondaryDark rounded-full vhcenter">
-                    <RiImage2Fill
+<div className="h-full gap-4 vhcenter box-wrapper borderb">
+<div className="flex flex-col items-center gap-4">
+<div className="size-11 bg-[#F9FAFB] dark:bg-secondaryDark rounded-full vhcenter">
+<RiImage2Fill
                       size={60}
                       className="text-black text-opacity-50 dark:text-white"
                     />
-                  </div>
-                  <h6 className="h6">You don't have any evaluation now</h6>
+</div>
+<h6 className="h6">You don't have any evaluation now</h6>
                   {/* <p className="para">
         You can schedule a meeting at any moment you want. Click "Create Event" to set one.
-      </p>
-      <ButtonClick
+</p>
+<ButtonClick
         buttonName="Create Event"
         BtnType="primary"
         handleSubmit={onCreateEventClick}
       /> */}
-                </div>
-              </div>
+</div>
+</div>
             )}
           </div>
         </div>
