@@ -42,20 +42,20 @@ function App() {
 
   // Only use For temp
 
-  const getOrganisaction = async () => {
-    const response = await getAllOrganisation();
-    // console.log(response);
-    localStorage.setItem(
-      "organisationId",
-      JSON.stringify(
-        parseInt(response?.result[0]?.organisationId)
-      )
-    );
-  };
+  // const getOrganisaction = async () => {
+  //   const response = await getAllOrganisation();
+  //   // console.log(response);
+  //   localStorage.setItem(
+  //     "organisationId",
+  //     JSON.stringify(
+  //       parseInt(response?.result[0]?.organisationId)
+  //     )
+  //   );
+  // };
 
-  useEffect(() => {
-    getOrganisaction();
-  }, []);
+  // useEffect(() => {
+  //   getOrganisaction();
+  // }, []);
 
   return (
     <ThemeProvider>

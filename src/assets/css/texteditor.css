@@ -52,7 +52,9 @@
 }
 
 .jodit-ui-group:last-child {
-    border: 0px;
+    
+    border: 1px solidwhite;
+    
     border-radius: 6px;
 }
 .jodit-popup__content{

@@ -1,14 +1,14 @@
 import axios from "axios";
 
 // const apiUrl="https://alpha-api.loyaltri.com/api/main"
-const apiUrl="https://web-api.loyaltri.com/api/main"
 // const apiUrl="https://web-api.loyaltri.com/api/main"
-// const apiUrl="https://demo-api.loyaltri.com/api/main"
+// const apiUrl="https://web-api.loyaltri.com/api/main"
+const apiUrl="https://demo-api.loyaltri.com/api/main"
 const API = {
   // HOST: "http://192.168.29.111/loyaltri-server",
   // HOST: "http://192.168.0.37/ci-news",
    
-  HOST: "https://web-api.loyaltri.com",
+  HOST: "https://demo-api.loyaltri.com",
  
   // HOST: "http://192.168.0.55/loyaltri-recruitment-server/api/v1",
 
@@ -200,6 +200,7 @@ const API = {
 };
 
 export default API;
+const token = JSON.parse(localStorage.getItem("LoginData"));
 const apiRequest = async (action, method, kwargs) => {
   try {
     const response = await axios.post(apiUrl, {
@@ -208,7 +209,14 @@ const apiRequest = async (action, method, kwargs) => {
       method,
 
       kwargs,
-    });
+    },{
+      headers: {
+        // "Content-Type": "multipart/form-data",
+        Authorization: `Bearer ${token?.userData.token}`,
+      },
+    }
+
+  );
 
     return response.data;
   } catch (error) {

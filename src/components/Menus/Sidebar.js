@@ -380,14 +380,14 @@ const Sidebar = () => {
                   ),
                   link: "/Notification",
                 },
-                {
-                  id: 114,
-                  title: t("Role_and_Privileges"),
-                  icon: (
-                    <GoKey  className="!text-base 2xl:!text-2xl" />
-                  ),
-                  link: "/Privilege",
-                },
+                // {
+                //   id: 114,
+                //   title: t("Role_and_Privileges"),
+                //   icon: (
+                //     <GoKey  className="!text-base 2xl:!text-2xl" />
+                //   ),
+                //   link: "/Privilege",
+                // },
                 
                
               ],

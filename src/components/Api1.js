@@ -1,11 +1,11 @@
 import axios from "axios";
 
 // const apiUrl = 'http://192.168.29.185/loyaltri-recruitment-server/api/v1';
-const apiUrl = 'https://alpha-jobs-api.loyaltri.com/api/v1';
+// const apiUrl = 'https://alpha-jobs-api.loyaltri.com/api/v1';
 // const apiUrl = 'https://jobs-api.loyaltri.com/api/v1';
 
 // const apiUrl = 'https://web-jobs-api.loyaltri.com/api/v1';
-// const apiUrl = 'https://demo-jobs-api.loyaltri.com/api/v1'
+const apiUrl = 'https://demo-jobs-api.loyaltri.com/api/v1'
 
 
 const apiRequest = async (action, method, kwargs) => {
@@ -1152,8 +1152,8 @@ export { action };
 
 
 // file handling url
-const urlFileHandler = "https://alpha-jobs-api.loyaltri.com/api/fileHandler";
-// const urlFileHandler = "https://demo-jobs-api.loyaltri.com/api/fileHandler";
+// const urlFileHandler = "https://alpha-jobs-api.loyaltri.com/api/fileHandler";
+const urlFileHandler = "https://demo-jobs-api.loyaltri.com/api/fileHandler";
 // const urlFileHandler = "https://web-jobs-api.loyaltri.com/api/fileHandler";
 // const urlFileHandler = "https://jobs-api.loyaltri.com/api/fileHandler";
 const fileAction = async (formData) => {
