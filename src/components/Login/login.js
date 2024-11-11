@@ -2,8 +2,6 @@ import React, { useEffect, useState } from "react";
 import logo from "../../assets/images/login/brandlogo.png";
 import { LuMail } from "react-icons/lu";
 import { LuLock } from "react-icons/lu";
-import { RiCheckFill } from "react-icons/ri";
-import { RiCloseFill } from "react-icons/ri";
 import { FiEye, FiEyeOff } from "react-icons/fi";
 
 import googleLogo from "../../assets/images/Social/Google.png";
@@ -14,20 +12,17 @@ import widget2 from "../../assets/images/login/widget2.png";
 import widget3 from "../../assets/images/login/widget3.png";
 import { Button, Checkbox, Modal, notification } from "antd";
 
-import { Link, useNavigate } from "react-router-dom";
+import { useNavigate } from "react-router-dom";
 import { useFormik } from "formik";
 import * as yup from "yup";
 import axios from "axios";
 import API from "../Api";
-import logindash from "../../assets/images/logindash.png";
-import ImageScroll from "../common/ImageScroll";
 import FormInput from "../common/FormInput";
-import { googleLogout, useGoogleLogin } from "@react-oauth/google";
-import { motion, AnimatePresence } from "framer-motion";
+import { useGoogleLogin } from "@react-oauth/google";
+import { motion } from "framer-motion";
 
 export default function Login() {
   const [showPassword, setShowPassword] = useState(false);
-  // const [loginData, setLoginData] = useState();
 
   const [profile, setProfile] = useState(null);
   const [user, setUser] = useState([]);
@@ -35,9 +30,9 @@ export default function Login() {
     onSuccess: (codeResponse) => setUser(codeResponse),
     onError: (error) => console.log("Login Failed:", error),
   });
+
   useEffect(() => {
     if (user.access_token) {
-      user == [] ? console.log(user) : console.log("Empty user");
       axios
         .get(
           `https://www.googleapis.com/oauth2/v1/userinfo?access_token=${user.access_token}`,
@@ -50,12 +45,12 @@ export default function Login() {
         )
         .then((res) => {
           setProfile(res.data);
-          console.log("data assigned");
         })
-        .catch((err) => console.log(err));
+        .catch((err) => {
+          return err;
+        });
     }
   }, [user]);
-  // console.log(profile, "profile from google")
 
   useEffect(() => {
     const fetchUserProfile = async () => {
@@ -134,38 +129,31 @@ export default function Login() {
     }),
     onSubmit: async (values) => {
       try {
-        const response = await axios.post(
-          API.HOST + API.LOGIN_USER,
-          {
-            username: values.username,
-            password: values.password,
-            thirdPartyLogin: 0,
-          }
-        );
-  
+        const response = await axios.post(API.HOST + API.LOGIN_USER, {
+          username: values.username,
+          password: values.password,
+          thirdPartyLogin: 0,
+        });
         if (response.data.status === true) {
           const userData = response.data.userData;
           const employeeId = userData.employeeId;
-          const companyId = userData.companyId[0]; 
+          const companyId = userData.companyId[0];
           const organisationId = userData.organisationId;
-  
           localStorage.setItem("LoginData", JSON.stringify(response.data));
           localStorage.setItem("employeeId", employeeId);
           localStorage.setItem("companyId", companyId);
           localStorage.setItem("organisationId", organisationId);
-  
+          localStorage.setItem("token", userData.token);
           navigate("/");
           window.location.reload();
         } else {
           openNotification("error", "Failure", response.data.message);
         }
       } catch (error) {
-        console.error("Login error:", error);
         openNotification("error", "Failed", error.message);
       }
     },
   });
-  
 
   const formik2 = useFormik({
     initialValues: {
@@ -511,7 +499,7 @@ export default function Login() {
                   <img src={widget1} alt="" className="w-full" />
                   {/* GLASSMORPHISAMS  */}
                   <motion.div
-                   initial={{ scale: 0, opacity: 0, }}
+                    initial={{ scale: 0, opacity: 0 }}
                     animate={{ scale: 1, opacity: 1 }}
                     transition={{
                       yoyo: Infinity,
@@ -522,7 +510,7 @@ export default function Login() {
                     className="isolate absolute w-[14%] h-[24%] -right-[7%] top-1/2 bg-white/10 shadow-lg ring-1 ring-white/80 backdrop-blur-sm"
                   />
                   <motion.div
-                   initial={{ scale: 0, opacity: 0, }}
+                    initial={{ scale: 0, opacity: 0 }}
                     animate={{ scale: 1, opacity: 1 }}
                     transition={{
                       yoyo: Infinity,
@@ -533,7 +521,7 @@ export default function Login() {
                     className="isolate absolute w-[10%] h-[13%] -right-[6%] -bottom-[8%] bg-white/10 shadow-lg ring-1 ring-white/80 backdrop-blur-sm"
                   />
                   <motion.div
-                   initial={{ scale: 0, opacity: 0, }}
+                    initial={{ scale: 0, opacity: 0 }}
                     animate={{ scale: 1, opacity: 1 }}
                     transition={{
                       yoyo: Infinity,
@@ -544,7 +532,7 @@ export default function Login() {
                     className="isolate absolute w-[24%] h-[28%] -left-[20%] -top-[10%] bg-white/10 shadow-lg ring-1 ring-white/60  backdrop-blur-[6px]"
                   />
                   <motion.div
-                   initial={{ scale: 0, opacity: 0, }}
+                    initial={{ scale: 0, opacity: 0 }}
                     animate={{ scale: 1, opacity: 1 }}
                     transition={{
                       yoyo: Infinity,
@@ -573,7 +561,7 @@ export default function Login() {
                       className=" w-full object-cover"
                     />
                     <motion.div
-                     initial={{ scale: 0, opacity: 0, }}
+                      initial={{ scale: 0, opacity: 0 }}
                       animate={{ scale: 1, opacity: 1 }}
                       transition={{
                         yoyo: Infinity,
