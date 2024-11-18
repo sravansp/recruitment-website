@@ -9,15 +9,13 @@ import { useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { themeColor } from "./Redux/slice";
 import { ThemeProvider } from "./Context/Theme/ThemeContext";
-import axios from "axios";
-import API from "./components/Api";
-import JobCard from "./components/common/JobCard";
-import { getAllOrganisation } from "./components/Api";
 
 function App() {
   const dispatch = useDispatch();
+
   const colorPrimary = useSelector((state) => state.layout.themeColor);
-  const mode = useSelector((state) => state.layout.mode)
+
+  const mode = useSelector((state) => state.layout.mode);
 
   useEffect(() => {
     dispatch(themeColor(colorPrimary));
@@ -33,10 +31,12 @@ function App() {
       window.removeEventListener("unload", handleRefresh);
     };
   }, []);
-  let isRefresh = sessionStorage.getItem("isRefreshing");
-  let rememberMe = localStorage.getItem('rememberMe');
 
-  if (isRefresh != "true" && rememberMe !== 'true') {
+  let isRefresh = sessionStorage.getItem("isRefreshing");
+  
+  let rememberMe = localStorage.getItem("rememberMe");
+
+  if (isRefresh != "true" && rememberMe !== "true") {
     localStorage.clear();
   }
 
@@ -67,7 +67,6 @@ function App() {
         }}
       >
         <Router />
-
       </ConfigProvider>
     </ThemeProvider>
   );

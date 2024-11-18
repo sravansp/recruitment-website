@@ -3,7 +3,6 @@ import logo from "../../assets/images/login/brandlogo.png";
 import { LuMail } from "react-icons/lu";
 import { LuLock } from "react-icons/lu";
 import { FiEye, FiEyeOff } from "react-icons/fi";
-
 import googleLogo from "../../assets/images/Social/Google.png";
 import appleLogo from "../../assets/images/Social/apple-fill.png";
 import metaLogo from "../../assets/images/Social/meta-fill.png";
@@ -11,7 +10,6 @@ import widget1 from "../../assets/images/login/widget1.png";
 import widget2 from "../../assets/images/login/widget2.png";
 import widget3 from "../../assets/images/login/widget3.png";
 import { Button, Checkbox, Modal, notification } from "antd";
-
 import { useNavigate } from "react-router-dom";
 import { useFormik } from "formik";
 import * as yup from "yup";
@@ -23,7 +21,6 @@ import { motion } from "framer-motion";
 
 export default function Login() {
   const [showPassword, setShowPassword] = useState(false);
-
   const [profile, setProfile] = useState(null);
   const [user, setUser] = useState([]);
   const googleLogin = useGoogleLogin({
@@ -98,7 +95,6 @@ export default function Login() {
       description: description,
       placement: "top",
       onClose: callback,
-
       // stack: 2,
       style: {
         background: `${
@@ -118,8 +114,8 @@ export default function Login() {
 
   const formik = useFormik({
     initialValues: {
-      username: "admin",
-      password: "123abcAB",
+      username: "",
+      password: "",
     },
     enableReinitialize: true,
     validateOnChange: false,
@@ -191,13 +187,14 @@ export default function Login() {
   });
 
   const [rememberMe, setRememberMe] = useState(false);
+
   useEffect(() => {
-    // Check local storage for rememberMe value when component mounts
     const rememberMeValue = localStorage.getItem("rememberMe");
     if (rememberMeValue) {
       setRememberMe(JSON.parse(rememberMeValue));
     }
   }, []);
+
   const onChange = (e) => {
     const isChecked = e.target.checked;
     setRememberMe(isChecked);
@@ -304,7 +301,7 @@ export default function Login() {
                     <label
                       htmlFor="floating_filled_email"
                       className={`-z-10 absolute transition-all leading-[1] duration-300 ${
-                        formik.values.username.length === 0
+                        formik.values.username?.length === 0
                           ? "left-12 text-gray-400 peer-focus-within:left-12 peer-focus-within:-translate-y-4 peer-focus-within:text-gray-700 peer-focus-within:text-[10px] peer-focus-within:text-bold"
                           : "left-12 -translate-y-4 text-gray-700 text-[10px] text-bold"
                       }`}
@@ -346,7 +343,7 @@ export default function Login() {
                     <label
                       htmlFor="floating_filled_password"
                       className={`-z-10 absolute transition-all leading-[1] duration-300 ${
-                        formik.values.password.length === 0
+                        formik.values.password?.length === 0
                           ? "left-12 text-gray-400 peer-focus-within:left-12 peer-focus-within:-translate-y-4 peer-focus-within:text-gray-700 peer-focus-within:text-[10px] peer-focus-within:text-bold"
                           : "left-12 -translate-y-4 text-gray-700 text-[10px] text-bold"
                       }`}
@@ -427,7 +424,6 @@ export default function Login() {
                     </div>
                   </Modal>
                 </div>
-
                 {/* BUTTON  */}
                 <Button
                   type="submit"
@@ -441,7 +437,6 @@ export default function Login() {
               </div>
             </div>
           </div>
-
           {/* FOOTER TITLE  */}
           <div>
             <p className="text-sm text-center 2xl:text-base opacity-30">
@@ -450,7 +445,6 @@ export default function Login() {
           </div>
         </div>
       </div>
-
       <div className="items-center justify-center hidden text-white lg:w-1/2 lg:flex">
         <div className="h-[calc(100%_-5%)] w-[calc(100%_-5%)] bg_linear_colort rounded-3xl px-20 py-10 2xl:py-20 gap-4  flex flex-col justify-between">
           {/* <div className="top h-[20%] 5xl:h-[5%] flex flex-col gap-1">
@@ -461,7 +455,6 @@ export default function Login() {
               Enter your credintials to access your account
             </p>
           </div> */}
-
           {/* <div className="ml-0 h-[70%] 2xl:h-[60%]">
             <img
               src={logindash}
@@ -469,7 +462,6 @@ export default function Login() {
               className="object-contain object-left w-full h-full ml-auto"
             />
           </div> */}
-
           {/* <div className="w-full mx-auto h-[10%]">
             <div className="text-center">
               <ImageScroll />
@@ -483,7 +475,7 @@ export default function Login() {
               alt="logindash"
               className="object-contain object-left w-full h-full ml-auto"
             /> */}
-            <div className=" w-full h-full vhcenter">
+            <div className="w-full h-full vhcenter">
               <div className="2xl:w-[500px] w-[270px] 5 relative">
                 <motion.div
                   initial={{ opacity: 0, translateX: 30 }}
@@ -494,7 +486,7 @@ export default function Login() {
                     delay: 0.5,
                     duration: 0.6,
                   }}
-                  className=" drop-shadow-2xl relative"
+                  className="drop-shadow-2xl relative"
                 >
                   <img src={widget1} alt="" className="w-full" />
                   {/* GLASSMORPHISAMS  */}
@@ -555,11 +547,7 @@ export default function Login() {
                   }}
                 >
                   <div className="relative w-full h-full">
-                    <img
-                      src={widget2}
-                      alt=""
-                      className=" w-full object-cover"
-                    />
+                    <img src={widget2} alt="" className="w-full object-cover" />
                     <motion.div
                       initial={{ scale: 0, opacity: 0 }}
                       animate={{ scale: 1, opacity: 1 }}
@@ -584,11 +572,10 @@ export default function Login() {
                     duration: 0.6,
                   }}
                 >
-                  <img src={widget3} alt="" className=" w-full object-cover" />
+                  <img src={widget3} alt="" className="w-full object-cover" />
                 </motion.div>
               </div>
             </div>
-
             {/* </div> */}
             <div className="top flex flex-col gap-3">
               <h1 className="text-2xl 2xl:text-5xl font-semibold">
@@ -598,7 +585,6 @@ export default function Login() {
                 Enter your credintials to access your account
               </p>
             </div>
-
             {/* <div className="w-full mx-auto">
               <div className="text-center">
                 <ImageScroll />

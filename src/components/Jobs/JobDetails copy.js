@@ -57,35 +57,25 @@ const Column = ({ title, headingColor, cards, column, setCards }) => {
 
   const handleDragEnd = (e) => {
     const cardId = e.dataTransfer.getData("cardId");
-
     setActive(false);
     clearHighlights();
-
     const indicators = getIndicators();
     const { element } = getNearestIndicator(e, indicators);
-
     const before = element.dataset.before || "-1";
-
     if (before !== cardId) {
       let copy = [...cards];
-
       let cardToTransfer = copy.find((c) => c.id === cardId);
       if (!cardToTransfer) return;
       cardToTransfer = { ...cardToTransfer, column };
-
       copy = copy.filter((c) => c.id !== cardId);
-
       const moveToBack = before === "-1";
-
       if (moveToBack) {
         copy.push(cardToTransfer);
       } else {
         const insertAtIndex = copy.findIndex((el) => el.id === before);
         if (insertAtIndex === undefined) return;
-
         copy.splice(insertAtIndex, 0, cardToTransfer);
       }
-
       setCards(copy);
     }
   };
@@ -93,13 +83,11 @@ const Column = ({ title, headingColor, cards, column, setCards }) => {
   const handleDragOver = (e) => {
     e.preventDefault();
     highlightIndicator(e);
-
     setActive(true);
   };
 
   const clearHighlights = (els) => {
     const indicators = els || getIndicators();
-
     indicators.forEach((i) => {
       i.style.height = "fit-content";
       i.style.opacity = "0";
@@ -110,11 +98,8 @@ const Column = ({ title, headingColor, cards, column, setCards }) => {
 
   const highlightIndicator = (e) => {
     const indicators = getIndicators();
-
     clearHighlights(indicators);
-
     const el = getNearestIndicator(e, indicators);
-
     el.element.style.display = "flex";
     el.element.style.opacity = "1";
     el.element.style.height = "75px";
@@ -123,13 +108,10 @@ const Column = ({ title, headingColor, cards, column, setCards }) => {
 
   const getNearestIndicator = (e, indicators) => {
     const DISTANCE_OFFSET = 50;
-
     const el = indicators.reduce(
       (closest, child) => {
         const box = child.getBoundingClientRect();
-
         const offset = e.clientY - (box.top + DISTANCE_OFFSET);
-
         if (offset < 0 && offset > closest.offset) {
           return { offset: offset, element: child };
         } else {
@@ -141,7 +123,6 @@ const Column = ({ title, headingColor, cards, column, setCards }) => {
         element: indicators[indicators.length - 1],
       }
     );
-
     return el;
   };
 
@@ -205,7 +186,6 @@ const DropIndicator = ({ beforeId, column }) => {
       data-before={beforeId || "-1"}
       data-column={column}
       className=" w-full bg-[#F0F0F0] opacity-0 h-4 justify-center items-center vhcenter" // my-0.5 h-0.5
-      
     >
       <span className="para">Drop Here</span>
     </div>
@@ -226,9 +206,7 @@ const BurnBarrel = ({ setCards }) => {
 
   const handleDragEnd = (e) => {
     const cardId = e.dataTransfer.getData("cardId");
-
     setCards((pv) => pv.filter((c) => c.id !== cardId));
-
     setActive(false);
   };
 

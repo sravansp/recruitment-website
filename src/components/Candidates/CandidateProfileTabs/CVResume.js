@@ -1,21 +1,20 @@
+/* eslint-disable react-hooks/exhaustive-deps */
 import React, { useState, useEffect } from "react";
 import TabsNew from "../../common/TabsNew";
 import TextEditor from "../../common/TextEditor/TextEditor";
 import ButtonClick from "../../common/Button";
-import { IoMdAdd } from "react-icons/io";
-import { getRecruitmentResumeById, getRecruitmentJobResumesNoteById, updateRecruitmentJobResumesNote, getAllRecruitmentJobResumesNotes, saveRecruitmentJobResumesNote } from "../../Api1";
 import {
-  RiArrowDownLine,
-  RiFileList3Line,
-  RiStickyNoteLine,
-} from "react-icons/ri";
+  getRecruitmentResumeById,
+  getRecruitmentJobResumesNoteById,
+  updateRecruitmentJobResumesNote,
+  getAllRecruitmentJobResumesNotes,
+  saveRecruitmentJobResumesNote,
+} from "../../Api1";
+import { RiFileList3Line, RiStickyNoteLine } from "react-icons/ri";
 import PDFViewer from "../../common/PDFViewer";
-import { BsFileEarmarkRichtext } from "react-icons/bs";
-import pdfFile from "../../../assets/documents/sample.pdf";
-import { Formik, useFormik } from "formik";
-import { Link, useParams, useLocation } from "react-router-dom";
+import { useFormik } from "formik";
+import { useParams, useLocation } from "react-router-dom";
 import { FaRegEdit } from "react-icons/fa";
-import { PiPushPinSlashBold } from "react-icons/pi";
 
 const tabData = [
   {
@@ -33,152 +32,131 @@ const tabData = [
   //   icon: <BsFileEarmarkRichtext className="text-base" />,
   // },
 ];
-const QA = [
-  {
-    id: 1,
-    question: "Do you prefer an in-office setup or Remote?*",
-    answer: "Remote",
-  },
-  {
-    id: 2,
-    question: "Are you legally eligible to work in the country?",
-    answer: "Yes, I’ve resident visa",
-  },
-  {
-    id: 3,
-    question: "Do you prefer an in-office setup or Remote?",
-    answer: "Remote",
-  },
-];
+
 const CVResume = ({ showTextEditor, pdfUrl }) => {
   const [content, setContent] = useState("");
+
   const primaryColor = localStorage.getItem("mainColor");
-  const { resumeId } = useParams()
-  const [jobId, setJobId] = useState(null)
+
+  const { resumeId } = useParams();
+
+  const [jobId, setJobId] = useState(null);
+
   const { state } = useLocation();
+
   const [selectedNoteId, setSelectedNoteId] = useState(null);
+
   const [isPinned, setIsPinned] = useState(0);
+
   const [PdFViewer, setPdFViewer] = useState("");
+
   useEffect(() => {
     if (pdfUrl) {
       setPdFViewer(pdfUrl);
     }
   }, [pdfUrl]);
 
-  console.log(PdFViewer, "PdFViewer data")
-
   const handleEditClick = (jobResumeNoteId) => {
     setSelectedNoteId(jobResumeNoteId);
-    getnotesbyId(jobResumeNoteId)
-    // You can perform any additional actions here, such as opening a modal or navigating to another page.
-  }; //
+    getnotesbyId(jobResumeNoteId);
+  };
+
   useEffect(() => {
     if (state && state.jobID) {
       setJobId(state.jobID);
     } else {
-      const storedJobId = localStorage.getItem('jobid');
+      const storedJobId = localStorage.getItem("jobid");
       if (storedJobId) {
         setJobId(storedJobId);
       }
     }
   }, [state]);
-  const handleEditorChange = (content) => {
-    setContent(content);
-  };
 
   const onTabChange = (tabId) => {
-    // Do something when the tab changes if needed
-    console.log(`Tab changed to ${tabId}`);
     if (tabId === 1) {
     } else if (tabId === 2) {
     }
   };
 
-
-  const [notes, setnotes] = useState("")
-
-
+  const [notes, setnotes] = useState("");
 
   const formik = useFormik({
     initialValues: {
       jobId: "",
       resumeId: "",
       notes: "",
-      createdBy: ""
+      createdBy: "",
     },
     onSubmit: async (e) => {
+      const result = e.notes.replace(/(<p[^>]+?>|<p>|<\/p>)/gim, "");
       try {
         if (!selectedNoteId) {
           const response = await saveRecruitmentJobResumesNote({
             jobId: jobId,
             resumeId: resumeId,
-            notes: e.notes,
+            notes: result,
             createdBy: null,
-          })
-          console.log(response)
-          getnotes()
+          });
+          getnotes();
+          return response;
         } else {
           const response = await updateRecruitmentJobResumesNote({
             id: selectedNoteId,
             jobId: jobId,
             resumeId: resumeId,
-            notes: e.notes,
+            notes: result,
             isPinned: isPinned,
-            modifiedBy: null
-          })
-          console.log(response)
-          getnotes()
+            modifiedBy: null,
+          });
+          getnotes();
+          return response;
         }
       } catch (error) {
-        console.log(error)
+        return error;
       }
-    }
-  })
+    },
+  });
+
   const getnotes = async () => {
     try {
-      const response = await getAllRecruitmentJobResumesNotes({ resumeId: resumeId })
-      console.log(response)
-      setnotes(response.result)
-
+      const response = await getAllRecruitmentJobResumesNotes({
+        resumeId: resumeId,
+      });
+      setnotes(response.result);
     } catch (error) {
-      console.log(error)
+      return error;
     }
-  }
-  useEffect(() => {
-    getnotes()
-    console.log(notes)
+  };
 
-  }, [resumeId])
+  useEffect(() => {
+    if (resumeId) {
+      getnotes();
+    }
+  }, [resumeId]);
 
   const getnotesbyId = async (jobResumeNoteId) => {
     try {
-      const response = await getRecruitmentJobResumesNoteById({ id: jobResumeNoteId })
-      console.log(response);
-      formik.setFieldValue('notes', response.result[0].notes)
+      const response = await getRecruitmentJobResumesNoteById({
+        id: jobResumeNoteId,
+      });
+      formik.setFieldValue("notes", response.result[0].notes);
     } catch (error) {
-      console.log(error)
+      return error;
     }
-
-  }
+  };
 
   const getCandidatesById = async () => {
     try {
-      const response = await getRecruitmentResumeById({id:resumeId});
-
-
-      setPdFViewer(response.result[0].resumeFile)
-
-
-      console.log(response.result)
-      console.log(PdFViewer)
-
+      const response = await getRecruitmentResumeById({ id: resumeId });
+      setPdFViewer(response.result[0].resumeFile);
     } catch (error) {
-      console.error('Error updating workflow ID:', error);
+      return error;
     }
   };
   useEffect(() => {
-    getCandidatesById()
-  }, [])
+    getCandidatesById();
+  }, []);
+  
   return (
     <div className="grid gap-6 lg:grid-cols-12">
       {/* LEFT COLUMN  */}
@@ -188,7 +166,7 @@ const CVResume = ({ showTextEditor, pdfUrl }) => {
             <h6 className="h6 !text-black dark:!text-white">CV / Resume</h6>
             {/* <ButtonClick buttonName="Add Cover Note" icon={<IoMdAdd />} /> */}
           </div>
-          {PdFViewer &&
+          {PdFViewer && (
             <div className="flex items-center justify-between">
               <div className="flex items-center gap-2.5">
                 <div className="w-8 h-8 iconI vhcenter bg-[#F5F5F5] dark:bg-secondaryDark text-base rounded-lg ">
@@ -206,16 +184,12 @@ const CVResume = ({ showTextEditor, pdfUrl }) => {
                 icon={<RiArrowDownLine />}
               /> */}
             </div>
-          }
-          {PdFViewer &&
-            <div className="divider-h" />
-          }
-          {PdFViewer &&
-            <PDFViewer pdfUrl={PdFViewer} />
-          }
-          {!PdFViewer &&
+          )}
+          {PdFViewer && <div className="divider-h" />}
+          {PdFViewer && <PDFViewer pdfUrl={PdFViewer} />}
+          {!PdFViewer && (
             <div className="flex items-center pt-5">No Resume found</div>
-          }
+          )}
         </div>
         {/* 
         <div className="flex flex-col gap-5 divide-y box-wrapper">
@@ -251,44 +225,63 @@ const CVResume = ({ showTextEditor, pdfUrl }) => {
       {/* RIGHT COLUMN  */}
       <div className="lg:col-span-4">
         {showTextEditor ? (
-          <><div className="rounded-lg bg-white dark:bg-secondaryDark p-1.5 ">
-            <TabsNew tabs={tabData} onTabChange={onTabChange} initialTab={9} />
+          <>
+            <div className="rounded-lg bg-white dark:bg-secondaryDark p-1.5 ">
+              <TabsNew
+                tabs={tabData}
+                onTabChange={onTabChange}
+                initialTab={9}
+              />
 
-            <TextEditor
-              initialValue={formik.values.notes}
-              onChange={(e) => {
-                formik.setFieldValue('notes', e);
-              }}
-              minheight="250px" />
+              <TextEditor
+                initialValue={formik.values.notes}
+                onChange={(e) => {
+                  formik.setFieldValue("notes", e);
+                }}
+                minheight="250px"
+              />
 
-            <div
-              className="flex items-center justify-end gap-2.5 p-1.5 mt-4 rounded-lg"
-              style={{ backgroundColor: `${primaryColor}10` }}
-            >
-              <ButtonClick buttonName="Cancel" />
-              <ButtonClick buttonName="Save" BtnType="primary" handleSubmit={formik.handleSubmit} />
+              <div
+                className="flex items-center justify-end gap-2.5 p-1.5 mt-4 rounded-lg"
+                style={{ backgroundColor: `${primaryColor}10` }}
+              >
+                <ButtonClick buttonName="Cancel" />
+                <ButtonClick
+                  buttonName="Save"
+                  BtnType="primary"
+                  handleSubmit={formik.handleSubmit}
+                />
+              </div>
             </div>
-          </div><div className="rounded-lg bg-white dark:bg-secondaryDark p-1.5 ">
-              {notes && notes.map((note, index) => (
-                <div className="relative flex pb-6" key={index}>
-                  <div className="flex items-center justify-between w-full">
-                    <p className="pblack flex-grow pl-4 !font-normal">
-                      <strong>{note.notes}</strong>
-                    </p>
-                    <div className="flex items-center gap-6"> {/* Added gap between createdOn and icons */}
-                      <p className="para !font-normal">{note.createdOn}</p>
-                      <div className="flex items-center gap-3">
-                        {/* <TiPin
+            <div className="rounded-lg bg-white dark:bg-secondaryDark p-1.5 ">
+              {notes &&
+                notes.map((note, index) => (
+                  <div className="relative flex pb-6" key={index}>
+                    <div className="flex items-center justify-between w-full">
+                      <p className="pblack flex-grow pl-4 !font-normal">
+                        <strong>{note.notes}</strong>
+                      </p>
+                      <div className="flex items-center gap-6">
+                        {" "}
+                        {/* Added gap between createdOn and icons */}
+                        <p className="para !font-normal">{note.createdOn}</p>
+                        <div className="flex items-center gap-3">
+                          {/* <TiPin
                       onClick={() => handlePinClick(note.jobResumeNoteId)}
                       style={{ color: selectedNoteId === note.jobResumeNoteId && isPinned === 1 ? 'blue' : 'gray' }}
                     />  */}
-                        <FaRegEdit onClick={() => handleEditClick(note.jobResumeNoteId)} />
+                          <FaRegEdit
+                            onClick={() =>
+                              handleEditClick(note.jobResumeNoteId)
+                            }
+                          />
+                        </div>
                       </div>
                     </div>
                   </div>
-                </div>
-              ))}
-            </div></>
+                ))}
+            </div>
+          </>
         ) : null}
       </div>
     </div>

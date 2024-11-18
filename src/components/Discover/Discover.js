@@ -1,3 +1,4 @@
+/* eslint-disable react-hooks/exhaustive-deps */
 import React, { useEffect, useState } from "react";
 import Card from "./Card";
 import { PiChartBar } from "react-icons/pi";
@@ -14,46 +15,24 @@ import { getDashboardStaticDatas } from "../Api1";
 import TinyLineChart from "./TinyLineChart";
 
 const Discover = () => {
-  // const smallCard = [
-  //   {
-  //     title: "Total No of Jobs Posted",
-  //     currentValue: "3612",
-  //     isIncreasedOrDecreased: true,
-  //     IODPercentage: "12.4%",
-  //   },
-  //   {
-  //     title: "Source Diversity",
-  //     currentValue: "35%",
-  //     isIncreasedOrDecreased: true,
-  //     IODPercentage: "5%",
-  //   },
-  //   {
-  //     title: "Open Jobs",
-  //     currentValue: "86",
-  //     isIncreasedOrDecreased: false,
-  //     IODPercentage: "9.4%",
-  //   },
-  //   {
-  //     title: "Rejection Average",
-  //     currentValue: "1932",
-  //     isIncreasedOrDecreased: true,
-  //     IODPercentage: "43%",
-  //   },
-  // ];
   const [Name, setName] = useState("");
+
+  const [value, setValue] = useState(null);
+
+  const [value1, setValue1] = useState(null);
+
+  const [SmallCard, setsmallCard] = useState([]);
+
   useEffect(() => {
     const loginDataString = localStorage.getItem("LoginData");
-
     if (loginDataString) {
       const loginData = JSON.parse(loginDataString);
       const { firstName, lastName } = loginData.userData;
       const fullName = `${firstName} ${lastName}`;
       setName(fullName);
-    } else {
-      console.error("Login data not found in local storage");
     }
   }, []);
-  const [SmallCard, setsmallCard] = useState([]);
+
   const dropdown1 = [
     {
       id: 1,
@@ -81,6 +60,7 @@ const Discover = () => {
       value: "last90days",
     },
   ];
+
   const dropdown2 = [
     {
       id: 1,
@@ -98,27 +78,19 @@ const Discover = () => {
       value: "recruiters",
     },
   ];
+
   const [companyId, setCompanyId] = useState(localStorage.getItem("companyId"));
-  console.log(companyId,"companyId")  
-  // useEffect(() => {
-  //   setCompanyId(localStorage.getItem("companyId"));
-  // }, []);
+
   const getJobdetails = async () => {
     try {
       const response = await getDashboardStaticDatas({ companyId: companyId });
-      console.log(response);
       const resultArray = Object.entries(response.result).map(
         ([key, value]) => {
-          console.log("Processing statistic:", key);
-
           const currentValue = value.prefix;
-
           const isIncreasedOrDecreased = value.isPositive;
-
           const IODPercentage = (value.suffix * 100).toFixed(1) + "%";
           let title = key.replace(/([A-Z])/g, " $1").trim();
           title = title.charAt(0).toUpperCase() + title.slice(1);
-
           return {
             title,
             currentValue,
@@ -127,18 +99,16 @@ const Discover = () => {
           };
         }
       );
-
-      console.log("Result Array:", resultArray);
-
       setsmallCard(resultArray);
     } catch (error) {
-      console.log(error);
+      return error;
     }
   };
+
   useEffect(() => {
     getJobdetails();
-    console.log(SmallCard);
   }, []);
+
   return (
     <div className="flex flex-col gap-4 discover">
       <div className="headerTitle">
@@ -197,9 +167,12 @@ const Discover = () => {
                         </div>
                       </div>
                     </div>
-                    
                     <div className="absolute top-0 right-0 h-10 w-32">
-                      <TinyLineChart color={card.isIncreasedOrDecreased ? "#07A86D" : "#F23131" }/>
+                      <TinyLineChart
+                        color={
+                          card.isIncreasedOrDecreased ? "#07A86D" : "#F23131"
+                        }
+                      />
                     </div>
                   </div>
                 </Card>
@@ -211,9 +184,7 @@ const Discover = () => {
           <div className="grid grid-cols-12 gap-4">
             <div className="col-span-12 lg:col-span-8 xl:col-span-12 2xl:col-span-8">
               <Card cardName="Application Frequency Rate" className="h-[397px]">
-                <FrequencyBarChart 
-                companyId={companyId}
-                />
+                <FrequencyBarChart companyId={companyId} />
               </Card>
             </div>
 
@@ -230,6 +201,11 @@ const Discover = () => {
             filters={true}
             dropdown1={dropdown1}
             dropdown2={dropdown2}
+            value={value}
+            value1={value1}
+            placeholder={"Select"}
+            change={(e) => setValue(e)}
+            dropdown2Change={(e) => setValue1(e)}
           >
             <LiveJobs />
           </Card>
@@ -239,6 +215,7 @@ const Discover = () => {
             filters={true}
             dropdown1={dropdown1}
             dropdown2={dropdown2}
+            placeholder={"Select"}
           >
             <AgeOfJobs />
           </Card>

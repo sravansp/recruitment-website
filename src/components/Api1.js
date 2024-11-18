@@ -5,18 +5,27 @@ import axios from "axios";
 // const apiUrl = 'https://jobs-api.loyaltri.com/api/v1';
 
 // const apiUrl = 'https://web-jobs-api.loyaltri.com/api/v1';
-const apiUrl = "https://demo-jobs-api.loyaltri.com/api/v1";
+const apiUrl = "http://192.168.0.36/loyaltri-recruitment-server/api/v1";
+
+// const apiUrl = "https://demo-jobs-api.loyaltri.com/api/v1";
 
 const token = localStorage.getItem("token");
 
-const apiRequest = async (action, method, kwargs, headers) => {
+const apiRequest = async (action, method, kwargs) => {
   try {
-    const response = await axios.post(apiUrl, {
-      action,
-      method,
-      kwargs,
-      headers,
-    });
+    const response = await axios.post(
+      apiUrl,
+      {
+        action,
+        method,
+        kwargs,
+      },
+      {
+        headers: {
+          Authorization: `Bearer ${token}`,
+        },
+      }
+    );
     return response.data;
   } catch (error) {
     throw error;
@@ -63,7 +72,6 @@ export const saveRecruitmentJobApplicationFormSetting = async (e) => {
   const action = "saveRecruitmentJobApplicationFormSetting";
   const method = "POST";
   const kwargs = e;
-  const response = await apiRequest(action, method, kwargs);
   return await apiRequest(action, method, kwargs);
 };
 
@@ -190,8 +198,7 @@ export const saveRecruitmentEvaluationTemplateDetailBatch = async (
     const action = "saveRecruitmentEvaluationTemplateDetailBatch";
     const method = "POST";
     const kwargs = formattedData;
-    const response = await apiRequest(action, method, kwargs);
-    return response;
+    return await apiRequest(action, method, kwargs);
   } catch (error) {
     throw error;
   }
@@ -232,8 +239,7 @@ export const saveRecruitmentQuestionnaireTemplateDetailBatch = async (
     const action = "saveRecruitmentQuestionnaireTemplateDetailBatch";
     const method = "POST";
     const kwargs = formattedData;
-    const response = await apiRequest(action, method, kwargs);
-    return response;
+    return await apiRequest(action, method, kwargs);
   } catch (error) {
     throw error;
   }
@@ -251,8 +257,7 @@ export const saveRecruitmentWorkFlow = async (e) => {
     const action = "saveRecruitmentWorkFlow";
     const method = "POST";
     const kwargs = e;
-    const response = await apiRequest(action, method, kwargs);
-    return response;
+    return await apiRequest(action, method, kwargs);
   } catch (error) {
     throw error;
   }
@@ -281,13 +286,13 @@ export const saveRecruitmentLetterTemplate = async (e) => {
   const kwargs = e;
   return await apiRequest(action, method, kwargs);
 };
+
 export const saveRecruitmentWorkFlowStageBatch = async (e) => {
   try {
     const action = "saveRecruitmentWorkFlowStageBatch";
     const method = "POST";
     const kwargs = e;
-    const response = await apiRequest(action, method, kwargs);
-    return response;
+    return await apiRequest(action, method, kwargs);
   } catch (error) {
     throw error;
   }
@@ -347,10 +352,10 @@ export const insertOrUpdateRecruitmentJobApplicationFormSettingWithJobId =
     return await apiRequest(action, method, kwargs);
   };
 
-export const getAllRecruitmentUsers = async () => {
+export const getAllRecruitmentUsers = async (data) => {
   const action = "getAllRecruitmentUsers";
   const method = "POST";
-  const kwargs = {};
+  const kwargs = data || {};
   return await apiRequest(action, method, kwargs);
 };
 
@@ -380,8 +385,7 @@ export const updateWorkFlowWithStages = async (e) => {
     const action = "updateWorkFlowWithStages";
     const method = "POST";
     const kwargs = e;
-    const response = await apiRequest(action, method, kwargs);
-    return response;
+    return await apiRequest(action, method, kwargs);
   } catch (error) {
     throw error;
   }
@@ -399,8 +403,7 @@ export const updateEvaluationTemplateWithDetails = async (e) => {
     const action = "updateEvaluationTemplateWithDetails";
     const method = "POST";
     const kwargs = e;
-    const response = await apiRequest(action, method, kwargs);
-    return response;
+    return await apiRequest(action, method, kwargs);
   } catch (error) {
     throw error;
   }
@@ -411,8 +414,7 @@ export const updateQuestionnaireTemplateWithDetails = async (e) => {
     const action = "updateQuestionnaireTemplateWithDetails";
     const method = "POST";
     const kwargs = e;
-    const response = await apiRequest(action, method, kwargs);
-    return response;
+    return await apiRequest(action, method, kwargs);
   } catch (error) {
     throw error;
   }
@@ -437,8 +439,7 @@ export const updateRecruitmentEmailTemplate = async (e) => {
     const action = "updateRecruitmentEmailTemplate";
     const method = "POST";
     const kwargs = e;
-    const response = await apiRequest(action, method, kwargs);
-    return response;
+    return await apiRequest(action, method, kwargs);
   } catch (error) {
     throw error;
   }
@@ -575,8 +576,7 @@ export const saveRecruitmentJobResumesOfferLetter = async (e) => {
     const action = "saveRecruitmentJobResumesOfferLetter";
     const method = "POST";
     const kwargs = e;
-    const response = await apiRequest(action, method, kwargs);
-    return response;
+    return await apiRequest(action, method, kwargs);
   } catch (error) {
     throw error;
   }
@@ -586,9 +586,7 @@ export const getAllEmployee = async (data) => {
   const action = "getAllEmployee";
   const method = "POST";
   const kwargs = data;
-  return await apiRequest(action, method, kwargs, {
-    Authorization: `Bearer ${token}`,
-  });
+  return await apiRequest(action, method, kwargs);
 };
 
 export const getAllRecruitmentRoles = async () => {
@@ -603,8 +601,7 @@ export const addRecruitmentUserWithRoleMapping = async (e) => {
     const action = "addRecruitmentUserWithRoleMapping";
     const method = "POST";
     const kwargs = e;
-    const response = await apiRequest(action, method, kwargs);
-    return response;
+    return await apiRequest(action, method, kwargs);
   } catch (error) {
     throw error;
   }
@@ -801,20 +798,18 @@ const action = async (actionUrl, params = {}, url = apiUrl, headers) => {
         action: actionUrl,
         method: "POST",
         kwargs: params,
+      },
+      {
+        headers: {
+          Authorization: `Bearer ${token}`,
+        },
       }
-      // {
-      //   headers: {
-      //     "Content-Type": "multipart/form-data",
-      //     // Authorization: "Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIi",
-      //   },
-      // }
     );
     return result.data;
   } catch (error) {
     return error;
   }
 };
-
 export { action };
 
 // file handling url

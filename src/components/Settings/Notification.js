@@ -1,25 +1,22 @@
 import React, { useState } from "react";
-import { IoIosArrowForward } from "react-icons/io";
-import { Switch } from "antd";
 import ToggleBtn from "../common/ToggleBtn";
 import { useTranslation } from "react-i18next";
-
 import { useMediaQuery } from "react-responsive";
-import axios from "axios";
-import API from "../Api";
-import { useFormik } from "formik";
-import * as yup from "yup";
 import Accordion from "../common/Accordion";
 import Breadcrumbs from "../common/BreadCrumbs";
+
 export default function Notification() {
   const isSmallScreen = useMediaQuery({ maxWidth: 1439 });
+
   const { t } = useTranslation();
+
   const breadcrumbItems = [
     { label: t("Settings"), url: "" },
     { label: t("General"), url: "" },
     { label: t("Notification"), url: "/" },
     // { label: navigationPath.charAt(0).toUpperCase() + navigationPath.slice(1) },
   ];
+
   const [notificationData, setNotificationData] = useState([
     {
       id: 1,
@@ -107,18 +104,6 @@ export default function Notification() {
     // },
   ]);
 
-  const [expanded, setExpanded] = useState(
-    Object.fromEntries(notificationData.map((item) => [item.id, true]))
-  );
-  // const toggleAccordion = (id) => {
-  //   setExpanded((prevExpanded) => ({
-  //     ...prevExpanded,
-  //     [id]: !prevExpanded[id],
-  //   }));
-  // };
-
-  const loginData = JSON.parse(localStorage.getItem("LoginData"));
-
   // const setNotificationsToDB = async (subTitle, value) => {
   //   try {
   //     const result = await axios.post(API.HOST + API.NOTIFICATION_SETTINGS, {
@@ -204,8 +189,10 @@ export default function Notification() {
   return (
     <div className="flex flex-col gap-6">
       <div>
-        <Breadcrumbs items={breadcrumbItems} 
-        description={t("notification_dsc")}/>
+        <Breadcrumbs
+          items={breadcrumbItems}
+          description={t("notification_dsc")}
+        />
       </div>
       {/* <div>
         <h1 className="h1">{t("Notification_settings")}</h1>
@@ -215,22 +202,13 @@ export default function Notification() {
       <div className="relative flex flex-col gap-6">
         {/*  Accordian item 1 */}
         {notificationData.map((item) => (
-
           <Accordion
             title={item.title}
             description={item.description}
             initialExpanded={true}
-          > <div
-            key={item.id}
-
           >
-              <h2>
-
-
-
-
-              </h2>
-
+            {" "}
+            <div key={item.id}>
               <div className="flex flex-col gap-8 overflow-hidden">
                 {item.contents.map((subitems) => (
                   <div
@@ -264,12 +242,10 @@ export default function Notification() {
                   </div>
                 ))}
               </div>
-
             </div>
           </Accordion>
         ))}
       </div>
-
     </div>
   );
 }

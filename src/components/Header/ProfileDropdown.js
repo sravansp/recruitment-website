@@ -1,12 +1,10 @@
 import React, { useState } from "react";
 import noImg from "../../assets/images/noImg.webp";
-import { IoLogOut } from "react-icons/io5";
-import { RiAccountCircleFill } from "react-icons/ri";
 import { RiArrowDownSLine } from "react-icons/ri";
 import { Modal } from "antd";
 import { Link } from "react-router-dom";
 
-import { Button, Divider, Dropdown, Space, theme } from "antd";
+import { Divider, Dropdown, theme } from "antd";
 import ButtonClick from "../common/Button";
 import { PiPalette, PiQuestion, PiSignOut, PiUser } from "react-icons/pi";
 
@@ -71,9 +69,7 @@ const ProfileDropdown = ({ Email = "", Profile = "", Name = "" }) => {
                 </div>
                 <div className="flex flex-col justify-start leading-none">
                   <p className="text-sm font-semibold 2xl:text-base ">{Name}</p>
-                  <p className="text-xs text-gray-500 2xl:text-sm">
-                    {Email}
-                  </p>
+                  <p className="text-xs text-gray-500 2xl:text-sm">{Email}</p>
                 </div>
               </div>
             </div>

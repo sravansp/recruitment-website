@@ -1,3 +1,4 @@
+/* eslint-disable react-hooks/exhaustive-deps */
 import React, { useEffect, useState } from "react";
 import { BrowserRouter, Routes, Route } from "react-router-dom";
 import Header from "./components/Header/Header";
@@ -9,7 +10,6 @@ import JobsList from "./components/Jobs/JobsList";
 import Appearance from "./components/Settings/Appearance/Appearance";
 import JobDetails from "./components/Jobs/JobDetails";
 import CandidatesList from "./components/Candidates/CandidatesList";
-
 import AllJobs from "./components/Jobs/AllJobs";
 import JobCard from "./components/common/JobCard";
 import JobTabs from "./components/common/JobTabs";
@@ -20,27 +20,22 @@ import Template from "./components/Template/Template";
 import Login from "./components/Login/login";
 import Intergration from "./components/Settings/Intergration";
 import SystemSettings from "./components/Settings/SystemSettings";
-
 import CandidateProfile from "./components/Candidates/CandidateProfile";
 import Discover from "./components/Discover/Discover";
 import Privileges from "./components/Settings/Privileges";
 import Reports from "./components/Reports/Reports";
+import SmallScreenMenu from "./components/Menus/SmallScreenMenu";
 
 export default function Router() {
   const { i18n } = useTranslation();
-
   const layout = useSelector((state) => state.layout.value);
   const mode = useSelector((state) => state.layout.mode);
   const selectedDataId = useSelector((state) => state.dataId.selectedDataId);
   const dispatch = useDispatch();
   const [loginData, setLoginData] = useState();
-  // const [loginData, setLoginData] = useState();
-  // const [endload, setEndLoad] = useState();
-
   const changeLanguage = (language) => {
     i18n.changeLanguage(language);
   };
-
   useEffect(() => {
     const layout = localStorage.getItem("layout");
     if (layout !== null) {
@@ -49,6 +44,7 @@ export default function Router() {
     changeLanguage(layout === "rtl" ? "ar" : "en");
     setLoginData(JSON.parse(localStorage.getItem("LoginData")));
   }, []);
+
   // useEffect(() => {
   //   const localCompanyId = localStorage.getItem("companyId");
   //   if (localCompanyId) {
@@ -56,22 +52,22 @@ export default function Router() {
   //   }
   // }, []);
 
+  console.log(layout, "layout=====");
+
   return (
-    <BrowserRouter basename="">
+    <BrowserRouter>
       {loginData ? (
         <div
           className={`main_content flex bg-[#F8FAFC] dark:bg-[#171C28] h-full min-h-screen font-Inter ${mode}`}
           dir={layout}
         >
-          {/* <NavigationMenu /> */}
-
-          <Sidebar />
+          {/* <NavigationMenu /> */} <Sidebar />
+          {/* <NavigationMenu /> */} <SmallScreenMenu />
           <div className="absolute top-0 h-full overflow-auto transition-all duration-300 home dark:bg-[#171C28] pink:bg-pink-600">
             <Header />
             <div className="relative px-4 py-8 md:p-4 2xl:p-8 content">
               <Routes>
                 <Route path="/" element={<Discover />} />
-
                 <Route path="/Reports" element={<Reports />} />
                 <Route path="/JobsList" element={<JobsList />} />
                 <Route path="/Appearance" element={<Appearance />} />
@@ -90,7 +86,6 @@ export default function Router() {
                 <Route path="/Integrations" element={<Intergration />}></Route>
                 <Route path="/Templates" element={<Template />}></Route>
                 <Route path="/Privilege" element={<Privileges />}></Route>
-
                 <Route
                   path="/Systemsettings"
                   element={<SystemSettings />}

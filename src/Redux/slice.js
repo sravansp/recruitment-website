@@ -10,6 +10,7 @@ const initialState = {
   themeColor: initialThemeColor,
   companyId: null,
   hamburger: true,
+  menuview: false,
 };
 
 const layoutSlice = createSlice({
@@ -22,29 +23,26 @@ const layoutSlice = createSlice({
     mode: (state, action) => {
       state.mode = action.payload;
     },
-
     themeColor: (state, action) => {
       state.themeColor = action.payload;
     },
-
     calendarDetails: (state, action) => {
       state.calendarDetails = action.payload;
     },
-
     organisationId: (state, action) => {
       state.organisationId = action.payload;
     },
     companyIdSet: (state, action) => {
       state.companyId = action.payload;
     },
-
     hamburger: (state, action) => {
       state.hamburger = action.payload;
     },
+    menuview: (state, action) => {
+      state.menuview = action.payload;
+    },
   },
 });
-
-
 
 // Action creators are generated for each case reducer function
 export const {
@@ -58,7 +56,7 @@ export const {
   organisationId,
   companyIdSet,
   hamburger,
-   
+  menuview,
 } = layoutSlice.actions;
 
 export default layoutSlice.reducer;

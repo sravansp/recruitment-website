@@ -5,7 +5,6 @@ import SearchBox from "../common/SearchBox";
 
 import { Checkbox } from "antd";
 
-const CheckboxGroup = Checkbox.Group;
 const progress = [
   {
     id: 1,
@@ -63,11 +62,6 @@ const dateAdded = [
   },
 ];
 
-
-
-
-
-
 export default function FilterDrawer({ open, close = () => {}, colors }) {
   console.log(colors);
   const primaryColor = localStorage.getItem("mainColor");
@@ -76,10 +70,14 @@ export default function FilterDrawer({ open, close = () => {}, colors }) {
   const [checkedList, setCheckedList] = useState(progress); //Check box 1
   const [checkedList2, setCheckedList2] = useState(dateAdded); //Check box 2
 
-  //   Check Box 1 
-  const totalProgressCount = progress.reduce((total, item) => total + item.count, 0);
+  //   Check Box 1
+  const totalProgressCount = progress.reduce(
+    (total, item) => total + item.count,
+    0
+  );
   const checkAll = checkedList.length === progress.length;
-  const indeterminate = checkedList.length > 0 && checkedList.length < progress.length;
+  const indeterminate =
+    checkedList.length > 0 && checkedList.length < progress.length;
 
   const onChange = (list) => {
     setCheckedList(list);
@@ -89,9 +87,10 @@ export default function FilterDrawer({ open, close = () => {}, colors }) {
     setCheckedList(e.target.checked ? progress : []);
   };
 
-//   CheckBox 2 
+  //   CheckBox 2
   const checkAll2 = checkedList2.length === dateAdded.length;
-  const indeterminate2 = checkedList2.length > 0 && checkedList2.length < dateAdded.length;
+  const indeterminate2 =
+    checkedList2.length > 0 && checkedList2.length < dateAdded.length;
 
   const onChange2 = (list) => {
     setCheckedList2(list);
@@ -100,8 +99,6 @@ export default function FilterDrawer({ open, close = () => {}, colors }) {
   const onCheckAllChange2 = (e) => {
     setCheckedList2(e.target.checked ? dateAdded : []);
   };
-
-
 
   const handleClose = () => {
     setShow(false);
@@ -168,7 +165,7 @@ export default function FilterDrawer({ open, close = () => {}, colors }) {
                 <label className="flex items-center gap-2">
                   <Checkbox
                     value={option.id}
-                    checked={checkedList.some(item => item.id === option.id)}
+                    checked={checkedList.some((item) => item.id === option.id)}
                     onChange={(e) =>
                       onChange(
                         e.target.checked
@@ -180,26 +177,32 @@ export default function FilterDrawer({ open, close = () => {}, colors }) {
                   <p
                     className=" para px-2.5 py-1 rounded-2xl justify-center items-center flex text-sm font-medium leading-tight text-center"
                     style={{
-                      backgroundColor: `${dynamicColors[option.id % colors.length]}30`,
+                      backgroundColor: `${
+                        dynamicColors[option.id % colors.length]
+                      }30`,
                       color: dynamicColors[option.id % colors.length],
                     }}
                   >
                     {option.name}
                   </p>
                 </label>
-                <p className="para"  style={{
-                      color: dynamicColors[option.id % colors.length],
-                    }}>{option.count}</p>
+                <p
+                  className="para"
+                  style={{
+                    color: dynamicColors[option.id % colors.length],
+                  }}
+                >
+                  {option.count}
+                </p>
               </div>
             ))}
           </div>
         </div>
 
-
         {/* CheckBox Group 2 */}
         <div className="flex flex-col gap-2">
           <label className="para !text-black dark:!text-white font-semibold">
-          Date Added
+            Date Added
           </label>
           <div className="flex flex-col gap-1">
             <div
@@ -211,11 +214,7 @@ export default function FilterDrawer({ open, close = () => {}, colors }) {
                   onChange={onCheckAllChange2}
                   checked={checkAll2}
                 />
-                <span
-                  className="para"
-                >
-                  Show all
-                </span>
+                <span className="para">Show all</span>
               </label>
             </div>
 
@@ -227,18 +226,16 @@ export default function FilterDrawer({ open, close = () => {}, colors }) {
                 <label className="flex items-center gap-2">
                   <Checkbox
                     value={option.id}
-                    checked={checkedList2.some(item => item.id === option.id)}
+                    checked={checkedList2.some((item) => item.id === option.id)}
                     onChange={(e) =>
-                        onChange2(
+                      onChange2(
                         e.target.checked
                           ? [...checkedList2, option]
                           : checkedList2.filter((item) => item.id !== option.id)
                       )
                     }
                   />
-                  <p
-                    className=" para !text-black dark:!text-white"
-                  >
+                  <p className=" para !text-black dark:!text-white">
                     {option.name}
                   </p>
                 </label>
@@ -246,8 +243,6 @@ export default function FilterDrawer({ open, close = () => {}, colors }) {
             ))}
           </div>
         </div>
-
-
       </div>
     </DrawerPop>
   );

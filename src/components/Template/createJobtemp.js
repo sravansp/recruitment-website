@@ -1,35 +1,18 @@
+/* eslint-disable react-hooks/exhaustive-deps */
 import React, { useState, useEffect, useRef } from "react";
 import DrawerPop from "../common/DrawerPop";
 import { useTranslation } from "react-i18next";
-import { RxCross2, RxQuestionMarkCircled } from "react-icons/rx";
+import { RxQuestionMarkCircled } from "react-icons/rx";
 import AI_Text from "../../assets/images/AI_Text.jpg";
 import Stepper from "../common/Stepper";
-import {
-  Button,
-  Card,
-  Checkbox,
-  Flex,
-  List,
-  Radio,
-  Space,
-  Tooltip,
-  notification,
-} from "antd";
+import { Radio, Tooltip, notification } from "antd";
 import Accordion from "../common/Accordion";
 import FlexCol from "../common/FlexCol";
 import Dropdown from "../common/Dropdown";
 import FormInput from "../common/FormInput";
-import VirtualList from "rc-virtual-list";
 import CheckBoxInput from "../common/CheckBoxInput";
-import { Employees } from "../data";
-import * as yup from "yup";
-import TextArea from "../common/TextArea";
 import Radiobuttonnew from "../common/Radiobuttonnew";
-import GoogleForm from "../common/GoogleForm";
-import JobCard from "../common/JobCard";
-// import DOMPurify from 'dompurify';
 import {
-  cardData,
   regularOvertime,
   Requirment,
   JobType,
@@ -38,50 +21,28 @@ import {
   saleryCurrency,
 } from "../data";
 import {
-  saveRecruitmentJobApplicationFormSetting,
   saveRecruitmentJobTemplate,
   getAllRecruitmentWorkFlows,
-  updateRecruitmentJob,
-  getAllRecruitmentJobTeamMembers,
   updateRecruitmentJobTemplate,
   getRecruitmentJobTemplateById,
   getAllRecruitmentJobDescriptionTemplates,
   getRecruitmentJobDescriptionTemplateById,
   getAllRecruitmentJobTemplates,
 } from "../Api1";
-import { Formik, useFormik } from "formik";
 import { CgAdd } from "react-icons/cg";
 import { Form } from "../data";
-import { MdContentCopy, MdOutlineFileCopy } from "react-icons/md";
 import { MdDelete } from "react-icons/md";
 import ToggleBtn from "../common/ToggleBtn";
-import { index } from "d3";
 import axios from "axios";
 import API from "../Api";
-import { DownOutlined, UserOutlined } from "@ant-design/icons";
 import image from "../../assets/images/generate-ai-img.png";
-import Item from "antd/es/list/Item";
-import TableAnt from "../common/TableAnt";
-import SearchBox from "../common/SearchBox";
-import TabsNew from "../common/TabsNew";
-import Tabs from "../common/Tabs";
-import indeed from "../../assets/images/indeed.png";
-import bayt from "../../assets/images/Bayt.png";
-import linkedin from "../../assets/images/Linked.png";
-import gulftalent from "../../assets/images/gulftalent.png";
-import Naukrigulf from "../../assets/images/Naukrigulf.png";
-import loyaltri from "../../assets/images/logo.png";
 import ButtonClick from "../common/Button";
-import { Check } from "@mui/icons-material";
 import AddMore from "../common/AddMore";
 import TextEditor from "../common/TextEditor/TextEditor";
-import RadioButton from "../common/RadioButton";
-import { IoClose } from "react-icons/io5";
 import Jobcardcopy from "../common/Jobcardcopy";
 import { RiDeleteBinLine } from "react-icons/ri";
 import { FaAsterisk } from "react-icons/fa";
-import TextEditorcopy from "../common/TextEditor/textEditorCopy";
-import { EditorState, ContentState, convertFromHTML } from "draft-js";
+import { useFormik } from "formik";
 // import Editor from "../common/TextEditor/textEditorCopy";
 // import Editor1 from "../common/TextEditor/textEditorCopy";
 // import { convertToHTML } from 'draft-convert';
@@ -96,72 +57,86 @@ const CreatejobTemp = ({
   refresh,
 }) => {
   const [show, setShow] = useState(open);
+
   const { t } = useTranslation();
 
-  // const [isUpdate, setIsUpdate] = useState();
   const [Jobcode, setJobcode] = useState("");
-  const [errorMessages, setErrorMessages] = useState("");
+
   const [Education, seteducation] = useState(1);
-  const [fieldValue, setFieldValue] = useState("");
+
   const [Experience, setExperience] = useState(1);
+
   const [activeBtn, setActiveBtn] = useState(0);
+
   const [presentage, setPresentage] = useState(0);
+
   const [nextStep, setNextStep] = useState(0);
-  const [activeBtnValue, setActiveBtnValue] = useState("Jobdetails"); //Publish//TeamMembers//LeaveType//ApplicationForm//Jobdetails////Workflow
+
+  const [activeBtnValue, setActiveBtnValue] = useState("Jobdetails");
+
   const [btnName, setBtnName] = useState();
+
   const [customRate, setCustomRate] = useState(1);
-  const [savedContent, setSavedContent] = useState([]);
+
   const [companyId, setCompanyId] = useState(localStorage.getItem("companyId"));
+
   const [selectedCompany, setSelectedCompany] = useState(null);
+
   const loginDataString = localStorage.getItem("LoginData");
+
   const [userid, setuserid] = useState("");
-  const [workFlows, setWorkFlows] = useState([]);
+
   const [selectedWorkFlowId, setSelectedWorkFlowId] = useState("");
+
   const [selectedDivs, setSelectedDivs] = useState([]);
+
   const [content, setContent] = useState("");
+
+  const [descriptionContent, setDescriptionContent] = useState("");
+
   const [JobDescriptionList, setJobDescriptionList] = useState([]);
+
   const [decriptionId, setDecriptionId] = useState(null);
+
   const [Phone, setPhone] = useState(1);
+
   const [Headline, setHeadline] = useState(1);
+
   const [Address, setAddress] = useState(1);
+
   const [country, setCountry] = useState(1);
+
   const [summary, setSummary] = useState(1);
+
   const [resume, setResume] = useState(1);
+
   const [coverLetter, setCoverletter] = useState(1);
-  const [errors, setErrors] = useState([]);
+
   const [jobTitle, setJobTitle] = useState("");
-  const [html, setstateHTML] = useState("");
+
   const [Questionerror, setQuestionError] = useState("");
+
   const [answerError, setAnswerError] = useState("");
+
   const [OptionError, setoptionserror] = useState("");
+
   const [salaryRangeToError, setsalaryRangeToError] = useState("");
+
   const [salaryRangeFromError, setsalaryRangeFromError] = useState("");
+
   const [trigger, SetTrigger] = useState("");
 
-  // console.log(updateId);
   useEffect(() => {
-    // Retrieve the login data JSON string from local storage
     const loginDataString = localStorage.getItem("LoginData");
-
     if (loginDataString) {
-      // Parse the JSON string to get the LoginData object
       const loginData = JSON.parse(loginDataString);
-
-      // Extract the username from the userData object
       setuserid(loginData && loginData.userData && loginData.userData.id);
-
-      // Now, 'username' variable contains the username
-    } else {
-      console.error("Login data not found in local storage.");
     }
-  }, []); // Empty dependency array ensures the useEffect runs only once
-  const [isChecked, setIsChecked] = useState(false);
+  }, []);
 
   const getAllJobdescription = async () => {
     try {
       const data = await getAllRecruitmentJobDescriptionTemplates({});
-      console.log(data);
-      //
       setJobDescriptionList(
         data.result.map((each) => ({
           label: each.descriptionTemplateName,
@@ -169,7 +144,7 @@ const CreatejobTemp = ({
         }))
       );
     } catch (error) {
-      console.log(error);
+      return error;
     }
   };
 
@@ -179,22 +154,22 @@ const CreatejobTemp = ({
       const response = await getRecruitmentJobDescriptionTemplateById({
         id: id,
       });
-      console.log(response);
-
       setContent(response.result[0].descriptionTemplate);
     } catch (error) {
-      console.log(error);
+      return error;
     }
   };
+
   useEffect(() => {
     getDecriptionById();
   }, [decriptionId]);
+
   useEffect(() => {
     getAllJobdescription();
   }, []);
 
-  // console.log("Username:", userid);
   const [api, contextHolder] = notification.useNotification();
+
   const openNotification = (type, message, description) => {
     api[type]({
       message: message,
@@ -216,14 +191,13 @@ const CreatejobTemp = ({
       // duration: null,
     });
   };
+
   useEffect(() => {
     setCompanyId(localStorage.getItem("companyId"));
   }, []);
-  const [organisationId, setOrganisationId] = useState(
-    localStorage.getItem("organisationId")
-  );
-  // const [isGoogleFormVisible, setIsGoogleFormVisible] = useState(false);
+
   const [loader, setloader] = useState(false);
+
   const handleGenerateWithAI = async () => {
     setloader(true);
     try {
@@ -232,7 +206,6 @@ const CreatejobTemp = ({
         radioval: "1",
         summarise: null,
       };
-
       const response = await fetch("https://chat.bmark.in/ai/api.php", {
         method: "POST",
         headers: {
@@ -240,34 +213,28 @@ const CreatejobTemp = ({
         },
         body: JSON.stringify(requestBody),
       });
-
       if (response.ok) {
         const data = await response.json();
-        // Handle the response data as needed
-        console.log(data);
         setContent(data.receivedData);
-      } else {
-        console.error("Failed to fetch data");
       }
     } catch (error) {
-      console.error("Error:", error);
+      return error;
     } finally {
-      setloader(false); // Hide loader after response is received
+      setloader(false);
     }
   };
+
   const handleEditorChange = (content) => {
     //             const contentState = content.getCurrentContent();
     //             const htmlContent = convertToHTML(contentState);
-
-    //  console.log(content)
     // setContent(htmlContent);
     // const blocksFromHTML = convertFromHTML(content);
     // const contentState = ContentState.createFromBlockArray(blocksFromHTML.contentBlocks, blocksFromHTML.entityMap);
-
     // setContent(EditorState.createWithContent(contentState))
     setContent(content);
-    // console.log(contentState);
+    setDescriptionContent(content);
   };
+
   const [evaluation, setEvaluation] = useState([
     {
       id: 1,
@@ -277,11 +244,6 @@ const CreatejobTemp = ({
       is_required: 0,
     },
   ]);
-  const [dropdownOptions, setDropdownOptions] = useState([]);
-  const [jobId, setJobId] = useState("");
-
-  // console.log(evaluation);
-  //job applying
 
   const formik = useFormik({
     initialValues: {
@@ -316,7 +278,6 @@ const CreatejobTemp = ({
         summary: 1,
         resume: 1,
         coverLetter: 1,
-
         customFields: [],
       },
       createdBy: "",
@@ -331,12 +292,9 @@ const CreatejobTemp = ({
     //     experience: yup.string().required("Gender is Required"),
     //     education: yup.string().required("Date of Birth Group is Required"),
     //     searchKeywords: yup.string().required("Gender is Required"),
-
     //     salaryRangeFrom: yup.string().required("Gender is Required"),
     //     salaryCurrency: yup.string().required("Date of Birth Group is Required"),
-
     //   }),
-
     onSubmit: async (e) => {
       try {
         const updatedCustomFields = evaluation.map((condition) => ({
@@ -381,11 +339,9 @@ const CreatejobTemp = ({
               summary: summary,
               resume: resume,
               coverLetter: coverLetter,
-
               customFields: updatedCustomFields,
             },
           });
-          console.log(response);
           if (response.status === 200) {
             openNotification(
               "success",
@@ -405,8 +361,6 @@ const CreatejobTemp = ({
             );
           }
         } else {
-          console.log(e);
-
           const response = await saveRecruitmentJobTemplate({
             companyId: companyId,
             jobTitle: e.jobTitle,
@@ -440,13 +394,9 @@ const CreatejobTemp = ({
               summary: summary,
               resume: resume,
               coverLetter: coverLetter,
-
               customFields: updatedCustomFields,
             },
           });
-          console.log(response);
-
-          console.log(jobId);
           if (response.status === 200) {
             openNotification(
               "success",
@@ -467,13 +417,7 @@ const CreatejobTemp = ({
           }
         }
       } catch (error) {
-        // Handle the error here
-        console.error("Error during form submission:", error);
-        // openNotification(
-        //   "error",
-        //   "Error saving category",
-        //   error
-        // );
+        return error;
       }
     },
   });
@@ -482,13 +426,9 @@ const CreatejobTemp = ({
   const getJobtemById = async () => {
     try {
       const response = await getRecruitmentJobTemplateById(updateId);
-      console.log(response);
-
       if (response.result.length > 0) {
         const firstJob = response.result[0];
-
         setjobdata(firstJob);
-
         // formik.setFieldValue("companyId", firstJob.companyId);
         formik.setFieldValue("jobTitle", firstJob.jobTitle);
         formik.setFieldValue("departmentId", firstJob.departmentId);
@@ -497,7 +437,7 @@ const CreatejobTemp = ({
         formik.setFieldValue("isActive", firstJob.isActive);
         formik.setFieldValue("isSalaryPublic", firstJob.isSalaryPublic);
         formik.setFieldValue("jobCode", firstJob.jobCode);
-        setContent(firstJob.jobDescription);
+        setDescriptionContent(firstJob.jobDescription);
         // const blocksFromHTML = convertFromHTML(firstJob.jobDescription);
         // const contentState = ContentState.createFromBlockArray(blocksFromHTML.contentBlocks, blocksFromHTML.entityMap);
         // const newEditorState = EditorState.createWithContent(contentState);
@@ -529,43 +469,34 @@ const CreatejobTemp = ({
           }));
         setEvaluation(formattedCustomFields);
         setSelectedWorkFlowId(firstJob.workFlowId);
-
-        console.log(firstJob.companyId);
-      } else {
-        console.error("No data found in the response.");
       }
     } catch (error) {
-      console.log(error);
+      return error;
     }
   };
   useEffect(() => {
     getJobtemById();
-    console.log(jobdata);
   }, []);
+
   const [departmentList, setDepartmentList] = useState([]);
-  const [company, setCompany] = useState([]);
+
   const getDepartmentList = async () => {
     try {
       const result = await axios.post(
         API.HOST + API.GET_DEPARTMENT + "/" + companyId
       );
-      // console.log(result,"result")
       setDepartmentList(
         result.data.tbl_department.map((each) => ({
           label: each.department,
           value: each.departmentId,
         }))
       );
-
-      console.log("Department List:", departmentList);
-      console.log("Is Update:", isUpdate);
     } catch (error) {
-      console.error("Error fetching department list:", error);
+      return error;
     }
   };
+
   useEffect(() => {
-    // switch (assignBtnName) {
-    //   default:
     getDepartmentList();
   }, []);
 
@@ -575,7 +506,6 @@ const CreatejobTemp = ({
       ...prevEvaluation,
       {
         id: prevEvaluation.length + 1,
-        // Replace insertedId with your actual value
         answer_type: "",
         question: "",
         answerMetaData: "[]",
@@ -589,17 +519,14 @@ const CreatejobTemp = ({
 
   const handleDeleteCondition = (index) => {
     setEvaluation((prevEvaluation) => {
-      // Check if there's more than one condition before deleting
       if (prevEvaluation.length > 1) {
         return prevEvaluation.filter((_, i) => i !== index);
       }
-      // If there's only one condition, return the existing array without deleting
       return prevEvaluation;
     });
   };
-  const handleDeleteField = (conditionIndex, fieldIndex) => {
-    console.log("Deleting field", conditionIndex, fieldIndex);
 
+  const handleDeleteField = (conditionIndex, fieldIndex) => {
     setEvaluation((prevEvaluation) =>
       prevEvaluation.map((prevCondition, i) =>
         i === conditionIndex
@@ -613,6 +540,7 @@ const CreatejobTemp = ({
       )
     );
   };
+
   const handleAddField = (index, selectedvalue) => {
     setEvaluation((prevEvaluation) =>
       prevEvaluation.map((prevCondition, i) =>
@@ -623,7 +551,7 @@ const CreatejobTemp = ({
                 ...prevCondition.answerMetaData,
                 {
                   id: prevCondition.answerMetaData.length + 1,
-                  key: selectedvalue, // You can set the default key or customize as needed
+                  key: selectedvalue,
                   value: "",
                 },
               ],
@@ -634,9 +562,7 @@ const CreatejobTemp = ({
   };
 
   const handleClose = () => {
-    // Reset the form values to their initial state
     formik.resetForm();
-    // Close the modal or perform other actions
     close(false);
   };
 
@@ -691,31 +617,7 @@ const CreatejobTemp = ({
       value: 0,
     },
   ];
-  const tabs = [
-    {
-      id: 1,
-      title: t("Public"),
-      value: "Public",
-    },
-    {
-      id: 2,
-      title: t("Internal"),
-      value: "Internal",
-    },
-    {
-      id: 3,
-      title: t("Confidential"),
-      value: "Confidential",
-    },
-  ];
-  const data = [
-    { title: "Naukarigulf", image: Naukrigulf },
-    { title: "Bayt", image: bayt },
-    { title: "Linked in", image: linkedin },
-    { title: "Gulf Talent", image: gulftalent },
-    { title: "Indeed", image: indeed },
-    { title: "Loyaltri", image: loyaltri },
-  ];
+
   const handleCheckboxChange = (index) => {
     if (selectedDivs.includes(index)) {
       setSelectedDivs(selectedDivs.filter((item) => item !== index));
@@ -723,16 +625,11 @@ const CreatejobTemp = ({
       setSelectedDivs([...selectedDivs, index]);
     }
   };
-  const selectedCount = selectedDivs.length;
 
   useEffect(() => {
-    console.log(nextStep, activeBtn);
     if (activeBtn < 3 && activeBtn !== nextStep) {
-      /// && activeBtn !== nextStep
       setActiveBtn(1 + activeBtn);
       setNextStep(nextStep);
-      console.log(1 + activeBtn);
-      console.log(steps?.[activeBtn + 1].data, "data");
       setActiveBtnValue(steps?.[activeBtn + 1].data);
     }
   }, [nextStep]);
@@ -760,11 +657,10 @@ const CreatejobTemp = ({
   //   getCompany();
   //   console.log("value", company);
   // }, []);
+
   const handleCompanyChange = (selectedOption) => {
     setSelectedCompany(selectedOption);
-    // Additional logic if needed
   };
-  //Fetch work flow
 
   const [Stages, setStages] = useState([]);
   // const fetchData = async () => {
@@ -808,8 +704,6 @@ const CreatejobTemp = ({
       const response = await getAllRecruitmentWorkFlows({
         companyId: companyId,
       });
-      console.log("Response:", response);
-
       const stagesByWorkflowId = response.result.map((item) => ({
         workFlowId: item.workFlowId,
         workFlowName: item.workFlowName,
@@ -820,17 +714,14 @@ const CreatejobTemp = ({
       }));
       setStages(stagesByWorkflowId);
     } catch (error) {
-      // Handle errors
-      console.error("Error:", error);
+      return error;
     }
   };
+
   useEffect(() => {
     fetchData();
   }, []);
 
-  useEffect(() => {
-    console.log("Updated Workflow:", Stages);
-  }, [Stages]);
   // const workflowDetails = workflow.map((stageName, index) => ({
   //   stageName,
   //   label: stageName,
@@ -880,6 +771,7 @@ const CreatejobTemp = ({
   //   }
   // };
   const [jobcodelength, setJobcodelength] = useState("");
+
   const getJobsByJoBecode = async () => {
     try {
       const response = await getAllRecruitmentJobTemplates({
@@ -889,20 +781,20 @@ const CreatejobTemp = ({
       if (response.result.length > 0) {
         formik.setFieldError("jobCode", "Job code already exists.");
       }
-
-      console.log(response);
     } catch (error) {
-      console.log(error);
+      return error;
     }
   };
+
   useEffect(() => {
-    getJobsByJoBecode();
+    if (Jobcode) {
+      getJobsByJoBecode();
+    }
   }, [Jobcode]);
+
   const handleButtonClick = async (e) => {
     switch (activeBtnValue) {
       case "Jobdetails":
-        // Handle submission for Configuration
-
         if (
           formik.values.salaryRangeTo &&
           formik.values.salaryRangeFrom &&
@@ -991,7 +883,6 @@ const CreatejobTemp = ({
             "jobDescription",
             !content ? "Description is required" : ""
           );
-
           return;
         }
         if (formik.values.location && formik.values.location.length < 3) {
@@ -1001,7 +892,6 @@ const CreatejobTemp = ({
           );
           return;
         }
-
         if (content && content.length < 3) {
           formik.setFieldError(
             "jobDescription",
@@ -1012,14 +902,10 @@ const CreatejobTemp = ({
         if (jobcodelength === 0) {
           setNextStep(nextStep + 1);
         } else getJobsByJoBecode();
-        console.log(content);
         setPresentage(1);
         break;
 
       case "ApplicationForm":
-        // Handle submission for Applicability
-        // Your logic for Applicability form submission...
-        // Move to the next step if applicable
         let hasError = false;
         const newErrorMessages = evaluation.map((condition) => {
           if (!condition.question) {
@@ -1042,20 +928,12 @@ const CreatejobTemp = ({
             hasError = true;
           }
         });
-
-        // Update errorMessages state with new error messages
-
         if (hasError) {
-          // Don't proceed if there are errors
           return;
         }
-
         setNextStep(nextStep + 1);
-
         break;
         setPresentage(2);
-      // Add more cases for additional activeBtnValues...
-
       case "Workflow":
         // fetchData();
         // try {
@@ -1089,8 +967,6 @@ const CreatejobTemp = ({
         break;
     }
   };
-
-  //Teammebers
 
   return (
     <div>
@@ -1225,7 +1101,6 @@ const CreatejobTemp = ({
                           value={formik.values.jobTitle}
                           error={formik.errors.jobTitle}
                         />
-
                         <Dropdown
                           title={t("Department")}
                           placeholder={t("Choose Department")}
@@ -1238,7 +1113,6 @@ const CreatejobTemp = ({
                           }}
                           error={formik.errors.departmentId}
                         />
-
                         <FormInput
                           title={t(" Job Code")}
                           placeholder={t("Enter Job Code")}
@@ -1253,7 +1127,6 @@ const CreatejobTemp = ({
                         />
                       </div>
                     </Accordion>
-
                     <Accordion
                       title={"Location "}
                       className="Text_area"
@@ -1277,17 +1150,10 @@ const CreatejobTemp = ({
                             }`}
                             onClick={() => {
                               setCustomRate(each.id);
-                              if (!formik.values.workLocationType) {
-                                formik.setFieldValue(
-                                  "workLocationType",
-                                  "Onsite"
-                                );
-                              } else {
-                                formik.setFieldValue(
-                                  "workLocationType",
-                                  each.value
-                                );
-                              }
+                              formik.setFieldValue(
+                                "workLocationType",
+                                each.value
+                              );
                               setPresentage(0.4);
                             }}
                           >
@@ -1338,7 +1204,6 @@ const CreatejobTemp = ({
                           </div>
                         ))}
                       </div>
-
                       <div className="grid grid-cols-2 gap-4">
                         <FormInput
                           title={"Location"}
@@ -1351,7 +1216,6 @@ const CreatejobTemp = ({
                           required={true}
                           error={formik.errors.location}
                         />
-
                         <Dropdown
                           title={"Requirement"}
                           placeholder={"Choose Requirement"}
@@ -1359,7 +1223,6 @@ const CreatejobTemp = ({
                           value={formik.values.requirementType}
                           change={(e) => {
                             formik.setFieldValue("requirementType", e);
-                            console.log(e);
                             setPresentage(0.6);
                           }}
                           required={true}
@@ -1367,7 +1230,6 @@ const CreatejobTemp = ({
                         />
                       </div>
                     </Accordion>
-
                     <Accordion
                       title={"Employment Details"}
                       className="Text_area"
@@ -1385,7 +1247,6 @@ const CreatejobTemp = ({
                           options={JobType}
                           change={(e) => {
                             formik.setFieldValue("jobType", e);
-                            console.log(e);
                             setPresentage(0.7);
                           }}
                           required={true}
@@ -1503,7 +1364,6 @@ const CreatejobTemp = ({
                                   "Salary Range From should be less than Salary Range To "
                                 );
                                 formik.setFieldValue("salaryRangeFrom", value);
-                                console.log("ttt");
                               } else {
                                 setsalaryRangeFromError("");
                               }
@@ -1524,18 +1384,15 @@ const CreatejobTemp = ({
                           required={true}
                           maxLength={15}
                         />
-
                         <FormInput
                           title={"Salary Range To"}
                           placeholder={"Enter value"}
                           description={"Maximum Annual Salary"}
                           change={(e) => {
-                            // Validate Salary Range To
-                            const salaryRangeTo = parseFloat(e); // Convert input to a number
+                            const salaryRangeTo = parseFloat(e);
                             const salaryRangeFrom = parseFloat(
                               formik.values.salaryRangeFrom
-                            ); // Convert Salary Range From to a number
-
+                            );
                             if (salaryRangeTo <= salaryRangeFrom) {
                               setsalaryRangeToError(
                                 "Salary Range To should be greater than the Salary Range from"
@@ -1545,9 +1402,7 @@ const CreatejobTemp = ({
                               setsalaryRangeToError(
                                 "Salary Range To must be a positive number"
                               );
-                              console.log("gg");
                             } else {
-                              // Clear the error message when the conditions are met
                               setsalaryRangeToError("");
                               formik.setFieldValue("salaryRangeTo", e);
                             }
@@ -1581,7 +1436,6 @@ const CreatejobTemp = ({
                           <CheckBoxInput
                             change={(e) => {
                               formik.setFieldValue("isSalaryPublic", e);
-                              console.log(e);
                             }}
                             value={formik.values.isSalaryPublic}
                             title={"View Public"}
@@ -1598,7 +1452,6 @@ const CreatejobTemp = ({
                         </div>
                       </div>
                     </Accordion>
-
                     <Accordion
                       title={"Job Description"}
                       className="Text_area"
@@ -1657,8 +1510,8 @@ const CreatejobTemp = ({
                             BtnType="primary"
                             icon={
                               <img
+                                alt=""
                                 src={image}
-                                alt="image"
                                 style={{
                                   height: "20px",
                                   width: "20px",
@@ -1677,10 +1530,9 @@ const CreatejobTemp = ({
                           placeholder={t("Enter Description ")}
                           minheight="300px"
                           height="250px"
-                          initialValue={content}
+                          initialValue={descriptionContent}
                           onChange={handleEditorChange}
                           error={formik.errors.jobDescription}
-                          
                           loader={loader}
                         />
                       </div>
@@ -1705,7 +1557,6 @@ const CreatejobTemp = ({
                           <div className="w-[53.92px] text-black text-sm font-medium font-['Inter'] leading-tight">
                             Name
                           </div>
-
                           <Radiobuttonnew
                             options={Radiobuttons.filter(
                               (option) => option.label === t("Mandatory")
@@ -1725,7 +1576,6 @@ const CreatejobTemp = ({
                           <div className="w-[53.92px] text-black text-sm font-medium font-['Inter'] leading-tight">
                             Email
                           </div>
-
                           <Radiobuttonnew
                             options={Radiobuttons.filter(
                               (option) => option.label === t("Mandatory")
@@ -1745,7 +1595,6 @@ const CreatejobTemp = ({
                           <div className="w-[53.92px] text-black text-sm font-medium font-['Inter'] leading-tight">
                             Headline
                           </div>
-
                           <Radiobuttonnew
                             options={Radiobuttons}
                             title={""}
@@ -1765,7 +1614,6 @@ const CreatejobTemp = ({
                           <div className="w-[53.92px] text-black text-sm font-medium font-['Inter'] leading-tight">
                             Phone
                           </div>
-
                           <Radiobuttonnew
                             options={Radiobuttons}
                             title={""}
@@ -1785,7 +1633,6 @@ const CreatejobTemp = ({
                           <div className="w-[53.92px] text-black text-sm font-medium font-['Inter'] leading-tight">
                             Address
                           </div>
-
                           <Radiobuttonnew
                             options={Radiobuttons}
                             title={""}
@@ -1805,7 +1652,6 @@ const CreatejobTemp = ({
                           <div className="w-[53.92px] text-black text-sm font-medium font-['Inter'] leading-tight">
                             Country
                           </div>
-
                           <Radiobuttonnew
                             options={Radiobuttons}
                             title={""}
@@ -1837,7 +1683,6 @@ const CreatejobTemp = ({
                           <div className="w-[53.92px] text-black text-sm font-medium font-['Inter'] leading-tight">
                             Education
                           </div>
-
                           <Radiobuttonnew
                             options={Radiobuttons.filter(
                               (option) => option.label !== t("Mandatory")
@@ -1858,7 +1703,6 @@ const CreatejobTemp = ({
                           <div className="w-[53.92px] text-black text-sm font-medium font-['Inter'] leading-tight">
                             Experience
                           </div>
-
                           <Radiobuttonnew
                             options={Radiobuttons.filter(
                               (option) => option.label !== t("Mandatory")
@@ -1879,7 +1723,6 @@ const CreatejobTemp = ({
                           <div className="w-[53.92px] text-black text-sm font-medium font-['Inter'] leading-tight">
                             Summary
                           </div>
-
                           <Radiobuttonnew
                             options={Radiobuttons}
                             title={""}
@@ -1900,7 +1743,6 @@ const CreatejobTemp = ({
                           <div className="w-[53.92px] text-black text-sm font-medium font-['Inter'] leading-tight">
                             Resume
                           </div>
-
                           <Radiobuttonnew
                             options={Radiobuttons}
                             title={""}
@@ -1922,7 +1764,6 @@ const CreatejobTemp = ({
                           <div className="w-[53.92px] text-black text-sm font-medium font-['Inter'] leading-tight">
                             Cover Letter
                           </div>
-
                           <Radiobuttonnew
                             options={Radiobuttons}
                             title={""}
@@ -1940,9 +1781,8 @@ const CreatejobTemp = ({
                         </div>
                       </Accordion>
                     </div>
-
                     <Accordion
-                      title={"Custom Fields "}
+                      title={"Custom Fields"}
                       className="Text_area"
                       padding={true}
                       toggleBtn={false}
@@ -2017,7 +1857,6 @@ icondropDown={true}
                                           : prevCondition
                                       )
                                     );
-                                    console.log(e);
                                   }}
                                   error={
                                     condition.question
@@ -2108,7 +1947,6 @@ icondropDown={true}
                               </div>
                               {condition.answerMetaData[0]?.key && (
                                 <>
-                                  {/* Render existing FormInput components */}
                                   {condition.answerMetaData.map(
                                     (field, fieldIndex) => (
                                       <div
@@ -2183,7 +2021,6 @@ icondropDown={true}
                                       </div>
                                     )
                                   )}
-
                                   {[
                                     "Drop-down",
                                     "Multiple Choice",
@@ -2210,14 +2047,12 @@ icondropDown={true}
                                 </>
                               )}
                             </>
-
                             <div className="flex items-center gap-2"></div>
-
                             <div className="v-divider"></div>
                           </>
                         ))}
                         <AddMore
-                          name="Add Custom Field "
+                          name="Add Custom Field"
                           className="!text-black"
                           change={(e) => {
                             handleAddCondition();
@@ -2270,7 +2105,6 @@ icondropDown={true}
                           {/* <title={<span className="no-underline">{each.workFlowName}</span>}> */}
                           {/* <h6 className="h6 mt">{each.workFlowName}</h6> */}
                           <h6 className="h6 mb-4"> {each.workFlowName} </h6>
-
                           <div className="">
                             <Jobcardcopy
                               options={each.stages}

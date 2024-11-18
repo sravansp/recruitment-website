@@ -76,6 +76,7 @@
     "react-spinners": "^0.13.8",
     "react-step-wizard": "^5.3.11",
     "recharts": "^2.12.2",
+    "redux": "^4.2.1",
     "redux-persist": "^6.0.0",
     "sanitize-html": "^2.13.0",
     "tailwind-merge": "^2.2.1",

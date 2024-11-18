@@ -20,6 +20,7 @@ export default function DarkModeSwitch() {
   } else {
     document.documentElement.classList.remove("dark");
   }
+  
   return (
     <div
       onClick={handleToggle}

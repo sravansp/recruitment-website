@@ -1,27 +1,18 @@
+/* eslint-disable react-hooks/exhaustive-deps */
 import React, { useEffect, useState } from "react";
 import {
-  Button,
   Table,
   Input,
-  Dropdown,
-  Space,
-  Menu,
   notification,
-  Radio,
   Switch,
   Popconfirm,
-  Flex,
   Popover,
   Tooltip,
 } from "antd";
 import { RxDotFilled } from "react-icons/rx";
 import { CiSearch } from "react-icons/ci";
-import { LuListFilter } from "react-icons/lu";
-import { BsListUl, BsThreeDotsVertical } from "react-icons/bs";
-import { BsGrid } from "react-icons/bs";
-import { FiSettings } from "react-icons/fi";
+import { BsThreeDotsVertical } from "react-icons/bs";
 import Logo1 from "../../assets/images/logos/logo1.png";
-import axios from "axios";
 // import API from "../Api";
 import SearchBox from "./SearchBox";
 import { RiDeleteBin5Line } from "react-icons/ri";
@@ -30,7 +21,7 @@ import { useTranslation } from "react-i18next";
 import { useMediaQuery } from "react-responsive";
 // import { useNavigate } from "react-router-dom";
 import ButtonClick from "./Button";
-import API, { action } from "../Api1";
+import { action } from "../Api1";
 import { useDispatch, useSelector } from "react-redux";
 import { setNavigationPath } from "../../Redux/action";
 import { setSelectedDataId } from "../../Redux/action";
@@ -40,22 +31,10 @@ import TabsNew from "./TabsNew";
 import { IoEyeOutline } from "react-icons/io5";
 
 // Filter Dropdown
-const { SubMenu } = Menu;
 // Table Header And Style
 // push the array value in map
 
 // Dropdown Items In each Rows
-
-const gridListoptions = [
-  {
-    label: <BsListUl />,
-    value: 1,
-  },
-  {
-    label: <BsGrid />,
-    value: 2,
-  },
-];
 
 const TableAnt = ({
   data = [],
@@ -84,31 +63,46 @@ const TableAnt = ({
   refreshJobCrad = () => {},
 }) => {
   const { t } = useTranslation();
+
   const navigate = useNavigate();
+
   const isSmallScreen = useMediaQuery({ maxWidth: 1439 });
+
   const [listData, setListData] = useState([]);
+
   const [tabTitle, setTabTitle] = useState(
     tabValue.charAt(0).toUpperCase() + tabValue.slice(1)
   );
+
   const [selectedRowKeys, setSelectedRowKeys] = useState([]);
+
   const [searchValue, setSearchValue] = useState("");
-  // const [searchFilter, setSearchFilter] = useState([...data]);
+
   const [searchFilter, setSearchFilter] = useState(
     data.map((each) => ({
       key: each[actionID],
       ...each,
     }))
   );
+
   const [tabClick, setTabClick] = useState(path);
+
   const dispatch = useDispatch();
+
   const [visibleColumns, setVisibleColumns] = useState();
+
   const [gridList, setGridList] = useState(1);
+
   const primaryColor = localStorage.getItem("mainColor");
+
   const [show, setShow] = useState(false);
-  const handleShow = () => setShow(true);
+
   const [modalData, setModalData] = useState({});
+
   const [isModalOpen, setIsModalOpen] = useState(false);
+
   const [api, contextHolder] = notification.useNotification();
+
   const openNotification = (type, message, description, callback) => {
     api[type]({
       message: message,
@@ -138,10 +132,6 @@ const TableAnt = ({
     // }
   }, [data[0]]);
 
-  //Sort Function
-  const handleSortFunction = (pagination, filters, sorter, extra) => {
-    console.log("params", pagination, filters, sorter, extra);
-  };
   React.useEffect(() => {
     dispatch(setNavigationPath(tabValue));
   }, [dispatch, tabValue]);
@@ -150,39 +140,24 @@ const TableAnt = ({
   const navigationPath = useSelector(
     (state) => state.navigation.navigationPath
   );
-  useEffect(() => {
-    //console.log("Updated navigationPath:", navigationPath);
-  }, [navigationPath]);
 
-  const handleAddButtonClick = (path) => {
-    // Use the path parameter as needed in your function
-    //console.log(`Add button clicked for path: ${path}`);
-    // The rest of your logic...
-  };
   const handleToggleList = (id, checked) => {
-    // console.log(checked);
-    // console.log(switches);
     setListData(
       (prevSwitches) =>
         prevSwitches?.map((sw, i) =>
-          // console.log(sw.companyId , id )
           sw?.[actionID] === id
             ? { ...sw, isActive: checked === true ? 1 : 0 }
             : sw
         )
-
       // prevSwitches.map((sw) => (sw.id === i ? { ...sw, value: checked } : sw))
     );
     // refresh(true)
   };
 
   // const handleToggle = (id, checked) => {
-  //   // console.log(checked);
-  //   // console.log(switches);
   //   setSwitches(
   //     (prevSwitches) =>
   //       prevSwitches?.map((sw) =>
-  //         // console.log(sw.companyId , id )
   //         sw?.companyId === id
   //           ? { ...sw, isActive: checked === true ? 1 : 0 }
   //           : sw
@@ -195,25 +170,10 @@ const TableAnt = ({
   // update Api integration
   const updateCompany = async (id, checked) => {
     try {
-      // console.log(
-      //   updateApi,
-      //   {
-      //     [actionID]: id, //Id
-      //     isActive: checked === true ? 1 : 0,
-      //   },
-      //   "updateApi"
-      // );
-      // const result = await action(updateApi, {
-      //   [actionID]: id, //Id
-      //   isActive: checked === true ? 1 : 0,
-      // });
       const response = await action(updateApi, {
         id: id, //Id
         // isActive: checked === true ? 1 : 0,
       });
-      // console.log(id)
-      // console.log(response);
-
       if (response.status === 200) {
         // handleClose();
         // setFunctionRender(!functionRender);
@@ -227,14 +187,13 @@ const TableAnt = ({
       openNotification("error", "Failed", error.code);
     }
   };
+
   const [tableData, setTableData] = useState([]);
 
   // Delete Api Integration
 
   // const deleteRecord = async (e) => {
-  //   console.log(e);
   //   const result = await action(deleteApi, { id: e });
-  //   console.log(result);
   //   if (result.status === 200) {
   //     // window.location.reload();
   //     openNotification("success", "Success", result?.message);
@@ -242,14 +201,11 @@ const TableAnt = ({
   //   }
   // };
 
-  // Function to delete a record
-
   const deleteRecord = async (id) => {
-    const result = await action(deleteApi, { id: id }); // Ensure 'id' is passed correctly
+    const result = await action(deleteApi, { id: id });
     if (result.status === 200) {
-      // Handle success response
       openNotification("success", "Successful", result?.message);
-      refresh(true);
+      refresh();
     } else if (result.status === 500) {
       openNotification("error", "Info", result?.message);
     }
@@ -272,19 +228,11 @@ const TableAnt = ({
     localStorage.setItem("selectedDataId", record[actionID]);
     localStorage.setItem("jobid", record[jobId]);
   };
+
   const handleModalOpen = (text, title) => {
     setModalData({ text, title });
     setIsModalOpen(true);
   };
-  // console.log(modalData, "hii");
-  // console.log("modalData.title:", modalData.title);
-  // console.log("tabTitle:", tabTitle);
-  // console.log("path:", path);
-
-  // useEffect(()=>{
-  //   const record
-  //   console.log(record.jobId)
-  // })
 
   useEffect(() => {
     setTableData(
@@ -322,7 +270,6 @@ const TableAnt = ({
                   // onClick={() => {
                   //   !viewOutside &&
                   //     handleModalOpen(text, drawerH[0]?.[tabValue || path]);
-                  //   // console.log(tabValue, path, "kiok");
                   // }}
                 >
                   <RxDotFilled
@@ -339,7 +286,6 @@ const TableAnt = ({
                   key={text}
                   onClick={() => {
                     if (path && path.length > 0) {
-                      console.log(path);
                       navigate(`/${path}/${text[actionID]}`);
                       // Store the clicked data ID in local storage only when the path is present and not an empty array
                       localStorage.setItem("selectedDataId", text[actionID]);
@@ -356,7 +302,6 @@ const TableAnt = ({
                   // onClick={() => {
                   //   !viewOutside &&
                   //     handleModalOpen(text, header[0]?.[tabValue || path]);
-                  //   // console.log(tabValue, path, "kiok");
                   // }}
                 >
                   <RxDotFilled
@@ -446,8 +391,6 @@ const TableAnt = ({
                       handleToggleList(text?.[actionID], checked);
                       // buttonClick(each.companyId);
                       // activeOrNot(checked);
-                      //console.log(checked);
-                      //console.log(text?.[actionID]);
                       refreshJobCrad(true);
                       updateCompany(text?.[actionID], checked);
                     }}
@@ -461,11 +404,8 @@ const TableAnt = ({
                     <button
                       className={`w-8 h-8 2xl:w-10 2xl:h-10 rounded-full vhcenter hover:bg-primaryalpha/20 dark:hover:bg-primaryalpha/30 text-accent transition-all duration-300`}
                       onClick={() => {
-                        buttonClick(text[actionID], "edit"); //"8"
+                        buttonClick(text[actionID], "edit");
                         clickDrawer(true);
-
-                        // console.log(actionID);
-                        // console.log(text[actionID], "ddddddddsfsd");
                       }}
                     >
                       <FaPencil className="text-xs 2xl:text-sm" />
@@ -479,7 +419,6 @@ const TableAnt = ({
                       okText="Confirm"
                       cancelText="No"
                       onConfirm={() => {
-                        // console.log("hh");
                         deleteRecord(text[actionID]);
                       }}
                       // className="activeBtn"
@@ -491,7 +430,6 @@ const TableAnt = ({
                           // onClick={() => {
                           //   // deleteRecord(text[actionID]);
                           //   // clickDrawer(true);
-                          //   // console.log(text[actionID]);
                           // }}
                         >
                           <RiDeleteBin5Line className="text-xs 2xl:text-sm" />
@@ -615,19 +553,14 @@ const TableAnt = ({
                   </p>
                 </div>
               )}
-
               {each.dotsVertical && (
                 <Popover
                   content={
                     <div>
                       <p
                         onClick={() => {
-                          buttonClick(text[actionID], "edit"); //"8"
+                          buttonClick(text[actionID], "edit");
                           clickDrawer(true);
-                          // console.log(text[actionID]);
-
-                          // console.log(actionID);
-                          // console.log(text[actionID], "ddddddddsfsd");
                         }}
                         className="text-md font-semibold p-2 cursor-pointer"
                       >
@@ -640,7 +573,6 @@ const TableAnt = ({
                         okText="Confirm"
                         cancelText="No"
                         onConfirm={() => {
-                          // console.log("hh");
                           deleteRecord(text[actionID]);
                         }}
                         // className="activeBtn"
@@ -669,11 +601,8 @@ const TableAnt = ({
 
   useEffect(() => {
     setListData([...searchFilter]);
-
-    // console.log(searchFilter);
     // setListData(listData?.filter((each)=>{
     // }))
-    // console.log(Object.values(Object.keys({ ...listData })));
     // setListData(
     // listData?.filter((each) => {
     //   if (Object.values(Object.values(each)).includes(searchFilter)) {
@@ -681,7 +610,6 @@ const TableAnt = ({
     //   }
     //   Object.values(Object.values(each)).filter((filterdata) => {
     //     if (filterdata !== null && filterdata !== " ") return filterdata;
-    //     // console.log(filterdata.includes("d"));
     //   });
     // });
     // );
@@ -701,7 +629,6 @@ const TableAnt = ({
   // };
 
   const onSelectChange = (newSelectedRowKeys) => {
-    //console.log(newSelectedRowKeys, "eeddd");
     setSelectedRowKeys(newSelectedRowKeys);
   };
 
@@ -714,50 +641,25 @@ const TableAnt = ({
     );
   };
 
-  // const rowSelection = {
-  //   selectedRowKeys,
-  //   onChange: onSelectChange,
-  // };
-
-  // useEffect(() => {
-  //   console.log(rowSelection, "e");
-  // }, [rowSelection]);
-
-  const [checkStrictly, setCheckStrictly] = useState(false);
-
   // rowSelection objects indicates the need for row selection
   const rowSelection = {
-    onChange: (selectedRowKeys, selectedRows) => {
-      // console.log(
-      //   `selectedRowKeys: ${selectedRowKeys}`,
-      //   "selectedRows: ",
-      //   selectedRows
-      // );
-    },
-    onSelect: (record, selected, selectedRows) => {
-      //console.log(record, selected, selectedRows);
-    },
-    onSelectAll: (selected, selectedRows, changeRows) => {
-      //console.log(selected, selectedRows, changeRows);
-    },
+    onChange: (selectedRowKeys, selectedRows) => {},
+    onSelect: (record, selected, selectedRows) => {},
+    onSelectAll: (selected, selectedRows, changeRows) => {},
   };
 
   // FILTER DROPDOWN SEARCH
   const handleColumnSearch = (searchValue) => {
     // Convert searchValue to lowercase for case-insensitive search
     const lowerSearchValue = searchValue.toLowerCase();
-
     // Filter columns based on whether their titles contain the searchValue
     const filteredColumns = tableData.filter((column) => {
-      //  console.log(column, "column");
       const titleText =
         typeof column.title === "string"
           ? column.title
           : column.title.props.children;
-
       return titleText.toLowerCase().includes(lowerSearchValue);
     });
-
     // Set the visible columns to the filtered columns
     setVisibleColumns(filteredColumns.map((col) => col.dataIndex));
   };
@@ -889,7 +791,6 @@ const TableAnt = ({
   // const columnMenu = <Menu mode="vertical" items={columnMenuItems} />;
 
   const onChangeGridlist = ({ target: { value } }) => {
-    // console.log("radio1 checked", value);
     setGridList(value);
   };
   const splitTitle = tabTitle.split("_");
@@ -937,7 +838,6 @@ const TableAnt = ({
           <TabsNew
             tabs={tab}
             tabClick={(e) => {
-              // console.log(e, "e");
               setTabClick(e);
               handleTabChange(e);
             }}
@@ -955,21 +855,9 @@ const TableAnt = ({
             style={{ marginLeft: 8 }}
             className={`bg-[${primaryColor}] bg-opacity-10 text-primary text-[10px] 2xl:text-xs rounded-full px-3 py-1 vhcenter`}
           >
-            {/* {console.log(...tabTitle.split("_"))} */}
             {All ? (
               <div>
-                {/* {hasSelected
-              ? `${selectedRowKeys?.length} ${
-                  jsonResult ? jsonResult : path
-                } Selected`
-              : `All ${jsonResult ? jsonResult : path}`} */}
-
-                <p className="text-lg font-semibold dark:text-white">
-                  {/* {tabTitle?.split("_") || path?.split("_")} */}
-                  {/* {jsonResult || path} */}
-
-                  {/* (0) */}
-                </p>
+                <p className="text-lg font-semibold dark:text-white"></p>
               </div>
             ) : (
               showsearch && (
@@ -991,21 +879,18 @@ const TableAnt = ({
                       setSearchValue(value);
                     }}
                     onSearch={(value) => {
-                      // console.log(value);
                       setSearchFilter(value);
                     }}
                   />
                 </div>
               )
             )}
-
             {/*             
             {hasSelected
               ? `${selectedRowKeys?.length} ${
                   jsonResult ? jsonResult : path
                 } Selected`
               : `All ${jsonResult ? jsonResult : path}`} */}
-            {/* {console.log(jsonResult)} */}
           </div>
         </div>
         <div className="flex flex-wrap items-center gap-3">
@@ -1031,7 +916,6 @@ const TableAnt = ({
                     setSearchValue(value);
                   }}
                   onSearch={(value) => {
-                    // console.log(value);
                     setSearchFilter(value);
                   }}
                 />
@@ -1059,7 +943,6 @@ const TableAnt = ({
                         trigger={["click"]}
                         open={dropdownVisible}
                         onOpenChange={(visible) => {
-                          console.log(visible);
                           setDropdownVisible(visible);
                         }}
                   >
@@ -1067,7 +950,6 @@ const TableAnt = ({
                  <Button
                       className="flex items-center dark:bg-black dark:text-white justify-center h-full font-medium flex-nowrap bg-[#FAFAFA]"
                       onClick={(e) => {
-                        console.log(e);
                         e.stopPropagation(); // Prevent dropdown from closing
                         setDropdownVisible(!dropdownVisible);
                       }}
@@ -1085,8 +967,6 @@ const TableAnt = ({
         </div>
       </div>
       <div className="border rounded-lg border-[#E7E7E7] dark:border-secondary relative overflow-auto">
-        {/* {console.log(data)} */}
-        {console.log(tableData)}
         {data && (
           <Table
             //rowSelection={{ ...rowSelection }}
@@ -1141,7 +1021,6 @@ const TableAnt = ({
             setIsModalOpen(e);
           }}
         >
-          {/* {console.log(modalData, "this is modaldata")} */}
           <div className="flex flex-col gap-2 dark:text-white">
             {/* Render all title-value pairs */}
             {modalData.title.map((titleItem, index) => (

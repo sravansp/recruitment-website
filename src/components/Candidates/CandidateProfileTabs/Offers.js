@@ -1,12 +1,26 @@
 import React, { useState, useEffect } from "react";
 import ButtonClick from "../../common/Button";
 import TextEditor from "../../common/TextEditor/TextEditor";
-import { stateToHTML } from 'draft-js-export-html';
-import { EditorState, convertToRaw, ContentState, convertFromHTML } from 'draft-js';
+import { stateToHTML } from "draft-js-export-html";
+import {
+  EditorState,
+  convertToRaw,
+  ContentState,
+  convertFromHTML,
+} from "draft-js";
 import TabsNew from "../../common/TabsNew";
-import { getAllRecruitmentJobResumesOfferLetters, getRecruitmentJobResumesNoteById, updateRecruitmentJobResumesNote, getRecruitmentLetterTemplateById, saveRecruitmentJobResumesOfferLetter, getAllRecruitmentLetterTemplates, getAllRecruitmentJobResumesNotes, saveRecruitmentJobResumesNote } from "../../Api1";
+import {
+  getAllRecruitmentJobResumesOfferLetters,
+  getRecruitmentJobResumesNoteById,
+  updateRecruitmentJobResumesNote,
+  getRecruitmentLetterTemplateById,
+  saveRecruitmentJobResumesOfferLetter,
+  getAllRecruitmentLetterTemplates,
+  getAllRecruitmentJobResumesNotes,
+  saveRecruitmentJobResumesNote,
+} from "../../Api1";
 
-import { format } from 'date-fns';
+import { format } from "date-fns";
 import {
   RiAttachment2,
   RiDeleteBin6Line,
@@ -14,7 +28,12 @@ import {
   RiHome6Line,
   RiStickyNoteLine,
 } from "react-icons/ri";
-import { BsFileEarmarkRichtext, BsFileImage, BsFileWord, BsFiletypePdf } from "react-icons/bs";
+import {
+  BsFileEarmarkRichtext,
+  BsFileImage,
+  BsFileWord,
+  BsFiletypePdf,
+} from "react-icons/bs";
 import { Editor } from "react-draft-wysiwyg";
 import "react-draft-wysiwyg/dist/react-draft-wysiwyg.css";
 import { FcCheckmark } from "react-icons/fc";
@@ -24,7 +43,7 @@ import { Formik, useFormik } from "formik";
 import { Button, Card, Dropdown, Menu, Space, notification } from "antd";
 import { FaRegEdit } from "react-icons/fa";
 import { CommonAxisSettingsConstantLineStyle } from "devextreme-react/chart";
-import Pdf from "../../../assets/images/uploader/pdf.png"
+import Pdf from "../../../assets/images/uploader/pdf.png";
 import { FiAlertOctagon } from "react-icons/fi";
 import { PiChecks, PiPushPinSlashBold } from "react-icons/pi";
 import { IoIosArrowDown } from "react-icons/io";
@@ -33,21 +52,20 @@ const Offers = () => {
   const [content, setContent] = useState("");
   const [uploadedFiles, setUploadedFiles] = useState([]);
   const primaryColor = localStorage.getItem("mainColor");
-  const { resumeId } = useParams()
-  const [jobId, setJobId] = useState(null)
-  const [LetterTemplate, setLetterTemplate] = useState([])
+  const { resumeId } = useParams();
+  const [jobId, setJobId] = useState(null);
+  const [LetterTemplate, setLetterTemplate] = useState([]);
   const { state } = useLocation();
-  const [LetterTemplateId, setLetterTemplateId] = useState("")
-  const [Letterdata, setLetterdata] = useState([])
+  const [LetterTemplateId, setLetterTemplateId] = useState("");
+  const [Letterdata, setLetterdata] = useState([]);
   const [selectedNoteId, setSelectedNoteId] = useState(null);
   const [isPinned, setIsPinned] = useState(0);
-  const [offerLetters, setOfferLetters] = useState([])
+  const [offerLetters, setOfferLetters] = useState([]);
   const [userid, setuserid] = useState("");
-
 
   const handleEditClick = (jobResumeNoteId) => {
     setSelectedNoteId(jobResumeNoteId);
-    getnotesbyId(jobResumeNoteId)
+    getnotesbyId(jobResumeNoteId);
     // You can perform any additional actions here, such as opening a modal or navigating to another page.
   };
 
@@ -55,7 +73,7 @@ const Offers = () => {
     if (state && state.jobID) {
       setJobId(state.jobID);
     } else {
-      const storedJobId = localStorage.getItem('jobid');
+      const storedJobId = localStorage.getItem("jobid");
       if (storedJobId) {
         setJobId(storedJobId);
       }
@@ -63,8 +81,8 @@ const Offers = () => {
   }, [state]);
 
   const handleViewResume = (PdFViewer) => {
-    window.open(PdFViewer, '_blank');
-  }
+    window.open(PdFViewer, "_blank");
+  };
   const getFileIcon = (fileType) => {
     switch (fileType) {
       case "application/pdf":
@@ -80,10 +98,10 @@ const Offers = () => {
     }
   };
   const formatSize = (bytes) => {
-    const sizes = ['Bytes', 'KB', 'MB', 'GB', 'TB'];
-    if (bytes === 0) return '0 Byte';
+    const sizes = ["Bytes", "KB", "MB", "GB", "TB"];
+    if (bytes === 0) return "0 Byte";
     const i = parseInt(Math.floor(Math.log(bytes) / Math.log(1024)));
-    return Math.round(bytes / Math.pow(1024, i), 2) + ' ' + sizes[i];
+    return Math.round(bytes / Math.pow(1024, i), 2) + " " + sizes[i];
   };
   const removeFile = (index) => {
     const updatedFiles = [...uploadedFiles];
@@ -117,14 +135,16 @@ const Offers = () => {
       placement: "top",
       // stack: 2,
       style: {
-        background: `${type === "success"
-          ? `linear-gradient(180deg, rgba(204, 255, 233, 0.8) 0%, rgba(235, 252, 248, 0.8) 51.08%, rgba(246, 251, 253, 0.8) 100%)`
-          : "linear-gradient(180deg, rgba(255, 236, 236, 0.80) 0%, rgba(253, 246, 248, 0.80) 51.13%, rgba(251, 251, 254, 0.80) 100%)"
-          }`,
-        boxShadow: `${type === "success"
-          ? "0px 4.868px 11.358px rgba(62, 255, 93, 0.2)"
-          : "0px 22px 60px rgba(134, 92, 144, 0.20)"
-          }`,
+        background: `${
+          type === "success"
+            ? `linear-gradient(180deg, rgba(204, 255, 233, 0.8) 0%, rgba(235, 252, 248, 0.8) 51.08%, rgba(246, 251, 253, 0.8) 100%)`
+            : "linear-gradient(180deg, rgba(255, 236, 236, 0.80) 0%, rgba(253, 246, 248, 0.80) 51.13%, rgba(251, 251, 254, 0.80) 100%)"
+        }`,
+        boxShadow: `${
+          type === "success"
+            ? "0px 4.868px 11.358px rgba(62, 255, 93, 0.2)"
+            : "0px 22px 60px rgba(134, 92, 144, 0.20)"
+        }`,
       },
       // duration: null,
     });
@@ -167,130 +187,121 @@ const Offers = () => {
     // },
   ];
   const handleEditorChange = (state) => {
-
-
-    setContent(state)
+    setContent(state);
   };
 
-
-  const [notes, setnotes] = useState("")
-  const [html, setstateHTML] = useState("")
-
+  const [notes, setnotes] = useState("");
+  const [html, setstateHTML] = useState("");
 
   const handlesubmit = async () => {
     try {
       const currentDate = new Date();
-      const formattedDate = format(currentDate, 'yyyy-MM-dd HH:mm:ss');
-      const response = await saveRecruitmentJobResumesOfferLetter(
-        {
-          jobId: jobId,
-          resumeId: resumeId,
-          offerLetterData: html,
-          offerLetterTemplateId: LetterTemplateId || null,
-          offerLetterStatusDate: formattedDate,
-          seal: null,
-          signature: null,
-          attachments: null,
-          createdBy: userid
-        }
-      )
-      console.log(response)
-      getOfferLetters()
+      const formattedDate = format(currentDate, "yyyy-MM-dd HH:mm:ss");
+      const response = await saveRecruitmentJobResumesOfferLetter({
+        jobId: jobId,
+        resumeId: resumeId,
+        offerLetterData: html,
+        offerLetterTemplateId: LetterTemplateId || null,
+        offerLetterStatusDate: formattedDate,
+        seal: null,
+        signature: null,
+        attachments: null,
+        createdBy: userid,
+      });
+      console.log(response);
+      getOfferLetters();
       if (response.status === 200) {
-
-
-        openNotification(
-          "success",
-          "Successful",
-          response.message
-        );
-        formik.resetForm()
-
+        openNotification("success", "Successful", response.message);
+        formik.resetForm();
       } else if (response.status === 500) {
         openNotification("error", "input field is empty..", response.message);
       }
     } catch (error) {
-      console.log(error)
+      console.log(error);
     }
-
-  }
+  };
 
   const formik = useFormik({
     initialValues: {
       jobId: "",
       resumeId: "",
       notes: "",
-      createdBy: ""
+      createdBy: "",
     },
     onSubmit: async (e) => {
+      const result = e.notes.replace(/(<p[^>]+?>|<p>|<\/p>)/gim, "");
       try {
         if (!selectedNoteId) {
           const response = await saveRecruitmentJobResumesNote({
             jobId: jobId,
             resumeId: resumeId,
-            notes: e.notes,
+            notes: result,
             createdBy: userid,
-          })
-          console.log(response)
-          getnotes()
+          });
+          console.log(response);
+          getnotes();
         } else {
           const response = await updateRecruitmentJobResumesNote({
             id: selectedNoteId,
             jobId: jobId,
             resumeId: resumeId,
-            notes: e.notes,
+            notes: result,
             isPinned: isPinned,
-            modifiedBy: userid
-          })
-          console.log(response)
-          getnotes()
+            modifiedBy: userid,
+          });
+          console.log(response);
+          getnotes();
         }
       } catch (error) {
-        console.log(error)
+        console.log(error);
       }
-    }
-  })
+    },
+  });
   const getnotes = async () => {
     try {
-      const response = await getAllRecruitmentJobResumesNotes({ resumeId: resumeId })
-      console.log(response)
-      setnotes(response.result)
-
+      const response = await getAllRecruitmentJobResumesNotes({
+        resumeId: resumeId,
+      });
+      console.log(response);
+      setnotes(response.result);
     } catch (error) {
-      console.log(error)
+      console.log(error);
     }
-  }
+  };
   useEffect(() => {
-    getnotes()
-    console.log(notes)
-
-  }, [resumeId])
+    getnotes();
+    console.log(notes);
+  }, [resumeId]);
 
   const getnotesbyId = async (jobResumeNoteId) => {
     try {
-      const response = await getRecruitmentJobResumesNoteById({ id: jobResumeNoteId })
+      const response = await getRecruitmentJobResumesNoteById({
+        id: jobResumeNoteId,
+      });
       console.log(response);
-      formik.setFieldValue('notes', response.result[0].notes)
+      formik.setFieldValue("notes", response.result[0].notes);
     } catch (error) {
-      console.log(error)
+      console.log(error);
     }
-
-  }
+  };
   const getLetterTemplate = async () => {
     try {
-      const response = await getAllRecruitmentLetterTemplates({})
-      console.log(response)
-      setLetterTemplate(response.result.map((each) => ({
-        label: each.letterTemplateName,
-        value: each.letterTemplateId,
-      })))
+      const response = await getAllRecruitmentLetterTemplates({});
+      console.log(response);
+      setLetterTemplate(
+        response.result.map((each) => ({
+          label: each.letterTemplateName,
+          value: each.letterTemplateId,
+        }))
+      );
     } catch (error) {
-      console.log(error)
+      console.log(error);
     }
-  }
+  };
   useEffect(() => {
-    getLetterTemplate()
-  }, [])
+    getLetterTemplate();
+  }, []);
+
   const getletteTemplateByid = async (id) => {
     try {
       const response = await getRecruitmentLetterTemplateById({ id });
@@ -302,52 +313,52 @@ const Offers = () => {
   };
 
   useEffect(() => {
-
-    getletteTemplateByid(LetterTemplateId);
-    console.log(content);
-
+    if (LetterTemplateId) {
+      getletteTemplateByid(LetterTemplateId);
+    }
   }, [LetterTemplateId]);
 
   const getOfferLetters = async () => {
     try {
       const response = await getAllRecruitmentJobResumesOfferLetters({
         jobId: jobId,
-        resumeId: resumeId
-
-      })
-      console.log(response)
-      setOfferLetters(response.result)
+        resumeId: resumeId,
+      });
+      console.log(response);
+      setOfferLetters(response.result);
     } catch (error) {
-      console.log(error)
+      console.log(error);
     }
-  }
+  };
   useEffect(() => {
-    getOfferLetters()
-  }, [jobId])
-
+    getOfferLetters();
+  }, [jobId]);
 
   const options = [
     {
       id: 1,
-      label: 'opt 1',
-      value: '',
+      label: "opt 1",
+      value: "",
     },
     {
       id: 2,
-      label: 'opt2',
-      value: '',
+      label: "opt2",
+      value: "",
     },
     {
       id: 3,
-      label: 'opt3',
-      value: '',
+      label: "opt3",
+      value: "",
     },
   ];
 
   const menu = (
-    <Menu >
-      {LetterTemplate.map(option => (
-        <Menu.Item key={option.value} onClick={({ key }) => setLetterTemplateId(key)}>
+    <Menu>
+      {LetterTemplate.map((option) => (
+        <Menu.Item
+          key={option.value}
+          onClick={({ key }) => setLetterTemplateId(key)}
+        >
           {option.label}
         </Menu.Item>
       ))}
@@ -358,20 +369,25 @@ const Offers = () => {
     <div className="grid gap-6 lg:grid-cols-12">
       {/* LEFT COLUMN  */}
       <div className="flex flex-col gap-6 lg:col-span-8">
-        <div className="flex flex-col gap-4 box-wrapper rounded-[10px] dark:border dark:border-secondaryWhite border dark:border-opacity-10"
-        >
+        <div className="flex flex-col gap-4 box-wrapper rounded-[10px] dark:border dark:border-secondaryWhite border dark:border-opacity-10">
           <div className="flex flex-col gap-4 divide-y">
             <div className="flex items-center justify-between">
               <h6 className="h6">Offer Letter</h6>
               <div
                 className="flex items-center justify-end gap-2.5 p-1.5  rounded-lg"
-              // style={{ backgroundColor: `${primaryColor}10` }}
+                // style={{ backgroundColor: `${primaryColor}10` }}
               >
                 {/* <ButtonClick buttonName="Reject" icon={<FiAlertOctagon size={16} className="text-white bg-red-700 rounded-full" />} />
                 <ButtonClick buttonName="Accept" icon={<PiChecks size={16} className="text-green " />} /> */}
-                <Dropdown overlay={menu} trigger={['click']} placement="bottomCenter">
+                <Dropdown
+                  overlay={menu}
+                  trigger={["click"]}
+                  placement="bottomCenter"
+                >
                   <Button className="flex items-center gap-2 ml-auto">
-                    <div className="text-primary text-xs font-bold">Choose Template</div>
+                    <div className="text-primary text-xs font-bold">
+                      Choose Template
+                    </div>
                     <IoIosArrowDown className="text-primary transition-all bg-transparent border-none outline-none 2xl:text-2xl" />
                   </Button>
                 </Dropdown>
@@ -384,19 +400,26 @@ const Offers = () => {
                   initialValue={content}
                   onChange={handleEditorChange}
                   changetoHtml={(e) => {
-                    setstateHTML(e)
+                    setstateHTML(e);
                   }}
                   minheight="250px"
                 />
-
               </div>
               {uploadedFiles.length > 0 && (
                 <div className="flex flex-wrap items-center gap-2">
                   {/* <p className="font-bold">Uploaded Files:</p> */}
                   {uploadedFiles.map((file, index) => (
-                    <div key={index} className="flex items-center p-4 text-black border border-black rounded-lg border-opacity-20 dark:border-white dark:text-white">
+                    <div
+                      key={index}
+                      className="flex items-center p-4 text-black border border-black rounded-lg border-opacity-20 dark:border-white dark:text-white"
+                    >
                       {getFileIcon(file.type)}
-                      <p><span>{file.name}</span>   <span className="text-black text-opacity-50">{formatSize(file.size)}</span></p>
+                      <p>
+                        <span>{file.name}</span>{" "}
+                        <span className="text-black text-opacity-50">
+                          {formatSize(file.size)}
+                        </span>
+                      </p>
                       <button
                         className="ml-2 text-black text-opacity-40 hover:text-red-500"
                         onClick={() => removeFile(index)}
@@ -411,7 +434,6 @@ const Offers = () => {
                 className="flex justify-between items-center gap-2.5 p-1.5  rounded-lg "
                 style={{
                   backgroundColor: `${primaryColor}10`,
-
                 }}
               >
                 <div className="flex justify-items-start !important  gap-2.5 p-1.5 ">
@@ -438,32 +460,44 @@ const Offers = () => {
                 </div>
                 <div className="flex gap-2.5 p-1.5">
                   <ButtonClick buttonName="Cancel" />
-                  <ButtonClick buttonName="Send now" BtnType="primary" handleSubmit={handlesubmit} />
+                  <ButtonClick
+                    buttonName="Send now"
+                    BtnType="primary"
+                    handleSubmit={handlesubmit}
+                  />
                 </div>
               </div>
             </div>
           </div>
         </div>
         <div className="rounded-lg bg-white dark:bg-secondaryDark p-1.5 ">
-          {offerLetters && offerLetters.map((Letter, index) => (
-            <div className="relative flex pb-6" key={index}>
-              <div className="flex items-center justify-between w-full">
-                <p className="pblack flex-grow pl-4 !font-normal">
-                  <img src={Pdf} alt="PDF" />
-                </p>
-                <div className="flex items-center gap-6"> {/* Added gap between createdOn and icons */}
-                  <p className="para !font-normal">{Letter.createdOn}</p>
-                  <div className="flex items-center gap-3">
-                    {/* <TiPin
+          {offerLetters &&
+            offerLetters.map((Letter, index) => (
+              <div className="relative flex pb-6" key={index}>
+                <div className="flex items-center justify-between w-full">
+                  <p className="pblack flex-grow pl-4 !font-normal">
+                    <img src={Pdf} alt="PDF" />
+                  </p>
+                  <div className="flex items-center gap-6">
+                    {" "}
+                    {/* Added gap between createdOn and icons */}
+                    <p className="para !font-normal">{Letter.createdOn}</p>
+                    <div className="flex items-center gap-3">
+                      {/* <TiPin
                   onClick={() => handlePinClick(note.jobResumeNoteId)}
                   style={{ color: selectedNoteId === note.jobResumeNoteId && isPinned === 1 ? 'blue' : 'gray' }}
                 />  */}
-                    <Button onClick={() => handleViewResume(Letter.offerLetterPdf)}  > View Offer Letter</Button>
+                      <Button
+                        onClick={() => handleViewResume(Letter.offerLetterPdf)}
+                      >
+                        {" "}
+                        View Offer Letter
+                      </Button>
+                    </div>
                   </div>
                 </div>
               </div>
-            </div>
-          ))}
+            ))}
         </div>
       </div>
 
@@ -480,7 +514,7 @@ const Offers = () => {
             initialValue={formik.values.notes}
             placeholder={"Type here....."}
             onChange={(e) => {
-              formik.setFieldValue('notes', e)
+              formik.setFieldValue("notes", e);
             }}
             minheight="250px"
           />
@@ -489,29 +523,38 @@ const Offers = () => {
             style={{ backgroundColor: `${primaryColor}10` }}
           >
             <ButtonClick buttonName="Cancel" />
-            <ButtonClick buttonName="Save" BtnType="primary" handleSubmit={formik.handleSubmit} />
+            <ButtonClick
+              buttonName="Save"
+              BtnType="primary"
+              handleSubmit={formik.handleSubmit}
+            />
           </div>
         </div>
         <div className="rounded-lg bg-white dark:bg-secondaryDark p-1.5 ">
-          {notes && notes.map((note, index) => (
-            <div className="relative flex pb-6" key={index}>
-              <div className="flex items-center justify-between w-full">
-                <p className="pblack flex-grow pl-4 !font-normal">
-                  <strong>{note.notes}</strong>
-                </p>
-                <div className="flex items-center gap-6"> {/* Added gap between createdOn and icons */}
-                  <p className="para !font-normal">{note.createdOn}</p>
-                  <div className="flex items-center gap-3">
-                    {/* <TiPin
+          {notes &&
+            notes.map((note, index) => (
+              <div className="relative flex pb-6" key={index}>
+                <div className="flex items-center justify-between w-full">
+                  <p className="pblack flex-grow pl-4 !font-normal">
+                    <strong>{note.notes}</strong>
+                  </p>
+                  <div className="flex items-center gap-6">
+                    {" "}
+                    {/* Added gap between createdOn and icons */}
+                    <p className="para !font-normal">{note.createdOn}</p>
+                    <div className="flex items-center gap-3">
+                      {/* <TiPin
                   onClick={() => handlePinClick(note.jobResumeNoteId)}
                   style={{ color: selectedNoteId === note.jobResumeNoteId && isPinned === 1 ? 'blue' : 'gray' }}
                 />  */}
-                    <FaRegEdit onClick={() => handleEditClick(note.jobResumeNoteId)} />
+                      <FaRegEdit
+                        onClick={() => handleEditClick(note.jobResumeNoteId)}
+                      />
+                    </div>
                   </div>
                 </div>
               </div>
-            </div>
-          ))}
+            ))}
         </div>
       </div>
       {contextHolder}

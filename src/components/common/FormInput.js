@@ -1,5 +1,5 @@
 import { Input } from "antd";
-import React, { useRef, useState } from "react";
+import React, { useState } from "react";
 import { FiAlertCircle } from "react-icons/fi";
 import { FaAsterisk } from "react-icons/fa";
 import { useMediaQuery } from "react-responsive";
@@ -15,7 +15,7 @@ export default function FormInput({
   className = "",
   phoneNumber,
   websiteLink,
-  change = () => { },
+  change = () => {},
   error = "",
   width = "full",
   description,
@@ -25,8 +25,8 @@ export default function FormInput({
   maxLength = 30,
 }) {
   const isSmallScreen = useMediaQuery({ maxWidth: 1439 });
+
   const [show, setShow] = useState(false);
-  const target = useRef(null);
 
   if (type === "number") {
     maxLength = 10;
@@ -47,17 +47,19 @@ export default function FormInput({
     }
     change(inputValue);
   };
-  // console.log(error)
+
   return (
-    <div className={`flex flex-col ${title ? "gap-2" : "gap-0 items-center "} `}>
+    <div
+      className={`flex flex-col ${title ? "gap-2" : "gap-0 items-center "} `}
+    >
       <div className="flex gap-1.5">
-        <p className={`text-xs font-medium 2xl:text-sm dark:text-white ${className}`}>
+        <p
+          className={`text-xs font-medium 2xl:text-sm dark:text-white ${className}`}
+        >
           {title}
         </p>
         {required && <FaAsterisk className="text-[6px] text-rose-600" />}
       </div>
-
-
       {websiteLink ? (
         <span className="relative w-full">
           <Input
@@ -67,8 +69,9 @@ export default function FormInput({
             value={value}
             onChange={(e) => change(e.target.value)}
             onKeyDown={handleKeyPress}
-            className={`rounded-lg w-full pl-0 text-sm relative ${className}  ${error ? "border-rose-400" : ""
-              }`}
+            className={`rounded-lg w-full pl-0 text-sm relative ${className}  ${
+              error ? "border-rose-400" : ""
+            }`}
             status={error ? "error" : ""}
             size={isSmallScreen ? "default" : "large"}
             style={
@@ -125,10 +128,7 @@ export default function FormInput({
           {description}
         </p>
       )}
-      {showValueParagraph && (
-        <p className="text-sm">{value}</p>
-
-      )}
+      {showValueParagraph && <p className="text-sm">{value}</p>}
     </div>
   );
 }

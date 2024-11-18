@@ -1,10 +1,6 @@
-import Card from "antd/es/card/Card";
 import React from "react";
 import { CiLocationOn } from "react-icons/ci";
 import { GrGroup } from "react-icons/gr";
-import { FaMapLocationDot } from "react-icons/fa6";
-import { RiH1 } from "react-icons/ri";
-import { Button, Dropdown } from "antd";
 import { BsThreeDots } from "react-icons/bs";
 
 const JobsList = () => {

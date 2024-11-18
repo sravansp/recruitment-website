@@ -1,17 +1,8 @@
+/* eslint-disable react-hooks/exhaustive-deps */
 import React, { useEffect, useState } from "react";
-import TabsNew from "../common/TabsNew";
-import TableAnt from "../common/TableAnt";
-import axios from "axios";
-import JobTabs from "../common/JobTabs";
-import { Add } from "@mui/icons-material";
-// import API from "../Api";
-import Table from "../common/Table";
 import API, { getAllRecruitmentJobs, getJobStatics } from "../Api1";
-import CustomTable from "../common/Table";
-import App1 from "../common/Table";
-import TableAnt1 from "../common/Table";
 import Heading from "../common/Heading";
-import { Link, Navigate } from "react-router-dom";
+import { Link } from "react-router-dom";
 import { PiArrowSquareOut } from "react-icons/pi";
 import ButtonClick from "../common/Button";
 import Tabs from "../common/Tabs";
@@ -19,9 +10,6 @@ import { useTranslation } from "react-i18next";
 import Createjob from "./Createjob";
 import { motion } from "framer-motion";
 import JobListCopy from "../common/JobListCopy";
-import { RiRuler2Fill } from "react-icons/ri";
-import JobDetails from "./JobDetails";
-// import API, { action, getJobStatics } from "../Api1";
 
 function AllJobs() {
   const { t } = useTranslation();
@@ -35,45 +23,52 @@ function AllJobs() {
       hired_count: "152",
     },
   ];
-  const [companyId, setCompanyId] = useState(localStorage.getItem("companyId"));
-  const [navigationPath, setNavigationPath] = useState("My_Open_Jobs");
-  const handleshow = () => setShow(true);
-  const handleClose = () => setShow(false);
-  const [show, setShow] = useState(false);
-  const [userid, setuserid] = useState("");
-  const [updateId, setUpdateId] = useState("")
-  const [FilteredJobList, setFilteredJobList] = useState([])
-  const [OpenJObs, setOpenJObs] = useState([])
-  const [createdBy, setCreatedBy] = useState("");
-  const [DraftJObs, setDraftJObs] = useState([])
-  const [openPop, setOpenPop] = useState("");
-  const [sortedInfo, setSortedInfo] = useState({});
-  const record = ""
 
+  const [companyId, setCompanyId] = useState(localStorage.getItem("companyId"));
+
+  const [navigationPath, setNavigationPath] = useState("My_Open_Jobs");
+
+  const handleshow = () => setShow(true);
+
+  const handleClose = () => setShow(false);
+
+  const [show, setShow] = useState(false);
+
+  const [userid, setuserid] = useState("");
+
+  const [updateId, setUpdateId] = useState("");
+
+  const [FilteredJobList, setFilteredJobList] = useState([]);
+
+  const [OpenJObs, setOpenJObs] = useState([]);
+
+  const [createdBy, setCreatedBy] = useState("");
+
+  const [DraftJObs, setDraftJObs] = useState([]);
+
+  const [sortedInfo, setSortedInfo] = useState({});
 
   useEffect(() => {
     // Retrieve the login data JSON string from local storage
-    const loginDataString = localStorage.getItem('LoginData');
-
+    const loginDataString = localStorage.getItem("LoginData");
     if (loginDataString) {
       // Parse the JSON string to get the LoginData object
       const loginData = JSON.parse(loginDataString);
-
       // Extract the username from the userData object
-      setuserid(loginData && loginData.userData && loginData.userData.employeeId);
-      setCreatedBy(loginData && loginData.userData && loginData.userData.employeeId)
+      setuserid(
+        loginData && loginData.userData && loginData.userData.employeeId
+      );
+      setCreatedBy(
+        loginData && loginData.userData && loginData.userData.employeeId
+      );
       // Now, 'username' variable contains the username
-
-    } else {
-      console.error('Login data not found in local storage.');
     }
   }, []);
-  const handleChange = (pagination, filters, sorter) => {
-    console.log('Various parameters', pagination, filters, sorter);
 
+  const handleChange = (pagination, filters, sorter) => {
     setSortedInfo(sorter || {});
   };
-  console.log(updateId)
+
   const tabs = [
     {
       id: 1,
@@ -108,7 +103,8 @@ function AllJobs() {
           bold: true,
           key: "jobTitle",
           sorter: (a, b) => a.jobTitle.localeCompare(b.jobTitle),
-          sortOrder: sortedInfo?.columnKey === 'jobTitle' ? sortedInfo.order : null,
+          sortOrder:
+            sortedInfo?.columnKey === "jobTitle" ? sortedInfo.order : null,
         },
         {
           id: 2,
@@ -116,7 +112,10 @@ function AllJobs() {
           value: "noOfApplicants",
           key: "noOfApplicants",
           sorter: (a, b) => a.noOfApplicants - b.noOfApplicants,
-          sortOrder: sortedInfo?.columnKey === 'noOfApplicants' ? sortedInfo.order : null,
+          sortOrder:
+            sortedInfo?.columnKey === "noOfApplicants"
+              ? sortedInfo.order
+              : null,
         },
         {
           id: 3,
@@ -127,7 +126,10 @@ function AllJobs() {
             // Compare the workLocationType strings alphabetically
             return a.workLocationType.localeCompare(b.workLocationType);
           },
-          sortOrder: sortedInfo?.columnKey === 'workLocationType' ? sortedInfo.order : null,
+          sortOrder:
+            sortedInfo?.columnKey === "workLocationType"
+              ? sortedInfo.order
+              : null,
         },
 
         {
@@ -136,7 +138,8 @@ function AllJobs() {
           value: "location",
           key: "location",
           sorter: (a, b) => a.location.localeCompare(b.location),
-          sortOrder: sortedInfo?.columnKey === 'location' ? sortedInfo.order : null,
+          sortOrder:
+            sortedInfo?.columnKey === "location" ? sortedInfo.order : null,
         },
         {
           id: 5,
@@ -150,7 +153,8 @@ function AllJobs() {
           value: "jobCreatedBy",
           key: "jobCreatedBy",
           sorter: (a, b) => a.jobCreatedBy.localeCompare(b.jobCreatedBy),
-          sortOrder: sortedInfo?.columnKey === 'jobCreatedBy' ? sortedInfo.order : null,
+          sortOrder:
+            sortedInfo?.columnKey === "jobCreatedBy" ? sortedInfo.order : null,
         },
         {
           id: 7,
@@ -161,11 +165,11 @@ function AllJobs() {
             // Parse the dates
             const dateA = new Date(a.createdOn);
             const dateB = new Date(b.createdOn);
-
             // Compare the dates
             return dateA - dateB;
           },
-          sortOrder: sortedInfo?.columnKey === 'createdOn' ? sortedInfo.order : null,
+          sortOrder:
+            sortedInfo?.columnKey === "createdOn" ? sortedInfo.order : null,
         },
         {
           id: 8,
@@ -182,7 +186,8 @@ function AllJobs() {
           bold: true,
           key: "jobTitle",
           sorter: (a, b) => a.jobTitle.localeCompare(b.jobTitle),
-          sortOrder: sortedInfo?.columnKey === 'jobTitle' ? sortedInfo.order : null,
+          sortOrder:
+            sortedInfo?.columnKey === "jobTitle" ? sortedInfo.order : null,
         },
         {
           id: 2,
@@ -190,7 +195,10 @@ function AllJobs() {
           value: "noOfApplicants",
           key: "noOfApplicants",
           sorter: (a, b) => a.noOfApplicants - b.noOfApplicants,
-          sortOrder: sortedInfo?.columnKey === 'noOfApplicants' ? sortedInfo.order : null,
+          sortOrder:
+            sortedInfo?.columnKey === "noOfApplicants"
+              ? sortedInfo.order
+              : null,
         },
         {
           id: 3,
@@ -198,20 +206,21 @@ function AllJobs() {
           value: "workLocationType",
           key: "workLocationType",
           sorter: (a, b) => {
-
             return a.workLocationType.localeCompare(b.workLocationType);
           },
-          sortOrder: sortedInfo?.columnKey === 'workLocationType' ? sortedInfo.order : null,
+          sortOrder:
+            sortedInfo?.columnKey === "workLocationType"
+              ? sortedInfo.order
+              : null,
         },
-
         {
           id: 4,
           title: t("Location"),
           value: "location",
           key: "location",
           sorter: (a, b) => a.location.localeCompare(b.location),
-          sortOrder: sortedInfo?.columnKey === 'location' ? sortedInfo.order : null,
-
+          sortOrder:
+            sortedInfo?.columnKey === "location" ? sortedInfo.order : null,
         },
         {
           id: 5,
@@ -225,7 +234,8 @@ function AllJobs() {
           value: "jobCreatedBy",
           key: "jobCreatedBy",
           sorter: (a, b) => a.jobCreatedBy.localeCompare(b.jobCreatedBy),
-          sortOrder: sortedInfo?.columnKey === 'jobCreatedBy' ? sortedInfo.order : null,
+          sortOrder:
+            sortedInfo?.columnKey === "jobCreatedBy" ? sortedInfo.order : null,
         },
         {
           id: 7,
@@ -240,7 +250,8 @@ function AllJobs() {
             // Compare the dates
             return dateA - dateB;
           },
-          sortOrder: sortedInfo?.columnKey === 'createdOn' ? sortedInfo.order : null,
+          sortOrder:
+            sortedInfo?.columnKey === "createdOn" ? sortedInfo.order : null,
         },
         {
           id: 8,
@@ -257,7 +268,8 @@ function AllJobs() {
           bold: true,
           key: "jobTitle",
           sorter: (a, b) => a.jobTitle.localeCompare(b.jobTitle),
-          sortOrder: sortedInfo?.columnKey === 'jobTitle' ? sortedInfo.order : null,
+          sortOrder:
+            sortedInfo?.columnKey === "jobTitle" ? sortedInfo.order : null,
         },
         {
           id: 2,
@@ -265,7 +277,10 @@ function AllJobs() {
           value: "noOfApplicants",
           key: "noOfApplicants",
           sorter: (a, b) => a.noOfApplicants - b.noOfApplicants,
-          sortOrder: sortedInfo?.columnKey === 'noOfApplicants' ? sortedInfo.order : null,
+          sortOrder:
+            sortedInfo?.columnKey === "noOfApplicants"
+              ? sortedInfo.order
+              : null,
         },
         {
           id: 3,
@@ -273,20 +288,21 @@ function AllJobs() {
           value: "workLocationType",
           key: "workLocationType",
           sorter: (a, b) => {
-
             return a.workLocationType.localeCompare(b.workLocationType);
           },
-          sortOrder: sortedInfo?.columnKey === 'workLocationType' ? sortedInfo.order : null,
+          sortOrder:
+            sortedInfo?.columnKey === "workLocationType"
+              ? sortedInfo.order
+              : null,
         },
-
         {
           id: 4,
           title: t("Location"),
           value: "location",
           key: "location",
           sorter: (a, b) => a.location.localeCompare(b.location),
-          sortOrder: sortedInfo?.columnKey === 'location' ? sortedInfo.order : null,
-
+          sortOrder:
+            sortedInfo?.columnKey === "location" ? sortedInfo.order : null,
         },
         {
           id: 5,
@@ -300,7 +316,8 @@ function AllJobs() {
           value: "jobCreatedBy",
           key: "jobCreatedBy",
           sorter: (a, b) => a.jobCreatedBy.localeCompare(b.jobCreatedBy),
-          sortOrder: sortedInfo?.columnKey === 'jobCreatedBy' ? sortedInfo.order : null,
+          sortOrder:
+            sortedInfo?.columnKey === "jobCreatedBy" ? sortedInfo.order : null,
         },
         {
           id: 7,
@@ -311,11 +328,11 @@ function AllJobs() {
             // Parse the dates
             const dateA = new Date(a.createdOn);
             const dateB = new Date(b.createdOn);
-
             // Compare the dates
             return dateA - dateB;
           },
-          sortOrder: sortedInfo?.columnKey === 'createdOn' ? sortedInfo.order : null,
+          sortOrder:
+            sortedInfo?.columnKey === "createdOn" ? sortedInfo.order : null,
         },
         {
           id: 8,
@@ -332,7 +349,8 @@ function AllJobs() {
           bold: true,
           key: "jobTitle",
           sorter: (a, b) => a.jobTitle.localeCompare(b.jobTitle),
-          sortOrder: sortedInfo?.columnKey === 'jobTitle' ? sortedInfo.order : null,
+          sortOrder:
+            sortedInfo?.columnKey === "jobTitle" ? sortedInfo.order : null,
         },
         {
           id: 2,
@@ -340,7 +358,10 @@ function AllJobs() {
           value: "noOfApplicants",
           key: "noOfApplicants",
           sorter: (a, b) => a.noOfApplicants - b.noOfApplicants,
-          sortOrder: sortedInfo?.columnKey === 'noOfApplicants' ? sortedInfo.order : null,
+          sortOrder:
+            sortedInfo?.columnKey === "noOfApplicants"
+              ? sortedInfo.order
+              : null,
         },
         {
           id: 3,
@@ -348,19 +369,20 @@ function AllJobs() {
           value: "workLocationType",
           key: "workLocationType",
           sorter: (a, b) => {
-
             return a.workLocationType.localeCompare(b.workLocationType);
           },
-          sortOrder: sortedInfo?.columnKey === 'workLocationType' ? sortedInfo.order : null,
+          sortOrder:
+            sortedInfo?.columnKey === "workLocationType"
+              ? sortedInfo.order
+              : null,
         },
-
         {
           id: 4,
           title: t("Location"),
           value: "location",
           key: "location",
           sorter: (a, b) => a.location.length - b.location.length,
-          sortOrder: sortedInfo?.columnKey === 'location'
+          sortOrder: sortedInfo?.columnKey === "location",
         },
         // {
         //   id: 5,
@@ -375,7 +397,7 @@ function AllJobs() {
           value: "jobCreatedBy",
           key: "jobCreatedBy",
           sorter: (a, b) => a.jobCreatedBy.length - b.jobCreatedBy.length,
-          sortOrder: sortedInfo?.columnKey === 'jobCreatedBy'
+          sortOrder: sortedInfo?.columnKey === "jobCreatedBy",
         },
         {
           id: 6,
@@ -390,7 +412,8 @@ function AllJobs() {
             // Compare the dates
             return dateA - dateB;
           },
-          sortOrder: sortedInfo?.columnKey === 'createdOn' ? sortedInfo.order : null,
+          sortOrder:
+            sortedInfo?.columnKey === "createdOn" ? sortedInfo.order : null,
         },
         {
           id: 7,
@@ -417,13 +440,12 @@ function AllJobs() {
       My_Open_Jobs: { id: 2, api: API.UpDate_jobs },
       Open: { id: 3, api: API.UpDate_jobs },
       Draft: { id: 3, api: API.UpDate_jobs },
-
     },
   ];
   useEffect(() => {
     setCompanyId(localStorage.getItem("companyId"));
-
   }, []);
+
   const [JobsList, setJobList] = useState([]);
 
   const actionData = [
@@ -432,69 +454,69 @@ function AllJobs() {
       All_Jobs: { id: 2, response: JobsList },
       Open: { id: 3, response: OpenJObs },
       Draft: { id: 4, response: DraftJObs },
-
     },
   ];
-
-
 
   const callapi = async () => {
     try {
       const response = await getAllRecruitmentJobs({ companyId });
-      const filteredJobs = response.result.filter(job => job.jobStatus !== "Draft");
-      console.log("Draft", filteredJobs)
+      const filteredJobs = response.result.filter(
+        (job) => job.jobStatus !== "Draft"
+      );
       setJobList(filteredJobs);
-      console.log(response);
     } catch (error) {
-      console.error(error);
+      return error;
     }
   };
 
   const getcreatedBy = async () => {
     const createdBy = userid;
     try {
-      const response = await getAllRecruitmentJobs({ companyId, createdBy, jobStatus: 'Open' });
+      const response = await getAllRecruitmentJobs({
+        companyId,
+        createdBy,
+        jobStatus: "Open",
+      });
       setFilteredJobList(response.result);
-      console.log(response);
     } catch (error) {
-      // console.error(error);
+      return error;
     }
   };
 
   const getOpenjobs = async () => {
     try {
-      const response = await getAllRecruitmentJobs({ companyId, jobStatus: 'Open' });
+      const response = await getAllRecruitmentJobs({
+        companyId,
+        jobStatus: "Open",
+      });
       setOpenJObs(response.result);
-      console.log(response);
     } catch (error) {
-      console.error(error);
+      return error;
     }
   };
 
   const getDraftjobs = async () => {
     try {
-      const response = await getAllRecruitmentJobs({ companyId, jobStatus: 'Draft' });
+      const response = await getAllRecruitmentJobs({
+        companyId,
+        jobStatus: "Draft",
+      });
       setDraftJObs(response.result);
-      console.log(response);
     } catch (error) {
-      console.error(error);
+      return error;
     }
   };
 
   useEffect(() => {
-    // Retrieve the login data JSON string from local storage
-    const loginDataString = localStorage.getItem('LoginData');
-
+    const loginDataString = localStorage.getItem("LoginData");
     if (loginDataString) {
-      // Parse the JSON string to get the LoginData object
       const loginData = JSON.parse(loginDataString);
-
-      // Extract the username from the userData object
-      setuserid(loginData && loginData.userData && loginData.userData.employeeId);
-      setCreatedBy(loginData && loginData.userData && loginData.userData.employeeId)
-      // Now, 'username' variable contains the username
-    } else {
-      console.error('Login data not found in local storage.');
+      setuserid(
+        loginData && loginData.userData && loginData.userData.employeeId
+      );
+      setCreatedBy(
+        loginData && loginData.userData && loginData.userData.employeeId
+      );
     }
   }, []);
 
@@ -505,7 +527,6 @@ function AllJobs() {
   useEffect(() => {
     switch (navigationPath) {
       case "All_Jobs":
-
         callapi();
         break;
       case "My_Open_Jobs":
@@ -515,40 +536,34 @@ function AllJobs() {
         break;
       case "Open":
         getOpenjobs();
-        break
+        break;
       case "Draft":
         getDraftjobs();
-        break
+        break;
       default:
-        break
-
-
+        break;
     }
   }, [navigationPath]);
+
   useEffect(() => {
     getcreatedBy();
+  }, [userid]);
 
-  }, [userid])
-
-
-
-  const [jobstatic, setjobstatic] = useState([])
+  const [jobstatic, setjobstatic] = useState([]);
   //static
 
   const getJobstat = async () => {
     try {
       const response = await getJobStatics({ companyId });
       setjobstatic(response.result);
-      console.log(response,"jobstatic");
     } catch (error) {
-      console.error(error);
+      return error;
     }
   };
-  useEffect(() => {
-    getJobstat()
-    console.log("value", jobstatic)
-  }, [companyId])
 
+  useEffect(() => {
+    getJobstat();
+  }, [companyId]);
 
   const Drawerheader = [
     {
@@ -683,21 +698,17 @@ function AllJobs() {
           title: "Requirement Type",
           value: "requirementType",
         },
-
       ],
     },
   ];
   const handleNavigate = () => {
-    window.open('https://careerui.vercel.app/', '_blank');
+    window.open("https://careerui.vercel.app/", "_blank");
   };
 
   return (
     <div className="flex flex-col gap-[25px]">
       <div className="flex items-center justify-between">
-        <Heading
-          title={t("Jobs")}
-          description={t("Main_Description")}
-        />
+        <Heading title={t("Jobs")} description={t("Main_Description")} />
         <div className="flex items-center gap-4">
           {" "}
           <Link onClick={handleNavigate} className="flex items-center gap-2">
@@ -718,7 +729,7 @@ function AllJobs() {
                 open={show}
                 close={(e) => {
                   setShow(e);
-                  setUpdateId(false)
+                  setUpdateId(false);
                   handleClose();
                 }}
                 inputshow={true}
@@ -728,13 +739,10 @@ function AllJobs() {
                   getcreatedBy();
                   getOpenjobs();
                   getDraftjobs();
-
                 }}
                 // openPolicy={openPop}
                 // updateId={updateId}
                 isUpdate={false}
-
-
               />
             </motion.div>
           )}
@@ -757,36 +765,27 @@ function AllJobs() {
               : null
           }
           tabClick={(e) => {
-            console.log(e, "e");
             setNavigationPath(e);
           }}
           actionID="jobId"
-
-
-          buttonClick={(e,) => {
-            // console.log(company, "company", e);
+          buttonClick={(e) => {
             setUpdateId(e);
-            handleshow(true)
-            console.log(e)
+            handleshow(true);
           }}
           All={true}
           // recordId={record.jobId}
           actionToggle={(e) => {
             setUpdateId(e);
-
           }}
           refreshJobCrad={() => {
-            getJobstat()
-            console.log("hiii")
+            getJobstat();
           }}
           refresh={() => {
-
             switch (navigationPath) {
               default:
                 getcreatedBy();
                 break;
               case "AllJobs":
-
                 callapi();
                 break;
               case "Open":
@@ -795,7 +794,6 @@ function AllJobs() {
               case "Draft":
                 getDraftjobs();
                 break;
-
             }
           }}
           updateApi={
@@ -803,7 +801,6 @@ function AllJobs() {
               ? updateApi[0]?.[navigationPath].api
               : null
           }
-
         />
       </div>
     </div>

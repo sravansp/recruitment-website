@@ -1,19 +1,15 @@
+/* eslint-disable react-hooks/exhaustive-deps */
 import React, { useEffect, useState } from "react";
 import { useTranslation } from "react-i18next";
-import Automate from "../../assets/images/Automate.svg";
 import DrawerPop from "../common/DrawerPop";
 import FlexCol from "../common/FlexCol";
 import Accordion from "../common/Accordion";
 import FormInput from "../common/FormInput";
-import { MdDelete, MdOutlineLock } from "react-icons/md";
 import AddMore from "../common/AddMore";
-import { SlEnergy } from "react-icons/sl";
-import { AiFillThunderbolt } from "react-icons/ai";
-import { Formik, useFormik } from "formik";
+import { useFormik } from "formik";
 import { MdAlignHorizontalLeft } from "react-icons/md";
 import { CiTextAlignLeft } from "react-icons/ci";
 import { IoMdCheckboxOutline } from "react-icons/io";
-import { FaCircleDot } from "react-icons/fa6";
 import { IoIosArrowDropdown } from "react-icons/io";
 import { FaRegCircleDot } from "react-icons/fa6";
 import { RiDeleteBin5Line } from "react-icons/ri";
@@ -25,34 +21,27 @@ import {
   getAllRecruitmentEmailTemplates,
   getAllRecruitmentEvaluationTemplates,
   getAllRecruitmentQuestionnaireTemplates,
-  getAllRecruitmentWorkFlows
+  getAllRecruitmentWorkFlows,
 } from "../Api1";
-import { PiCopySimple, PiPencilSimpleLineThin } from "react-icons/pi";
-import { Modal, Button, notification, Tooltip, Menu } from "antd";
-import image from "../../assets/images/image 622.png";
+import { PiPencilSimpleLineThin } from "react-icons/pi";
+import { notification, Tooltip } from "antd";
 import TextArea from "../common/TextArea";
 import { RiDeleteBinLine } from "react-icons/ri";
-import copy from "clipboard-copy";
-import * as Yup from "yup";
 import WorkflowModal from "../common/WorkflowModal";
-import ModalImg from "../../assets/images/Workflowimg.png";
 import Dropdown from "../common/Dropdown";
 import arrow from "../../assets/images/arrow3d 1.png";
-import Emailtemplate from "./AddEmailtemplate";
-import { title } from "process";
 import MenuItems from "../DropDown";
 
 const Workflowstage = ({
   open = "",
-  close = () => { },
+  close = () => {},
   inputshow = false,
   isUpdate = {},
   updateId,
   refresh,
 }) => {
-  const [successNotificationVisible, setSuccessNotificationVisible] =
-    useState(false);
   const [api, contextHolder] = notification.useNotification();
+
   const openNotification = (type, message, description) => {
     api[type]({
       message: message,
@@ -60,79 +49,93 @@ const Workflowstage = ({
       placement: "top",
       // stack: 2,
       style: {
-        background: `${type === "success"
+        background: `${
+          type === "success"
             ? `linear-gradient(180deg, rgba(204, 255, 233, 0.8) 0%, rgba(235, 252, 248, 0.8) 51.08%, rgba(246, 251, 253, 0.8) 100%)`
             : "linear-gradient(180deg, rgba(255, 236, 236, 0.80) 0%, rgba(253, 246, 248, 0.80) 51.13%, rgba(251, 251, 254, 0.80) 100%)"
-          }`,
-        boxShadow: `${type === "success"
+        }`,
+        boxShadow: `${
+          type === "success"
             ? "0px 4.868px 11.358px rgba(62, 255, 93, 0.2)"
             : "0px 22px 60px rgba(134, 92, 144, 0.20)"
-          }`,
+        }`,
       },
       // duration: null,
     });
   };
-  console.log(updateId);
 
   const [show, setShow] = useState(open);
+
   const { t } = useTranslation();
+
   const handleClose = () => {
     close(false);
     formik.resetForm();
   };
+
   const [editStageIndex, setEditStageIndex] = useState(null);
-  const [companyId, setCompanyId] = useState(localStorage.getItem("companyId"));
+
+  const companyId = localStorage.getItem("companyId");
+
   const [presentage, setPresentage] = useState(0);
+
   const [stageName, setStageName] = useState("");
+
   const [insertedId, setInsertedId] = useState("");
+
   const [stageError, setStageError] = useState("");
+
   const [menuVisible, setMenuVisible] = useState(false);
+
   const [menuitem, setmenuitem] = useState(false);
+
   const [stages, setstages] = useState([]);
+
   const [selectedStageName, setSelectedStageName] = useState("");
-  const [selectedOption, setSelectedOption] = useState(null);
-  const [showEmailDiv, setShowEmailDiv] = useState(false);
-  const [selectedMenuLabel, setSelectedMenuLabel] = useState("");
+
   const [optionData, setOptionData] = useState([]);
-  const [evaluationValue,setEvaluationValue] = useState("")
-  const [questionnaire,setQuestionnaire] = useState("")
-  const [Addnote,setAddnote] = useState("")
-  const [Email,setEmail] = useState("")
-  const [AddTag,setAddtag] = useState("")
-  const[evaluation,setEvaluation] = useState([])
-  const[questionareTemp,setQuestionareTemp] = useState([])
-  const [emailTemp,setEmailTemp] = useState([])
+
+  const [evaluationValue, setEvaluationValue] = useState("");
+
+  const [questionnaire, setQuestionnaire] = useState("");
+
+  const [Addnote, setAddnote] = useState("");
+
+  const [Email, setEmail] = useState("");
+
+  const [AddTag, setAddtag] = useState("");
+
+  const [evaluation, setEvaluation] = useState([]);
+
+  const [questionareTemp, setQuestionareTemp] = useState([]);
+
+  const [emailTemp, setEmailTemp] = useState([]);
+
   const [showDiv, setShowDiv] = useState(false);
-  const primaryColor = localStorage.getItem('mainColor')
-  const [response,setResponse] = useState("")
-  const [templateName,setTemplateName] =useState("")
-  const[Length,setLength] =useState("")
 
-  
- 
+  const primaryColor = localStorage.getItem("mainColor");
 
+  const [templateName, setTemplateName] = useState("");
+
+  const [Length, setLength] = useState("");
 
   const getEmailLsit = async () => {
     try {
       const response = await getAllRecruitmentEmailTemplates({});
-  
-      // Extract emailSubject array from the response and set it to state
-      const newEmailSubject = response.result.map(email => ({
+      const newEmailSubject = response.result.map((email) => ({
         label: email.emailTemplateName,
         value: email.emailTemplateId,
       }));
-  
-      setEmailTemp(newEmailSubject) 
-      setoptions(prevOptions => {
-        // Map over the prevOptions and update the option where key matches "request"
-        return prevOptions.map(option => {
-          if (option.key === 3) { // Assuming "request" corresponds to key 1
+      setEmailTemp(newEmailSubject);
+      setoptions((prevOptions) => {
+        return prevOptions.map((option) => {
+          if (option.key === 3) {
             return {
               ...option,
-              det: option.det.map(detItem => {
+              det: option.det.map((detItem) => {
                 return {
                   ...detItem,
-                  option1: detItem.option1.map(option1Item => {
+                  option1: detItem.option1.map((option1Item) => {
                     if (option1Item.title === "Choose Email Template") {
                       return {
                         ...option1Item,
@@ -148,54 +151,39 @@ const Workflowstage = ({
           return option;
         });
       });
-
-  
-      console.log(newEmailSubject);
     } catch (error) {
-      console.error(error); // Handle errors
+      return error;
     }
   };
-  useEffect(()=>{
-    getEmailLsit()
-  
-  },[])
+  useEffect(() => {
+    getEmailLsit();
+  }, []);
 
   const handleMenuClick = (option, value) => {
-    let demo = options.filter(data => data.key == option);
-
-   
+    let demo = options.filter((data) => data.key == option);
     let detObject = demo.length > 0 ? demo[0].det : {};
-  
-    // Add the selected detObject to the existing optionData array as an object
-    setOptionData(prevOptionData => [...prevOptionData, ...detObject]);
-    
+    setOptionData((prevOptionData) => [...prevOptionData, ...detObject]);
     setmenuitem(true);
-    setMenuVisible(false)
+    setMenuVisible(false);
     setShowDiv(true);
-  };  
-  console.log(optionData, "0000");
- 
+  };
   const getEvaluationtem = async () => {
     try {
       const response = await getAllRecruitmentEvaluationTemplates({});
-      console.log(response);
-      const newEvaluation =
-        response.result.map((each) => ({
-          label: each.evaluationTemplateName,
-          value: each.evaluationTemplateId,
-        }))
-        setEvaluation(newEvaluation)
-      
-      setoptions(prevOptions => {
-        // Map over the prevOptions and update the option where key matches "request"
-        return prevOptions.map(option => {
-          if (option.key === 1) { // Assuming "request" corresponds to key 1
+      const newEvaluation = response.result.map((each) => ({
+        label: each.evaluationTemplateName,
+        value: each.evaluationTemplateId,
+      }));
+      setEvaluation(newEvaluation);
+      setoptions((prevOptions) => {
+        return prevOptions.map((option) => {
+          if (option.key === 1) {
             return {
               ...option,
-              det: option.det.map(detItem => {
+              det: option.det.map((detItem) => {
                 return {
                   ...detItem,
-                  option1: detItem.option1.map(option1Item => {
+                  option1: detItem.option1.map((option1Item) => {
                     if (option1Item.title === "Choose Evaluation") {
                       return {
                         ...option1Item,
@@ -211,276 +199,219 @@ const Workflowstage = ({
           return option;
         });
       });
-
     } catch (error) {
-      console.log(error);
+      return error;
     }
   };
 
-  useEffect(()=>{
-    getEvaluationtem()
-  },[])
+  useEffect(() => {
+    getEvaluationtem();
+  }, []);
+
   const getQuestionare = async () => {
     try {
       const response = await getAllRecruitmentQuestionnaireTemplates({});
-      console.log(response);
-       const questiontionnare= 
-        response.result.map((each) => ({
-          label: each.questionnaireTemplateName,
-          value: each.questionnaireTemplateId,
-        }))
-
-        setQuestionareTemp(questiontionnare)
-        setoptions(prevOptions => {
-          // Map over the prevOptions and update the option where key matches "request"
-          return prevOptions.map(option => {
-            if (option.key === 4) { // Assuming "request" corresponds to key 1
-              return {
-                ...option,
-                det: option.det.map(detItem => {
-                  return {
-                    ...detItem,
-                    option1: detItem.option1.map(option1Item => {
-                      if (option1Item.title === "Choose Questionnaire") {
-                        return {
-                          ...option1Item,
-                          options: questiontionnare,
-                        };
-                      }
-                      return option1Item;
-                    }),
-                  };
-                }),
-              };
-            }
-            return option;
-          });
+      const questiontionnare = response.result.map((each) => ({
+        label: each.questionnaireTemplateName,
+        value: each.questionnaireTemplateId,
+      }));
+      setQuestionareTemp(questiontionnare);
+      setoptions((prevOptions) => {
+        return prevOptions.map((option) => {
+          if (option.key === 4) {
+            return {
+              ...option,
+              det: option.det.map((detItem) => {
+                return {
+                  ...detItem,
+                  option1: detItem.option1.map((option1Item) => {
+                    if (option1Item.title === "Choose Questionnaire") {
+                      return {
+                        ...option1Item,
+                        options: questiontionnare,
+                      };
+                    }
+                    return option1Item;
+                  }),
+                };
+              }),
+            };
+          }
+          return option;
         });
-  
+      });
     } catch (error) {
-      console.log(error);
+      return error;
     }
   };
+
   useEffect(() => {
     getQuestionare();
-   
   }, []);
-   
+
   const handleEditStage = (stageIndex) => {
-    // Find the index of the stage with the given stage name
-   
     const index = stages.findIndex((stage) => stage.stageName === stageIndex);
-    
     if (index !== -1) {
-        // Set the selected stage name and edit stage index
-        setStageName(stages[index].stageName);
-
-        setEditStageIndex(index);
-       
-
-        // Parse the stage rules string into a JavaScript object
-        const stageRules = stages[index].stageRules;
-
-        // Construct the optionData array based on the stage rules
-        const optionData = [];
-
+      setStageName(stages[index].stageName);
+      setEditStageIndex(index);
+      const stageRules = stages[index].stageRules;
+      const optionData = [];
+      if (stageRules.evaluation) {
+        optionData.push({
+          id: "request_evaluation",
+          name: "Request Evaluation",
+          option1: [
+            {
+              // Evaluation options here...
+              id: 1,
+              title: "Choose Evaluation",
+              options: evaluation,
+            },
+          ],
+        });
+      }
+      if (stageRules.questionnaire) {
+        optionData.push({
+          id: "send_questionnaire",
+          name: "Send Questionnaire ",
+          option1: [
+            // Questionnaire options here...
+            { id: 1, title: "Choose Questionnaire", options: questionareTemp },
+          ],
+        });
+      }
+      if (stageRules.note) {
+        optionData.push({
+          id: "Add note",
+          name: "Add note ",
+          option1: [
+            // Questionnaire options here...
+            { id: 1, title: "Add note" },
+          ],
+        });
+      }
+      if (stageRules.tag) {
+        optionData.push({
+          id: "add_tag",
+          name: "Add Tag",
+          option1: [
+            // Questionnaire options here...
+            { id: 1, titletag: "Add New Tag" },
+          ],
+        });
+      }
+      if (stageRules.emailTemplate) {
+        optionData.push({
+          id: "send_email",
+          name: "Send Email",
+          option1: [
+            // Questionnaire options here...
+            {
+              id: 1,
+              title: "Choose Email Template",
+              options: emailTemp,
+            },
+          ],
+        });
+      }
+      setOptionData(optionData);
+      if (stageRules) {
         if (stageRules.evaluation) {
-            
-        
-          optionData.push({
-                id: "request_evaluation",
-                name: "Request Evaluation",
-                option1: [
-                    {// Evaluation options here...
-                        id:1,
-                        title:"Choose Evaluation",
-                        options: evaluation
-                    }
-                ]
-            });
+          setEvaluationValue(stageRules.evaluation);
         }
-
         if (stageRules.questionnaire) {
-            optionData.push({
-                id: "send_questionnaire",
-                name: "Send Questionnaire ",
-                option1: [
-                    // Questionnaire options here...
-                    {id:1, 
-                    title:"Choose Questionnaire", 
-                    options:questionareTemp
-                  }
-                ]
-            });
+          setQuestionnaire(stageRules.questionnaire);
         }
-
-        if (stageRules.note) {
-            optionData.push({
-                id: "Add note",
-                name: "Add note ",
-                option1: [
-                    // Questionnaire options here...
-                    {id:1, title:"Add note"}
-                ]
-            });
-        }
-
-        if (stageRules.tag) {
-            optionData.push({
-                id: "add_tag",
-                name: "Add Tag",
-                option1: [
-                    // Questionnaire options here...
-                    {id:1, titletag:"Add New Tag"}
-                ]
-            });
-        }
-
         if (stageRules.emailTemplate) {
-            optionData.push({
-                id: "send_email",
-                name: "Send Email",
-                option1: [
-                    // Questionnaire options here...
-                    {
-                    id:1, 
-                    title:"Choose Email Template", 
-                    options:emailTemp
-                  }
-                ]
-            });
+          setEmail(stageRules.emailTemplate);
         }
-
-        // Update the optionData state
-        setOptionData(optionData);
-         console.log("haaa",optionData)
-        // Set the values of input fields based on the stage rules of the selected stage
-        if (stageRules) {
-          
-            if (stageRules.evaluation) {
-                console.log(stageRules.evaluation,"haaa")
-                setEvaluationValue(stageRules.evaluation);
-            }
-
-            if (stageRules.questionnaire) {
-              console.log(stageRules.questionnaire,"haaa")  
-              setQuestionnaire(stageRules.questionnaire);
-            }
-
-            if (stageRules.emailTemplate) {
-              console.log(stageRules.emailTemplate,"haaa")  
-                setEmail(stageRules.emailTemplate);
-            }
-
-            if (stageRules.note) {
-              console.log(stageRules.note,"haaa")
-              setAddnote(stageRules.note);
-            }
-
-            if (stageRules.tag) {
-              console.log(stageRules.tag,"haaa")
-                setAddtag(stageRules.tag);
-            }
+        if (stageRules.note) {
+          setAddnote(stageRules.note);
         }
-
-        // Show the modal
-        setIsModalVisible(true);
-        
-    } else {
-        console.error("Invalid stage name:", stageIndex);
+        if (stageRules.tag) {
+          setAddtag(stageRules.tag);
+        }
+      }
+      setIsModalVisible(true);
     }
-};
-
-  
+  };
 
   useEffect(() => {
     console.log(stages);
   }, [stages]);
 
   const handleAddStageClick = () => {
-  
-    
-    
-    
     if (!stageName) {
-      setStageError('Stage Name is required.');
+      setStageError("Stage Name is required.");
       return;
     } else if (stageName.length < 3) {
-      setStageError('Stage Name must be at least 3 characters long.');
+      setStageError("Stage Name must be at least 3 characters long.");
       return;
     } else if (!stageName.trim()) {
-      setStageError('Stage Name must not be empty or contain only whitespace.');
+      setStageError("Stage Name must not be empty or contain only whitespace.");
       return;
     } else {
-      setStageError('');
+      setStageError("");
     }
-
-    // Create an object to hold the stage rules based on user inputs
     const stageRules = {};
-    
-    // Set the stage rules based on dropdown selections and input field values
     if (evaluationValue) {
-        stageRules["evaluation"] = evaluationValue;
+      stageRules["evaluation"] = evaluationValue;
     }
-
     if (questionnaire) {
-        stageRules["questionnaire"] = questionnaire;
+      stageRules["questionnaire"] = questionnaire;
     }
-
     if (Email) {
-        stageRules["emailTemplate"] = Email;
+      stageRules["emailTemplate"] = Email;
     }
-
     if (Addnote) {
-        stageRules["note"] = Addnote;
+      stageRules["note"] = Addnote;
     }
-
     if (AddTag) {
-        stageRules["tag"] = AddTag;
+      stageRules["tag"] = AddTag;
     }
-
     let newStageOrder = stages.length + 1;
-
     if (editStageIndex !== null) {
-        // If editStageIndex is not null, it means we're editing an existing stage
-        // Update the corresponding stage name and stage rules in the stages array
-        setstages(prevStages =>
-            prevStages.map((stage, index) =>
-                index === editStageIndex ? { ...stage, stageName, stageRules, optionData: [...optionData] } : stage
-            )
-        );
+      // If editStageIndex is not null, it means we're editing an existing stage
+      // Update the corresponding stage name and stage rules in the stages array
+      setstages((prevStages) =>
+        prevStages.map((stage, index) =>
+          index === editStageIndex
+            ? { ...stage, stageName, stageRules, optionData: [...optionData] }
+            : stage
+        )
+      );
     } else if (!updateId) {
-        // Otherwise, we're adding a new stage
-        // Add the new stage with stage name and stage rules to the stages array
-        setstages(prevStages => [
-            ...prevStages,
-            {
-                id: stages.length + 1,
-                workFlowId: insertedId,
-                stageOrder: newStageOrder,
-                stageName,
-                stageRules,
-                createdBy: 9,
-                optionData: [...optionData] // Create a new array for optionData
-            },
-        ]);
+      // Otherwise, we're adding a new stage
+      // Add the new stage with stage name and stage rules to the stages array
+      setstages((prevStages) => [
+        ...prevStages,
+        {
+          id: stages.length + 1,
+          workFlowId: insertedId,
+          stageOrder: newStageOrder,
+          stageName,
+          stageRules,
+          createdBy: 9,
+          optionData: [...optionData], // Create a new array for optionData
+        },
+      ]);
     } else {
-        setstages(prevStages => [
-            ...prevStages,
-            {
-                id: null,
-                workFlowId: insertedId,
-                stageOrder: newStageOrder,
-                stageName,
-                stageRules,
-                createdBy: 9,
-                optionData: [...optionData] // Create a new array for optionData
-            },
-        ]);
+      setstages((prevStages) => [
+        ...prevStages,
+        {
+          id: null,
+          workFlowId: insertedId,
+          stageOrder: newStageOrder,
+          stageName,
+          stageRules,
+          createdBy: 9,
+          optionData: [...optionData], // Create a new array for optionData
+        },
+      ]);
     }
 
-     // Close the modal
-     closeModal()
+    // Close the modal
+    closeModal();
     // setEditStageIndex(null); // Clear the editStageIndex
     // setStageName("");
     // setSelectedStageName("");
@@ -489,21 +420,17 @@ const Workflowstage = ({
     // setEmail(""); // Clear dropdown selection
     // setAddnote(""); // Clear input field value
     // setAddtag("");
-};
+  };
 
   const handleDeleteStage = (id) => {
     setstages((prevStages) => prevStages.filter((stage) => stage.id !== id));
   };
-  //Modal
+
   const [isModalVisible, setIsModalVisible] = useState(false);
+
   const openModal = () => {
     setIsModalVisible(true);
   };
-  // const handleAddStageClick = () => {
-  //   // Set the state to true to show the modal
-  //   setIsModalVisible(true);
-  //   console.log("hhhh");
-  // };
 
   const closeModal = () => {
     setIsModalVisible(false);
@@ -515,12 +442,8 @@ const Workflowstage = ({
     setEmail(""); // Clear dropdown selection
     setAddnote(""); // Clear input field value
     setAddtag("");
-    setOptionData([])
-
-   
-
+    setOptionData([]);
   };
-  const formik1 = useFormik({});
 
   //  const handleAddStageRule = () => {
   //   // Add your logic for handling the "Add stage rule" button click
@@ -529,8 +452,6 @@ const Workflowstage = ({
   //   setSvgContent(stageName);
   //   setIsModalVisible(false);
   // };
-
-  const [svgContent, setSvgContent] = useState("");
 
   const formik = useFormik({
     initialValues: {
@@ -552,49 +473,51 @@ const Workflowstage = ({
         const alphanumericRegex = /^[a-zA-Z0-9 ]+$/; // Regex to allow only letters, numbers, and spaces
         let hasError = false;
         if (!values.workFlowName) {
-          formik.setFieldError('workFlowName', 'Template Name is required');
+          formik.setFieldError("workFlowName", "Template Name is required");
           hasError = true;
         } else if (!alphanumericRegex.test(values.workFlowName)) {
-          formik.setFieldError('workFlowName', 'Please enter only letters and numbers');
+          formik.setFieldError(
+            "workFlowName",
+            "Please enter only letters and numbers"
+          );
           hasError = true;
         } else if (values.workFlowName.length < 3) {
-          formik.setFieldError('workFlowName', 'Workflow Name must be at least 3 characters long');
+          formik.setFieldError(
+            "workFlowName",
+            "Workflow Name must be at least 3 characters long"
+          );
           hasError = true;
         } else if (Length > 0) {
-          formik.setFieldError('workFlowName', 'Workflow Name Already Exist');
+          formik.setFieldError("workFlowName", "Workflow Name Already Exist");
           hasError = true;
         } else {
           // Clear any existing errors if validation passes
-          formik.setFieldError('workFlowName', '');
+          formik.setFieldError("workFlowName", "");
         }
-      
         if (!values.description) {
-          formik.setFieldError('description', 'Description is required');
+          formik.setFieldError("description", "Description is required");
           hasError = true;
         } else {
-          formik.setFieldError('description', '');
+          formik.setFieldError("description", "");
         }
-         if(hasError){
-          return
-         }
-        if(stageName.length<3)
-
-
-        if (stages.length === 0) {
-          setIsModalVisible(true);
+        if (hasError) {
           return;
         }
-
+        if (stageName.length < 3)
+          if (stages.length === 0) {
+            setIsModalVisible(true);
+            return;
+          }
         if (updateId) {
           const formattedData = stages.map((item) => ({
-            stageId: item.id, // Add stageId property
+            stageId: item.id,
             stageOrder: item.stageOrder,
             stageName: item.stageName,
             stageRules: item.stageRules,
-            workFlowId: updateId, // Assuming stageRules is available in item
+            workFlowId: updateId,
             createdBy: 9,
           }));
-              
+
           const response = await updateWorkFlowWithStages({
             RecruitmentWorkFlow: {
               workFlowId: updateId,
@@ -605,7 +528,6 @@ const Workflowstage = ({
             },
             RecruitmentWorkFlowStage: [...formattedData],
           });
-          console.log(response);
           if (response.status === 200) {
             openNotification("success", "Successful", response.message);
             setTimeout(() => {
@@ -626,13 +548,9 @@ const Workflowstage = ({
             description: values.description,
             createdBy: 9,
           });
-
-          
-          console.log(response);
           if (response.status === 500) {
             openNotification("error", "Info", response.message);
           }
-          
 
           if (response.status === 200) {
             const insertedId = response.result.insertedId; // Get insertedId here
@@ -643,14 +561,9 @@ const Workflowstage = ({
               stageRules: JSON.stringify(item.stageRules),
               createdBy: 9,
             }));
-
             const response2 = await saveRecruitmentWorkFlowStageBatch(
               formattedData
             );
-            console.log("Response2:", response2);
-            console.log(formattedData);
-            console.log(insertedId);
-
             if (response2.status === 200) {
               openNotification("success", "Successful", response2.message);
               setTimeout(() => {
@@ -676,7 +589,7 @@ const Workflowstage = ({
         //   "Info",
         //   response
         // );
-        console.log(error)
+        return error;
       }
       setSubmitting(false);
     },
@@ -684,25 +597,20 @@ const Workflowstage = ({
   //update
 
   const [workFlowsatges, setworkFlowsatges] = useState([]);
+
   const getworkFlow = async () => {
     const id = updateId;
     try {
       const response = await getRecruitmentWorkFlowById({ id });
-      console.log(response);
       setworkFlowsatges(response.result);
-      console.log({ stageName: stageName });
       if (response.result.length > 0) {
         const firstJob = response.result[0];
-  
-        // Set workflow name
         formik.setFieldValue("workFlowName", firstJob.workFlowName);
         formik.setFieldValue("description", firstJob.description);
-  
-        // Set stages and parse stageRules from JSON
         const stagesData = firstJob.recruitmentWorkFlowStages.map((stage) => {
           let parsedStageRules;
           try {
-            parsedStageRules = JSON.parse(stage.stageRules || '{}');
+            parsedStageRules = JSON.parse(stage.stageRules || "{}");
           } catch (error) {
             console.error("Error parsing stageRules:", error);
             parsedStageRules = {};
@@ -715,19 +623,18 @@ const Workflowstage = ({
             stageRules: parsedStageRules,
           };
         });
-  
-        console.log(stagesData);
         setstages(stagesData);
       }
     } catch (error) {
-      console.log(error);
+      return error;
     }
   };
-  
+
   useEffect(() => {
-    getworkFlow();
-    console.log(stages,"haaa");
-  }, []);
+    if (updateId) {
+      getworkFlow();
+    }
+  }, [updateId]);
 
   const [options, setoptions] = useState([
     {
@@ -735,22 +642,17 @@ const Workflowstage = ({
       label: "Request Evaluation",
       value: "request",
       icon: <MdAlignHorizontalLeft />,
-      det: [{
-        id: "request_evaluation",
-        name: "Request Evaluation",
-        
-        option1: [
-          { id: 1, 
-            title: "Choose Evaluation", 
-            
+      det: [
+        {
+          id: "request_evaluation",
+          name: "Request Evaluation",
 
-            
-          },
-          
-          // { id: 2, title: "Email Sender" },
-        ],
-       
-      },]
+          option1: [
+            { id: 1, title: "Choose Evaluation" },
+            // { id: 2, title: "Email Sender" },
+          ],
+        },
+      ],
     },
 
     {
@@ -758,55 +660,61 @@ const Workflowstage = ({
       label: "Add Note",
       value: "note",
       icon: <CiTextAlignLeft />,
-      det: [{
-        id: "Add note",
-        name: "Add note ",
-        option1: [
-          { id: 1, title: "Add note" },
-          // { id: 2, title: "Email Sender" },
-        ],
-      },]
+      det: [
+        {
+          id: "Add note",
+          name: "Add note ",
+          option1: [
+            { id: 1, title: "Add note" },
+            // { id: 2, title: "Email Sender" },
+          ],
+        },
+      ],
     },
     {
       key: 3,
       label: "Send Email",
       value: "email",
       icon: <IoMdCheckboxOutline />,
-      det: [{
-        id: "send_email",
-        name: "Send Email ",
-        option1: [
-          { id: 1, title: "Choose Email Template" },
-          // { id: 2, title: "Email Sender" },
-        ],
-      },]
+      det: [
+        {
+          id: "send_email",
+          name: "Send Email ",
+          option1: [
+            { id: 1, title: "Choose Email Template" },
+            // { id: 2, title: "Email Sender" },
+          ],
+        },
+      ],
     },
     {
       key: 4,
       label: "Send Questionnaire",
       value: "questionnaire",
       icon: <FaRegCircleDot />,
-      det: [{
-        id: "send_questionnaire",
-        name: "Send Questionnaire ",
-        option1: [
-          { id: 1, title: "Choose Questionnaire" },
-          // { id: 2, title: "Email Sender" },
-        ],
-      },]
+      det: [
+        {
+          id: "send_questionnaire",
+          name: "Send Questionnaire ",
+          option1: [
+            { id: 1, title: "Choose Questionnaire" },
+            // { id: 2, title: "Email Sender" },
+          ],
+        },
+      ],
     },
     {
       key: 5,
       label: "Add Tag",
       value: "tag",
       icon: <IoIosArrowDropdown />,
-      det: [{
-        id: "add_tag",
-        name: "Add Tag",
-        option1: [
-          { id: 1, titletag: "Add New Tag" }
-        ],
-      },]
+      det: [
+        {
+          id: "add_tag",
+          name: "Add Tag",
+          option1: [{ id: 1, titletag: "Add New Tag" }],
+        },
+      ],
     },
   ]);
   // const [emailOptions, setEmailOptions] = useState({
@@ -832,36 +740,31 @@ const Workflowstage = ({
   //   }]
   // });
 
- 
-  const [sections, setSections] = useState([]);
-
-  const getWorkflowwithName=async(templateName)=>{
-    try{
+  const getWorkflowwithName = async (templateName) => {
+    try {
       const response = await getAllRecruitmentWorkFlows({
-        companyId:companyId,
-        workFlowName:templateName
-      })
-      setLength(response.result.length)
-     if (response.result.length > 0) {
-        formik.setFieldError('workFlowName', 'Workflow Name Already Exist');
+        companyId: companyId,
+        workFlowName: templateName,
+      });
+      setLength(response.result.length);
+      if (response.result.length > 0) {
+        formik.setFieldError("workFlowName", "Workflow Name Already Exist");
         return;
-      } 
-    }catch(error){
-      console.log(error)
+      }
+    } catch (error) {
+      return error;
     }
-  }
-  useEffect(()=>{
-    getWorkflowwithName(templateName)
-  },[templateName])
-   
+  };
+
+  useEffect(() => {
+    getWorkflowwithName(templateName);
+  }, [templateName]);
 
   const handleDeleteSection = (id) => {
-    const updatedOptions = optionData.filter(option => option.id !== id);
+    const updatedOptions = optionData.filter((option) => option.id !== id);
     setOptionData(updatedOptions);
-    console.log(`Option with id '${id}' deleted successfully.`);
   };
- 
-  console.log(stages,"stages")
+
   return (
     <DrawerPop
       open={show}
@@ -901,10 +804,7 @@ const Workflowstage = ({
       //      </div>
       //    </div>
       //  }
-      footerBtn={[
-        t("Cancel"),
-        t("Save"),
-      ]}
+      footerBtn={[t("Cancel"), t("Save")]}
       className="widthFull"
       //  buttonClickCancel={(e) => {
       //    if (activeBtn > 0) {
@@ -958,7 +858,7 @@ const Workflowstage = ({
                 className="!text-[#344054] "
                 change={(e) => {
                   formik.setFieldValue("workFlowName", e);
-                  setTemplateName(e)
+                  setTemplateName(e);
                 }}
                 value={formik.values.workFlowName}
                 error={formik.errors.workFlowName}
@@ -1018,11 +918,17 @@ const Workflowstage = ({
                     </foreignObject>
                   </svg>
 
-                  <div className='flex  gap-5'>
-                    <div className='flex items-center gap-5'>
-                      <Tooltip placement="top" title={"Edit"} >
-                        <div className='p-2 hover:bg-slate-300 rounded-md' onClick={() => handleEditStage(stage.stageName)}>
-                          <PiPencilSimpleLineThin className='text-gray-500' size={16} />
+                  <div className="flex  gap-5">
+                    <div className="flex items-center gap-5">
+                      <Tooltip placement="top" title={"Edit"}>
+                        <div
+                          className="p-2 hover:bg-slate-300 rounded-md"
+                          onClick={() => handleEditStage(stage.stageName)}
+                        >
+                          <PiPencilSimpleLineThin
+                            className="text-gray-500"
+                            size={16}
+                          />
                         </div>
                       </Tooltip>
 
@@ -1032,17 +938,20 @@ const Workflowstage = ({
                         </Tooltip>
                       </div> */}
 
-                      <Tooltip placement="top" color={"red"} title={"Delete"} >
-                        <div className='p-2 hover:bg-slate-300 rounded-md' onClick={() => handleDeleteStage(stage.id)}>
-                          <RiDeleteBinLine className="cursor-pointer text-red-500" size={16} />
+                      <Tooltip placement="top" color={"red"} title={"Delete"}>
+                        <div
+                          className="p-2 hover:bg-slate-300 rounded-md"
+                          onClick={() => handleDeleteStage(stage.id)}
+                        >
+                          <RiDeleteBinLine
+                            className="cursor-pointer text-red-500"
+                            size={16}
+                          />
                         </div>
                       </Tooltip>
-
                     </div>
                   </div>
                 </div>
-                
-              
               ))}
             </div>
           </div>
@@ -1060,7 +969,6 @@ const Workflowstage = ({
             isOpen={isModalVisible}
             onClose={closeModal}
             buttonSubmit={handleAddStageClick}
-
           >
             {/* <div className="h-[500px] overflow-auto"> */}
             <div className=" flex flex-col items-center justify-center w-full h-full gap-5">
@@ -1100,75 +1008,94 @@ const Workflowstage = ({
                 />
               </div>
             </div>
-           
+
             <div className="h-auto max-h-[370px] overflow-auto gap-5 flex flex-col">
-            {optionData.map((key, index) => (
-  <div key={index} className="flex flex-col gap-3 w-full borderb rounded-[10px] p-1 "
-  >
-    <div className="w-full m-auto h-12 rounded-md flex justify-between items-center pr-2"   style={{backgroundColor: `${primaryColor}10`}}>
-      <h1 className="mt-3.5 m-3 font-semibold dark:text-white">{key.name}</h1>
-      <Tooltip placement="top" color={'red'} title={"Delete"}>
-        <RiDeleteBin5Line className="text-gray-500 2xl:text-base dark:text-white hover:text-red-500" onClick={() => handleDeleteSection(key.id)} />
-      </Tooltip>
-    </div>
-    <div className="flex gap-2 w-full px-5 py-4">
-      {key && key.option1 && key.option1.map((item, ind) => (
-        <>
-          {console.log(item)}
-          {item.title === "Choose Evaluation" ? (
-            <div key={ind} className="w-1/2">
-              <Dropdown title={item.title}
-                options={item.options}
-                change={(e) => {
-                  setEvaluationValue(e)
-                }}
-                value={evaluationValue}
-              />
-            </div>
-          ) : item.title === "Choose Questionnaire" ? (
-            <div key={ind} className="w-1/2">
-              <Dropdown title={item.title}
-                options={item.options}
-                change={(e) => {
-                  setQuestionnaire(e)
-                }}
-                value={questionnaire}
-              />
-            </div>
-          ) : item.title === "Choose Email Template" ? (
-            <div key={ind} className="w-1/2">
-              <Dropdown title={item.title}
-                options={item.options}
-                change={(e) => {
-                  setEmail(e)
-                }}
-                value={Email}
-              />
-            </div>
-          ) : item.title === "Add note" ? (
-            <FormInput title={item.title}
-              change={(e) => {
-                setAddnote(e)
-              }}
-              value={Addnote}
-            />
-          ) : ""}
-          {item.titletag &&
-            <div className="w-full">
-              <FormInput title={item.titletag}
-                change={(e) => {
-                  setAddtag(e)
-                }}
-                value={AddTag}
-              />
-            </div>
-          }
-        </>
-      ))}
-    </div>
-  </div>
-))}
-          {/* {optionData.map((item) => (
+              {optionData.map((key, index) => (
+                <div
+                  key={index}
+                  className="flex flex-col gap-3 w-full borderb rounded-[10px] p-1 "
+                >
+                  <div
+                    className="w-full m-auto h-12 rounded-md flex justify-between items-center pr-2"
+                    style={{ backgroundColor: `${primaryColor}10` }}
+                  >
+                    <h1 className="mt-3.5 m-3 font-semibold dark:text-white">
+                      {key.name}
+                    </h1>
+                    <Tooltip placement="top" color={"red"} title={"Delete"}>
+                      <RiDeleteBin5Line
+                        className="text-gray-500 2xl:text-base dark:text-white hover:text-red-500"
+                        onClick={() => handleDeleteSection(key.id)}
+                      />
+                    </Tooltip>
+                  </div>
+                  <div className="flex gap-2 w-full px-5 py-4">
+                    {key &&
+                      key.option1 &&
+                      key.option1.map((item, ind) => (
+                        <>
+                          {console.log(item)}
+                          {item.title === "Choose Evaluation" ? (
+                            <div key={ind} className="w-1/2">
+                              <Dropdown
+                                title={item.title}
+                                options={item.options}
+                                change={(e) => {
+                                  setEvaluationValue(e);
+                                }}
+                                value={evaluationValue}
+                              />
+                            </div>
+                          ) : item.title === "Choose Questionnaire" ? (
+                            <div key={ind} className="w-1/2">
+                              <Dropdown
+                                title={item.title}
+                                options={item.options}
+                                change={(e) => {
+                                  setQuestionnaire(e);
+                                }}
+                                value={questionnaire}
+                              />
+                            </div>
+                          ) : item.title === "Choose Email Template" ? (
+                            <div key={ind} className="w-1/2">
+                              <Dropdown
+                                title={item.title}
+                                options={item.options}
+                                change={(e) => {
+                                  setEmail(e);
+                                }}
+                                value={Email}
+                              />
+                            </div>
+                          ) : item.title === "Add note" ? (
+                            <FormInput
+                              title={item.title}
+                              change={(e) => {
+                                setAddnote(e);
+                              }}
+                              value={Addnote}
+                            />
+                          ) : (
+                            ""
+                          )}
+                          {item.titletag && (
+                            <div className="w-full">
+                              <FormInput
+                                title={item.titletag}
+                                change={(e) => {
+                                  setAddtag(e);
+                                }}
+                                value={AddTag}
+                              />
+                            </div>
+                          )}
+                        </>
+                      ))}
+                  </div>
+                </div>
+              ))}
+              {/* {optionData.map((item) => (
               <div  className="flex flex-col gap-3 w-full border border-black-500 ring-1 ring-black ring-opacity-5 shadow-lg rounded-lg p-1" style={{ display: menuitem ? "block" : "none" }}>
                 <div className="w-full m-auto bg-slate-100 h-12 rounded-lg flex justify-between items-center pr-2">
                   <h1 className="mt-3.5 m-3 font-semibold">{item.name}</h1>
@@ -1194,9 +1121,7 @@ const Workflowstage = ({
               </div>
             ))} */}
 
-        
-
-          {/* <Menu
+              {/* <Menu
               onClick={({ key }) => handleMenuClick(key)}
               style={{ display: menuVisible ? "block" : "none" }}
               className="w-48 border border-black-500 ring-1 ring-black ring-opacity-5 bg-white shadow-lg rounded-lg"
@@ -1220,7 +1145,7 @@ const Workflowstage = ({
               })}
             </Menu> */}
             </div>
-           
+
             {/* <div className="justify-start">
             <AddMore
               name="Add stage rule"
@@ -1244,17 +1169,16 @@ const Workflowstage = ({
               );
             })}
           </Menu> */}
-          <MenuItems
-          Items ={options}
-          handleItemClick={(Key)=>{
-            handleMenuClick(Key)
-          }}
-          
-          />
-          
-          {/* </div> */}
-        </WorkflowModal>
-        {/* <Modal
+            <MenuItems
+              Items={options}
+              handleItemClick={(Key) => {
+                handleMenuClick(Key);
+              }}
+            />
+
+            {/* </div> */}
+          </WorkflowModal>
+          {/* <Modal
             // title="Vertically centered modal dialog"
             wrapClassName="vertical-center-modal"
             open={isModalVisible}
@@ -1299,10 +1223,10 @@ const Workflowstage = ({
             </div>
  
           </Modal> */}
-      </Accordion>
-      {contextHolder}
-    </div>
-    </DrawerPop >
+        </Accordion>
+        {contextHolder}
+      </div>
+    </DrawerPop>
   );
 };
 

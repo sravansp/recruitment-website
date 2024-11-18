@@ -1,10 +1,10 @@
+/* eslint-disable react-hooks/exhaustive-deps */
 import React, { useEffect, useState } from "react";
-import { useDispatch, useSelector } from "react-redux";
 import {
   getRecruitmentJobById,
   getAllCandidatesByjobId,
   saveRecruitmentJobResumesStage,
-  AutomateResumesInStage
+  AutomateResumesInStage,
 } from "../Api1";
 // import BoardData from "../../data/board.json";
 import { DragDropContext, Droppable, Draggable } from "react-beautiful-dnd";
@@ -13,7 +13,6 @@ import Breadcrumbs from "../common/BreadCrumbs";
 import { motion } from "framer-motion";
 import { useMediaQuery } from "react-responsive";
 import { Link } from "react-router-dom";
-import ButtonClick from "../common/Button";
 import SearchBox from "../common/SearchBox";
 import { FilterBtn } from "../common/FilterBtn";
 import { useNavigate, useParams } from "react-router-dom";
@@ -23,31 +22,20 @@ import User from "../../assets/images/user1.jpeg";
 import { GoClock } from "react-icons/go";
 import {
   PiArrowSquareOut,
-  PiBookmarkSimpleFill,
   PiCalendarFill,
-  PiDotOutlineFill,
   PiDotsThreeOutlineFill,
-  PiDotsThreeOutlineVerticalFill,
   PiMapPinFill,
   PiNavigationArrowFill,
   PiTrashBold,
   PiTreeStructureFill,
   PiUsersThreeFill,
 } from "react-icons/pi";
-import {
-  FcEngineering,
-  FcHighPriority,
-  FcMms,
-  FcProcess,
-} from "react-icons/fc";
+import { FcEngineering, FcHighPriority, FcProcess } from "react-icons/fc";
 import { BsGrid, BsListUl } from "react-icons/bs";
-
 import Createjob from "./Createjob";
-import { ColumnChooserSelection } from "devextreme-react/data-grid";
 import JobCard from "../common/JobCard";
 import FlexCol from "../common/FlexCol";
 import TableAnt from "../common/TableAnt";
-import { RxDotFilled } from "react-icons/rx";
 
 const customColors = [
   "#00B23C",
@@ -65,20 +53,27 @@ const customColors = [
 
 const JobDetails = () => {
   const isSmallScreen = useMediaQuery({ maxWidth: 1439 });
+
   const [viewType, setViewType] = useState("grid");
+
   const { jobId } = useParams();
+
   const [jobTitle, setjobTitle] = useState("");
+
   const [Jobdetails, setJobdetails] = useState([]);
-  const[jobstatus,setjobStatus] = useState("")
-  
+
+  const [jobstatus, setjobStatus] = useState("");
+
   // Initial view type
   const breadcrumbItems = [
     { label: "Jobs", url: "/AllJobs" },
     { label: jobTitle },
   ];
-  const handleshow = () => setShow(true);
+
   const handleClose = () => setShow(false);
+
   const [show, setShow] = useState(false);
+
   const gridListoptions = [
     {
       label: <BsListUl />,
@@ -99,21 +94,20 @@ const JobDetails = () => {
       const response = await getRecruitmentJobById({
         id: jobId,
       });
-      console.log(response);
-
       setjobTitle(response.result[0].jobTitle);
       setJobdetails(response.result[0]); // Access jobTitle from the first object in the array
-      setjobStatus(response.result[0].jobStatus)
+      setjobStatus(response.result[0].jobStatus);
       // Update the breadcrumb label to include the job title
       breadcrumbItems[breadcrumbItems.length - 1].label = jobTitle;
     } catch (error) {
-      console.error("Error fetching job title:", error);
+      return error;
     }
   };
+
   useEffect(() => {
-    console.log(jobTitle, "jobTitle");
     getjobTitle();
   }, [jobTitle]);
+
   const customMessage = (
     <p>
       <span>
@@ -146,7 +140,6 @@ const JobDetails = () => {
             open={show}
             close={(e) => {
               setShow(e);
-
               handleClose();
             }}
             // updateId={updateId}
@@ -161,22 +154,24 @@ const JobDetails = () => {
       {/* FILTER SECTON AND DETAILS  */}
       <div className="flex flex-col items-baseline justify-between gap-4 lg:items-center lg:gap-0 lg:flex-row">
         <div className="flex flex-wrap items-center gap-7">
-        <div
-  className={`px-2.5 py-1 ${
-    Jobdetails.jobStatus === "Open"
-      ? "bg-emerald-500 bg-opacity-10 dark:bg-opacity-50"
-      : "bg-red-500 bg-opacity-10 dark:bg-opacity-50"
-  } rounded-[18px] gap-[7px] vhcenter`}
->
-<div className="w-2.5 h-2.5 relative rounded-[5px] border border-white shrink-0"
-    style={{
-      backgroundColor: Jobdetails.jobStatus === "Open" ? "#10B981" : "#EF4444",
-    }}
-  />
-  <p className="para dark:text-white !font-normal">
-    {Jobdetails.jobStatus}
-  </p>
-</div>
+          <div
+            className={`px-2.5 py-1 ${
+              Jobdetails.jobStatus === "Open"
+                ? "bg-emerald-500 bg-opacity-10 dark:bg-opacity-50"
+                : "bg-red-500 bg-opacity-10 dark:bg-opacity-50"
+            } rounded-[18px] gap-[7px] vhcenter`}
+          >
+            <div
+              className="w-2.5 h-2.5 relative rounded-[5px] border border-white shrink-0"
+              style={{
+                backgroundColor:
+                  Jobdetails.jobStatus === "Open" ? "#10B981" : "#EF4444",
+              }}
+            />
+            <p className="para dark:text-white !font-normal">
+              {Jobdetails.jobStatus}
+            </p>
+          </div>
           <div className="gap-2 vhcenter">
             <PiUsersThreeFill size={20} className="text-[#DFDFDF]" />
             <p className="para !text-black dark:!text-white !font-normal">
@@ -209,6 +204,7 @@ const JobDetails = () => {
           </div>
           <div className="vhcenter gap-2.5">
             <img
+              alt=""
               className="w-6 h-6 border-2 rounded-full border-stone-50"
               src={User}
             />
@@ -233,7 +229,6 @@ const JobDetails = () => {
           />
         </div>
       </div>
-
       <Alert
         message={customMessage}
         type="info"
@@ -244,9 +239,7 @@ const JobDetails = () => {
       {/* MAIN CONTENT BASED ON DRAG VIEW AND LIST VIEW */}
       {viewType === "grid" ? (
         // Render grid view components
-        <DragView 
-        jobStatus={jobstatus}
-        />
+        <DragView jobStatus={jobstatus} />
       ) : (
         // Render list view components
         <ListView />
@@ -255,12 +248,13 @@ const JobDetails = () => {
   );
 };
 
-const DragView = ({jobStatus}) => {
+const DragView = ({ jobStatus }) => {
   const [candidatelist, setcandidatelist] = useState([]);
-  const [Workflow, setWorkflow] = useState([]);
-  // const selectedDataId = useSelector((state) => state.dataId.selectedDataId);
+
   const selectedDataId = localStorage.getItem("selectedDataId");
+
   const [api, contextHolder] = notification.useNotification();
+
   const openNotification = (type, message, description, callback) => {
     api[type]({
       message: message,
@@ -270,28 +264,31 @@ const DragView = ({jobStatus}) => {
 
       // stack: 2,
       style: {
-        background: `${type === "success"
-          ? `linear-gradient(180deg, rgba(204, 255, 233, 0.8) 0%, rgba(235, 252, 248, 0.8) 51.08%, rgba(246, 251, 253, 0.8) 100%)`
-          : "linear-gradient(180deg, rgba(255, 236, 236, 0.80) 0%, rgba(253, 246, 248, 0.80) 51.13%, rgba(251, 251, 254, 0.80) 100%)"
-          }`,
-        boxShadow: `${type === "success"
-          ? "0px 4.868px 11.358px rgba(62, 255, 93, 0.2)"
-          : "0px 22px 60px rgba(134, 92, 144, 0.20)"
-          }`,
+        background: `${
+          type === "success"
+            ? `linear-gradient(180deg, rgba(204, 255, 233, 0.8) 0%, rgba(235, 252, 248, 0.8) 51.08%, rgba(246, 251, 253, 0.8) 100%)`
+            : "linear-gradient(180deg, rgba(255, 236, 236, 0.80) 0%, rgba(253, 246, 248, 0.80) 51.13%, rgba(251, 251, 254, 0.80) 100%)"
+        }`,
+        boxShadow: `${
+          type === "success"
+            ? "0px 4.868px 11.358px rgba(62, 255, 93, 0.2)"
+            : "0px 22px 60px rgba(134, 92, 144, 0.20)"
+        }`,
       },
       // duration: null,
     });
   };
   const { jobId } = useParams();
+
   useEffect(() => {
     localStorage.setItem("jobid", jobId);
   }, [jobId]); // Run this effect whenever jobId changes
 
   const [boardData, setBoardData] = useState([]);
+
   const getCandidatesById = async () => {
     try {
       const response = await getAllCandidatesByjobId(jobId);
-
       setBoardData(
         response.result.map((item) => ({
           id: item.stageId,
@@ -305,9 +302,6 @@ const DragView = ({jobStatus}) => {
           })),
         }))
       );
-
-      console.log(response);
-      console.log(boardData);
       // response.result.forEach((item) => {
       //   item.stageCandidates.forEach((candidate) => {
       //     // Call saveRecruitmentJobResumesStage with jobId, stageId, and resumeId
@@ -315,7 +309,7 @@ const DragView = ({jobStatus}) => {
       //   });
       // });
     } catch (error) {
-      console.error("Error updating workflow ID:", error);
+      return error;
     }
   };
 
@@ -332,25 +326,14 @@ const DragView = ({jobStatus}) => {
   //     //     image: candidate.candidateEmail
   //     //   }))
   //     // })));
-
   //     // setBoardData(newBoardData);
-  //     console.log(response);
   //   } catch (error) {
   //     console.error('Error updating workflow ID:', error);
   //   }
   // };
 
   useEffect(() => {
-    // console.log('Both API calls completed');
-    // console.log('Job ID:', jobId);
-    // console.log('Workflow:', Workflow);
-    // console.log('Candidate List:', candidatelist);
-
-    // Create the desired array structure
-    // getRecruitmentWorkflow()
     getCandidatesById(jobId);
-
-    // console.log(newBoardData);
   }, [jobId]);
 
   useEffect(() => {
@@ -394,11 +377,13 @@ const DragView = ({jobStatus}) => {
   const [draggingPosition, setDraggingPosition] = useState(null);
 
   const [currentStageId, setCurrentStageId] = useState(null);
+
   const [currentResumeId, setCurrentResumeId] = useState(null);
+
   const resumeId = currentResumeId;
+
   const stageId = currentStageId;
 
-  // console.log(BoardData);
   useEffect(() => {
     if (typeof window !== "undefined") {
       setReady(true);
@@ -406,54 +391,45 @@ const DragView = ({jobStatus}) => {
   }, []);
 
   const JobResumesStage = async (jobId, stageId, resumeId) => {
-    console.log(jobId);
     try {
       const response = await saveRecruitmentJobResumesStage({
         jobId: jobId,
         stageId: stageId,
         resumeId: resumeId,
       });
-
-      console.log(response);
-      console.log(boardData);
+      return response;
     } catch (error) {
-      console.error("Error updating workflow ID:", error);
+      return error;
     }
   };
+
   useEffect(() => {
     JobResumesStage(jobId, stageId, resumeId);
   }, [jobId, stageId, resumeId]);
+
   const onDragEnd = (re) => {
     if (!re.destination) return;
     setBoardData((prevData) => {
       const newBoardData = [...prevData];
       const sourceStageId = newBoardData[re.source.droppableId].id;
       const destinationStageId = newBoardData[re.destination.droppableId].id;
-
       const dragItem =
         newBoardData[re.source.droppableId].items[re.source.index];
-
       setCurrentStageId(destinationStageId);
       setCurrentResumeId(dragItem.id);
-      console.log(destinationStageId);
-      console.log(dragItem.id);
-
       newBoardData[re.source.droppableId].items.splice(re.source.index, 1);
       newBoardData[re.destination.droppableId].items.splice(
         re.destination.index,
         0,
         dragItem
       );
-
       return newBoardData;
     });
-
-    // Reset dragging position after drop
     setDraggingPosition(null);
   };
+
   const onDragOver = (snapshot) => {
     if (snapshot.isDraggingOver) {
-      // Set the top position of the dropping div based on clientY
       const topPosition = snapshot.clientOffset ? snapshot.clientOffset.y : 0;
       setDraggingPosition(topPosition);
     }
@@ -486,27 +462,25 @@ const DragView = ({jobStatus}) => {
     // },
   ];
 
-  const handleClick = async (stageId)=>{
-    console.log(stageId,"stageId")
-    try{
-    const response = await AutomateResumesInStage({
-      jobId: jobId,
-      stageId: stageId
-    })
-    console.log(response)
-    if (response.status === 200) {
-      // handleClose();
-      // setFunctionRender(!functionRender);
-      // getRecords()
-      // window.location.reload();
-      openNotification("success", "Success", response.message);
-    } else if (response.result === 404) {
-      openNotification("error", "Failed", response.message);
+  const handleClick = async (stageId) => {
+    try {
+      const response = await AutomateResumesInStage({
+        jobId: jobId,
+        stageId: stageId,
+      });
+      if (response.status === 200) {
+        // handleClose();
+        // setFunctionRender(!functionRender);
+        // getRecords()
+        // window.location.reload();
+        openNotification("success", "Success", response.message);
+      } else if (response.result === 404) {
+        openNotification("error", "Failed", response.message);
+      }
+    } catch (error) {
+      return error;
     }
-    }catch(error){
-      console.log(error)
-    }
-  }
+  };
 
   return (
     <div className="flex flex-col gap-5">
@@ -561,7 +535,7 @@ const DragView = ({jobStatus}) => {
         {ready && (
           <DragDropContext onDragEnd={onDragEnd}>
             <div className="flex w-full h-full gap-3">
-              {console.log(boardData,"BoardData")}
+              {console.log(boardData, "BoardData")}
               {boardData.map((board, bIndex) => (
                 <div key={board.name} className="flex flex-col gap-5">
                   <div className="flex items-center justify-between gap-2 p-3 bg-white border rounded-md w-[270px] 2xl:w-[303px] border-borderlight dark:border-borderdark dark:bg-[#0c101c] dark:text-white">
@@ -597,11 +571,10 @@ const DragView = ({jobStatus}) => {
                           ],
                         }}
                         placement="bottomRight"
-                        
                       >
                         <a
-                          onClick={(e) => {e.preventDefault()
-                          
+                          onClick={(e) => {
+                            e.preventDefault();
                           }}
                           className="p-1 border border-transparent rounded cursor-pointer text-primary hover:border-primary"
                         >
@@ -662,10 +635,9 @@ const DragView = ({jobStatus}) => {
   );
 };
 
-const CardItem = ({ data, index, color, jobId,jobStatus }) => {
+const CardItem = ({ data, index, color, jobId, jobStatus }) => {
   const [bookmarkState, setBookmarkState] = useState({});
   const navigate = useNavigate();
-  console.log(jobStatus,"hiiii")
 
   const toggleBookmark = (cardId) => {
     setBookmarkState((prevState) => ({
@@ -729,14 +701,13 @@ const CardItem = ({ data, index, color, jobId,jobStatus }) => {
   // Convert the difference to days and get the absolute value
   const diffInDays = Math.abs(Math.ceil(diffInTime / (1000 * 3600 * 24)));
 
-  console.log(diffInDays); // Logging the difference in days
-
   return (
     <Draggable
       index={index}
       draggableId={data.id.toString()}
-      isDragDisabled={ jobStatus === 'Closed' || parseInt(data.currentStatus) !== 0}
-
+      isDragDisabled={
+        jobStatus === "Closed" || parseInt(data.currentStatus) !== 0
+      }
     >
       {(provided, snapshot) => (
         <div
@@ -753,7 +724,7 @@ const CardItem = ({ data, index, color, jobId,jobStatus }) => {
             snapshot.isDragging &&
             "shadow-dragShadow dark:shadow-dragShadowDark"
           } p-3 mb-1.5 bg-white border rounded-md ${
-            parseInt(data.currentStatus) !== 0 || jobStatus === 'Closed'
+            parseInt(data.currentStatus) !== 0 || jobStatus === "Closed"
               ? " cursor-default"
               : "cursor-grab"
           }  border-borderlight dark:border-borderdark dark:bg-[#0c101c] dark:text-white`}
@@ -789,7 +760,11 @@ const CardItem = ({ data, index, color, jobId,jobStatus }) => {
                 </p>
               </div>
 
-              <Tooltip placement="topRight" title="View candidate profile" color={color}>
+              <Tooltip
+                placement="topRight"
+                title="View candidate profile"
+                color={color}
+              >
                 {/* <Button>TR</Button> */}
                 <button
                   onClick={navigateToCandidateProfile}
@@ -868,13 +843,16 @@ const CardItem = ({ data, index, color, jobId,jobStatus }) => {
 
 const ListView = () => {
   const selectedDataId = localStorage.getItem("selectedDataId");
+
   const [stageId, setStageId] = useState(null);
+
   const jobId = selectedDataId;
+
   const [boardData, setBoardData] = useState([]);
+
   const getCandidatesById = async () => {
     try {
       const response = await getAllCandidatesByjobId(jobId);
-
       setBoardData(
         response.result.map((item) => ({
           id: item.stageId,
@@ -890,9 +868,6 @@ const ListView = () => {
           })),
         }))
       );
-
-      console.log(response);
-      console.log(boardData);
       // response.result.forEach((item) => {
       //   item.stageCandidates.forEach((candidate) => {
       //     // Call saveRecruitmentJobResumesStage with jobId, stageId, and resumeId
@@ -900,18 +875,16 @@ const ListView = () => {
       //   });
       // });
     } catch (error) {
-      console.error("Error updating workflow ID:", error);
+      return error;
     }
   };
   const selectedStageItems =
     boardData.find((board) => board.id === stageId)?.items || [];
   useEffect(() => {
     getCandidatesById(jobId);
-    console.log(selectedStageItems);
   }, [jobId]);
   const handleSelectCard = (selectedStageId) => {
     // Handle the selected stageId in your parent component
-    console.log("Selected Stage ID:", selectedStageId);
     setStageId(selectedStageId);
   };
 
@@ -958,7 +931,12 @@ const ListView = () => {
   return (
     <FlexCol>
       <div>
-        <JobCard options={boardData} selectcard={(e)=>{handleSelectCard(e)}} />
+        <JobCard
+          options={boardData}
+          selectcard={(e) => {
+            handleSelectCard(e);
+          }}
+        />
       </div>
       <div>
         <TableAnt

@@ -1,61 +1,53 @@
+/* eslint-disable react-hooks/exhaustive-deps */
 import React, { useEffect, useState } from "react";
-import { DownOutlined } from "@ant-design/icons";
-import { Button, Divider, Dropdown, Space, theme, message } from "antd";
-
-import { RiDraggable } from "react-icons/ri";
+import { Dropdown, message } from "antd";
 import Clogo from "../../assets/images/clogo.jpeg";
-import { MdKeyboardArrowRight } from "react-icons/md";
 import API from "../Api";
 import axios from "axios";
 import { useDispatch } from "react-redux";
 import { companyIdSet } from "../../Redux/slice";
-import { json } from "d3";
 import { PiCaretDown, PiCheck } from "react-icons/pi";
-
-const { useToken } = theme;
 
 const SelectCompany = () => {
   const dispatch = useDispatch();
+
   const [selectedItemId, setSelectedItemId] = useState(
     localStorage.getItem("companyId")
-  ); // Initialize with null
-  const [companyData, setCompanyData] = useState(null); // Initialize with null
+  );
+
+  const [companyData, setCompanyData] = useState(null);
+
   const [selectedLabel, setSelectedLabel] = useState();
+
   const [organisationId, setOrganisationId] = useState(
     localStorage.getItem("organisationId")
   );
+
   const selectedCompany = companyData?.find(
     (item) => parseInt(item.companyId) === parseInt(selectedItemId)
   );
 
   useEffect(() => {
-    // Fetch data from localStorage
     const companyId = localStorage.getItem("companyId");
     const organisationId = localStorage.getItem("organisationId");
-
-    // If companyId is available in localStorage, set it to state
     if (companyId) {
       setSelectedItemId(companyId);
     }
-
-    // If organisationId is available in localStorage, fetch company data
     if (organisationId) {
       setOrganisationId(organisationId);
       getCompanyList(organisationId);
     }
-  }, []); 
+  }, []);
 
   const handleItemClick = (itemId) => {
     dispatch(companyIdSet(itemId));
     setSelectedItemId(itemId);
     localStorage.setItem("companyId", itemId);
-    // console.log(itemId);
     window.location.reload();
   };
 
   const onClick = ({ key }) => {
     const selected = companyData?.find((item) => item.companyId === key);
-    console.log(selected);
     setSelectedLabel(selected?.company || "");
     handleItemClick(key);
     message.success({
@@ -75,13 +67,10 @@ const SelectCompany = () => {
       const result = await axios.post(
         API.HOST + API.GET_COMPANY_RECORDS + "/" + organisationId
       );
-
-     
       if (!selectedItemId) {
         setSelectedItemId(result.data.tbl_company[0].companyId);
         localStorage.setItem("companyId", result.data.tbl_company[0].companyId);
       }
-
       const companyId = localStorage.getItem("companyId");
       if (companyId === null || companyId === undefined) {
         setSelectedItemId(result.data.tbl_company[0].companyId);
@@ -89,10 +78,10 @@ const SelectCompany = () => {
       }
       setCompanyData(result.data.tbl_company);
     } catch (error) {
-      console.error("Error fetching company data:", error);
+      return error;
     }
   };
-  const { token } = useToken();
+
   const contentStyle = {
     // backgroundColor: token.colorBgElevated,
     // borderRadius: "6px",
@@ -106,7 +95,7 @@ const SelectCompany = () => {
     boxShadow:
       "0px 29.49px 46.341px 0px rgba(6, 6, 6, 0.10), 0px 29.49px 46.341px 0px rgba(6, 6, 6, 0.10)",
   };
-  console.log(companyData, "companyData")
+
   const items = companyData?.map((company) => ({
     key: company.companyId.toString(),
     label: (

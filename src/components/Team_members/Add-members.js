@@ -1,12 +1,13 @@
 /* eslint-disable react-hooks/exhaustive-deps */
-import { useEffect, useState } from "react";
 import React from "react";
+import { useEffect, useState } from "react";
 import DrawerPop from "../common/DrawerPop";
 import { useTranslation } from "react-i18next";
 import FlexCol from "../common/FlexCol";
 import { notification } from "antd";
 import * as yup from "yup";
 import Dropdown from "../common/Dropdown";
+import { useFormik } from "formik";
 import {
   updateRecruitmentUserRoleMapping,
   getRecruitmentUserById,
@@ -14,7 +15,6 @@ import {
   getAllEmployee,
   getAllRecruitmentRoles,
 } from "../Api1";
-import { useFormik } from "formik";
 
 const Addmembers = ({
   open,
@@ -24,30 +24,41 @@ const Addmembers = ({
   companyDataId = "",
 }) => {
   const [employeeList, setEmployeeList] = useState([]);
+
   const [show, setShow] = useState(open);
+
   const { t } = useTranslation();
+
   const [isUpdate, setIsUpdate] = useState();
+
   const [api, contextHolder] = notification.useNotification();
+
   const [companyId, setCompanyId] = useState(localStorage.getItem("companyId"));
+
   const [role, setRole] = useState([]);
+
   const [EmployeeName, setEmployeeName] = useState("");
+
   const [EmployeeEmail, setEmployeeEmail] = useState("");
-  const [roleMapping, setRoleMapping] = useState("");
-  const [userId, setUserId] = useState("");
+
   const [employeeId, setEemployeeId] = useState("");
+
+  const [userById, setUserById] = useState();
+
   useEffect(() => {
     setCompanyId(localStorage.getItem("companyId"));
   }, []);
+
   const handleClose = () => {
     close(false);
   };
+
   const openNotification = (type, message, description, callback) => {
     api[type]({
       message: message,
       description: description,
       placement: "top",
       onClose: callback,
-
       // stack: 2,
       style: {
         background: `${
@@ -64,6 +75,7 @@ const Addmembers = ({
       // duration: null,
     });
   };
+
   useEffect(() => {
     const loginDataString = localStorage.getItem("LoginData");
     let employeeId = null;
@@ -77,10 +89,7 @@ const Addmembers = ({
   const getUserByid = async () => {
     try {
       const response = await getRecruitmentUserById({ id: updateId });
-      formik.setFieldValue("employeeId", response.result[0].employeeId);
-      formik.setFieldValue("roleId", parseInt(response.result[0].roleId));
-      setRoleMapping(response.result[0].userRoleMapId);
-      setUserId(response.result[0].userId);
+      setUserById(response?.result[0]);
     } catch (error) {
       return error;
     }
@@ -95,11 +104,8 @@ const Addmembers = ({
   const getTeamMembers = async () => {
     try {
       const response = await getAllEmployee({ companyId: companyId });
-      console.log(response, "response=====");
       const formattedEmployeeList = response.result.map((employee) => ({
-        label: `${employee.firstName} ${
-          employee.middleName ? employee.middleName + " " : ""
-        }${employee.lastName}`,
+        label: employee.fullName,
         value: employee.employeeId,
         email: employee.email,
       }));
@@ -126,16 +132,21 @@ const Addmembers = ({
       return error;
     }
   };
+
   useEffect(() => {
     getRoles();
   }, []);
+
   const formik = useFormik({
+    enableReinitialize: true,
     initialValues: {
+      id: userById?.userRoleMapId || "",
       userName: "",
       userEmail: "",
-      employeeId: null,
+      employeeId: userById?.employeeId || null,
+      userId: userById?.userId || null,
       userImage: null,
-      roleId: null,
+      roleId: parseInt(userById?.roleId) || null,
       createdBy: null,
     },
     validationSchema: yup.object().shape({
@@ -152,6 +163,7 @@ const Addmembers = ({
             userImage: null,
             roleId: e.roleId,
             createdBy: null,
+            companyId: localStorage.getItem("companyId"),
           });
           if (response.status === 200) {
             openNotification("success", "Successful", response.message);
@@ -161,18 +173,14 @@ const Addmembers = ({
               refresh();
             }, 2000);
           } else if (response.status === 500) {
-            openNotification(
-              "error",
-              "input field is empty..",
-              response.message
-            );
+            openNotification("error", "Info", "This member already added.");
           }
         } else {
           const response = await updateRecruitmentUserRoleMapping({
-            id: roleMapping,
-            userId: userId,
+            id: e.id,
+            userId: e.userId,
             roleId: e.roleId,
-            modifiedBy: employeeId,
+            modifiedBy: localStorage.getItem("employeeId"),
           });
           if (response.status === 200) {
             openNotification("success", "Successful", response.message);
@@ -181,11 +189,7 @@ const Addmembers = ({
               handleClose();
             }, 2000);
           } else if (response.status === 500) {
-            openNotification(
-              "error",
-              "input field is empty..",
-              response.message
-            );
+            openNotification("error", "Info", "This member already added.");
           }
         }
       } catch (error) {
@@ -198,7 +202,6 @@ const Addmembers = ({
     <DrawerPop
       open={show}
       close={(e) => {
-        // console.log(e);
         close(e);
         handleClose();
       }}
@@ -206,7 +209,6 @@ const Addmembers = ({
         width: "590px",
       }}
       handleSubmit={(e) => {
-        // console.log(e);
         formik.handleSubmit();
       }}
       updateBtn={isUpdate}
@@ -231,7 +233,6 @@ const Addmembers = ({
             const selectedEmployee = employeeList.find(
               (employee) => employee.value === e
             );
-            console.log(selectedEmployee);
             if (selectedEmployee) {
               // Set the values to the other Formik form
               setEmployeeName(selectedEmployee.label);

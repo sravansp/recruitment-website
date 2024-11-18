@@ -15,20 +15,23 @@ const TeamMembers = ({
   openPolicy,
 }) => {
   const { t } = useTranslation();
+
   const [updateId, setUpdateId] = useState(null);
+
   const [showPop, setShowPop] = useState(false);
-  const handleClose = () => setOpenPop(false);
+
   const handleShow = () => setShow(true);
+
   const [show, setShow] = useState(open);
+
   const [openPop, setOpenPop] = useState("");
-  const [TeamMembers, setTeamMembers] = useState([]);
-  const [navigationValue, setNavigationValue] = useState(t("Members"));
-  const breadcrumbItems = [
-    { label: t("Settings"), url: "" },
-    { label: t("Other"), url: "" },
-    { label: t("Team_Members"), url: "/" },
-    // { label: navigationPath.charAt(0).toUpperCase() + navigationPath.slice(1) },
-  ];
+
+  const [teamMembers, setTeamMembers] = useState([]);
+
+  const navigationValue = t("Members");
+
+  const companyId = localStorage.getItem("companyId");
+
   const Header = [
     {
       Employee: [
@@ -67,7 +70,7 @@ const TeamMembers = ({
 
   const callapi = async () => {
     try {
-      const data = await getAllRecruitmentUsers();
+      const data = await getAllRecruitmentUsers({ companyId: companyId });
       setTeamMembers(data?.result);
     } catch (error) {
       return error;
@@ -130,12 +133,14 @@ const TeamMembers = ({
           <TableAnt
             header={Header}
             All={true}
-            data={TeamMembers}
+            data={teamMembers}
             actionID="userId"
             path="Employee"
+            deleteApi="deleteRecruitmentUserById"
             clickDrawer={(e) => {
               handleShow();
             }}
+            refresh={callapi}
             navigationValue={navigationValue}
             buttonClick={(e, company) => {
               setUpdateId(e);

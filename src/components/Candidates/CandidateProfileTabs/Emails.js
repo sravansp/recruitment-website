@@ -1,23 +1,28 @@
+/* eslint-disable react-hooks/exhaustive-deps */
 import React, { useState, useEffect } from "react";
 import TabsNew from "../../common/TabsNew";
 import TextEditor from "../../common/TextEditor/TextEditor";
 import ButtonClick from "../../common/Button";
-import { Link, useParams, useLocation } from "react-router-dom";
-import { RiAttachment2, RiDeleteBin6Line, RiStickyNoteLine } from "react-icons/ri";
+import { useParams, useLocation } from "react-router-dom";
 import {
-  BsFileEarmarkRichtext,
-  BsFileImage,
-  BsFileWord,
-  BsFiletypePdf,
-} from "react-icons/bs";
-import { Formik, useFormik } from "formik";
-import { saveRecruitmentJobResumesEmailCommunication, getAllRecruitmentJobResumesEmailCommunications } from "../../Api1";
-import { notification } from 'antd';
-import { getRecruitmentJobResumesNoteById, updateRecruitmentJobResumesNote, getAllRecruitmentJobResumesNotes, saveRecruitmentJobResumesNote } from "../../Api1";
+  RiAttachment2,
+  RiDeleteBin6Line,
+  RiStickyNoteLine,
+} from "react-icons/ri";
+import { BsFileImage, BsFileWord, BsFiletypePdf } from "react-icons/bs";
+import { useFormik } from "formik";
+import {
+  saveRecruitmentJobResumesEmailCommunication,
+  getAllRecruitmentJobResumesEmailCommunications,
+} from "../../Api1";
+import { notification } from "antd";
+import {
+  getRecruitmentJobResumesNoteById,
+  updateRecruitmentJobResumesNote,
+  getAllRecruitmentJobResumesNotes,
+  saveRecruitmentJobResumesNote,
+} from "../../Api1";
 import { FaRegEdit } from "react-icons/fa";
-import { PiBracketsCurly, PiPushPinSlashBold } from "react-icons/pi";
-import Dropdown from "../../common/Dropdown";
-
 
 const tabData = [
   {
@@ -37,16 +42,26 @@ const tabData = [
 ];
 const Emails = ({ Email }) => {
   const [content, setContent] = useState("");
+
   const { state } = useLocation();
   const [emailContent, setEmailContent] = useState("");
+
   const [uploadedFiles, setUploadedFiles] = useState([]);
+
   const primaryColor = localStorage.getItem("mainColor");
-  const [jobId, setJobId] = useState(null)
-  const { resumeId } = useParams()
+
+  const [jobId, setJobId] = useState(null);
+
+  const { resumeId } = useParams();
+
   const [emailSentDate, setEmailSentDate] = useState("");
+
   const [selectedNoteId, setSelectedNoteId] = useState(null);
+
   const [isPinned, setIsPinned] = useState(0);
+
   const [api, contextHolder] = notification.useNotification();
+
   const openNotification = (type, message, description) => {
     api[type]({
       message: message,
@@ -54,33 +69,27 @@ const Emails = ({ Email }) => {
       placement: "top",
       // stack: 2,
       style: {
-        background: `${type === "success"
-          ? `linear-gradient(180deg, rgba(204, 255, 233, 0.8) 0%, rgba(235, 252, 248, 0.8) 51.08%, rgba(246, 251, 253, 0.8) 100%)`
-          : "linear-gradient(180deg, rgba(255, 236, 236, 0.80) 0%, rgba(253, 246, 248, 0.80) 51.13%, rgba(251, 251, 254, 0.80) 100%)"
-          }`,
-        boxShadow: `${type === "success"
-          ? "0px 4.868px 11.358px rgba(62, 255, 93, 0.2)"
-          : "0px 22px 60px rgba(134, 92, 144, 0.20)"
-          }`,
+        background: `${
+          type === "success"
+            ? `linear-gradient(180deg, rgba(204, 255, 233, 0.8) 0%, rgba(235, 252, 248, 0.8) 51.08%, rgba(246, 251, 253, 0.8) 100%)`
+            : "linear-gradient(180deg, rgba(255, 236, 236, 0.80) 0%, rgba(253, 246, 248, 0.80) 51.13%, rgba(251, 251, 254, 0.80) 100%)"
+        }`,
+        boxShadow: `${
+          type === "success"
+            ? "0px 4.868px 11.358px rgba(62, 255, 93, 0.2)"
+            : "0px 22px 60px rgba(134, 92, 144, 0.20)"
+        }`,
       },
       // duration: null,
     });
   };
   const handleEditClick = (jobResumeNoteId) => {
     setSelectedNoteId(jobResumeNoteId);
-    getnotesbyId(jobResumeNoteId)
+    getnotesbyId(jobResumeNoteId);
     // You can perform any additional actions here, such as opening a modal or navigating to another page.
   }; // State to store candi
-  const handleEditorChange = (content) => {
-    setContent(content);
-  };
-  const handleEditorChange2 = (emailContent) => {
-    setEmailContent(emailContent);
-  };
-  console.log(Email)
+
   const onTabChange = (tabId) => {
-    // Do something when the tab changes if needed
-    console.log(`Tab changed to ${tabId}`);
     if (tabId === 1) {
     } else if (tabId === 2) {
     }
@@ -90,7 +99,7 @@ const Emails = ({ Email }) => {
     if (state && state.jobID) {
       setJobId(state.jobID);
     } else {
-      const storedJobId = localStorage.getItem('jobid');
+      const storedJobId = localStorage.getItem("jobid");
       if (storedJobId) {
         setJobId(storedJobId);
       }
@@ -122,7 +131,6 @@ const Emails = ({ Email }) => {
       emailSentFrom: "",
       emailSentStatus: "",
       createdBy: "",
-
     },
     onSubmit: async (e, { resetForm }) => {
       try {
@@ -139,43 +147,34 @@ const Emails = ({ Email }) => {
           emailSentDate: currentDate,
           emailSentId: Email,
           emailSentFrom: "ekbwekj@gmail.com",
-
-          createdBy: null
-        })
-        console.log(response)
+          createdBy: null,
+        });
         if (response.status === 200) {
-          openNotification(
-            "success",
-            "Successful",
-            response.message
-          );
+          openNotification("success", "Successful", response.message);
           resetForm();
-
         } else if (response.status === 500) {
           openNotification("error", "input field is empty..", response.message);
         }
       } catch (error) {
-
+        return error;
       }
+    },
+  });
 
-    }
+  const [allEmail, setAllemail] = useState([]);
 
-
-  })
-  const [allEmail, setAllemail] = useState([])
   const getEmailCommunication = async () => {
     try {
-      const response = await getAllRecruitmentJobResumesEmailCommunications({ resumeId })
-      console.log(response)
-      setAllemail(response.result)
-    } catch (error) {
+      const response = await getAllRecruitmentJobResumesEmailCommunications({
+        resumeId,
+      });
+      setAllemail(response.result);
+    } catch (error) {}
+  };
 
-    }
-  }
   useEffect(() => {
-    getEmailCommunication()
-    console.log(allEmail)
-  }, [])
+    getEmailCommunication();
+  }, []);
 
   const getFileIcon = (fileType) => {
     switch (fileType) {
@@ -193,94 +192,78 @@ const Emails = ({ Email }) => {
   };
 
   const formatSize = (bytes) => {
-    const sizes = ['Bytes', 'KB', 'MB', 'GB', 'TB'];
-    if (bytes === 0) return '0 Byte';
+    const sizes = ["Bytes", "KB", "MB", "GB", "TB"];
+    if (bytes === 0) return "0 Byte";
     const i = parseInt(Math.floor(Math.log(bytes) / Math.log(1024)));
-    return Math.round(bytes / Math.pow(1024, i), 2) + ' ' + sizes[i];
+    return Math.round(bytes / Math.pow(1024, i), 2) + " " + sizes[i];
   };
 
-
-  const [notes, setnotes] = useState("")
-
+  const [notes, setnotes] = useState("");
 
   const formik1 = useFormik({
     initialValues: {
       jobId: "",
       resumeId: "",
       notes: "",
-      createdBy: ""
+      createdBy: "",
     },
     onSubmit: async (e) => {
+      const result = e.notes.replace(/(<p[^>]+?>|<p>|<\/p>)/gim, "");
       try {
         if (!selectedNoteId) {
           const response = await saveRecruitmentJobResumesNote({
             jobId: jobId,
             resumeId: resumeId,
-            notes: e.notes,
+            notes: result,
             createdBy: null,
-          })
-          console.log(response)
-          getnotes()
+          });
+          getnotes();
+          return response;
         } else {
           const response = await updateRecruitmentJobResumesNote({
             id: selectedNoteId,
             jobId: jobId,
             resumeId: resumeId,
-            notes: e.notes,
+            notes: result,
             isPinned: isPinned,
-            modifiedBy: null
-          })
-          console.log(response)
-          getnotes()
+            modifiedBy: null,
+          });
+          getnotes();
+          return response;
         }
       } catch (error) {
-        console.log(error)
+        return error;
       }
-    }
-  })
+    },
+  });
+
   const getnotes = async () => {
     try {
-      const response = await getAllRecruitmentJobResumesNotes({ resumeId: resumeId })
-      console.log(response)
-      setnotes(response.result)
-
+      const response = await getAllRecruitmentJobResumesNotes({
+        resumeId: resumeId,
+      });
+      setnotes(response.result);
     } catch (error) {
-      console.log(error)
+      return error;
     }
-  }
-  useEffect(() => {
-    getnotes()
-    console.log(notes)
+  };
 
-  }, [resumeId])
+  useEffect(() => {
+    if (resumeId) {
+      getnotes();
+    }
+  }, [resumeId]);
 
   const getnotesbyId = async (jobResumeNoteId) => {
     try {
-      const response = await getRecruitmentJobResumesNoteById({ id: jobResumeNoteId })
-      console.log(response);
-      formik1.setFieldValue('notes', response.result[0].notes)
+      const response = await getRecruitmentJobResumesNoteById({
+        id: jobResumeNoteId,
+      });
+      formik1.setFieldValue("notes", response.result[0].notes);
     } catch (error) {
-      console.log(error)
+      return error;
     }
-
-  }
-  const dropdown1 = [
-    {
-      id: 1,
-      label: "[candidate]",
-      value: "candidate",
-    },
-    {
-      id: 2,
-      label: "[candidate_first_name]",
-      value: "candidate_first_name",
-    },
-    {
-      id: 3,
-      label: "[company]",
-      value: "company",
-    },
-  ];
+  };
 
   return (
     <div className="grid gap-6 lg:grid-cols-12">
@@ -297,7 +280,6 @@ const Emails = ({ Email }) => {
               <input
                 type="text"
                 className="w-full bg-transparent border-none outline-none"
-
                 onChange={(e) => {
                   formik.setFieldValue("subject", e.target.value);
                 }}
@@ -321,9 +303,17 @@ const Emails = ({ Email }) => {
             <div className="flex flex-wrap items-center gap-2">
               {/* <p className="font-bold">Uploaded Files:</p> */}
               {uploadedFiles.map((file, index) => (
-                <div key={index} className="flex items-center p-4 text-black border border-black rounded-lg border-opacity-20 dark:border-white dark:text-white">
+                <div
+                  key={index}
+                  className="flex items-center p-4 text-black border border-black rounded-lg border-opacity-20 dark:border-white dark:text-white"
+                >
                   {getFileIcon(file.type)}
-                  <p><span>{file.name}</span>   <span className="text-black text-opacity-50">{formatSize(file.size)}</span></p>
+                  <p>
+                    <span>{file.name}</span>{" "}
+                    <span className="text-black text-opacity-50">
+                      {formatSize(file.size)}
+                    </span>
+                  </p>
                   <button
                     className="ml-2 text-black text-opacity-40 hover:text-red-500"
                     onClick={() => removeFile(index)}
@@ -352,13 +342,16 @@ const Emails = ({ Email }) => {
             </label>
             <div className="flex items-center gap-2.5">
               <ButtonClick buttonName="Cancel" />
-              <ButtonClick handleSubmit={formik.handleSubmit} buttonName="Send Now" BtnType="primary" />
+              <ButtonClick
+                handleSubmit={formik.handleSubmit}
+                buttonName="Send Now"
+                BtnType="primary"
+              />
             </div>
           </div>
         </div>
         {allEmail.map((email, index) => (
-          <div className="flex flex-col gap-4 divide-y box-wrapper"
-            key={index}>
+          <div className="flex flex-col gap-4 divide-y box-wrapper" key={index}>
             <h6 className="h6">Previously Sent Email</h6>
             {/* <div className="v-divider h-[2px]" /> */}
             <div className="flex flex-col gap-4 pt-4 prevemail">
@@ -367,9 +360,7 @@ const Emails = ({ Email }) => {
                   <p className="para">SN</p>
                 </div>
                 <div className="inline-flex flex-col items-start justify-start gap-1">
-                  <p className="text-xs font-semibold leading-tight text-black dark:text-white ">
-
-                  </p>
+                  <p className="text-xs font-semibold leading-tight text-black dark:text-white "></p>
                   <p className="text-xs font-normal leading-none text-black opacity-50 dark:text-white">
                     {email.emailSentDate}
                   </p>
@@ -472,7 +463,6 @@ const Emails = ({ Email }) => {
           </div> */}
           </div>
         ))}
-
       </div>
 
       {/* RIGHT COLUMN  */}
@@ -489,7 +479,7 @@ const Emails = ({ Email }) => {
             initialValue={formik1.values.notes}
             placeholder={"Type here....."}
             onChange={(e) => {
-              formik1.setFieldValue('notes', e)
+              formik1.setFieldValue("notes", e);
             }}
             minheight="250px"
           />
@@ -498,29 +488,38 @@ const Emails = ({ Email }) => {
             style={{ backgroundColor: `${primaryColor}10` }}
           >
             <ButtonClick buttonName="Cancel" />
-            <ButtonClick buttonName="Save" BtnType="primary" handleSubmit={formik1.handleSubmit} />
+            <ButtonClick
+              buttonName="Save"
+              BtnType="primary"
+              handleSubmit={formik1.handleSubmit}
+            />
           </div>
         </div>
         <div className="rounded-lg bg-white dark:bg-secondaryDark p-1.5 ">
-          {notes && notes.map((note, index) => (
-            <div className="relative flex pb-6" key={index}>
-              <div className="flex items-center justify-between w-full">
-                <p className="pblack flex-grow pl-4 !font-normal">
-                  <strong>{note.notes}</strong>
-                </p>
-                <div className="flex items-center gap-6"> {/* Added gap between createdOn and icons */}
-                  <p className="para !font-normal">{note.createdOn}</p>
-                  <div className="flex items-center gap-3">
-                    {/* <TiPin
+          {notes &&
+            notes.map((note, index) => (
+              <div className="relative flex pb-6" key={index}>
+                <div className="flex items-center justify-between w-full">
+                  <p className="pblack flex-grow pl-4 !font-normal">
+                    <strong>{note.notes}</strong>
+                  </p>
+                  <div className="flex items-center gap-6">
+                    {" "}
+                    {/* Added gap between createdOn and icons */}
+                    <p className="para !font-normal">{note.createdOn}</p>
+                    <div className="flex items-center gap-3">
+                      {/* <TiPin
                   onClick={() => handlePinClick(note.jobResumeNoteId)}
                   style={{ color: selectedNoteId === note.jobResumeNoteId && isPinned === 1 ? 'blue' : 'gray' }}
                 />  */}
-                    <FaRegEdit onClick={() => handleEditClick(note.jobResumeNoteId)} />
+                      <FaRegEdit
+                        onClick={() => handleEditClick(note.jobResumeNoteId)}
+                      />
+                    </div>
                   </div>
                 </div>
               </div>
-            </div>
-          ))}
+            ))}
         </div>
       </div>
       {contextHolder}
