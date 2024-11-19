@@ -6,7 +6,7 @@ import TextEditor from "../../common/TextEditor/TextEditor";
 import TabsNew from "../../common/TabsNew";
 import Dropdown from "../../common/Dropdown";
 import { Checkbox, Radio, notification } from "antd";
-import { useParams,  } from "react-router-dom";
+import { useParams } from "react-router-dom";
 import {
   updateRecruitmentJobResumesNote,
   getRecruitmentJobResumesNoteById,
@@ -23,7 +23,6 @@ import FormInput from "../../common/FormInput";
 import { FaRegEdit } from "react-icons/fa";
 
 const Evaluations = ({ EvaluationID = "", stageId = "" }) => {
-
   const primaryColor = localStorage.getItem("mainColor");
 
   const [evaluationList, setevaluationList] = useState([]);
@@ -152,7 +151,6 @@ const Evaluations = ({ EvaluationID = "", stageId = "" }) => {
                 .split(",")
                 .map((option) => option.trim());
               setSelectedCheckboxes(selectedOptions);
-              console.log(selectedOptions);
               break;
             case "Short Answer":
               setForminputValue(evaluationAnswer);

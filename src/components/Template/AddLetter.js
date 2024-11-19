@@ -176,7 +176,6 @@ const AddLetter = ({
     const id = updateId;
     try {
       const response = await getRecruitmentLetterTemplateById({ id });
-      console.log(response);
       setTemplateName(response.result[0].letterTemplateName);
       setcopytemplateName(response.result[0].letterTemplateName);
       setContent(response.result[0].letterTemplate.body);
@@ -255,13 +254,11 @@ const AddLetter = ({
         footerBtn={[t("Cancel"), t("Save")]}
         className="widthFull"
         handleSubmit={handleSubmit}
-
         //  buttonClickCancel={(e) => {
         //    if (activeBtn > 0) {
         //      setActiveBtn(activeBtn - 1);
         //      setNextStep(nextStep - 1);
         //      setActiveBtnValue(steps?.[activeBtn - 1].data);
-        //      console.log(activeBtn - 1);
         //    }
         //    setBtnName("");
         //  }}

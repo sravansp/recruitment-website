@@ -1,7 +1,6 @@
 import Tabs from "../common/Tabs";
 import React, { useState } from "react";
 import { useTranslation } from "react-i18next";
-import { useSelector, useDispatch } from "react-redux";
 import Departments from "./Add _departments";
 import Location from "./Addlocation";
 import API from "../Api";
@@ -12,13 +11,9 @@ const Company = () => {
 
   const [navigationPath, setNavigationPath] = useState("Departments");
 
-  const companySliceId = useSelector((state) => state.layout.companyId);
-
   const [show, setShow] = useState(false);
 
   const handleShow = () => setShow(true);
-
-  const dispatch = useDispatch();
 
   const tabs = [
     {
@@ -189,7 +184,6 @@ const Company = () => {
         }}
         // data={tabsData}
         tabClick={(e) => {
-          console.log(e, "e");
           setNavigationPath(e);
         }}
         data={
@@ -198,7 +192,6 @@ const Company = () => {
             : null
         }
       />
-
       {navigationPath === "Departments" && show && (
         <Departments
           open={show}
@@ -212,7 +205,6 @@ const Company = () => {
           }}
         />
       )}
-
       {navigationPath === "Locations" && show && (
         <Location
           open={show}

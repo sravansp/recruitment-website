@@ -1,5 +1,6 @@
+/* eslint-disable react-hooks/exhaustive-deps */
 import React, { useEffect, useState } from "react";
-import { useDispatch, useSelector } from "react-redux";
+import { useSelector } from "react-redux";
 import {
   PieChart,
   Pie,
@@ -10,62 +11,79 @@ import {
   Label,
 } from "recharts";
 import { getDashboardCandidateSource } from "../Api1";
-import { setDate } from "date-fns";
-
 
 const COLORS = ["#0e2535", "#9da4fe", "#7942c5", "#ecc4f9", "#cfd6e6"];
 
-
 const PieChartWithLegends = () => {
-  const theme = useSelector((state) => state.layout.mode)
-  const [data, SetData] = useState([])
+  const theme = useSelector((state) => state.layout.mode);
+
+  const [data, SetData] = useState([]);
+
   const [companyId, setCompanyId] = useState(localStorage.getItem("companyId"));
 
   useEffect(() => {
     setCompanyId(localStorage.getItem("companyId"));
-
   }, []);
 
   const getCandidateSource = async () => {
     try {
-      const response = await getDashboardCandidateSource({ companyId: companyId })
-      // console.log(response)
-      const formattedResult = Object.entries(response.result).map(([name, value]) => ({
-        name: name.toUpperCase(), // Convert month to uppercase
-        value: value  // Calculate the frequency (multiplying by 1.8 as an example)
-      }));
-      // console.log(formattedResult, "formattedResult")
-      SetData(formattedResult)
+      const response = await getDashboardCandidateSource({
+        companyId: companyId,
+      });
+      const formattedResult = Object.entries(response.result).map(
+        ([name, value]) => ({
+          name: name.toUpperCase(),
+          value: value,
+        })
+      );
+      SetData(formattedResult);
     } catch (error) {
-      // console.log(error)
+      return error;
     }
-  }
+  };
+
   useEffect(() => {
-    getCandidateSource()
-  }, [])
+    getCandidateSource();
+  }, []);
+  
   const getTotalSources = () => {
     let total = 0;
     data.forEach((item) => (total += item.value));
     return total;
   };
+
   const style = {
     top: "48%",
     right: 0,
     transform: "translate(0, -50%)",
     lineHeight: "24px",
   };
+
   const labelText = (props) => {
     const totalSources = getTotalSources();
     const { viewBox } = props;
     const { cx, cy } = viewBox;
     return (
       <text x={cx} y={cy} textAnchor="middle" dominantBaseline="middle">
-        <tspan fill={theme === "dark" ? "white" : "black"} fontSize="10" fontWeight="normal">Total Sources</tspan>
-        <tspan x={cx} dy="20" fill={theme === "dark" ? "white" : "black"} fontSize="18" fontWeight="bold">{totalSources}</tspan>
+        <tspan
+          fill={theme === "dark" ? "white" : "black"}
+          fontSize="10"
+          fontWeight="normal"
+        >
+          Total Sources
+        </tspan>
+        <tspan
+          x={cx}
+          dy="20"
+          fill={theme === "dark" ? "white" : "black"}
+          fontSize="18"
+          fontWeight="bold"
+        >
+          {totalSources}
+        </tspan>
       </text>
     );
   };
-
 
   return (
     <ResponsiveContainer width="100%" height={220}>
@@ -90,7 +108,6 @@ const PieChartWithLegends = () => {
             />
           ))}
           <Label content={labelText} position="center" />
-
         </Pie>
         <Tooltip />
         {/* <Legend layout="vertical" align="right" verticalAlign="middle" /> */}
@@ -102,7 +119,6 @@ const PieChartWithLegends = () => {
           wrapperStyle={style}
           content={(props) => {
             const { payload } = props;
-            // console.log(payload,"payload");
             return (
               <div className="flex flex-col gap-2 dark:text-white">
                 {/* <p className="font-medium text-opacity-50 2xl:text-xs text-[#667085]">Leave Summary</p> */}

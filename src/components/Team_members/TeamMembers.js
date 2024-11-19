@@ -60,6 +60,7 @@ const TeamMembers = ({
       ],
     },
   ];
+
   //    const handleOpenModal = () => {
   //     // Set the state to trigger the rendering of AddLeaveType
   //     setOpenPop("Members");
@@ -113,7 +114,6 @@ const TeamMembers = ({
                   setShow(true);
                   handleShow();
                   setShowPop(true);
-                  //   console.log(company, "companyparentId");
                   //   if (company === "edit") {
                   //   setUpdateId(e);
                   //   }

@@ -1,5 +1,4 @@
 import { TimePicker } from "antd";
-import dayjs from "dayjs";
 import moment from "moment";
 import React, { useEffect, useState } from "react";
 import { FiAlertCircle } from "react-icons/fi";
@@ -19,11 +18,10 @@ export default function TimeSelect({
   required = false,
 }) {
   const isSmallScreen = useMediaQuery({ maxWidth: 1439 });
+
   const [defaultValue, setDefaultValue] = useState(null);
 
   useEffect(() => {
-    console.log(value);
-    console.log(format);
     setDefaultValue(value);
   }, [value]);
 
@@ -37,7 +35,6 @@ export default function TimeSelect({
       </div>
       {/* <TimePicker
         onChange={(time, timeString) => {
-          console.log(timeString);
           change(timeString);
         }}
         changeOnScroll
@@ -51,7 +48,6 @@ export default function TimeSelect({
         placeholder={placeholder}
         // {...props}
         onChange={(time, timeString) => {
-          console.log(timeString);
           change(timeString);
         }}
         size={isSmallScreen ? "default" : "large"}
@@ -69,9 +65,6 @@ export default function TimeSelect({
               "0px 0px 0px 4px #FEE4E2, 0px 1px 2px 0px rgba(16, 24, 40, 0.05)",
           }
         }
-        // onSelect={(e, i) => {
-        //   console.log(e);
-        // }}
         // changeOnScroll
         // // needConfirm={true}
         // showNow={false}

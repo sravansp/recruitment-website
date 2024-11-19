@@ -1,21 +1,16 @@
 import React from "react";
 import { IoIosArrowForward } from "react-icons/io";
-
 import Arrow_Top from "../../assets/images/Vector.svg";
 import Arrow_Bottom from "../../assets/images/Vector_bottom.svg";
 import img from "../../assets/images/Rectangle 363.png";
-import { useTranslation } from "react-i18next";
 
 export default function ListHeader({
   path = [],
   companyList = true,
-
   navigateBtn = [],
   navigationClick = () => {},
   buttonClick = () => {},
 }) {
-  const { t } = useTranslation();
-
   return (
     <div className="">
       <div className="md:grid grid-cols-10 gap-5  justify-between items-center px-4 pt-5 pb-4">
@@ -52,7 +47,6 @@ export default function ListHeader({
               type="submit"
               className="p-2 border rounded-md pl-5 bg-primary text-white text-xs"
               onClick={() => {
-                // console.log("worked");
                 buttonClick(true);
               }}
             >

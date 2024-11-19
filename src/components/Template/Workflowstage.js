@@ -155,6 +155,7 @@ const Workflowstage = ({
       return error;
     }
   };
+
   useEffect(() => {
     getEmailLsit();
   }, []);
@@ -167,6 +168,7 @@ const Workflowstage = ({
     setMenuVisible(false);
     setShowDiv(true);
   };
+
   const getEvaluationtem = async () => {
     try {
       const response = await getAllRecruitmentEvaluationTemplates({});
@@ -262,7 +264,6 @@ const Workflowstage = ({
           name: "Request Evaluation",
           option1: [
             {
-              // Evaluation options here...
               id: 1,
               title: "Choose Evaluation",
               options: evaluation,
@@ -275,7 +276,6 @@ const Workflowstage = ({
           id: "send_questionnaire",
           name: "Send Questionnaire ",
           option1: [
-            // Questionnaire options here...
             { id: 1, title: "Choose Questionnaire", options: questionareTemp },
           ],
         });
@@ -284,20 +284,14 @@ const Workflowstage = ({
         optionData.push({
           id: "Add note",
           name: "Add note ",
-          option1: [
-            // Questionnaire options here...
-            { id: 1, title: "Add note" },
-          ],
+          option1: [{ id: 1, title: "Add note" }],
         });
       }
       if (stageRules.tag) {
         optionData.push({
           id: "add_tag",
           name: "Add Tag",
-          option1: [
-            // Questionnaire options here...
-            { id: 1, titletag: "Add New Tag" },
-          ],
+          option1: [{ id: 1, titletag: "Add New Tag" }],
         });
       }
       if (stageRules.emailTemplate) {
@@ -305,7 +299,6 @@ const Workflowstage = ({
           id: "send_email",
           name: "Send Email",
           option1: [
-            // Questionnaire options here...
             {
               id: 1,
               title: "Choose Email Template",
@@ -335,10 +328,6 @@ const Workflowstage = ({
       setIsModalVisible(true);
     }
   };
-
-  useEffect(() => {
-    console.log(stages);
-  }, [stages]);
 
   const handleAddStageClick = () => {
     if (!stageName) {
@@ -371,8 +360,6 @@ const Workflowstage = ({
     }
     let newStageOrder = stages.length + 1;
     if (editStageIndex !== null) {
-      // If editStageIndex is not null, it means we're editing an existing stage
-      // Update the corresponding stage name and stage rules in the stages array
       setstages((prevStages) =>
         prevStages.map((stage, index) =>
           index === editStageIndex
@@ -381,8 +368,6 @@ const Workflowstage = ({
         )
       );
     } else if (!updateId) {
-      // Otherwise, we're adding a new stage
-      // Add the new stage with stage name and stage rules to the stages array
       setstages((prevStages) => [
         ...prevStages,
         {
@@ -392,7 +377,7 @@ const Workflowstage = ({
           stageName,
           stageRules,
           createdBy: 9,
-          optionData: [...optionData], // Create a new array for optionData
+          optionData: [...optionData],
         },
       ]);
     } else {
@@ -405,12 +390,10 @@ const Workflowstage = ({
           stageName,
           stageRules,
           createdBy: 9,
-          optionData: [...optionData], // Create a new array for optionData
+          optionData: [...optionData],
         },
       ]);
     }
-
-    // Close the modal
     closeModal();
     // setEditStageIndex(null); // Clear the editStageIndex
     // setStageName("");
@@ -434,13 +417,13 @@ const Workflowstage = ({
 
   const closeModal = () => {
     setIsModalVisible(false);
-    setEditStageIndex(null); // Clear the editStageIndex
+    setEditStageIndex(null);
     setStageName("");
     setSelectedStageName("");
-    setEvaluationValue(""); // Clear dropdown selection
-    setQuestionnaire(""); // Clear dropdown selection
-    setEmail(""); // Clear dropdown selection
-    setAddnote(""); // Clear input field value
+    setEvaluationValue("");
+    setQuestionnaire("");
+    setEmail("");
+    setAddnote("");
     setAddtag("");
     setOptionData([]);
   };
@@ -460,17 +443,15 @@ const Workflowstage = ({
       description: "",
       createdBy: "",
     },
-
     // enableReinitialize: true,
     // validateOnChange: false,
     // validationSchema: Yup.object().shape({
     //   workFlowName: Yup.string().required('WorkFlow Name is required '),
     //   description: Yup.string().required('Description  is required '),
-
     // }),
     onSubmit: async (values, { setSubmitting }) => {
       try {
-        const alphanumericRegex = /^[a-zA-Z0-9 ]+$/; // Regex to allow only letters, numbers, and spaces
+        const alphanumericRegex = /^[a-zA-Z0-9 ]+$/;
         let hasError = false;
         if (!values.workFlowName) {
           formik.setFieldError("workFlowName", "Template Name is required");
@@ -491,7 +472,6 @@ const Workflowstage = ({
           formik.setFieldError("workFlowName", "Workflow Name Already Exist");
           hasError = true;
         } else {
-          // Clear any existing errors if validation passes
           formik.setFieldError("workFlowName", "");
         }
         if (!values.description) {
@@ -517,7 +497,6 @@ const Workflowstage = ({
             workFlowId: updateId,
             createdBy: 9,
           }));
-
           const response = await updateWorkFlowWithStages({
             RecruitmentWorkFlow: {
               workFlowId: updateId,
@@ -551,9 +530,8 @@ const Workflowstage = ({
           if (response.status === 500) {
             openNotification("error", "Info", response.message);
           }
-
           if (response.status === 200) {
-            const insertedId = response.result.insertedId; // Get insertedId here
+            const insertedId = response.result.insertedId;
             const formattedData = stages.map((item) => ({
               workFlowId: insertedId,
               stageOrder: item.stageOrder,
@@ -594,7 +572,6 @@ const Workflowstage = ({
       setSubmitting(false);
     },
   });
-  //update
 
   const [workFlowsatges, setworkFlowsatges] = useState([]);
 
@@ -654,7 +631,6 @@ const Workflowstage = ({
         },
       ],
     },
-
     {
       key: 2,
       label: "Add Note",
@@ -811,7 +787,6 @@ const Workflowstage = ({
       //      setActiveBtn(activeBtn - 1);
       //      setNextStep(nextStep - 1);
       //      setActiveBtnValue(steps?.[activeBtn - 1].data);
-      //      console.log(activeBtn - 1);
       //    }
       //    setBtnName("");
       //  }}
@@ -819,7 +794,6 @@ const Workflowstage = ({
       //  activeBtn={activeBtn}
       //  saveAndContinue={true}
       //  stepsData={steps}
-
       handleSubmit={() => {
         formik.handleSubmit();
       }}
@@ -832,7 +806,6 @@ const Workflowstage = ({
     </div>
   </div>
 </div> */}
-
       <div className="relative max-w-[1070px]  w-full mx-auto">
         <FlexCol />
         <Accordion
@@ -879,7 +852,6 @@ const Workflowstage = ({
               />
             </div>
             <div className="w-full sm:w-[545px] grid grid-cols-1 gap-4">
-              {console.log(stages)}
               {stages.map((stage) => (
                 <div key={stage.id} className="flex gap-5">
                   <svg
@@ -917,7 +889,6 @@ const Workflowstage = ({
                       </div>
                     </foreignObject>
                   </svg>
-
                   <div className="flex  gap-5">
                     <div className="flex items-center gap-5">
                       <Tooltip placement="top" title={"Edit"}>
@@ -931,13 +902,11 @@ const Workflowstage = ({
                           />
                         </div>
                       </Tooltip>
-
                       {/* <div className='p-2 hover:bg-slate-300 rounded-md' onClick={() => handleCopy(stage.stageName)} >
                         <Tooltip placement="top" title={"Copy"} >
                           <PiCopySimple className='text-gray-500' size={16} />
                         </Tooltip>
                       </div> */}
-
                       <Tooltip placement="top" color={"red"} title={"Delete"}>
                         <div
                           className="p-2 hover:bg-slate-300 rounded-md"
@@ -986,7 +955,6 @@ const Workflowstage = ({
                   on punch-in and punch-out time.
                 </p>
               </div>
-
               <div
                 className="w-full"
                 onKeyDown={(event) => {
@@ -1008,7 +976,6 @@ const Workflowstage = ({
                 />
               </div>
             </div>
-
             <div className="h-auto max-h-[370px] overflow-auto gap-5 flex flex-col">
               {optionData.map((key, index) => (
                 <div
@@ -1034,7 +1001,6 @@ const Workflowstage = ({
                       key.option1 &&
                       key.option1.map((item, ind) => (
                         <>
-                          {console.log(item)}
                           {item.title === "Choose Evaluation" ? (
                             <div key={ind} className="w-1/2">
                               <Dropdown
@@ -1120,7 +1086,6 @@ const Workflowstage = ({
                 </div>
               </div>
             ))} */}
-
               {/* <Menu
               onClick={({ key }) => handleMenuClick(key)}
               style={{ display: menuVisible ? "block" : "none" }}
@@ -1145,7 +1110,6 @@ const Workflowstage = ({
               })}
             </Menu> */}
             </div>
-
             {/* <div className="justify-start">
             <AddMore
               name="Add stage rule"
@@ -1175,7 +1139,6 @@ const Workflowstage = ({
                 handleMenuClick(Key);
               }}
             />
-
             {/* </div> */}
           </WorkflowModal>
           {/* <Modal
@@ -1220,8 +1183,7 @@ const Workflowstage = ({
                 />
               </div>
               <AddMore name="Add stage rule" className="text-black" />
-            </div>
- 
+            </div> 
           </Modal> */}
         </Accordion>
         {contextHolder}

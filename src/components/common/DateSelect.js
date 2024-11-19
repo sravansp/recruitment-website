@@ -5,7 +5,7 @@ import { useMediaQuery } from "react-responsive";
 import React from "react";
 
 export default function DateSelect({
-  change = () => { },
+  change = () => {},
   className,
   picker = "",
   dateFormat = "YYYY-MM-DD", // Default date format
@@ -36,7 +36,6 @@ export default function DateSelect({
         format={dateFormat} // Pass the provided date format
         placeholder={placeholder}
         onChange={(date, dateString) => {
-          console.log(dateString);
           change(dateString);
         }}
         status={error && "error"}

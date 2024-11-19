@@ -376,9 +376,9 @@ const TableAnt = () => {
   );
 
   const onChangeGridlist = ({ target: { value } }) => {
-    console.log("radio1 checked", value);
     setGridList(value);
   };
+
   return (
     <div className="flex flex-col gap-5">
       <div className="flex flex-col justify-between gap-3 xl:items-center xl:flex-row">

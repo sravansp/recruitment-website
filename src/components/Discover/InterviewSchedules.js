@@ -1,3 +1,4 @@
+/* eslint-disable react-hooks/exhaustive-deps */
 import React, { useState, useMemo, useEffect } from "react";
 import DashboardAccordian from "./DashboardAccordian";
 import { useSelector } from "react-redux";
@@ -62,13 +63,14 @@ export default function InterviewSchedules() {
       const response = await getDashboardUpcommingInterviewSchedules({
         companyId: companyId,
       });
-      console.log(response);
       const convertedEvents = response.result.map((event) => ({
         title: event.eventName,
         date: event.eventDetails.eventDate,
         time: event.eventDetails.eventTime,
         meetingType:
-          event.eventDetails.eventType === "offline" ? "Offline" : "Google Meet",
+          event.eventDetails.eventType === "offline"
+            ? "Offline"
+            : "Google Meet",
         assignees: event.attendees.map(
           (attendee) =>
             `https://images.unsplash.com/photo-1580489944761-15a19d654956?ixlib=rb-4.0.3&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=580&q=80`
@@ -83,15 +85,13 @@ export default function InterviewSchedules() {
           hours * 60 + minutes + hoursPart * 60 + minutesPart;
         const endHours = Math.floor(totalMinutes / 60);
         const endMinutes = totalMinutes % 60;
-        return `${String(endHours).padStart(2, "0")}:${String(endMinutes).padStart(
-          2,
-          "0"
-        )}`;
+        return `${String(endHours).padStart(2, "0")}:${String(
+          endMinutes
+        ).padStart(2, "0")}`;
       }
-      console.log(convertedEvents);
       setAccordianData(convertedEvents);
     } catch (error) {
-      console.log(error);
+      return error;
     }
   };
 
@@ -102,7 +102,10 @@ export default function InterviewSchedules() {
   // Memoize the array of random colors to ensure they don't change on re-renders
   const randomColors = useMemo(
     () =>
-      Array.from({ length: Math.max(accordianData.length, 3) }, getRandomColorWithOpacity),
+      Array.from(
+        { length: Math.max(accordianData.length, 3) },
+        getRandomColorWithOpacity
+      ),
     [accordianData.length]
   );
 
@@ -132,7 +135,10 @@ export default function InterviewSchedules() {
           <p
             className="2xl:text-xs text-[9px]"
             style={{
-              color: themeMode === "dark" ? "#ffffff" : randomColors[index].randomColor,
+              color:
+                themeMode === "dark"
+                  ? "#ffffff"
+                  : randomColors[index].randomColor,
             }}
           >
             {data.meetingType}
@@ -156,7 +162,6 @@ export default function InterviewSchedules() {
       </div>
     </DashboardAccordian>
   ));
-
   return (
     <div className="flex flex-col gap-2 overflow-auto 2xl:max-h-[322px] max-h-72">
       {accordians}

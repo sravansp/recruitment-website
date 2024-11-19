@@ -210,7 +210,6 @@ export default function Privileges() {
               buttonName={t("Create_Role")}
               handleSubmit={() => {
                 setShow(true);
-                console.log(true);
               }}
               BtnType="add"
             ></ButtonClick>

@@ -1,16 +1,10 @@
-import { useEffect, useMemo, useState } from "react";
+/* eslint-disable react-hooks/exhaustive-deps */
+import { useMemo, useState } from "react";
 import { motion } from "framer-motion";
 import TableAnt from "./TableAnt";
 import InProgress from "./InProgres";
-import TableAnt1 from "./Table";
-import { useTranslation } from "react-i18next";
-import SearchBox from "./SearchBox";
-import { CiSearch } from "react-icons/ci";
-import { Button, Dropdown, Input, Radio } from "antd";
-import { LuListFilter } from "react-icons/lu";
+import { Input } from "antd";
 import { useMediaQuery } from "react-responsive";
-import { BsGrid, BsListUl } from "react-icons/bs";
-import { FiSettings } from "react-icons/fi";
 
 const Tabs = ({
   tabs = [],
@@ -37,41 +31,27 @@ const Tabs = ({
   arabic = true,
   checkBox = true,
   tabClick = () => {},
-  showButton=false,
-  Showsearch=false,
+  showButton = false,
+  Showsearch = false,
   refresh = () => {},
-  All=false,
-  recordId="",
-  drawerH=[],
-  handlesort=()=>{},
-  refreshJobCrad =()=>{} 
- 
+  All = false,
+  recordId = "",
+  drawerH = [],
+  handlesort = () => {},
+  refreshJobCrad = () => {},
 }) => {
   const [activeTab, setActiveTab] = useState(tabs[0].id);
+
   const [changeData, setChangedata] = useState(false);
+
   const [tabeName, setTabName] = useState("company");
-  const [tabeData, setTabData] = useState();
-  const { t } = useTranslation();
-  const [searchValue, setSearchValue] = useState("");
-  const [searchFilter, setSearchFilter] = useState([]);
-  const [gridList, setGridList] = useState(1);
+
   const isSmallScreen = useMediaQuery({ maxWidth: 1439 });
+
   const [tableData, setTableData] = useState([]);
+
   const [visibleColumns, setVisibleColumns] = useState();
 
-  // useEffect(() => {
-  //   console.log(activeTab);
-  //   console.log(changeData);
-  //   console.log(tabs[0]);
-
-  //   //   console.log(data, "data1");
-  //   //   console.log(tabs, "tabs");
-  //   //   // if (data) {
-  //   //   //   setChangedata(true);
-  //   //   // }
-  //   //   // setTabData([...tabs]);
-  // }, [tabs]);
-  // console.log("action",actionID)
   const items = [
     {
       key: "selectAll",
@@ -113,10 +93,11 @@ const Tabs = ({
       // ),
     })) || []),
   ];
+
   useMemo(() => {
     setChangedata(true);
   }, [activeTab]);
-  
+
   const handleColumnVisibilityChange = (column) => (e) => {
     e.stopPropagation();
     setVisibleColumns((prevColumns) =>
@@ -125,38 +106,18 @@ const Tabs = ({
         : [...prevColumns, column]
     );
   };
-  const handleColumnSearch = (searchValue) => {
-    // Convert searchValue to lowercase for case-insensitive search
-    const lowerSearchValue = searchValue.toLowerCase();
 
-    // Filter columns based on whether their titles contain the searchValue
+  const handleColumnSearch = (searchValue) => {
+    const lowerSearchValue = searchValue.toLowerCase();
     const filteredColumns = tableData.filter((column) => {
-      // console.log(column, "column");
       const titleText =
         typeof column.title === "string"
           ? column.title
           : column.title.props.children;
-
       return titleText.toLowerCase().includes(lowerSearchValue);
     });
-
-    // Set the visible columns to the filtered columns
     setVisibleColumns(filteredColumns.map((col) => col.dataIndex));
   };
-  const onChangeGridlist = ({ target: { value } }) => {
-    // console.log("radio1 checked", value);
-    setGridList(value);
-  };
-  const gridListoptions = [
-    {
-      label: <BsListUl />,
-      value: 1,
-    },
-    {
-      label: <BsGrid />,
-      value: 2,
-    },
-  ];
 
   return (
     <div className="flex flex-col gap-6">
@@ -173,7 +134,6 @@ const Tabs = ({
               activeTab === tab.id ? "" : ""
             } text-xs 2xl:text-sm font-medium whitespace-nowrap px-3 h-8 2xl:h-10 relative group`}
           >
-            
             {activeTab === tab.id && (
               <motion.div
                 layoutId="bubble"
@@ -186,13 +146,14 @@ const Tabs = ({
                 activeTab === tab.id
                   ? "relative z-20 text-white"
                   : " text-black dark:text-white group-hover:text-primary"
-              }`} title={tab.title}
+              }`}
+              title={tab.title}
             >
               {tab.title}
             </span>
           </button>
         ))}
-                     {/* <div className="flex flex-wrap items-center justify-end gap-3">
+        {/* <div className="flex flex-wrap items-center justify-end gap-3">
                 
                 <SearchBox
             // title="Search"
@@ -206,11 +167,9 @@ const Tabs = ({
               setSearchValue(value);
             }}
             onSearch={(value) => {
-              // console.log(value);
               setSearchFilter(value);
             }}
-          />
-               
+          />               
           <div>
             {/* <Dropdown
               menu={{
@@ -220,25 +179,24 @@ const Tabs = ({
             >
               <Button>bottomRight</Button>
             </Dropdown> */}
-            {/* <Dropdown
+        {/* <Dropdown
               // menu={columnMenuItems.map((item, index) => ({
               //   ...item,
               //   key: index,
               // }))}
               menu={{ items }}
               placement="bottomRight" */}
-              {/* // trigger={["click"]}
+        {/* // trigger={["click"]}
               // open={dropdownVisible}
               // onOpenChange={(visible) => { */}
-              {/* //   console.log(visible);
+        {/* //   
               //   setDropdownVisible(visible);
               // }}
             > */}
-              {/* <Button>Filters</Button> */}
-              {/* <Button
+        {/* <Button>Filters</Button> */}
+        {/* <Button
                 className="flex items-center dark:bg-black dark:text-white justify-center h-full font-medium flex-nowrap bg-[#FAFAFA]"
                 onClick={(e) => {
-                  // console.log(e);
                   // e.stopPropagation(); // Prevent dropdown from closing
                   // setDropdownVisible(!dropdownVisible);
                 }}
@@ -266,18 +224,14 @@ const Tabs = ({
             <FiSettings className="text-base 2xl:text-lg" />
           </Button>
 
-    </div> */} 
+    </div> */}
       </div>
       <div className="tab-content">
-        
         {tabs?.map((tab) => (
           <div
             key={tab.id}
             className={`tab-panel ${activeTab === tab.id ? "active" : ""}`}
           >
-
- 
-            
             {
               activeTab === tab.id &&
                 changeData &&
@@ -305,7 +259,7 @@ const Tabs = ({
                     exportButton={false}
                     title={title}
                     // showButton={showButton}
-                    Showsearch={Showsearch }
+                    Showsearch={Showsearch}
                     // viewOutside={true}
                     refresh={() => {
                       refresh();
@@ -314,7 +268,6 @@ const Tabs = ({
                     recordId={recordId}
                     refreshJobCrad={refreshJobCrad}
                     // All={All}
-                    
                     // arabic = true,
                     // checkBox = true
                   />

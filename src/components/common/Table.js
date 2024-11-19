@@ -1,3 +1,4 @@
+/* eslint-disable react-hooks/exhaustive-deps */
 // import React from "react";
 // import { MdEdit } from "react-icons/md";
 // import { MdDelete } from "react-icons/md";
@@ -71,14 +72,11 @@ import { SlCalender } from "react-icons/sl";
 import Onsite from "../../assets/images/onsite.png";
 import Remote from "../../assets/images/remote.png";
 import Hybrid from "../../assets/images/hybrid.png";
-
-import Tabs from "./Tabs";
 import TabsNew from "./TabsNew";
 import { HiUserGroup } from "react-icons/hi2";
 import ToggleBtn from "./ToggleBtn";
 
 // Filter Dropdown
-const { SubMenu } = Menu;
 // Table Header And Style
 // push the array value in map
 
@@ -98,7 +96,6 @@ const gridListoptions = [
 const TableAnt1 = ({
   data = [],
   header = [],
-
   actionID = "",
   updateApi = "",
   deleteApi = "",
@@ -107,31 +104,36 @@ const TableAnt1 = ({
   buttonClick = () => {},
   clickDrawer = () => {},
   viewDetails = false,
- 
 }) => {
   const { t } = useTranslation();
+
   const navigate = useNavigate();
+
   const isSmallScreen = useMediaQuery({ maxWidth: 1439 });
+
   const [listData, setListData] = useState([]);
+
   const [tabTitle, setTabTitle] = useState(
     tabValue.charAt(0).toUpperCase() + tabValue.slice(1)
   );
+
   const [selectedRowKeys, setSelectedRowKeys] = useState([]);
-  const [loading, setLoading] = useState(false);
+
   const [searchValue, setSearchValue] = useState("");
+
   const [searchFilter, setSearchFilter] = useState([...data]);
 
   const [visibleColumns, setVisibleColumns] = useState();
-  const [dropdownVisible, setDropdownVisible] = useState(false);
+
   const [gridList, setGridList] = useState(1);
+
   const primaryColor = localStorage.getItem("mainColor");
+
   const [activeTab, setActiveTab] = useState(1);
 
   // Function to handle tab change
   const handleTabChange = (tabid) => {
     setActiveTab(tabid);
-    // You can perform any other actions related to tab change here
-    console.log(`Tab changed to ${tabid}`);
   };
 
   const tab = [
@@ -140,50 +142,23 @@ const TableAnt1 = ({
     { id: 3, title: "Open", value: "tab3" },
     { id: 4, title: "Draft", value: "tab4" },
   ];
+
   useEffect(() => {
-    // if (tabs.id===2) {
     setListData([...data]);
-    // }
-    console.log(listData);
   }, [data[0]]);
 
-  // Action Toggle change
-
   const handleToggleList = (id, checked) => {
-    // console.log(checked);
-    // console.log(switches);
-    setListData(
-      (prevSwitches) =>
-        prevSwitches?.map((sw, i) =>
-          // console.log(sw.companyId , id )
-          sw?.[actionID] === id
-            ? { ...sw, isActive: checked === true ? 1 : 0 }
-            : sw
-        )
-
-      // prevSwitches.map((sw) => (sw.id === i ? { ...sw, value: checked } : sw))
+    setListData((prevSwitches) =>
+      prevSwitches?.map((sw, i) =>
+        sw?.[actionID] === id
+          ? { ...sw, isActive: checked === true ? 1 : 0 }
+          : sw
+      )
     );
   };
 
-  // const handleToggle = (id, checked) => {
-  //   // console.log(checked);
-  //   // console.log(switches);
-  //   setSwitches(
-  //     (prevSwitches) =>
-  //       prevSwitches?.map((sw) =>
-  //         // console.log(sw.companyId , id )
-  //         sw?.companyId === id
-  //           ? { ...sw, isActive: checked === true ? 1 : 0 }
-  //           : sw
-  //       )
-
-  //     // prevSwitches.map((sw) => (sw.id === i ? { ...sw, value: checked } : sw))
-  //   );
-  // };
-
   // update Api integration
   const updateCompany = async (id, checked) => {
-    console.log(id, checked, "checked");
     const result = await axios.post(API.HOST + updateApi, {
       [actionID]: id, //Id
       isActive: checked === true ? 1 : 0,
@@ -194,23 +169,18 @@ const TableAnt1 = ({
       // getRecords()
       // window.location.reload();
     }
-    console.log(result);
   };
+
   const [tableData, setTableData] = useState([]);
 
-  // Delete Api Integration
-
   const deleteRecord = async (e) => {
-    // console.log(e);
     const result = await axios.post(API.HOST + deleteApi + "/" + e);
-    // console.log(result);
     if (result.data.status === 200) {
       window.location.reload();
     }
   };
 
   useEffect(() => {
-    console.log(header, "header");
     setTableData(
       header[0]?.[tabValue || path]?.map((each, i) => ({
         title: (
@@ -227,32 +197,27 @@ const TableAnt1 = ({
           <>
             {each.value === "createdOn" && (
               <div className="flex items-center gap-2">
-                
                 <SlCalender className="w-6 h-6 text-gray-300" />
-               
+
                 <span>{record}</span>
-              
               </div>
             )}
             {each.value === "location" && (
               <div className="flex items-center gap-2">
-                
                 <FaLocationDot className="w-6 h-6 text-gray-300" />
-                
+
                 <span>{record}</span>
               </div>
             )}
             {each.value === "companyId" && (
               <div className="flex items-center gap-2">
-              
                 <HiUserGroup className="w-6 h-6 text-gray-300" />
-               
+
                 <span>{record}</span>
               </div>
             )}
             {each.value === "jobTitle" && (
               <div className="flex items-center gap-2">
-               
                 <div
                   className="w-5 h-5 rounded bg-gray-100 text-blue-600 text-center"
                   style={{ minWidth: "8px", minHeight: "8px" }}
@@ -266,7 +231,7 @@ const TableAnt1 = ({
             {each.value === "jobPublishType" && (
               <div className="flex items-center gap-2">
                 <div className="w-5 h-5 rounded-full bg-gray-300"></div>
-              
+
                 <span>{record}</span>
               </div>
             )}
@@ -292,11 +257,10 @@ const TableAnt1 = ({
                     {/* Display hybrid image if record is hybrid */}
                   </div>
                 </div>
-               
+
                 <span>{record}</span>
               </div>
             )}
-
             <div
               className=" cursor-pointer"
               onClick={() => {
@@ -371,8 +335,6 @@ const TableAnt1 = ({
                     handleToggleList(text?.[actionID], checked);
                     // buttonClick(each.companyId);
                     // activeOrNot(checked);
-                    console.log(checked);
-                    console.log(text?.[actionID]);
                     updateCompany(text?.[actionID], checked);
                   }}
                   className=" bg-[#c2c0c0aa]"
@@ -385,9 +347,6 @@ const TableAnt1 = ({
                     onClick={() => {
                       buttonClick(text[actionID], "edit"); //"8"
                       clickDrawer(true);
-
-                      // console.log(actionID);
-                      // console.log(text[actionID], "ddddddddsfsd");
                     }}
                   >
                     <FaPencil className="text-xs 2xl:text-sm" />
@@ -399,7 +358,6 @@ const TableAnt1 = ({
                     okText="Confirm"
                     cancelText="No"
                     onConfirm={() => {
-                      console.log("hh");
                       deleteRecord(text[actionID]);
                     }}
                     // className="activeBtn"
@@ -410,7 +368,6 @@ const TableAnt1 = ({
                       // onClick={() => {
                       //   // deleteRecord(text[actionID]);
                       //   // clickDrawer(true);
-                      //   // console.log(text[actionID]);
                       // }}
                     >
                       <RiDeleteBin5Line className="text-xs 2xl:text-sm" />
@@ -432,10 +389,6 @@ const TableAnt1 = ({
                       onClick={() => {
                         buttonClick(text[actionID], "edit"); //"8"
                         clickDrawer(true);
-                        console.log(text[actionID]);
-
-                        // console.log(actionID);
-                        // console.log(text[actionID], "ddddddddsfsd");
                       }}
                       className="text-md font-semibold p-2 cursor-pointer"
                     >
@@ -448,7 +401,6 @@ const TableAnt1 = ({
                       okText="Confirm"
                       cancelText="No"
                       onConfirm={() => {
-                        console.log("hh");
                         deleteRecord(text[actionID]);
                       }}
                       // className="activeBtn"
@@ -473,22 +425,6 @@ const TableAnt1 = ({
   }, []);
   useEffect(() => {
     setListData([...searchFilter]);
-
-    // console.log(searchFilter);
-    // setListData(listData?.filter((each)=>{
-    // }))
-    // console.log(Object.values(Object.keys({ ...listData })));
-    // setListData(
-    // listData?.filter((each) => {
-    //   if (Object.values(Object.values(each)).includes(searchFilter)) {
-    //     return each;
-    //   }
-    //   Object.values(Object.values(each)).filter((filterdata) => {
-    //     if (filterdata !== null && filterdata !== " ") return filterdata;
-    //     // console.log(filterdata.includes("d"));
-    //   });
-    // });
-    // );
   }, [searchFilter]);
 
   useEffect(() => {
@@ -505,7 +441,6 @@ const TableAnt1 = ({
   // };
 
   const onSelectChange = (newSelectedRowKeys) => {
-    console.log(newSelectedRowKeys, "eeddd");
     setSelectedRowKeys(newSelectedRowKeys);
   };
 
@@ -518,32 +453,11 @@ const TableAnt1 = ({
     );
   };
 
-  // const rowSelection = {
-  //   selectedRowKeys,
-  //   onChange: onSelectChange,
-  // };
-
-  // useEffect(() => {
-  //   console.log(rowSelection, "e");
-  // }, [rowSelection]);
-
-  const [checkStrictly, setCheckStrictly] = useState(false);
-
   // rowSelection objects indicates the need for row selection
   const rowSelection = {
-    onChange: (selectedRowKeys, selectedRows) => {
-      console.log(
-        `selectedRowKeys: ${selectedRowKeys}`,
-        "selectedRows: ",
-        selectedRows
-      );
-    },
-    onSelect: (record, selected, selectedRows) => {
-      console.log(record, selected, selectedRows);
-    },
-    onSelectAll: (selected, selectedRows, changeRows) => {
-      console.log(selected, selectedRows, changeRows);
-    },
+    onChange: (selectedRowKeys, selectedRows) => {},
+    onSelect: (record, selected, selectedRows) => {},
+    onSelectAll: (selected, selectedRows, changeRows) => {},
   };
 
   // FILTER DROPDOWN SEARCH
@@ -553,7 +467,6 @@ const TableAnt1 = ({
 
     // Filter columns based on whether their titles contain the searchValue
     const filteredColumns = tableData.filter((column) => {
-      console.log(column, "column");
       const titleText =
         typeof column.title === "string"
           ? column.title
@@ -693,21 +606,19 @@ const TableAnt1 = ({
   // const columnMenu = <Menu mode="vertical" items={columnMenuItems} />;
 
   const onChangeGridlist = ({ target: { value } }) => {
-    console.log("radio1 checked", value);
     setGridList(value);
   };
   const splitTitle = tabTitle.split("_");
+
   const jsonResult = splitTitle
     .map((word) => word.charAt(0).toUpperCase() + word.slice(1))
     .join(" ");
+
   return (
     <div className="flex flex-col ">
       <div className="flex flex-col justify-between  xl:items-center xl:flex-row">
-       
-          <TabsNew tabs={tab} onTabChange={handleTabChange} />
-        
-        
-        
+        <TabsNew tabs={tab} onTabChange={handleTabChange} />
+
         <SearchBox
           // title="Search"
           data={data}
@@ -720,30 +631,25 @@ const TableAnt1 = ({
             setSearchValue(value);
           }}
           onSearch={(value) => {
-            // console.log(value);
             setSearchFilter(value);
           }}
         />
-          {/* <p className="text-lg font-semibold dark:text-white"> */}
-          {/* {tabTitle?.split("_") || path?.split("_")} */}
-          {/* {jsonResult || path} */}
-          {/* (0) */}
-          {/* </p> */}
+        {/* <p className="text-lg font-semibold dark:text-white"> */}
+        {/* {tabTitle?.split("_") || path?.split("_")} */}
+        {/* {jsonResult || path} */}
+        {/* (0) */}
+        {/* </p> */}
 
-          {/* <div
+        {/* <div
             style={{ marginLeft: 8 }}
             className={`bg-[${primaryColor}] bg-opacity-10 text-primary text-[10px] 2xl:text-xs rounded-full px-3 py-1 vhcenter`}
           >
-            {console.log(...tabTitle.split("_"))}
             {hasSelected
               ? `${selectedRowKeys?.length} ${
                   jsonResult ? jsonResult : path
                 } Selected`
               : `All ${jsonResult ? jsonResult : path}`}
-            {console.log(jsonResult)}
           </div> */}
-        
-
         <div className="flex  items-center gap-3">
           {/* <SearchBox 
             // title="Search"
@@ -757,13 +663,10 @@ const TableAnt1 = ({
               setSearchValue(value);
             }}
             onSearch={(value) => {
-              // console.log(value);
               setSearchFilter(value);
             }}
           /> */}
-
-          <ToggleBtn title="Show Stages" flexText="True"/>
-         
+          <ToggleBtn title="Show Stages" flexText="True" />
           <div>
             {/* <Dropdown
               menu={{
@@ -783,7 +686,6 @@ const TableAnt1 = ({
               // trigger={["click"]}
               // open={dropdownVisible}
               // onOpenChange={(visible) => {
-              //   console.log(visible);
               //   setDropdownVisible(visible);
               // }}
             >
@@ -791,7 +693,6 @@ const TableAnt1 = ({
               <Button
                 className="flex items-center dark:bg-black dark:text-white justify-center h-full font-medium flex-nowrap bg-[#FAFAFA]"
                 onClick={(e) => {
-                  // console.log(e);
                   // e.stopPropagation(); // Prevent dropdown from closing
                   // setDropdownVisible(!dropdownVisible);
                 }}
@@ -829,14 +730,11 @@ const TableAnt1 = ({
           </Button>
         </div>
       </div>
-
       <div className="border rounded-lg border-[#E7E7E7] dark:border-secondary relative overflow-auto">
-        {activeTab===2 && data ? (
+        {activeTab === 2 && data ? (
           <Table
             rowSelection={{ ...rowSelection }}
             columns={tableData}
-            
-            
             dataSource={listData}
             size={isSmallScreen ? "small" : ""}
             scroll={{ y: 600 }} // Adjust the height according to your requirement
@@ -859,13 +757,12 @@ const TableAnt1 = ({
             //       .toLowerCase()
             //       .includes(searchValue.toLowerCase())
             // )}
-            
-            
           />
-         ) :(
-           <div><p className="text-center">Coming soon...</p> </div>
-  )}
-         
+        ) : (
+          <div>
+            <p className="text-center">Coming soon...</p>{" "}
+          </div>
+        )}
       </div>
     </div>
   );

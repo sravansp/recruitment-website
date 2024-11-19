@@ -1,4 +1,4 @@
-import React, { useState, useEffect, useRef, useMemo } from "react";
+import React, { useState, useEffect, useRef } from "react";
 import { MdCheck } from "react-icons/md";
 
 export default function Stepper({
@@ -9,23 +9,12 @@ export default function Stepper({
   presentage,
 }) {
   const [stepperSteps, setStep] = useState([]);
-  const [newSteps, setNewSteps] = useState([]);
+
   const primaryColor = localStorage.getItem("mainColor");
+
   const stepsStateRef = useRef();
-  useEffect(() => {
-    // console.log(steps);
-    // console.log(addMore);
-
-    // if (addMore === true) {
-    //   steps.splice(1, 0, { data });
-    // }
-    // setNewSteps(steps);
-  }, [steps]);
 
   useEffect(() => {
-    // console.log(presentage);
-    // console.log(steps);
-
     const stepsState = steps.map((step, index) => ({
       description: step.title,
       completed: false,
@@ -41,10 +30,8 @@ export default function Stepper({
     const newSteps = [...steps];
     let stepCounter = 0;
     // let stepNumber = nextNumber + 1;
-    // console.log(stepCounter, newSteps.length, stepNumber);
     while (stepCounter < newSteps.length) {
       if (stepCounter === stepNumber) {
-        // console.log(stepNumber);
         newSteps[stepCounter] = {
           ...newSteps[stepCounter],
           highlighted: true,
@@ -106,7 +93,7 @@ export default function Stepper({
                     ? "border-opacity-40"
                     : " border-[#E4E4E4] border-opacity-100"
                 }`}
-                style={{backgroundColor: `${primaryColor}44`}}
+                style={{ backgroundColor: `${primaryColor}44` }}
               >
                 <div
                   style={{
@@ -118,7 +105,9 @@ export default function Stepper({
                   }}
                   className={`text-xs 2xl:text-base font-medium rounded-full transition duration-500 ease-in-out h-5 w-5 2xl:h-8 2xl:w-8 vhcenter shadow-stepShadow
              ${
-               step.selected ? "bg-accent text-white  border-accent" : "bg-white"
+               step.selected
+                 ? "bg-accent text-white  border-accent"
+                 : "bg-white"
              }
             `}
                 >
@@ -134,7 +123,9 @@ export default function Stepper({
             </div>
             <div
               className={`absolute top-0  text-center mt-11 2xl:mt-14 w-40 text-xs 2xl:text-base font-medium ${
-                step.selected ? "text-black dark:text-white" : "text-black dark:text-white opacity-50"
+                step.selected
+                  ? "text-black dark:text-white"
+                  : "text-black dark:text-white opacity-50"
               }`}
             >
               {step.description}

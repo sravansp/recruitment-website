@@ -1,13 +1,13 @@
 import { Input } from "antd";
-import React, { useEffect, useState } from "react";
+import React from "react";
 import { HiMiniStar } from "react-icons/hi2";
-import { useMediaQuery } from 'react-responsive';
+import { useMediaQuery } from "react-responsive";
 import { LuSearch } from "react-icons/lu";
 
 export default function SearchBox({
   placeholder = "",
   value = "",
-  icon = <LuSearch/>,
+  icon = <LuSearch />,
   error = "",
   className = "",
   change = () => {},
@@ -17,12 +17,8 @@ export default function SearchBox({
 }) {
   // Search Filter Function
   const isSmallScreen = useMediaQuery({ maxWidth: 1439 });
-  const [filterdata, setFilterdata] = useState([]);
-  const [searchValue, setSearchValue] = useState(value);
 
   const searchFun = (filterValue) => {
-    console.log(filterValue, "filterValue");
-    console.log(data, "data");
     const inputData = filterValue?.toString()?.toLowerCase();
     const searchData = data?.filter((each) => {
       // const keyValue = Object.values(each);
@@ -31,23 +27,8 @@ export default function SearchBox({
       );
       return filteredValues.length;
     });
-
-    console.log(searchData);
     onSearch(searchData);
-
-    // console.log(data, "data");
   };
-
-  // useEffect(() => {
-  //   searchFun();
-  // }, [searchValue]);
-
-  // useEffect(() => {
-  //   searchFun(value);
-
-  //   // onSearch(filterdata);
-  //   // console.log(filterdata);
-  // }, [value]);
 
   return (
     <div className="relative">
@@ -64,15 +45,12 @@ export default function SearchBox({
         data={data}
         onChange={(e) => {
           searchFun(e.target.value);
-
           change(e.target.value);
-          console.log(e.target.value);
           // searchFun(e.target.value);
         }}
         className={`w-full border focus:outline-none text-[#667085] ${className}`}
         size={isSmallScreen ? "default" : "large"}
-        prefix={icon && icon
-        }
+        prefix={icon && icon}
       />
       {/* {icon && (
         <span className=" absolute top-2.5  left-3 opacity-50 text-2xl">

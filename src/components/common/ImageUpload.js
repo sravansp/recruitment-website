@@ -6,7 +6,7 @@ import { AiOutlineCloudUpload } from "react-icons/ai";
 const { Dragger } = Upload;
 
 export default function ImageUpload({
-  change = () => { },
+  change = () => {},
   className,
   flex = true,
   file = null, // Default file prop
@@ -18,15 +18,13 @@ export default function ImageUpload({
   const [nameList, setNameList] = useState([]);
   const [changeStatus, setChangeStatus] = useState(false);
 
-
   useEffect(() => {
     if (file) {
-      setFileList([file])
-
+      setFileList([file]);
     } else {
-      setFileList([])
+      setFileList([]);
     }
-  }, [file])
+  }, [file]);
 
   const props = {
     name: "file",
@@ -60,29 +58,32 @@ export default function ImageUpload({
         fileList={fileList}
         onChange={(info) => {
           const { file } = info;
-          console.log(file, "file")
           if (file && changeStatus) {
             change(file);
           }
         }}
 
-      // onChange={(info) => {
-      //   const { status } = info.file;
-      //   if (status === "done") {
-      //     message.success(`${info.file.name} file uploaded successfully.`);
-      //   } else if (status === "error") {
-      //     message.error(`${info.file.name} file upload failed.`);
-      //   }
-      //   change(info.file);
-      // }}
+        // onChange={(info) => {
+        //   const { status } = info.file;
+        //   if (status === "done") {
+        //     message.success(`${info.file.name} file uploaded successfully.`);
+        //   } else if (status === "error") {
+        //     message.error(`${info.file.name} file upload failed.`);
+        //   }
+        //   change(info.file);
+        // }}
       >
-
         {flex === true ? (
           <div className="flex gap-2">
             <AiOutlineCloudUpload className="text-3xl text-primary" />
             <div className="flex flex-col">
-              <h2 className="acco-subhead"> {t("Click or drag files to upload")}</h2>
-              <p className="para px-5">{t("Allowed formats")}: {imageFormatsString}</p>
+              <h2 className="acco-subhead">
+                {" "}
+                {t("Click or drag files to upload")}
+              </h2>
+              <p className="para px-5">
+                {t("Allowed formats")}: {imageFormatsString}
+              </p>
             </div>
           </div>
         ) : (

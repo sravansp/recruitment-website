@@ -1,25 +1,23 @@
-import { Card, Tooltip } from "antd";
-import React, { useRef, useState,useEffect } from "react";
-import { BsFillLightningFill, BsThreeDotsVertical } from "react-icons/bs";
+/* eslint-disable react-hooks/exhaustive-deps */
+import { Tooltip } from "antd";
+import React, { useRef, useState, useEffect } from "react";
+import { BsThreeDotsVertical } from "react-icons/bs";
 
-import { MdArrowBackIos, MdArrowForwardIos, MdMessage } from "react-icons/md";
+import { MdArrowForwardIos } from "react-icons/md";
 
 function Jobcardcopy({
   card = false,
-  selectcard =()=>{},
-  options=[],
-  renderContent ,
+  selectcard = () => {},
+  options = [],
+  renderContent,
   selectable = true, // New prop to control whether cards can be selected
   firstCardSelectable = true,
-
-
 }) {
-  console.log(options,"options")
-  const itemsPerPage = 6;
   const containerRef = useRef(0);
+
   const scrollAmount = 253;
+
   const [selectedId, setSelectedId] = useState(null);
-  const primaryColor = localStorage.getItem('mainColor')
 
   const slidemover = () => {
     const container = containerRef.current;
@@ -27,41 +25,26 @@ function Jobcardcopy({
       container.scrollLeft += scrollAmount;
     }
   };
-  
- const handleSvgClick = (id, index) => {
-    // Check if selectable prop is false or it's the first card and firstCardSelectable prop is false
+
+  const handleSvgClick = (id, index) => {
     if (!selectable || (index === 0 && !firstCardSelectable)) return;
- 
-    // Toggle the selected state
     setSelectedId((prevId) => (prevId === id ? null : id));
-    // Call the selectcard function
     selectcard(id);
-    console.log(options)
-    console.log(selectedId)
   };
- 
- 
- 
-  // Save the selectedId to localStorage whenever it changes
- 
+
   useEffect(() => {
     if (options.length > 0 && selectable && firstCardSelectable) {
       const firstItemId = options[0].id;
       setSelectedId(firstItemId);
       selectcard(firstItemId);
-      console.log(selectedId);
     }
   }, [options]);
+
   return (
-    
-    
     <div className="flex ">
       <div className="flex overflow-x-auto " ref={containerRef}>
         {options.map((each, index) => (
-         
-         
-         <div key={index} className="flex items-center ">
-             
+          <div key={index} className="flex items-center ">
             {index === 0 && (
               <svg
                 xmlns="http://www.w3.org/2000/svg"
@@ -69,9 +52,12 @@ function Jobcardcopy({
                 height="74"
                 viewBox="0 0 253 74"
                 fill="none"
-                className={`svg-item ${selectedId === each.id ? "selected" : ""}`}
-                onClick={(e) => {selectcard(each.id)
-                  handleSvgClick(each.id)
+                className={`svg-item ${
+                  selectedId === each.id ? "selected" : ""
+                }`}
+                onClick={(e) => {
+                  selectcard(each.id);
+                  handleSvgClick(each.id);
                 }}
               >
                 <path
@@ -88,11 +74,9 @@ function Jobcardcopy({
                   y="40"
                   fill="black"
                   className="font-semibold text-sm "
-                 
                 >
                   {each.title}
                 </text>
-               
               </svg>
             )}
             {index > 0 && index < options.length - 1 && (
@@ -103,9 +87,12 @@ function Jobcardcopy({
                   height="74"
                   viewBox="0 0 253 74"
                   fill="none"
-                  className={`svg-item ${selectedId === each.id ? "selected" : ""}`}
-                  onClick={(e) => {selectcard(each.id)
-                    handleSvgClick(each.id)
+                  className={`svg-item ${
+                    selectedId === each.id ? "selected" : ""
+                  }`}
+                  onClick={(e) => {
+                    selectcard(each.id);
+                    handleSvgClick(each.id);
                   }}
                 >
                   <path
@@ -117,27 +104,40 @@ function Jobcardcopy({
                     stroke="black"
                     strokeOpacity="0.1"
                   />
-                  
+
                   <text
                     x="70"
                     y="40"
                     fill="black"
                     className="font-semibold text-sm "
-                    
                   >
-                    {/* {each.label} */}{each.title}
+                    {/* {each.label} */}
+                    {each.title}
                   </text>
-                  
+
                   {/* <foreignObject x="30" y="40" width="34" height="26">
                     <p className="flex items-center justify-center rounded-md bg-violet-100 font-semibold text-sm px-1 py-1">
                       {each.nummber}
                     </p>
                   </foreignObject> */}
-                  <foreignObject x="75" y="43" width="34" height="26" style={{ color: "gray" }} size={18}>
+                  <foreignObject
+                    x="75"
+                    y="43"
+                    width="34"
+                    height="26"
+                    style={{ color: "gray" }}
+                    size={18}
+                  >
                     {/* {each.icons1} */}
                   </foreignObject>
-                  <foreignObject x="100" y="43" width="34" height="26"  style={{ color: "#FF9900" }}
-                      size={18}>
+                  <foreignObject
+                    x="100"
+                    y="43"
+                    width="34"
+                    height="26"
+                    style={{ color: "#FF9900" }}
+                    size={18}
+                  >
                     {/* {each.icons2} */}
                   </foreignObject>
                   <foreignObject x="210" y="50" width="100" height="40">
@@ -150,16 +150,19 @@ function Jobcardcopy({
                 </svg>
               </div>
             )}
-          {(index === options.length - 1 || options.length === 1) && (
+            {(index === options.length - 1 || options.length === 1) && (
               <svg
                 xmlns="http://www.w3.org/2000/svg"
                 width="211"
                 height="74"
                 viewBox="0 0 211 74"
                 fill="none"
-                className={`svg-item ${selectedId === each.id ? "selected" : ""}`}
-                onClick={(e) => {selectcard(each.id)
-                  handleSvgClick(each.id)
+                className={`svg-item ${
+                  selectedId === each.id ? "selected" : ""
+                }`}
+                onClick={(e) => {
+                  selectcard(each.id);
+                  handleSvgClick(each.id);
                 }}
               >
                 <path
@@ -192,8 +195,6 @@ function Jobcardcopy({
                 >
                   {each.title}
                 </text>
-
-               
               </svg>
             )}
           </div>
@@ -222,7 +223,6 @@ function Jobcardcopy({
         </div>
       )}
     </div>
-  
   );
 }
 

@@ -132,8 +132,6 @@ const QuestionAire = ({
     close(false);
   };
 
-  const [content, setContent] = useState("");
-
   const [api, contextHolder] = notification.useNotification();
 
   const openNotification = (type, message, description) => {
@@ -159,7 +157,9 @@ const QuestionAire = ({
   };
 
   const [Questionerror, setQuestionError] = useState("");
+
   const [answerError, setAnswerError] = useState("");
+
   const [OptionError, setoptionserror] = useState("");
 
   const formik = useFormik({
@@ -246,7 +246,6 @@ const QuestionAire = ({
             },
             RecruitmentQuestionnaireTemplateDetail: formattedData,
           });
-          console.log(response);
           if (response.status == 200) {
             openNotification("success", "Success", response.message);
             setSuccessNotificationVisible(true);
@@ -332,7 +331,6 @@ const QuestionAire = ({
       // const ids = response.result.map(item => item.questionaireTemplateDetailData.map(detail => detail.questionnaireTemplateDetailsId)).flat();
       // setEvaluationTemplateDetailsIds(ids);
       setEvaluation(evaluationData);
-      console.log(evaluationData);
       const firstEvaluation = response.result[0];
       formik.setFieldValue(
         "questionnaireTemplateName",
@@ -343,6 +341,7 @@ const QuestionAire = ({
       return error;
     }
   };
+
   useEffect(() => {
     if (updateId) {
       getevaluationtem();
@@ -355,7 +354,6 @@ const QuestionAire = ({
         companyId: companyId,
         questionnaireTemplateName: templateName,
       });
-
       setLength(response.result.length);
       if (response.result.length > 0) {
         formik.setFieldError(
@@ -367,6 +365,7 @@ const QuestionAire = ({
       return error;
     }
   };
+
   useEffect(() => {
     getQuestionareByTemplatename();
   }, [templateName]);
@@ -419,7 +418,6 @@ const QuestionAire = ({
         //      setActiveBtn(activeBtn - 1);
         //      setNextStep(nextStep - 1);
         //      setActiveBtnValue(steps?.[activeBtn - 1].data);
-        //      console.log(activeBtn - 1);
         //    }
         //    setBtnName("");
         //  }}
@@ -482,7 +480,6 @@ const QuestionAire = ({
                               : prevCondition
                           )
                         );
-                        console.log(e);
                       }}
                       error={condition.question ? "" : Questionerror || ""}
                       required={true}
@@ -542,7 +539,6 @@ const QuestionAire = ({
                           <ToggleBtn />
                         </Tooltip>
                       </div>
-
                       {index !== 0 && (
                         <div
                           style={{

@@ -1,13 +1,7 @@
+/* eslint-disable react-hooks/exhaustive-deps */
 import React, { useState, useEffect } from "react";
 import ButtonClick from "../../common/Button";
 import TextEditor from "../../common/TextEditor/TextEditor";
-import { stateToHTML } from "draft-js-export-html";
-import {
-  EditorState,
-  convertToRaw,
-  ContentState,
-  convertFromHTML,
-} from "draft-js";
 import TabsNew from "../../common/TabsNew";
 import {
   getAllRecruitmentJobResumesOfferLetters,
@@ -19,48 +13,40 @@ import {
   getAllRecruitmentJobResumesNotes,
   saveRecruitmentJobResumesNote,
 } from "../../Api1";
-
 import { format } from "date-fns";
-import {
-  RiAttachment2,
-  RiDeleteBin6Line,
-  RiEmojiStickerFill,
-  RiHome6Line,
-  RiStickyNoteLine,
-} from "react-icons/ri";
-import {
-  BsFileEarmarkRichtext,
-  BsFileImage,
-  BsFileWord,
-  BsFiletypePdf,
-} from "react-icons/bs";
-import { Editor } from "react-draft-wysiwyg";
+import { RiAttachment2, RiDeleteBin6Line, RiHome6Line } from "react-icons/ri";
+import { BsFileImage, BsFileWord, BsFiletypePdf } from "react-icons/bs";
 import "react-draft-wysiwyg/dist/react-draft-wysiwyg.css";
-import { FcCheckmark } from "react-icons/fc";
-import { ImAttachment } from "react-icons/im";
-import { Link, useParams, useLocation } from "react-router-dom";
-import { Formik, useFormik } from "formik";
-import { Button, Card, Dropdown, Menu, Space, notification } from "antd";
+import { useParams, useLocation } from "react-router-dom";
+import { useFormik } from "formik";
+import { Button, Dropdown, Menu, notification } from "antd";
 import { FaRegEdit } from "react-icons/fa";
-import { CommonAxisSettingsConstantLineStyle } from "devextreme-react/chart";
 import Pdf from "../../../assets/images/uploader/pdf.png";
-import { FiAlertOctagon } from "react-icons/fi";
-import { PiChecks, PiPushPinSlashBold } from "react-icons/pi";
 import { IoIosArrowDown } from "react-icons/io";
 
 const Offers = () => {
   const [content, setContent] = useState("");
+
   const [uploadedFiles, setUploadedFiles] = useState([]);
+
   const primaryColor = localStorage.getItem("mainColor");
+
   const { resumeId } = useParams();
+
   const [jobId, setJobId] = useState(null);
+
   const [LetterTemplate, setLetterTemplate] = useState([]);
+
   const { state } = useLocation();
+
   const [LetterTemplateId, setLetterTemplateId] = useState("");
-  const [Letterdata, setLetterdata] = useState([]);
+
   const [selectedNoteId, setSelectedNoteId] = useState(null);
+
   const [isPinned, setIsPinned] = useState(0);
+
   const [offerLetters, setOfferLetters] = useState([]);
+
   const [userid, setuserid] = useState("");
 
   const handleEditClick = (jobResumeNoteId) => {
@@ -97,12 +83,14 @@ const Offers = () => {
         return null;
     }
   };
+
   const formatSize = (bytes) => {
     const sizes = ["Bytes", "KB", "MB", "GB", "TB"];
     if (bytes === 0) return "0 Byte";
     const i = parseInt(Math.floor(Math.log(bytes) / Math.log(1024)));
     return Math.round(bytes / Math.pow(1024, i), 2) + " " + sizes[i];
   };
+
   const removeFile = (index) => {
     const updatedFiles = [...uploadedFiles];
     updatedFiles.splice(index, 1);
@@ -110,24 +98,17 @@ const Offers = () => {
   };
 
   useEffect(() => {
-    // Retrieve the login data JSON string from local storage
     const loginDataString = localStorage.getItem("LoginData");
-
     if (loginDataString) {
-      // Parse the JSON string to get the LoginData object
       const loginData = JSON.parse(loginDataString);
-
-      // Extract the username from the userData object
       setuserid(
         loginData && loginData.userData && loginData.userData.employeeId
       );
-
-      // Now, 'username' variable contains the username
-    } else {
-      console.error("Login data not found in local storage.");
     }
   }, []);
+
   const [api, contextHolder] = notification.useNotification();
+
   const openNotification = (type, message, description) => {
     api[type]({
       message: message,
@@ -151,23 +132,22 @@ const Offers = () => {
   };
 
   const onTabChange = (tabId) => {
-    // Do something when the tab changes if needed
-    console.log(`Tab changed to ${tabId}`);
     if (tabId === 1) {
     } else if (tabId === 2) {
     }
   };
+
   const handleFileChange = (event) => {
     const files = event.target.files;
     setUploadedFiles([...uploadedFiles, ...files]);
   };
+
   const tabData = [
     {
       id: 9,
       title: "Notes",
       value: "notes",
       // content: <Overview />,
-
       icon: <RiHome6Line className="text-base" />,
     },
 
@@ -186,11 +166,13 @@ const Offers = () => {
     //   icon: <BsFileEarmarkRichtext className="text-base" />,
     // },
   ];
+
   const handleEditorChange = (state) => {
     setContent(state);
   };
 
   const [notes, setnotes] = useState("");
+
   const [html, setstateHTML] = useState("");
 
   const handlesubmit = async () => {
@@ -208,7 +190,6 @@ const Offers = () => {
         attachments: null,
         createdBy: userid,
       });
-      console.log(response);
       getOfferLetters();
       if (response.status === 200) {
         openNotification("success", "Successful", response.message);
@@ -217,7 +198,7 @@ const Offers = () => {
         openNotification("error", "input field is empty..", response.message);
       }
     } catch (error) {
-      console.log(error);
+      return error;
     }
   };
 
@@ -238,7 +219,6 @@ const Offers = () => {
             notes: result,
             createdBy: userid,
           });
-          console.log(response);
           getnotes();
         } else {
           const response = await updateRecruitmentJobResumesNote({
@@ -249,28 +229,25 @@ const Offers = () => {
             isPinned: isPinned,
             modifiedBy: userid,
           });
-          console.log(response);
           getnotes();
         }
-      } catch (error) {
-        console.log(error);
-      }
+      } catch (error) {}
     },
   });
+
   const getnotes = async () => {
     try {
       const response = await getAllRecruitmentJobResumesNotes({
         resumeId: resumeId,
       });
-      console.log(response);
       setnotes(response.result);
     } catch (error) {
-      console.log(error);
+      return error;
     }
   };
+
   useEffect(() => {
     getnotes();
-    console.log(notes);
   }, [resumeId]);
 
   const getnotesbyId = async (jobResumeNoteId) => {
@@ -278,16 +255,15 @@ const Offers = () => {
       const response = await getRecruitmentJobResumesNoteById({
         id: jobResumeNoteId,
       });
-      console.log(response);
       formik.setFieldValue("notes", response.result[0].notes);
     } catch (error) {
-      console.log(error);
+      return error;
     }
   };
+
   const getLetterTemplate = async () => {
     try {
       const response = await getAllRecruitmentLetterTemplates({});
-      console.log(response);
       setLetterTemplate(
         response.result.map((each) => ({
           label: each.letterTemplateName,
@@ -295,9 +271,10 @@ const Offers = () => {
         }))
       );
     } catch (error) {
-      console.log(error);
+      return error;
     }
   };
+
   useEffect(() => {
     getLetterTemplate();
   }, []);
@@ -305,10 +282,9 @@ const Offers = () => {
   const getletteTemplateByid = async (id) => {
     try {
       const response = await getRecruitmentLetterTemplateById({ id });
-      console.log(response);
       setContent(response.result[0].letterTemplate.body);
     } catch (error) {
-      console.log(error);
+      return error;
     }
   };
 
@@ -324,33 +300,15 @@ const Offers = () => {
         jobId: jobId,
         resumeId: resumeId,
       });
-      console.log(response);
       setOfferLetters(response.result);
     } catch (error) {
-      console.log(error);
+      return error;
     }
   };
+
   useEffect(() => {
     getOfferLetters();
   }, [jobId]);
-
-  const options = [
-    {
-      id: 1,
-      label: "opt 1",
-      value: "",
-    },
-    {
-      id: 2,
-      label: "opt2",
-      value: "",
-    },
-    {
-      id: 3,
-      label: "opt3",
-      value: "",
-    },
-  ];
 
   const menu = (
     <Menu>
@@ -393,7 +351,6 @@ const Offers = () => {
                 </Dropdown>
               </div>
             </div>
-
             <div className="flex flex-col gap-4">
               <div className="pt-4">
                 <TextEditor
@@ -500,7 +457,6 @@ const Offers = () => {
             ))}
         </div>
       </div>
-
       <div className="lg:col-span-4">
         <div className="rounded-lg bg-white dark:bg-secondaryDark p-1.5 ">
           <div className="flex justify-between items-center">

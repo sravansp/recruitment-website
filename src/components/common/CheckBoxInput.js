@@ -1,6 +1,5 @@
 import { Checkbox } from "antd";
 import React from "react";
-import { FaBullseye } from "react-icons/fa6";
 import { HiMiniStar } from "react-icons/hi2";
 
 export default function CheckBoxInput({
@@ -10,10 +9,9 @@ export default function CheckBoxInput({
   titleRight = "",
   titleDescription = "",
   required = false,
-  actionId=null,
-  roleId=null ,
+  actionId = null,
+  roleId = null,
 }) {
-  // console.log(actionId)
   return (
     <div className={`flex flex-col ${title ? "gap-2" : "gap-0 "} `}>
       <div className="flex">

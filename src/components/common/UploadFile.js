@@ -1,10 +1,8 @@
 import React, { useRef, useState } from 'react';
 import PropTypes from 'prop-types';
-
 // import './drop-file-input.css';
 
 import { ImageConfig } from '../../Config/ImageConfig'; 
-// import uploadImg from '../../assets/cloud-upload-regular-240.png';
 const defaultFiles = [
     { name: 'Document.pdf', size: 2048, type: 'application/pdf' },
     { name: 'Image.jpg', size: 1024, type: 'image/jpeg' },
@@ -38,7 +36,6 @@ const DropFileInput = props => {
         setFileList(updatedList);
         props.onFileChange(updatedList);
     }
-console.log(fileList);
     return (
         <>
             <div

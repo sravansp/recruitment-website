@@ -1062,10 +1062,8 @@ const Createjob = ({
         //     setNextStep(nextStep + 1);
         //   } else {
         //     // Handle the case where the radio is not selected, maybe show a message
-        //     console.log('Radio not selected');
         //   }
         // } catch (error) {
-        //   console.error('Error handling Workflow:', error);
         formik2.handleSubmit();
         // }
         break;
@@ -1083,9 +1081,6 @@ const Createjob = ({
         break;
       default:
         // // Handle the case when no card is selected
-        // console.log(
-        //   "Please select a card before moving to the next step."
-        // );
         // openNotification(
         //   "error",
         //   "Please choose a card..",
@@ -1119,7 +1114,6 @@ const Createjob = ({
     //   }
     //   Object.values(Object.values(each)).filter((filterdata) => {
     //     if (filterdata !== null && filterdata !== " ") return filterdata;
-    //     // console.log(filterdata.includes("d"));
     //   });
     // });
     // );
@@ -2618,7 +2612,6 @@ const Createjob = ({
         <img src={item.userImage} alt={`User ${item.userId} Image`} style={{ maxWidth: '100px' }} />
       </div> */}
                     {/* <div>{item}</div> *
-    {console.log(item)}
     </List.Item>
   )}
 /> */}

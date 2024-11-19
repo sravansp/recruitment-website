@@ -1,26 +1,27 @@
 import React, { useState } from "react";
-import { Select, Switch } from "antd";
+import { Select } from "antd";
 import { IoIosArrowForward } from "react-icons/io";
 import { FlagIcon } from "react-flag-kit";
-
 import { useTranslation } from "react-i18next";
-import { useDispatch, useSelector } from "react-redux";
-import { decrement, increment, rtl } from "../../../Redux/slice";
+import { useDispatch } from "react-redux";
+import { rtl } from "../../../Redux/slice";
 import ToggleBtn from "../../common/ToggleBtn";
-import { useMediaQuery } from 'react-responsive';
+import { useMediaQuery } from "react-responsive";
 
 const CustomAccordion = () => {
   const isSmallScreen = useMediaQuery({ maxWidth: 1439 });
+
   const { t, i18n } = useTranslation();
+
   const dispatch = useDispatch();
 
   const [languageChange, setLanguageChange] = useState(
     localStorage.getItem("layout") === "rtl" ? "ar" : "en"
   );
+
   const [toggleValue, setToggleValue] = useState(true);
 
   const handleToggleChange = (newValue) => {
-    // Handle the change event here
     setToggleValue(newValue);
   };
 
@@ -28,10 +29,8 @@ const CustomAccordion = () => {
     i18n.changeLanguage(language);
   };
 
-  const onChange = (checked) => {
-    // console.log(`switch to ${checked}`);
-  };
   const { Option } = Select;
+
   const languageOptions = [
     { value: "en", label: "English", code: "US" },
     { value: "ar", label: "Arabic", code: "AE" },
@@ -92,12 +91,14 @@ const CustomAccordion = () => {
   const [expanded, setExpanded] = useState(
     Object.fromEntries(accordionData.map((item) => [item.id, true]))
   );
+
   const toggleAccordion = (id) => {
     setExpanded((prevExpanded) => ({
       ...prevExpanded,
       [id]: !prevExpanded[id],
     }));
   };
+
   return (
     <div className="relative flex flex-col gap-6">
       {/*  Accordian item 1 */}
@@ -161,7 +162,6 @@ const CustomAccordion = () => {
                             value === "ar" ? "rtl" : "ltr"
                           );
                           dispatch(rtl(value === "ar" ? "rtl" : "ltr"));
-                          console.log(value);
                         }}
                         size={isSmallScreen ? "default" : "large"}
                         optionFilterProp="children"
@@ -191,10 +191,9 @@ const CustomAccordion = () => {
                       </Select>
                     ) : (
                       <ToggleBtn
-                      className="md:float-right rtl:md:float-left"
-                      value={true}
-                    />
-                  
+                        className="md:float-right rtl:md:float-left"
+                        value={true}
+                      />
                     )}
                   </div>
                 </div>

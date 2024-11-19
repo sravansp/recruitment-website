@@ -6,13 +6,23 @@ import { AiOutlineCloudUpload } from "react-icons/ai";
 const { Dragger } = Upload;
 
 export default function FileUpload({
-  change = () => { },
+  change = () => {},
   className,
   flex = true,
   file = null,
 }) {
   const { t } = useTranslation();
-  const allowedFileFormats = ["jpg", "png", "jpeg", "svg", "webp", "pdf", "doc", "docx", "pptx"];
+  const allowedFileFormats = [
+    "jpg",
+    "png",
+    "jpeg",
+    "svg",
+    "webp",
+    "pdf",
+    "doc",
+    "docx",
+    "pptx",
+  ];
   const fileFormatsString = allowedFileFormats.join(", ");
   const [selectedFile, setSelectedFile] = useState([]);
   const [nameList, setNameList] = useState([]);
@@ -20,11 +30,11 @@ export default function FileUpload({
 
   useEffect(() => {
     if (file) {
-      setSelectedFile([file])
+      setSelectedFile([file]);
     } else {
-      setSelectedFile([])
+      setSelectedFile([]);
     }
-  }, [file])
+  }, [file]);
 
   const props = {
     name: "file",
@@ -37,8 +47,7 @@ export default function FileUpload({
         message.error(`${file.name} file format is not supported.`);
         setChangeStatus(false);
         return false;
-      }
-      else if (nameList.includes(file.name)) {
+      } else if (nameList.includes(file.name)) {
         message.error(`${file.name} file is already uploaded.`);
         setChangeStatus(false);
         return false;
@@ -54,18 +63,12 @@ export default function FileUpload({
 
   // const handleChange = (info) => {
   //   const { status, originFileObj } = info.file;
-  //   if (status !== "uploading") {
-  //     console.log(info.fileList);
-  //     console.log(status, ":file upload status");
-  //     console.log(originFileObj);
-  //   }
   //   // Ensure only one file is selected
   //   if (originFileObj && changeStatus) {
   //     setSelectedFile(originFileObj);
   //     change(originFileObj);
   //   }
   // };
-
 
   return (
     <div className={`${className}`}>
@@ -74,7 +77,6 @@ export default function FileUpload({
         fileList={selectedFile}
         onChange={(info) => {
           const { file } = info;
-          console.log(file, "file")
           if (file && changeStatus) {
             change(file);
           }
@@ -85,8 +87,13 @@ export default function FileUpload({
           <div className="flex gap-2">
             <AiOutlineCloudUpload className="text-3xl text-primary " />
             <div className="flex flex-col">
-              <h2 className="acco-subhead"> {t("Click or drag files to upload")}</h2>
-              <p className="para px-5">{t("Allowed formats")}: {fileFormatsString}</p>
+              <h2 className="acco-subhead">
+                {" "}
+                {t("Click or drag files to upload")}
+              </h2>
+              <p className="para px-5">
+                {t("Allowed formats")}: {fileFormatsString}
+              </p>
             </div>
           </div>
         ) : (

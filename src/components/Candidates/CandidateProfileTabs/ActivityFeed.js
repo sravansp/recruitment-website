@@ -37,7 +37,6 @@ const tabData = [
   // },
 ];
 const ActivityFeed = () => {
-  const [content, setContent] = useState("");
 
   const primaryColor = localStorage.getItem("mainColor");
 
@@ -63,6 +62,7 @@ const ActivityFeed = () => {
     setSelectedNoteId(jobResumeNoteId);
     getnotesbyId(jobResumeNoteId);
   };
+  
   useEffect(() => {
     if (state && state.jobID) {
       setJobId(state.jobID);
@@ -157,7 +157,7 @@ const ActivityFeed = () => {
       return error;
     }
   };
-  
+
   return (
     <div className="grid gap-6 lg:grid-cols-12">
       <div className="flex flex-col gap-6 lg:col-span-8">
@@ -277,7 +277,6 @@ const ActivityFeed = () => {
         onChange={(data) => {
           setData(data);
           formik.setFieldValue('notes', data)
-          console.log(data);
         }}
         value={formik.values.notes}
 

@@ -224,6 +224,7 @@ const Addmembers = ({
       <FlexCol className="relative w-full h-full ">
         <Dropdown
           title={t("Name")}
+          disabled={formik.values.id !== "" ? true : false}
           placeholder={t("Choose Name")}
           value={formik.values.employeeId}
           error={formik.values.employeeId ? "" : formik.errors.employeeId}
@@ -234,11 +235,9 @@ const Addmembers = ({
               (employee) => employee.value === e
             );
             if (selectedEmployee) {
-              // Set the values to the other Formik form
               setEmployeeName(selectedEmployee.label);
               setEmployeeEmail(selectedEmployee.email);
             }
-            // Set the value for the current Formik form
             formik.setFieldValue("employeeId", e);
           }}
         />

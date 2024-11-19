@@ -1,20 +1,17 @@
 import React, { useEffect, useState } from "react";
-import { BsQuestionCircle } from "react-icons/bs";
 import { IoIosArrowBack, IoIosArrowForward } from "react-icons/io";
 import rules from "../../assets/images/rules.svg";
 import Vector from "../../assets/images/Vector.png";
 import delegate from "../../assets/images/delegate.png";
-import Button from "./Button";
 import { Affix, Steps } from "antd";
 import Breadcrumbs from "./BreadCrumbs";
-import { RxQuestionMarkCircled } from "react-icons/rx";
 import { t } from "i18next";
 import ButtonClick from "./Button";
 
 export default function Wizard({
   children,
-  buttonClick = () => { },
-  buttonClickCancel = () => { },
+  buttonClick = () => {},
+  buttonClickCancel = () => {},
   items = [],
   menu = true,
   btnName = "",
@@ -24,6 +21,7 @@ export default function Wizard({
   // activeBtn = 0,
 }) {
   const [choosePolicies, setChoosePolicies] = useState(1);
+
   const [chooseNextStep, setChooseNextStep] = useState(0);
 
   useEffect(() => {
@@ -31,7 +29,6 @@ export default function Wizard({
       setChoosePolicies(choosePolicies + 1);
     }
     setChooseNextStep(nextStep);
-    //   console.log(stepsData[choosePolicies]?.value, chooseNextStep, "USEeFFERCT");
   }, [nextStep]);
 
   const policiesMenu = [
@@ -74,10 +71,11 @@ export default function Wizard({
               <>
                 <div
                   key={i}
-                  className={` py-3.5 px-5 ${choosePolicies === each.value
+                  className={` py-3.5 px-5 ${
+                    choosePolicies === each.value
                       ? "bg-[#8770F21A] border-primary"
                       : "border-[#DCDCDC] dark:bg-lightdark"
-                    } flex  lg:justify-start justify-center lg:my-0 my-2 items-center gap-2.5 border  rounded-full`}
+                  } flex  lg:justify-start justify-center lg:my-0 my-2 items-center gap-2.5 border  rounded-full`}
                   onClick={() => {
                     // buttonClick(each.value);
                     // setChoosePolicies(each.value);
@@ -89,10 +87,11 @@ export default function Wizard({
                     className="black w-[18px] h-[21px] fill-green-500"
                   />
                   <p
-                    className={`${choosePolicies === each.value
+                    className={`${
+                      choosePolicies === each.value
                         ? "text-primary"
                         : " opacity-50"
-                      }  text-sm font-medium`}
+                    }  text-sm font-medium`}
                   >
                     {each.title}
                   </p>
@@ -114,7 +113,7 @@ export default function Wizard({
             // fontSize: 14,
             fontWeight: 600,
           }}
-        // percent={75}
+          // percent={75}
         />
       )}
       <div className=" h-full">{children}</div>
@@ -123,8 +122,9 @@ export default function Wizard({
         <div className=" md:flex justify-between items-center rounded-b-xl  py-4 border-t dark:text-white  bg-white dark:bg-lightdark px-2">
           <div className="">
             <p
-              className={`  ${menu ? "md:col-span-2 " : "col-span-6 "
-                }  col-span-12 lg:text-sm text-xs font-semibold opacity-50 lg:my-0 my-2`}
+              className={`  ${
+                menu ? "md:col-span-2 " : "col-span-6 "
+              }  col-span-12 lg:text-sm text-xs font-semibold opacity-50 lg:my-0 my-2`}
             >
               Reset to default
             </p>
@@ -152,7 +152,6 @@ export default function Wizard({
             ></ButtonClick>
             <ButtonClick
               handleSubmit={() => {
-                console.log(choosePolicies, nextStep);
                 if (choosePolicies < stepsData.length) {
                   buttonClick();
                   if (choosePolicies !== nextStep) {

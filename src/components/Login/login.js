@@ -21,11 +21,14 @@ import { motion } from "framer-motion";
 
 export default function Login() {
   const [showPassword, setShowPassword] = useState(false);
+
   const [profile, setProfile] = useState(null);
+
   const [user, setUser] = useState([]);
+
   const googleLogin = useGoogleLogin({
     onSuccess: (codeResponse) => setUser(codeResponse),
-    onError: (error) => console.log("Login Failed:", error),
+    onError: (error) => {},
   });
 
   useEffect(() => {
@@ -57,7 +60,6 @@ export default function Login() {
         //     username: profile.email,
         //     thirdPartyLogin: 1,
         //   });
-        //   console.log(result, "result from fetchUserProfile");
         //   if (result.data.status == false) {
         //     openNotification("error", "Failure", result.data.message);
         //   }
@@ -70,7 +72,6 @@ export default function Login() {
         //     window.location.reload();
         //   }
         // } catch (err) {
-        //   console.log(err);
         // }
       }
     };
@@ -79,16 +80,20 @@ export default function Login() {
   }, [profile]);
 
   const [visible, setVisible] = useState(false);
+
   const handleForgotPasswordClick = () => {
     setVisible(true);
   };
+
   const handleCancel = () => {
     formik2.resetForm();
     setVisible(false);
   };
+
   const navigate = useNavigate();
 
   const [api, contextHolder] = notification.useNotification();
+
   const openNotification = (type, message, description, callback) => {
     api[type]({
       message: message,
@@ -165,8 +170,6 @@ export default function Login() {
       //   const result = await action(API.FORGOT_PASSWORD, {
       //     emailId: e.email,
       //   });
-      //   console.log(result, "result for forgot pass");
-      //   console.log(result.result, "result.result for forgot pass");
       //   if (result.result.status === false) {
       //     openNotification(
       //       "error",
@@ -177,11 +180,9 @@ export default function Login() {
       //   if (result.result.status === true) {
       //     openNotification("success", "Successful", result.result.message);
       //   }
-      //   // console.log(e.email, "this is entered email")
       //   formik2.resetForm();
       //   setVisible(false);
       // } catch (error) {
-      //   console.log(error, "error on forgot password");
       // }
     },
   });

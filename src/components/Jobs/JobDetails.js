@@ -129,7 +129,6 @@ const JobDetails = () => {
           {/* <ButtonClick buttonName="Edit" /> */}
           {/* <ButtonClick BtnType="add" buttonName="Create a Job"   handleSubmit={() => {
             setShow(true);
-            console.log("set",show);
           }}
           ></ButtonClick> */}
         </div>
@@ -495,7 +494,6 @@ const DragView = ({ jobStatus }) => {
           <ButtonClick buttonName="Edit" />
           <ButtonClick BtnType="add" buttonName="Create a Job"   handleSubmit={() => {
             setShow(true);
-            console.log("set",show);
           }}
           ></ButtonClick>
         </div>
@@ -535,7 +533,6 @@ const DragView = ({ jobStatus }) => {
         {ready && (
           <DragDropContext onDragEnd={onDragEnd}>
             <div className="flex w-full h-full gap-3">
-              {console.log(boardData, "BoardData")}
               {boardData.map((board, bIndex) => (
                 <div key={board.name} className="flex flex-col gap-5">
                   <div className="flex items-center justify-between gap-2 p-3 bg-white border rounded-md w-[270px] 2xl:w-[303px] border-borderlight dark:border-borderdark dark:bg-[#0c101c] dark:text-white">

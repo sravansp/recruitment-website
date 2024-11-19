@@ -1,16 +1,15 @@
+/* eslint-disable react-hooks/exhaustive-deps */
 import React, { useEffect, useState } from "react";
 import {
   Button,
   Table,
   Input,
   Dropdown,
-  Space,
   Menu,
   Checkbox,
   Radio,
   Switch,
   Popconfirm,
-  Flex,
   Popover,
 } from "antd";
 import { RxCopy, RxDotFilled } from "react-icons/rx";
@@ -18,7 +17,6 @@ import { CiSearch } from "react-icons/ci";
 import copy from "clipboard-copy";
 import { LuArrowDownUp, LuListFilter } from "react-icons/lu";
 import { BsListUl, BsThreeDotsVertical } from "react-icons/bs";
-import { BsGrid } from "react-icons/bs";
 import { FiSettings } from "react-icons/fi";
 import Logo1 from "../../assets/images/logos/logo1.png";
 import axios from "axios";
@@ -28,15 +26,8 @@ import { RiDeleteBin5Line } from "react-icons/ri";
 import { FaPencil } from "react-icons/fa6";
 import { useTranslation } from "react-i18next";
 import { useMediaQuery } from "react-responsive";
-import { Link, useNavigate } from "react-router-dom";
+import { useNavigate } from "react-router-dom";
 import { FaPhoneAlt } from "react-icons/fa";
-
-// Filter Dropdown
-const { SubMenu } = Menu;
-// Table Header And Style
-// push the array value in map
-
-// Dropdown Items In each Rows
 
 const gridListoptions = [
   {
@@ -52,7 +43,6 @@ const gridListoptions = [
 const TableCopy = ({
   data = [],
   header = [],
-
   actionID = "",
   updateApi = "",
   deleteApi = "",
@@ -63,64 +53,59 @@ const TableCopy = ({
   viewDetails = false,
 }) => {
   const { t } = useTranslation();
+
   const navigate = useNavigate();
+
   const isSmallScreen = useMediaQuery({ maxWidth: 1439 });
+
   const [listData, setListData] = useState([]);
+
   const [tabTitle, setTabTitle] = useState(
     tabValue.charAt(0).toUpperCase() + tabValue.slice(1)
   );
+
   const [selectedRowKeys, setSelectedRowKeys] = useState([]);
-  const [loading, setLoading] = useState(false);
+
   const [searchValue, setSearchValue] = useState("");
+
   const [searchFilter, setSearchFilter] = useState([...data]);
 
   const [visibleColumns, setVisibleColumns] = useState();
-  const [dropdownVisible, setDropdownVisible] = useState(false);
+
   const [gridList, setGridList] = useState(1);
+
   const primaryColor = localStorage.getItem("mainColor");
+
   useEffect(() => {
-    // if (data) {
     setListData([...data]);
-    // }
   }, [data[0]]);
 
-  // Action Toggle change
-
   const handleToggleList = (id, checked) => {
-    // console.log(checked);
-    // console.log(switches);
     setListData(
       (prevSwitches) =>
         prevSwitches?.map((sw, i) =>
-          // console.log(sw.companyId , id )
           sw?.[actionID] === id
             ? { ...sw, isActive: checked === true ? 1 : 0 }
             : sw
         )
-
       // prevSwitches.map((sw) => (sw.id === i ? { ...sw, value: checked } : sw))
     );
   };
 
   // const handleToggle = (id, checked) => {
-  //   // console.log(checked);
-  //   // console.log(switches);
   //   setSwitches(
   //     (prevSwitches) =>
   //       prevSwitches?.map((sw) =>
-  //         // console.log(sw.companyId , id )
   //         sw?.companyId === id
   //           ? { ...sw, isActive: checked === true ? 1 : 0 }
   //           : sw
   //       )
-
   //     // prevSwitches.map((sw) => (sw.id === i ? { ...sw, value: checked } : sw))
   //   );
   // };
 
   // update Api integration
   const updateCompany = async (id, checked) => {
-    console.log(id, checked, "checked");
     const result = await axios.post(API.HOST + updateApi, {
       [actionID]: id, //Id
       isActive: checked === true ? 1 : 0,
@@ -131,30 +116,26 @@ const TableCopy = ({
       // getRecords()
       // window.location.reload();
     }
-    console.log(result);
   };
+
   const [tableData, setTableData] = useState([]);
 
-  // Delete Api Integration
-
   const deleteRecord = async (e) => {
-    // console.log(e);
     const result = await axios.post(API.HOST + deleteApi + "/" + e);
-    // console.log(result);
     if (result.data.status === 200) {
       window.location.reload();
     }
   };
+
   const handleCopyClick = (value) => {
     copy(value);
-
     // MessageApi.open({
     //   type: "success",
     //   content: `${value} is copied succesfully`,
     // });
   };
+
   useEffect(() => {
-    console.log(header, "header");
     setTableData(
       header[0]?.[tabValue || path]?.map((each, i) => ({
         title: (
@@ -291,8 +272,6 @@ const TableCopy = ({
                     handleToggleList(text?.[actionID], checked);
                     // buttonClick(each.companyId);
                     // activeOrNot(checked);
-                    console.log(checked);
-                    console.log(text?.[actionID]);
                     updateCompany(text?.[actionID], checked);
                   }}
                   className=" bg-[#c2c0c0aa]"
@@ -303,11 +282,8 @@ const TableCopy = ({
                   <button
                     className={`w-8 h-8 2xl:w-10 2xl:h-10 rounded-full vhcenter bg-[${primaryColor}] bg-opacity-10 hover:bg-opacity-100 text-accent hover:text-white transition-all duration-300`}
                     onClick={() => {
-                      buttonClick(text[actionID], "edit"); //"8"
+                      buttonClick(text[actionID], "edit");
                       clickDrawer(true);
-
-                      // console.log(actionID);
-                      // console.log(text[actionID], "ddddddddsfsd");
                     }}
                   >
                     <FaPencil className="text-xs 2xl:text-sm" />
@@ -319,7 +295,6 @@ const TableCopy = ({
                     okText="Confirm"
                     cancelText="No"
                     onConfirm={() => {
-                      console.log("hh");
                       deleteRecord(text[actionID]);
                     }}
                     // className="activeBtn"
@@ -330,7 +305,6 @@ const TableCopy = ({
                       // onClick={() => {
                       //   // deleteRecord(text[actionID]);
                       //   // clickDrawer(true);
-                      //   // console.log(text[actionID]);
                       // }}
                     >
                       <RiDeleteBin5Line className="text-xs 2xl:text-sm" />
@@ -350,12 +324,8 @@ const TableCopy = ({
                   <div>
                     <p
                       onClick={() => {
-                        buttonClick(text[actionID], "edit"); //"8"
+                        buttonClick(text[actionID], "edit");
                         clickDrawer(true);
-                        console.log(text[actionID]);
-
-                        // console.log(actionID);
-                        // console.log(text[actionID], "ddddddddsfsd");
                       }}
                       className="text-md font-semibold p-2 cursor-pointer"
                     >
@@ -368,7 +338,6 @@ const TableCopy = ({
                       okText="Confirm"
                       cancelText="No"
                       onConfirm={() => {
-                        console.log("hh");
                         deleteRecord(text[actionID]);
                       }}
                       // className="activeBtn"
@@ -393,11 +362,8 @@ const TableCopy = ({
   }, []);
   useEffect(() => {
     setListData([...searchFilter]);
-
-    // console.log(searchFilter);
     // setListData(listData?.filter((each)=>{
     // }))
-    // console.log(Object.values(Object.keys({ ...listData })));
     // setListData(
     // listData?.filter((each) => {
     //   if (Object.values(Object.values(each)).includes(searchFilter)) {
@@ -405,7 +371,6 @@ const TableCopy = ({
     //   }
     //   Object.values(Object.values(each)).filter((filterdata) => {
     //     if (filterdata !== null && filterdata !== " ") return filterdata;
-    //     // console.log(filterdata.includes("d"));
     //   });
     // });
     // );
@@ -415,17 +380,7 @@ const TableCopy = ({
     setVisibleColumns(tableData?.map((col) => col.dataIndex));
   }, [tableData]);
 
-  // const start = () => {
-  //   setLoading(true);
-  //   // ajax request after empty completing
-  //   setTimeout(() => {
-  //     setSelectedRowKeys([]);
-  //     setLoading(false);
-  //   }, 1000);
-  // };
-
   const onSelectChange = (newSelectedRowKeys) => {
-    console.log(newSelectedRowKeys, "eeddd");
     setSelectedRowKeys(newSelectedRowKeys);
   };
 
@@ -438,42 +393,16 @@ const TableCopy = ({
     );
   };
 
-  // const rowSelection = {
-  //   selectedRowKeys,
-  //   onChange: onSelectChange,
-  // };
-
-  // useEffect(() => {
-  //   console.log(rowSelection, "e");
-  // }, [rowSelection]);
-
-  const [checkStrictly, setCheckStrictly] = useState(false);
-
   // rowSelection objects indicates the need for row selection
   const rowSelection = {
-    onChange: (selectedRowKeys, selectedRows) => {
-      console.log(
-        `selectedRowKeys: ${selectedRowKeys}`,
-        "selectedRows: ",
-        selectedRows
-      );
-    },
-    onSelect: (record, selected, selectedRows) => {
-      console.log(record, selected, selectedRows);
-    },
-    onSelectAll: (selected, selectedRows, changeRows) => {
-      console.log(selected, selectedRows, changeRows);
-    },
+    onChange: (selectedRowKeys, selectedRows) => {},
+    onSelect: (record, selected, selectedRows) => {},
+    onSelectAll: (selected, selectedRows, changeRows) => {},
   };
 
-  // FILTER DROPDOWN SEARCH
   const handleColumnSearch = (searchValue) => {
-    // Convert searchValue to lowercase for case-insensitive search
     const lowerSearchValue = searchValue.toLowerCase();
-
-    // Filter columns based on whether their titles contain the searchValue
     const filteredColumns = tableData.filter((column) => {
-      console.log(column, "column");
       const titleText =
         typeof column.title === "string"
           ? column.title
@@ -481,12 +410,8 @@ const TableCopy = ({
 
       return titleText.toLowerCase().includes(lowerSearchValue);
     });
-
-    // Set the visible columns to the filtered columns
     setVisibleColumns(filteredColumns.map((col) => col.dataIndex));
   };
-
-  const hasSelected = selectedRowKeys.length > 0;
 
   // Filter Dropdown Menus and Search Input
   // const columnMenu = (
@@ -568,6 +493,7 @@ const TableCopy = ({
       ),
     })) || []),
   ];
+
   const columnMenuItems = [
     {
       key: "selectAll",
@@ -613,23 +539,23 @@ const TableCopy = ({
   // const columnMenu = <Menu mode="vertical" items={columnMenuItems} />;
 
   const onChangeGridlist = ({ target: { value } }) => {
-    console.log("radio1 checked", value);
     setGridList(value);
   };
+
   const splitTitle = tabTitle.split("_");
+
   const jsonResult = splitTitle
     .map((word) => word.charAt(0).toUpperCase() + word.slice(1))
     .join(" ");
+  const handleRowClick = (record) => {
+    // const candidateId = record.id;
+    // Use the Link component to navigate to the candidate profile page
+    // without directly manipulating history
+    // You can define the route in your React Router setup
+    // For example: <Route path="/candidate-profile/:id" component={CandidateProfile} />
+    window.location.href = "/candidateprofile";
+  };
 
-    const handleRowClick = (record) => {
-      // const candidateId = record.id;
-      // Use the Link component to navigate to the candidate profile page
-      // without directly manipulating history
-      // You can define the route in your React Router setup
-      // For example: <Route path="/candidate-profile/:id" component={CandidateProfile} />
-      window.location.href = '/candidateprofile';
-    };
-    
   return (
     <div className="flex flex-col gap-5">
       <div className="flex flex-col justify-between gap-3 xl:items-center xl:flex-row">
@@ -643,13 +569,11 @@ const TableCopy = ({
             style={{ marginLeft: 8 }}
             className={`bg-[${primaryColor}] bg-opacity-10 text-primary text-[10px] 2xl:text-xs rounded-full px-3 py-1 vhcenter`}
           >
-            {console.log(...tabTitle.split("_"))}
             {hasSelected
               ? `${selectedRowKeys?.length} ${
                   jsonResult ? jsonResult : path
                 } Selected`
               : `All ${jsonResult ? jsonResult : path}`}
-            {console.log(jsonResult)}
           </div> */}
           <SearchBox
             // title="Search"
@@ -663,7 +587,6 @@ const TableCopy = ({
               setSearchValue(value);
             }}
             onSearch={(value) => {
-              // console.log(value);
               setSearchFilter(value);
             }}
           />
@@ -688,7 +611,6 @@ const TableCopy = ({
               // trigger={["click"]}
               // open={dropdownVisible}
               // onOpenChange={(visible) => {
-              //   console.log(visible);
               //   setDropdownVisible(visible);
               // }}
             >
@@ -696,7 +618,6 @@ const TableCopy = ({
               <Button
                 className="flex items-center dark:bg-black dark:text-white justify-center h-full font-medium flex-nowrap bg-[#FAFAFA]"
                 onClick={(e) => {
-                  // console.log(e);
                   // e.stopPropagation(); // Prevent dropdown from closing
                   // setDropdownVisible(!dropdownVisible);
                 }}
@@ -745,7 +666,7 @@ const TableCopy = ({
             pagination={false} // Remove pagination
             columnMenuItems={true}
             className="custom-table"
-            rowClassName={() => 'table-row'}  
+            rowClassName={() => "table-row"}
             onRow={() => ({
               onClick: handleRowClick,
             })}
@@ -766,8 +687,6 @@ const TableCopy = ({
             //       .toLowerCase()
             //       .includes(searchValue.toLowerCase())
             // )}
-            
-           
           />
         )}
       </div>

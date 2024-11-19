@@ -13,17 +13,7 @@ import JobListCopy from "../common/JobListCopy";
 
 function AllJobs() {
   const { t } = useTranslation();
-
-  const data = [
-    {
-      Total_number_of_jobs_posted: "3612",
-      Source_diversity: "35%",
-      open_jobs: "80",
-      rejection_average: "19320",
-      hired_count: "152",
-    },
-  ];
-
+  
   const [companyId, setCompanyId] = useState(localStorage.getItem("companyId"));
 
   const [navigationPath, setNavigationPath] = useState("My_Open_Jobs");
@@ -720,7 +710,6 @@ function AllJobs() {
             BtnType="primary"
             handleSubmit={() => {
               setShow(true);
-              console.log("set", show);
             }}
           />
           {show && (

@@ -1,12 +1,8 @@
-import React, { useEffect, useState } from "react";
-import { getAllRecruitmentJobs } from "../Api1";
+import React from "react";
 import { useTranslation } from "react-i18next";
 import { IoMdArrowDropup } from "react-icons/io";
 
 function JobListCopy({ data = [] }) {
-  const [JobsList, setJobList] = useState([]);
-  const [activeJobs, setActiveJobs] = useState(0);
-  console.log(data);
   const { t } = useTranslation();
 
   // const data = [
@@ -71,7 +67,7 @@ function JobListCopy({ data = [] }) {
     acc[propertyName] = value;
     return acc;
   }, []);
-  console.log(result);
+  
   return (
     <div className="borderb rounded-[10px] h-full md:h-[88px] bg-white dark:bg-dark p-4 md:divide-x divide-y md:divide-y-0 flex flex-col justify-between md:flex-row divide-black/10 dark:divide-white/20">
       <div className="flex flex-col justify-center gap-1.5 pl-4 py-2 md:py-0 w-full md:w-[280px]">

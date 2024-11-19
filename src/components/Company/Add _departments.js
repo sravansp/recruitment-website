@@ -1,24 +1,27 @@
-import { useState } from 'react';
-import React from 'react'
-import { notification } from 'antd';
-import DrawerPop from '../common/DrawerPop'
-import { useTranslation } from 'react-i18next';
-import FormInput from '../common/FormInput';
-import TextArea from '../common/TextArea';
-import FlexCol from '../common/FlexCol';
+import { useState } from "react";
+import React from "react";
+import { notification } from "antd";
+import DrawerPop from "../common/DrawerPop";
+import { useTranslation } from "react-i18next";
+import FormInput from "../common/FormInput";
+import TextArea from "../common/TextArea";
+import FlexCol from "../common/FlexCol";
 
-const Departments = ({ open,
-  close = () => { },
+const Departments = ({
+  open,
+  close = () => {},
   updateId,
-  refresh = () => { },
+  refresh = () => {},
   companyDataId = "",
 }) => {
-
   const [isUpdate, setIsUpdate] = useState();
+
   const [show, setShow] = useState(open);
+
   const { t } = useTranslation();
 
   const [api, contextHolder] = notification.useNotification();
+
   const openNotification = (type, message, description, callback) => {
     api[type]({
       message: message,
@@ -28,14 +31,16 @@ const Departments = ({ open,
 
       // stack: 2,
       style: {
-        background: `${type === "success"
-          ? `linear-gradient(180deg, rgba(204, 255, 233, 0.8) 0%, rgba(235, 252, 248, 0.8) 51.08%, rgba(246, 251, 253, 0.8) 100%)`
-          : "linear-gradient(180deg, rgba(255, 236, 236, 0.80) 0%, rgba(253, 246, 248, 0.80) 51.13%, rgba(251, 251, 254, 0.80) 100%)"
-          }`,
-        boxShadow: `${type === "success"
-          ? "0px 4.868px 11.358px rgba(62, 255, 93, 0.2)"
-          : "0px 22px 60px rgba(134, 92, 144, 0.20)"
-          }`,
+        background: `${
+          type === "success"
+            ? `linear-gradient(180deg, rgba(204, 255, 233, 0.8) 0%, rgba(235, 252, 248, 0.8) 51.08%, rgba(246, 251, 253, 0.8) 100%)`
+            : "linear-gradient(180deg, rgba(255, 236, 236, 0.80) 0%, rgba(253, 246, 248, 0.80) 51.13%, rgba(251, 251, 254, 0.80) 100%)"
+        }`,
+        boxShadow: `${
+          type === "success"
+            ? "0px 4.868px 11.358px rgba(62, 255, 93, 0.2)"
+            : "0px 22px 60px rgba(134, 92, 144, 0.20)"
+        }`,
       },
       // duration: null,
     });
@@ -45,14 +50,12 @@ const Departments = ({ open,
     <DrawerPop
       open={show}
       close={(e) => {
-        // console.log(e);
         close(e);
       }}
       contentWrapperStyle={{
         maxWidth: "540px",
       }}
       handleSubmit={(e) => {
-        // console.log(e);
         //   formik.handleSubmit();
       }}
       // updateBtn={isUpdate}
@@ -61,14 +64,9 @@ const Departments = ({ open,
       }}
       header={[
         !isUpdate ? t("Add_New_Department") : t("Update_Department"),
-        !isUpdate
-          ? t("Add_New_Department")
-          : t("Update_Selected_Department"),
+        !isUpdate ? t("Add_New_Department") : t("Update_Selected_Department"),
       ]}
-      footerBtn={[
-        t("Cancel"),
-        t("Save"),
-      ]}
+      footerBtn={[t("Cancel"), t("Save")]}
     >
       <FlexCol className="relative w-full h-full ">
         <FormInput
@@ -78,7 +76,7 @@ const Departments = ({ open,
           change={(e) => {
             // formik.setFieldValue("location", e);
           }}
-        //   error={formik.errors.location}
+          //   error={formik.errors.location}
         />
 
         <TextArea
@@ -88,8 +86,8 @@ const Departments = ({ open,
           change={(e) => {
             // formik.setFieldValue("description", e);
           }}
-        //   value={formik.values.description}
-        //   error={formik.errors.description}
+          //   value={formik.values.description}
+          //   error={formik.errors.description}
         />
         {/* <ToggleBtn
           title="Status"
@@ -102,7 +100,7 @@ const Departments = ({ open,
         {contextHolder}
       </FlexCol>
     </DrawerPop>
-  )
-}
+  );
+};
 
-export default Departments
+export default Departments;

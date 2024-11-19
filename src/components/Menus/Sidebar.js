@@ -8,7 +8,7 @@ import { Menu } from "antd";
 import SelectCompany from "./SelectCompany";
 import { useTheme } from "../../Context/Theme/ThemeContext";
 import { useDispatch } from "react-redux";
-import { hamburger } from "../../Redux/slice";
+import { hamburger, menuview } from "../../Redux/slice";
 import { IoMdCompass } from "react-icons/io";
 import { BsBriefcaseFill } from "react-icons/bs";
 import { HiDocumentText, HiOutlineSquare3Stack3D } from "react-icons/hi2";
@@ -23,6 +23,7 @@ import {
 } from "react-icons/pi";
 import { CiBank } from "react-icons/ci";
 import { LuMonitorDot } from "react-icons/lu";
+import { useSelector } from "react-redux";
 
 const Sidebar = () => {
   const { t } = useTranslation();
@@ -443,9 +444,13 @@ const Sidebar = () => {
     }
   });
 
+  const menuView = useSelector((state) => state.layout.menuview);
+
   return (
     <aside
-      className={`z-[1000] sidebar top-0 ltr:left-0 rtl:right-0 font-figtree hidden lg:block fixed dark:!bg-black bg-primary h-full w-16 2xl:w-[88px] !py-5 !px-3 ${
+      className={`z-[1000] sidebar top-0 ltr:left-0 rtl:right-0 font-figtree ${
+        menuView === true ? "block" : "hidden"
+      }  lg:block fixed dark:!bg-black bg-primary h-full w-16 2xl:w-[88px] !py-5 !px-3 ${
         isHamburgerClicked ? "open" : "close"
       }`}
     >
@@ -455,7 +460,13 @@ const Sidebar = () => {
       <div className="flex items-center justify-center py-4">
         <div
           className="hamburger w-7 h-6 2xl:h-[38px] 2xl:w-[50px] rounded-md 2xl:rounded-xl bg-white bg-opacity-10 flex justify-center items-center p-[6px]"
-          onClick={handleHamburgerClick}
+          onClick={() => {
+            if (menuView === true) {
+              dispatch(menuview(false));
+            } else {
+              handleHamburgerClick();
+            }
+          }}
         >
           <div
             className={`flex-col gap-[2px] 2xl:gap-1 vhcenter ${
@@ -521,7 +532,6 @@ const Sidebar = () => {
                         : ""
                     }`}
                   >
-                    {" "}
                     <Link to={menuItem.link}>{menuItem.icon}</Link>
                   </div>
                   <p className="text-[9px] 2xl:text-xs text-white">

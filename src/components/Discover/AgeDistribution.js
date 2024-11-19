@@ -1,4 +1,5 @@
-import React, { useEffect,useState } from "react";
+/* eslint-disable react-hooks/exhaustive-deps */
+import React, { useEffect, useState } from "react";
 import {
   XAxis,
   YAxis,
@@ -8,15 +9,6 @@ import {
   AreaChart,
 } from "recharts";
 import { getDashboardAgeDistribution } from "../Api1";
-
-// const data = [
-//   { noOfEmployees: 20, age: "20-25" },
-//   { noOfEmployees: 10, age: "25-30" },
-//   { noOfEmployees: 30, age: "30-35" },
-//   { noOfEmployees: 8, age: "35-40" },
-//   { noOfEmployees: 5, age: "40-45" },
-//   { noOfEmployees: 0, age: "45-50" },
-// ];
 
 const CustomTooltip = ({ active, payload, label }) => {
   if (active && payload && payload.length) {
@@ -39,27 +31,29 @@ const CustomTooltip = ({ active, payload, label }) => {
 const AgeDistribution = () => {
   const primaryColor = localStorage.getItem("mainColor");
   const [companyId, setCompanyId] = useState(localStorage.getItem("companyId"));
-  const[data,setData] =useState([])
+  const [data, setData] = useState([]);
   useEffect(() => {
     setCompanyId(localStorage.getItem("companyId"));
-    
   }, []);
-  const getAgedetails = async()=>{
-    try{
-     const response = await getDashboardAgeDistribution({companyId:companyId})
-     console.log(response)
-     const formattedResult = Object.entries(response.result).map(([age, noOfEmployees]) => ({
-      noOfEmployees: noOfEmployees, // Convert month to uppercase
-      age: age  // Calculate the frequency (multiplying by 1.8 as an example)
-  }));
-   setData(formattedResult)
-    }catch(error){
-      console.log(error)
+  const getAgedetails = async () => {
+    try {
+      const response = await getDashboardAgeDistribution({
+        companyId: companyId,
+      });
+      const formattedResult = Object.entries(response.result).map(
+        ([age, noOfEmployees]) => ({
+          noOfEmployees: noOfEmployees, // Convert month to uppercase
+          age: age, // Calculate the frequency (multiplying by 1.8 as an example)
+        })
+      );
+      setData(formattedResult);
+    } catch (error) {
+      return error;
     }
-  }
-  useEffect(()=>{
-    getAgedetails()
-  },[])
+  };
+  useEffect(() => {
+    getAgedetails();
+  }, []);
 
   return (
     <div className="h-[250px] xl:h-[254px] zoom-125">

@@ -260,7 +260,6 @@ const Emailtemplate = ({
         //      setActiveBtn(activeBtn - 1);
         //      setNextStep(nextStep - 1);
         //      setActiveBtnValue(steps?.[activeBtn - 1].data);
-        //      console.log(activeBtn - 1);
         //    }
         //    setBtnName("");
         //  }}

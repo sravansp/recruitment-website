@@ -26,6 +26,7 @@ export default function Dropdown({
   image = false,
   dropdownWidth = "",
   needStar = true,
+  disabled = false,
 }) {
   const isSmallScreen = useMediaQuery({ maxWidth: 1439 });
   const filterOption = (input, option) =>
@@ -106,6 +107,7 @@ export default function Dropdown({
           </Select>
         ) : (
           <Select
+            disabled={disabled}
             showSearch
             placeholder={placeholder}
             optionFilterProp="children"

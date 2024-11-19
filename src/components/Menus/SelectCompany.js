@@ -1,3 +1,4 @@
+/* eslint-disable react-hooks/exhaustive-deps */
 import React, { useEffect, useState } from "react";
 import { Button, Dropdown, message, Space, Menu } from "antd";
 import { RiDraggable } from "react-icons/ri";
@@ -10,18 +11,23 @@ import { companyIdSet } from "../../Redux/slice";
 
 const SelectCompany = () => {
   const dispatch = useDispatch();
+
   const [selectedItemId, setSelectedItemId] = useState(
     localStorage.getItem("companyId")
   );
+
   const [companyData, setCompanyData] = useState();
+
   const [selectedLabel, setSelectedLabel] = useState();
+
   const [organisationId, setOrganisationId] = useState(
     localStorage.getItem("organisationId")
   );
+
   const selectedCompany = companyData?.find(
     (item) => parseInt(item.companyId) === parseInt(selectedItemId)
   );
-  // console.log(selectedCompany)
+  
   const handleItemClick = (itemId) => {
     dispatch(companyIdSet(itemId));
     setSelectedItemId(itemId);

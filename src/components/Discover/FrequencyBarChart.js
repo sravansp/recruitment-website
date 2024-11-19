@@ -1,6 +1,5 @@
-import React, { useEffect,useState } from "react";
-import { useTranslation } from "react-i18next";
-import { useDispatch, useSelector } from "react-redux";
+import React, { useEffect, useState } from "react";
+import { useSelector } from "react-redux";
 import { getDashboardApplicationFrequencyRate } from "../Api1";
 
 import {
@@ -9,60 +8,40 @@ import {
   XAxis,
   YAxis,
   CartesianGrid,
-  Tooltip,
-  Legend,
   ResponsiveContainer,
   LabelList,
 } from "recharts";
 
 export default function FrequencyBarChart() {
-  // const theme = localStorage.getItem("theme");
-  const dispatch = useDispatch();
-  // const theme = useSelector((state) => state.layout.themeColor);
   const theme = useSelector((state) => state.layout.mode);
 
-  const { t } = useTranslation();
-  // const data = [
-  //   { month: "JAN", Frequency: 1.8 },
-  //   { month: "FEB", Frequency: 4.6 },
-  //   { month: "MAR", Frequency: 1.9 },
-  //   { month: "APR", Frequency: 6.2 },
-  //   { month: "MAY", Frequency: 4.7 },
-  //   { month: "JUN", Frequency: 8.8 },
-  //   { month: "JUL", Frequency: 12 },
-  //   { month: "AUG", Frequency: 1.7 },
-  //   { month: "SEP", Frequency: 1.9 },
-  //   { month: "OCT", Frequency: 7.3 },
-  //   { month: "NOV", Frequency: 4.6 },
-  //   { month: "DEC", Frequency: 6 },
-  // ];
-  const[data,SetData]=useState([])
+  const [data, SetData] = useState([]);
+
   const [companyId, setCompanyId] = useState(localStorage.getItem("companyId"));
-  console.log(companyId,"companyId")
-  // useEffect(() => {
-  //   setCompanyId(localStorage.getItem("companyId"));
-    
-  // }, []);
-  const getFrequencyRate = async ()=>{
+
+  const getFrequencyRate = async () => {
     try {
-      
-      const response = await getDashboardApplicationFrequencyRate({companyId:companyId})
-      console.log(response);
-      const formattedResult = Object.entries(response.result).map(([month, frequency]) => ({
-        month: month.toUpperCase(), 
-        Frequency: frequency  
-    }));
-    console.log(formattedResult)
-    SetData(formattedResult)
-    }catch(error)
-    {
-      console.log(error)
+      const response = await getDashboardApplicationFrequencyRate({
+        companyId: companyId,
+      });
+      const formattedResult = Object.entries(response.result).map(
+        ([month, frequency]) => ({
+          month: month.toUpperCase(),
+          Frequency: frequency,
+        })
+      );
+      SetData(formattedResult);
+    } catch (error) {
+      return error;
     }
-  }
-  useEffect(()=>{
-    getFrequencyRate()
-  },[])
+  };
+
+  useEffect(() => {
+    getFrequencyRate();
+  }, []);
+
   const labelFormatter = (value) => `${value}`;
+
   const yAxisTickFormatter = (value) => `${value}`;
 
   const CustomTooltip = ({ active, payload, label }) => {
@@ -78,7 +57,6 @@ export default function FrequencyBarChart() {
         </div>
       );
     }
-
     return null;
   };
 
@@ -127,13 +105,11 @@ export default function FrequencyBarChart() {
               />
             </linearGradient>
           </defs>
-
           <CartesianGrid
             strokeDasharray="5 8"
             horizontal={true}
             vertical={false}
           />
-
           <XAxis
             dataKey="month"
             axisLine={false}

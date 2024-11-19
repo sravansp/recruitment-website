@@ -9,21 +9,21 @@ export default function ModalPop({
   width,
 }) {
   const [isModalOpen, setIsModalOpen] = useState(open);
+
   useEffect(() => {
     setIsModalOpen(open);
-    // console.log(open);
   }, [open]);
 
-  // const showModal = () => {
-  //   setIsModalOpen(true);
-  // };
-  useEffect(() => {
+  
+    useEffect(() => {
     setIsModalOpen(open);
   }, [open]);
+
   const handleOk = () => {
     close(false);
     setIsModalOpen(false);
   };
+  
   const handleCancel = () => {
     close(false);
     setIsModalOpen(false);

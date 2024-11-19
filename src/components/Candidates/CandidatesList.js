@@ -1,3 +1,4 @@
+/* eslint-disable react-hooks/exhaustive-deps */
 import React, { useEffect, useState } from "react";
 import Heading from "../common/Heading";
 import { PiArrowSquareOut } from "react-icons/pi";
@@ -5,24 +6,25 @@ import ButtonClick from "../common/Button";
 import { Link } from "react-router-dom";
 import JobListCopy from "../common/JobListCopy";
 import TableAnt from "../common/TableAnt";
-import TableCopy from "../common/TableCopy";
 import { getAllRecruitmentResumes, getJobStatics } from "../Api1";
-
 import { motion } from "framer-motion";
 import Createcandidatelist from "./Createcandidatelist";
 import { useTranslation } from "react-i18next";
 
 const CandidatesList = () => {
   const [jobList, setJobList] = useState([]);
-  const [show, setShow] = useState(false);
-  const [openPop, setOpenPop] = useState("");
-  const [updateId, setUpdateId] = useState("");
-  const [jobId, setJobId] = useState(null);
-  const [sortedInfo, setSortedInfo] = useState({});
-  const { t } = useTranslation();
-  const handleChange = (pagination, filters, sorter) => {
-    console.log("Various parameters", pagination, filters, sorter);
 
+  const [show, setShow] = useState(false);
+
+  const [openPop, setOpenPop] = useState("");
+
+  const [updateId, setUpdateId] = useState("");
+
+  const [sortedInfo, setSortedInfo] = useState({});
+
+  const { t } = useTranslation();
+
+  const handleChange = (pagination, filters, sorter) => {
     setSortedInfo(sorter || {});
   };
 
@@ -65,7 +67,6 @@ const CandidatesList = () => {
           sortOrder:
             sortedInfo.columnKey === "jobTitle" ? sortedInfo.order : null,
         },
-
         {
           id: 4,
           title: t("Stage"),
@@ -119,7 +120,6 @@ const CandidatesList = () => {
             // Parse the dates
             const dateA = new Date(a.createdOn);
             const dateB = new Date(b.createdOn);
-
             // Compare the dates
             return dateA - dateB;
           },
@@ -136,49 +136,49 @@ const CandidatesList = () => {
       ],
     },
   ];
- 
+
   const [companyId, setCompanyId] = useState(localStorage.getItem("companyId"));
+
+  const callapi = async () => {
+    try {
+      const response = await getAllRecruitmentResumes();
+      setJobList(response.result);
+      // const jobIds = response.result.map(resume => resume.jobId);
+      // setJobId(jobIds)
+      // setTableData(response.data);
+    } catch (error) {
+      return error;
+    }
+  };
+
   useEffect(() => {
-    const callapi = async () => {
-      try {
-        const response = await getAllRecruitmentResumes();
-        console.log(response.result);
-        setJobList(response.result);
-        // const jobIds = response.result.map(resume => resume.jobId);
-        // console.log("Job IDs:", jobIds);
-        // setJobId(jobIds)
-
-        // setTableData(response.data);
-        // console.log(response.data); // Access response data
-      } catch (error) {
-        console.error(error); // Handle errors
-      }
-    };
-
     callapi();
   }, []);
+
   const handleClose = () => {
     setShow(false);
-    setOpenPop(""); // Clear the value in setOpenPop
+    setOpenPop("");
   };
-  console.log(jobList);
+
   const [jobstatic, setjobstatic] = useState([]);
+
   const getJobstat = async () => {
     try {
       const response = await getJobStatics({ companyId });
       setjobstatic(response.result);
-      console.log(response);
     } catch (error) {
-      console.error(error);
+      return error;
     }
   };
+
   useEffect(() => {
     getJobstat();
-    console.log("value", jobstatic);
   }, [companyId]);
+
   const handleNavigate = () => {
     window.open("https://careerui.vercel.app/", "_blank");
   };
+
   return (
     <div className="flex flex-col gap-[25px]">
       <div className="flex justify-between">
@@ -196,7 +196,6 @@ const CandidatesList = () => {
             buttonName={t("Add_Candidate")}
             handleSubmit={() => {
               setShow(true);
-              console.log(true);
             }}
             BtnType="add"
           />
@@ -206,16 +205,15 @@ const CandidatesList = () => {
       <div className="">
         {/* <TableCopy data={jobList} header={header} path='CandidateProfile'/> */}
         <TableAnt
-        All={true} 
-        data={jobList} 
-        header={header} 
-        path='Candidate_Profile' 
-        actionID="resumeId" 
-        jobId="jobId"
-        handlesort={(e)=>{
-          handleChange(e)
-
-        }}
+          All={true}
+          data={jobList}
+          header={header}
+          path="Candidate_Profile"
+          actionID="resumeId"
+          jobId="jobId"
+          handlesort={(e) => {
+            handleChange(e);
+          }}
         />
       </div>
       {show && (
@@ -231,6 +229,7 @@ const CandidatesList = () => {
             refresh={() => {
               // getLocationList();
             }}
+            callapi={callapi}
             openPolicy={openPop}
             updateId={updateId}
           />

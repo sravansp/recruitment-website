@@ -1,20 +1,17 @@
+/* eslint-disable react-hooks/exhaustive-deps */
 import React, { useEffect, useState } from "react";
 import { IoIosArrowForward } from "react-icons/io";
 import Arrow_Top from "../../assets/images/Vector.svg";
 import Arrow_Bottom from "../../assets/images/Vector_bottom.svg";
 import img from "../../assets/images/Rectangle 363.png";
-import { useTranslation } from "react-i18next";
-import Table from "../common/Table";
 import axios from "axios";
 import API from "../Api";
 import { MdContentCopy, MdDelete, MdEdit } from "react-icons/md";
-import { useRouteLoaderData } from "react-router-dom";
 import { BsDot } from "react-icons/bs";
 import { HiOutlineDotsVertical, HiOutlineMail } from "react-icons/hi";
 import { FaLocationDot } from "react-icons/fa6";
-import ToggleBtn from "./ToggleBtn";
 import logo from "../../assets/images/image 380.png";
-import { Button, Popover, Switch } from "antd";
+import { Popover, Switch } from "antd";
 import { AiOutlineCloudDownload } from "react-icons/ai";
 import ButtonClick from "./Button";
 
@@ -42,59 +39,42 @@ export default function ListLayout({
   arabic = true,
   checkBox = true,
 }) {
-  const { t } = useTranslation();
-
   const [checked, setChecked] = useState();
+
   const [btnBackgroundColor, setBtnBackgroundColor] = useState(0);
+
   const [btnName, setBtnName] = useState(navigateBtn[0]?.value);
-  // const [addBtn, setAddBtn] = useState();
 
-  const [toggleBtn, setToggleBtn] = useState();
-
-  const [activeId, setActiveId] = useState([]);
-  const [recordListData, setRecordListData] = useState();
-  const [initialLoad, setinitialLoad] = useState(true);
   const [company, setCompany] = useState([]);
+
   const [companyData, setCompanyData] = useState([]);
+
   const [switches, setSwitches] = useState([]);
+
   const [listData, setListData] = useState([]);
+
   useEffect(() => {
-    console.log(data);
     if (data) {
       setSwitches([...data]);
       setListData([...data]);
-      console.log([...data], "...data");
       // togglefun();
       // data?.map(async(each)=>{
       // //  await setActiveId([each.companyId]);
       //  activeId.push(each.companyId)
       //  setToggleBtn()
       // })
-      // console.log(activeId,"activeId");
     }
   }, [btnBackgroundColor, data]);
 
   const deleteRecord = async (e) => {
-    // console.log(e);
     const result = await axios.post(API.HOST + deleteApi + "/" + e);
-    // console.log(result);
     if (result.data.status === 200) {
       window.location.reload();
     }
   };
 
-  // const togglefun = async (i, e) => {
-  //   console.log(i, activeId);
-  //   if (i === activeId) {
-  //     console.log(e);
-
-  //     setToggleBtn(e);
-  //   }
-  // };
-
   const getCompany = async () => {
     const result = await axios.get(API.HOST + API.GET_COMPANY_RECORDS);
-    console.log(result);
     if (result.status === 200) {
       // setCompanyList()
       setCompanyData({
@@ -115,7 +95,6 @@ export default function ListLayout({
         }
       });
     }
-    console.log(result.data.tbl_company);
   };
 
   useEffect(() => {
@@ -123,39 +102,30 @@ export default function ListLayout({
   }, []);
 
   const handleToggleList = (id, checked) => {
-    // console.log(checked);
-    // console.log(switches);
     setListData(
       (prevSwitches) =>
         prevSwitches?.map((sw) =>
-          // console.log(sw.companyId , id )
           sw?.[actionID] === id
             ? { ...sw, isActive: checked === true ? 1 : 0 }
             : sw
         )
-
       // prevSwitches.map((sw) => (sw.id === i ? { ...sw, value: checked } : sw))
     );
   };
 
   const handleToggle = (id, checked) => {
-    // console.log(checked);
-    // console.log(switches);
     setSwitches(
       (prevSwitches) =>
         prevSwitches?.map((sw) =>
-          // console.log(sw.companyId , id )
           sw?.companyId === id
             ? { ...sw, isActive: checked === true ? 1 : 0 }
             : sw
         )
-
       // prevSwitches.map((sw) => (sw.id === i ? { ...sw, value: checked } : sw))
     );
   };
 
   const updateCompany = async (id, checked) => {
-    // console.log(id, checked);
     const result = await axios.post(API.HOST + updateApi, {
       [actionID]: id, //Id
       isActive: checked === true ? 1 : 0,
@@ -166,20 +136,7 @@ export default function ListLayout({
       // getRecords()
       // window.location.reload();
     }
-    console.log(result);
   };
-
-  // Get records List
-
-  //   const getRecordsList = async () => {
-  //     const result = await axios.get(API.HOST + ListApi);
-  //     setRecordListData(result.data.tbl_location);
-  //     console.log(result);
-  //   };
-
-  // useEffect(() => {
-  //   getRecordsList()
-  // }, [])
 
   return (
     <div className="">
@@ -281,11 +238,9 @@ export default function ListLayout({
               type="submit"
               className="border rounded-md  py-[10px] bg-accent text-white text-xs"
               onClick={() => {
-                console.log("worked");
                 buttonClick(true);
               }}
             > */}
-
             <ButtonClick
               buttonName={
                 btnName
@@ -298,9 +253,7 @@ export default function ListLayout({
               BtnType="Add"
               type="submit"
               handleSubmit={() => {
-                // console.log(companyData.companyId, "worked");
                 clickDrawer(true);
-
                 buttonClick(btnName, companyData.companyId);
               }}
               className=" flex items-center cursor-pointer  rounded-md font-semibold  bg-accent text-white text-sm md:py-3.5 px-2 md:px-[18px] py-2  "
@@ -387,7 +340,6 @@ export default function ListLayout({
                 </p>
               </div>
               <div className="col-span-1 flex justify-end items-center">
-                {/* {console.log(each.isActive)} */}
                 <Switch
                   checked={parseInt(each.isActive)}
                   onChange={(checked) => {
@@ -412,26 +364,16 @@ export default function ListLayout({
                   // value={toggleBtn } //toggleBtn
                   change={(e) => {
                     // setcompanyId(activeId.at(i));
-
                     // // if (i === activeId) {
                     // //   togglefun(i, e);
                     // // }
-                    // // console.log(each.companyId, activeId);
-                    // console.log(activeId.includes(each.companyId));
-
                     // if (activeId.includes(each.companyId)) {
-                    //   console.log(e);
-
                     //   setToggleBtn(e);
                     // }
-
                     // setToggleBtn(i === activeId ? e : 0);
-                    // console.log(i, activeId);
                     // if (i === activeId) {
                     //  await setToggleBtn(e);
                     // }
-
-                    console.log(e, "e");
                     buttonClick(each.companyId);
                     activeOrNot(e);
                   }}
@@ -442,11 +384,8 @@ export default function ListLayout({
                       <p
                         className=" cursor-pointer"
                         onClick={() => {
-                          buttonClick(each[actionID]); //"8"
+                          buttonClick(each[actionID]);
                           clickDrawer(true);
-
-                          // console.log(actionID);
-                          // console.log(each[actionID]);
                         }}
                       >
                         Update
@@ -456,8 +395,6 @@ export default function ListLayout({
                         onClick={() => {
                           deleteRecord(each[actionID]);
                           // clickDrawer(true);
-
-                          // console.log(each[actionID]);
                         }}
                       >
                         Delete
@@ -488,7 +425,6 @@ export default function ListLayout({
                           defaultChecked={checked}
                           onChange={(e) => {
                             setChecked(e.target.checked);
-                            // console.log(e.target.checked);
                           }}
                         />
                       </th>
@@ -645,11 +581,8 @@ export default function ListLayout({
                           <>
                             <MdEdit
                               onClick={() => {
-                                buttonClick(each[actionID], "edit"); //"8"
+                                buttonClick(each[actionID], "edit");
                                 clickDrawer(true);
-
-                                // console.log(actionID);
-                                // console.log(each[actionID], "ddddddddsfsd");
                               }}
                               className="  dark:text-white cursor-pointer bg-slate-100 text-primary rounded-full p-1 text-2xl"
                             />
@@ -658,8 +591,6 @@ export default function ListLayout({
                               onClick={() => {
                                 deleteRecord(each[actionID]);
                                 // clickDrawer(true);
-
-                                // console.log(each[actionID]);
                               }}
                             />
                           </>

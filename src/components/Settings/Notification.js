@@ -1,12 +1,10 @@
 import React, { useState } from "react";
 import ToggleBtn from "../common/ToggleBtn";
 import { useTranslation } from "react-i18next";
-import { useMediaQuery } from "react-responsive";
 import Accordion from "../common/Accordion";
 import Breadcrumbs from "../common/BreadCrumbs";
 
 export default function Notification() {
-  const isSmallScreen = useMediaQuery({ maxWidth: 1439 });
 
   const { t } = useTranslation();
 
@@ -124,7 +122,6 @@ export default function Notification() {
   //       createdBy: "as"
   //     });
   //   } catch (error) {
-  //     console.log(error);
   //   }
   // }
 
@@ -152,8 +149,6 @@ export default function Notification() {
   //     // // dateOfBirth: yup.string().required("Date of Birth Group is Required"),
   //   }),
   //   onSubmit: async (e) => {
-  //     console.log(e);
-
   //     try {
   //       const result = await axios.post(API.HOST + API.NOTIFICATION_SETTINGS, {
   //         employeeId: loginData.userData.id,
@@ -168,20 +163,15 @@ export default function Notification() {
   //         pushemployeeRequests: e.pushemployeeRequests,
   //         attendanceUpdates: e.attendanceUpdates,
   //       });
-  //       console.log(result);
   //     } catch (error) {}
   //   },
   // });
   // const handleToggleList = (id, checked) => {
-  //   // console.log(checked);
-  //   // console.log(switches);
   //   setNotificationData(
   //     (prevSwitches) =>
   //       prevSwitches?.map((sw, i) =>
-  //         // console.log(sw.companyId , id )
   //         sw?.id === id ? { ...sw, isActive: checked === true ? 1 : 0 } : sw
   //       )
-
   //     // prevSwitches.map((sw) => (sw.id === i ? { ...sw, value: checked } : sw))
   //   );
   // };

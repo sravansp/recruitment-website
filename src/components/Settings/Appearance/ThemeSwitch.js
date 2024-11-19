@@ -30,12 +30,12 @@ const ThemeSwitch = () => {
         disablevoiceCommands: "dffddf",
         showdisablevoiceSuggestion: "fddd",
         isActive: "1",
-        createdBy: "as"
+        createdBy: "as",
       });
     } catch (error) {
-      console.log(error);
+      return error;
     }
-  }
+  };
 
   return (
     <ul className="flex flex-wrap justify-center gap-4 sm:flex-nowrap">
@@ -58,8 +58,9 @@ const ThemeSwitch = () => {
           </div>
           <div className="flex items-center h-10 pl-2 bg-white dark:bg-secondaryDark">
             <RxDot
-              className={`text-xl 2xl:text-3xl ${theme === "light" ? "text-primary" : " text-[#A2A2A2]"
-                } `}
+              className={`text-xl 2xl:text-3xl ${
+                theme === "light" ? "text-primary" : " text-[#A2A2A2]"
+              } `}
             />
             <p className="mb-0 text-[10px] text-black  2xl:text-sm dark:text-white">
               {t("System_light_PurpleBlue")}
@@ -87,15 +88,16 @@ const ThemeSwitch = () => {
           </div>
           <div className="flex items-center h-10 pl-2 bg-white dark:bg-secondaryDark">
             <RxDot
-              className={`text-xl 2xl:text-3xl ${theme === "dark" ? "text-primary" : " text-[#A2A2A2]"
-                } `}
+              className={`text-xl 2xl:text-3xl ${
+                theme === "dark" ? "text-primary" : " text-[#A2A2A2]"
+              } `}
             />
             <p className="mb-0 text-[10px] text-black  2xl:text-sm dark:text-white">
               {t("System_Dark_PurpleBlue")}
             </p>
           </div>
-        </label >
-      </li >
+        </label>
+      </li>
 
       {/* <li className="relative sm:w-36 2xl:w-52">
         <input
@@ -125,7 +127,7 @@ const ThemeSwitch = () => {
           </div>
         </label >
       </li > */}
-    </ul >
+    </ul>
   );
 };
 

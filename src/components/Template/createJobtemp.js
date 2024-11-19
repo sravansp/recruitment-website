@@ -303,7 +303,6 @@ const CreatejobTemp = ({
           is_required: condition.is_required,
           answer_meta_data: condition.answerMetaData,
         }));
-
         if (updateId) {
           const response = await updateRecruitmentJobTemplate({
             id: updateId,
@@ -645,18 +644,9 @@ const CreatejobTemp = ({
   //         value: each.companyId,
   //       }))
   //     );
-  //     // console.log(result.data);
   //   } catch (error) {
-  //     console.log(error);
   //   }
-  //   console.log("company", company);
   // };
-  // useEffect(() => {
-  //   // switch (assignBtnName) {
-  //   //   default:
-  //   getCompany();
-  //   console.log("value", company);
-  // }, []);
 
   const handleCompanyChange = (selectedOption) => {
     setSelectedCompany(selectedOption);
@@ -667,9 +657,7 @@ const CreatejobTemp = ({
   //   try {
   //     // Call the function and await the response
   //     const response = await getAllRecruitmentWorkFlows();
-
   //     // Handle the response
-  //     console.log('Response:', response);
   //     const stageNamesByWorkflowId = {};
   //   response.result.forEach(workflow => {
   //     const { workFlowId, recruitmentWorkFlowStages } = workflow;
@@ -680,24 +668,13 @@ const CreatejobTemp = ({
   //       stageNamesByWorkflowId[workFlowId].push(stage.stageName);
   //     });
   //   });
-
   //     // Assuming the data is in response.data, you can further process it
   //     // setworkFlowId(response.result.map(item => item.stageName))
   //     // ... do something with the data
   //     setStages(stageNamesByWorkflowId)
-
   //   } catch (error) {
-  //     // Handle errors
-  //     console.error('Error:', error);
   //   }
   // };
-  // useEffect(() => {
-  //   fetchData()
-
-  // }, []);
-  // useEffect(() => {
-  //   console.log('Updated Workflow:', Stages);
-  // }, [Stages]);
 
   const fetchData = async () => {
     try {
@@ -744,32 +721,25 @@ const CreatejobTemp = ({
   //   // const jobId = 24;
   //   const modifiedBy = userid
   //   // Update the database with the selected workflow ID for the specific job
-
   //    try {
-  //     console.log(workFlowId)
   //     const response = await updateRecruitmentJob(
   //        jobId,
   //        workFlowId,
   //        modifiedBy,
 
   //     );
-
-  //     console.log(response);
   //     if (response.status === 200) {
-
   //       openNotification(
   //         "success",
   //         "Successful",
   //         response.message
   //       );
   //       setPresentage(2);
-
   //     }
   //   } catch (error) {
-  //     console.error('Error updating workflow ID:', error);
-
   //   }
   // };
+
   const [jobcodelength, setJobcodelength] = useState("");
 
   const getJobsByJoBecode = async () => {
@@ -946,19 +916,14 @@ const CreatejobTemp = ({
         //     setNextStep(nextStep + 1);
         //   } else {
         //     // Handle the case where the radio is not selected, maybe show a message
-        //     console.log('Radio not selected');
         //   }
         // } catch (error) {
         //   console.error('Error handling Workflow:', error);
         formik.handleSubmit();
         // }
         break;
-
       default:
         // // Handle the case when no card is selected
-        // console.log(
-        //   "Please select a card before moving to the next step."
-        // );
         // openNotification(
         //   "error",
         //   "Please choose a card..",
@@ -1018,7 +983,6 @@ const CreatejobTemp = ({
             setActiveBtn(activeBtn - 1);
             setNextStep(nextStep - 1);
             setActiveBtnValue(steps?.[activeBtn - 1].data);
-            console.log(activeBtn - 1);
           }
           setBtnName("");
         }}
@@ -1302,9 +1266,7 @@ const CreatejobTemp = ({
   placeholder={'Enter value'}
   change={(e) => {
     formik.setFieldValue('salaryRangeFrom', e);
-    // Validate Salary Range To when Salary Range From changes
-    console.log(e)
-   
+    // Validate Salary Range To when Salary Range From changes   
   }}
   value={formik.values.salaryRangeFrom}
   type={"number"}
@@ -1802,7 +1764,6 @@ value={formik.values.customFields.default?.[index]?.question}
 
 change={(e) => {
 formik.setFieldValue(`customFields.default[${index}].question`, e);
-console.log("question value", e);
 }}
 />
 
@@ -1811,7 +1772,6 @@ options={Form}
 change={(e) => {
 formik.setFieldValue(`customFields.default[${index}].answer_type`, e);
 handleDropdownChange(e,index)
-console.log("dropdown", e);
 }}
 value={formik.values.customFields.default?.[index]?.answer_type}
 icondropDown={true}

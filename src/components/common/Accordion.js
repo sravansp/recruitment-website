@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import React, { useState } from "react";
 import { IoIosArrowForward } from "react-icons/io";
 import ToggleBtn from "./ToggleBtn";
 
@@ -14,18 +14,15 @@ export default function Accordion({
   tableshow = false,
 }) {
   const [expanded, setExpanded] = useState(initialExpanded);
+
   const primaryColor = localStorage.getItem("mainColor");
+
   // const toggleAccordion = (id) => {
   //   setExpanded((prevExpanded) => ({
   //     ...prevExpanded,
   //     [id]: !prevExpanded[id],
   //   }));
   // };
-
-  useEffect(() => {
-    // console.log(expanded[1]);
-    // console.log(data)
-  }, [expanded]);
 
   return (
     <div className="relative flex flex-col gap-6" onClick={() => click()}>

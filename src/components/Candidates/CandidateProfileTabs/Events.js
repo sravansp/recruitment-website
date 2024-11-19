@@ -43,8 +43,6 @@ const tabData = [
   // },
 ];
 const Events = () => {
-  const [content, setContent] = useState("");
-
   const { state } = useLocation();
 
   const [showAddEventSection, setShowAddEventSection] = useState(false);
@@ -280,14 +278,11 @@ const CreateEventSection = ({ onCreateEventClick }) => {
 const Eventlist = ({ onCreateEventClick, primaryColor }) => {
   const { resumeId } = useParams();
   const [eventList, seteventList] = useState([]);
-
   const getEvents = async () => {
     try {
       const response = await getAllRecruitmentJobResumesEvents({
         resumeId: resumeId,
       });
-
-      console.log(response);
       seteventList(
         response.result.map((item) => ({
           id: item.jobResumeEventId,
@@ -307,13 +302,12 @@ const Eventlist = ({ onCreateEventClick, primaryColor }) => {
           })),
         }))
       );
-    } catch (errro) {
-      console.log(errro);
+    } catch (error) {
+      return error;
     }
   };
   useEffect(() => {
     getEvents();
-    console.log(eventList);
   }, []);
 
   return (
@@ -328,7 +322,6 @@ const Eventlist = ({ onCreateEventClick, primaryColor }) => {
           handleSubmit={onCreateEventClick}
         />
       </div>
-
       {eventList.map((event, index) => (
         <div
           className="flex flex-col gap-3 p-4 bg-white rounded-lg borderb dark:bg-transparent"
@@ -374,13 +367,19 @@ const Eventlist = ({ onCreateEventClick, primaryColor }) => {
 // EVENT FORM SECTION
 const FormSection = ({ onCancel }) => {
   const [EventDropValue, setEventDropValue] = useState("online");
-  const [durationValue, setDurationValue] = useState("15min");
+
   const primaryColor = localStorage.getItem("mainColor");
+
   const [jobId, setJobId] = useState(null);
+
   const { state } = useLocation();
+
   const { resumeId } = useParams();
+
   const [selectedvalue, setselectedvalue] = useState("");
+
   const [api, contextHolder] = notification.useNotification();
+
   const openNotification = (type, message, description) => {
     api[type]({
       message: message,
@@ -402,6 +401,7 @@ const FormSection = ({ onCancel }) => {
       // duration: null,
     });
   };
+
   useEffect(() => {
     if (state && state.jobID) {
       setJobId(state.jobID);
@@ -412,6 +412,7 @@ const FormSection = ({ onCancel }) => {
       }
     }
   }, [state]);
+
   const formik = useFormik({
     initialValues: {
       jobId: "",
@@ -426,7 +427,6 @@ const FormSection = ({ onCancel }) => {
         notes: "",
       },
       attendees: [],
-
       createdBy: "",
     },
     onSubmit: async (e) => {
@@ -446,16 +446,18 @@ const FormSection = ({ onCancel }) => {
           attendees: selectedvalue,
           createdBy: null,
         });
-        console.log(response);
         if (response.status == 200) {
           openNotification("success", "Successful", response.message);
           formik.resetForm();
         } else if (response.status === 500) {
           openNotification("error", response.message);
         }
-      } catch (error) {}
+      } catch (error) {
+        return error;
+      }
     },
   });
+
   const [selectedUserIds, setSelectedUserIds] = useState([]);
 
   const handleAddUser = (userId) => {
@@ -464,9 +466,9 @@ const FormSection = ({ onCancel }) => {
     }
     setselectedvalue(userId); // Set selectedValue to the updated selectedUserIds array
   };
-  console.log(selectedvalue);
 
   const [employee, setEmpoloyee] = useState([]);
+
   const employeeList = async () => {
     try {
       const response = await getAllRecruitmentUsers();
@@ -482,9 +484,9 @@ const FormSection = ({ onCancel }) => {
       );
     } catch (error) {}
   };
+
   useEffect(() => {
     employeeList();
-    console.log(employee);
   }, []);
 
   return (
@@ -498,7 +500,6 @@ const FormSection = ({ onCancel }) => {
             value={formik.values.eventName}
             change={(e) => {
               formik.setFieldValue("eventName", e);
-              console.log(e);
             }}
           />
           <div className="grid gap-4 md:grid-cols-3">
@@ -612,7 +613,6 @@ const FormSection = ({ onCancel }) => {
             </div>
           </div> */}
           </div>
-
           <TextArea
             title="Note"
             placeholder="Add note..."
@@ -623,7 +623,6 @@ const FormSection = ({ onCancel }) => {
           />
         </div>
       </div>
-
       <div
         className="flex items-center justify-end gap-2.5 p-1.5 rounded-lg"
         style={{ backgroundColor: `${primaryColor}10` }}

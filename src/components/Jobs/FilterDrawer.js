@@ -1,5 +1,4 @@
 import React, { useState } from "react";
-import { useTranslation } from "react-i18next";
 import DrawerPop from "../common/DrawerPop";
 import SearchBox from "../common/SearchBox";
 
@@ -63,19 +62,21 @@ const dateAdded = [
 ];
 
 export default function FilterDrawer({ open, close = () => {}, colors }) {
-  console.log(colors);
   const primaryColor = localStorage.getItem("mainColor");
-  const { t } = useTranslation();
-  const [show, setShow] = useState(open);
-  const [checkedList, setCheckedList] = useState(progress); //Check box 1
-  const [checkedList2, setCheckedList2] = useState(dateAdded); //Check box 2
 
-  //   Check Box 1
+  const [show, setShow] = useState(open);
+
+  const [checkedList, setCheckedList] = useState(progress);
+  
+  const [checkedList2, setCheckedList2] = useState(dateAdded);
+
   const totalProgressCount = progress.reduce(
     (total, item) => total + item.count,
     0
   );
+
   const checkAll = checkedList.length === progress.length;
+
   const indeterminate =
     checkedList.length > 0 && checkedList.length < progress.length;
 
@@ -89,6 +90,7 @@ export default function FilterDrawer({ open, close = () => {}, colors }) {
 
   //   CheckBox 2
   const checkAll2 = checkedList2.length === dateAdded.length;
+  
   const indeterminate2 =
     checkedList2.length > 0 && checkedList2.length < dateAdded.length;
 

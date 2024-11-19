@@ -1,7 +1,6 @@
+/* eslint-disable react-hooks/exhaustive-deps */
 import React, { useState, useMemo, useEffect } from "react";
-
 import { motion } from "framer-motion";
-import TableAnt from "./TableAnt";
 import SearchBox from "./SearchBox";
 import ToggleBtn from "./ToggleBtn";
 import { Button, Dropdown } from "antd";
@@ -37,9 +36,10 @@ function JobTabs({
   checkBox = true,
   tabClick = () => {},
 }) {
-  // const [activeTab, setActiveTab] = useState(tabs[0].id);
-  const [activeTab, setActiveTab] = useState(true)
+  const [activeTab, setActiveTab] = useState(true);
+
   const [changeData, setChangedata] = useState(false);
+
   const [tabeName, setTabName] = useState("company");
 
   useEffect(() => {
@@ -48,7 +48,7 @@ function JobTabs({
         const response = await axios.post("");
         setActiveTab(response.data);
       } catch (error) {
-        console.error(error, "error");
+        return error;
       }
     };
     fetchdata();
@@ -57,6 +57,7 @@ function JobTabs({
   useMemo(() => {
     setChangedata(true);
   }, [activeTab]);
+
   const isSmallScreen = useMediaQuery({ maxWidth: 1439 });
 
   return (
@@ -96,7 +97,7 @@ function JobTabs({
           ))}
         </div>
       </div>
-      <SearchBox className="mt-1 h-12"placeholder="Search jobs" />
+      <SearchBox className="mt-1 h-12" placeholder="Search jobs" />
 
       <ToggleBtn className="mt-2 ml-80" />
       <p className="mt-2">Show Stages</p>
@@ -111,14 +112,12 @@ function JobTabs({
         // trigger={["click"]}
         // open={dropdownVisible}
         // onOpenChange={(visible) => {
-        //   console.log(visible);
         //   setDropdownVisible(visible);
         // }}
       >
         <Button
           className="flex items-center dark:bg-black dark:text-white justify-center h-full font-medium flex-nowrap bg-[#FAFAFA] gap-2"
           onClick={(e) => {
-            // console.log(e);
             // e.stopPropagation(); // Prevent dropdown from closing
             // setDropdownVisible(!dropdownVisible);
           }}
@@ -130,11 +129,14 @@ function JobTabs({
           </span>
         </Button>
       </Dropdown>
-      <Button className="flex items-center dark:bg-black dark:text-white justify-center h-full font-medium flex-nowrap bg-[#FAFAFA] gap-2" size={isSmallScreen ? "default" : "large"}>
-      <span className="mr-2">{"Sort by"}</span>
-      <span className="ml-auto">
-            <LuArrowDownUp className="text-base 2xl:text-lg" />
-          </span>
+      <Button
+        className="flex items-center dark:bg-black dark:text-white justify-center h-full font-medium flex-nowrap bg-[#FAFAFA] gap-2"
+        size={isSmallScreen ? "default" : "large"}
+      >
+        <span className="mr-2">{"Sort by"}</span>
+        <span className="ml-auto">
+          <LuArrowDownUp className="text-base 2xl:text-lg" />
+        </span>
       </Button>
       <Button
         className="flex items-center justify-center h-full  font-medium bg-white dark:bg-black dark:text-white flex-nowrap gap-2"

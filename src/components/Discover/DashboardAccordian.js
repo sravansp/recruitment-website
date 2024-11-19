@@ -17,10 +17,6 @@ export default function DashboardAccordion({
 }) {
   const [expanded, setExpanded] = useState(initialExpanded);
 
-  useEffect(() => {
-    console.log(expanded[1]);
-  }, [expanded]);
-
   return (
     <div
       className={`border border-secondaryDark dark:border-secondaryWhite border-opacity-10 dark:border-opacity-10 ${className}`}

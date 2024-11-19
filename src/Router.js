@@ -24,18 +24,22 @@ import CandidateProfile from "./components/Candidates/CandidateProfile";
 import Discover from "./components/Discover/Discover";
 import Privileges from "./components/Settings/Privileges";
 import Reports from "./components/Reports/Reports";
-import SmallScreenMenu from "./components/Menus/SmallScreenMenu";
 
 export default function Router() {
   const { i18n } = useTranslation();
+
   const layout = useSelector((state) => state.layout.value);
+
   const mode = useSelector((state) => state.layout.mode);
-  const selectedDataId = useSelector((state) => state.dataId.selectedDataId);
+
   const dispatch = useDispatch();
+
   const [loginData, setLoginData] = useState();
+
   const changeLanguage = (language) => {
     i18n.changeLanguage(language);
   };
+
   useEffect(() => {
     const layout = localStorage.getItem("layout");
     if (layout !== null) {
@@ -52,8 +56,6 @@ export default function Router() {
   //   }
   // }, []);
 
-  console.log(layout, "layout=====");
-
   return (
     <BrowserRouter>
       {loginData ? (
@@ -62,7 +64,6 @@ export default function Router() {
           dir={layout}
         >
           {/* <NavigationMenu /> */} <Sidebar />
-          {/* <NavigationMenu /> */} <SmallScreenMenu />
           <div className="absolute top-0 h-full overflow-auto transition-all duration-300 home dark:bg-[#171C28] pink:bg-pink-600">
             <Header />
             <div className="relative px-4 py-8 md:p-4 2xl:p-8 content">

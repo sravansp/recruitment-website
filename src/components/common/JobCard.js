@@ -1,27 +1,25 @@
-import { Card } from "antd";
-import { Options } from "devextreme-react/autocomplete";
-import React, { useRef, useState,useEffect } from "react";
+/* eslint-disable react-hooks/exhaustive-deps */
+
+import React, { useRef, useState, useEffect } from "react";
 import { BsFillLightningFill, BsThreeDotsVertical } from "react-icons/bs";
 
-import { MdArrowBackIos, MdArrowForwardIos, MdMessage } from "react-icons/md";
+import { MdArrowForwardIos, MdMessage } from "react-icons/md";
 
 function JobCard({
   card = false,
-  selectcard =()=>{},
-  options=[],
-  renderContent ,
+  selectcard = () => {},
+  options = [],
+  renderContent,
   selectable = true, // New prop to control whether cards can be selected
-  firstCardSelectable = true, 
-
-
+  firstCardSelectable = true,
 }) {
-
-  const itemsPerPage = 6;
   const containerRef = useRef(0);
+
   const scrollAmount = 253;
+
   const [selectedId, setSelectedId] = useState(null);
-  const [Count,setCount]=useState("")
-  const primaryColor = localStorage.getItem('mainColor')
+
+  const primaryColor = localStorage.getItem("mainColor");
 
   const slidemover = () => {
     const container = containerRef.current;
@@ -32,45 +30,23 @@ function JobCard({
   const handleSvgClick = (id, index) => {
     // Check if selectable prop is false or it's the first card and firstCardSelectable prop is false
     if (!selectable || (index === 0 && !firstCardSelectable)) return;
-
-    // Toggle the selected state
     setSelectedId((prevId) => (prevId === id ? null : id));
-    // Call the selectcard function
     selectcard(id);
-    console.log(options)
-    console.log(selectedId)
   };
-  
-  
 
-  // Save the selectedId to localStorage whenever it changes
- 
   useEffect(() => {
     if (options.length > 0 && selectable && firstCardSelectable) {
       const firstItemId = options[0].id;
       setSelectedId(firstItemId);
       selectcard(firstItemId);
-      console.log(selectedId);
     }
   }, [options]);
 
-
-  
-
-
-
-
-
-
-
   return (
-    
-    
     <div className="flex ">
       <div className="flex    overflow-x-auto " ref={containerRef}>
         {options.map((each, index) => (
           <div key={index} className="flex items-center ">
-             
             {index === 0 && (
               <svg
                 xmlns="http://www.w3.org/2000/svg"
@@ -78,9 +54,12 @@ function JobCard({
                 height="74"
                 viewBox="0 0 253 74"
                 fill="none"
-                className={`svg-item ${selectedId === each.id ? "selected" : ""}`}
-                onClick={(e) => {selectcard(each.id)
-                  handleSvgClick(each.id)
+                className={`svg-item ${
+                  selectedId === each.id ? "selected" : ""
+                }`}
+                onClick={(e) => {
+                  selectcard(each.id);
+                  handleSvgClick(each.id);
                 }}
               >
                 <path
@@ -103,7 +82,6 @@ function JobCard({
                 <foreignObject x="30" y="40" width="34" height="26">
                   <p className="flex items-center justify-center rounded-md bg-violet-100 font-semibold text-sm px-1 py-1">
                     {each.number}
-                  
                   </p>
                 </foreignObject>
                 <foreignObject x="210" y="50" width="100" height="40">
@@ -123,9 +101,12 @@ function JobCard({
                   height="74"
                   viewBox="0 0 253 74"
                   fill="none"
-                  className={`svg-item ${selectedId === each.id ? "selected" : ""}`}
-                  onClick={(e) => {selectcard(each.id)
-                    handleSvgClick(each.id)
+                  className={`svg-item ${
+                    selectedId === each.id ? "selected" : ""
+                  }`}
+                  onClick={(e) => {
+                    selectcard(each.id);
+                    handleSvgClick(each.id);
                   }}
                 >
                   <path
@@ -143,7 +124,8 @@ function JobCard({
                     fill="black"
                     className="font-semibold text-sm "
                   >
-                    {/* {each.label} */}{each.title}
+                    {/* {each.label} */}
+                    {each.title}
                   </text>
                   <foreignObject x="40" y="40" width="24" height="26">
                     <p className="flex items-center justify-center rounded-md bg-violet-100 font-semibold text-sm  px-1 py-1 w-full">
@@ -151,15 +133,23 @@ function JobCard({
                       12
                     </p>
                   </foreignObject>
-                  <foreignObject x="75" y="43"  style={{ color: "gray",width:"18px",height:"18px" }} size={18}>
+                  <foreignObject
+                    x="75"
+                    y="43"
+                    style={{ color: "gray", width: "18px", height: "18px" }}
+                    size={18}
+                  >
                     {/* {each.icons1} */}
-                    <MdMessage/>
-                    
+                    <MdMessage />
                   </foreignObject>
-                  <foreignObject x="100" y="43"   style={{ color: "#FF9900" ,width:"11px",height:"17px"}}
-                      size={18}>
+                  <foreignObject
+                    x="100"
+                    y="43"
+                    style={{ color: "#FF9900", width: "11px", height: "17px" }}
+                    size={18}
+                  >
                     {each.icons2}
-                    <BsFillLightningFill/>
+                    <BsFillLightningFill />
                   </foreignObject>
                   <foreignObject x="210" y="50" width="100" height="40">
                     <button
@@ -178,9 +168,12 @@ function JobCard({
                 height="74"
                 viewBox="0 0 211 74"
                 fill="none"
-                className={`svg-item ${selectedId === each.id ? "selected" : ""}`}
-                onClick={(e) => {selectcard(each.id)
-                  handleSvgClick(each.id)
+                className={`svg-item ${
+                  selectedId === each.id ? "selected" : ""
+                }`}
+                onClick={(e) => {
+                  selectcard(each.id);
+                  handleSvgClick(each.id);
                 }}
               >
                 <path
@@ -219,18 +212,35 @@ function JobCard({
                     {each.nummber}
                   </p>
                 </foreignObject>
-                <foreignObject x="75" y="43" width="34" height="26"style={{ color: "gray" }} size={18} >
+                <foreignObject
+                  x="75"
+                  y="43"
+                  width="34"
+                  height="26"
+                  style={{ color: "gray" }}
+                  size={18}
+                >
                   {each.icons2}
                 </foreignObject>
-                <foreignObject x="100" y="43" width="34" height="26"style={{ color: "#FF9900" }} size={19}>
+                <foreignObject
+                  x="100"
+                  y="43"
+                  width="34"
+                  height="26"
+                  style={{ color: "#FF9900" }}
+                  size={19}
+                >
                   {each.icons2}
                 </foreignObject>
 
                 <foreignObject x="190" y="50" width="100" height="40">
                   <button
-                    style={{color: `${primaryColor}`, width: "2px", height: "13px" }}
+                    style={{
+                      color: `${primaryColor}`,
+                      width: "2px",
+                      height: "13px",
+                    }}
                   >
-                    
                     <BsThreeDotsVertical />
                   </button>
                 </foreignObject>
@@ -245,7 +255,9 @@ function JobCard({
           onClick={slidemover}
         >
           <span className=" inset-0 flex items-center justify-center rounded-md bg-white">
-          <span className={`flex items-center justify-center w-6 h-6 rounded-full border-2 border-[${primaryColor}] bg-[${primaryColor}10]`}>
+            <span
+              className={`flex items-center justify-center w-6 h-6 rounded-full border-2 border-[${primaryColor}] bg-[${primaryColor}10]`}
+            >
               <MdArrowForwardIos
                 style={{ width: "10.69px", height: "17.37", color: "black" }}
               />
@@ -257,7 +269,6 @@ function JobCard({
         </button> */}
       </div>
     </div>
-  
   );
 }
 
