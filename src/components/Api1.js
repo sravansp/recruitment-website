@@ -1,13 +1,13 @@
 import axios from "axios";
 
 // const apiUrl = 'http://192.168.29.185/loyaltri-recruitment-server/api/v1';
-// const apiUrl = "https://alpha-jobs-api.loyaltri.com/api/v1";
+const apiUrl = "https://alpha-jobs-api.loyaltri.com/api/v1";
 // const apiUrl = 'https://jobs-api.loyaltri.com/api/v1';
 
 // const apiUrl = "https://web-jobs-api.loyaltri.com/api/v1";
 // const apiUrl = "http://192.168.0.45/loyaltri-recruitment-server/api/v1";
 
-const apiUrl = "https://demo-jobs-api.loyaltri.com/api/v1";
+// const apiUrl = "https://demo-jobs-api.loyaltri.com/api/v1";
 
 const token = localStorage.getItem("token");
 
