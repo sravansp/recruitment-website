@@ -813,8 +813,8 @@ const action = async (actionUrl, params = {}, url = apiUrl, headers) => {
 export { action };
 
 // file handling url
-// const urlFileHandler = "https://alpha-jobs-api.loyaltri.com/api/fileHandler";
-const urlFileHandler = "https://demo-jobs-api.loyaltri.com/api/fileHandler";
+const urlFileHandler = "https://alpha-jobs-api.loyaltri.com/api/fileHandler";
+// const urlFileHandler = "https://demo-jobs-api.loyaltri.com/api/fileHandler";
 // const urlFileHandler = "https://web-jobs-api.loyaltri.com/api/fileHandler";
 // const urlFileHandler = "https://jobs-api.loyaltri.com/api/fileHandler";
 const fileAction = async (formData) => {
