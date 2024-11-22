@@ -1,10 +1,10 @@
-
-"use client"
+"use client";
 import { useState, useEffect } from "react";
 
 export default function useDarkSide() {
   // Check if localStorage is available and retrieve the theme
-  const initialTheme = typeof window !== "undefined" ? localStorage.theme : null;
+  const initialTheme =
+    typeof window !== "undefined" ? localStorage.theme : null;
 
   // Set a default theme if localStorage.theme is not available
   const defaultTheme = "light";

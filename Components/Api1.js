@@ -6,7 +6,6 @@ const fileAction = async (formData) => {
     const result = await axios.post(urlFileHandler, formData, {
       "Content-Type": "multipart/form-data",
     });
-    // console.log(result.data);
     return result.data;
   } catch (error) {
     return error;

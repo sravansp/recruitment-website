@@ -7,6 +7,7 @@ import Link from "next/link";
 
 const Login = () => {
   const router = useRouter();
+
   const handleSignInWithGoogle = () => {
     router.push("/Form");
   };

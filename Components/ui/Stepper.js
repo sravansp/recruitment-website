@@ -179,7 +179,7 @@ export default function Stepper({
   const [newSteps, setNewSteps] = useState([]);
   const [primaryColor, setPrimaryColor] = useState("");
   useEffect(() => {
-    const color = localStorage.getItem("themeColor");
+    const color = typeof window !== "undefined" ? localStorage.getItem("themeColor") : null;
     if (color) {
       setPrimaryColor(color);
     }

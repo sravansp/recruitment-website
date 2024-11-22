@@ -6,22 +6,28 @@ import FormInput from "@components/ui/FormInput";
 import AddMore from "@components/ui/AddMore";
 import { RiDeleteBin5Line } from "react-icons/ri";
 import { useFormik } from "formik";
-import * as Yup from 'yup';
+import * as Yup from "yup";
 
 function EducationalDetails() {
-  const [primaryColor, setPrimaryColor] = useState('');
+  const [primaryColor, setPrimaryColor] = useState("");
+
   useEffect(() => {
-    
-    const color = localStorage.getItem("themeColor");
+    const color =
+      typeof window !== "undefined" ? localStorage.getItem("themeColor") : null;
     if (color) {
       setPrimaryColor(color);
     }
   }, []);
+
   const validationSchema = Yup.object().shape({
-    schoolOrUniversity: Yup.string().required('School or University is required'),
-    degree: Yup.string().required('Degree is required'),
-    fieldOfStudy: Yup.string().required('Field of Study is required'),
-    year: Yup.number().required('Year is required').positive('Year must be a positive number'),
+    schoolOrUniversity: Yup.string().required(
+      "School or University is required"
+    ),
+    degree: Yup.string().required("Degree is required"),
+    fieldOfStudy: Yup.string().required("Field of Study is required"),
+    year: Yup.number()
+      .required("Year is required")
+      .positive("Year must be a positive number"),
   });
 
   const formik = useFormik({
@@ -33,17 +39,15 @@ function EducationalDetails() {
     },
     validationSchema: validationSchema,
     onSubmit: (values, { setSubmitting }) => {
-      // Handle form submission here
-      console.log(values);
       setSubmitting(false);
     },
   });
   return (
     <div>
       <div className="flex flex-col gap-6">
-        <FlexCol/>
+        <FlexCol />
         <div className="relative  w-full mx-auto borderb rounded-md">
-          <FlexCol/>
+          <FlexCol />
           <div className="relative flex flex-col gap-12">
             <div className="p-1 bg-white rounded-[10px] dark:bg-transparent dark:border dark:border-secondaryWhite border-opacity-20 dark:border-opacity-10">
               <h2>
@@ -71,8 +75,8 @@ function EducationalDetails() {
                     className="text-[#344054]"
                     name="schoolOrUniversity"
                     value={formik.values.schoolOrUniversity}
-                    change={(e)=>{
-                      formik.setFieldValue('schoolOrUniversity',e)
+                    change={(e) => {
+                      formik.setFieldValue("schoolOrUniversity", e);
                     }}
                     required={true}
                     error={formik.errors.schoolOrUniversity}
@@ -83,8 +87,8 @@ function EducationalDetails() {
                     name="degree"
                     className="text-[#344054]"
                     value={formik.values.degree}
-                    change={(e)=>{
-                      formik.setFieldValue('degree',e)
+                    change={(e) => {
+                      formik.setFieldValue("degree", e);
                     }}
                     required={true}
                     error={formik.errors.degree}
@@ -96,24 +100,21 @@ function EducationalDetails() {
                     placeholder={"Eg: Business"}
                     className="text-[#344054]"
                     name="fieldOfStudy"
-                  
                     value={formik.values.fieldOfStudy}
-                    change={(e)=>{
-                      formik.setFieldValue('fieldOfStudy',e)
+                    change={(e) => {
+                      formik.setFieldValue("fieldOfStudy", e);
                     }}
                     required={true}
                     error={formik.errors.fieldOfStudy}
-                    
                   />
                   <FormInput
                     title={"Year"}
                     placeholder={"Year"}
                     className="text-[#344054]"
                     name="year"
-                  
                     value={formik.values.year}
-                    change={(e)=>{
-                      formik.setFieldValue('year',e)
+                    change={(e) => {
+                      formik.setFieldValue("year", e);
                     }}
                     required={true}
                     error={formik.errors.year}
@@ -128,8 +129,8 @@ function EducationalDetails() {
                     className="text-[#344054]"
                     name="schoolOrUniversity"
                     value={formik.values.schoolOrUniversity}
-                    change={(e)=>{
-                      formik.setFieldValue('schoolOrUniversity',e)
+                    change={(e) => {
+                      formik.setFieldValue("schoolOrUniversity", e);
                     }}
                     required={true}
                     error={formik.errors.schoolOrUniversity}
@@ -139,10 +140,9 @@ function EducationalDetails() {
                     placeholder={"Eg: Bachelor’s"}
                     className="text-[#344054]"
                     name="degree"
-                    
                     value={formik.values.degree}
-                    change={(e)=>{
-                      formik.setFieldValue('degree',e)
+                    change={(e) => {
+                      formik.setFieldValue("degree", e);
                     }}
                     required={true}
                     error={formik.errors.degree}
@@ -154,10 +154,9 @@ function EducationalDetails() {
                     placeholder={"Eg: Business"}
                     className="text-[#344054]"
                     name="fieldOfStudy"
-                  
                     value={formik.values.fieldOfStudy}
-                    change={(e)=>{
-                      formik.setFieldValue('fieldOfStudy',e)
+                    change={(e) => {
+                      formik.setFieldValue("fieldOfStudy", e);
                     }}
                     required={true}
                     error={formik.errors.fieldOfStudy}
@@ -167,10 +166,9 @@ function EducationalDetails() {
                     placeholder={"Year"}
                     className="text-[#344054]"
                     name="year"
-                  
                     value={formik.values.year}
-                    change={(e)=>{
-                      formik.setFieldValue('year',e)
+                    change={(e) => {
+                      formik.setFieldValue("year", e);
                     }}
                     required={true}
                     error={formik.errors.year}
@@ -178,7 +176,7 @@ function EducationalDetails() {
 
                   <RiDeleteBin5Line className="text-gray-500 w-[17px] h-[17px] justify-end " />
                 </div>
-                <AddMore name="Add More Experience "  />
+                <AddMore name="Add More Experience " />
               </div>
             </div>
           </div>

@@ -10,7 +10,7 @@ const items = [
       { label: "Full-time", value: "Full Time" },
       { label: "Part Time", value: "Part Time" },
       { label: "Temporary", value: "temporary" },
-      { label: "Intern", value: "intern" }
+      { label: "Intern", value: "intern" },
     ],
   },
   {
@@ -20,14 +20,14 @@ const items = [
       { label: "AbovePostGraduate", value: "AbovePostGraduate" },
       { label: "Graduate", value: "Graduate" },
       { label: "SchoolLevel", value: "SchoolLevel" },
-      { label: "UnderGraduate", value: "UnderGraduate" }
+      { label: "UnderGraduate", value: "UnderGraduate" },
     ],
   },
 ];
 
 const CustomDropdown = ({ filteredJobs, onFilterChange }) => {
   const [selectedFilters, setSelectedFilters] = useState({});
-  const [jobs, setJobs] = useState({})
+  const [jobs, setJobs] = useState({});
 
   const handleCheckboxChange = (sectionTitle, checkboxValue) => {
     setSelectedFilters((prevFilters) => {
@@ -35,12 +35,12 @@ const CustomDropdown = ({ filteredJobs, onFilterChange }) => {
         ...(prevFilters[sectionTitle] || {}),
         [checkboxValue]: !prevFilters[sectionTitle]?.[checkboxValue],
       };
-  
+
       // Remove the filter if unchecked
       if (!updatedSectionFilters[checkboxValue]) {
         delete updatedSectionFilters[checkboxValue];
       }
-  
+
       // If no options are selected in a section, remove the section
       if (Object.keys(updatedSectionFilters).length === 0) {
         const { [sectionTitle]: deletedFilter, ...rest } = prevFilters;
@@ -48,23 +48,18 @@ const CustomDropdown = ({ filteredJobs, onFilterChange }) => {
         console.log("Updated filters:", rest);
         return rest;
       }
-  
+
       console.log("Updated filters:", {
         ...prevFilters,
         [sectionTitle]: updatedSectionFilters,
       });
-  
+
       return {
         ...prevFilters,
         [sectionTitle]: updatedSectionFilters,
       };
     });
   };
-  
-  
-  
-  
-  
 
   // useEffect(() => {
   //   const filterJobs = filteredJobs.filter((job) => {
@@ -121,54 +116,61 @@ const CustomDropdown = ({ filteredJobs, onFilterChange }) => {
       return Object.keys(selectedFilters).every((filterKey) => {
         const selectedOptions = selectedFilters[filterKey];
         const jobValue = job[filterKey];
-  
+
         // Custom filtering logic for specific criteria
         if (filterKey === "jobType" || filterKey === "education") {
           // Check if any selected job type matches the job's type
-          return Object.keys(selectedOptions).some(option => selectedOptions[option] && jobValue === option);
+          return Object.keys(selectedOptions).some(
+            (option) => selectedOptions[option] && jobValue === option
+          );
         } else {
           // For other filter keys (e.g., "Degree"), use the previous logic
-          return Object.keys(selectedOptions).some(option => selectedOptions[option] && jobValue === option);
+          return Object.keys(selectedOptions).some(
+            (option) => selectedOptions[option] && jobValue === option
+          );
         }
       });
     });
-  
+
     // Initialize variables to hold filtered jobs by job type and education
     const filteredByJobType = {
-      'Full Time': [],
-      'Part Time': [],
-      'Temporary': [],
-      'Intern': []
+      "Full Time": [],
+      "Part Time": [],
+      Temporary: [],
+      Intern: [],
     };
-  
+
     const filteredByEducation = {
-      'PostGraduate': [],
-      'Above PostGraduate': [],
-      'Graduate': [],
-      'School Level': [],
-      'UnderGraduate': []
+      PostGraduate: [],
+      "Above PostGraduate": [],
+      Graduate: [],
+      "School Level": [],
+      UnderGraduate: [],
     };
-  
+
     // Iterate over filtered jobs and categorize them based on job type and education
-    filteredJobs.forEach(job => {
+    filteredJobs.forEach((job) => {
       // Check if the job type exists in filteredByJobType and initialize if not
-      if (!filteredByJobType[job['jobType']]) {
-        filteredByJobType[job['jobType']] = [];
+      if (!filteredByJobType[job["jobType"]]) {
+        filteredByJobType[job["jobType"]] = [];
       }
       // Check if the education level exists in filteredByEducation and initialize if not
-      if (!filteredByEducation[job['education']]) {
-        filteredByEducation[job['education']] = [];
+      if (!filteredByEducation[job["education"]]) {
+        filteredByEducation[job["education"]] = [];
       }
       // Push the job into the corresponding arrays
-      filteredByJobType[job['jobType']].push(job);
-      filteredByEducation[job['education']].push(job);
+      filteredByJobType[job["jobType"]].push(job);
+      filteredByEducation[job["education"]].push(job);
     });
-  
+
     // Merge filtered jobs by job type and education into a single array
     const mergedJobs = Object.values(filteredByJobType)
       .concat(Object.values(filteredByEducation))
-      .reduce((accumulator, currentValue) => accumulator.concat(currentValue), []);
-  
+      .reduce(
+        (accumulator, currentValue) => accumulator.concat(currentValue),
+        []
+      );
+
     // Update the state based on merged jobs
     if (mergedJobs.length === 0) {
       console.log("No matching jobs found.");
@@ -177,10 +179,8 @@ const CustomDropdown = ({ filteredJobs, onFilterChange }) => {
       setJobs(mergedJobs);
       onFilterChange(filterJobs); // Call onFilterChange here
     }
-  }, [ onFilterChange]);
-  
+  }, [onFilterChange]);
 
-  
   // useEffect(() => {
   //   console.log(jobs, "Updated jobs");
   // }, [jobs]);
@@ -202,7 +202,7 @@ const CustomDropdown = ({ filteredJobs, onFilterChange }) => {
   );
 
   return (
-    <Dropdown overlay={menu} trigger={["hover"]}  jobs={jobs}>
+    <Dropdown overlay={menu} trigger={["hover"]} jobs={jobs}>
       <a className="ant-dropdown-link para text-[#656565] cursor-pointer">
         Filter Jobs <DownOutlined />
       </a>

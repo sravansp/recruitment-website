@@ -10,7 +10,7 @@ function page() {
     const [primaryColor, setPrimaryColor] = useState('');
     useEffect(() => {
     
-        const color = localStorage.getItem("themeColor");
+        const color = typeof window !== "undefined" ? localStorage.getItem("themeColor") : null;
         if (color) {
           setPrimaryColor(color);
         }

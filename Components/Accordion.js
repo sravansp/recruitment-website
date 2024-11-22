@@ -3,7 +3,13 @@ import React, { useEffect, useState } from "react";
 import { motion, AnimatePresence } from "framer-motion";
 import { Checkbox } from "antd";
 
-const AccordionItem = ({ title, checkboxes, isOpen, isActive, onCheckboxChange }) => {
+const AccordionItem = ({
+  title,
+  checkboxes,
+  isOpen,
+  isActive,
+  onCheckboxChange,
+}) => {
   return (
     <AnimatePresence>
       {isActive && (
@@ -20,7 +26,9 @@ const AccordionItem = ({ title, checkboxes, isOpen, isActive, onCheckboxChange }
                 <Checkbox
                   key={checkbox.value}
                   value={checkbox.value}
-                  onChange={(e) => onCheckboxChange(title, checkbox.value, e.target.checked)}
+                  onChange={(e) =>
+                    onCheckboxChange(title, checkbox.value, e.target.checked)
+                  }
                 >
                   {checkbox.label}
                 </Checkbox>

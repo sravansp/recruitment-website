@@ -10,7 +10,6 @@ import SearchBox from "@/Components/SearchBox";
 import { PiMagnifyingGlass, PiNavigationArrow } from "react-icons/pi";
 import { useMediaQuery } from "react-responsive";
 import { useRouter } from "next/navigation";
-import Link from "next/link";
 
 import {
   getAllRecruitmentJobs,
@@ -24,38 +23,34 @@ import CustomDropdown from "@/Components/Filter";
 
 const Home = ({ jobs }) => {
   const [selectedJobId, setSelectedJobId] = useState(1);
-  const [selectedJob, setSelectedJob] = useState(); // Change to null
+  const [selectedJob, setSelectedJob] = useState();
   const [JobsList, setJobList] = useState([]);
   const [searchJobTitle, setSearchJobTitle] = useState("");
   const [searchJobLocation, setSearchJobLocation] = useState("");
   const [filteredJobs, setFilteredJobs] = useState([]);
-  const [searchKeywords, setSearchKeywords] = useState("")
-
-
+  const [searchKeywords, setSearchKeywords] = useState("");
   const jobDetailsAnimation = useAnimation();
   const isSmallScreen = useMediaQuery({ maxWidth: 767 });
   const [drawerVisible, setDrawerVisible] = useState(false);
   const [selectedJobIdForApply, setSelectedJobIdForApply] = useState(null);
-  const [clearInput, setClearInput] = useState(false); // State to toggle clearing input
-  const [sortOrder, setSortOrder] = useState("dsc"); // "asc" or "desc"
+  const [clearInput, setClearInput] = useState(false);
+  const [sortOrder, setSortOrder] = useState("dsc");
   const [company, setCompany] = useState([]);
   const [isSearchClicked, setIsSearchClicked] = useState(false);
   const [selectedFilters, setSelectedFilters] = useState([]);
-
   const router = useRouter();
-  console.log(setSearchJobTitle);
-  // Function to find job by id
+
   useEffect(() => {
     if (JobsList.length > 0) {
       setSelectedJobId(JobsList[0].jobId); // Set selectedJobId to the id of the first job
     }
   }, [JobsList]);
+
   useEffect(() => {
     const newSelectedJob = findJobById(selectedJobId);
     setSelectedJob(newSelectedJob);
   }, [selectedJobId, JobsList]);
 
-  // Function to find job by id
   const findJobById = (jobId) => {
     return JobsList.find((job) => job.jobId === jobId); // Use jobId instead of id
   };
@@ -65,9 +60,9 @@ const Home = ({ jobs }) => {
       jobDetailsAnimation.start({ opacity: 1, y: 0 });
     });
   };
+
   const handleJobSelect = (jobId) => {
     setSelectedJobId(jobId);
-    console.log(selectedJobId, "selected job :");
     if (isSmallScreen) {
       router.push(`/job-details/${jobId}`, undefined, { shallow: true });
     } else {
@@ -83,12 +78,10 @@ const Home = ({ jobs }) => {
           (job) => job.jobStatus === "Open"
         );
         setJobList(openJobs);
-        console.log(openJobs, "filtered joblist data");
         setFilteredJobs(openJobs);
-        setSelectedFilters(openJobs)
-
+        setSelectedFilters(openJobs);
       } catch (error) {
-        console.error(error);
+        return error;
       }
     };
     callapi();
@@ -164,7 +157,7 @@ const Home = ({ jobs }) => {
     try {
       animateJobDetails();
     } catch (error) {
-      console.error("Error in controls.start:", error);
+      return error;
     }
   }, [jobDetailsAnimation]);
 
@@ -180,6 +173,7 @@ const Home = ({ jobs }) => {
     setFilteredJobs(JobsList); // Reset filtered jobs to the original JobsList
     setClearInput((prevState) => !prevState);
   };
+
   const openDrawer = () => {
     setDrawerVisible(true);
   };
@@ -189,9 +183,9 @@ const Home = ({ jobs }) => {
     setDrawerVisible(false);
     // window.location.reload();
   };
+
   const handleApply = (jobId) => {
     setSelectedJobIdForApply(jobId);
-    console.log(selectedJobIdForApply, "hjvgvh");
     openDrawer();
   };
 
@@ -223,72 +217,70 @@ const Home = ({ jobs }) => {
         setFilteredJobs(JobsList); // Reset to all jobs when both search inputs are empty
         return;
       }
-
       let newFilteredJobs = filteredJobs.filter((job) => {
-        const titleMatch = job.jobTitle.toLowerCase().includes(searchJobTitle.toLowerCase()) ||
-          job.searchKeywords.toLowerCase().includes(searchJobTitle.toLowerCase());
-        const locationMatch = job.location.toLowerCase().includes(searchJobLocation.toLowerCase());
+        const titleMatch =
+          job.jobTitle.toLowerCase().includes(searchJobTitle.toLowerCase()) ||
+          job.searchKeywords
+            .toLowerCase()
+            .includes(searchJobTitle.toLowerCase());
+        const locationMatch = job.location
+          .toLowerCase()
+          .includes(searchJobLocation.toLowerCase());
 
         return titleMatch && locationMatch;
       });
       setFilteredJobs(newFilteredJobs);
     };
-
     handleSearch();
-
-
   }, [searchJobTitle, searchJobLocation]);
 
   const handleSearch = () => {
     let newFilteredJobs = filteredJobs.filter((job) =>
       job.location.toLowerCase().includes(searchJobLocation.toLowerCase())
     );
-
     setFilteredJobs(newFilteredJobs);
   };
 
-
-
   const handleSortChange = (key) => {
-    let sortedJobs = [...selectedFilters]; // Make a copy of filteredJobs array for manipulation
-
+    let sortedJobs = [...selectedFilters];
     switch (key) {
       case "1":
         // Add your sorting logic for case 1 if needed
         break;
       case "2":
         sortedJobs.sort(
-          (a, b) => new Date(b.createdOn).getTime() - new Date(a.createdOn).getTime()
+          (a, b) =>
+            new Date(b.createdOn).getTime() - new Date(a.createdOn).getTime()
         ); // Sort by newest
         break;
       case "3":
         sortedJobs.sort(
-          (a, b) => new Date(a.createdOn).getTime() - new Date(b.createdOn).getTime()
+          (a, b) =>
+            new Date(a.createdOn).getTime() - new Date(b.createdOn).getTime()
         ); // Sort by oldest
         break;
       case "4":
         const tenDaysAgo = new Date();
         tenDaysAgo.setDate(tenDaysAgo.getDate() - 9); // Subtracting 9 instead of 10 to include jobs created within the last 10 days
-        sortedJobs = sortedJobs.filter(
-          (job) => {
-            const jobTimestamp = new Date(job.createdOn).getTime();
-            // Check if job was created within the last ten days
-            return jobTimestamp >= tenDaysAgo.getTime(); // Compare against the adjusted date
-          }
-        );
+        sortedJobs = sortedJobs.filter((job) => {
+          const jobTimestamp = new Date(job.createdOn).getTime();
+          // Check if job was created within the last ten days
+          return jobTimestamp >= tenDaysAgo.getTime(); // Compare against the adjusted date
+        });
         break;
       case "5":
         const twentyDaysAgo = new Date();
         twentyDaysAgo.setDate(twentyDaysAgo.getDate() - 10);
         const twentyDaysAgoTimestamp = twentyDaysAgo.getTime();
         // Filter jobs created before 20 days ago
-        sortedJobs = sortedJobs.filter(
-          (job) => {
-            const jobTimestamp = new Date(job.createdOn).getTime();
-            // Check if job was created before 20 days ago
-            return jobTimestamp >= twentyDaysAgoTimestamp && jobTimestamp < twentyDaysAgoTimestamp + (24 * 60 * 60 * 2000);
-          }
-        );
+        sortedJobs = sortedJobs.filter((job) => {
+          const jobTimestamp = new Date(job.createdOn).getTime();
+          // Check if job was created before 20 days ago
+          return (
+            jobTimestamp >= twentyDaysAgoTimestamp &&
+            jobTimestamp < twentyDaysAgoTimestamp + 24 * 60 * 60 * 2000
+          );
+        });
         // Check if any jobs are filtered out
         if (sortedJobs.length === 0) {
           // If no jobs are found, update sortedJobs to display "No jobs found"
@@ -298,18 +290,12 @@ const Home = ({ jobs }) => {
       default:
         break;
     }
-
-    // Update the state with the sorted or filtered jobs
     setFilteredJobs(sortedJobs);
   };
 
   const handleFilterChange = (filteredJobs) => {
-    // Update the filtered jobs in the parent component
     setFilteredJobs(filteredJobs);
   };
-
-
-
 
   // useEffect(() => {
   //   const sortedJobs = [...filteredJobs].sort((a, b) => {
@@ -330,17 +316,13 @@ const Home = ({ jobs }) => {
     const fetchdata = async () => {
       try {
         const response = await getCompanyById(4);
-        console.log(response.result);
         setCompany(response.result);
       } catch (error) {
-        console.error(error, "error");
+        return error;
       }
     };
-
     fetchdata();
   }, []);
-
-
 
   // useEffect(() => {
   //   const filterJobs = () => {
@@ -403,7 +385,6 @@ const Home = ({ jobs }) => {
   //   setFilteredJobs(filtered);
   // };
 
-
   return (
     <>
       <Navbar company={company} />
@@ -416,7 +397,8 @@ const Home = ({ jobs }) => {
                 Jobs
               </h1>
               <p className="para text-[#656565]">
-                Discover a wide range of job openings and kickstart your journey towards professional fulfillment today.
+                Discover a wide range of job openings and kickstart your journey
+                towards professional fulfillment today.
               </p>
             </div>
             <div className="searchJob rounded-[10px] bg-white dark:bg-secondaryDark w-full lg:h-full p-3 flex gap-3 justify-between items-center flex-col md:flex-row md:divide-x divide-y md:divide-y-0">
@@ -445,7 +427,7 @@ const Home = ({ jobs }) => {
                 onItemSelected={setSearchJobLocation}
                 onChange={(value) => {
                   if (value.length <= 30) {
-                    setSearchJobLocation(value)
+                    setSearchJobLocation(value);
                   }
                 }}
                 onSearch={() => setIsSearchClicked(true)}
@@ -498,7 +480,9 @@ const Home = ({ jobs }) => {
                 />
               ))
             ) : (
-              <p>No jobs found</p>
+              <div>
+                <p>No jobs found</p>
+              </div>
             )}
           </div>
           <div className="sticky top-[1rem] hidden w-full h-[96vh] overflow-auto md:col-span-7 md:block p-3 rounded-lg borderb">
@@ -506,7 +490,6 @@ const Home = ({ jobs }) => {
               selectedJob={selectedJob}
               jobDetailsAnimation={jobDetailsAnimation}
               handleApply={handleApply}
-
             />
           </div>
         </motion.div>

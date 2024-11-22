@@ -46,7 +46,7 @@ function profile() {
   ];
   const [showDropdown, setShowDropdown] = useState(false);
   useEffect(() => {
-    const color = localStorage.getItem("themeColor");
+    const color = typeof window !== "undefined" ? localStorage.getItem("themeColor") : null;
     if (color) {
       setPrimaryColor(color);
     }

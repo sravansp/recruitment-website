@@ -3,22 +3,23 @@ import React, { useEffect, useState } from "react";
 import FlexCol from "@components/ui/FlexCol";
 import Dropdown from "@components/ui/Dropdown";
 import FormInput from "@components/ui/FormInput";
-import * as Yup from 'yup';
+import * as Yup from "yup";
 import { useFormik } from "formik";
 
 function Questions() {
-  const [primaryColor, setPrimaryColor] = useState('');
+  const [primaryColor, setPrimaryColor] = useState("");
+
   useEffect(() => {
-    
-    const color = localStorage.getItem("themeColor");
+    const color =
+      typeof window !== "undefined" ? localStorage.getItem("themeColor") : null;
     if (color) {
       setPrimaryColor(color);
     }
   }, []);
 
   const validationSchema = Yup.object().shape({
-    legalEligibility: Yup.string().required('This field is required'),
-    highestEducationLevel: Yup.string().required('This field is required'),
+    legalEligibility: Yup.string().required("This field is required"),
+    highestEducationLevel: Yup.string().required("This field is required"),
   });
 
   const formik = useFormik({
@@ -28,8 +29,6 @@ function Questions() {
     },
     validationSchema: validationSchema,
     onSubmit: (values, { setSubmitting }) => {
-      // Handle form submission here
-      console.log(values);
       setSubmitting(false);
     },
   });
@@ -66,8 +65,8 @@ function Questions() {
                     className="text-[#344054]"
                     name="legalEligibility"
                     value={formik.values.legalEligibility}
-                    change={(e)=>{
-                      formik.setFieldValue('legalEligibility',e)
+                    change={(e) => {
+                      formik.setFieldValue("legalEligibility", e);
                     }}
                     required={true}
                     error={formik.errors.legalEligibility}
@@ -80,8 +79,8 @@ function Questions() {
                     className="text-[#344054]"
                     name="highestEducationLevel"
                     value={formik.values.highestEducationLevel}
-                    change={(e)=>{
-                      formik.setFieldValue('highestEducationLevel',e)
+                    change={(e) => {
+                      formik.setFieldValue("highestEducationLevel", e);
                     }}
                     required={true}
                     error={formik.errors.highestEducationLevel}
@@ -95,8 +94,8 @@ function Questions() {
                     className="text-[#344054]"
                     name="highestEducationLevel"
                     value={formik.values.highestEducationLevel}
-                    change={(e)=>{
-                      formik.setFieldValue('highestEducationLevel',e)
+                    change={(e) => {
+                      formik.setFieldValue("highestEducationLevel", e);
                     }}
                     required={true}
                     error={formik.errors.highestEducationLevel}
@@ -109,8 +108,8 @@ function Questions() {
                     className="text-[#344054]"
                     name="highestEducationLevel"
                     value={formik.values.highestEducationLevel}
-                    change={(e)=>{
-                      formik.setFieldValue('highestEducationLevel',e)
+                    change={(e) => {
+                      formik.setFieldValue("highestEducationLevel", e);
                     }}
                     required={true}
                     error={formik.errors.highestEducationLevel}

@@ -1,11 +1,9 @@
 "use client";
 import Image from "next/image";
 import React from "react";
-import logo from '@/public/brand/logo.png'
+import logo from "@/public/brand/logo.png";
 import { HiOutlineMenuAlt3 } from "react-icons/hi";
-import NoImagePlaceholder from "@/public/NoImagePlaceholder.png"
-
-
+import NoImagePlaceholder from "@/public/NoImagePlaceholder.png";
 
 // import Switcher from "./Switcher";
 
@@ -25,9 +23,10 @@ const Navbar = ({ company }) => {
               />
             </div>
 
-            <p className="h1  !text-[#6A4BFC] !font-[Red Hat Display] pr-2">{company?.company}</p>
+            <p className="h1  !text-[#6A4BFC] !font-[Red Hat Display] pr-2">
+              {company?.company}
+            </p>
             {/* /* <p className="h2">RECRUITMENT</p> */}
-
           </a>
           {/* <nav className="flex flex-wrap items-center justify-center text-base font-semibold transition-all duration-300 md:ml-auto">
             <a className="mr-5 cursor-pointer hover:text-gray-900">Home</a>

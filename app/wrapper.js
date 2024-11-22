@@ -4,23 +4,25 @@ import { ConfigProvider, theme } from "antd";
 import { AntdRegistry } from "@ant-design/nextjs-registry";
 import Navbar from "@/Components/Navbar";
 
-
 export default function Wrapper(props) {
   // Set a default theme if localStorage.theme is not available
   const defaultTheme = "light";
 
   const colorPrimary = "#6A4BFC";
 
-
   // Use state to manage the current theme
   const [currentTheme, setCurrentTheme] = useState(() => {
     // Check if localStorage is available and retrieve the theme
-    return typeof window !== "undefined" ? localStorage.theme || defaultTheme : defaultTheme;
+    return typeof window !== "undefined"
+      ? localStorage.theme || defaultTheme
+      : defaultTheme;
   });
   // Use state to manage the current theme
   const [themeColor, setthemeColor] = useState(() => {
     // Check if localStorage is available and retrieve the theme
-    return typeof window !== "undefined" ? localStorage.themeColor || colorPrimary : colorPrimary;
+    return typeof window !== "undefined"
+      ? localStorage.themeColor || colorPrimary
+      : colorPrimary;
   });
 
   const { children } = props;
@@ -32,11 +34,13 @@ export default function Wrapper(props) {
   }, [currentTheme, themeColor]);
 
   return (
-     <ConfigProvider
+    <ConfigProvider
       theme={{
         token: { colorPrimary },
         algorithm:
-        currentTheme === "dark" ? theme.darkAlgorithm : theme.defaultAlgorithm,
+          currentTheme === "dark"
+            ? theme.darkAlgorithm
+            : theme.defaultAlgorithm,
       }}
     >
       <AntdRegistry>

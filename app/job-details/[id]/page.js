@@ -11,13 +11,12 @@
 //   const { id } = router.query;
 //   const [selectedJob, setSelectedJob] = useState("")
 //     // const {id}=useParams()
-    
-   
+
 //     // const id = useParams();
 //   //   useEffect(() => {
 //   //  console.log(id,"job id");
 //   //   }, [id])
-    
+
 //   // const { id } = router.query;
 //   // console.log(jobId);
 //   // console.log(params.id); // Correctly accessing the ID from URL parameters
@@ -74,7 +73,6 @@
 //   //   return <div>Job not found</div>;
 //   // }
 
-
 //   return (
 //     <div className="flex flex-col gap-4 dark:bg-black">
 //       <div className="md:h-[288px] h-full w-full bg-TopSection py-5">
@@ -82,7 +80,7 @@
 //           <div>
 //             <h6 className="h6 text-primary">Careers</h6>
 //             <h1 className=" text-3xl 2xl:text-5xl font-semibold leading-[140%] text-black dark:text-white">
-//               Job Details 
+//               Job Details
 //             </h1>
 //             <p className="para text-[#656565]">
 //             We are looking for a talented and experienced software engineer to join our team. If you are passionate about technology and innovation, we want to hear from you! In this role, you will be responsible for developing, testing, and maintaining high-quality software solutions. Apply now and be a part of our dynamic team!
@@ -101,12 +99,7 @@
 
 // export default JobDetailsPage;
 
-
-
-
-
 // ---------------------------------------------------------------------
-
 
 "use client";
 import { useEffect, useState } from "react";
@@ -125,6 +118,7 @@ const JobDetailsCard = dynamic(() => import("@/Components/JobDetailsCard"), {
 
 const JobDetailsPage = () => {
   const [selectedJob, setSelectedJob] = useState(null);
+
   const [routerReady, setRouterReady] = useState(false);
 
   useEffect(() => {
@@ -135,32 +129,34 @@ const JobDetailsPage = () => {
     if (routerReady && window && window.location && window.location.pathname) {
       const pathArray = window.location.pathname.split("/");
       const id = pathArray[pathArray.length - 1];
-      
       const getJobById = async () => {
         try {
           const response = await getRecruitmentJobById(id);
           setSelectedJob(response.result[0]);
         } catch (error) {
-          console.log(error);
+          return error;
         }
       };
-
       getJobById();
     }
   }, [routerReady]);
 
   return (
     <div className="flex flex-col gap-4 dark:bg-black">
-      <Navbar/>
+      <Navbar />
       <div className="md:h-[288px] h-full w-full bg-TopSection py-5">
         <div className="flex flex-col gap-3 px-5 pt-16 md:pt-24 container-wrapper">
           <div>
             <h6 className="h6 text-primary">Careers</h6>
             <h1 className="text-3xl 2xl:text-5xl font-semibold leading-[140%] text-black dark:text-white">
-              Job Details 
+              Job Details
             </h1>
             <p className="para text-[#656565]">
-              We are looking for a talented and experienced software engineer to join our team. If you are passionate about technology and innovation, we want to hear from you! In this role, you will be responsible for developing, testing, and maintaining high-quality software solutions. Apply now and be a part of our dynamic team!
+              We are looking for a talented and experienced software engineer to
+              join our team. If you are passionate about technology and
+              innovation, we want to hear from you! In this role, you will be
+              responsible for developing, testing, and maintaining high-quality
+              software solutions. Apply now and be a part of our dynamic team!
             </p>
           </div>
         </div>
@@ -174,8 +170,3 @@ const JobDetailsPage = () => {
 };
 
 export default JobDetailsPage;
-
-
-
-
-

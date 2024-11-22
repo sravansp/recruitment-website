@@ -23,7 +23,6 @@ const JobDetailsCard = ({ selectedJob, jobDetailsAnimation }) => {
   };
   const handleApply = (jobId) => {
     setSelectedJobIdForApply(jobId);
-    console.log(selectedJobIdForApply, "hjvgvh");
     openDrawer();
   };
   // const handleApply = () => {
@@ -35,9 +34,7 @@ const JobDetailsCard = ({ selectedJob, jobDetailsAnimation }) => {
 
   //   }
   // };
-  console.log(selectedJob);
   return (
-
     <motion.div
       // initial={{ opacity: 0, y: 20 }}
       // animate={jobDetailsAnimation}
@@ -52,7 +49,11 @@ const JobDetailsCard = ({ selectedJob, jobDetailsAnimation }) => {
           <div className="flex items-center justify-between">
             <h1 className="h2">{selectedJob.jobTitle}</h1>
             {/* <Link href="/login"> */}
-            <ButtonClick buttonName="Apply" BtnType="primary" handleSubmit={() => handleApply(selectedJob.jobId)} />
+            <ButtonClick
+              buttonName="Apply"
+              BtnType="primary"
+              handleSubmit={() => handleApply(selectedJob.jobId)}
+            />
             {/* </Link> */}
           </div>
           <div className="flex flex-col gap-2.5 2xl:gap-4 Overview">
@@ -76,21 +77,27 @@ const JobDetailsCard = ({ selectedJob, jobDetailsAnimation }) => {
                 <p className="!font-normal !text-opacity-50 capitalize pblack col-span-1">
                   salary range
                 </p>
-                {selectedJob.isSalaryPublic=="t"? (
-                <p className="col-span-4 pblack">{selectedJob.salaryCurrency + " "}{selectedJob.salaryRangeFrom}-{selectedJob.salaryRangeTo}</p>
-                ):(
+                {selectedJob.isSalaryPublic == "t" ? (
+                  <p className="col-span-4 pblack">
+                    {selectedJob.salaryCurrency + " "}
+                    {selectedJob.salaryRangeFrom}-{selectedJob.salaryRangeTo}
+                  </p>
+                ) : (
                   <p className="col-span-4 pblack">N/L</p>
                 )}
-                </div>
+              </div>
               <div className="grid grid-cols-6">
                 <p className="!font-normal !text-opacity-50 capitalize pblack col-span-1">
                   experience
                 </p>
-                <p className="col-span-4 pblack"> {selectedJob.experience.replace(/([a-z])([A-Z])/g, '$1 $2')}</p>
+                <p className="col-span-4 pblack">
+                  {" "}
+                  {selectedJob.experience.replace(/([a-z])([A-Z])/g, "$1 $2")}
+                </p>
               </div>
               <div className="grid grid-cols-6">
                 <p className="!font-normal !text-opacity-50 capitalize pblack col-span-1">
-                 Job type
+                  Job type
                 </p>
                 <p className="col-span-4 pblack">{selectedJob.jobType}</p>
               </div>
@@ -109,12 +116,14 @@ const JobDetailsCard = ({ selectedJob, jobDetailsAnimation }) => {
               <h3 className="pblack">Other Details</h3>
             </div>
             {/* {selectedJob ( */}
-            <div className="p-2.5 flex flex-col gap-4" >
+            <div className="p-2.5 flex flex-col gap-4">
               <div className="grid grid-cols-6">
                 <p className="!font-normal !text-opacity-50 capitalize pblack col-span-1">
                   Education
                 </p>
-                <p className="col-span-4 pblack">{selectedJob.education.replace(/([a-z])([A-Z])/g, '$1 $2')}</p>
+                <p className="col-span-4 pblack">
+                  {selectedJob.education.replace(/([a-z])([A-Z])/g, "$1 $2")}
+                </p>
               </div>
               <div className="grid grid-cols-6">
                 <p className="!font-normal !text-opacity-50 capitalize pblack col-span-1">
@@ -126,13 +135,17 @@ const JobDetailsCard = ({ selectedJob, jobDetailsAnimation }) => {
                 <p className="!font-normal !text-opacity-50 capitalize pblack col-span-1">
                   Requirement Type
                 </p>
-                <p className="col-span-4 pblack">{selectedJob.requirementType}</p>
+                <p className="col-span-4 pblack">
+                  {selectedJob.requirementType}
+                </p>
               </div>
               <div className="grid grid-cols-6">
                 <p className="!font-normal !text-opacity-50 capitalize pblack col-span-1">
                   Location type
                 </p>
-                <p className="col-span-4 pblack">{selectedJob.workLocationType}</p>
+                <p className="col-span-4 pblack">
+                  {selectedJob.workLocationType}
+                </p>
               </div>
             </div>
             {/* )} */}
@@ -144,22 +157,18 @@ const JobDetailsCard = ({ selectedJob, jobDetailsAnimation }) => {
             visible={drawerVisible}
             width="100%" // Adjust the width as needed
             height="100%"
-            
             wrapperBodyStyle={{ backgroundColor: "#F8FAFC" }}
-            
             className="ant-drawer-body"
-            
-
-
           >
-
-            <Web closeDrawer={closeDrawer} selectedJobId={selectedJobIdForApply} selectedJob />
-            
+            <Web
+              closeDrawer={closeDrawer}
+              selectedJobId={selectedJobIdForApply}
+              selectedJob
+            />
           </Drawer>
         </div>
       )}
     </motion.div>
-
   );
 };
 

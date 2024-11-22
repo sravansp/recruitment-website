@@ -14,7 +14,7 @@ import Navbar1 from "@/Components/ui/Navbar1";
 function EditContactinformation() {
   const [primaryColor, setPrimaryColor] = useState("");
   useEffect(() => {
-    const color = localStorage.getItem("themeColor");
+    const color = typeof window !== "undefined" ? localStorage.getItem("themeColor") : null;
     if (color) {
       setPrimaryColor(color);
     }

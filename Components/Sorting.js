@@ -23,13 +23,13 @@ const items = [
     label: "20days Ago",
   },
 ];
-const Sorting = ({onSortChange}) => (
+const Sorting = ({ onSortChange }) => (
   <Dropdown
     menu={{
       items,
       selectable: true,
       // defaultSelectedKeys: ["2"],
-      onClick: ({ key }) => onSortChange(key)
+      onClick: ({ key }) => onSortChange(key),
     }}
   >
     {/* <Typography.Link>
@@ -40,9 +40,9 @@ const Sorting = ({onSortChange}) => (
     </Typography.Link> */}
     <a
       className="ant-dropdown-link para text-[#656565] cursor-pointer"
-    //   onClick={(e) => e.preventDefault()}
+      //   onClick={(e) => e.preventDefault()}
     >
-   Sort by Selectable
+      Sort by Selectable
       <DownOutlined />
     </a>
   </Dropdown>

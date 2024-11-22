@@ -20,7 +20,10 @@ import { BsFileEarmarkRichtext, BsJustify } from "react-icons/bs";
 import Accordion from "@components/ui/Accordion";
 import ButtonClick from "@components/ui/Button";
 import PDFViewer from "@components/ui/PDFViewer";
-import { educationExperiences, workExperiences } from "@components/ui/DataArrays";
+import {
+  educationExperiences,
+  workExperiences,
+} from "@components/ui/DataArrays";
 import pdfFile from "@/public/sample.pdf";
 import FlexCol from "@components/ui/FlexCol";
 import candidate from "@/public/Frame 427319140.png";
@@ -89,19 +92,17 @@ const Questions = [
 ];
 const Review = () => {
   const [content, setContent] = useState("");
-  const primaryColor = localStorage.getItem("themeColor");
 
   const handleEditorChange = (content) => {
     setContent(content);
   };
 
   const onTabChange = (tabId) => {
-    // Do something when the tab changes if needed
-    console.log(`Tab changed to ${tabId}`);
     if (tabId === 1) {
     } else if (tabId === 2) {
     }
   };
+
   const tabData = [
     {
       id: 9,
@@ -264,7 +265,7 @@ const Review = () => {
               />
             </div>
             <div className="divider-h" />
-            <PDFViewer pdfUrl={pdfFile}  />
+            <PDFViewer pdfUrl={pdfFile} />
           </div>
           <div className="divider-h mt-9" />
           <div className="flex flex-col gap-8 mt-8">

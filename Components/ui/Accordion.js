@@ -13,14 +13,13 @@ export default function Accordion({
   description,
   click = () => {},
   initialExpanded = false,
-  tableshow=false,
-  
+  tableshow = false,
 }) {
   const [expanded, setExpanded] = useState(initialExpanded);
-  const [primaryColor, setPrimaryColor] = useState('');
+  const [primaryColor, setPrimaryColor] = useState("");
   useEffect(() => {
-    
-    const color = localStorage.getItem("themeColor");
+    const color =
+      typeof window !== "undefined" ? localStorage.getItem("themeColor") : null;
     if (color) {
       setPrimaryColor(color);
     }
@@ -34,7 +33,7 @@ export default function Accordion({
 
   useEffect(() => {
     console.log(expanded[1]);
-    console.log(data)
+    console.log(data);
   }, [expanded]);
 
   return (
@@ -49,7 +48,7 @@ export default function Accordion({
           <button
             type="button"
             className="flex items-center justify-between w-full px-6 py-4 font-semibold text-left rounded-md"
-            style={{backgroundColor: `${primaryColor}10`}}
+            style={{ backgroundColor: `${primaryColor}10` }}
             onClick={() => setExpanded(!expanded)}
             aria-expanded={expanded}
             aria-controls={`acco-text-item`}
@@ -82,9 +81,7 @@ export default function Accordion({
           aria-labelledby={`acco-title-item`}
           className={`grid overflow-hidden text-sm transition-all duration-300 ease-in-out ${
             expanded
-              ? `grid-rows-[1fr] opacity-100 ${
-                  padding ? "p-6" : ""
-                } `
+              ? `grid-rows-[1fr] opacity-100 ${padding ? "p-6" : ""} `
               : "grid-rows-[0fr] opacity-0 "
           }`}
         >
@@ -119,7 +116,6 @@ export default function Accordion({
     </Table>
   </div>
 )} */}
-          
         </div>
       </div>
 
