@@ -1121,7 +1121,9 @@ const Createjob = ({
 
   const AllRecruitmentJobTeamMembers = async () => {
     try {
-      const response = await getAllRecruitmentUsers();
+      const response = await getAllRecruitmentUsers({
+        companyId: companyId,
+      });
       const sortedData = response.result.sort((a, b) => {
         return a.userName.localeCompare(b.userName, undefined, {
           sensitivity: "base",
@@ -2552,7 +2554,6 @@ const Createjob = ({
                               <td>
                                 <div className="flex items-center gap-4 py-2">
                                   {/* Assuming you have an 'image' property in your employee object */}
-
                                   <div className="size-10 2xl:size-11 rounded-full overflow-hidden">
                                     {employee.userimage ? (
                                       <img

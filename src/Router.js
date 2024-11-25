@@ -95,7 +95,7 @@ export default function Router() {
             </div>
           </div>
           <div className="absolute bottom-0 right-0 p-2 opacity-40">
-            <h1 className="text-xs 2xl:text-md">Alpha Mode V-2</h1>
+            <h1 className="text-xs 2xl:text-md">Alpha Mode V-3</h1>
           </div>
         </div>
       ) : loginData === null ? (
