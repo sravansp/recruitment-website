@@ -2,7 +2,6 @@
 import React, { useEffect, useState } from "react";
 import { IoIosArrowForward } from "react-icons/io";
 import ToggleBtn from "@components/ui/ToggleBtn";
-import { Table } from "antd";
 
 export default function Accordion({
   children,
@@ -16,6 +15,7 @@ export default function Accordion({
   tableshow = false,
 }) {
   const [expanded, setExpanded] = useState(initialExpanded);
+
   const [primaryColor, setPrimaryColor] = useState("");
   useEffect(() => {
     const color =
@@ -24,17 +24,6 @@ export default function Accordion({
       setPrimaryColor(color);
     }
   }, []);
-  // const toggleAccordion = (id) => {
-  //   setExpanded((prevExpanded) => ({
-  //     ...prevExpanded,
-  //     [id]: !prevExpanded[id],
-  //   }));
-  // };
-
-  useEffect(() => {
-    console.log(expanded[1]);
-    console.log(data);
-  }, [expanded]);
 
   return (
     <div className="relative flex flex-col gap-6" onClick={() => click()}>

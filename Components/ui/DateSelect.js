@@ -1,6 +1,5 @@
 import { DatePicker } from "antd";
 import { FiAlertCircle } from "react-icons/fi";
-import { HiMiniStar } from "react-icons/hi2";
 import { FaAsterisk } from "react-icons/fa";
 import { useMediaQuery } from "react-responsive";
 import React from "react";
@@ -9,7 +8,7 @@ export default function DateSelect({
   change = () => {},
   className,
   picker = "",
-  dateFormat = "YYYY-MM-DD", // Default date format
+  dateFormat = "YYYY-MM-DD", 
   value = "",
   title = "",
   description = "",
@@ -36,7 +35,7 @@ export default function DateSelect({
       </div>
 
       <DatePicker
-        format={dateFormat} // Pass the provided date format
+        format={dateFormat} 
         onChange={(date, dateString) => {
           console.log(dateString);
           change(dateString);

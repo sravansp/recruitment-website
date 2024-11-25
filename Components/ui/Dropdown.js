@@ -1,10 +1,7 @@
 import { Popover, Select } from "antd";
 import React from "react";
-import { FlagIcon } from "react-flag-kit";
-import { FiAlertCircle } from "react-icons/fi";
 import { HiMiniStar } from "react-icons/hi2";
 import { IoAlertCircleOutline } from "react-icons/io5";
-// import logo from "../../assets/images/Avatar.png";
 import { useMediaQuery } from "react-responsive";
 import { FaAsterisk } from "react-icons/fa";
 
@@ -28,8 +25,8 @@ export default function Dropdown({
   icon = false,
   image = false,
 }) {
-  console.log(options, "hi");
   const isSmallScreen = useMediaQuery({ maxWidth: 1439 });
+  
   const filterOption = (input, option) =>
     (option?.label ?? "").toLowerCase().includes(input.toLowerCase());
   const { Option } = Select;

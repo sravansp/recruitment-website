@@ -111,9 +111,7 @@
 
 import React, { useEffect, useState } from "react";
 import { motion, AnimatePresence } from "framer-motion";
-import ButtonClick from "./Button";
 import { lightenColor } from "./Lightercolor";
-import { useDispatch, useSelector } from "react-redux";
 import { MdCheck } from "react-icons/md";
 
 const Modal2 = ({

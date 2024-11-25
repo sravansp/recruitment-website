@@ -1,14 +1,6 @@
-import {
-  Tabs,
-  TabsHeader,
-  TabsBody,
-  Tab,
-  TabPanel,
-} from "@material-tailwind/react";
 import { useState } from "react";
-import { Segmented } from 'antd';
+import { Segmented } from "antd";
 
- 
 export function TabsCustomAnimation() {
   const data = [
     {
@@ -24,7 +16,7 @@ export function TabsCustomAnimation() {
       // desc: `Because it's about motivating the doers. Because I'm here
       // to follow my dreams and inspire other people to follow their dreams, too.`,
     },
- 
+
     // {
     //   label: "Vue",
     //   value: "vue",
@@ -32,14 +24,14 @@ export function TabsCustomAnimation() {
     //   We're constantly growing. We're constantly making mistakes. We're
     //   constantly trying to express ourselves and actualize our dreams.`,
     // },
- 
+
     // {
     //   label: "Angular",
     //   value: "angular",
     //   desc: `Because it's about motivating the doers. Because I'm here
     //   to follow my dreams and inspire other people to follow their dreams, too.`,
     // },
- 
+
     // {
     //   label: "Svelte",
     //   value: "svelte",
@@ -55,7 +47,7 @@ export function TabsCustomAnimation() {
   };
   return (
     <div>
-    {/* <Tabs id="custom-animation"  value={activeTab} > */}
+      {/* <Tabs id="custom-animation"  value={activeTab} > */}
       {/* <TabsHeader className="bg-[#F1F1F1] w-48 text-black">
         {data.map(({ label, value }) => (
          <Tab 
@@ -81,14 +73,12 @@ export function TabsCustomAnimation() {
           </TabPanel>
         ))}
       </TabsBody> */}
-    {/* </Tabs> */}
-    <Segmented
+      {/* </Tabs> */}
+      <Segmented
         defaultValue="center"
         style={{ marginBottom: 8 }}
         className="px-4 py-2 w-32 "
-            
-           options={['Active','Inactive']}
-
+        options={["Active", "Inactive"]}
       />
     </div>
   );

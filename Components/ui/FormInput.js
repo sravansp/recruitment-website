@@ -2,7 +2,6 @@ import { Input } from "antd";
 import React, { useRef, useState } from "react";
 import { FaAsterisk } from "react-icons/fa";
 import { FiAlertCircle } from "react-icons/fi";
-import { HiMiniStar } from "react-icons/hi2";
 import { useMediaQuery } from "react-responsive";
 
 export default function FormInput({
@@ -22,7 +21,9 @@ export default function FormInput({
   maxLength = 30,
 }) {
   const isSmallScreen = useMediaQuery({ maxWidth: 1439 });
+
   const [show, setShow] = useState(false);
+  
   const target = useRef(null);
 
   const handleChange = (e) => {

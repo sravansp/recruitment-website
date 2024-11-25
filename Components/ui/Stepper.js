@@ -174,31 +174,21 @@ export default function Stepper({
   currentStepNumber,
   presentage,
 }) {
-  
   const [stepperSteps, setStep] = useState([]);
-  const [newSteps, setNewSteps] = useState([]);
+
   const [primaryColor, setPrimaryColor] = useState("");
+
   useEffect(() => {
-    const color = typeof window !== "undefined" ? localStorage.getItem("themeColor") : null;
+    const color =
+      typeof window !== "undefined" ? localStorage.getItem("themeColor") : null;
     if (color) {
       setPrimaryColor(color);
     }
   }, []);
+
   const stepsStateRef = useRef();
-  useEffect(() => {
-    console.log(steps);
-    console.log(addMore);
-
-    // if (addMore === true) {
-    //   steps.splice(1, 0, { data });
-    // }
-    // setNewSteps(steps);
-  }, [steps]);
 
   useEffect(() => {
-    console.log(presentage);
-    console.log(steps);
-
     const stepsState = steps.map((step, index) => ({
       description: step.title,
       completed: false,
@@ -214,10 +204,8 @@ export default function Stepper({
     const newSteps = [...steps];
     let stepCounter = 0;
     // let stepNumber = nextNumber + 1;
-    console.log(stepCounter, newSteps.length, stepNumber);
     while (stepCounter < newSteps.length) {
       if (stepCounter === stepNumber) {
-        console.log(stepNumber);
         newSteps[stepCounter] = {
           ...newSteps[stepCounter],
           highlighted: true,

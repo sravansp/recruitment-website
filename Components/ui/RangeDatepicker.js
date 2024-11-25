@@ -2,7 +2,6 @@ import React, { useState } from "react";
 import { DatePicker } from "antd";
 import { FiAlertCircle } from "react-icons/fi";
 import { HiMiniStar } from "react-icons/hi2";
-
 const { RangePicker } = DatePicker;
 
 export default function RangeDatePicker({
@@ -17,7 +16,9 @@ export default function RangeDatePicker({
   required = false,
 }) {
   const [dates, setDates] = useState(null);
+
   const [values, setValues] = useState(null);
+
   const disabledDate = (current) => {
     if (!dates) {
       return false;
@@ -26,8 +27,8 @@ export default function RangeDatePicker({
     const tooEarly = dates[1] && dates[1].diff(current, "days") >= 61;
     return !!tooEarly || !!tooLate;
   };
+
   const onOpenChange = (open) => {
-    console.log(open);
     if (open) {
       setDates([null, null]);
     } else {
@@ -55,7 +56,6 @@ export default function RangeDatePicker({
           setDates(val);
         }}
         onChange={(val, date) => {
-          console.log(val);
           setValues(val);
           change(date);
         }}

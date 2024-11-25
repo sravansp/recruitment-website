@@ -207,11 +207,6 @@ export default function FileUpload({
         {...props}
         onChange={(info) => {
           const { status, originFileObj } = info.file;
-          if (status !== "uploading") {
-            console.log(info.fileList);
-            console.log(status,":file upload status");
-            console.log(originFileObj);
-          }
           // if (status === "done") {
           //   message.success(`${info.file.name} file uploaded successfully.`);
           // } else if (status === "error") {
@@ -220,7 +215,6 @@ export default function FileUpload({
           change(originFileObj);
         }}
         onDrop={(e) => {
-          console.log(e.dataTransfer.files[0]);
           change(e.dataTransfer.files[0]);
         }}
       >

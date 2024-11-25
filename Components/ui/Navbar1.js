@@ -1,6 +1,5 @@
 import Image from "next/image";
 import React from 'react'
-import logo from '@/public/brand/logo.png'
 import candidate from "@/public/Frame 427319140.png";
 
 function Navbar1() {
