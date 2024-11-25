@@ -13,7 +13,7 @@ import JobListCopy from "../common/JobListCopy";
 
 function AllJobs() {
   const { t } = useTranslation();
-  
+
   const [companyId, setCompanyId] = useState(localStorage.getItem("companyId"));
 
   const [navigationPath, setNavigationPath] = useState("My_Open_Jobs");
