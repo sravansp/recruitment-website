@@ -4,7 +4,6 @@ import React, { useState } from "react";
 import { motion } from "framer-motion";
 import ButtonClick from "./Button";
 import TextReadMore from "./TextReadMore";
-import Link from "next/link";
 import { Drawer } from "antd";
 import Web from "@/app/Form/page";
 
@@ -25,15 +24,7 @@ const JobDetailsCard = ({ selectedJob, jobDetailsAnimation }) => {
     setSelectedJobIdForApply(jobId);
     openDrawer();
   };
-  // const handleApply = () => {
 
-  //   if (selectedJob) {
-  //     // Navigate to the apply page with the selected job ID
-  //     window.location.href = `/Form?jobId=${selectedJob.jobId}`;
-  //     // const result = selectedJob.jobId
-
-  //   }
-  // };
   return (
     <motion.div
       // initial={{ opacity: 0, y: 20 }}
