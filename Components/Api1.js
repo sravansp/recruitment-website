@@ -1,6 +1,7 @@
 import axios from "axios";
 
 const urlFileHandler = "https://alpha-jobs-api.loyaltri.com/api/fileHandler";
+
 const fileAction = async (formData) => {
   try {
     const result = await axios.post(urlFileHandler, formData, {

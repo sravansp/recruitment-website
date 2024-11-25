@@ -4,10 +4,12 @@ import FlexCol from "@components/ui/FlexCol";
 import Dropdown from "@components/ui/Dropdown";
 import FormInput from "@components/ui/FormInput";
 import * as Yup from "yup";
-import { Formik, useFormik } from "formik";
+import {  useFormik } from "formik";
 
 function PersonalDetails({ handleSubmit = () => {} }) {
+
   const [primaryColor, setPrimaryColor] = useState("");
+  
   useEffect(() => {
     const color = typeof window !== "undefined" ? localStorage.getItem("themeColor") : null;
     if (color) {
@@ -44,13 +46,11 @@ function PersonalDetails({ handleSubmit = () => {} }) {
       candidateSource: "source1",
       candidateEmail: "",
       jobId: 5,
-      createdBy: "ajay", // You may need to replace this with the actual createdBy value
+      createdBy: "ajay", 
     },
     validationSchema: validationSchema,
     onSubmit: (values) => {
-      // Call the handleSubmit function passed from Web component
       handleSubmit(values);
-      console.log(values, "dataaaa");
     },
   });
   return (
@@ -85,7 +85,6 @@ function PersonalDetails({ handleSubmit = () => {} }) {
                     placeholder={"Mr"}
                     // className="text-[#344054]"
                     // onChange={formik.handleChange}
-
                     name="namePrefix"
                     value={formik.values.namePrefix}
                   />
@@ -99,7 +98,6 @@ function PersonalDetails({ handleSubmit = () => {} }) {
                     value={formik.values.firstName}
                     change={(e) => {
                       formik.setFieldValue("firstName", e);
-                      console.log("First Name:", e);
                     }}
                     required={true}
                     error={formik.errors.firstName}

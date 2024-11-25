@@ -2,13 +2,10 @@
 import Image from "next/image";
 import React, { useEffect, useRef, useState } from "react";
 import EducationalDetails from "./Form-items/EducationalDetails";
-import PersonalDetails from "./Form-items/PersonalDetails";
 import { TfiLocationPin } from "react-icons/tfi";
 import { LiaAddressCard } from "react-icons/lia";
-import Questions from "./Form-items/Questions";
 import ButtonClick from "@components/ui/Button";
 import Stepper from "@components/ui/Stepper";
-
 import { RxCross2 } from "react-icons/rx";
 import WorkExperience from "./Form-items/WorkExperience";
 import Header1 from "./Form-items/Header";
@@ -39,7 +36,7 @@ import {
 } from "@/Components/Api";
 import Dropdown from "@/Components/ui/Dropdown";
 import FormInput from "@/Components/ui/FormInput";
-import { Formik, useFormik } from "formik";
+import { useFormik } from "formik";
 import * as Yup from "yup";
 import {
   RiCake2Line,
@@ -55,11 +52,6 @@ import AddMore from "@/Components/ui/AddMore";
 import TextArea from "@/Components/ui/TextArea";
 import Accordion from "@/Components/ui/Accordion";
 import { AiTwotoneEdit } from "react-icons/ai";
-import PDFViewer from "@/Components/ui/PDFViewer";
-import candidate from "@/public/Frame 427319140.png";
-import uploader from "@/public/image 339.png";
-import pdfFile from "@/public/sample.pdf";
-import { useRouter } from "next/router";
 import {
   Button,
   DatePicker,
@@ -343,17 +335,17 @@ function Web({ closeDrawer, selectedJobId, onClick }) {
     {
       id: 1,
       question: "Are you legally eligible to work in the country?",
-      answer: "Yes, I’ve resident visa",
+      answer: "Yes, I've resident visa",
     },
     {
       id: 2,
       question: "Are you legally eligible to work in the country?",
-      answer: "Yes, I’ve resident visa",
+      answer: "Yes, I've resident visa",
     },
     {
       id: 3,
       question: "Are you legally eligible to work in the country?",
-      answer: "Yes, I’ve resident visa",
+      answer: "Yes, I've resident visa",
     },
   ];
 
@@ -445,35 +437,20 @@ function Web({ closeDrawer, selectedJobId, onClick }) {
   // };
 
   // const handleSubmitAllForms = (event) => {
-  //   console.log("handleSubmitAllForms called");
-
   //   if (event) {
   //     event.preventDefault();
   //   }
-
   //   formik.handleSubmit(() => {
-  //     console.log("formik.handleSubmit called");
-
   //     // Call the API after the first form (formik) is submitted
   //     saveRecruitmentResume(formik.values, () => {
-  //       console.log("saveRecruitmentResume API called");
-
   //       if (formik1.isValid) {
   //         formik1.handleSubmit(() => {
-  //           console.log("formik1.handleSubmit called");
-
   //           // Call the API after the second form (formik1) is submitted
   //           saveRecruitmentResumesExperienceDetail(formik1.values, () => {
-  //             console.log("saveRecruitmentResumesExperienceDetail API called");
-
   //             if (formik2.isValid) {
   //               formik2.handleSubmit(() => {
-  //                 console.log("formik2.handleSubmit called");
-
   //                 // Call the API after the third form (formik2) is submitted
   //                 saveRecruitmentJobResumesCustomField(formik2.values, () => {
-  //                   console.log("saveRecruitmentJobResumesCustomField API called");
-
   //                   if (currentStep === 4 && closeDrawer) {
   //                     closeDrawer();
   //                     setShowModal(true);
@@ -591,12 +568,10 @@ function Web({ closeDrawer, selectedJobId, onClick }) {
     // try {
     //   // Call the API function to save recruitment resume
     //   const response = await saveRecruitmentResume(values);
-    //   console.log("API Response:", response);
     //   callback(values)
     //   // Update formData state if needed
     //   setFormData(values);
     // } catch (error) {
-    //   console.error("Error:", error);
     // }
   };
 
@@ -667,21 +642,13 @@ function Web({ closeDrawer, selectedJobId, onClick }) {
   //   onSubmit: async (values, { setSubmitting }) => {
   //     try {
   //       // Make your API call here
-
   //       const response = await saveRecruitmentResume(values);
-  //       console.log("API Response:", response);
-  //       console.log(response.result.insertedId,"inserted id responsee")
-
   //       setinsertedId1(response.result.insertedId);
-  //       console.log(insertedid1);
   //       setActiveBtn(activeBtn + 1);
-
   //       setCurrentStep(currentStep + 1);
-
   //       // You can handle the API response here
   //       // For example, update UI, show success message, etc.
   //     } catch (error) {
-  //       console.error("API Error:", error);
   //       // Handle API errors here
   //       // For example, show error message, handle form submission failure, etc.
   //     } finally {
@@ -906,35 +873,21 @@ function Web({ closeDrawer, selectedJobId, onClick }) {
 
   // useEffect(() => {
   //   const Fileuplaod = async () => {
-  //     //  console.log(, "hhhhhhhhhhhhhh");
   //  if (insertedid1) {
   //      try {
-
-  //          console.log(e,"hhhhhh");
   //          const formData = new FormData();
-
   //          formData.append("file", filePdf);
-
-  //          console.log("inside file upload api");
-
   //          formData.append("action", "resumePhotoUpload");
   //          formData.append("resumeId", e);
-
   //          const FileUpload = await fileAction(formData);
-  //          console.log(FileUpload, "fileUploadResult");
   //        }
   //       catch (error) {
-  //        console.log(error);
   //      }}
   //    };
   //   Fileuplaod ();
   //    }, [insertedid1]);
 
-  // You can handle the API response here
-  // For example, update UI, show success message, etc.
-
   // const validationSchema1 = Yup.object().shape({
-
   //   institute: Yup.string().required("School or University is required"),
   //   courseType: Yup.string().required("Degree is required"),
   //   courseName: Yup.string().required("Field of Study is required"),
@@ -946,7 +899,6 @@ function Web({ closeDrawer, selectedJobId, onClick }) {
   const formik1 = useFormik({
     initialValues: {
       // ...existing fields
-
       resumeId: insertedid1,
       institute: "",
       courseType: "",
@@ -1265,9 +1217,6 @@ function Web({ closeDrawer, selectedJobId, onClick }) {
         //   });
         //   return Object.values(answers);
         // });
-
-        // console.log("New Answers:", newAnswers);
-        // console.log(detailsId)
         const response = await saveRecruitmentJobResumesCustomField(values);
         if (response.status === 200) {
           openNotification("success", "Successful", "Questions has been saved");
@@ -1281,12 +1230,9 @@ function Web({ closeDrawer, selectedJobId, onClick }) {
             response.message.replace(/<br\/>/g, "\n")
           );
         }
-        // Handle success response if needed
       } catch (error) {
         return error;
-        // Handle error if the API call fails
       } finally {
-        // Reset form state after submission (whether successful or not)
         setSubmitting(false);
       }
     },
@@ -1302,48 +1248,33 @@ function Web({ closeDrawer, selectedJobId, onClick }) {
 
   // useEffect(() => {
   //   const fetchapi = async () => {
-
   //     try {
   //       if (currentStep === 4) {
   //       // Check if the current step is the review page
   //       const response = await getRecruitmentResumeById(id);
   //       // if (response.result.length > 0) {
   //       //   const resume = response.result[0];
-
   //       //   setData(resume);
   //       // }
   //       setData(response.result)
-
-  //       // console.log(insertedid1, "dfrfgreg");
-  //       console.log(response, "resume api res");
-  //       console.log(data, "dhcdghcvhd");
   //    } } catch (error) {
-  //       console.error("error", error);
   //     }
   //   };
   //   fetchapi();
-  //   console.log(data, "dhcdghcvhd");
   // }, [currentStep]);
 
   // ***************************************
   // const getquestionnaire = async () => {
   //   try {
-  //     // console.log(questid, "iddd");
   //     // const idnew = questid;
-  //     // console.log(idnew, "daataa of idd new");
   //     const response = await getRecruitmentQuestionnaireTemplateDetailsById(
   //       questid
   //     );
   //     // if (response && response.result && response.result.length > 0) {
   //     //   const questionnaireId = response.result[0].questionnaireTemplateId;
-  //     console.log(response,"questionnaire response");
-  //     console.log(response.result[0].question,"qqqqqqqqqq");
-  //     console.log(response.result[0],"result");
   //     const questionData = response.result[0].questionaireTemplateDetailData.
   //     map(item => ({
-
   //     //   item.questionTemplateDetailData.map(detail =>({
-
   //     //   questionTemplateDetailsId: detail.formSettingsId,
   //     //   question: detail.question,
   //     //   answerMetaData: detail.answerMetaData.map(metadata =>({
@@ -1361,14 +1292,9 @@ function Web({ closeDrawer, selectedJobId, onClick }) {
   //   //         key: items.key,
   //   //         value: items.value
   //   // }))
-  //   console.log(questionData,"questionsssss");
   //     // return questionData;
-
   //     setQuesttemp(questionData);
-
-  //     console.log(response.result, "questionnaire");
   //   } catch (error) {
-  //     console.error("error", error);
   //   }
   // };
 
@@ -1383,12 +1309,10 @@ function Web({ closeDrawer, selectedJobId, onClick }) {
   //       (condition =>
   //         condition.questionTemplateDetailsId === questionTemplateDetailsId
   //     );
-
   //     if (matchedCondition) {
   //       const metaData = matchedCondition.answerMetaData.find
   //         (meta => meta.key
   //       );
-
   //       if (metaData) {
   //         const { key } = metaData;
   //         switch (key) {
@@ -1427,8 +1351,6 @@ function Web({ closeDrawer, selectedJobId, onClick }) {
   //   });
   // }, [questtemp, questionAnswers]);
 
-  // console.log(questtemp,"questionssssss");
-
   // useEffect(() => {
   //   fetchedAnswers.forEach((answer) => {
   //     const { questionTemplateDetailsId, questionAnswer } = answer;
@@ -1436,12 +1358,10 @@ function Web({ closeDrawer, selectedJobId, onClick }) {
   //       (condition) =>
   //         condition.questionTemplateDetailsId === questionTemplateDetailsId
   //     );
-
   //     if (matchedCondition) {
   //       const metaData = matchedCondition.answerMetaData.find(
   //         (meta) => meta.key
   //       );
-
   //       if (metaData) {
   //         const { key } = metaData;
   //         switch (key) {
@@ -1649,6 +1569,7 @@ function Web({ closeDrawer, selectedJobId, onClick }) {
     ]);
     setAdditionalEducationalDetailsCount((prevCount) => prevCount + 1);
   };
+
   const handleDelete = (indexToRemove) => {
     setAdditionalEducationalDetails((prevDetails) =>
       prevDetails.filter((_, index) => index !== indexToRemove)
@@ -1702,17 +1623,14 @@ function Web({ closeDrawer, selectedJobId, onClick }) {
         formik.handleSubmit();
         // setCurrentStage(currentStage + 1);
         // Move to next stage after successful submission
-
         break;
       case 1:
         formik1.handleSubmit();
         // setCurrentStage(currentStage + 1);
-
         break;
       case 2:
         formik2.handleSubmit();
         // setCurrentStage(currentStage + 1);
-
         break;
       case 3:
         formik3.handleSubmit();
@@ -1724,16 +1642,13 @@ function Web({ closeDrawer, selectedJobId, onClick }) {
         break;
       case 4:
         // closeDrawer();
-
         formik.resetForm();
         formik1.resetForm();
         formik2.resetForm();
         formik3.resetForm();
         setShowModal(true);
         // window.location.reload();
-
         // Close the drawer only when the modal is closed
-
         //   // window.location.reload();
         //   formik.resetForm();
         //   formik1.resetForm();
@@ -1743,15 +1658,12 @@ function Web({ closeDrawer, selectedJobId, onClick }) {
         // if(modalIsClosed)
         //   closeDrawer()
         // }
-
         // if (handleCloseModal) {
         //   modalClosed();
         // }
         // case 5:
-
         // closeDrawer()
         // setShowModal(true);
-
         break;
       default:
         break;
@@ -1771,11 +1683,9 @@ function Web({ closeDrawer, selectedJobId, onClick }) {
   //      setShowModal(true);
 
   const previous = () => {
-    // Exit early if currentStage is 0
     if (currentStep === 0) {
       return;
     }
-
     setActiveBtn(activeBtn - 1);
     setCurrentStage(currentStage - 1);
     setCurrentStep(currentStep - 1);
@@ -1783,8 +1693,6 @@ function Web({ closeDrawer, selectedJobId, onClick }) {
   };
 
   const handleTextChange = (value) => {
-    // Validate the input if necessary
-
     setCoverletter(value);
   };
 
@@ -1815,12 +1723,9 @@ function Web({ closeDrawer, selectedJobId, onClick }) {
   return (
     <div className="bg-[#F8FAFC] ">
       <FlexCol />
-
       <Header1 closeDrawer={closeDrawer} jobid={jobid} />
-
       <div className="flex flex-col gap-6 container-wrapper  mb-[65px]   ">
         <FlexCol />
-
         <div className="flex flex-col gap-6 max-w-[1070px] w-full mx-auto mt-4   ">
           {steps && (
             <div className=" sticky -top-6 w-full z-50 px-5  dark:bg-[#1f1f1f] pb-10  ">
@@ -1883,7 +1788,6 @@ function Web({ closeDrawer, selectedJobId, onClick }) {
                               ]}
                               change={(e) => {
                                 formik.setFieldValue("namePrefix", e);
-                                console.log("First Name:", e);
                               }}
                               name="namePrefix"
                               value={formik.values.namePrefix}
@@ -1908,7 +1812,6 @@ function Web({ closeDrawer, selectedJobId, onClick }) {
                               value={formik.values.firstName}
                               change={(e) => {
                                 formik.setFieldValue("firstName", e);
-                                console.log("First Name:", e);
                               }}
                               required={
                                 formvalidation &&
@@ -2046,13 +1949,11 @@ function Web({ closeDrawer, selectedJobId, onClick }) {
                         </div> */}
                         <div className="w-3/5">
                           <p>Photo (Optional)</p>
-
                           <FileUpload
                             change={(e) => {
                               if (e) {
                                 setfilepdf(e);
                               }
-                              console.log(e);
                             }}
                           />
                         </div>
@@ -2290,7 +2191,6 @@ function Web({ closeDrawer, selectedJobId, onClick }) {
                               className="text-[#344054]"
                               name={`additionalEducationalDetails[${index}].yearOfStudy`}
                               // picker={"YYYY"}
-
                               placeholder="Enter Passout Year"
                               value={detail.yearOfStudy}
                               change={(e) => {
@@ -2328,7 +2228,6 @@ function Web({ closeDrawer, selectedJobId, onClick }) {
                           <div className="divider-h" />
                         </div>
                       ))}
-
                       {/* <div className="grid grid-cols-1 gap-4 sm:grid-cols-3">
                   <FormInput
                     title={"School or University"}
@@ -2346,8 +2245,7 @@ function Web({ closeDrawer, selectedJobId, onClick }) {
                     title={"Degree"}
                     placeholder={"Eg: Bachelor’s"}
                     className="text-[#344054]"
-                    name="degree"
-                    
+                    name="degree"                    
                     value={formik1.values.degree}
                     change={(e)=>{
                       formik1.setFieldValue('degree',e)
@@ -2361,8 +2259,7 @@ function Web({ closeDrawer, selectedJobId, onClick }) {
                     title={"Field of Study"}
                     placeholder={"Eg: Business"}
                     className="text-[#344054]"
-                    name="fieldOfStudy"
-                  
+                    name="fieldOfStudy"                  
                     value={formik1.values.fieldOfStudy}
                     change={(e)=>{
                       formik1.setFieldValue('fieldOfStudy',e)
@@ -2374,8 +2271,7 @@ function Web({ closeDrawer, selectedJobId, onClick }) {
                     title={"Year"}
                     placeholder={"Year"}
                     className="text-[#344054]"
-                    name="year"
-                  
+                    name="year"                  
                     value={formik1.values.year}
                     change={(e)=>{
                       formik1.setFieldValue('year',e)
@@ -2383,10 +2279,8 @@ function Web({ closeDrawer, selectedJobId, onClick }) {
                     required={true}
                     error={formik1.errors.year}
                   />
-
                   <RiDeleteBin5Line className="text-gray-500 w-[17px] h-[17px] justify-end " />
                 </div> */}
-
                       <AddMore
                         name="Add More Education "
                         change={handleAddMoreEducationalDetails}
@@ -2624,7 +2518,6 @@ function Web({ closeDrawer, selectedJobId, onClick }) {
                           <div className="divider-h" />
                         </div>
                       ))}
-
                       <AddMore
                         name="Add More Experience "
                         className="text-black"
@@ -2829,7 +2722,6 @@ function Web({ closeDrawer, selectedJobId, onClick }) {
           ) : currentStep === 4 ? (
             <>
               <FlexCol />
-
               <div className="relative w-full mx-auto rounded-md borderb">
                 <Accordion
                   title="Review"
@@ -2898,7 +2790,6 @@ function Web({ closeDrawer, selectedJobId, onClick }) {
                       </div>
                     </div>
                   ))}
-
                   <div>
                     {userdata.map((user) => (
                       <UserInfoComponent
@@ -2945,7 +2836,6 @@ function Web({ closeDrawer, selectedJobId, onClick }) {
                   ))}
                 </div> */}
                   <div className="v-divider" />
-
                   <div className="flex flex-col gap-4 ">
                     <h6 className="h6">Education</h6>
                     <div className="flex flex-col divide-y">
@@ -2972,14 +2862,12 @@ function Web({ closeDrawer, selectedJobId, onClick }) {
                         {work.Shift}
                       </p> */}
                             </div>
-
                             <div className="flex flex-col gap-4">
                               <p className="h6 !font-medium">{edu.degree}</p>
                               <div className="flex gap-3">
                                 <p className="para !font-normal text-opacity-70">
                                   {edu.graduationYear}
                                 </p>
-
                                 <p className="para !font-normal text-opacity-70">
                                   {edu.location}
                                 </p>
@@ -3016,13 +2904,11 @@ function Web({ closeDrawer, selectedJobId, onClick }) {
                                 {work.Shift}
                               </p>
                             </div>
-
                             <div className="inline-flex items-center justify-start gap-4">
                               <p className="!text-opacity-50 h6">{work.role}</p>
                               <p className="para !font-normal text-opacity-70">
                                 {work.experienceDuration}
                               </p>
-
                               <p className="para !font-normal text-opacity-70">
                                 {work.startDate}, {work.endDate}
                               </p>
@@ -3033,7 +2919,6 @@ function Web({ closeDrawer, selectedJobId, onClick }) {
                     </div>
                   </div>
                 </Accordion>
-
                 <div className="box-wrapper">
                   <div className="flex flex-col gap-4">
                     <div className="flex items-center justify-between">
@@ -3093,7 +2978,6 @@ function Web({ closeDrawer, selectedJobId, onClick }) {
                       {data.resumeCoverLetter}
                     </div>
                   ))}
-
                   <div className="divider-h mt-9" />
                   <div className="flex flex-col gap-8 mt-8">
                     <h2 className="h6">Prerequisite</h2>
