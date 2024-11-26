@@ -5,10 +5,10 @@ const apiUrl = "https://alpha-jobs-api.loyaltri.com/api/v1";
 const fileapi = "https://alpha-jobs-api.loyaltri.com/api/fileHandler";
 const companyid = "https://alpha-api.loyaltri.com/api/main";
 
-const token = localStorage.getItem("token");
+// const token = localStorage.getItem("token");
 
-// const token =
-//   typeof window !== "undefined" ? localStorage.getItem("token") : null;
+const token =
+  typeof window !== "undefined" ? localStorage.getItem("token") : null;
 
 const apiRequest = async (action, method, kwargs) => {
   try {
