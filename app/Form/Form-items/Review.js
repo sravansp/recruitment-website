@@ -14,8 +14,6 @@ import {
   RiSmartphoneLine,
   RiStickyNoteLine,
 } from "react-icons/ri";
-import { IoMdAdd } from "react-icons/io";
-import { Notes } from "@mui/icons-material";
 import { BsFileEarmarkRichtext, BsJustify } from "react-icons/bs";
 import Accordion from "@components/ui/Accordion";
 import ButtonClick from "@components/ui/Button";

@@ -4,7 +4,6 @@ import { motion, useAnimation } from "framer-motion";
 import JobCard from "@/Components/JobCard";
 import JobDetailsCard from "@/Components/JobDetailsCard";
 import ButtonClick from "@/Components/Button";
-import Filter from "@/Components/Filter";
 import Sorting from "@/Components/Sorting";
 import SearchBox from "@/Components/SearchBox";
 import { PiMagnifyingGlass, PiNavigationArrow } from "react-icons/pi";
@@ -16,10 +15,7 @@ import {
   getCompanyById,
   getRecruitmentJobById,
 } from "@/Components/Api";
-import { Drawer } from "antd";
-import Web from "./Form/page";
 import Navbar from "@/Components/Navbar";
-import CustomDropdown from "@/Components/Filter";
 
 const Home = ({ jobs }) => {
   const [selectedJobId, setSelectedJobId] = useState(1);
@@ -88,11 +84,9 @@ const Home = ({ jobs }) => {
   }, []);
 
   // const handleSearch = async () => {
-  //   console.log("Searching...");
   //   try {
   //     const response = await getAllRecruitmentJobs();
   //     const allJobs = response.result;
-  //     console.log(allJobs, "data of jobs");
   //     const filteredJobs = allJobs.filter(
   //       (job) =>
   //         job.jobTitle.toLowerCase().includes(searchJobTitle.toLowerCase()) &&
@@ -101,27 +95,19 @@ const Home = ({ jobs }) => {
   //       // JSON.parse(job.searchKeywords).some(keyword =>
   //       //   keyword.toLowerCase().includes(searchJobTitle.toLowerCase())
   //     );
-  //     console.log("Search title:", searchJobTitle);
-  //     console.log("Search location:", searchJobLocation);
-  //     console.log("Filtered jobs:", filteredJobs);
   //     setFilteredJobs(filteredJobs); // Update the filtered jobs state
   //     setSearchJobTitle(""); // Clear the searchJobTitle state
   //     setSearchJobLocation(""); // Clear the searchJobLocation state
   //     setClearInput(prevState => !prevState);
   //   } catch (error) {
-  //     console.error(error);
   //   }
   // };
   // const handleSearch = () => {
-  //   console.log("Searching...");
   //   const newFilteredJobs = JobsList.filter(
   //     (job) =>
   //       job.jobTitle.toLowerCase().includes(searchJobTitle.toLowerCase()) &&
   //       job.location.toLowerCase().includes(searchJobLocation.toLowerCase())
   //   );
-  //   console.log("Search title:", searchJobTitle);
-  //   console.log("Search location:", searchJobLocation);
-  //   console.log("Filtered jobs:", newFilteredJobs);
   //   setFilteredJobs(newFilteredJobs); // Update the filtered jobs state based on the new search
   //   setSearchJobTitle(""); // Clear the searchJobTitle state
   //   setSearchJobLocation(""); // Clear the searchJobLocation state
@@ -152,7 +138,6 @@ const Home = ({ jobs }) => {
   //   setClearInput(prevState => !prevState);
   // };
 
-  // console.log("Search title:", searchJobTitle);
   useEffect(() => {
     try {
       animateJobDetails();
@@ -200,7 +185,6 @@ const Home = ({ jobs }) => {
   //   } else {
   //     sortedJobs.sort((a, b) => new Date(b.createdOn).getTime() - new Date(a.createdOn).getTime()); // Sorting by newest
   //   }
-
   //   setFilteredJobs(sortedJobs);
   // }, [sortOrder]);
 
@@ -301,14 +285,12 @@ const Home = ({ jobs }) => {
   //   const sortedJobs = [...filteredJobs].sort((a, b) => {
   //     const dateA = new Date(a.createdOn).getTime();
   //     const dateB = new Date(b.createdOn).getTime();
-
   //     if (sortOrder === "asc") {
   //       return dateA - dateB;
   //     } else {
   //       return dateB - dateA;
   //     }
   //   });
-
   //   setFilteredJobs(sortedJobs);
   // }, [sortOrder, filteredJobs])
 
@@ -327,20 +309,16 @@ const Home = ({ jobs }) => {
   // useEffect(() => {
   //   const filterJobs = () => {
   //     let filtered = JobsList;
-
   //     if (selectedFilters["Job Types"] && selectedFilters["Job Types"]["Full-Time"]) {
   //       filtered = filtered.filter((job) => job.jobType === "Full Time");
   //     }
-
   //     setFilteredJobs(filtered);
   //   };
-
   //   filterJobs();
   // }, [selectedFilters, JobsList]);
 
   // // Handle filter change from CustomDropdown
   // const handleFilterChange = (filters) => {
-  //   console.log("Selected filters:", filters); // Log the selected filters
   //   setSelectedFilters(filters);
   // };
   // const handleFilterChange = (key) =>{

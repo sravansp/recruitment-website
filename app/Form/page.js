@@ -52,16 +52,7 @@ import AddMore from "@/Components/ui/AddMore";
 import TextArea from "@/Components/ui/TextArea";
 import Accordion from "@/Components/ui/Accordion";
 import { AiTwotoneEdit } from "react-icons/ai";
-import {
-  Button,
-  DatePicker,
-  AntdModal,
-  Modal,
-  notification,
-  Tooltip,
-  Checkbox,
-  Radio,
-} from "antd";
+import { notification, Tooltip } from "antd";
 import DateSelect from "@/Components/ui/DateSelect";
 import Modal2 from "@/Components/ui/Modal";
 import { IoIosArrowBack } from "react-icons/io";
@@ -70,57 +61,103 @@ import FileUpload from "@/Components/ui/FileUpload";
 import noImg from "@/public/noImg.webp";
 
 function Web({ closeDrawer, selectedJobId, onClick }) {
-  const questidRef = useRef(null);
   const [currentStep, setCurrentStep] = useState();
+
   const [activeBtn, setActiveBtn] = useState(0);
+
   const [presentage, setPresentage] = useState(0);
+
   const [nextStep, setNextStep] = useState(0);
+
   const [activeBtnValue, setActiveBtnValue] = useState(0);
+
   const isSmallScreen = useMediaQuery({ maxWidth: 1439 });
+
   const [IsSmallScreen, setIsSmallScreen] = useState(false);
+
   const [formData, setFormData] = useState({});
+
   const [insertedid1, setinsertedId1] = useState();
+
   const [data, setData] = useState([{}]);
+
   const [educationaldetails, setEducationaldetails] = useState([]);
+
   const [experience, setExperience] = useState([]);
+
   const [customfield, setCustomfield] = useState([]);
+
   const [currentStage, setCurrentStage] = useState(1);
+
   const [candidateEmail, setCandidateEmail] = useState("");
+
   const [userdata, setuserdata] = useState([]);
+
   const [eduinsertedid, seteduinsertedid] = useState();
+
   const [selectedImage, setSelectedImage] = useState(null);
+
   const [questid, setQestid] = useState(null);
+
   const [questtemp, setQuesttemp] = useState([]);
+
   const [filePdf, setfilepdf] = useState("");
+
   const [filePdfresume, setfilepdfresume] = useState("");
+
   const [questionAnswers, setQuestionAnswers] = useState([]);
+
   const [coverLetter, setCoverletter] = useState("");
+
   const [questionfield, setQuestionfield] = useState("");
+
   const [instituteerror, setInstituteerror] = useState("");
+
   const [coursetype, setCoursetype] = useState("");
+
   const [coursename, setCoursename] = useState("");
+
   const [yearofstudy, setYearofstudy] = useState("");
+
   const [jobtitle, setjobtitle] = useState("");
+
   const [employmenttype, setemploymenttype] = useState("");
+
   const [companyname, setcompanyname] = useState("");
+
   const [location, setlocation] = useState("");
+
   const [fromdate, setfromdate] = useState("");
+
   const [todate, settodate] = useState("");
+
   const [exp, setExp] = useState("");
+
   const [selectedValues, setSelectedValues] = useState(null);
+
   const [dropdownvalue, Setdopdownvalue] = useState(null);
+
   const [textAreaValue, setTextAreavalue] = useState(null);
+
   const [forminputvalue, setForminputValue] = useState(null);
+
   const [jobResumeEvaluationId, setjobResumeEvaluationId] = useState([]);
+
   const [fetchedAnswers, setfetchedAnswers] = useState([]);
+
   const [quesData, setQuesData] = useState(null);
+
   const [formvalidation, setFormvalidation] = useState([]);
+
   const [showModal, setShowModal] = useState(false);
+
   const [additionalExperienceCount, setAdditionalExperienceCount] = useState(1);
+
   const [
     additionalEducationalDetailsCount,
     setAdditionalEducationalDetailsCount,
   ] = useState([1]);
+
   const [isFormSubmitted, setIsFormSubmitted] = useState(false);
 
   // const [additionalEducationalDetails, setAdditionalEducationalDetails] =
@@ -132,6 +169,7 @@ function Web({ closeDrawer, selectedJobId, onClick }) {
   //       yearOfStudy: "",
   //     }))
   //   );
+
   const [additionalExperiences, setAdditionalExperiences] = useState([
     {
       id: 1,
@@ -241,94 +279,15 @@ function Web({ closeDrawer, selectedJobId, onClick }) {
     },
   ]);
 
-  // const [steps, setSteps] = useState(() => {
-  //   const baseSteps = [
-  //     {
-  //       id: 1,
-  //       value: 0,
-  //       title: "Personal Details",
-  //       data: "personaldetails",
-  //     },
-  //     {
-  //       id: 2,
-  //       value: 1,
-  //       title: "Educational Details",
-  //       data: "educationaldetails",
-  //     },
-  //     {
-  //       id: 3,
-  //       value: 2,
-  //       title: "Work Experience",
-  //       data: "workexperience",
-  //     },
-  //     {
-  //       id: 4,
-  //       value: 3,
-  //       title: "Questions",
-  //       data: "questions",
-  //     },
-  //     {
-  //       id: 5,
-  //       value: 4,
-  //       title: "Review",
-  //       data: "review",
-  //     },
-  //   ];
-
   //   // Check if formvalidation and its first item exist and if experience is 0
   //   if (exp == 0) {
   //     // Filter out the "Work Experience" step from baseSteps
   //     const newSteps = baseSteps.filter(step => step.id !== 3);
   //     return newSteps;
   //   }
-
   //   return baseSteps;
   // });
 
-  // const userInfo = [
-  //   {
-  //     personal: [
-  //       {
-  //         id: 1,
-  //         label: "Email Address",
-  //         value: "grace.bennet@example.com",
-  //         icon: <RiMailSendLine />,
-  //       },
-  //       {
-  //         id: 2,
-  //         label: "Phone number",
-  //         value: "+1234567890",
-  //         icon: <RiSmartphoneLine />,
-  //       },
-  //       {
-  //         id: 3,
-  //         label: "Date of Birth",
-  //         value: "03 September 2000",
-  //         icon: <RiCake2Line />,
-  //       },
-  //       {
-  //         id: 4,
-  //         label: "Location",
-  //         value: "Istanbul, Izmir, Ankara, Turkey, US, Europe",
-  //         icon: <RiMapPin2Line />,
-  //       },
-  //     ],
-  //     other: [
-  //       {
-  //         id: 5,
-  //         label: "Location",
-  //         value: "Istanbul, Izmir, Ankara, Turkey, US, Europe",
-  //         icon: <RiMapPin2Line />,
-  //       },
-  //       {
-  //         id: 6,
-  //         label: "Work Type",
-  //         value: "Remote. Fulltime. Part-Timet Internship, Freelance",
-  //         icon: <RiMouseLine />,
-  //       },
-  //     ],
-  //   },
-  // ];
   const jobid = selectedJobId;
 
   const Questions = [
@@ -411,24 +370,19 @@ function Web({ closeDrawer, selectedJobId, onClick }) {
     setIsModalOpen(false);
   };
   // const handleSubmitAllForms = async (event) => {
-  //   console.log("handleSubmitAllForms called");
   //   if (event) {
   //     event.preventDefault();
   //   }
 
   //   await formik.handleSubmit();
-  //   console.log("formik.handleSubmit called");
   //   if (formik.isValid) {
   //     await formik1.handleSubmit();
-  //     console.log("formik1.handleSubmit called");
   //   }
   //   if (formik1.isValid) {
   //     await formik2.handleSubmit();
-  //     console.log("formik2.handleSubmit called");
   //   }
   //   if (formik2.isValid) {
   //     await formik3.handleSubmit();
-  //     console.log("formik3.handleSubmit called");
   //   }
   //   if (currentStep === 4 && closeDrawer) {
   //     closeDrawer();
@@ -553,17 +507,15 @@ function Web({ closeDrawer, selectedJobId, onClick }) {
   //   try {
   //     // Call the API function with the form data
   //     const response = await saveRecruitmentJobApplicationFormSetting(formData);
-  //     console.log("API Response:", response);
   //     // Handle the API response as needed
   //   } catch (error) {
-  //     console.error("Error:", error);
   //   }
   // };
 
   const handleSubmit = async (values, callback) => {
     if (activeBtn < steps.length - 1) {
-      setActiveBtn(activeBtn + 1); // Increment the active step
-      setCurrentStep(currentStep + 1); // Increment the current step
+      setActiveBtn(activeBtn + 1);
+      setCurrentStep(currentStep + 1);
     }
     // try {
     //   // Call the API function to save recruitment resume
@@ -576,8 +528,7 @@ function Web({ closeDrawer, selectedJobId, onClick }) {
   };
 
   const handlePersonalDetailsSubmit = (values) => {
-    // You can set the form data to the state or perform any other action here
-    setFormData(values); // Example of setting form data to state
+    setFormData(values);
   };
 
   // const  = () => {
@@ -815,7 +766,6 @@ function Web({ closeDrawer, selectedJobId, onClick }) {
                 "Personal Details has been updated"
               );
               setActiveBtn(activeBtn + 1);
-
               setCurrentStep(currentStep + 1);
               setPresentage(presentage + 1);
             } else if (response.status === 500) {
@@ -909,7 +859,6 @@ function Web({ closeDrawer, selectedJobId, onClick }) {
         { institute: "", courseType: "", courseName: "", yearOfStudy: "" },
       ],
     },
-
     // enableReinitialize: true,
     // validateOnChange: false,
     // validationSchema: Yup.object().shape({
@@ -923,7 +872,6 @@ function Web({ closeDrawer, selectedJobId, onClick }) {
     //     })
     //   ),
     // }),
-
     onSubmit: async (values, { setSubmitting }) => {
       setInstituteerror("");
       setCoursetype("");
@@ -964,7 +912,6 @@ function Web({ closeDrawer, selectedJobId, onClick }) {
       } else {
         try {
           // const transformedData = Object.values(additionalEducationalDetails);
-
           // const response = await saveRecruitmentResumeEducationalDetailBatch(Object.entries(additionalEducationalDetails).map(([_, value]) => value));
           const formattedData = additionalEducationalDetails.map((item) => ({
             resumeId: insertedid1,
@@ -975,11 +922,8 @@ function Web({ closeDrawer, selectedJobId, onClick }) {
             location: "jnvkjdn",
           }));
           // if (eduinsertedid) {
-          //   console.log(values,"gggg");
           //   const update = await updateRecruitmentResumeEducationalDetail({id:eduinsertedid, ...values});
-          //   console.log(update);
           //   setActiveBtn(activeBtn + 1);
-
           //   setCurrentStep(currentStep + 1);
           //   setPresentage(presentage + 1);
           // } else {
@@ -1169,7 +1113,6 @@ function Web({ closeDrawer, selectedJobId, onClick }) {
       // answer: answerMetaData ? answerMetaData.questionAnswer : questionAnswers,
       jobId: selectedJobId,
       resumeId: insertedid1,
-
       // highestEducationLevel: "",
     },
     enableReinitialize: true,
@@ -1547,11 +1490,8 @@ function Web({ closeDrawer, selectedJobId, onClick }) {
   //           insertedid1
   //         );
   //         setCustomfield(response);
-  //         console.log(insertedid1, "dfrfgreg");
-  //         console.log(response);
   //       }
   //     } catch (error) {
-  //       console.error("error", error);
   //     }
   //   };
   //   callapi();
@@ -2483,7 +2423,6 @@ function Web({ closeDrawer, selectedJobId, onClick }) {
                                 ];
                                 updatedExperiences[index].toDate =
                                   formattedDate;
-
                                 setAdditionalExperiences(updatedExperiences);
                               }}
                               required={true}
@@ -3109,7 +3048,7 @@ const UserInfoComponent = ({ personalInfo }) => {
         <>
           {info.value && (
             <div className="flex items-center gap-2.5">
-              <div className="w-8 h-8 iconI vhcenter bg-[#F5F5F5] dark:bg-secondaryDark text-base rounded-lg ">
+              <div className="w-8 h-8 iconI vhcenter bg-[#F5F5F5] dark:bg-secondaryDark text-base rounded-lg">
                 <div className="text-black opacity-50">{info.icon}</div>
               </div>
               <div className="inline-flex flex-col items-start justify-start ">

@@ -145,8 +145,8 @@ const JobDetailsCard = ({ selectedJob, jobDetailsAnimation }) => {
             placement="right"
             closable={false}
             onClose={closeDrawer}
-            visible={drawerVisible}
-            width="100%" // Adjust the width as needed
+            open={drawerVisible}
+            width="100%"
             height="100%"
             wrapperBodyStyle={{ backgroundColor: "#F8FAFC" }}
             className="ant-drawer-body"

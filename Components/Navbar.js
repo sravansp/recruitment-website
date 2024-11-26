@@ -1,8 +1,6 @@
 "use client";
 import Image from "next/image";
 import React from "react";
-import logo from "@/public/brand/logo.png";
-import { HiOutlineMenuAlt3 } from "react-icons/hi";
 import NoImagePlaceholder from "@/public/NoImagePlaceholder.png";
 
 // import Switcher from "./Switcher";

@@ -82,11 +82,6 @@
 // //   );
 // // }
 
-
-
-
-
-
 // import React from "react";
 // import { InboxOutlined } from "@ant-design/icons";
 // import { message, Upload } from "antd";
@@ -168,8 +163,6 @@
 //   );
 // }
 
-
-
 import React from "react";
 import { InboxOutlined } from "@ant-design/icons";
 import { message, Upload } from "antd";
@@ -178,13 +171,25 @@ import { AiOutlineCloudUpload } from "react-icons/ai";
 const { Dragger } = Upload;
 
 export default function FileUpload({
-  change = () => { },
+  change = () => {},
   className,
   flex = true,
 }) {
   const { t } = useTranslation();
-  const allowedFileFormats = ["jpg", "png", "jpeg", "svg", "webp", "pdf", "doc", "docx", "pptx"];
+  const allowedFileFormats = [
+    "jpg",
+    "png",
+    "jpeg",
+    "svg",
+    "webp",
+    "pdf",
+    "doc",
+    "docx",
+    "pptx",
+  ];
+
   const fileFormatsString = allowedFileFormats.join(", ");
+
   const props = {
     name: "file",
     multiple: true,
@@ -195,8 +200,7 @@ export default function FileUpload({
       if (!isAllowedFile) {
         message.error(`${file.name} file format is not supported.`);
         return false;
-      }
-      else {
+      } else {
         return isAllowedFile;
       }
     },
@@ -223,7 +227,9 @@ export default function FileUpload({
             <AiOutlineCloudUpload className="text-3xl text-primary " />
             <div className="flex flex-col">
               <h2 className="acco-subhead"> {t("Click to upload")}</h2>
-              <p className="para px-5">{t("Allowed formats")}: {fileFormatsString}</p>
+              <p className="para px-5">
+                {t("Allowed formats")}: {fileFormatsString}
+              </p>
             </div>
           </div>
         ) : (
@@ -244,4 +250,3 @@ export default function FileUpload({
     </div>
   );
 }
-

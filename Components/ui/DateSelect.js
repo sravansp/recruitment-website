@@ -37,7 +37,6 @@ export default function DateSelect({
       <DatePicker
         format={dateFormat} 
         onChange={(date, dateString) => {
-          console.log(dateString);
           change(dateString);
         }}
         // value={value}

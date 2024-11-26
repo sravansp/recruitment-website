@@ -164,7 +164,7 @@
 //     </div>
 //   );
 // }
-import React, { useState, useEffect, useRef, useMemo } from "react";
+import React, { useState, useEffect, useRef } from "react";
 import { MdCheck } from "react-icons/md";
 
 export default function Stepper({

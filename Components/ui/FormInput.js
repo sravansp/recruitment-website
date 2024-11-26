@@ -13,7 +13,7 @@ export default function FormInput({
   className = "",
   phoneNumber,
   websiteLink,
-  change = () => { },
+  change = () => {},
   error = "",
   width = "full",
   description,
@@ -23,7 +23,7 @@ export default function FormInput({
   const isSmallScreen = useMediaQuery({ maxWidth: 1439 });
 
   const [show, setShow] = useState(false);
-  
+
   const target = useRef(null);
 
   const handleChange = (e) => {
@@ -35,9 +35,13 @@ export default function FormInput({
   };
 
   return (
-    <div className={`flex flex-col ${title ? "gap-2" : "gap-0 items-center "} `}>
+    <div
+      className={`flex flex-col ${title ? "gap-2" : "gap-0 items-center "} `}
+    >
       <div className="flex">
-        <p className={`text-xs font-medium 2xl:text-sm dark:text-white ${className}`}>
+        <p
+          className={`text-xs font-medium 2xl:text-sm dark:text-white ${className}`}
+        >
           {title}
         </p>
         {required && <FaAsterisk className="text-[8px] text-rose-600" />}
@@ -50,8 +54,9 @@ export default function FormInput({
             placeholder={placeholder}
             value={value}
             onChange={(e) => change(e.target.value)}
-            className={`rounded-lg w-full pl-0 text-sm relative ${className}  ${error ? "border-rose-400" : ""
-              }`}
+            className={`rounded-lg w-full pl-0 text-sm relative ${className}  ${
+              error ? "border-rose-400" : ""
+            }`}
             status={error ? "error" : ""}
             size={isSmallScreen ? "default" : "large"}
             style={

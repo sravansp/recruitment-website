@@ -9,12 +9,12 @@ export default function Dropdown({
   title = "",
   formik,
   value = null,
-  change = () => { },
+  change = () => {},
   options = [],
   error = "",
   placeholder = "",
   className = "",
-  onSearch = () => { },
+  onSearch = () => {},
   styles,
   description,
   required = false,
@@ -26,7 +26,7 @@ export default function Dropdown({
   image = false,
 }) {
   const isSmallScreen = useMediaQuery({ maxWidth: 1439 });
-  
+
   const filterOption = (input, option) =>
     (option?.label ?? "").toLowerCase().includes(input.toLowerCase());
   const { Option } = Select;
@@ -39,7 +39,6 @@ export default function Dropdown({
             <label htmlFor="" className="text-xs font-medium 2xl:text-sm ">
               {title}
             </label>
-
             {required && <FaAsterisk className="text-[8px] text-rose-600" />}
           </div>
           {descriptionTop && (
@@ -96,7 +95,6 @@ export default function Dropdown({
                     <span>mkck</span> */}
                   <span>{each.label}</span>
                 </div>
-
                 <p class="text-gray-500 text-xs font-medium font-['Inter'] leading-none">
                   {each.description}
                 </p>
@@ -108,7 +106,6 @@ export default function Dropdown({
         <Select
           showSearch
           placeholder={placeholder}
-       
           optionFilterProp="children"
           onChange={change}
           onSearch={onSearch}

@@ -1,6 +1,6 @@
 import React from "react";
 import { DownOutlined } from "@ant-design/icons";
-import { Dropdown, Space, Typography } from "antd";
+import { Dropdown } from "antd";
 const items = [
   // {
   //   key: "1",
@@ -23,6 +23,7 @@ const items = [
     label: "20days Ago",
   },
 ];
+
 const Sorting = ({ onSortChange }) => (
   <Dropdown
     menu={{

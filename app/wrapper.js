@@ -2,7 +2,6 @@
 import React, { useEffect, useState } from "react";
 import { ConfigProvider, theme } from "antd";
 import { AntdRegistry } from "@ant-design/nextjs-registry";
-import Navbar from "@/Components/Navbar";
 
 export default function Wrapper(props) {
   // Set a default theme if localStorage.theme is not available

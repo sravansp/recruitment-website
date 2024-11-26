@@ -12,7 +12,8 @@ function WorkExperience() {
   const [primaryColor, setPrimaryColor] = useState("");
 
   useEffect(() => {
-    const color = typeof window !== "undefined" ? localStorage.getItem("themeColor") : null;
+    const color =
+      typeof window !== "undefined" ? localStorage.getItem("themeColor") : null;
     if (color) {
       setPrimaryColor(color);
     }

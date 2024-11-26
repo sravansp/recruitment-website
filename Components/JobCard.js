@@ -2,7 +2,6 @@
 import React from "react";
 import { motion } from "framer-motion";
 import { PiFoldersLight, PiClock, PiMapPin, PiMoney } from "react-icons/pi";
-import Link from "next/link";
 
 const JobCard = ({
   jobTitle,
@@ -17,7 +16,7 @@ const JobCard = ({
   selected,
   index,
   isSalaryPublic,
-  jobId, // Pass the index of the card as a prop
+  jobId,
 }) => {
   const cardVariants = {
     initial: { opacity: 0, y: 30 },
