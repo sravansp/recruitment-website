@@ -39,7 +39,7 @@ export default function Dropdown({
             <label htmlFor="" className="text-xs font-medium 2xl:text-sm ">
               {title}
             </label>
-            {required && <FaAsterisk className="text-[8px] text-rose-600" />}
+            {required && <FaAsterisk className="text-[5px] text-rose-600" />}
           </div>
           {descriptionTop && (
             <p className="text-xs font-medium opacity-50 dark:text-white">

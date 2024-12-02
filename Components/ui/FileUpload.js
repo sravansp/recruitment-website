@@ -205,6 +205,7 @@ export default function FileUpload({
       }
     },
   };
+
   return (
     <div className={`${className}`}>
       <Dragger

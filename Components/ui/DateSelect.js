@@ -8,15 +8,14 @@ export default function DateSelect({
   change = () => {},
   className,
   picker = "",
-  dateFormat = "YYYY-MM-DD", 
+  dateFormat = "YYYY-MM-DD",
   value = "",
   title = "",
   description = "",
   error = "",
   required = false,
   placeholder = "",
-  minDate = null,
-  
+  minDate = "",
 }) {
   const isSmallScreen = useMediaQuery({ maxWidth: 1439 });
 
@@ -31,20 +30,22 @@ export default function DateSelect({
             {title}
           </label>
         )}
-        {required && <FaAsterisk className="text-[8px] text-rose-600" />}
+        {required && <FaAsterisk className="text-[5px] text-rose-600" />}
       </div>
 
       <DatePicker
-        format={dateFormat} 
+        format={dateFormat}
         onChange={(date, dateString) => {
           change(dateString);
         }}
+        minDate={minDate}
         // value={value}
         picker={picker}
         status={error && "error"}
         size={isSmallScreen ? "default" : "large"}
         placeholder={placeholder}
-        disabledDate={(current) => current && new Date(current) > new Date()}  />
+        disabledDate={(current) => current && new Date(current) > new Date()}
+      />
 
       {error && (
         <FiAlertCircle className="absolute top-3.5 mt-6 right-8 -mr-1 transform -translate-y-2/5 text-red-400" />

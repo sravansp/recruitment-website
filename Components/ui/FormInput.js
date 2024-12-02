@@ -44,7 +44,7 @@ export default function FormInput({
         >
           {title}
         </p>
-        {required && <FaAsterisk className="text-[8px] text-rose-600" />}
+        {required && <FaAsterisk className="text-[5px] text-rose-600" />}
       </div>
       {websiteLink ? (
         <span className="relative w-full ">

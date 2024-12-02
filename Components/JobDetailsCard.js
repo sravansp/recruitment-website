@@ -1,15 +1,19 @@
 // JobDetailsCard.js
 "use client";
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import { motion } from "framer-motion";
 import ButtonClick from "./Button";
 import TextReadMore from "./TextReadMore";
 import { Drawer } from "antd";
 import Web from "@/app/Form/page";
+import axios from "axios";
 
 const JobDetailsCard = ({ selectedJob, jobDetailsAnimation }) => {
   const [drawerVisible, setDrawerVisible] = useState(false);
+
   const [selectedJobIdForApply, setSelectedJobIdForApply] = useState(null);
+
+  const apiUrl = "https://alpha-jobs-api.loyaltri.com/api/auth";
 
   const openDrawer = () => {
     setDrawerVisible(true);
@@ -24,6 +28,29 @@ const JobDetailsCard = ({ selectedJob, jobDetailsAnimation }) => {
     setSelectedJobIdForApply(jobId);
     openDrawer();
   };
+
+  const getToken = async () => {
+    try {
+      await axios
+        .post(apiUrl, {
+          action: "getToken",
+          method: "POST",
+          kwargs: {
+            userName: "Admin",
+          },
+        })
+        .then((res) => {
+          localStorage.setItem("token", res.data.result.token);
+          return res;
+        });
+    } catch (err) {
+      return err;
+    }
+  };
+
+  useEffect(() => {
+    getToken();
+  }, []);
 
   return (
     <motion.div

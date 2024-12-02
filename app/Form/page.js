@@ -1,6 +1,6 @@
 "use client";
 import Image from "next/image";
-import React, { useEffect, useRef, useState } from "react";
+import React, { useEffect, useState } from "react";
 import EducationalDetails from "./Form-items/EducationalDetails";
 import { TfiLocationPin } from "react-icons/tfi";
 import { LiaAddressCard } from "react-icons/lia";
@@ -59,6 +59,7 @@ import { IoIosArrowBack } from "react-icons/io";
 import { fileAction } from "@/Components/Api1";
 import FileUpload from "@/Components/ui/FileUpload";
 import noImg from "@/public/noImg.webp";
+import dayjs from "dayjs";
 
 function Web({ closeDrawer, selectedJobId, onClick }) {
   const [currentStep, setCurrentStep] = useState();
@@ -467,13 +468,6 @@ function Web({ closeDrawer, selectedJobId, onClick }) {
     closeDrawer();
   };
 
-  // const handleCloseModal = () => {
-  //   setIsModalVisible(false);
-
-  // };
-  // const router = useRouter();
-  // const { jobId } = router.query;
-
   useEffect(() => {
     if (activeBtn < 4 && activeBtn !== nextStep) {
       /// && activeBtn !== nextStep
@@ -665,7 +659,11 @@ function Web({ closeDrawer, selectedJobId, onClick }) {
         if (!formik.values.candidateEmail) {
           formik.setFieldError("candidateEmail", "Email is required");
           isValid = false;
-        } else if (!formik.values.candidateEmail.endsWith("@gmail.com")) {
+        } else if (
+          !/^[A-Z0-9._%+-]+@[A-Z0-9.-]+\.[A-Z]{2,4}$/i.test(
+            formik.values.candidateEmail
+          )
+        ) {
           formik.setFieldError("candidateEmail", "Enter valid Email ");
           isValid = false;
         }
@@ -977,22 +975,21 @@ function Web({ closeDrawer, selectedJobId, onClick }) {
       fromDate: "",
       toDate: "",
     },
-
-    // enableReinitialize: true,
-    // validateOnChange: false,
-    // validationSchema2: Yup.object().shape({
-    //   // ...existing validations
-    //   additionalExperiences: Yup.array().of(
-    //     Yup.object().shape({
-    //       jobTitle: Yup.string().required("Job Title is required"),
-    //       employmentType: Yup.string().required("Employment Type is required"),
-    //       companyName: Yup.string().required("Company Name is required"),
-    //       location: Yup.string().required("Location is required"),
-    //       fromDate: Yup.string().required("From Date is required"),
-    //       toDate: Yup.string().required("To Date is required"),
-    //     })
-    //   ),
-    // }),
+    enableReinitialize: true,
+    validateOnChange: false,
+    validationSchema: Yup.object().shape({
+      // ...existing validations
+      additionalExperiences: Yup.array().of(
+        Yup.object().shape({
+          jobTitle: Yup.string().required("Job Title is required"),
+          employmentType: Yup.string().required("Employment Type is required"),
+          companyName: Yup.string().required("Company Name is required"),
+          location: Yup.string().required("Location is required"),
+          fromDate: Yup.string().required("From Date is required"),
+          toDate: Yup.string().required("To Date is required"),
+        })
+      ),
+    }),
     onSubmit: async (values, { setSubmitting }) => {
       try {
         // Check validation
@@ -1045,11 +1042,11 @@ function Web({ closeDrawer, selectedJobId, onClick }) {
           setCurrentStep(currentStep + 1);
           setPresentage(presentage + 1);
         } else if (response.status === 500) {
-          openNotification(
-            "error",
-            "input field is empty..",
-            response.message.replace(/<br\/>/g, "\n")
-          );
+          // openNotification(
+          //   "error",
+          //   "input field is empty..",
+          //   response.message.replace(/<br\/>/g, "\n")
+          // );
         }
       } catch (error) {
         return error;
@@ -1117,7 +1114,7 @@ function Web({ closeDrawer, selectedJobId, onClick }) {
     },
     enableReinitialize: true,
     validateOnChange: false,
-    validationSchema3: Yup.object().shape({
+    validationSchema: Yup.object().shape({
       answer: Yup.string().required("This field is required"),
     }),
     onSubmit: async (values, { setSubmitting }) => {
@@ -2242,7 +2239,7 @@ function Web({ closeDrawer, selectedJobId, onClick }) {
                       style={{ backgroundColor: `${primaryColor}10` }}
                     >
                       <div className="text-left rtl:text-right">
-                        <h1 className="acco-h1">Work Experience Details </h1>
+                        <h1 className="acco-h1">Work Experience Details</h1>
                         <p className="para">
                           Fill your work experience details.
                         </p>
@@ -2383,7 +2380,6 @@ function Web({ closeDrawer, selectedJobId, onClick }) {
                                   .split("/")
                                   .reverse()
                                   .join("-");
-
                                 const updatedExperiences = [
                                   ...additionalExperiences,
                                 ];
@@ -2411,13 +2407,12 @@ function Web({ closeDrawer, selectedJobId, onClick }) {
                               className="text-[#344054]"
                               name={`additionalExperiences[${index}].toDate`}
                               value={experience.toDate}
-                              minDate={experience.fromDate}
+                              minDate={dayjs(experience.fromDate)}
                               change={(e) => {
                                 const formattedDate = e
                                   .split("/")
                                   .reverse()
                                   .join("-");
-
                                 const updatedExperiences = [
                                   ...additionalExperiences,
                                 ];
@@ -2629,25 +2624,13 @@ function Web({ closeDrawer, selectedJobId, onClick }) {
                             }
                             placeholder={"Answer here.."}
                             className="text-[#344054]"
-                            // name="customQuestion"
-                            // value={questionfield}
-                            // change={(e) => {
-                            //   formik3.setFieldValue("customQuestion", e);
-                            // }}
-                            // change={(e) => {
-                            //   setQuestionfield(e);
-                            // }}
                             name="answer"
                             value={formik3.values.answer}
-                            // change={formik3.handleChange}
                             change={(e) => {
                               formik3.setFieldValue("answer", e);
                             }}
-                            // onBlur={formik3.handleBlur}
                             required={true}
                             error={formik3.errors.answer}
-                            // required={false}
-                            // error={formik3.errors.customQuestion}
                           />
                           {/* Additional FormInput components can be added here */}
                         </div>
